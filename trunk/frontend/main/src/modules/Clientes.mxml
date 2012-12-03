@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical" 
+		   width="810" height="400" 
+		   xmlns:clientes="components.clientes.*"
+		   creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import events.GenericEvent;
+			
+			import model.Cliente;
+			
+			import mx.events.FlexEvent;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				
+			}
+			
+			protected function consult_clientDetailHandler(event:GenericEvent):void
+			{
+				this.detail.client = event.information as Cliente;
+				this.navigator.selectedChild = this.detail;
+			}
+			
+			protected function register_clientNewHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+			
+			protected function detail_clientUpdatedHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:TabNavigator id="navigator" width="100%" height="100%" creationPolicy="all">
+		<clientes:Consult id="consult" clientDetail="consult_clientDetailHandler(event)"/>
+		<clientes:Client id="detail" update="true" clientUpdated="detail_clientUpdatedHandler(event)"/>
+		<clientes:Client id="register" registrer="true" clientNew="register_clientNewHandler(event)"/>
+	</mx:TabNavigator>
+</mx:Module>

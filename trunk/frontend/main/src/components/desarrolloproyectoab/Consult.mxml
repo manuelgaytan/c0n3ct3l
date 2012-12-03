@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+		 label="Consulta"
+		 horizontalAlign="right"
+		 creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import events.GenericEvent;
+			
+			import model.DesarrolloProyecto;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			[Bindable]
+			private var generalDataProjects:ArrayCollection = null;
+			
+			private var datosGeneralesProyecto:DesarrolloProyecto;
+			
+			protected function responseGetAll_resultHandler(event:ResultEvent):void
+			{
+				generalDataProjects = event.result as ArrayCollection;
+			}
+			
+			protected function desarrolloProyectoABService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.executeQuery();
+			}
+			
+			private function labelFunctionProfile(object:Object, column:DataGridColumn):String{
+				return object["perfil"]["etiqueta"];
+			}
+			
+			protected function datagrid_doubleClickHandler(event:MouseEvent):void
+			{
+				var developmentProjectAB:DesarrolloProyecto = this.datagrid.selectedItem as DesarrolloProyecto;
+				this.responseGetDesarrolloProyectoAB.token = this.desarrolloProyectoABService.getDesarrolloProyectoAB( developmentProjectAB.id );
+			}
+			
+			protected function responseGetDesarrolloProyectoAB_resultHandler(event:ResultEvent):void
+			{
+				var developmentProjectAB:DesarrolloProyecto = event.result as DesarrolloProyecto;
+				if( developmentProjectAB == null ){
+					return;
+				}
+				var genericEvent:GenericEvent = new GenericEvent("developmentProjectABDetail");
+				genericEvent.information = developmentProjectAB;
+				this.dispatchEvent( genericEvent );
+			}
+			
+			public function executeQuery():void
+			{
+				this.responseGetAll.token = this.desarrolloProyectoABService.getAll();
+			}
+			
+			private function labelFunctionIDProyecto(item:Object, column:DataGridColumn):String{
+				return Util.getIDConectelFormat( Util.extractObject(item, column.dataField) );
+			}
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="developmentProjectABDetail", type="events.GenericEvent")]
+	</mx:Metadata>
+	<mx:DataGrid id="datagrid" width="100%" height="100%" dataProvider="{generalDataProjects}"
+				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
+				 allowMultipleSelection="true">
+		<mx:columns>
+			<mx:DataGridColumn id="dtgProjectID" headerText="{'ID Proyecto'}"
+							   dataField="proyecto.id"
+							   labelFunction="labelFunctionIDProyecto"
+							   width="130"/>
+			<mx:DataGridColumn id="dtgFrame" headerText="{'Bastidor/Gabinete'}"
+							   dataField="bastidorGabinete"
+							   width="130"/>
+			<mx:DataGridColumn id="dtgLedge" headerText="{'Repisa'}"
+							   dataField="repisa"
+							   width="130"/>
+			<mx:DataGridColumn id="dtgVersion" headerText="{'Versión/Release'}"
+							   dataField="version"
+							   width="130"/>
+			<mx:DataGridColumn id="dtgController" headerText="{'Controladora'}"
+							   dataField="controladora"
+							   width="130"/>
+		</mx:columns>
+	</mx:DataGrid>
+	<mx:HBox>
+		<!--<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>-->
+	</mx:HBox>
+	<mx:RemoteObject id="desarrolloProyectoABService" destination="desarrolloProyectoABService" fault="desarrolloProyectoABService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetAll" result="responseGetAll_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetDesarrolloProyectoAB" result="responseGetDesarrolloProyectoAB_resultHandler(event)"/>
+</mx:VBox>

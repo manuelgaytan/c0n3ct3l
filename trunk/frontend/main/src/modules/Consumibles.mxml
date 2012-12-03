@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
+		   width="100%" height="100%"
+		   xmlns:consumibles="components.consumibles.*"
+		   creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import events.GenericEvent;
+			
+			import model.Consumible;
+			
+			import mx.events.FlexEvent;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				
+			}
+			
+			protected function consult_consumableDetailHandler(event:GenericEvent):void
+			{
+				this.detail.consumable = event.information as model.Consumible;
+				this.navigator.selectedChild = this.detail;
+			}
+			
+			protected function register_consumableNewHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+			
+			protected function detail_consumableUpdatedHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:TabNavigator id="navigator" width="100%" height="100%" creationPolicy="all">
+		<consumibles:Consult id="consult" consumableDetail="consult_consumableDetailHandler(event)"/>
+		<consumibles:Consumable id="detail" update="true" consumableUpdated="detail_consumableUpdatedHandler(event)"/>
+		<consumibles:Consumable id="register" registrer="true" consumableNew="register_consumableNewHandler(event)"/>
+	</mx:TabNavigator>
+</mx:Module>

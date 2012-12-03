@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%"
+		 label="Filtro" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import events.GenericEvent;
+			
+			import model.FiltroProyecto;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			protected function btnFilter_clickHandler(event:MouseEvent):void
+			{
+				var productFilter:FiltroProyecto = new FiltroProyecto();
+				productFilter.idConectel = Util.stringToNumber( this.txtConectelID.text );
+				productFilter.idCategoria = Util.selectedId(cmbCategory);
+				productFilter.idCliente = Util.selectedId(cmbClient) == 0 ? undefined:Util.selectedId(cmbClient);
+				productFilter.tipoProyecto = Util.selectedLabel( cmbProjectType );
+				productFilter.tecnologia = Util.selectedLabel( cmbTechnology );
+				productFilter.equipo = Util.selectedLabel( cmbEquipment );
+				productFilter.actividadRealizar = Util.selectedLabel( cmbActivity );
+				productFilter.modelo = Util.selectedLabel( cmbModel );
+				productFilter.descripcionServicio = Util.selectedLabel( cmbServiceDescription );
+				productFilter.tipoServicio = Util.selectedLabel( cmbServiceType );
+				productFilter.idCosto = Util.selectedId( cmbCost );
+				
+				var filterEvent:GenericEvent = new GenericEvent("filterCommand");
+				filterEvent.information = productFilter;
+				this.dispatchEvent( filterEvent );
+			}
+			
+			protected function proyectoService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.fillCombos();
+			}
+			
+			private function fillCombos():void
+			{
+				this.responseGetCategorias.token = this.proyectoService.getCategorias();
+				this.responseGetClientes.token = this.clienteService.getClientes();
+			}
+			
+			protected function responseGetCategorias_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbCategory.dataProvider = Util.addEmptyCatalgo( data );
+			}
+			
+			protected function responseGetClientes_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbClient.dataProvider = Util.addEmptyCatalgo( data, "nombreComercial" );
+			}
+			
+			protected function responseGetTiposProyecto_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbProjectType.dataProvider = Util.addEmptyCatalgo( data );
+			}
+			
+			protected function responseGetTecnologias_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbTechnology.dataProvider = Util.addEmptyCatalgo( data );
+			}
+			
+			protected function responseGetEquipos_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbEquipment.dataProvider = Util.addEmptyCatalgo( data );
+			}
+			
+			protected function responseGetActividadRealizar_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbActivity.dataProvider = Util.addEmptyCatalgo( data );
+			}
+			
+			protected function responseGetModelo_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbModel.dataProvider = Util.addEmptyCatalgo( data );
+			}
+			
+			protected function responseGetDescripcionServicio_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbServiceDescription.dataProvider = Util.addEmptyCatalgo( data );
+			}
+			
+			protected function responseGetTipoServicio_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbServiceType.dataProvider = Util.addEmptyCatalgo( data );
+			}
+			
+			protected function responseGetCosto_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbCost.dataProvider = Util.addEmptyCatalgo( data );
+			}
+			
+			protected function cmbClient_changeHandler(event:ListEvent):void
+			{
+				var i:* = Util.selectedId( this.cmbClient );
+				if( i == undefined ||
+					i == 0 ){
+					cleanCombos( cmbClient.id );
+					return;
+				}
+				this.responseGetTiposProyecto.token = this.productoService.getTiposProyecto(i);
+			}
+			
+			protected function cmbProjectType_changeHandler(event:ListEvent):void
+			{
+				var i:String = Util.selectedLabel( this.cmbProjectType );
+				if( Util.validateEmpty( i) == null ){
+					cleanCombos( cmbProjectType.id );
+					return;
+				}
+				this.responseGetTecnologias.token = this.productoService.getTecnologias( Util.selectedId( this.cmbClient ),
+																						 i);
+			}
+			
+			protected function cmbTechnology_changeHandler(event:ListEvent):void
+			{
+				var i:String = Util.selectedLabel( this.cmbTechnology );
+				if( Util.validateEmpty( i) == null ){
+					cleanCombos( cmbTechnology.id );
+					return;
+				}
+				this.responseGetEquipos.token = this.productoService.getEquipos( Util.selectedId( this.cmbClient ),
+					Util.selectedLabel( this.cmbProjectType ),
+					i);
+			}
+			
+			protected function cmbEquipment_changeHandler(event:ListEvent):void
+			{
+				var i:String = Util.selectedLabel( this.cmbEquipment );
+				if( Util.validateEmpty( i) == null ){
+					cleanCombos( cmbEquipment.id );
+					return;
+				}
+				this.responseGetActividadRealizar.token = this.productoService.getActividadRealizar( Util.selectedId( this.cmbClient ),
+					Util.selectedLabel( this.cmbProjectType ),
+					Util.selectedLabel( this.cmbTechnology ),
+					i);
+			}
+			
+			protected function cmbActivity_changeHandler(event:ListEvent):void
+			{
+				var i:String = Util.selectedLabel( this.cmbActivity );
+				if( Util.validateEmpty( i) == null ){
+					cleanCombos( cmbActivity.id );
+					return;
+				}
+				this.responseGetModelo.token = this.productoService.getModelo( Util.selectedId( this.cmbClient ),
+					Util.selectedLabel( this.cmbProjectType ),
+					Util.selectedLabel( this.cmbTechnology ),
+					Util.selectedLabel( this.cmbEquipment ),
+					i);
+			}
+			
+			protected function cmbModel_changeHandler(event:ListEvent):void
+			{
+				var i:String = Util.selectedLabel( this.cmbModel );
+				if( Util.validateEmpty( i) == null ){
+					cleanCombos( cmbModel.id );
+					return;
+				}
+				this.responseGetDescripcionServicio.token = this.productoService.getDescripcionServicio( Util.selectedId( this.cmbClient ),
+					Util.selectedLabel( this.cmbProjectType ),
+					Util.selectedLabel( this.cmbTechnology ),
+					Util.selectedLabel( this.cmbEquipment ),
+					Util.selectedLabel( this.cmbActivity ),
+					i);
+			}
+			
+			protected function cmbServiceDescription_changeHandler(event:ListEvent):void
+			{
+				var i:String = Util.selectedLabel( this.cmbServiceDescription );
+				if( Util.validateEmpty( i) == null ){
+					cleanCombos( cmbServiceDescription.id );
+					return;
+				}
+				this.responseGetTipoServicio.token = this.productoService.getTipoServicio( Util.selectedId( this.cmbClient ),
+					Util.selectedLabel( this.cmbProjectType ),
+					Util.selectedLabel( this.cmbTechnology ),
+					Util.selectedLabel( this.cmbEquipment ),
+					Util.selectedLabel( this.cmbActivity ),
+					Util.selectedLabel( this.cmbModel ),
+					i);
+			}
+			
+			protected function cmbServiceType_changeHandler(event:ListEvent):void
+			{
+				var i:String = Util.selectedLabel( this.cmbServiceType );
+				if( Util.validateEmpty( i) == null ){
+					cleanCombos( cmbServiceType.id );
+					return;
+				}
+				this.responseGetCosto.token = this.productoService.getCosto( Util.selectedId( this.cmbClient ),
+					Util.selectedLabel( this.cmbProjectType ),
+					Util.selectedLabel( this.cmbTechnology ),
+					Util.selectedLabel( this.cmbEquipment ),
+					Util.selectedLabel( this.cmbActivity ),
+					Util.selectedLabel( this.cmbModel ),
+					Util.selectedLabel( this.cmbServiceDescription ),
+					i);
+			}
+			
+			private function cleanCombos(id:String):void
+			{
+				switch(id)
+				{
+					case cmbClient.id:
+					{
+						Util.freeDataProvider( cmbProjectType );
+						cmbProjectType.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
+						break;
+					}
+					case cmbProjectType.id:
+					{
+						Util.freeDataProvider( cmbTechnology );
+						cmbTechnology.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
+						break;
+					}
+					case cmbTechnology.id:
+					{
+						Util.freeDataProvider( cmbEquipment );
+						cmbEquipment.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
+						break;
+					}
+					case cmbEquipment.id:
+					{
+						Util.freeDataProvider( cmbActivity );
+						cmbActivity.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
+						break;
+					}
+					case cmbActivity.id:
+					{
+						Util.freeDataProvider( cmbModel );
+						cmbModel.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
+						break;
+					}
+					case cmbModel.id:
+					{
+						Util.freeDataProvider( cmbServiceDescription );
+						cmbServiceDescription.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
+						break;
+					}
+					case cmbServiceDescription.id:
+					{
+						Util.freeDataProvider( cmbServiceType );
+						cmbServiceType.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
+						break;
+					}
+					case cmbServiceType.id:
+					{
+						Util.freeDataProvider( cmbCost );
+						cmbCost.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
+						break;
+					}
+					default:
+					{
+						break;
+					}
+				}
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="filterCommand", type="events.GenericEvent")]
+	</mx:Metadata>
+	<mx:Form>
+		<mx:FormItem label="ID Conectel:" direction="horizontal">
+			<mx:Label text="CON"/>
+			<components:TextInput id="txtConectelID" width="150" textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Categoria:">
+			<mx:ComboBox id="cmbCategory" 
+						 labelField="etiqueta"
+						 width="400"/>
+		</mx:FormItem>
+		<mx:FormItem label="Cliente:">
+			<mx:ComboBox id="cmbClient" width="400"
+						 labelField="nombreComercial"
+						 change="cmbClient_changeHandler(event)"/>
+		</mx:FormItem>
+		<mx:FormItem label="Tipo de Proyecto:">
+			<mx:ComboBox id="cmbProjectType" width="300"
+						 change="cmbProjectType_changeHandler(event)"
+						 labelField="etiqueta"/>
+		</mx:FormItem>
+		<mx:FormItem label="Tecnología:">
+			<mx:ComboBox id="cmbTechnology" width="250"
+						 change="cmbTechnology_changeHandler(event)"
+						 labelField="etiqueta"/>
+		</mx:FormItem>
+		<mx:FormItem label="Equipo:">
+			<mx:ComboBox id="cmbEquipment" width="300"
+						 change="cmbEquipment_changeHandler(event)"
+						 labelField="etiqueta"/>
+		</mx:FormItem>
+		<mx:FormItem label="Actividad a Realizar:">
+			<mx:ComboBox id="cmbActivity" width="500"
+						 change="cmbActivity_changeHandler(event)"
+						 labelField="etiqueta"/>
+		</mx:FormItem>
+		<mx:FormItem label="Modelo:">
+			<mx:ComboBox id="cmbModel" width="250"
+						 change="cmbModel_changeHandler(event)"
+						 labelField="etiqueta"/>
+		</mx:FormItem>
+		<mx:FormItem label="Descripción del Servicio:">
+			<mx:ComboBox id="cmbServiceDescription" width="500"
+						 change="cmbServiceDescription_changeHandler(event)"
+						 labelField="etiqueta"/>
+		</mx:FormItem>
+		<mx:FormItem label="Tipo de Servicio:">
+			<mx:ComboBox id="cmbServiceType" width="250"
+						 change="cmbServiceType_changeHandler(event)"
+						 labelField="etiqueta"/>
+		</mx:FormItem>
+		<mx:FormItem label="Costo:">
+			<mx:ComboBox id="cmbCost" width="250" textAlign="right"
+						 labelField="etiqueta"/>
+		</mx:FormItem>
+		<mx:FormItem>
+			<mx:Button id="btnFilter" label="Filtrar" click="btnFilter_clickHandler(event)"/>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:RemoteObject id="proyectoService" destination="proyectoService" fault="proyectoService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetCategorias" result="responseGetCategorias_resultHandler(event)"/>
+	<mx:RemoteObject id="clienteService" destination="clienteService" fault="proyectoService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetClientes" result="responseGetClientes_resultHandler(event)"/>
+	<mx:RemoteObject id="productoService" destination="productoService" fault="proyectoService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetTiposProyecto" result="responseGetTiposProyecto_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetTecnologias" result="responseGetTecnologias_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetEquipos" result="responseGetEquipos_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetActividadRealizar" result="responseGetActividadRealizar_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetModelo" result="responseGetModelo_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetDescripcionServicio" result="responseGetDescripcionServicio_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetTipoServicio" result="responseGetTipoServicio_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetCosto" result="responseGetCosto_resultHandler(event)"/>
+</mx:VBox>

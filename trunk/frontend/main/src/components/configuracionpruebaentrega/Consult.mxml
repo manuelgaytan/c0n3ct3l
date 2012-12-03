@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+		 label="Consulta"
+		 horizontalAlign="right"
+		 creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import events.GenericEvent;
+			
+			import model.ConfiguracionPruebaEntrega;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			[Bindable]
+			private var generalDataProjects:ArrayCollection = null;
+			
+			private var configuracionPruebaEntrega:ConfiguracionPruebaEntrega;
+			
+			protected function responseGetAll_resultHandler(event:ResultEvent):void
+			{
+				generalDataProjects = event.result as ArrayCollection;
+			}
+			
+			protected function datosGeneralesProyectoService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.executeQuery();
+			}
+			
+			private function labelFunctionProfile(object:Object, column:DataGridColumn):String{
+				return object["perfil"]["etiqueta"];
+			}
+			
+			protected function datagrid_doubleClickHandler(event:MouseEvent):void
+			{
+				var generalDataProject:ConfiguracionPruebaEntrega = this.datagrid.selectedItem as ConfiguracionPruebaEntrega;
+				this.responseGetDatosGeneralesProyecto.token = this.configuracionPruebaEntregaService.getConfigPruebaEntrega( generalDataProject.id );
+			}
+			
+			protected function responseGetDatosGeneralesProyecto_resultHandler(event:ResultEvent):void
+			{
+				var generalDataProject:ConfiguracionPruebaEntrega = event.result as ConfiguracionPruebaEntrega;
+				if( generalDataProject == null ){
+					return;
+				}
+				var genericEvent:GenericEvent = new GenericEvent("generalDataProjectDetail");
+				genericEvent.information = generalDataProject;
+				this.dispatchEvent( genericEvent );
+			}
+			
+			public function executeQuery():void
+			{
+				this.responseGetAll.token = this.configuracionPruebaEntregaService.getAll();
+			}
+			
+			private function labelFunctionDate(object:Object, column:DataGridColumn):String{
+				return Util.formatDateToString( object[column.dataField] );
+			}
+			
+			private function labelFunctionIDProyecto(item:Object, column:DataGridColumn):String{
+				return Util.getIDConectelFormat( Util.extractObject(item, column.dataField) );
+			}
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="generalDataProjectDetail", type="events.GenericEvent")]
+	</mx:Metadata>
+	<mx:DataGrid id="datagrid" width="100%" height="100%" dataProvider="{generalDataProjects}"
+				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
+				 allowMultipleSelection="true">
+		<mx:columns>
+			<mx:DataGridColumn id="dtgProjectID" headerText="{'ID\nProyecto'}"
+							   dataField="proyecto.id"
+							   labelFunction="labelFunctionIDProyecto"
+							   width="130"/>
+			<mx:DataGridColumn id="dtgDivision" headerText="{'Comisionado'}"
+							   dataField="comisionado"
+							   width="130"/>
+			<mx:DataGridColumn id="dtgArea" headerText="{'Puertos\nEntregados'}"
+							   dataField="puertosEntregados"
+							   width="130"/>
+			<mx:DataGridColumn id="dtgFinalClient" headerText="{'Alineación'}"
+							   dataField="alineacion"
+							   width="130"/>
+			<mx:DataGridColumn id="dtgConectelResponsable" headerText="{'Slot\nEntregado'}"
+							   dataField="slotEntregado"
+							   width="130"/>
+			<mx:DataGridColumn id="dtgConectelResponsable1" headerText="{'Tarjetas\nEntregadas'}"
+							   dataField="tarjetasEntregadas"
+							   width="130"/>
+			<mx:DataGridColumn id="dtgConectelResponsable2" headerText="{'Clave de\nAceptación'}"
+							   dataField="claveAceptacion"
+							   width="130"/>
+			<mx:DataGridColumn id="dtgConectelResponsable3" headerText="{'Fecha de\nEntrega'}"
+							   dataField="fechaEntrega"
+							   labelFunction="labelFunctionDate"
+							   width="130"/>
+		</mx:columns>
+	</mx:DataGrid>
+	<mx:HBox>
+		<!--<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>-->
+	</mx:HBox>
+	<mx:RemoteObject id="configuracionPruebaEntregaService" destination="configuracionPruebaEntregaService" fault="datosGeneralesProyectoService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetAll" result="responseGetAll_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetDatosGeneralesProyecto" result="responseGetDatosGeneralesProyecto_resultHandler(event)"/>
+</mx:VBox>

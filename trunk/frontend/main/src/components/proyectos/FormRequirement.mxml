@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Form xmlns:mx="http://www.adobe.com/2006/mxml"
+		 width="100%" label="{resourceManager.getString('labels','addressData')}"
+		 creationComplete="creationCompleteHandler(event)" xmlns:components="components.*"
+		 paddingTop="2" paddingBottom="2"
+		 >
+	<mx:Script>
+		<![CDATA[
+			import model.Catalogo;
+			import model.Requisicion;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorEntero;
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			private var validators:InicializaValidadoresEtiquetas = null;
+			
+			[Bindable]
+			public var phoneTypes:Array;
+			
+			public function initializeComponent():void{
+			}
+			
+			public function set requirement(value:Requisicion):void{
+				if( value == null ){
+					return;
+				}
+				this.txtRequirement.text = Util.extractToText( value, "requisicion" );
+			}
+			
+			public function get requirement():Requisicion{
+				if( !validations() ){
+					return null;
+				}
+				var _requirement:Requisicion = new Requisicion();
+				_requirement.requisicion = this.txtRequirement.text;
+				return _requirement; 
+			}
+			
+			private function initializeCombos():void
+			{
+			}
+			
+			public function reset():void
+			{
+				this.verticalScrollPosition = 0;
+				this.txtRequirement.reset();
+			}
+			
+			public function validations():Boolean
+			{
+				return this.validators.validarFormulario();
+			}
+			
+			protected function initializeValidators():void
+			{
+				this.validators = new InicializaValidadoresEtiquetas();
+				validators.crearValidadorRestrictor("requirement",ValidadorAlfanumerico.nombre, 0, 50);
+				validators.setRestrictor(txtRequirement, "requirement");
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.initializeComponent();
+				this.initializeValidators();
+			}
+			
+			protected function remove_clickHandler(event:MouseEvent):void
+			{
+				var evt:Event = new Event("removeRequirement");
+				dispatchEvent( evt );
+			}
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="removeRequirement", type="flash.events.Event")]
+	</mx:Metadata>
+	<mx:FormItem label="Requisición:"
+				 required="false"
+				 direction="horizontal">
+		<components:TextInput id="txtRequirement"
+						 width="300"/>
+		<mx:Spacer width="60"/>
+		<mx:Button label="X" click="remove_clickHandler(event)"/>
+	</mx:FormItem>
+</mx:Form>

@@ -1,0 +1,562 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)"
+		 >
+	<mx:Script>
+		<![CDATA[
+			import model.Catalogo;
+			import model.Constants;
+			import model.DesarrolloProyecto;
+			import model.Estado;
+			import model.Proyecto;
+			import model.Seguimiento;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorEntero;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			private var mode:String = null;
+			private var _developmentProjectAB:DesarrolloProyecto;
+			private var validators:InicializaValidadoresEtiquetas;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				this.label = Constants.REGISTRAR;
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set developmentProjectAB(value:DesarrolloProyecto):void{
+				if( value == null ){
+					return;
+				}
+				this._developmentProjectAB = value;
+				this.setDevelopmentProjectAB(); 
+			}
+			
+			private function setDevelopmentProjectAB():void
+			{
+				if( this._developmentProjectAB == null ){
+					return;
+				}
+				this.txtConectelID.text = Util.numberToString( this._developmentProjectAB.proyecto.id );
+				this.txtFrame.text = this._developmentProjectAB.bastidorGabinete;
+				this.txtLedge.text = this._developmentProjectAB.repisa;
+				this.txtVersion.text = this._developmentProjectAB.version;
+				this.txtController.text = this._developmentProjectAB.controladora;
+				this.txtCard1.text = this._developmentProjectAB.tarjeta1;
+				this.txtCard2.text = this._developmentProjectAB.tarjeta2;
+				this.txtCard3.text = this._developmentProjectAB.tarjeta3;
+				this.txtCard4.text = this._developmentProjectAB.tarjeta4;
+				this.txtCard5.text = this._developmentProjectAB.tarjeta5;
+				this.txtCard6.text = this._developmentProjectAB.tarjeta6;
+				this.txtOTPorts.text = this._developmentProjectAB.puertosOt;
+				this.txtWiresNumber.text = this._developmentProjectAB.noCables;
+				this.txtPairsNumbersIntalled.text = this._developmentProjectAB.noPares;
+				this.txtPortsNumbersInstalled.text = this._developmentProjectAB.noPuertos;
+				this.txtInstalledWires.text = this._developmentProjectAB.slotsCables;
+				this.txtMultipairWire.text = this._developmentProjectAB.longitudCable;
+				this.txtPlundered.text = this._developmentProjectAB.champeado;
+				this.txtWiringRing.text = this._developmentProjectAB.timbrado;
+				this.txtLanding.text = this._developmentProjectAB.aterrizaje;
+				this.txtFeeding.text = this._developmentProjectAB.alimentacion;
+				this.txtFOPairsInstalled.text = this._developmentProjectAB.paresFo;
+				this.txtRCDTWiring.text = this._developmentProjectAB.cableado;
+				this.txtLabeled.text = this._developmentProjectAB.rotulo;
+				if( Util.isFill( this.cmbMedia ) && this._developmentProjectAB.soportes != null ){
+					this.cmbMedia.selectedIndex = Util.selectedIndexFromCombo( this.cmbMedia.dataProvider as ArrayCollection, 
+					this._developmentProjectAB.soportes.id);
+				}
+				if( Util.isFill( this.cmbAntenna ) && this._developmentProjectAB.antena != null ){
+					this.cmbAntenna.selectedIndex = Util.selectedIndexFromCombo( this.cmbAntenna.dataProvider as ArrayCollection, 
+						this._developmentProjectAB.antena.id);
+				}
+				if( Util.isFill( this.cmbRatio ) && this._developmentProjectAB.radio != null ){
+					this.cmbRatio.selectedIndex = Util.selectedIndexFromCombo( this.cmbRatio.dataProvider as ArrayCollection, 
+						this._developmentProjectAB.radio.id);
+				}
+				if( Util.isFill( this.cmbWireRatio ) && this._developmentProjectAB.radioCable != null ){
+					this.cmbWireRatio.selectedIndex = Util.selectedIndexFromCombo( this.cmbWireRatio.dataProvider as ArrayCollection, 
+						this._developmentProjectAB.radioCable.id);
+				}
+				if( Util.isFill( this.cmbLanding ) && this._developmentProjectAB.aterrizajeSeguimiento != null ){
+					this.cmbLanding.selectedIndex = Util.selectedIndexFromCombo( this.cmbLanding.dataProvider as ArrayCollection, 
+						this._developmentProjectAB.aterrizajeSeguimiento.id);
+				}
+				if( Util.isFill( this.cmbFeeding ) && this._developmentProjectAB.alimentacionSeguimiento != null ){
+					this.cmbFeeding.selectedIndex = Util.selectedIndexFromCombo( this.cmbFeeding.dataProvider as ArrayCollection, 
+						this._developmentProjectAB.alimentacionSeguimiento.id);
+				}
+				if( Util.isFill( this.cmbFiberEndCustomer ) && this._developmentProjectAB.fibraClienteFinal != null ){
+					this.cmbFiberEndCustomer.selectedIndex = Util.selectedIndexFromCombo( this.cmbFiberEndCustomer.dataProvider as ArrayCollection, 
+						this._developmentProjectAB.fibraClienteFinal.id);
+				}
+				if( Util.isFill( this.cmbBase ) && this._developmentProjectAB.planchaBase != null ){
+					this.cmbBase.selectedIndex = Util.selectedIndexFromCombo( this.cmbBase.dataProvider as ArrayCollection, 
+						this._developmentProjectAB.planchaBase.id);
+				}
+				this.observations.observations = this._developmentProjectAB.proyecto.observaciones;
+			}
+			
+			private function getGeneralDataProject():DesarrolloProyecto{
+				var developmentProjectAB:DesarrolloProyecto = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					developmentProjectAB = new DesarrolloProyecto();
+				}else{
+					developmentProjectAB = this._developmentProjectAB;
+				}
+				developmentProjectAB.proyecto = new Proyecto();
+				developmentProjectAB.proyecto.id = Util.stringToNumber( this.txtConectelID.text );
+				developmentProjectAB.proyecto.estado = new Estado();
+				developmentProjectAB.proyecto.estado.id = Estado.ID_DESARROLLO_PROYECTO_A_Y_B;
+				developmentProjectAB.bastidorGabinete = Util.validateEmpty( this.txtFrame.text );
+				developmentProjectAB.repisa = Util.validateEmpty( this.txtLedge.text );
+				developmentProjectAB.version = Util.validateEmpty( this.txtVersion.text );
+				developmentProjectAB.controladora = Util.validateEmpty( this.txtController.text );
+				developmentProjectAB.tarjeta1 = Util.validateEmpty( this.txtCard1.text );
+				developmentProjectAB.tarjeta2 = Util.validateEmpty( this.txtCard2.text );
+				developmentProjectAB.tarjeta3 = Util.validateEmpty( this.txtCard3.text );
+				developmentProjectAB.tarjeta4 = Util.validateEmpty( this.txtCard4.text );
+				developmentProjectAB.tarjeta5 = Util.validateEmpty( this.txtCard5.text );
+				developmentProjectAB.tarjeta6 = Util.validateEmpty( this.txtCard6.text );
+				developmentProjectAB.puertosOt = Util.validateEmpty( this.txtOTPorts.text );
+				developmentProjectAB.noCables = Util.validateEmpty( this.txtWiresNumber.text );
+				developmentProjectAB.noPares = Util.validateEmpty( this.txtPairsNumbersIntalled.text );
+				developmentProjectAB.noPuertos = Util.validateEmpty( this.txtPortsNumbersInstalled.text );
+				developmentProjectAB.slotsCables = Util.validateEmpty( this.txtInstalledWires.text );
+				developmentProjectAB.longitudCable = Util.validateEmpty( this.txtMultipairWire.text );
+				developmentProjectAB.champeado = Util.validateEmpty( this.txtPlundered.text );
+				developmentProjectAB.timbrado = Util.validateEmpty( this.txtWiringRing.text );
+				developmentProjectAB.aterrizaje = Util.validateEmpty( this.txtLanding.text );
+				developmentProjectAB.alimentacion = Util.validateEmpty( this.txtFeeding.text );
+				developmentProjectAB.paresFo = Util.validateEmpty( this.txtFOPairsInstalled.text );
+				developmentProjectAB.cableado = Util.validateEmpty( this.txtRCDTWiring.text );
+				developmentProjectAB.rotulo = Util.validateEmpty( this.txtLabeled.text );
+				developmentProjectAB.soportes = this.cmbMedia.selectedItem as Seguimiento;
+				developmentProjectAB.antena = this.cmbAntenna.selectedItem as Seguimiento;
+				developmentProjectAB.radio = this.cmbRatio.selectedItem as Seguimiento;
+				developmentProjectAB.radioCable = this.cmbWireRatio.selectedItem as Seguimiento;
+				developmentProjectAB.aterrizajeSeguimiento = this.cmbLanding.selectedItem as Seguimiento;
+				developmentProjectAB.alimentacionSeguimiento = this.cmbFeeding.selectedItem as Seguimiento;
+				developmentProjectAB.fibraClienteFinal = this.cmbFiberEndCustomer.selectedItem as Seguimiento;
+				developmentProjectAB.planchaBase = this.cmbBase.selectedItem as Seguimiento;
+				developmentProjectAB.proyecto.observaciones = this.observations.observations;
+				return developmentProjectAB;
+			}
+			
+			private function fillCombos():void
+			{
+				this.responseGetSeguimiento.token = this.catalogoService.getSeguimiento();
+			}
+			
+			protected function responseGetSoportes_resultHandler(data:ArrayCollection):void
+			{
+				this.cmbMedia.dataProvider = data;
+				if( Util.extractObject(this._developmentProjectAB,"soportes") != null ){
+					this.cmbMedia.selectedIndex = Util.selectedIndexFromCombo( this.cmbMedia.dataProvider as ArrayCollection, 
+						this._developmentProjectAB.soportes.id);
+				}
+			}
+			protected function responseGetAntena_resultHandler(data:ArrayCollection):void
+			{
+				this.cmbAntenna.dataProvider = data;
+				if( Util.extractObject(this._developmentProjectAB,"antena") != null ){
+					this.cmbAntenna.selectedIndex = Util.selectedIndexFromCombo( this.cmbAntenna.dataProvider as ArrayCollection, 
+						this._developmentProjectAB.antena.id);
+				}
+			}
+			protected function responseGetRadio_resultHandler(data:ArrayCollection):void
+			{
+				this.cmbRatio.dataProvider = data;
+				if( Util.extractObject(this._developmentProjectAB,"radio") != null ){
+					this.cmbRatio.selectedIndex = Util.selectedIndexFromCombo( this.cmbRatio.dataProvider as ArrayCollection, 
+						this._developmentProjectAB.radio.id);
+				}
+			}
+			protected function responseGetRadioCable_resultHandler(data:ArrayCollection):void
+			{
+				this.cmbWireRatio.dataProvider = data;
+				if( Util.extractObject(this._developmentProjectAB,"radioCable") != null ){
+					this.cmbWireRatio.selectedIndex = Util.selectedIndexFromCombo( this.cmbWireRatio.dataProvider as ArrayCollection, 
+						this._developmentProjectAB.radioCable.id);
+				}
+			}
+			protected function responseGetAterrizaje_resultHandler(data:ArrayCollection):void
+			{
+				this.cmbLanding.dataProvider = data;
+				if( Util.extractObject(this._developmentProjectAB,"aterrizajeSeguimiento") != null ){
+					this.cmbLanding.selectedIndex = Util.selectedIndexFromCombo( this.cmbLanding.dataProvider as ArrayCollection, 
+						this._developmentProjectAB.aterrizajeSeguimiento.id);
+				}
+			}
+			protected function responseGetAlimentacion_resultHandler(data:ArrayCollection):void
+			{
+				this.cmbFeeding.dataProvider = data;
+				if( Util.extractObject(this._developmentProjectAB,"alimentacionSeguimiento") != null ){
+					this.cmbFeeding.selectedIndex = Util.selectedIndexFromCombo( this.cmbFeeding.dataProvider as ArrayCollection, 
+						this._developmentProjectAB.alimentacionSeguimiento.id);
+				}
+			}
+			protected function responseGetFibraClienteFinal_resultHandler(data:ArrayCollection):void
+			{
+				this.cmbFiberEndCustomer.dataProvider = data;
+				if( Util.extractObject(this._developmentProjectAB,"fibraClienteFinal") != null ){
+					this.cmbFiberEndCustomer.selectedIndex = Util.selectedIndexFromCombo( this.cmbFiberEndCustomer.dataProvider as ArrayCollection, 
+						this._developmentProjectAB.fibraClienteFinal.id);
+				}
+			}
+			
+			protected function responseGetPlanchaBase_resultHandler(data:ArrayCollection):void
+			{
+				this.cmbBase.dataProvider = data;
+				if( Util.extractObject(this._developmentProjectAB,"planchaBase") != null ){
+					this.cmbBase.selectedIndex = Util.selectedIndexFromCombo( this.cmbBase.dataProvider as ArrayCollection, 
+						this._developmentProjectAB.planchaBase.id);
+				}
+			}
+			
+			protected function desarrolloProyectoABService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function btnAccept_clickHandler(event:MouseEvent):void
+			{
+				if( !this.validations() ){
+					Util.showMessageVerifyFields();
+					return;
+				}
+				if( this.mode == Constants.REGISTER_MODE ){
+					var developmentProjectAB:DesarrolloProyecto = this.getGeneralDataProject();
+					Util.showProperties( developmentProjectAB );
+					this.responseSave.token = this.desarrolloProyectoABService.save( developmentProjectAB );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
+				}
+			}
+			
+			private function updateItem(event:CloseEvent):void{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var developmentProjectAB:DesarrolloProyecto = this.getGeneralDataProject();
+				Util.showProperties( developmentProjectAB );
+				this.responseUpdate.token = this.desarrolloProyectoABService.update( developmentProjectAB );
+			}
+			
+			private function validations():Boolean
+			{
+				var value:Boolean = true;
+				return value;
+				value &&= this.validators.validarFormulario();
+				value &&= Util.listBaseSelected( this.cmbMedia );
+				value &&= Util.listBaseSelected( this.cmbAntenna );
+				value &&= Util.listBaseSelected( this.cmbRatio );
+				value &&= Util.listBaseSelected( this.cmbWireRatio );
+				value &&= Util.listBaseSelected( this.cmbLanding );
+				value &&= Util.listBaseSelected( this.cmbFeeding );
+				value &&= Util.listBaseSelected( this.cmbFiberEndCustomer );
+				value &&= Util.listBaseSelected( this.cmbBase );
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+					this.btnDone.visible = false;
+					this.txtConectelID.editable = true;
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+					this.txtConectelID.editable = false;
+				}
+			}
+			
+			private function initializeValidators():void
+			{
+				this.validators = new InicializaValidadoresEtiquetas();
+				validators.crearValidadorRestrictor("numerico11",ValidadorEntero.nombre, 11);
+				validators.setValidador(txtConectelID, "numerico11");
+				validators.crearValidadorRestrictor("alfanumerico50",ValidadorAlfanumerico.nombre, 0, 50, true);
+				validators.setRestrictor(txtFrame, "alfanumerico50");
+				validators.setRestrictor(txtLedge, "alfanumerico50");
+				validators.crearValidadorRestrictor("alfanumerico100",ValidadorAlfanumerico.nombre, 0, 100, true);
+				validators.setRestrictor(txtVersion, "alfanumerico100");
+				validators.setRestrictor(txtController, "alfanumerico100");
+				validators.crearValidadorRestrictor("alfanumerico75",ValidadorAlfanumerico.nombre, 0, 75, true);
+				validators.setRestrictor(txtCard1, "alfanumerico75");
+				validators.setRestrictor(txtCard2, "alfanumerico75");
+				validators.setRestrictor(txtCard3, "alfanumerico75");
+				validators.setRestrictor(txtCard4, "alfanumerico75");
+				validators.setRestrictor(txtCard5, "alfanumerico75");
+				validators.setRestrictor(txtCard6, "alfanumerico75");
+				validators.setRestrictor(txtOTPorts, "alfanumerico100");
+				validators.setRestrictor(txtWiresNumber, "alfanumerico100");
+				validators.setRestrictor(txtPairsNumbersIntalled, "alfanumerico100");
+				validators.setRestrictor(txtPortsNumbersInstalled, "alfanumerico100");
+				validators.setRestrictor(txtInstalledWires, "alfanumerico100");
+				validators.setRestrictor(txtMultipairWire, "alfanumerico100");
+				validators.setRestrictor(txtPlundered, "alfanumerico100");
+				validators.setRestrictor(txtWiringRing, "alfanumerico100");
+				validators.setRestrictor(txtLanding, "alfanumerico100");
+				validators.setRestrictor(txtFeeding, "alfanumerico100");
+				validators.setRestrictor(txtFOPairsInstalled, "alfanumerico100");
+				validators.setRestrictor(txtRCDTWiring, "alfanumerico100");
+				validators.setRestrictor(txtLabeled, "alfanumerico100");
+			}
+			
+			protected function responseSave_resultHandler(event:ResultEvent):void
+			{
+				var eventGeneralDataProjectNew:Event = new Event("developmentProjectABNew");
+				this.dispatchEvent( eventGeneralDataProjectNew );
+				this.cleanForm();
+			}
+			
+			private function cleanForm():void
+			{
+				this.txtConectelID.reset();
+				this.txtFrame.reset();
+				this.txtLedge.reset();
+				this.txtVersion.reset();
+				this.txtController.reset();
+				this.txtCard1.reset();
+				this.txtCard2.reset();
+				this.txtCard3.reset();
+				this.txtCard4.reset();
+				this.txtCard5.reset();
+				this.txtCard6.reset();
+				this.txtOTPorts.reset();
+				this.txtWiresNumber.reset();
+				this.txtPairsNumbersIntalled.reset();
+				this.txtPortsNumbersInstalled.reset();
+				this.txtInstalledWires.reset();
+				this.txtMultipairWire.reset();
+				this.txtPlundered.reset();
+				this.txtWiringRing.reset();
+				this.txtLanding.reset();
+				this.txtFeeding.reset();
+				this.txtFOPairsInstalled.reset();
+				this.txtRCDTWiring.reset();
+				this.txtLabeled.reset();
+				this.cmbMedia.selectedIndex = 0;
+				this.cmbAntenna.selectedIndex = 0;
+				this.cmbRatio.selectedIndex = 0;
+				this.cmbWireRatio.selectedIndex = 0;
+				this.cmbLanding.selectedIndex = 0;
+				this.cmbFeeding.selectedIndex = 0;
+				this.cmbFiberEndCustomer.selectedIndex = 0;
+				this.cmbBase.selectedIndex = 0;
+				this.observations.reset();
+			}
+			
+			protected function responseUpdate_resultHandler(event:ResultEvent):void
+			{
+				var eventGeneralDataProjectUpdated:Event = new Event("developmentProjectABUpdated");
+				this.dispatchEvent( eventGeneralDataProjectUpdated );
+				this.cleanForm();
+			}
+			
+			protected function colaboradorService_faultHandler(event:FaultEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
+			protected function utilService_faultHandler(event:FaultEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
+			protected function btnHecho_clickHandler(event:MouseEvent):void
+			{
+				if( !this.validations() ){
+					Util.showMessageVerifyFields();
+					return;
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+					Alert.show("Confirme si desea dar por terminada la fase.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
+				}
+			}
+			
+			protected function responseDone_resultHandler(event:ResultEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
+			protected function responseGetSeguimiento_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				data = Util.addEmptyCatalgo( data );
+				this.responseGetSoportes_resultHandler(data);
+				this.responseGetAntena_resultHandler(data);
+				this.responseGetRadio_resultHandler(data);
+				this.responseGetRadioCable_resultHandler(data);
+				this.responseGetAterrizaje_resultHandler(data);
+				this.responseGetAlimentacion_resultHandler(data);
+				this.responseGetFibraClienteFinal_resultHandler(data);
+				this.responseGetPlanchaBase_resultHandler(data);
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="developmentProjectABNew", type="flash.events.Event")]
+		[Event(name="developmentProjectABUpdated", type="flash.events.Event")]
+	</mx:Metadata>
+	<mx:Form id="form">
+		<mx:FormItem label="ID Conectel:" direction="horizontal">
+			<mx:Label text="CON"/>
+			<components:TextInput id="txtConectelID" width="150" textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Bastidor/Gabinete:">
+			<components:TextInput id="txtFrame" width="200" textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Repisa:">
+			<components:TextInput id="txtLedge" width="200" textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Versión/Release:">
+			<components:TextInput id="txtVersion" width="400"/>
+		</mx:FormItem>
+		<mx:FormItem label="Controladora:">
+			<components:TextInput id="txtController" width="400"/>
+		</mx:FormItem>
+		<mx:FormItem label="Tarjeta 1:">
+			<components:TextInput id="txtCard1" width="300"/>
+		</mx:FormItem>
+		<mx:FormItem label="Tarjeta 2:">
+			<components:TextInput id="txtCard2" width="300"/>
+		</mx:FormItem>
+		<mx:FormItem label="Tarjeta 3:">
+			<components:TextInput id="txtCard3" width="300"/>
+		</mx:FormItem>
+		<mx:FormItem label="Tarjeta 4:">
+			<components:TextInput id="txtCard4" width="300"/>
+		</mx:FormItem>
+		<mx:FormItem label="Tarjeta 5:">
+			<components:TextInput id="txtCard5" width="300"/>
+		</mx:FormItem>
+		<mx:FormItem label="Tarjeta 6:">
+			<components:TextInput id="txtCard6" width="300"/>
+		</mx:FormItem>
+		<mx:FormItem label="Puertos en OT:">
+			<components:TextInput id="txtOTPorts" width="400"/>
+		</mx:FormItem>
+		<mx:FormItem label="No. Cables/Tributarias:">
+			<components:TextInput id="txtWiresNumber" width="400"/>
+		</mx:FormItem>
+		<mx:FormItem label="No. Pares Instalados:">
+			<components:TextInput id="txtPairsNumbersIntalled" width="400"/>
+		</mx:FormItem>
+		<mx:FormItem label="No. Puertos Instalados:">
+			<components:TextInput id="txtPortsNumbersInstalled" width="400"/>
+		</mx:FormItem>
+		<mx:FormItem label="Slots de Cables Instalados:">
+			<components:TextInput id="txtInstalledWires" width="400"/>
+		</mx:FormItem>
+		<mx:FormItem label="Long. de Cable Multipar:">
+			<components:TextInput id="txtMultipairWire" width="400"/>
+		</mx:FormItem>
+		<mx:FormItem label="Champeado/Rapinado:">
+			<components:TextInput id="txtPlundered" width="400"/>
+		</mx:FormItem>
+		<mx:FormItem label="Timbrado del Cableado:">
+			<components:TextInput id="txtWiringRing" width="400"/>
+		</mx:FormItem>
+		<mx:FormItem label="Aterrizaje:">
+			<components:TextInput id="txtLanding" width="400"/>
+		</mx:FormItem>
+		<mx:FormItem label="Alimentación:">
+			<components:TextInput id="txtFeeding" width="400"/>
+		</mx:FormItem>
+		<mx:FormItem label="Pares de FO Instalados:">
+			<components:TextInput id="txtFOPairsInstalled" width="400"/>
+		</mx:FormItem>
+		<mx:FormItem label="Cableado RCDT:">
+			<components:TextInput id="txtRCDTWiring" width="400"/>
+		</mx:FormItem>
+		<mx:FormItem label="Rótulo/Etiquetado:">
+			<components:TextInput id="txtLabeled" width="400"/>
+		</mx:FormItem>
+		<mx:FormItem label="Soportes:">
+			<mx:ComboBox id="cmbMedia" width="250"
+						 labelField="etiqueta"/>
+		</mx:FormItem>
+		<mx:FormItem label="Antena:">
+			<mx:ComboBox id="cmbAntenna" width="250"
+						 labelField="etiqueta"/>
+		</mx:FormItem>
+		<mx:FormItem label="Radio:">
+			<mx:ComboBox id="cmbRatio" width="250"
+						 labelField="etiqueta"/>
+		</mx:FormItem>
+		<mx:FormItem label="Radio Cable:">
+			<mx:ComboBox id="cmbWireRatio" width="250"
+						 labelField="etiqueta"/>
+		</mx:FormItem>
+		<mx:FormItem label="Aterrizaje:">
+			<mx:ComboBox id="cmbLanding" width="250"
+						 labelField="etiqueta"/>
+		</mx:FormItem>
+		<mx:FormItem label="Alimentación:">
+			<mx:ComboBox id="cmbFeeding" width="250"
+						 labelField="etiqueta"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fibra Cliente Final:">
+			<mx:ComboBox id="cmbFiberEndCustomer" width="250"
+						 labelField="etiqueta"/>
+		</mx:FormItem>
+		<mx:FormItem label="Plancha o Base:">
+			<mx:ComboBox id="cmbBase" width="250"
+						 labelField="etiqueta"/>
+		</mx:FormItem>
+		<components:Observations id="observations"/>
+		<mx:FormItem direction="horizontal">
+			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
+			<mx:Button id="btnDone" label="Hecho" click="btnHecho_clickHandler(event)"/>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="utilService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetSeguimiento" result="responseGetSeguimiento_resultHandler(event)"/>
+	<!--
+	<mx:CallResponder id="responseGetSoportes" result="responseGetSoportes_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetAntena" result="responseGetAntena_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetRadio" result="responseGetRadio_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetRadioCable" result="responseGetRadioCable_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetAterrizaje" result="responseGetAterrizaje_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetAlimentacion" result="responseGetAlimentacion_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetFibraClienteFinal" result="responseGetFibraClienteFinal_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetPlanchaBase" result="responseGetPlanchaBase_resultHandler(event)"/>
+	-->
+	<mx:RemoteObject id="desarrolloProyectoABService" destination="desarrolloProyectoABService" fault="desarrolloProyectoABService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
+	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
+	<mx:CallResponder id="responseDone" result="responseDone_resultHandler(event)"/>
+</mx:VBox>

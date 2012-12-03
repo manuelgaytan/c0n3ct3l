@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 width="100%" height="100%"
+		 creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*"
+		 label="Modificar"
+		 paddingLeft="20"
+		 >
+	<mx:Script>
+		<![CDATA[
+			import model.Estado;
+			import model.Proyecto;
+			import model.Util;
+			
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.utils.object_proxy;
+			
+			private var _project:Proyecto;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+			}
+			
+			public function set project(value:Proyecto):void{
+				if( value == null ){
+					return;
+				}
+				this._project = value;
+				this.setProject(); 
+			}
+			
+			private function setProject():void
+			{
+				if( this._project == null ){
+					return;
+				}
+				this.requirements.requirements = this._project.requisiciones;
+				this.observations.observations  = this._project.observaciones;
+				this.validateStatus( Number( Util.extractObject( this._project, "estado.id") ) );
+			}
+			
+			private function cleanForm():void
+			{
+				this.requirements.reset();
+				this.observations.reset();
+			}
+			
+			protected function btnAccept_clickHandler(event:MouseEvent):void
+			{
+				Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
+			}
+			
+			private function updateItem(event:CloseEvent):void{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				this._project.requisiciones = this.requirements.requirements;
+				this._project.observaciones = this.observations.observations;
+				Util.showProperties( _project );
+				this.responseUpdate.token = this.proyectoService.update( _project );
+			}
+			
+			protected function proyectoService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function responseUpdate_resultHandler(event:ResultEvent):void
+			{
+				var eventProjectUpdate:Event = new Event("projectUpdated");
+				this.dispatchEvent( eventProjectUpdate );
+				this.cleanForm();
+			}
+			
+			private function validateStatus(idEstado:Number):void
+			{
+				var value:Boolean = false;
+				if( idEstado != Estado.ID_CANCELADO ){
+					value = true;
+				}
+				this.requirements.enabledButton = value;
+				this.btnAccept.visible = value;
+			}
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="projectUpdated", type="flash.events.Event")]
+	</mx:Metadata>
+	<proyectos:FormRequirements id="requirements"/>
+ 	<components:Observations id="observations"/>
+	<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
+	<mx:RemoteObject id="proyectoService" destination="proyectoService" fault="proyectoService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
+</mx:VBox>

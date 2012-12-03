@@ -1,0 +1,499 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)"
+		 >
+	<mx:Script>
+		<![CDATA[
+			import model.Aplica;
+			import model.Catalogo;
+			import model.Colaborador;
+			import model.Constants;
+			import model.DatosGeneralesProyecto;
+			import model.Estado;
+			import model.Proyecto;
+			import model.TipoEntregable;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorEntero;
+			import mx.com.gahm.componentes.validadores.ValidadorNumerico;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			private var mode:String = null;
+			private var _generalDataProject:DatosGeneralesProyecto;
+			private var validators:InicializaValidadoresEtiquetas;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				this.label = Constants.REGISTRAR;
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set generalDataProject(value:DatosGeneralesProyecto):void{
+				if( value == null ){
+					return;
+				}
+				this._generalDataProject = value;
+				this.setGeneralDataProject(); 
+			}
+			
+			private function setGeneralDataProject():void
+			{
+				if( this._generalDataProject == null ){
+					return;
+				}
+				this.txtConectelID.text = Util.numberToString( this._generalDataProject.proyecto.id );
+				this.txtDivision.text = this._generalDataProject.divisionRegion;
+				this.txtArea.text = this._generalDataProject.areaGoa;
+				this.txtFinalClient.text = this._generalDataProject.clienteFinal;
+				this.txtClientID.text = this._generalDataProject.clienteId;
+				this.txtNodeID.text = this._generalDataProject.nodoId;
+				this.txtGraph.text = this._generalDataProject.grafo;
+				this.txtClientOrder.text = this._generalDataProject.pedidoCliente;
+				this.txtPEPElement.text = this._generalDataProject.elementoPep;
+				this.txtClientResponsable.text = this._generalDataProject.responsableCliente;
+				this.txtWeek.text = this._generalDataProject.semana;
+				this.dtfAsignDateClient.selectedDate = this._generalDataProject.fechaAsignacionCliente;
+				this.dtfStartDateProgramming.selectedDate = this._generalDataProject.fechaInicioProgramada;
+				this.dtfEndDateProgramming.selectedDate = this._generalDataProject.fechaTerminoProgramada;
+				if( Util.isFill( this.cmbConectelResponsable ) && !(this._generalDataProject.reponsableConectel == null) ){
+					this.cmbConectelResponsable.selectedIndex = Util.selectedIndexFromCombo( this.cmbConectelResponsable.dataProvider as ArrayCollection, 
+					this._generalDataProject.reponsableConectel.id);
+				}
+				if( Util.isFill( this.cmbImplementationResponsable ) && !(this._generalDataProject.responsableImpl == null) ){
+					this.cmbImplementationResponsable.selectedIndex = Util.selectedIndexFromCombo( this.cmbImplementationResponsable.dataProvider as ArrayCollection, 
+						this._generalDataProject.responsableImpl.id);
+				}
+				if( Util.isFill( this.cmbMaterial ) && !(this._generalDataProject.material == null) ){
+					this.cmbMaterial.selectedIndex = Util.selectedIndexFromCombo( this.cmbMaterial.dataProvider as ArrayCollection, 
+						this._generalDataProject.material.id);
+				}
+				if( Util.isFill( this.cmbTool ) && !(this._generalDataProject.herramienta == null) ){
+					this.cmbTool.selectedIndex = Util.selectedIndexFromCombo( this.cmbTool.dataProvider as ArrayCollection, 
+						this._generalDataProject.herramienta.id);
+				}
+				if( Util.isFill( this.cmbEquipment ) && !(this._generalDataProject.equipo == null) ){
+					this.cmbEquipment.selectedIndex = Util.selectedIndexFromCombo( this.cmbEquipment.dataProvider as ArrayCollection, 
+						this._generalDataProject.equipo.id);
+				}
+				if( Util.isFill( this.cmbVehicle ) && !(this._generalDataProject.unidad == null) ){
+					this.cmbVehicle.selectedIndex = Util.selectedIndexFromCombo( this.cmbVehicle.dataProvider as ArrayCollection, 
+						this._generalDataProject.unidad.id);
+				}
+				if( Util.isFill( this.cmbPerDiem ) && !(this._generalDataProject.viaticos == null) ){
+					this.cmbPerDiem.selectedIndex = Util.selectedIndexFromCombo( this.cmbPerDiem.dataProvider as ArrayCollection, 
+						this._generalDataProject.viaticos.id);
+				}
+				this.dtfStartDateReal.selectedDate = this._generalDataProject.fechaInicioReal;
+				this.dtfStartDateReal.invalidateDisplayList();
+				this.dtfEndDateReal.selectedDate = this._generalDataProject.fechaTerminoReal;
+				this.txtSite.text = this._generalDataProject.siteSurvey;
+				this.dlvEngineeringDeliverable.delivers = Util.getEntregables( this._generalDataProject.proyecto.proyectoEntregables, TipoEntregable.ENTREGABLE_INGENIERIA );
+				this.observations.observations = this._generalDataProject.proyecto.observaciones;
+			}
+			
+			private function getGeneralDataProject():DatosGeneralesProyecto{
+				var generalDataProject:DatosGeneralesProyecto = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					generalDataProject = new DatosGeneralesProyecto();
+				}else{
+					generalDataProject = this._generalDataProject;
+				}
+				generalDataProject.proyecto = new Proyecto();
+				generalDataProject.proyecto.id = Util.stringToNumber( this.txtConectelID.text );
+				generalDataProject.proyecto.estado = new Estado();
+				generalDataProject.proyecto.estado.id = Estado.ID_DATOS_GENERALES;
+				generalDataProject.divisionRegion = Util.validateEmpty( this.txtDivision.text );
+				generalDataProject.areaGoa = Util.validateEmpty( this.txtArea.text );
+				generalDataProject.clienteFinal = Util.validateEmpty( this.txtFinalClient.text );
+				generalDataProject.clienteId = Util.validateEmpty( this.txtClientID.text );
+				generalDataProject.nodoId = Util.validateEmpty( this.txtNodeID.text );
+				generalDataProject.grafo = Util.validateEmpty( this.txtGraph.text );
+				generalDataProject.pedidoCliente = Util.validateEmpty( this.txtClientOrder.text );
+				generalDataProject.elementoPep = Util.validateEmpty( this.txtPEPElement.text );
+				generalDataProject.responsableCliente = Util.validateEmpty( this.txtClientResponsable.text );
+				generalDataProject.semana = Util.validateEmpty( this.txtWeek.text );
+				generalDataProject.fechaAsignacionCliente = this.dtfAsignDateClient.selectedDate;
+				generalDataProject.fechaInicioProgramada = this.dtfStartDateProgramming.selectedDate;
+				generalDataProject.fechaTerminoProgramada = this.dtfEndDateProgramming.selectedDate;
+				generalDataProject.reponsableConectel = this.cmbConectelResponsable.selectedItem as Colaborador;
+				generalDataProject.responsableImpl = this.cmbImplementationResponsable.selectedItem as Colaborador;
+				generalDataProject.material = this.cmbMaterial.selectedItem as Aplica;
+				generalDataProject.herramienta = this.cmbTool.selectedItem as Aplica;
+				generalDataProject.equipo = this.cmbEquipment.selectedItem as Aplica;
+				generalDataProject.unidad = this.cmbVehicle.selectedItem as Aplica;
+				generalDataProject.viaticos = this.cmbPerDiem.selectedItem as Aplica;
+				generalDataProject.fechaInicioReal = this.dtfStartDateReal.selectedDate;
+				generalDataProject.fechaTerminoReal = this.dtfEndDateReal.selectedDate;
+				generalDataProject.siteSurvey = Util.validateEmpty( this.txtSite.text );
+				generalDataProject.proyecto.proyectoEntregables = this.dlvEngineeringDeliverable.delivers;
+				generalDataProject.proyecto.observaciones = this.observations.observations;
+				return generalDataProject;
+			}
+			
+			private function fillCombos():void
+			{
+				this.responseGetResponsableConectel.token = this.colaboradorService.getColaborador();
+				this.responseGetResponsableImplementacion.token = this.colaboradorService.getColaborador();
+				this.responseGetAplica.token = this.catalogoService.getAplica();
+			}
+			
+			protected function responseGetResponsableConectel_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbConectelResponsable.dataProvider = Util.addEmptyCatalgo( data, "nombreCompleto" );
+				if( Util.extractObject(this._generalDataProject,"responsableConectel") != null ){
+					this.cmbConectelResponsable.selectedIndex = Util.selectedIndexFromCombo( this.cmbConectelResponsable.dataProvider as ArrayCollection, 
+						this._generalDataProject.reponsableConectel.id);
+				}
+			}
+			protected function responseGetResponsableImplementacion_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbImplementationResponsable.dataProvider = Util.addEmptyCatalgo( data, "nombreCompleto" );
+				if( Util.extractObject(this._generalDataProject,"responsableImplementacion") != null ){
+					this.cmbImplementationResponsable.selectedIndex = Util.selectedIndexFromCombo( this.cmbImplementationResponsable.dataProvider as ArrayCollection, 
+						this._generalDataProject.responsableImpl.id);
+				}
+			}
+			protected function responseGetMaterial_resultHandler(data:ArrayCollection):void
+			{
+				this.cmbMaterial.dataProvider = data;
+				if( Util.extractObject(this._generalDataProject,"material") != null ){
+					this.cmbMaterial.selectedIndex = Util.selectedIndexFromCombo( this.cmbMaterial.dataProvider as ArrayCollection, 
+						this._generalDataProject.material.id);
+				}
+			}
+			protected function responseGetHerramienta_resultHandler(data:ArrayCollection):void
+			{
+				this.cmbTool.dataProvider = data;
+				if( Util.extractObject(this._generalDataProject,"herramienta") != null ){
+					this.cmbTool.selectedIndex = Util.selectedIndexFromCombo( this.cmbTool.dataProvider as ArrayCollection, 
+						this._generalDataProject.herramienta.id);
+				}
+			}
+			protected function responseGetEquipo_resultHandler(data:ArrayCollection):void
+			{
+				this.cmbEquipment.dataProvider = data;
+				if( Util.extractObject(this._generalDataProject,"equipo") != null ){
+					this.cmbEquipment.selectedIndex = Util.selectedIndexFromCombo( this.cmbEquipment.dataProvider as ArrayCollection, 
+						this._generalDataProject.equipo.id);
+				}
+			}
+			protected function responseGetUnidad_resultHandler(data:ArrayCollection):void
+			{
+				this.cmbVehicle.dataProvider = data;
+				if( Util.extractObject(this._generalDataProject,"unidad") != null ){
+					this.cmbVehicle.selectedIndex = Util.selectedIndexFromCombo( this.cmbVehicle.dataProvider as ArrayCollection, 
+						this._generalDataProject.unidad.id);
+				}
+			}
+			protected function responseGetViaticos_resultHandler(data:ArrayCollection):void
+			{
+				this.cmbPerDiem.dataProvider = data;
+				if( Util.extractObject(this._generalDataProject,"viaticos") != null ){
+					this.cmbPerDiem.selectedIndex = Util.selectedIndexFromCombo( this.cmbPerDiem.dataProvider as ArrayCollection, 
+						this._generalDataProject.viaticos.id);
+				}
+			}
+			
+			protected function datosGeneralesProyectoService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function btnAccept_clickHandler(event:MouseEvent):void
+			{
+				if( !this.validations() ){
+					Util.showMessageVerifyFields();
+					return;
+				}
+				if( this.mode == Constants.REGISTER_MODE ){
+					var generalDataProject:DatosGeneralesProyecto = this.getGeneralDataProject();
+					Util.showProperties( generalDataProject );
+					this.responseSave.token = this.datosGeneralesService.save( generalDataProject );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
+				}
+			}
+			
+			private function updateItem(event:CloseEvent):void{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var generalDataProject:DatosGeneralesProyecto = this.getGeneralDataProject();
+				Util.showProperties( generalDataProject );
+				this.responseUpdate.token = this.datosGeneralesService.update( generalDataProject );
+			}
+			
+			private function validations():Boolean
+			{
+				var value:Boolean = true;
+				value &&= this.validators.validarFormulario();
+				value &&= this.dtfAsignDateClient.selectedDate;
+				value &&= this.dtfStartDateProgramming.selectedDate;
+				value &&= this.dtfEndDateProgramming.selectedDate;
+				value &&= Util.listBaseSelected( this.cmbConectelResponsable );
+				value &&= Util.listBaseSelected( this.cmbImplementationResponsable );
+				value &&= Util.listBaseSelected( this.cmbMaterial );
+				value &&= Util.listBaseSelected( this.cmbTool );
+				value &&= Util.listBaseSelected( this.cmbEquipment );
+				value &&= Util.listBaseSelected( this.cmbVehicle );
+				value &&= Util.listBaseSelected( this.cmbPerDiem );
+				value &&= this.dtfStartDateReal.selectedDate;
+				value &&= this.dtfEndDateReal.selectedDate;
+				//value &&= this.dlvEngineeringDeliverable.existElements();
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+					this.btnDone.visible = false;
+					this.txtConectelID.editable = true;
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+					this.txtConectelID.editable = false;
+				}
+					
+			}
+			
+			private function initializeValidators():void
+			{
+				this.validators = new InicializaValidadoresEtiquetas();
+				validators.crearValidadorRestrictor("numerico11",ValidadorEntero.nombre, 11);
+				validators.setValidador(txtConectelID, "numerico11");
+				validators.crearValidadorRestrictor("alfanumerico100",ValidadorAlfanumerico.nombre, 0, 100, true);
+				validators.setRestrictor(txtDivision, "alfanumerico100");
+				validators.setRestrictor(txtArea, "alfanumerico100");
+				validators.setRestrictor(txtFinalClient, "alfanumerico100");
+				validators.setRestrictor(txtClientID, "alfanumerico100");
+				validators.setRestrictor(txtNodeID, "alfanumerico100");
+				validators.setRestrictor(txtGraph, "alfanumerico100");
+				validators.setRestrictor(txtClientOrder, "alfanumerico100");
+				validators.setRestrictor(txtPEPElement, "alfanumerico100");
+				validators.setRestrictor(txtClientResponsable, "alfanumerico100");
+				validators.setRestrictor(txtWeek, "alfanumerico100");
+				validators.setRestrictor(txtSite, "alfanumerico100");
+			}
+			
+			protected function responseSave_resultHandler(event:ResultEvent):void
+			{
+				var eventGeneralDataProjectNew:Event = new Event("generalDataProjectNew");
+				this.dispatchEvent( eventGeneralDataProjectNew );
+				this.cleanForm();
+			}
+			
+			private function cleanForm():void
+			{
+				this.txtConectelID.reset();
+				this.txtDivision.reset();
+				this.txtArea.reset();
+				this.txtFinalClient.reset();
+				this.txtClientID.reset();
+				this.txtNodeID.reset();
+				this.txtGraph.reset();
+				this.txtClientOrder.reset();
+				this.txtPEPElement.reset();
+				this.txtClientResponsable.reset();
+				this.txtWeek.reset();
+				this.dtfAsignDateClient.reset();
+				this.dtfStartDateProgramming.reset();
+				this.dtfEndDateProgramming.reset();
+				this.cmbConectelResponsable.selectedIndex = 0;
+				this.cmbImplementationResponsable.selectedIndex = 0;
+				this.cmbMaterial.selectedIndex = 0;
+				this.cmbTool.selectedIndex = 0;
+				this.cmbEquipment.selectedIndex = 0;
+				this.cmbVehicle.selectedIndex = 0;
+				this.cmbPerDiem.selectedIndex = 0;
+				this.dtfStartDateReal.reset();
+				this.dtfEndDateReal.reset();
+				this.txtSite.reset();
+				this.dlvEngineeringDeliverable.reset();
+				this.observations.reset();
+			}
+			
+			protected function responseUpdate_resultHandler(event:ResultEvent):void
+			{
+				var eventGeneralDataProjectUpdated:Event = new Event("generalDataProjectUpdated");
+				this.dispatchEvent( eventGeneralDataProjectUpdated );
+				this.cleanForm();
+			}
+			
+			protected function colaboradorService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function btnHecho_clickHandler(event:MouseEvent):void
+			{
+				if( !this.validations() ){
+					Util.showMessageVerifyFields();
+					return;
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+					Alert.show("Confirme si desea dar por terminada la fase.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
+				}
+			}
+			
+			protected function responseGetAplica_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				data = Util.addEmptyCatalgo( data );
+				this.responseGetMaterial_resultHandler(data);
+				this.responseGetHerramienta_resultHandler(data);
+				this.responseGetEquipo_resultHandler(data);
+				this.responseGetUnidad_resultHandler(data);
+				this.responseGetViaticos_resultHandler(data);
+			}
+			
+			protected function catalogoService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="generalDataProjectNew", type="flash.events.Event")]
+		[Event(name="generalDataProjectUpdated", type="flash.events.Event")]
+	</mx:Metadata>
+	<mx:Form id="form">
+		<mx:FormItem label="ID Conectel:" direction="horizontal">
+			<mx:Label text="CON"/>
+			<components:TextInput id="txtConectelID" width="150" textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Divisón o Región:">
+			<components:TextInput id="txtDivision" width="200"/>
+		</mx:FormItem>
+		<mx:FormItem label="Area/GOA:">
+			<components:TextInput id="txtArea" width="300"/>
+		</mx:FormItem>
+		<mx:FormItem label="Cliente Final:">
+			<components:TextInput id="txtFinalClient" width="400"/>
+		</mx:FormItem>
+		<mx:FormItem label="ID Ciente:">
+			<components:TextInput id="txtClientID" width="200"/>
+		</mx:FormItem>
+		<mx:FormItem label="ID Nodo:">
+			<components:TextInput id="txtNodeID" width="200"/>
+		</mx:FormItem>
+		<mx:FormItem label="Grafo:">
+			<components:TextInput id="txtGraph" width="200"/>
+		</mx:FormItem>
+		<mx:FormItem label="Pedido Cliente:">
+			<components:TextInput id="txtClientOrder" width="300"/>
+		</mx:FormItem>
+		<mx:FormItem label="Elemento PEP:">
+			<components:TextInput id="txtPEPElement" width="300"/>
+		</mx:FormItem>
+		<mx:FormItem label="Responsable Cliente:">
+			<components:TextInput id="txtClientResponsable" width="400"/>
+		</mx:FormItem>
+		<mx:FormItem label="Semana:">
+			<components:TextInput id="txtWeek" width="300"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha Asignación Cliente:">
+			<components:DateField id="dtfAsignDateClient"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha Inicio Programada:">
+			<components:DateField id="dtfStartDateProgramming"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha Fin Programada:">
+			<components:DateField id="dtfEndDateProgramming"/>
+		</mx:FormItem>
+		<mx:FormItem label="Responsable Conectel:">
+			<mx:ComboBox id="cmbConectelResponsable" width="400"
+						 labelField="nombreCompleto"/>
+		</mx:FormItem>
+		<mx:FormItem label="Responsable Implementación:">
+			<mx:ComboBox id="cmbImplementationResponsable" width="400"
+						 labelField="nombreCompleto"/>
+		</mx:FormItem>
+		<mx:FormItem label="Material:">
+			<mx:ComboBox id="cmbMaterial" width="300"
+						 labelField="etiqueta"/>
+		</mx:FormItem>
+		<mx:FormItem label="Herramienta:">
+			<mx:ComboBox id="cmbTool" width="300"
+						 labelField="etiqueta"/>
+		</mx:FormItem>
+		<mx:FormItem label="Equipo:">
+			<mx:ComboBox id="cmbEquipment" width="300"
+						 labelField="etiqueta"/>
+		</mx:FormItem>
+		<mx:FormItem label="Unidad:">
+			<mx:ComboBox id="cmbVehicle" width="300"
+						 labelField="etiqueta"/>
+		</mx:FormItem>
+		<mx:FormItem label="Viáticos:">
+			<mx:ComboBox id="cmbPerDiem" width="300"
+						 labelField="etiqueta"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha Inicio Real:">
+			<components:DateField id="dtfStartDateReal"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha Término Real:">
+			<components:DateField id="dtfEndDateReal"/>
+		</mx:FormItem>
+		<mx:FormItem label="Site Survey:">
+			<components:TextInput id="txtSite" width="350"/>
+		</mx:FormItem>
+		<mx:FormItem label="Entregable Ingeniería:">
+			<components:Deliver id="dlvEngineeringDeliverable" deliveryType="{TipoEntregable.ENTREGABLE_INGENIERIA}"/>
+		</mx:FormItem>
+		<components:Observations id="observations"/>
+		<mx:FormItem direction="horizontal">
+			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
+			<mx:Button id="btnDone" label="Hecho" click="btnHecho_clickHandler(event)"/>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:RemoteObject id="colaboradorService" destination="colaboradorService" fault="colaboradorService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetResponsableConectel" result="responseGetResponsableConectel_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetResponsableImplementacion" result="responseGetResponsableImplementacion_resultHandler(event)"/>
+	<!--<mx:CallResponder id="responseGetMaterial" result="responseGetMaterial_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetHerramienta" result="responseGetHerramienta_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetEquipo" result="responseGetEquipo_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetUnidad" result="responseGetUnidad_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetViaticos" result="responseGetViaticos_resultHandler(event)"/>-->
+	<mx:RemoteObject id="datosGeneralesService" destination="datosGeneralesService" fault="datosGeneralesProyectoService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
+	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
+	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="catalogoService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetAplica" result="responseGetAplica_resultHandler(event)"/>
+</mx:VBox>

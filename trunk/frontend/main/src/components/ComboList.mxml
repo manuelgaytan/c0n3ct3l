@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+	paddingTop="0" paddingBottom="5">
+	<mx:Script>
+		<![CDATA[
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+
+			[Bindable]
+			private var _delivers:ArrayCollection;
+			
+			private var textTypes:FileFilter = new FileFilter("Archivos de Texto (*.doc, *.docx, *.xls, *.xlsx, *.pdf)", "*.doc; *.docx; *.xls; *.xlsx; *.pdf");
+			private var allTypes:Array = new Array(textTypes);
+			private var fileRef:FileReference = null;
+			
+			public function existElements():Boolean{
+				if( this._delivers == null ||
+					this._delivers.length == 0 ){
+					return false;
+				}
+				return true;
+			}
+			
+			protected function txtDeliver_clickHandler(event:MouseEvent):void
+			{
+				fileRef = new FileReference();
+				fileRef.addEventListener(Event.SELECT, selectHandler);
+				fileRef.addEventListener(Event.COMPLETE, completeHandler);
+				fileRef.browse(allTypes);
+			}
+			
+			private function selectHandler(event:Event):void
+			{
+				var request:URLRequest = new URLRequest("http://localhost:8080/serviciosWeb/file_upload.jsp")
+				try
+				{
+					this.txtDeliver.text = event.currentTarget.name;
+					fileRef.upload(request);
+				}
+				catch (error:Error)
+				{
+					trace("Unable to upload file.");
+				}
+			}
+			
+			public function reset():void{
+				//txtDeliver.reset();
+				Util.freeListDataProvider( this.lstDelivers );  
+			}
+			
+			protected function lstDelivers_doubleClickHandler(event:MouseEvent):void
+			{
+				if( this.lstDelivers.selectedItem != null ){
+					Alert.show("Confirme si desea eliminar los elementos.","Advertencia",Alert.YES+Alert.NO,this, deleteItem);
+				}
+			}
+				
+			private function deleteItem(event:CloseEvent):void
+			{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				this._delivers.removeItemAt( this.lstDelivers.selectedIndex );
+			}
+			
+			public function set list(value:ArrayCollection):void{
+				if( value == null ){
+					return;
+				}
+				this._delivers = value;
+			}
+			
+			public function get delivers():ArrayCollection{
+				return this._delivers;
+			}
+			
+			protected function btnAdd_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
+			protected function completeHandler(event:Event):void
+			{
+				this.addDelivery( txtDeliver.text );
+				//this.txtDeliver.reset();
+			}
+			
+			private function addDelivery(text:String):void
+			{
+				if( this._delivers == null ){
+					this._delivers = new ArrayCollection();
+				}
+				this._delivers.addItem( text );
+			}
+		]]>
+	</mx:Script>
+	<mx:HBox>
+		<mx:ComboBox id="txtDeliver" width="160"
+							  />
+		<mx:Button id="btnAdd" label="Agregar" click="btnAdd_clickHandler(event)"/>
+	</mx:HBox>
+	<mx:List id="lstDelivers" width="160" height="160"
+			 dataProvider="{_delivers}"
+			 doubleClickEnabled="true" 
+			 doubleClick="lstDelivers_doubleClickHandler(event)"/>
+</mx:VBox>

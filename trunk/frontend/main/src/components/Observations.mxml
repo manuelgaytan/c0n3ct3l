@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Form xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)"
+		 paddingTop="5" paddingBottom="5">
+	<mx:Script>
+		<![CDATA[
+			import model.Imputable;
+			import model.Model;
+			import model.Observacion;
+			import model.Proyecto;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			private var _project:Proyecto;
+			
+			[Bindable]
+			private var _observations:ArrayCollection;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this._observations = new ArrayCollection()
+				this.initializeCombos();
+			}
+			
+			private function initializeCombos():void
+			{
+				this.responseGetAllImputable.token = this.catalogoService.getImputable();
+			}
+			
+			public function set observations(value:ArrayCollection):void{
+				if( value == null ){
+					return;
+				}
+				this._observations = value;
+			}
+			
+			public function get observations():ArrayCollection{
+				if( this._observations.length == 0 ){
+					return null;
+				}
+				return this._observations;
+			}
+			
+			protected function proyectoService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function responseGetAllImputable_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbImputable.dataProvider = Util.addEmptyCatalgo( data );
+			}
+			
+			public function reset():void
+			{
+				this.cmbImputable.selectedIndex = 0;
+				this.txtObservation.reset();
+				this._observations.removeAll();
+			}
+			
+			protected function btnAddObservation_clickHandler(event:MouseEvent):void
+			{
+				if( !this.validations() ){
+					Util.showMessageVerifyFields();
+					return;
+				}
+				var observation:Observacion = new Observacion();
+				observation.fechaCaptura = new Date();
+				observation.imputable = this.cmbImputable.selectedItem as Imputable;
+				observation.usuario = Model.getInstance().user;
+				observation.requisicion = Util.validateEmpty(this.txtObservation.text); 
+				this._observations.addItem( observation );
+				this.cleanForm();
+			}
+			
+			private function cleanForm():void
+			{
+				this.cmbImputable.selectedIndex = 0;
+				this.txtObservation.reset();
+			}
+			
+			private function validations():Boolean
+			{
+				var value:Boolean = true;
+				value &&= Util.listBaseSelected( this.cmbImputable, "id", true );
+				value &&= (Util.validateEmpty( this.txtObservation.text ) != null);
+				return value;
+			}
+			
+			private function dateFormat(object:Object, columna:DataGridColumn):String{
+				return Util.formatDateToString( object[columna.dataField] );
+			}
+		]]>
+	</mx:Script>
+	<mx:FormItem label="Imputable:">
+		<mx:ComboBox id="cmbImputable"
+					 labelField="etiqueta"/>
+	</mx:FormItem>
+	<mx:FormItem label="Observación:" direction="vertical">
+		<mx:HBox>			
+			<components:TextArea id="txtObservation" width="400"/>
+			<mx:Button label="+" id="btnAddObservation" click="btnAddObservation_clickHandler(event)"/>
+		</mx:HBox>
+		<mx:DataGrid dataProvider="{this._observations}" variableRowHeight="true">
+			<mx:columns>
+				<mx:DataGridColumn headerText="Fecha"
+								   dataField="fechaCaptura"
+								   labelFunction="dateFormat"/>
+				<mx:DataGridColumn headerText="Comentario" width="200"
+								   wordWrap="true"
+								   dataField="requisicion"/>
+				<mx:DataGridColumn headerText="Imputable"
+								   dataField="imputable.etiqueta"/>
+				<mx:DataGridColumn headerText="Usuario"
+								   dataField="usuario.usuario"/>
+				<mx:DataGridColumn headerText="Estado"
+								   wordWrap="true"
+								   dataField="estado.etiqueta"/>
+			</mx:columns>
+		</mx:DataGrid>
+	</mx:FormItem>
+	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="proyectoService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetAllImputable" result="responseGetAllImputable_resultHandler(event)"/>
+</mx:Form>

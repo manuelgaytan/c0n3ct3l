@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+		 label="Consulta"
+		 horizontalAlign="right"
+		 creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import events.GenericEvent;
+			
+			import model.Cliente;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			[Bindable]
+			private var clients:ArrayCollection = null;
+			
+			private var cliente:Cliente;
+			
+			protected function responseGetAll_resultHandler(event:ResultEvent):void
+			{
+				clients = event.result as ArrayCollection;
+			}
+			
+			protected function clienteService_faultHandler(event:FaultEvent):void
+			{
+				//Util.showProperties( event.fault );
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.executeQuery();
+			}
+			
+			protected function datagrid_doubleClickHandler(event:MouseEvent):void
+			{
+				var client:Cliente = this.datagrid.selectedItem as Cliente;
+				this.responseGetCliente.token = this.clienteService.getCliente( client.id );
+			}
+			
+			protected function responseGetCliente_resultHandler(event:ResultEvent):void
+			{
+				var client:Cliente = event.result as Cliente;
+				if( client == null ){
+					return;
+				}
+				var genericEvent:GenericEvent = new GenericEvent("clientDetail");
+				genericEvent.information = client;
+				this.dispatchEvent( genericEvent );
+			}
+			
+			public function executeQuery():void
+			{
+				this.responseGetAll.token = this.clienteService.getAll();
+			}
+			
+			protected function btnDelete_clickHandler(event:MouseEvent):void
+			{
+				if( this.datagrid.selectedItems == null ||
+					this.datagrid.selectedItems.length == 0 ){
+					Util.showErrorMessage("Debe seleccionar elementos de la tabla.");
+					return;
+				}
+				Alert.show("Confirme si desea eliminar los elementos.","Advertencia",Alert.YES+Alert.NO,this, deleteItems);
+			}
+			
+			private function deleteItems(event:CloseEvent):void
+			{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var items:ArrayCollection = Util.selectedIDs( this.datagrid.selectedItems ); 
+				this.responseDeleteClientes.token = this.clienteService.deleteClientes( items );
+			}
+			
+			protected function responseDeleteClientes_resultHandler(event:ResultEvent):void
+			{
+				this.executeQuery();
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="clientDetail", type="events.GenericEvent")]
+	</mx:Metadata>
+	<mx:DataGrid id="datagrid" width="100%" height="100%" dataProvider="{clients}"
+				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
+				 allowMultipleSelection="true">
+		<mx:columns>
+			<mx:DataGridColumn id="dtgComercialName" headerText="Nombre Comercial"
+							   dataField="nombreComercial" width="270"/>
+			<mx:DataGridColumn id="dtgLegalName" headerText="Razón Social"
+							   dataField="razonSocial" width="270"/>
+			<mx:DataGridColumn id="dtgRFC" headerText="R.F.C."
+							   dataField="rfc" width="120"/>
+			<mx:DataGridColumn id="dtgFiscalAddress" headerText="Domicilio Fiscal"
+							   dataField="domicilioFiscal"/>
+		</mx:columns>
+	</mx:DataGrid>
+	<mx:HBox>
+		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>
+	</mx:HBox>
+	<mx:RemoteObject id="clienteService" destination="clienteService" fault="clienteService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetAll" result="responseGetAll_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetCliente" result="responseGetCliente_resultHandler(event)"/>
+	<mx:CallResponder id="responseDeleteClientes" result="responseDeleteClientes_resultHandler(event)"/>
+</mx:VBox>

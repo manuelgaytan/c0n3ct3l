@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import model.Catalogo;
+			import model.Cliente;
+			import model.Constants;
+			import model.Producto;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
+			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			private var mode:String = null;
+			private var _product:Producto;
+			private var validators:InicializaValidadoresEtiquetas;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				this.label = Constants.REGISTRAR;
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+				this.cmbClient.enabled = value;
+				this.txtProjectType.enabled = value;
+				this.txtTechnology.enabled = value;
+				this.txtEquipment.enabled = value;
+				this.txtActivity.enabled = value;
+				this.txtModel.enabled = value;
+				this.txtServiceDescription.enabled = value;
+				this.txtServiceType.enabled = value;
+				this.txtCost.enabled = value;				
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set product(value:Producto):void{
+				if( value == null ){
+					return;
+				}
+				this._product = value;
+				this.setProduct(); 
+			}
+			
+			private function setProduct():void
+			{
+				if( this._product == null ){
+					return;
+				}
+				if( Util.isFill( this.cmbClient ) ){
+					this.cmbClient.selectedIndex = Util.selectedIndexFromCombo( this.cmbClient.dataProvider as ArrayCollection, 
+						this._product.cliente.id);
+				}
+				this.txtProjectType.text = this._product.tipoProyecto;
+				this.txtTechnology.text = this._product.teconologia;
+				this.txtEquipment.text = this._product.equipo;
+				this.txtActivity.text = this._product.actividadRealizar;
+				this.txtModel.text = this._product.modelo;
+				this.txtServiceDescription.text = this._product.descripcionServicio;
+				this.txtServiceType.text = this._product.tipoServicio;
+				this.txtCost.text = Util.formatNumber(this._product.costo);
+			}
+			
+			private function getClient():Producto{
+				var product:Producto = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					product = new Producto();
+				}else{
+					product = this._product;
+				}
+				product.cliente = new Cliente();
+				product.cliente.id = (this.cmbClient.selectedItem as Cliente).id; 
+				product.cliente.nombreComercial = (this.cmbClient.selectedItem as Cliente).nombreComercial;
+				product.tipoProyecto = Util.validateEmpty(this.txtProjectType.text);
+				product.teconologia = Util.validateEmpty(this.txtTechnology.text);
+				product.equipo = Util.validateEmpty(this.txtEquipment.text);
+				product.actividadRealizar = Util.validateEmpty(this.txtActivity.text);
+				product.modelo = Util.validateEmpty(this.txtModel.text);
+				product.descripcionServicio = Util.validateEmpty(this.txtServiceDescription.text);
+				product.tipoServicio  = Util.validateEmpty(this.txtServiceType.text);
+				product.costo = Util.stringToNumber(this.txtCost.text);
+				return product;
+			}
+			
+			private function fillCombos():void
+			{
+				this.responseGetClientes.token = this.clienteService.getClientes();
+			}
+			
+			protected function responseGetAllPerfiles_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+			}
+			
+			protected function productService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function btnAccept_clickHandler(event:MouseEvent):void
+			{
+				if( !this.validations() ){
+					Util.showMessageVerifyFields();
+					return;
+				}
+				if( this.mode == Constants.REGISTER_MODE ){
+					var product:Producto = this.getClient();
+					this.responseSave.token = this.productoService.save( product );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
+				}
+			}
+			
+			private function updateItem(event:CloseEvent):void{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var product:Producto = this.getClient();
+				this.responseUpdate.token = this.productoService.update( product );
+			}
+			
+			private function validations():Boolean
+			{
+				var value:Boolean = true;
+				value &&= this.validators.validarFormulario();
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+			}
+			
+			private function initializeValidators():void
+			{
+				this.validators = new InicializaValidadoresEtiquetas();
+				validators.crearValidadorRestrictor("a200",ValidadorAlfabetico.nombre, 0, 200, true);
+				validators.setValidador(txtProjectType, "a200");
+				validators.setValidador(txtTechnology, "a200");
+				validators.setValidador(txtEquipment, "a200");
+				validators.setValidador(txtModel, "a200");
+				validators.setValidador(txtServiceType, "a200");
+				validators.crearValidadorRestrictor("a255",ValidadorAlfabetico.nombre, 0, 255, true);
+				validators.setValidador(txtActivity, "a255");
+				validators.setValidador(txtServiceDescription, "a255");
+				validators.crearValidadorRestrictor("cost",ValidadorDecimal.nombre, 9, 2);
+				validators.setRestrictor(txtCost, "cost");
+			}
+			
+			protected function responseSave_resultHandler(event:ResultEvent):void
+			{
+				var eventClentNew:Event = new Event("productNew");
+				this.dispatchEvent( eventClentNew );
+				this.cleanForm();
+			}
+			
+			private function cleanForm():void
+			{
+				this.cmbClient.selectedIndex = 0;
+				this.txtProjectType.reset();
+				this.txtTechnology.reset();
+				this.txtEquipment.reset();
+				this.txtActivity.reset();
+				this.txtModel.reset();
+				this.txtServiceDescription.reset();
+				this.txtServiceType.reset();
+				this.txtCost.reset();
+			}
+			
+			protected function responseUpdate_resultHandler(event:ResultEvent):void
+			{
+				var eventClentUpdated:Event = new Event("productUpdated");
+				this.dispatchEvent( eventClentUpdated );
+				this.cleanForm();
+			}
+			
+			protected function responseGetClientes_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbClient.dataProvider = Util.addEmptyCatalgo( data, "nombreComercial" );
+				if( this._product != null ){
+					this.cmbClient.selectedIndex = Util.selectedIndexFromCombo( this.cmbClient.dataProvider as ArrayCollection, 
+						this._product.cliente.id);
+				}
+			}
+			
+			protected function productoService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function clienteService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="productNew", type="flash.events.Event")]
+		[Event(name="productUpdated", type="flash.events.Event")]
+	</mx:Metadata>
+	<mx:Form>
+		<mx:FormItem label="Cliente:">
+			<mx:ComboBox id="cmbClient" width="400"
+						 labelField="nombreComercial"/>
+		</mx:FormItem>
+		<mx:FormItem label="Tipo de Proyecto:">
+			<components:TextInput id="txtProjectType" width="300"/>
+		</mx:FormItem>
+		<mx:FormItem label="Tecnología:">
+			<components:TextInput id="txtTechnology" width="250"/>
+		</mx:FormItem>
+		<mx:FormItem label="Equipo:">
+			<components:TextInput id="txtEquipment" width="300"/>
+		</mx:FormItem>
+		<mx:FormItem label="Actividad a Realizar:">
+			<components:TextInput id="txtActivity" width="600"/>
+		</mx:FormItem>
+		<mx:FormItem label="Modelo:">
+			<components:TextInput id="txtModel" width="450"/>
+		</mx:FormItem>
+		<mx:FormItem label="Descripción del Servicio:">
+			<components:TextInput id="txtServiceDescription" width="600"/>
+		</mx:FormItem>
+		<mx:FormItem label="Tipo de Servicio:">
+			<components:TextInput id="txtServiceType" width="250"/>
+		</mx:FormItem>
+		<mx:FormItem label="Costo:">
+			<components:TextInput id="txtCost" width="150" textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem>
+			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:RemoteObject id="productoService" destination="productoService" fault="productoService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
+	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
+	<mx:RemoteObject id="clienteService" destination="clienteService" fault="clienteService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetClientes" result="responseGetClientes_resultHandler(event)"/>
+</mx:VBox>

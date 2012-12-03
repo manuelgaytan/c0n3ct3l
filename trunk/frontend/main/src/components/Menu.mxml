@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Accordion xmlns:mx="http://www.adobe.com/2006/mxml" 
+			  width="230" height="300"
+			  creationComplete="creationCompleteHandler(event)"
+			  creationPolicy="all">
+	<mx:Script>
+		<![CDATA[
+			import events.GenericEvent;
+			
+			import model.MenuOption;
+			import model.Usuario;
+			import model.Util;
+			
+			import mx.controls.LinkButton;
+			import mx.events.FlexEvent;
+			
+			protected function clickMenuHandler(event:MouseEvent):void
+			{
+				var linkButton:LinkButton = event.currentTarget as LinkButton;
+				if( linkButton == null ){
+					return;
+				}
+				var menuOption:MenuOption = new MenuOption();
+				menuOption.id = linkButton.id;
+				menuOption.label = linkButton.label;
+				var genericEvent:GenericEvent = new GenericEvent("menuItemClick");
+				genericEvent.information = menuOption;
+				this.dispatchEvent( genericEvent );
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.selectedChild = empty;
+			}
+			
+			public function set userAccess(user:Usuario):void{
+				//return;
+				for each (var category:VBox in this.getChildren()) 
+				{
+					if( category == null ){
+						continue;
+					}
+					for each (var button:LinkButton in category.getChildren()) 
+					{
+						button.includeInLayout = user.allowed( button.id );
+					}
+				}
+			}
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="menuItemClick", type="events.GenericEvent")]
+	</mx:Metadata>
+	<mx:VBox label="Catálogos" width="100%" height="100%">
+		<mx:LinkButton label="Clientes" id="Clientes" click="clickMenuHandler(event)"
+					   icon="@Embed(source='assets/images/clientes.png')"/>
+		<mx:LinkButton label="Productos y Servicios" id="Productos" click="clickMenuHandler(event)"
+					   icon="@Embed(source='assets/images/servicios.png')"/>
+		<mx:LinkButton label="Usuarios" id="Usuarios" click="clickMenuHandler(event)"
+					   icon="@Embed(source='assets/images/usuarios.png')"/>
+	</mx:VBox>
+	<mx:VBox label="Operación" width="100%" height="100%">
+		<mx:LinkButton label="Proyectos" id="Proyectos" click="clickMenuHandler(event)"/>
+		<mx:LinkButton label="Datos Generales" id="DatosGenerales" click="clickMenuHandler(event)"
+					   />
+		<mx:LinkButton label="Desarrollo Proyecto A y B" id="DesarrolloProyectoAB" click="clickMenuHandler(event)"
+					   />
+		<mx:LinkButton label="Configuración Prueba y Entrega" id="ConfiguracionPruebaEntrega" click="clickMenuHandler(event)"
+					   />
+		<mx:LinkButton label="Notificaciones" id="Notificaciones" click="clickMenuHandler(event)"
+					   />
+	</mx:VBox>
+	<mx:VBox label="Almacén" width="100%" height="100%">
+		<mx:LinkButton label="Manejo Almacén" id="Almacen" click="clickMenuHandler(event)"/>
+	</mx:VBox>
+	<mx:VBox id="empty"/>
+</mx:Accordion>

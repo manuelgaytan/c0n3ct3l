@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+	paddingTop="0" paddingBottom="5">
+	<mx:Script>
+		<![CDATA[
+			import model.Constants;
+			import model.Entregable;
+			import model.Model;
+			import model.ProyectoEntregable;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+
+			[Bindable]
+			private var _delivers:ArrayCollection;
+			
+			private var textTypes:FileFilter = new FileFilter("Archivos de Texto (*.doc, *.docx, *.xls, *.xlsx, *.pdf)", "*.doc; *.docx; *.xls; *.xlsx; *.pdf");
+			private var allTypes:Array = new Array(textTypes);
+			private var fileRef:FileReference = null;
+			
+			[Bindable]
+			public var deliveryType:Number;
+			
+			public function existElements():Boolean{
+				if( this._delivers == null ||
+					this._delivers.length == 0 ){
+					return false;
+				}
+				return true;
+			}
+			
+			protected function txtDeliver_clickHandler(event:MouseEvent):void
+			{
+				fileRef = new FileReference();
+				fileRef.addEventListener(Event.SELECT, selectHandler);
+				fileRef.addEventListener(Event.COMPLETE, completeHandler);
+				fileRef.browse(allTypes);
+			}
+			
+			private function selectHandler(event:Event):void
+			{
+				var type:String = Constants.PROJECT_TYPE;
+				var prefix:String = Util.createPrefix( type, Model.getInstance().user.usuario );
+				var urlRequest:String = "http://localhost:8080/serviciosWeb/file_upload.jsp";
+				urlRequest += "?prefix=" + prefix;
+				var request:URLRequest = new URLRequest( urlRequest );
+				
+				if( !sizeValidation( event.currentTarget as FileReference ) ){
+					Util.showErrorMessage( "Archivo mayor a 5 MB no se puede cargar" );
+					trace("Unable to upload file for sizing greater than 5 MB.");
+					return;
+				}
+				
+				try
+				{
+					this.txtDeliver.text = prefix + event.currentTarget.name;
+					fileRef.upload(request);
+				}
+				catch (error:Error)
+				{
+					trace("Unable to upload file.");
+				}
+			}
+			
+			public function reset():void{
+				txtDeliver.reset();
+				Util.freeListDataProvider( this.lstDelivers );  
+			}
+			
+			protected function lstDelivers_doubleClickHandler(event:MouseEvent):void
+			{
+				if( this.lstDelivers.selectedItem != null ){
+					var params:Object = new Object();
+					var fileName:String = (this.lstDelivers.selectedItem as ProyectoEntregable).entregable.nombreArchivo;
+					params.document = fileName;
+					this.exposeService.send(params);
+				}
+			}
+				
+			private function deleteItem(event:CloseEvent):void
+			{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				this._delivers.removeItemAt( this.lstDelivers.selectedIndex );
+			}
+			
+			public function set delivers(value:ArrayCollection):void{
+				if( value == null ){
+					return;
+				}
+				this._delivers = value;
+			}
+			
+			public function get delivers():ArrayCollection{
+				return this._delivers;
+			}
+			
+			protected function btnAdd_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+			}
+			
+			protected function completeHandler(event:Event):void
+			{
+				this.addDelivery( txtDeliver.text );
+				this.txtDeliver.reset();
+			}
+			
+			private function addDelivery(text:String):void
+			{
+				if( this._delivers == null ){
+					this._delivers = new ArrayCollection();
+				}
+				var proyectoEntregable:ProyectoEntregable = new ProyectoEntregable();
+				proyectoEntregable.entregable = new Entregable();
+				proyectoEntregable.entregable.nombreArchivo = text;
+				proyectoEntregable.entregable.idTipoEntregable = this.deliveryType;
+				this._delivers.addItem( proyectoEntregable );
+			}
+			
+			private function formatFile( item:Object ):String{
+				var currentItem:String = (item as ProyectoEntregable).entregable.nombreArchivo;
+				var index:int = currentItem.indexOf("_");
+				if( index == -1 ){
+					return currentItem;
+				}else{
+					index++;
+					return currentItem.substring( index );
+				}
+			}
+			
+			private function sizeValidation(currentTarget:FileReference):Boolean
+			{
+				if( currentTarget == null ){
+					return false;
+				}
+				return currentTarget.size <= 5120000;
+			}
+			
+			protected function btnDelete_clickHandler(event:MouseEvent):void
+			{
+				if( this.lstDelivers.selectedItem != null ){
+					Alert.show("Confirme si desea eliminar los elementos.","Advertencia",Alert.YES+Alert.NO,this, deleteItem);
+				}
+			}
+			
+			protected function exposeService_faultHandler(event:FaultEvent):void
+			{
+				//Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+				this.exposeService_resultHandler();
+			}
+			
+			protected function exposeService_resultHandler(event:ResultEvent = null):void
+			{
+				if( this.lstDelivers.selectedItem != null ){
+					Alert.show("Confirme si desea descargar el archivo.","Advertencia",Alert.YES+Alert.NO,this, downloadItem);
+				}
+			}
+			
+			private function downloadItem(event:CloseEvent):void
+			{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var fileName:String = (this.lstDelivers.selectedItem as ProyectoEntregable).entregable.nombreArchivo;
+				var FILE_URL:String = "http://localhost:8080/serviciosWeb/output" + "/" + fileName;
+				var downloadFile:DownloadFile = new DownloadFile( FILE_URL );
+				downloadFile.download();
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:HTTPService id="exposeService" url="http://localhost:8080/serviciosWeb/exposing.jsp"
+					result="exposeService_resultHandler(event)" fault="exposeService_faultHandler(event)"/>
+	<mx:HBox>
+		<components:TextInput id="txtDeliver" width="160"
+							  click="txtDeliver_clickHandler(event)"
+							  />
+		<!--<mx:Button id="btnAdd" label="Agregar" click="btnAdd_clickHandler(event)"/>-->
+		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>
+	</mx:HBox>
+	<mx:List id="lstDelivers" width="160" height="160"
+			 dataProvider="{_delivers}"
+			 doubleClickEnabled="true" 
+			 doubleClick="lstDelivers_doubleClickHandler(event)"
+			 labelFunction="formatFile"/>
+</mx:VBox>

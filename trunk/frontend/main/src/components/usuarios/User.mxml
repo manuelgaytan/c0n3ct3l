@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)"
+		 >
+	<mx:Script>
+		<![CDATA[
+			import model.Catalogo;
+			import model.Constants;
+			import model.Perfil;
+			import model.Usuario;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			private var mode:String = null;
+			private var _user:Usuario;
+			private var validators:InicializaValidadoresEtiquetas;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				this.label = Constants.REGISTRAR;
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+				this.txtWholeName.enabled = value;
+				this.cmbProfile.enabled = value;
+				this.txtUser.enabled = value;
+				this.txtPasword.enabled = value;
+				this.txtVerifyPassword.enabled = value;
+				this.chbActive.enabled = value;
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set user(value:Usuario):void{
+				if( value == null ){
+					return;
+				}
+				this._user = value;
+				this.setUser(); 
+			}
+			
+			private function setUser():void
+			{
+				if( this._user == null ){
+					return;
+				}
+				this.txtWholeName.text = this._user.nombreCompleto;
+				if( Util.isFill( this.cmbProfile ) ){
+					this.cmbProfile.selectedIndex = Util.selectedIndexFromCombo( this.cmbProfile.dataProvider as ArrayCollection, 
+					this._user.perfil.id);
+				}
+				this.txtUser.text = this._user.usuario;
+				this.txtPasword.text = this._user.contrasena;
+				this.txtVerifyPassword.text = this._user.contrasena;
+				this.chbActive.selected = this._user.activo;
+			}
+			
+			private function getUser():Usuario{
+				var user:Usuario = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					user = new Usuario();
+				}else{
+					user = this._user;
+				}
+				user.nombreCompleto = Util.validateEmpty( this.txtWholeName.text );
+				user.perfil = this.cmbProfile.selectedItem as Perfil;
+				user.usuario = Util.validateEmpty( this.txtUser.text );
+				user.contrasena = Util.validateEmpty( this.txtPasword.text );
+				user.activo = this.chbActive.selected;
+				return user;
+			}
+			
+			private function fillCombos():void
+			{
+				this.responseGetAllPerfiles.token = this.usuarioService.getAllPerfiles();
+			}
+			
+			
+			protected function responseGetAllPerfiles_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbProfile.dataProvider = Util.addEmptyCatalgo( data );
+				if( this._user != null ){
+					this.cmbProfile.selectedIndex = Util.selectedIndexFromCombo( this.cmbProfile.dataProvider as ArrayCollection, 
+						this._user.perfil.id);
+				}
+			}
+			
+			protected function usuarioService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function btnAccept_clickHandler(event:MouseEvent):void
+			{
+				if( !this.txtVerifyPassword_focusOutHandler() ){
+					return;
+				}
+				if( !this.validations() ){
+					Util.showMessageVerifyFields();
+					return;
+				}
+				if( this.mode == Constants.REGISTER_MODE ){
+					var user:Usuario = this.getUser();
+					this.responseSave.token = this.usuarioService.save( user );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
+				}
+			}
+			
+			private function updateItem(event:CloseEvent):void{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var user:Usuario = this.getUser();
+				this.responseUpdate.token = this.usuarioService.update( user );
+			}
+			
+			private function validations():Boolean
+			{
+				var value:Boolean = true;
+				value &&= this.validators.validarFormulario();
+				value &&= Util.listBaseSelected( this.cmbProfile );
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+			}
+			
+			private function initializeValidators():void
+			{
+				this.validators = new InicializaValidadoresEtiquetas();
+				validators.crearValidadorRestrictor("wholeName",ValidadorAlfabetico.nombre, 0, 100, true);
+				validators.setValidador(txtWholeName, "wholeName");
+				validators.crearValidadorRestrictor("user",ValidadorAlfabetico.nombre, 0, 40, true);
+				validators.setValidador(txtUser, "user");
+				validators.setValidador(txtPasword, "user");
+				validators.setValidador(txtVerifyPassword, "user");
+			}
+			
+			protected function txtVerifyPassword_focusOutHandler(event:FocusEvent = null):Boolean
+			{
+				var value:Boolean = this.passwordMatch();
+				if( !value ){
+					Util.showErrorMessage("La contraseña no corresponde con la verificación de la misma");
+				}
+				return value;
+			}
+			
+			private function passwordMatch():Boolean
+			{
+				return this.txtPasword.text == this.txtVerifyPassword.text;
+			}
+			
+			protected function responseSave_resultHandler(event:ResultEvent):void
+			{
+				var eventUserNew:Event = new Event("userNew");
+				this.dispatchEvent( eventUserNew );
+				this.cleanForm();
+			}
+			
+			private function cleanForm():void
+			{
+				this.txtWholeName.reset();
+				this.cmbProfile.selectedIndex = 0;
+				this.txtUser.reset();
+				this.txtPasword.reset();
+				this.txtVerifyPassword.reset();
+				this.chbActive.selected = false;
+			}
+			
+			protected function responseUpdate_resultHandler(event:ResultEvent):void
+			{
+				var eventUserUpdated:Event = new Event("userUpdated");
+				this.dispatchEvent( eventUserUpdated );
+				this.cleanForm();
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="userNew", type="flash.events.Event")]
+		[Event(name="userUpdated", type="flash.events.Event")]
+	</mx:Metadata>
+	<mx:Form id="form">
+		<mx:FormItem label="Nombre Completo:">
+			<components:TextInput id="txtWholeName" width="400"/>
+		</mx:FormItem>
+		<mx:FormItem label="Perfil:">
+			<mx:ComboBox id="cmbProfile" width="300"
+						 labelField="etiqueta"
+						 />
+		</mx:FormItem>
+		<mx:FormItem label="Usuario:">
+			<components:TextInput id="txtUser" width="200"/>
+		</mx:FormItem>
+		<mx:FormItem label="Contraseña:">
+			<components:TextInput id="txtPasword" width="150"
+								  displayAsPassword="true"/>
+		</mx:FormItem>
+		<mx:FormItem label="Confirmar Contraseña:">
+			<components:TextInput id="txtVerifyPassword" width="150"
+								  displayAsPassword="true"
+								  />
+		</mx:FormItem>
+		<mx:FormItem label="Activo:">
+			<mx:CheckBox id="chbActive"/>
+		</mx:FormItem>
+		<mx:FormItem>
+			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:RemoteObject id="usuarioService" destination="usuarioService" fault="usuarioService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetAllPerfiles" result="responseGetAllPerfiles_resultHandler(event)"/>
+	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
+	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
+</mx:VBox>

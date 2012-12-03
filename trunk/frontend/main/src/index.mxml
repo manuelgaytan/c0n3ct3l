@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
+				xmlns:components="components.*"
+				currentState="login"
+				creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import components.ComboList;
+			import components.Comments;
+			import components.DateField;
+			import components.Deliver;
+			import components.DownloadFile;
+			import components.LoadFile;
+			import components.Observations;
+			import components.TextArea;
+			import components.TextInput;
+			
+			import events.GenericEvent;
+			
+			import model.Aplica;
+			import model.AreaSolicitante;
+			import model.Catalogo;
+			import model.Categoria;
+			import model.Cliente;
+			import model.Colaborador;
+			import model.Comentario;
+			import model.Compania;
+			import model.ConfiguracionPruebaEntrega;
+			import model.Constants;
+			import model.Consumible;
+			import model.Contacto;
+			import model.DatosComerciales;
+			import model.DatosGeneralesProyecto;
+			import model.DesarrolloProyecto;
+			import model.DescripcionAlmacen;
+			import model.DocumentoAlmacen;
+			import model.Entregable;
+			import model.EquipoMedicion;
+			import model.EquipoTransporte;
+			import model.Estado;
+			import model.EstatusA;
+			import model.EstatusB;
+			import model.EstatusC;
+			import model.FiltroProducto;
+			import model.FiltroProyecto;
+			import model.GrupoFamiliaA;
+			import model.GrupoFamiliaB;
+			import model.GrupoFamiliaC;
+			import model.GrupoFamiliaD;
+			import model.GrupoFamiliaE;
+			import model.GrupoFamiliaF;
+			import model.Hardware;
+			import model.Herramienta;
+			import model.Imputable;
+			import model.Material;
+			import model.MenuOption;
+			import model.Model;
+			import model.NombreSolicitante;
+			import model.Observacion;
+			import model.Pantalla;
+			import model.Perfil;
+			import model.PerfilPantalla;
+			import model.Prioridad;
+			import model.Producto;
+			import model.Proyecto;
+			import model.ProyectoEntregable;
+			import model.Requisicion;
+			import model.Seguimiento;
+			import model.ServicioSolicitado;
+			import model.Software;
+			import model.SolicitudAlmacen;
+			import model.TelefoniaMovil;
+			import model.TipoAlmacen;
+			import model.TipoColaborador;
+			import model.TipoDocumentoAlmacen;
+			import model.TipoEntregable;
+			import model.TipoMantenimiento;
+			import model.UbicacionA;
+			import model.UbicacionB;
+			import model.UbicacionC;
+			import model.UnidadA;
+			import model.UnidadB;
+			import model.UnidadC;
+			import model.Usuario;
+			import model.Util;
+			
+			import mx.containers.Form;
+			import mx.containers.FormItem;
+			import mx.containers.VBox;
+			import mx.controls.Alert;
+			import mx.controls.Button;
+			import mx.controls.CheckBox;
+			import mx.controls.ComboBox;
+			import mx.controls.Label;
+			import mx.controls.List;
+			import mx.controls.Spacer;
+			import mx.controls.TextArea;
+			import mx.controls.TextInput;
+			import mx.controls.dataGridClasses.DataGridColumn;
+			import mx.events.FlexEvent;
+			import mx.events.ModuleEvent;
+			import mx.modules.Module;
+			import mx.rpc.remoting.mxml.RemoteObject;
+			
+			private var alert:Alert;
+			private var aplica:Aplica;
+			private var areaSolicitante:AreaSolicitante;
+			private var button:Button;
+			private var catalogo:Catalogo;
+			private var categoria:Categoria;
+			private var checkBox:CheckBox;
+			private var cliente:Cliente;
+			private var colaborador:Colaborador;
+			private var comboBox:ComboBox;
+			private var comboList:ComboList;
+			private var comentario:Comentario;
+			private var comments:Comments;
+			private var compania:Compania;
+			private var configuracionPruebaEntrega:ConfiguracionPruebaEntrega;
+			private var constants:Constants;
+			private var consumible:Consumible;
+			private var contacto:Contacto;
+			private var dataGridColumn:DataGridColumn;
+			private var dateField:DateField;
+			private var datosComerciales:DatosComerciales;
+			private var datosGeneralesProyecto:DatosGeneralesProyecto;
+			private var deliver:Deliver;
+			private var desarrolloProyecto:DesarrolloProyecto;
+			private var descripcionAlmacen:DescripcionAlmacen;
+			private var documentoAlmacen:DocumentoAlmacen;
+			private var downloadFile:DownloadFile;
+			private var entregable:Entregable;
+			private var equipoMedicion:EquipoMedicion;
+			private var equipoTransporte:EquipoTransporte;
+			private var estado:Estado;
+			private var estatusA:EstatusA;
+			private var estatusB:EstatusB;
+			private var estatusC:EstatusC;
+			private var filtroProducto:FiltroProducto;
+			private var filtroProyecto:FiltroProyecto;
+			private var form:Form;
+			private var formItem:FormItem;
+			private var grupoFamiliaA:GrupoFamiliaA;
+			private var grupoFamiliaB:GrupoFamiliaB;
+			private var grupoFamiliaC:GrupoFamiliaC;
+			private var grupoFamiliaD:GrupoFamiliaD;
+			private var grupoFamiliaE:GrupoFamiliaE;
+			private var grupoFamiliaF:GrupoFamiliaF;
+			private var hardware:Hardware;
+			private var hBox:HBox;
+			private var herramienta:Herramienta;
+			private var imputable:Imputable;
+			private var labelControl:Label;
+			private var list:List;
+			private var loadFile:LoadFile;
+			private var material:Material;
+			private var menuOption:MenuOption;
+			private var model:Model;
+			private var module:Module;
+			private var moduleLoader:ModuleLoader;
+			private var nombreSolicitante:NombreSolicitante;
+			private var observacion:Observacion;
+			private var observations:Observations;
+			private var pantalla:Pantalla;
+			private var perfil:Perfil;
+			private var perfilPantalla:PerfilPantalla;
+			private var prioridad:Prioridad;
+			private var producto:Producto;
+			private var proyecto:Proyecto;
+			private var proyectoEntregable:ProyectoEntregable;
+			private var remoteObject:RemoteObject;
+			private var requisicion:Requisicion;
+			private var seguimiento:Seguimiento;
+			private var servicioSolicitado:ServicioSolicitado;
+			private var software:Software;
+			private var solicitudAlmacen:SolicitudAlmacen;
+			private var spacer:Spacer;
+			private var telefoniaMovil:TelefoniaMovil;
+			private var textArea:components.TextArea;
+			private var textAreaControls:mx.controls.TextArea;
+			private var textInput:components.TextInput;
+			private var textInputControls:mx.controls.TextInput;
+			private var tipoAlmacen:TipoAlmacen;
+			private var tipoColaborador:TipoColaborador;
+			private var tipoDocumentoAlmacen:TipoDocumentoAlmacen;
+			private var tipoEntregable:TipoEntregable;
+			private var tipoMantenimiento:TipoMantenimiento;
+			private var ubicacionA:UbicacionA;
+			private var ubicacionB:UbicacionB;
+			private var ubicacionC:UbicacionC;
+			private var unidadA:UnidadA;
+			private var unidadB:UnidadB;
+			private var unidadC:UnidadC;
+			private var usuario:Usuario;
+			private var util:Util;
+			private var vBox:VBox;
+			
+			protected function login_readyHandler(event:ModuleEvent):void
+			{
+				this.loaderLogin.child.addEventListener("validUser",validUser);
+			}
+			
+			protected function validUser(event:GenericEvent):void
+			{
+				this.currentState = "";
+				var user:Usuario = event.information as Usuario;
+				this.menu.userAccess = user;
+				this.header.user = user;
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.model = Model.getInstance();
+			}
+			
+			protected function menuItemClickHandler(event:GenericEvent):void
+			{
+				var menuOption:MenuOption = event.information as MenuOption;
+				workSpace.menuOption = menuOption;
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:Style source="assets/css/styles.css"/>
+	<mx:states>
+		<mx:State name="login">
+			<mx:RemoveChild target="{header}"/>
+			<mx:RemoveChild target="{body}"/>
+			<mx:AddChild position="lastChild">
+				<mx:ModuleLoader id="loaderLogin" url="modules/Login.swf" ready="login_readyHandler(event)"/>
+			</mx:AddChild>
+		</mx:State>
+	</mx:states>
+	<components:Header id="header"/>
+	<mx:HBox id="body" width="100%" height="100%"
+			 verticalAlign="middle" horizontalAlign="center">
+		<mx:HBox verticalAlign="top">
+			<mx:Panel title="Menú Principal">
+				<components:Menu id="menu" menuItemClick="menuItemClickHandler(event)"/>
+			</mx:Panel>
+			<components:WorkSpace id="workSpace"/>
+		</mx:HBox>
+	</mx:HBox>
+</mx:Application>

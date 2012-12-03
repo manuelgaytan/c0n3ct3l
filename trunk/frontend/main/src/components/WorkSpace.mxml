@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" 
+		  verticalAlign="middle" horizontalAlign="center"
+		  initialize="initializeHandler(event)"
+		  showEffect="{fadeIn}" hideEffect="{fadeOut}">
+	<mx:Script>
+		<![CDATA[
+			import model.MenuOption;
+			
+			import mx.events.FlexEvent;
+			import mx.events.ModuleEvent;
+			
+			private var menuOptionLocal:MenuOption = null;
+			private var idCurrentModule:String = null;
+			
+			private static const MODULE_URL:String = "modules/";
+			private static const MODULE_EXTENSION:String = ".swf";
+			
+			public function set menuOption(value:MenuOption):void{
+				if( value == null ){
+					return;
+				}else if( this.idCurrentModule == value.id ){
+					return;	
+				}
+				this.idCurrentModule = value.id;
+					
+				cursorManager.setBusyCursor();
+				this.visible = false;
+				
+				this.menuOptionLocal = value;
+				this.appearThis();
+			}
+			
+			private function moduleName(id:String):String{
+				return MODULE_URL + id + MODULE_EXTENSION;
+			}
+			
+			public function performEffect():void{
+			}
+			
+			private function disappearThis():void{
+			}
+			
+			private function appearThis():void{
+				var timer:Timer = new Timer(1000,1);
+				timer.addEventListener(TimerEvent.TIMER, function():void{
+					moduleLoader.url = moduleName( menuOptionLocal.id );
+				});
+				timer.start();
+			}
+			
+			protected function initializeHandler(event:FlexEvent):void
+			{
+				this.visible = false;
+			}
+			
+			protected function moduleLoader_readyHandler(event:ModuleEvent):void
+			{
+				this.visible = true;
+				this.title = menuOptionLocal.label;
+				cursorManager.removeBusyCursor();
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:Fade id="fadeOut" duration="1000" alphaFrom="1.0" alphaTo="0.0"/>
+	<mx:Fade id="fadeIn" duration="1000" alphaFrom="0.0" alphaTo="1.0"/>
+	<mx:ModuleLoader id="moduleLoader"
+					 backgroundImage="assets/images/logoWorkSpace.png"
+					 ready="moduleLoader_readyHandler(event)"
+					 />
+</mx:Panel>

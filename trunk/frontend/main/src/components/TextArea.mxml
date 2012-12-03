@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TextArea xmlns:mx="http://www.adobe.com/2006/mxml"
+			 change="textarea_changeHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			protected function textarea_changeHandler(event:Event):void
+			{
+				this.text = this.text.toUpperCase();
+			}
+			
+			public function reset():void{
+				text = "";
+				errorString = "";
+			}
+		]]>
+	</mx:Script>
+</mx:TextArea>

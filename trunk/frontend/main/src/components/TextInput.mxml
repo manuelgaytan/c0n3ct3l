@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TextInput xmlns:mx="http://www.adobe.com/2006/mxml"
+			  change="textinput_changeHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			private var _upperCase:Boolean = true;
+			
+			public function set upperCase(value:Boolean):void
+			{
+				this._upperCase = value;	
+			}
+			
+			protected function textinput_changeHandler(event:Event):void
+			{
+				if( this._upperCase ){
+					this.text = this.text.toUpperCase();
+				}
+			}
+			
+			public function reset():void{
+				text = "";
+				errorString = "";
+			}
+		]]>
+	</mx:Script>
+</mx:TextInput>

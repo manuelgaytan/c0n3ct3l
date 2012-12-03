@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<flexProperties enableServiceManager="false" flexServerFeatures="4" flexServerType="2" serverContextRoot="/serviciosWeb" serverRoot="C:/Users/Manuel/Documents/conectel/entregas/glassfish3/glassfish/domains/domain1/eclipseApps/servicios/serviciosWeb_war" serverRootURL="http://localhost:8080/serviciosWeb/" toolCompile="true" useServerFlexSDK="false" version="2"/>

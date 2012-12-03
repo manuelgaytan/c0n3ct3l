@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical" width="900" height="400" 
+		   xmlns:productos="components.productos.*">
+	<mx:Script>
+		<![CDATA[
+			import events.GenericEvent;
+			
+			import model.FiltroProducto;
+			import model.Producto;
+			
+			import mx.events.FlexEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			protected function filtro_filterCommandHandler(event:GenericEvent):void
+			{
+				var filter:FiltroProducto = event.information as FiltroProducto;
+				this.navigator.selectedChild = consult;
+				this.consult.executeQuery( filter );
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				
+			}
+			
+			protected function consult_productDetailHandler(event:GenericEvent):void
+			{
+				this.detail.product = event.information as Producto;
+				this.navigator.selectedChild = this.detail;
+			}
+			
+			protected function register_productNewHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+			
+			protected function detail_productUpdatedHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+		]]>
+	</mx:Script>
+	<mx:TabNavigator id="navigator" width="100%" height="100%" creationPolicy="all">
+		<productos:Filter id="filtro" filterCommand="filtro_filterCommandHandler(event)"/>
+		<productos:Consult id="consult" productDetail="consult_productDetailHandler(event)"/>
+		<productos:Product id="detail" update="true" productUpdated="detail_productUpdatedHandler(event)"/>
+		<productos:Product id="register" registrer="true" productNew="register_productNewHandler(event)"/>
+	</mx:TabNavigator>
+</mx:Module>

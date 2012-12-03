@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+		 label="Consulta"
+		 horizontalAlign="right">
+	<mx:DataGrid id="datagrid" width="100%" height="100%">
+		<mx:columns>
+			<mx:DataGridColumn id="dtgDateHour" headerText="Fecha y Hora"/>
+			<mx:DataGridColumn id="dtgAction" headerText="Acción" width="270"/>
+			<mx:DataGridColumn id="dtgProject" headerText="Proyecto"/>
+			<mx:DataGridColumn id="dtgUser" headerText="Usuario"/>
+		</mx:columns>
+	</mx:DataGrid>
+	<mx:HBox>
+		<mx:Button label="Exportar"/>
+	</mx:HBox>
+</mx:VBox>

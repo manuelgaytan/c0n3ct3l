@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%"
+		 xmlns:components="components.*"
+		 verticalAlign="middle"
+		 creationComplete="creationCompleteHandler(event)"
+		 horizontalGap="0">
+	<mx:Script>
+		<![CDATA[
+			import model.Usuario;
+			
+			import mx.events.FlexEvent;
+			import mx.rpc.events.ResultEvent;
+			public function set user(value:Usuario):void{
+				if( value == null ){
+					return;
+				}
+				this.lblWholeName.text = value.nombreCompleto;
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+			}
+		]]>
+	</mx:Script>
+	<!--<mx:Image source="assets/images/logoERP.png"/>-->
+	<mx:Spacer width="100%"/>
+	<mx:Image source="assets/images/login.png"/>
+	<mx:Label text="Bienvenid@" color="white"/>
+	<mx:Label id="lblWholeName" color="white"/>
+</mx:HBox>

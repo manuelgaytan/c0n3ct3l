@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
+		   width="100%" height="100%"
+		   xmlns:solicitudalmacen="components.solicitudalmacen.*"
+		   creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import events.GenericEvent;
+			
+			import model.SolicitudAlmacen;
+			
+			import mx.events.FlexEvent;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				
+			}
+			
+			protected function consult_warehouseApplicationDetailHandler(event:GenericEvent):void
+			{
+				this.detail.warehouseApplication = event.information as model.SolicitudAlmacen;
+				this.navigator.selectedChild = this.detail;
+			}
+			
+			protected function register_warehouseApplicationNewHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+			
+			protected function detail_warehouseApplicationUpdatedHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:TabNavigator id="navigator" width="100%" height="100%" creationPolicy="all">
+		<solicitudalmacen:Consult id="consult" warehouseApplicationDetail="consult_warehouseApplicationDetailHandler(event)"/>
+		<solicitudalmacen:WarehouseApplication id="detail" update="true" warehouseApplicationUpdated="detail_warehouseApplicationUpdatedHandler(event)"/>
+		<solicitudalmacen:WarehouseApplication id="register" registrer="true" warehouseApplicationNew="register_warehouseApplicationNewHandler(event)"/>
+	</mx:TabNavigator>
+</mx:Module>

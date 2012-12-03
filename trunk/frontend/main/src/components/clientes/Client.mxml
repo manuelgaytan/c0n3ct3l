@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import model.Cliente;
+			import model.Constants;
+			import model.Contacto;
+			import model.DatosComerciales;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
+			import mx.com.gahm.componentes.validadores.ValidadorEmail;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			private var mode:String = null;
+			private var _client:Cliente;
+			private var validators:InicializaValidadoresEtiquetas;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				this.label = Constants.REGISTRAR;
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+				this.txtComercialName.enabled = value;
+				this.txtLegalName.enabled = value;
+				this.txtRFC.enabled = value;
+				this.txtFiscalAddress.enabled = value;
+				this.txtWholeName.enabled = value;
+				this.txtEmail.enabled = value;
+				this.txtPhone.enabled = value;
+				this.txtWebPage.enabled = value;
+				this.txtLocality.enabled = value;
+				this.txtState.enabled = value;
+				this.txtComercialConditions.enabled = value;
+				this.txtVendorNumber.enabled = value;
+				this.txtAccountExecutive.enabled = value;
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set client(value:Cliente):void{
+				if( value == null ){
+					return;
+				}
+				this._client = value;
+				this.setClient(); 
+			}
+			
+			private function setClient():void
+			{
+				if( this._client == null ){
+					return;
+				}
+				this.txtComercialName.text = this._client.nombreComercial;
+				this.txtLegalName.text = this._client.razonSocial;
+				this.txtRFC.text = this._client.rfc;
+				this.txtFiscalAddress.text = this._client.domicilioFiscal;
+				if( this._client.contacto != null ){
+					this.txtWholeName.text = this._client.contacto.nombreCompleto;
+					this.txtEmail.text = this._client.contacto.correoElectronico;
+					this.txtPhone.text = this._client.contacto.telefono;
+					this.txtWebPage.text = this._client.contacto.paginaWeb;
+					this.txtLocality.text = this._client.contacto.localidad;
+					this.txtState.text = this._client.contacto.estado;
+				}
+				if( this._client.datosComerciales != null ){
+					this.txtComercialConditions.text = this._client.datosComerciales.condicionesComerciales;
+					this.txtVendorNumber.text = this._client.datosComerciales.noVendedor;
+					this.txtAccountExecutive.text = this._client.datosComerciales.ejecutivoCuenta;
+				}
+			}
+			
+			private function getClient():Cliente{
+				var client:Cliente = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					client = new Cliente();
+				}else{
+					client = this._client;
+				}
+				client.nombreComercial = Util.validateEmpty(this.txtComercialName.text);
+				client.razonSocial = Util.validateEmpty( this.txtLegalName.text);
+				client.rfc = Util.validateEmpty( this.txtRFC.text);
+				client.domicilioFiscal = Util.validateEmpty( this.txtFiscalAddress.text);
+				client.contacto = new Contacto();
+				client.contacto.nombreCompleto = Util.validateEmpty( this.txtWholeName.text);
+				client.contacto.correoElectronico = Util.validateEmpty( this.txtEmail.text);
+				client.contacto.telefono = Util.validateEmpty( this.txtPhone.text);
+				client.contacto.paginaWeb = Util.validateEmpty( this.txtWebPage.text);
+				client.contacto.localidad = Util.validateEmpty( this.txtLocality.text);
+				client.contacto.estado = Util.validateEmpty( this.txtState.text);
+				client.datosComerciales = new DatosComerciales();
+				client.datosComerciales.condicionesComerciales = Util.validateEmpty( this.txtComercialConditions.text);
+				client.datosComerciales.noVendedor = Util.validateEmpty( this.txtVendorNumber.text);
+				client.datosComerciales.ejecutivoCuenta = Util.validateEmpty( this.txtAccountExecutive.text);
+				return client;
+			}
+			
+			private function fillCombos():void
+			{
+			}
+			
+			protected function responseGetAllPerfiles_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+			}
+			
+			protected function clienteService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function btnAccept_clickHandler(event:MouseEvent):void
+			{
+				if( !this.validations() ){
+					Util.showMessageVerifyFields();
+					return;
+				}
+				if( this.mode == Constants.REGISTER_MODE ){
+					var client:Cliente = this.getClient();
+					this.responseSave.token = this.clienteService.save( client );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
+				}
+			}
+			
+			private function updateItem(event:CloseEvent):void{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var client:Cliente = this.getClient();
+				this.responseUpdate.token = this.clienteService.update( client );
+			}
+			
+			private function validations():Boolean
+			{
+				var value:Boolean = true;
+				value &&= this.validators.validarFormulario();
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+			}
+			
+			private function initializeValidators():void
+			{
+				this.validators = new InicializaValidadoresEtiquetas();
+				validators.crearValidadorRestrictor("wholeName",ValidadorAlfabetico.nombre, 0, 100, true);
+				validators.setValidador(txtComercialName, "wholeName");
+				validators.setRestrictor(txtLegalName, "wholeName");
+				validators.setValidador(txtWholeName, "wholeName");
+				validators.setRestrictor(txtAccountExecutive, "wholeName");
+				validators.crearValidadorRestrictor("rfc",ValidadorAlfabetico.nombre, 0, 15, true);
+				validators.setRestrictor(txtRFC, "rfc");
+				validators.crearValidadorRestrictor("a255",ValidadorAlfabetico.nombre, 0, 255, true);
+				validators.setRestrictor(txtFiscalAddress, "a255");
+				validators.setRestrictor(txtLocality, "a255");
+				validators.setRestrictor(txtState, "a255");
+				validators.setRestrictor(txtComercialConditions, "a255");
+				validators.crearValidadorRestrictor("email",ValidadorEmail.nombre);
+				validators.setRestrictor(txtEmail, "email");
+				validators.crearValidadorRestrictor("a50",ValidadorAlfabetico.nombre, 0, 50, true);
+				validators.setRestrictor(txtPhone, "a50");
+				validators.setRestrictor(txtVendorNumber, "a50");
+				validators.crearValidadorRestrictor("webpage",ValidadorAlfabetico.nombre, 0, 50);
+				validators.setRestrictor(txtWebPage, "webpage");
+			}
+			
+			protected function responseSave_resultHandler(event:ResultEvent):void
+			{
+				var eventClentNew:Event = new Event("clientNew");
+				this.dispatchEvent( eventClentNew );
+				this.cleanForm();
+			}
+			
+			private function cleanForm():void
+			{
+				this.txtComercialName.reset();
+				this.txtLegalName.reset();
+				this.txtRFC.reset();
+				this.txtFiscalAddress.reset();
+				this.txtWholeName.reset();
+				this.txtEmail.reset();
+				this.txtPhone.reset();
+				this.txtWebPage.reset();
+				this.txtLocality.reset();
+				this.txtState.reset();
+				this.txtComercialConditions.reset();
+				this.txtVendorNumber.reset();
+				this.txtAccountExecutive.reset();
+			}
+			
+			protected function responseUpdate_resultHandler(event:ResultEvent):void
+			{
+				var eventClentUpdated:Event = new Event("clientUpdated");
+				this.dispatchEvent( eventClentUpdated );
+				this.cleanForm();
+			}
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="clientNew", type="flash.events.Event")]
+		[Event(name="clientUpdated", type="flash.events.Event")]
+	</mx:Metadata>
+	<mx:Form id="form">
+		<mx:FormHeading label="Datos Generales"/>
+		<mx:FormItem label="Nombre Comercial:">
+			<components:TextInput id="txtComercialName" width="500"/>
+		</mx:FormItem>
+		<mx:FormItem label="Razón Social:">
+			<components:TextInput id="txtLegalName" width="500"/>
+		</mx:FormItem>
+		<mx:FormItem label="R.F.C.:">
+			<components:TextInput id="txtRFC" width="120"/>
+		</mx:FormItem>
+		<mx:FormItem label="Domicilio Fiscal:">
+			<components:TextInput id="txtFiscalAddress" width="600"/>
+		</mx:FormItem>
+		<mx:FormHeading label="Datos de Contacto"/>
+		<mx:FormItem label="Nombre Completo:">
+			<components:TextInput id="txtWholeName" width="400"/>
+		</mx:FormItem>
+		<mx:FormItem label="Correo Electrónico:">
+			<components:TextInput id="txtEmail" width="300" upperCase="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Teléfono:">
+			<components:TextInput id="txtPhone" width="120"/>
+		</mx:FormItem>
+		<mx:FormItem label="Página Web:">
+			<components:TextInput id="txtWebPage" width="300" upperCase="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Localidad:">
+			<components:TextInput id="txtLocality" width="250"/>
+		</mx:FormItem>
+		<mx:FormItem label="Estado:">
+			<components:TextInput id="txtState" width="250"/>
+		</mx:FormItem>
+		<mx:FormHeading label="Datos Comerciales"/>
+		<mx:FormItem label="Condiciones Comerciales:">
+			<components:TextArea id="txtComercialConditions" width="600" height="70"/>
+		</mx:FormItem>
+		<mx:FormItem label="No. de Vendor:">
+			<components:TextInput id="txtVendorNumber" width="120"/>
+		</mx:FormItem>
+		<mx:FormItem label="Ejecutivo de Cuenta:">
+			<components:TextInput id="txtAccountExecutive" width="400"/>
+		</mx:FormItem>
+		<mx:FormItem>
+			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:RemoteObject id="clienteService" destination="clienteService" fault="clienteService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
+	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
+</mx:VBox>

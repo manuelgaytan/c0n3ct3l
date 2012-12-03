@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<fxpProperties abbreviated="false" authoringTool="Flex Builder" compiles="false" parentProject="d14c799c-85b4-44fa-b566-e62a2567538a" projectUUID="d14c799c-85b4-44fa-b566-e62a2567538a" pureCatalystProject="false" sdkVersion="3.6.0" uuid="139d2841-3779-4c1d-8501-3fcaea11169d" version="15">
+  <projects/>
+  <src/>
+  <swc>
+    <linked location="sdkPlaceHolder" path="sdkPlaceHolder" position="0" uuid="139d2841-3779-4c1d-8501-3fcaea11169d"/>
+    <linked location="/libs" path="\libs" position="1" uuid="139d2841-3779-4c1d-8501-3fcaea11169d"/>
+  </swc>
+  <misc>
+    <linked location="/Applications/glassfish/glassfishv3/glassfish/domains/domain1/eclipseApps/servicios/serviciosWeb_war/WEB-INF/flex" path="/services-config" position="0" uuid="139d2841-3779-4c1d-8501-3fcaea11169d"/>
+  </misc>
+  <theme/>
+  <mxmlFormattingPrefs groupAttributesByState="true" maxLineWidth="100" mxmlAlignAttributes="true" mxmlAttributeOrder="id,userLabel,includeIn,excludeFrom,visible,x,y,z,left,right,top,bottom,width,height,minWidth,minHeight,maxWidth,maxHeight,label" mxmlKeepAttributeValuesOrganized="true"/>
+</fxpProperties>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Form xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)"
+		 paddingTop="5" paddingBottom="5">
+	<mx:Script>
+		<![CDATA[
+			import model.Comentario;
+			import model.ComentarioHerramienta;
+			import model.Model;
+			import model.Proyecto;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			private var _project:Proyecto;
+			
+			[Bindable]
+			private var _comments:ArrayCollection;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this._comments = new ArrayCollection()
+				this.initializeCombos();
+			}
+			
+			private function initializeCombos():void
+			{
+			}
+			
+			public function set comments(value:ArrayCollection):void{
+				if( value == null ){
+					return;
+				}
+				this._comments = value;
+			}
+			
+			public function get comments():ArrayCollection{
+				if( this._comments.length == 0 ){
+					return null;
+				}
+				return this._comments;
+			}
+			
+			protected function proyectoService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function responseGetAllImputable_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+			}
+			
+			public function reset():void
+			{
+				
+			}
+			
+			protected function btnAddObservation_clickHandler(event:MouseEvent):void
+			{
+				if( !this.validations() ){
+					Util.showMessageVerifyFields();
+					return;
+				}
+				var comment:ComentarioHerramienta = new ComentarioHerramienta();
+				comment.fechaCaptura = new Date();
+				comment.usuario = Model.getInstance().user;
+				comment.comentario = Util.validateEmpty(this.txtObservation.text); 
+				this._comments.addItem( comment );
+				this.cleanForm();
+			}
+			
+			private function cleanForm():void
+			{
+				this.txtObservation.reset();
+			}
+			
+			private function validations():Boolean
+			{
+				var value:Boolean = true;
+				value &&= (Util.validateEmpty( this.txtObservation.text ) != null);
+				return value;
+			}
+			
+			private function dateFormat(object:Object, columna:DataGridColumn):String{
+				return Util.formatDateToString( object[columna.dataField] );
+			}
+		]]>
+	</mx:Script>
+	<mx:FormItem label="Comentario:" direction="vertical">
+		<mx:HBox>			
+			<components:TextArea id="txtObservation" width="400"/>
+			<mx:Button label="+" id="btnAddObservation" click="btnAddObservation_clickHandler(event)"/>
+		</mx:HBox>
+		<mx:DataGrid dataProvider="{this._comments}" variableRowHeight="true">
+			<mx:columns>
+				<mx:DataGridColumn headerText="Fecha"
+								   dataField="fechaCaptura"
+								   labelFunction="dateFormat"/>
+				<mx:DataGridColumn headerText="Comentario" width="300"
+								   wordWrap="true"
+								   dataField="comentario"/>
+				<mx:DataGridColumn headerText="Usuario"
+								   dataField="usuario.usuario"/>
+			</mx:columns>
+		</mx:DataGrid>
+	</mx:FormItem>
+</mx:Form>

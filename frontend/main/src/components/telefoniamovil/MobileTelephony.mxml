@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)"
+		 >
+	<mx:Script>
+		<![CDATA[
+			import model.Catalogo;
+			import model.Colaborador;
+			import model.Compania;
+			import model.Constants;
+			import model.EstatusB;
+			import model.GrupoFamiliaF;
+			import model.Perfil;
+			import model.TelefoniaMovil;
+			import model.TipoAlmacen;
+			import model.TipoMantenimiento;
+			import model.UbicacionB;
+			import model.UnidadA;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.com.gahm.componentes.validadores.ValidadorNumerico;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.utils.object_proxy;
+			
+			private var mode:String = null;
+			private var _item:TelefoniaMovil;
+			private var validators:InicializaValidadoresEtiquetas;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				this.label = Constants.REGISTRAR;
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set mobileTelephony(value:TelefoniaMovil):void{
+				if( value == null ){
+					return;
+				}
+				this._item = value;
+				this.setMobileTelephony(); 
+			}
+			
+			private function setMobileTelephony():void
+			{
+				if( this._item == null ){
+					return;
+				}
+				this.txtCode.text = this._item.codigo;
+				if( Util.isFill( this.cmbFamily ) && this._item.grupoFamiliaF != null ){
+					this.cmbFamily.selectedIndex = Util.selectedIndexFromCombo( this.cmbFamily.dataProvider as ArrayCollection, 
+						this._item.grupoFamiliaF.id);
+				}
+				this.txtDescription.text = this._item.descripcion;
+				this.txtSerie.text = this._item.noSerie;
+				this.txtTrade.text = this._item.marca;
+				this.txtModel.text = this._item.modelo;
+				this.dlvWarranty.delivers = this._item.polizaGarantia;
+				this.dlvInsurance.delivers = this._item.polizaSeguro;
+				this.txtIMEI.text = Util.numberToString( this._item.imei );
+				if( Util.isFill( this.cmbCompany ) && this._item.ubicacionB != null ){
+					this.cmbCompany.selectedIndex = Util.selectedIndexFromCombo( this.cmbCompany.dataProvider as ArrayCollection, 
+						this._item.ubicacionB.id);
+				}
+				this.txtTelephoneNumber.text = Util.numberToString( this._item.noTelefono );
+				this.txtPlanType.text = Util.numberToString( this._item.tipoPlanContratado );
+				this.txtExistence.text = Util.numberToString( this._item.existencia );
+				if( Util.isFill( this.cmbLocation ) && this._item.ubicacionB != null ){
+					this.cmbLocation.selectedIndex = Util.selectedIndexFromCombo( this.cmbLocation.dataProvider as ArrayCollection, 
+						this._item.ubicacionB.id);
+				}
+				if( Util.isFill( this.cmbResponsible ) && this._item.responsable != null ){
+					this.cmbResponsible.selectedIndex = Util.selectedIndexFromCombo( this.cmbResponsible.dataProvider as ArrayCollection, 
+						this._item.responsable.id);
+				}
+				if( Util.isFill( this.cmbStatus ) && this._item.estatusB != null ){
+					this.cmbStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbStatus.dataProvider as ArrayCollection, 
+						this._item.estatusB.id);
+				}
+				this.comments.comments = this._item.comentarios;
+			}
+			
+			private function getMobileTelephony():TelefoniaMovil{
+				var item:TelefoniaMovil = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					item = new TelefoniaMovil();
+				}else{
+					item = this._item;
+				}
+				item.tipoAlmacen = TipoAlmacen.getTelefoniaMovil();
+				item.fkTipoAlmacen = Util.extractId(item.tipoAlmacen);
+				item.codigo = Util.validateEmpty( this.txtCode.text );
+				item.grupoFamiliaF = Util.validateCombo( this.cmbFamily ) as GrupoFamiliaF;
+				item.fkGrupoFamiliaF = Util.extractId(item.grupoFamiliaF);
+				item.descripcion = Util.validateEmpty( this.txtDescription.text );
+				item.noSerie = Util.validateEmpty( this.txtSerie.text );
+				item.marca = Util.validateEmpty( this.txtTrade.text );
+				item.modelo = Util.validateEmpty( this.txtModel.text );
+				item.polizaGarantia = this.dlvWarranty.delivers;
+				item.polizaSeguro = this.dlvInsurance.delivers;
+				item.imei = Util.validateEmpty( this.txtIMEI.text );
+				item.compania = Util.validateCombo( this.cmbCompany ) as Compania;
+				item.fkCompania = Util.extractId(item.compania);
+				item.noTelefono = Util.validateEmpty( this.txtTelephoneNumber.text );
+				item.tipoPlanContratado = Util.validateEmpty( this.txtPlanType.text );
+				item.existencia = Util.stringToNumber( this.txtExistence.text );
+				item.ubicacionB = Util.validateCombo( this.cmbLocation ) as UbicacionB;
+				item.fkUbicacionB = Util.extractId(item.ubicacionB);
+				item.responsable = Util.validateCombo( this.cmbResponsible ) as Colaborador;
+				item.fkResponsable = Util.extractId(item.responsable);
+				item.estatusB = Util.validateCombo( this.cmbStatus ) as EstatusB;
+				item.fkEstatusB = Util.extractId(item.estatusB);
+				item.comentarios = this.comments.comments;
+				return item;
+			}
+			
+			private function fillCombos():void
+			{
+				this.responseGetGrupoFamiliaF.token = this.catalogoService.getGrupoFamiliaF();
+				this.responseGetCompania.token = this.catalogoService.getCompania();
+				this.responseGetUbicacionB.token = this.catalogoService.getUbicacionB();
+				this.responseGetColaborador.token = this.catalogoService.getColaborador();
+				this.responseGetEstatusB.token = this.catalogoService.getEstatusB();
+			}
+			
+			
+			protected function responseGetGrupoFamiliaF_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbFamily.dataProvider = Util.addEmptyCatalgo( data );
+				if( this._item != null && this._item.grupoFamiliaF != null ){
+					this.cmbFamily.selectedIndex = Util.selectedIndexFromCombo( this.cmbFamily.dataProvider as ArrayCollection, 
+						this._item.grupoFamiliaF.id);
+				}
+			}
+			
+			protected function responseGetCompania_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbCompany.dataProvider = Util.addEmptyCatalgo( data );
+				if( this._item != null && this._item.compania != null ){
+					this.cmbCompany.selectedIndex = Util.selectedIndexFromCombo( this.cmbCompany.dataProvider as ArrayCollection, 
+						this._item.compania.id);
+				}
+			}
+			
+			protected function telefoniaMovilService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function btnAccept_clickHandler(event:MouseEvent):void
+			{
+				if( !this.validations() ){
+					Util.showMessageVerifyFields();
+					return;
+				}
+				if( this.mode == Constants.REGISTER_MODE ){
+					var mobileTelephony:TelefoniaMovil = this.getMobileTelephony();
+					Util.showProperties( mobileTelephony );
+					this.responseSave.token = this.telefoniaMovilService.save( mobileTelephony );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
+				}
+			}
+			
+			private function updateItem(event:CloseEvent):void{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var mobileTelephony:TelefoniaMovil = this.getMobileTelephony();
+				Util.showProperties( mobileTelephony );
+				this.responseUpdate.token = this.telefoniaMovilService.update( mobileTelephony );
+			}
+			
+			private function validations():Boolean
+			{
+				var value:Boolean = true;
+				value &&= this.validators.validarFormulario();
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+			}
+			
+			private function initializeValidators():void
+			{
+				this.validators = new InicializaValidadoresEtiquetas();
+				validators.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
+				validators.setRestrictor(txtCode, "generic");
+				validators.setRestrictor(txtDescription, "generic");
+				validators.setRestrictor(txtSerie, "generic");
+				validators.setRestrictor(txtTrade, "generic");
+				validators.setRestrictor(txtModel, "generic");
+				validators.setRestrictor(txtIMEI, "generic");
+				validators.setRestrictor(txtTelephoneNumber, "generic");
+				validators.setRestrictor(txtPlanType, "generic");
+				validators.crearValidadorRestrictor("number",ValidadorDecimal.nombre, 10, 4);
+				validators.setRestrictor(txtExistence, "number");
+			}
+			
+			protected function responseSave_resultHandler(event:ResultEvent):void
+			{
+				var eventMobileTelephonyNew:Event = new Event("mobileTelephonyNew");
+				this.dispatchEvent( eventMobileTelephonyNew );
+				this.cleanForm();
+			}
+			
+			private function cleanForm():void
+			{
+				this.txtCode.reset();
+				this.cmbFamily.selectedIndex = 0;
+				this.txtDescription.reset();
+				this.txtSerie.reset();
+				this.txtTrade.reset();
+				this.txtModel.reset();
+				this.dlvWarranty.reset();
+				this.dlvInsurance.reset();
+				this.txtIMEI.reset();
+				this.cmbCompany.selectedIndex = 0;
+				this.txtTelephoneNumber.reset();
+				this.txtPlanType.reset();
+				this.txtExistence.reset();
+				this.cmbLocation.selectedIndex = 0;
+				this.cmbResponsible.selectedIndex = 0;
+				this.cmbStatus.selectedIndex = 0;
+				this.comments.reset();
+			}
+			
+			protected function responseUpdate_resultHandler(event:ResultEvent):void
+			{
+				var eventMobileTelephonyUpdated:Event = new Event("mobileTelephonyUpdated");
+				this.dispatchEvent( eventMobileTelephonyUpdated );
+				this.cleanForm();
+			}
+			
+			protected function responseGetUbicacionB_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbLocation.dataProvider = Util.addEmptyCatalgo( data );
+				if( this._item != null && this._item.ubicacionB != null ){
+					this.cmbLocation.selectedIndex = Util.selectedIndexFromCombo( this.cmbLocation.dataProvider as ArrayCollection, 
+						this._item.ubicacionB.id);
+				}
+			}
+			
+			protected function responseGetColaborador_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbResponsible.dataProvider = Util.addEmptyCatalgo( data, "nombreCompleto" );
+				if( this._item != null && this._item.responsable != null ){
+					this.cmbResponsible.selectedIndex = Util.selectedIndexFromCombo( this.cmbResponsible.dataProvider as ArrayCollection, 
+						this._item.responsable.id);
+				}
+			}
+			
+			protected function responseGetEstatusB_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbStatus.dataProvider = Util.addEmptyCatalgo( data );
+				if( this._item != null && this._item.estatusB != null ){
+					this.cmbStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbStatus.dataProvider as ArrayCollection, 
+						this._item.estatusB.id);
+				}
+			}
+			
+			protected function catalogoService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="mobileTelephonyNew", type="flash.events.Event")]
+		[Event(name="mobileTelephonyUpdated", type="flash.events.Event")]
+	</mx:Metadata>
+	<mx:Form id="form">
+		<mx:FormItem label="Código:">
+			<components:TextInput id="txtCode"/>
+		</mx:FormItem>
+		<mx:FormItem label="Grupo o Familia:">
+			<mx:ComboBox id="cmbFamily"
+						 labelField="etiqueta"
+						 />
+		</mx:FormItem>
+		<mx:FormItem label="Descripción:">
+			<components:TextInput id="txtDescription" width="400"/>
+		</mx:FormItem>
+		<mx:FormItem label="No. de Serie:">
+			<components:TextInput id="txtSerie"
+								  />
+		</mx:FormItem>
+		<mx:FormItem label="Marca:">
+			<components:TextInput id="txtTrade"
+								  />
+		</mx:FormItem>
+		<mx:FormItem label="Modelo:">
+			<components:TextInput id="txtModel"/>
+		</mx:FormItem>
+		<mx:FormItem label="Poliza de Garantía:">
+			<components:Deliver id="dlvWarranty"/>
+		</mx:FormItem>
+		<mx:FormItem label="Poliza de Seguro:">
+			<components:Deliver id="dlvInsurance"/>
+		</mx:FormItem>
+		<mx:FormItem label="IMEI:">
+			<components:TextInput id="txtIMEI"/>
+		</mx:FormItem>
+		<mx:FormItem label="Compañía:">
+			<mx:ComboBox id="cmbCompany"
+						 labelField="etiqueta"
+						 />
+		</mx:FormItem>
+		<mx:FormItem label="Número de Teléfono:">
+			<components:TextInput id="txtTelephoneNumber"/>
+		</mx:FormItem>
+		<mx:FormItem label="Tipo de Plan Contratado:">
+			<components:TextInput id="txtPlanType"/>
+		</mx:FormItem>
+		<mx:FormItem label="Existencia:">
+			<components:TextInput id="txtExistence"
+								  textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Ubicación:">
+			<mx:ComboBox id="cmbLocation"
+						 labelField="etiqueta"
+						 />
+		</mx:FormItem>
+		<mx:FormItem label="Responsable:">
+			<mx:ComboBox id="cmbResponsible"
+						 labelField="nombreCompleto"
+						 />
+		</mx:FormItem>
+		<mx:FormItem label="Estatus:">
+			<mx:ComboBox id="cmbStatus"
+						 labelField="etiqueta"
+						 />
+		</mx:FormItem>
+		<components:Comments id="comments"/>
+		<mx:FormItem>
+			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:RemoteObject id="telefoniaMovilService" destination="telefoniaMovilService" fault="telefoniaMovilService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
+	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
+	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="catalogoService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetGrupoFamiliaF" result="responseGetGrupoFamiliaF_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetCompania" result="responseGetCompania_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetUbicacionB" result="responseGetUbicacionB_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetColaborador" result="responseGetColaborador_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetEstatusB" result="responseGetEstatusB_resultHandler(event)"/>
+</mx:VBox>

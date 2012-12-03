@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)" xmlns:components1="com.hillelcoren.components.*"
+		 >
+	<mx:Script>
+		<![CDATA[
+			import model.AreaSolicitante;
+			import model.Catalogo;
+			import model.Colaborador;
+			import model.Constants;
+			import model.DescripcionAlmacen;
+			import model.GrupoFamiliaA;
+			import model.Perfil;
+			import model.Prioridad;
+			import model.ServicioSolicitado;
+			import model.SolicitudAlmacen;
+			import model.TipoAlmacen;
+			import model.UnidadB;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.com.gahm.componentes.validadores.ValidadorNumerico;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.utils.object_proxy;
+			
+			private var mode:String = null;
+			private var _item:SolicitudAlmacen;
+			private var validators:InicializaValidadoresEtiquetas;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				this.label = Constants.REGISTRAR;
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set warehouseApplication(value:SolicitudAlmacen):void{
+				if( value == null ){
+					return;
+				}
+				this._item = value;
+				this.setWarehouseApplication(); 
+			}
+			
+			private function setWarehouseApplication():void
+			{
+				if( this._item == null ){
+					return;
+				}
+				this.txtCode.text = Util.numberToString( this._item.folio );
+				this.dtfApplicationDate.selectedDate = this._item.fechaSolicitud;
+				this.txtMotive.text = this._item.motivo;
+				if( Util.isFill( this.cmbPriority ) && this._item.prioridad != null ){
+					this.cmbPriority.selectedIndex = Util.selectedIndexFromCombo( this.cmbPriority.dataProvider as ArrayCollection, 
+						this._item.prioridad.id);
+				}
+				this.cmbLstApplicatNames.list = this._item.nombresSolicitantes;
+				if( Util.isFill( this.cmbApplicantArea ) && this._item.areaSolicitante != null ){
+					this.cmbApplicantArea.selectedIndex = Util.selectedIndexFromCombo( this.cmbApplicantArea.dataProvider as ArrayCollection, 
+						this._item.areaSolicitante.id);
+				}
+				this.txtSite.text = this._item.centralSitio;
+				if( Util.isFill( this.cmbServiceRequested ) && this._item.servicioSolicitado != null ){
+					this.cmbServiceRequested.selectedIndex = Util.selectedIndexFromCombo( this.cmbServiceRequested.dataProvider as ArrayCollection, 
+						this._item.servicioSolicitado.id);
+				}
+				//if( Util.isFill( this.autCmpDescription ) && this._item.descripcionAlmacen != null ){
+					//this.autCmpDescription.selectedIndex = Util.selectedIndexFromCombo( this.autCmpDescription.dataProvider as ArrayCollection, 
+						//this._item.descripcionAlmacen.id);
+				//}
+				this.txtQuantity.text = Util.numberToString( this._item.cantidad );
+				if( Util.isFill( this.cmbUnit ) && this._item.unidadB != null ){
+					this.cmbUnit.selectedIndex = Util.selectedIndexFromCombo( this.cmbUnit.dataProvider as ArrayCollection, 
+						this._item.unidadB.id);
+				}
+				this.txtObservation.text = this._item.observaciones;
+				this.txtAuthorizes.text = this._item.autoriza;
+				this.txtDelivery.text = this._item.entrega;
+				this.dtfAllocationDate.selectedDate = this._item.fechaAsignacion;
+				this.dtfReturnDate.selectedDate = this._item.fechaRetorno;
+				this.txtVoucher.text = this._item.valeAbiertoCerrado;
+			}
+			
+			private function getWarehouseApplication():SolicitudAlmacen{
+				var item:SolicitudAlmacen = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					item = new SolicitudAlmacen();
+				}else{
+					item = this._item;
+				}
+				item.tipoAlmacen = TipoAlmacen.getSolicitudesAlmacen();
+				item.fkTipoAlmacen = Util.extractId(item.tipoAlmacen);
+				item.folio = Util.stringToNumber( this.txtCode.text );
+				item.fechaSolicitud = this.dtfApplicationDate.selectedDate;
+				item.motivo = Util.validateEmpty( this.txtMotive.text );
+				item.prioridad = Util.validateCombo( this.cmbPriority ) as Prioridad;
+				item.fkPrioridad = Util.extractId(item.prioridad);
+				//item.nombresSolicitantes = cmbLstApplicatNames.list;
+				item.areaSolicitante = Util.validateCombo( this.cmbApplicantArea ) as AreaSolicitante;
+				item.fkAreaSolicitante = Util.extractId(item.areaSolicitante);
+				item.centralSitio = Util.validateEmpty( this.txtSite.text );
+				item.servicioSolicitado = Util.validateCombo( this.cmbServiceRequested ) as ServicioSolicitado;
+				item.fkServicioSolicitado = Util.extractId(item.servicioSolicitado);
+				item.descripcionAlmacen = Util.validateCombo( this.autCmpDescription as ComboBox ) as DescripcionAlmacen;
+				item.cantidad = Util.stringToNumber( this.txtQuantity.text );
+				item.unidadB = Util.validateCombo( this.cmbUnit ) as UnidadB;
+				item.fkUnidadB = Util.extractId(item.unidadB);
+				item.observaciones = Util.validateEmpty( this.txtObservation.text );
+				item.autoriza = Util.validateEmpty( this.txtAuthorizes.text );
+				item.entrega = Util.validateEmpty( this.txtDelivery.text );
+				item.fechaAsignacion = this.dtfAllocationDate.selectedDate;
+				item.fechaRetorno = this.dtfReturnDate.selectedDate;
+				item.observaciones = Util.validateEmpty( this.txtVoucher.text );
+				return item;
+			}
+			
+			private function fillCombos():void
+			{
+				this.responseGetPrioridad.token = this.catalogoService.getPrioridad();
+				this.responseGetColaborador.token = this.catalogoService.getColaborador();
+				this.responseGetAreaSolicitante.token = this.catalogoService.getAreaSolicitante();
+				this.responseGetServicioSolicitado.token = this.catalogoService.getServicioSolicitado();
+				this.responseGetDescripcionAlmacen.token = this.catalogoService.getDescripcionAlmacen();
+				this.responseGetUnidadB.token = this.catalogoService.getUnidadB();
+			}
+			
+			protected function solicitudAlmacenService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function btnAccept_clickHandler(event:MouseEvent):void
+			{
+				if( !this.validations() ){
+					Util.showMessageVerifyFields();
+					return;
+				}
+				if( this.mode == Constants.REGISTER_MODE ){
+					var warehouseApplication:SolicitudAlmacen = this.getWarehouseApplication();
+					Util.showProperties( warehouseApplication );
+					this.responseSave.token = this.solicitudAlmacenService.save( warehouseApplication );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
+				}
+			}
+			
+			private function updateItem(event:CloseEvent):void{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var warehouseApplication:SolicitudAlmacen = this.getWarehouseApplication();
+				Util.showProperties( warehouseApplication );
+				this.responseUpdate.token = this.solicitudAlmacenService.update( warehouseApplication );
+			}
+			
+			private function validations():Boolean
+			{
+				var value:Boolean = true;
+				value &&= this.validators.validarFormulario();
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+			}
+			
+			private function initializeValidators():void
+			{
+				this.validators = new InicializaValidadoresEtiquetas();
+				validators.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
+				validators.setRestrictor(txtCode, "generic");
+				validators.setRestrictor(txtMotive, "generic");
+				validators.setRestrictor(txtSite, "generic");
+				validators.setRestrictor(txtObservation, "generic");
+				validators.setRestrictor(txtAuthorizes, "generic");
+				validators.setRestrictor(txtDelivery, "generic");
+				validators.setRestrictor(txtVoucher, "generic");
+				validators.crearValidadorRestrictor("number",ValidadorDecimal.nombre, 10, 4);
+				validators.setRestrictor(txtCode, "number");
+				validators.setRestrictor(txtQuantity, "number");
+			}
+			
+			protected function responseSave_resultHandler(event:ResultEvent):void
+			{
+				var eventWarehouseApplicationNew:Event = new Event("warehouseApplicationNew");
+				this.dispatchEvent( eventWarehouseApplicationNew );
+				this.cleanForm();
+			}
+			
+			private function cleanForm():void
+			{
+				this.txtCode.reset();
+				this.dtfApplicationDate.reset();
+				this.txtMotive.reset();
+				this.cmbPriority.selectedIndex = 0;
+				this.cmbLstApplicatNames.reset();
+				this.cmbApplicantArea.selectedIndex = 0;
+				this.txtSite.reset();
+				this.cmbServiceRequested.selectedIndex = 0;
+				//this.autCmpDescription.reset();
+				this.txtQuantity.reset();
+				this.cmbUnit.selectedIndex = 0;
+				this.txtObservation.reset();
+				this.txtAuthorizes.reset();
+				this.txtDelivery.reset();
+				this.dtfAllocationDate.reset();
+				this.dtfReturnDate.reset();
+				this.txtVoucher.reset();
+			}
+			
+			protected function responseUpdate_resultHandler(event:ResultEvent):void
+			{
+				var eventWarehouseApplicationUpdated:Event = new Event("warehouseApplicationUpdated");
+				this.dispatchEvent( eventWarehouseApplicationUpdated );
+				this.cleanForm();
+			}
+			
+			protected function responseGetUnidadB_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbUnit.dataProvider = Util.addEmptyCatalgo( data );
+				if( this._item != null && this._item.unidadB != null ){
+					this.cmbUnit.selectedIndex = Util.selectedIndexFromCombo( this.cmbUnit.dataProvider as ArrayCollection, 
+						this._item.unidadB.id);
+				}
+			}
+			
+			protected function responseGetPrioridad_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbPriority.dataProvider = Util.addEmptyCatalgo( data );
+				if( this._item != null && this._item.prioridad != null ){
+					this.cmbPriority.selectedIndex = Util.selectedIndexFromCombo( this.cmbPriority.dataProvider as ArrayCollection, 
+						this._item.prioridad.id);
+				}
+			}
+			
+			protected function responseGetColaborador_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				/*
+				this.cmbLstApplicatNames.dataProvider = Util.addEmptyCatalgo( data );
+				if( this._item != null && this._item.nombresSolicitantes != null ){
+					this.cmbLstApplicatNames.selectedIndex = Util.selectedIndexFromCombo( this.cmbLstApplicatNames.dataProvider as ArrayCollection, 
+						this._item.nombresSolicitantes.id);
+				}
+				*/
+			}
+			
+			protected function responseGetAreaSolicitante_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbApplicantArea.dataProvider = Util.addEmptyCatalgo( data );
+				if( this._item != null && this._item.areaSolicitante != null ){
+					this.cmbApplicantArea.selectedIndex = Util.selectedIndexFromCombo( this.cmbApplicantArea.dataProvider as ArrayCollection, 
+						this._item.areaSolicitante.id);
+				}
+			}
+			
+			protected function responseGetServicioSolicitado_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbServiceRequested.dataProvider = Util.addEmptyCatalgo( data );
+				if( this._item != null && this._item.servicioSolicitado != null ){
+					this.cmbServiceRequested.selectedIndex = Util.selectedIndexFromCombo( this.cmbServiceRequested.dataProvider as ArrayCollection, 
+						this._item.servicioSolicitado.id);
+				}
+			}
+			
+			protected function responseGetDescripcionAlmacen_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.autCmpDescription.dataProvider = Util.addEmptyCatalgo( data );
+				if( this._item != null && this._item.descripcionAlmacen != null ){
+					this.autCmpDescription.selectedItemId = Util.selectedIndexFromCombo( this.autCmpDescription.dataProvider as ArrayCollection, 
+						this._item.descripcionAlmacen.id);
+				}
+			}
+			
+			protected function catalogoService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="warehouseApplicationNew", type="flash.events.Event")]
+		[Event(name="warehouseApplicationUpdated", type="flash.events.Event")]
+	</mx:Metadata>
+	<mx:Form id="form">
+		<mx:FormItem label="Folio:">
+			<components:TextInput id="txtCode"
+								  textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha de Solicitud:">
+			<components:DateField enabled="false" selectedDate="{new Date()}"
+								  id="dtfApplicationDate"/>
+		</mx:FormItem>
+		<mx:FormItem label="Motivo:">
+			<components:TextInput id="txtMotive"/>
+		</mx:FormItem>
+		<mx:FormItem label="Prioridad:">
+			<mx:ComboBox id="cmbPriority"
+						 labelField="etiqueta"
+						 />
+		</mx:FormItem>
+		<mx:FormItem label="Nombres de los Solicitantes:">
+			<components:ComboList id="cmbLstApplicatNames"/>
+		</mx:FormItem>
+		<mx:FormItem label="Área Solicitante:">
+			<mx:ComboBox id="cmbApplicantArea"
+						 labelField="etiqueta"
+						 />
+		</mx:FormItem>
+		<mx:FormItem label="Central o Sitio:">
+			<components:TextInput id="txtSite"/>
+		</mx:FormItem>
+		<mx:FormItem label="Servicio Solicitado:">
+			<mx:ComboBox id="cmbServiceRequested"
+						 labelField="etiqueta"
+						 />
+		</mx:FormItem>
+		<mx:FormItem label="Descripción:">
+			<components1:AutoComplete id="autCmpDescription" width="400"
+									  labelField="etiqueta"/>
+		</mx:FormItem>
+		<mx:FormItem label="Cantidad:">
+			<components:TextInput id="txtQuantity" textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Unidad:">
+			<mx:ComboBox id="cmbUnit"
+						 labelField="etiqueta"
+						 />
+		</mx:FormItem>
+		<mx:FormItem label="Observaciones:">
+			<components:TextArea id="txtObservation" width="400"/>
+		</mx:FormItem>
+		<mx:FormItem label="Autoriza:">
+			<components:TextInput id="txtAuthorizes"/>
+		</mx:FormItem>
+		<mx:FormItem label="Entrega:">
+			<components:TextInput id="txtDelivery"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha de Asignación:">
+			<components:DateField id="dtfAllocationDate"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha de Retorno:">
+			<components:DateField id="dtfReturnDate"/>
+		</mx:FormItem>
+		<mx:FormItem label="Vale Abierto/Cerrado:">
+			<components:TextInput id="txtVoucher"/>
+		</mx:FormItem>
+		<mx:FormItem direction="horizontal">
+			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
+			<mx:Button id="btnOrdenCompra" label="Generar Orden de Compra" click="btnAccept_clickHandler(event)"/>
+			<mx:Button id="btnPrint" label="Imprimir"/>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:RemoteObject id="solicitudAlmacenService" destination="solicitudAlmacenService" fault="solicitudAlmacenService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
+	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
+	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="catalogoService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetPrioridad" result="responseGetPrioridad_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetColaborador" result="responseGetColaborador_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetAreaSolicitante" result="responseGetAreaSolicitante_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetServicioSolicitado" result="responseGetServicioSolicitado_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetDescripcionAlmacen" result="responseGetDescripcionAlmacen_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetUnidadB" result="responseGetUnidadB_resultHandler(event)"/>
+</mx:VBox>

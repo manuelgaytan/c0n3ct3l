@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml"
+		 height="100%">
+	<mx:Label text="Notificaciones:"/>
+	<mx:TextArea id="txtNotifications" 
+				 verticalScrollPolicy="auto"
+				 width="450" height="100%"
+				 editable="false"/>
+</mx:HBox>

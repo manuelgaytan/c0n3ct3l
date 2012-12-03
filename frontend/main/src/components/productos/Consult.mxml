@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+		 label="Consulta"
+		 horizontalAlign="right"
+		 creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import components.DownloadFile;
+			import components.LoadFile;
+			
+			import events.GenericEvent;
+			
+			import model.Constants;
+			import model.FiltroProducto;
+			import model.Model;
+			import model.Producto;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			[Bindable]
+			private var products:ArrayCollection = null;
+			
+			private var producto:Producto;
+			private var _filter:FiltroProducto;
+			private var loadFile:LoadFile;
+			private var typeImportFile:String = "IMPORT-PRODUCTS";
+			
+			protected function responseGetAll_resultHandler(event:ResultEvent):void
+			{
+				products = event.result as ArrayCollection;
+			}
+			
+			protected function productoService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+			}
+			
+			protected function datagrid_doubleClickHandler(event:MouseEvent):void
+			{
+				var product:Producto = this.datagrid.selectedItem as Producto;
+				this.responseGetProducto.token = this.productoService.getProducto( product.id );
+			}
+			
+			protected function responseGetProducto_resultHandler(event:ResultEvent):void
+			{
+				var product:Producto = event.result as Producto;
+				if( product == null ){
+					return;
+				}
+				var genericEvent:GenericEvent = new GenericEvent("productDetail");
+				genericEvent.information = product;
+				this.dispatchEvent( genericEvent );
+			}
+			
+			protected function btnDelete_clickHandler(event:MouseEvent):void
+			{
+				if( this.datagrid.selectedItems == null ||
+					this.datagrid.selectedItems.length == 0 ){
+					Util.showErrorMessage("Debe seleccionar elementos de la tabla.");
+					return;
+				}
+				Alert.show("Confirme si desea eliminar los elementos.","Advertencia",Alert.YES+Alert.NO,this, deleteItems);
+			}
+			
+			private function deleteItems(event:CloseEvent):void
+			{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var items:ArrayCollection = Util.selectedIDs( this.datagrid.selectedItems ); 
+				this.responseDeleteProductos.token = this.productoService.deleteProductos( items );
+			}
+			
+			protected function responseDeleteProductos_resultHandler(event:ResultEvent):void
+			{
+				this.executeQuery();
+			}
+			
+			public function executeQuery(filter:FiltroProducto = null):void
+			{
+				if( filter != null ){
+					this._filter = filter;
+				}else if( this._filter == null ){
+					return;
+				}
+				this.responseGetAllByFiltro.token = this.productoService.getAllByFiltro(this._filter);
+			}
+					
+			private function labelFunctionCliente(item:Object, column:DataGridColumn):String{
+				var value:String = "";
+				if( item !=null &&
+					item["cliente"] != null &&
+					item["cliente"]["nombreComercial"] != null ){
+					value = item["cliente"]["nombreComercial"];
+				}
+				return value;
+			}
+			
+			private function labelFunctionCosto(item:Object, column:DataGridColumn):String{
+				return item[column.dataField];
+			}
+			
+			protected function btnImport_clickHandler(event:MouseEvent):void
+			{
+				this.loadFile = new LoadFile( this.typeImportFile, Constants.CSV_FILES_FILTER_TEXT_SHOWED, Constants.CSV_FILES_FILTER );
+				this.loadFile.addEventListener(Event.COMPLETE, fileLoaded);
+				this.loadFile.show(event);
+			}
+			
+			protected function btnExport_clickHandler(event:MouseEvent):void
+			{
+				var filePath:String = Constants.REPOSITORY_PATH + "/" + this.getExportFileName();
+				trace("filePath: " + filePath);
+				this.responseExportProductos.token = this.productoService.export( filePath );
+			}
+			
+			protected function fileLoaded(event:Event):void
+			{
+				var filePath:String = Constants.REPOSITORY_PATH + "/" + event.currentTarget.fileName;
+				trace("filePath: " + filePath);
+				this.responseImportProductos.token = this.productoService.importProductos( filePath );
+			}
+			
+			protected function responseImportProductos_resultHandler(event:ResultEvent):void
+			{
+				this.executeQuery();
+			}
+			
+			protected function responseExportProductos_resultHandler(event:ResultEvent):void
+			{
+				var filePath:String = Constants.REPOSITORY_PATH + "/" + this.getExportFileName();
+				var params:Object = new Object();
+				params.document = this.getExportFileName();
+				this.exposeService.send(params);
+			}
+			
+			protected function exposeService_resultHandler(event:ResultEvent = null):void
+			{
+				Alert.show("Confirme si desea descargar el archivo.","Advertencia",Alert.YES+Alert.NO,this, downloadItem);
+			}
+			
+			private function downloadItem(event:CloseEvent):void
+			{
+				if( event.detail == Alert.YES ){
+					var downloadFile:DownloadFile = new DownloadFile("http://localhost:8080/serviciosWeb/output/"+this.getExportFileName());
+					downloadFile.download();
+				}
+			}
+			
+			private function getExportFileName():String
+			{
+				return Model.getInstance().user.usuario + "_" + Constants.EXPORT_PRODUCTS_TYPE + Constants.CSV_EXTENSION;
+			}
+			
+			protected function exposeService_faultHandler(event:FaultEvent):void
+			{
+				//Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+				this.exposeService_resultHandler();
+			}
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="productDetail", type="events.GenericEvent")]
+		[Event(name="productsDeleted", type="events.GenericEvent")]
+	</mx:Metadata>
+	<mx:DataGrid id="datagrid" width="100%" height="100%" dataProvider="{products}"
+				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
+				 allowMultipleSelection="true">
+		<mx:columns>
+			<mx:DataGridColumn id="dtgClient" headerText="Cliente"
+							   labelFunction="labelFunctionCliente"/>
+			<mx:DataGridColumn id="dtgProjectType" headerText="{'Tipo de\nProyecto'}"
+							   dataField="tipoProyecto"/>
+			<mx:DataGridColumn id="dtgTechnology" headerText="Tecnología"
+							   dataField="teconologia"/>
+			<mx:DataGridColumn id="dtgEquipment" headerText="Equipo"
+							   dataField="equipo"/>
+			<mx:DataGridColumn id="dtgActivity" headerText="{'Actividad\na Realizar'}" width="180"
+							   dataField="actividadRealizar"/>
+			<mx:DataGridColumn id="dtgModel" headerText="Modelo"
+							   dataField="modelo"/>
+			<mx:DataGridColumn id="dtgServiceDescription" headerText="{'Descripción\ndel Servicio'}"
+							   dataField="descripcionServicio"/>
+			<mx:DataGridColumn id="dtgServiceType" headerText="{'Tipo de\nServicio'}"
+							   dataField="tipoServicio"/>
+			<mx:DataGridColumn id="dtgCost" headerText="Costo" textAlign="right"
+							   dataField="costo"
+							   labelFunction="labelFunctionCosto"/>
+		</mx:columns>
+	</mx:DataGrid>
+	<mx:HBox>
+		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>
+		<mx:Button label="Exportar" id="btnExport" click="btnExport_clickHandler(event)"/>
+		<mx:Button label="Importar" id="btnImport" click="btnImport_clickHandler(event)"/>
+	</mx:HBox>
+	<mx:RemoteObject id="productoService" destination="productoService" fault="productoService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetProducto" result="responseGetProducto_resultHandler(event)"/>
+	<mx:CallResponder id="responseDeleteProductos" result="responseDeleteProductos_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetAllByFiltro" result="responseGetAll_resultHandler(event)"/>
+	<mx:CallResponder id="responseImportProductos" result="responseImportProductos_resultHandler(event)"/>
+	<mx:CallResponder id="responseExportProductos" result="responseExportProductos_resultHandler(event)"/>
+	<mx:HTTPService id="exposeService" url="http://localhost:8080/serviciosWeb/exposing.jsp"
+					result="exposeService_resultHandler(event)" fault="exposeService_faultHandler(event)"
+					showBusyCursor="true"/>
+</mx:VBox>

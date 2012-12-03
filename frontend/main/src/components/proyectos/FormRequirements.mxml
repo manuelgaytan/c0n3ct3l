@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+		 width="100%"
+		 creationComplete="creationCompleteHandler(event)"
+		 initialize="initializeHandler(event)"
+		 verticalGap="0">
+	<mx:Script>
+		<![CDATA[
+			import model.Requisicion;
+			
+			import mx.collections.ArrayCollection;
+			import mx.containers.Form;
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			private var requirementsUpdate:ArrayCollection = null;
+			private var flagUpdate:Boolean = false;
+			
+			public function set enabledButton(value:Boolean):void{
+				this.btnAddRequirement.enabled = value;
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+			}
+			
+			public function initializeComponent():void{
+			}
+			
+			private function initializeCombos():void
+			{
+			}
+			
+			public function reset():void{
+				this.requirementsUpdate = null;
+				this.flagUpdate = false;
+				for each (var i:DisplayObject in this.getChildren()) 
+				{
+					if( i is FormRequirement ){
+						this.removeChild( i );
+					}
+				}
+			}
+			
+			public function set requirements(value:ArrayCollection):void{
+				if( value == null || value.length == 0){
+					return;
+				}
+				this.reset();
+				this.requirementsUpdate = value;
+				this.setRequirementsUpdate();
+			}
+			
+			public function get requirements():ArrayCollection{
+				var requirements:ArrayCollection = new ArrayCollection();
+				for each (var i:DisplayObject in this.getChildren()) 
+				{
+					if( i is FormRequirement ){
+						requirements.addItem( (i as FormRequirement).requirement );
+					}
+				}
+				return (requirements.length == 0 ) ? null : requirements;
+			}
+			
+			private function addItem(value:Requisicion=null):void{
+				var requirement:FormRequirement = new FormRequirement();
+				requirement.addEventListener( "removeRequirement", removeHandler);
+				this.addChildAt( requirement, this.numChildren - 1 );
+				if( value != null ){
+					requirement.requirement = value;
+				}
+			}
+			
+			protected function removeHandler(event:Event):void
+			{
+				this.removeChild( event.currentTarget as DisplayObject );
+			}
+			
+			public function validations():Boolean{
+				var validation:Boolean = true;
+				for each (var i:DisplayObject in this.getChildren()) 
+				{
+					if( i is FormRequirement ){
+						validation &&= (i as FormRequirement).validations();
+					}
+				}
+				return validation;
+			}
+			
+			private function setRequirementsUpdate():void
+			{
+				this.flagUpdate = true;
+				for(var i:Number = 0; i<this.requirementsUpdate.length; i++) 
+				{
+					this.addItem( requirementsUpdate[i] as Requisicion);
+				}
+			}
+			
+			protected function initializeHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:Button id="btnAddRequirement" label="Agregar Requisición" click="addItem()"/>
+</mx:VBox>

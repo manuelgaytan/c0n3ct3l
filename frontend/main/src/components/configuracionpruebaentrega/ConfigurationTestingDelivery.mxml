@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)"
+		 >
+	<mx:Script>
+		<![CDATA[
+			import model.Catalogo;
+			import model.ConfiguracionPruebaEntrega;
+			import model.Constants;
+			import model.Estado;
+			import model.Proyecto;
+			import model.TipoEntregable;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorEntero;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			private var mode:String = null;
+			private var _configurationTestingDelivery:ConfiguracionPruebaEntrega;
+			private var validators:InicializaValidadoresEtiquetas;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				this.label = Constants.REGISTRAR;
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set configurationTestingDelivery(value:ConfiguracionPruebaEntrega):void{
+				if( value == null ){
+					return;
+				}
+				this._configurationTestingDelivery = value;
+				this.setConfigurationTestingDelivery(); 
+			}
+			
+			private function setConfigurationTestingDelivery():void
+			{
+				if( this._configurationTestingDelivery == null ){
+					return;
+				}
+				this.txtConectelID.text = Util.numberToString( this._configurationTestingDelivery.proyecto.id );
+				this.txtCommissioner.text = this._configurationTestingDelivery.comisionado;
+				this.txtPortsDelivered.text = this._configurationTestingDelivery.puertosEntregados;
+				this.txtAlign.text = this._configurationTestingDelivery.alineacion;
+				this.txtSlotDelivered.text = this._configurationTestingDelivery.slotEntregado;
+				this.txtCardDelivered.text = this._configurationTestingDelivery.tarjetasEntregadas;
+				this.txtAcceptationKey.text = this._configurationTestingDelivery.claveAceptacion;
+				this.dtfDeliveryDate.selectedDate = this._configurationTestingDelivery.fechaEntrega;
+				if( this._configurationTestingDelivery.siteSurvey == null ){
+					this.dlvSiteSurvey.delivers = Util.getEntregables( this._configurationTestingDelivery.proyecto.proyectoEntregables, TipoEntregable.SITE_SURVEY );
+				}else{
+					this.dlvSiteSurvey.delivers = this._configurationTestingDelivery.siteSurvey;
+				}
+				if( this._configurationTestingDelivery.planos == null ){
+					this.dlvPlanes.delivers = Util.getEntregables( this._configurationTestingDelivery.proyecto.proyectoEntregables, TipoEntregable.PLANOS );
+				}else{
+					this.dlvPlanes.delivers = this._configurationTestingDelivery.planos;
+				}
+				if( this._configurationTestingDelivery.ingenieria == null ){
+					this.dlvEngineering.delivers = Util.getEntregables( this._configurationTestingDelivery.proyecto.proyectoEntregables, TipoEntregable.INGENIERIA );
+				}else{
+					this.dlvEngineering.delivers = this._configurationTestingDelivery.ingenieria;
+				}
+				if( this._configurationTestingDelivery.visitaFactibilidad == null ){
+					this.dlvFeasibility.delivers = Util.getEntregables( this._configurationTestingDelivery.proyecto.proyectoEntregables, TipoEntregable.VISITA_FACTIBILIDAD );
+				}else{
+					this.dlvFeasibility.delivers = this._configurationTestingDelivery.visitaFactibilidad;
+				}
+				if( this._configurationTestingDelivery.carpetaAdministrativa == null ){
+					this.dlvAdministrativeFolder.delivers = Util.getEntregables( this._configurationTestingDelivery.proyecto.proyectoEntregables, TipoEntregable.CARPETA_ADMINISTRATIVA );
+				}else{
+					this.dlvAdministrativeFolder.delivers = this._configurationTestingDelivery.carpetaAdministrativa;
+				}
+				if( this._configurationTestingDelivery.protocolo == null ){
+					this.dlvProtocol.delivers = Util.getEntregables( this._configurationTestingDelivery.proyecto.proyectoEntregables, TipoEntregable.PROTOCOLO );
+				}else{
+					this.dlvProtocol.delivers = this._configurationTestingDelivery.protocolo;
+				}
+				if( this._configurationTestingDelivery.ot == null ){
+					this.dlvOT.delivers = Util.getEntregables( this._configurationTestingDelivery.proyecto.proyectoEntregables, TipoEntregable.OT );
+				}else{
+					this.dlvOT.delivers = this._configurationTestingDelivery.ot;
+				}
+				if( this._configurationTestingDelivery.clienteSatisfecho == null ){
+					this.dlvSatisfyCustomer.delivers = Util.getEntregables( this._configurationTestingDelivery.proyecto.proyectoEntregables, TipoEntregable.CLIENTE_SATISFECHO );
+				}else{
+					this.dlvSatisfyCustomer.delivers = this._configurationTestingDelivery.clienteSatisfecho;
+				}
+				if( this._configurationTestingDelivery.checklistInspeccion == null ){
+					this.dlvPhotographChecklist.delivers = Util.getEntregables( this._configurationTestingDelivery.proyecto.proyectoEntregables, TipoEntregable.CHECKLIST_INSPECCION );
+				}else{
+					this.dlvInspectionChecklist.delivers = this._configurationTestingDelivery.checklistInspeccion;
+				}
+				if( this._configurationTestingDelivery.checklistFotografico == null ){
+					this.dlvPhotographChecklist.delivers = Util.getEntregables( this._configurationTestingDelivery.proyecto.proyectoEntregables, TipoEntregable.CHECKLIST_FOTOGRAFICO );
+				}else{
+					this.dlvPhotographChecklist.delivers = this._configurationTestingDelivery.checklistFotografico;
+				}
+				if( this._configurationTestingDelivery.asBuild == null ){
+					this.dlvASBuild.delivers = Util.getEntregables( this._configurationTestingDelivery.proyecto.proyectoEntregables, TipoEntregable.ASBUILD );
+				}else{
+					this.dlvASBuild.delivers = this._configurationTestingDelivery.asBuild;
+				}
+				if( this._configurationTestingDelivery.entregableX == null ){
+					this.dlvXDelivery.delivers = Util.getEntregables( this._configurationTestingDelivery.proyecto.proyectoEntregables, TipoEntregable.ENTREGABLE_X );
+				}else{
+					this.dlvXDelivery.delivers = this._configurationTestingDelivery.entregableX;
+				}
+				if( this._configurationTestingDelivery.entregableY == null ){
+					this.dlvYDelivery.delivers = Util.getEntregables( this._configurationTestingDelivery.proyecto.proyectoEntregables, TipoEntregable.ENTREGABLE_Y );
+				}else{
+					this.dlvYDelivery.delivers = this._configurationTestingDelivery.entregableY;
+				}
+				this.observations.observations = this._configurationTestingDelivery.proyecto.observaciones;
+			}
+			
+			private function getGeneralDataProject():ConfiguracionPruebaEntrega{
+				var configurationTestingDelivery:ConfiguracionPruebaEntrega = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					configurationTestingDelivery = new ConfiguracionPruebaEntrega();
+				}else{
+					configurationTestingDelivery = this._configurationTestingDelivery;
+				}
+				configurationTestingDelivery.proyecto = new Proyecto();
+				configurationTestingDelivery.proyecto.id = Util.stringToNumber( this.txtConectelID.text );
+				configurationTestingDelivery.proyecto.estado = new Estado();
+				configurationTestingDelivery.proyecto.estado.id = Estado.ID_CONFIGURACION_PRUEBA_Y_ENTREGA;
+				configurationTestingDelivery.comisionado = Util.validateEmpty( this.txtCommissioner.text );
+				configurationTestingDelivery.puertosEntregados = Util.validateEmpty( this.txtPortsDelivered.text );
+				configurationTestingDelivery.alineacion = Util.validateEmpty( this.txtAlign.text );
+				configurationTestingDelivery.slotEntregado = Util.validateEmpty( this.txtSlotDelivered.text );
+				configurationTestingDelivery.tarjetasEntregadas = Util.validateEmpty( this.txtCardDelivered.text );
+				configurationTestingDelivery.claveAceptacion = Util.validateEmpty( this.txtAcceptationKey.text );
+				configurationTestingDelivery.fechaEntrega = this.dtfDeliveryDate.selectedDate;
+				configurationTestingDelivery.siteSurvey = this.dlvSiteSurvey.delivers;
+				configurationTestingDelivery.planos = this.dlvPlanes.delivers;
+				configurationTestingDelivery.ingenieria = this.dlvEngineering.delivers;
+				configurationTestingDelivery.visitaFactibilidad = this.dlvFeasibility.delivers;
+				configurationTestingDelivery.carpetaAdministrativa = this.dlvAdministrativeFolder.delivers;
+				configurationTestingDelivery.protocolo = this.dlvProtocol.delivers;
+				configurationTestingDelivery.ot = this.dlvOT.delivers;
+				configurationTestingDelivery.clienteSatisfecho = this.dlvSatisfyCustomer.delivers;
+				configurationTestingDelivery.checklistInspeccion = this.dlvInspectionChecklist.delivers;
+				configurationTestingDelivery.checklistFotografico = this.dlvPhotographChecklist.delivers;
+				configurationTestingDelivery.asBuild = this.dlvASBuild.delivers;
+				configurationTestingDelivery.entregableX = this.dlvXDelivery.delivers;
+				configurationTestingDelivery.entregableY = this.dlvYDelivery.delivers;
+				configurationTestingDelivery.proyecto.observaciones = this.observations.observations;
+				return configurationTestingDelivery;
+			}
+			
+			private function fillCombos():void
+			{
+			}
+			
+			
+			protected function datosGeneralesProyectoService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function btnAccept_clickHandler(event:MouseEvent):void
+			{
+				if( !this.validations() ){
+					Util.showMessageVerifyFields();
+					return;
+				}
+				if( this.mode == Constants.REGISTER_MODE ){
+					var generalDataProject:ConfiguracionPruebaEntrega = this.getGeneralDataProject();
+					Util.showProperties( generalDataProject );
+					this.responseSave.token = this.configuracionPruebaEntregaService.save( generalDataProject );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
+				}
+			}
+			
+			private function updateItem(event:CloseEvent):void{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var generalDataProject:ConfiguracionPruebaEntrega = this.getGeneralDataProject();
+				Util.showProperties( generalDataProject );
+				this.responseUpdate.token = this.configuracionPruebaEntregaService.update( generalDataProject );
+			}
+			
+			private function validations():Boolean
+			{
+				var value:Boolean = true;
+				value &&= this.validators.validarFormulario();
+				value &&= this.dtfDeliveryDate.selectedDate;
+				/* value &&= this.dlvEngineeringDeliverable.existElements(); */
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+					this.btnProjectDone.visible = false;
+					this.txtConectelID.editable = true;
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+					this.txtConectelID.editable = false;
+				}
+			}
+			
+			private function initializeValidators():void
+			{
+				this.validators = new InicializaValidadoresEtiquetas();
+				validators.crearValidadorRestrictor("numerico11",ValidadorEntero.nombre, 11);
+				validators.setValidador(txtConectelID, "numerico11");
+				validators.crearValidadorRestrictor("alfanumerico100",ValidadorAlfanumerico.nombre, 0, 100, true);
+				validators.setRestrictor(txtCommissioner, "alfanumerico100");
+				validators.setRestrictor(txtPortsDelivered, "alfanumerico100");
+				validators.crearValidadorRestrictor("alfanumerico200",ValidadorAlfanumerico.nombre, 0, 200, true);
+				validators.setRestrictor(txtAlign, "alfanumerico200");
+				validators.setRestrictor(txtSlotDelivered, "alfanumerico200");
+				validators.crearValidadorRestrictor("alfanumerico150",ValidadorAlfanumerico.nombre, 0, 150, true);
+				validators.setRestrictor(txtCardDelivered, "alfanumerico150");
+				validators.setRestrictor(txtAcceptationKey, "alfanumerico150");
+			}
+			
+			protected function responseSave_resultHandler(event:ResultEvent):void
+			{
+				var eventGeneralDataProjectNew:Event = new Event("configurationTestingDeliveryNew");
+				this.dispatchEvent( eventGeneralDataProjectNew );
+				this.cleanForm();
+			}
+			
+			private function cleanForm():void
+			{
+				this.txtConectelID.reset();
+				this.txtCommissioner.reset();
+				this.txtPortsDelivered.reset();
+				this.txtAlign.reset();
+				this.txtSlotDelivered.reset();
+				this.txtCardDelivered.reset();
+				this.txtAcceptationKey.reset();
+				this.dtfDeliveryDate.reset();
+				/* this.dlv.reset();
+				this.dlv.reset();
+				this.dlv.reset();
+				this.dlv.reset();
+				this.dlv.reset();
+				this.dlv.reset();
+				this.dlv.reset();
+				this.dlv.reset();
+				this.dlv.reset();
+				this.dlv.reset();
+				this.dlv.reset();
+				this.dlv.reset();
+				this.dlv.reset(); */
+				this.observations.reset();
+			}
+			
+			protected function responseUpdate_resultHandler(event:ResultEvent):void
+			{
+				var eventGeneralDataProjectUpdated:Event = new Event("configurationTestingDeliveryUpdated");
+				this.dispatchEvent( eventGeneralDataProjectUpdated );
+				this.cleanForm();
+			}
+			
+			protected function btnProjectDone_clickHandler(event:MouseEvent):void
+			{
+				if( !this.validations() ){
+					Util.showMessageVerifyFields();
+					return;
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+					Alert.show("Confirme si desea dar por terminado el proyecto.","Advertencia",Alert.YES+Alert.NO,this, projectDone);
+				}
+			}
+			
+			private function projectDone(event:CloseEvent):void
+			{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var generalDataProject:ConfiguracionPruebaEntrega = this.getGeneralDataProject();
+				this.responseUpdate.token = this.configuracionPruebaEntregaService.projectDone( generalDataProject );
+			}
+			
+			protected function responseProjectDone_resultHandler(event:ResultEvent):void
+			{
+				var eventGeneralDataProjectUpdated:Event = new Event("configurationTestingDeliveryProjectDone");
+				this.dispatchEvent( eventGeneralDataProjectUpdated );
+				this.cleanForm();
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="configurationTestingDeliveryNew", type="flash.events.Event")]
+		[Event(name="configurationTestingDeliveryUpdated", type="flash.events.Event")]
+		[Event(name="configurationTestingDeliveryProjectDone", type="flash.events.Event")]
+	</mx:Metadata>
+	<mx:Form id="form">
+		<mx:FormItem label="ID Conectel:" direction="horizontal">
+			<mx:Label text="CON"/>
+			<components:TextInput id="txtConectelID" width="150" textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Comisionado:">
+			<components:TextInput id="txtCommissioner" width="200" textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Puertos Entregados:">
+			<components:TextInput id="txtPortsDelivered" width="200" textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Alineación:">
+			<components:TextInput id="txtAlign" width="400"/>
+		</mx:FormItem>
+		<mx:FormItem label="Slot Entregado:">
+			<components:TextInput id="txtSlotDelivered" width="400"/>
+		</mx:FormItem>
+		<mx:FormItem label="Tarjetas Entregadas:">
+			<components:TextInput id="txtCardDelivered" width="300"/>
+		</mx:FormItem>
+		<mx:FormItem label="Clave de Aceptación:">
+			<components:TextInput id="txtAcceptationKey" width="300"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha de Entrega Responsablede Implementación:">
+			<components:DateField id="dtfDeliveryDate"/>
+		</mx:FormItem>
+		<mx:FormItem label="Site Survey:">
+			<components:Deliver id="dlvSiteSurvey" deliveryType="{TipoEntregable.SITE_SURVEY}"/>
+		</mx:FormItem>
+		<mx:FormItem label="Planos:">
+			<components:Deliver id="dlvPlanes" deliveryType="{TipoEntregable.PLANOS}"/>
+		</mx:FormItem>
+		<mx:FormItem label="Ingeniería:">
+			<components:Deliver id="dlvEngineering" deliveryType="{TipoEntregable.INGENIERIA}"/>
+		</mx:FormItem>
+		<mx:FormItem label="Visita de Factibilidad:">
+			<components:Deliver id="dlvFeasibility" deliveryType="{TipoEntregable.VISITA_FACTIBILIDAD}"/>
+		</mx:FormItem>
+		<mx:FormItem label="Carpeta Administrativa:">
+			<components:Deliver id="dlvAdministrativeFolder" deliveryType="{TipoEntregable.CARPETA_ADMINISTRATIVA}"/>
+		</mx:FormItem>
+		<mx:FormItem label="Protocolo:">
+			<components:Deliver id="dlvProtocol" deliveryType="{TipoEntregable.PROTOCOLO}"/>
+		</mx:FormItem>
+		<mx:FormItem label="OT:">
+			<components:Deliver id="dlvOT" deliveryType="{TipoEntregable.OT}"/>
+		</mx:FormItem>
+		<mx:FormItem label="Cliente Satisfecho:">
+			<components:Deliver id="dlvSatisfyCustomer" deliveryType="{TipoEntregable.CLIENTE_SATISFECHO}"/>
+		</mx:FormItem>
+		<mx:FormItem label="Checklist de Inspección:">
+			<components:Deliver id="dlvInspectionChecklist" deliveryType="{TipoEntregable.CHECKLIST_INSPECCION}"/>
+		</mx:FormItem>
+		<mx:FormItem label="Checklist Fotográfico:">
+			<components:Deliver id="dlvPhotographChecklist" deliveryType="{TipoEntregable.CHECKLIST_FOTOGRAFICO}"/>
+		</mx:FormItem>
+		<mx:FormItem label="ASBuild:">
+			<components:Deliver id="dlvASBuild" deliveryType="{TipoEntregable.ASBUILD}"/>
+		</mx:FormItem>
+		<mx:FormItem label="Entregable X:">
+			<components:Deliver id="dlvXDelivery" deliveryType="{TipoEntregable.ENTREGABLE_X}"/>
+		</mx:FormItem>
+		<mx:FormItem label="Entregable Y:">
+			<components:Deliver id="dlvYDelivery" deliveryType="{TipoEntregable.ENTREGABLE_Y}"/>
+		</mx:FormItem>
+		<components:Observations id="observations"/>
+		<mx:FormItem direction="horizontal">
+			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
+			<mx:Button id="btnProjectDone" label="Terminar Proyecto" click="btnProjectDone_clickHandler(event)"/>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:RemoteObject id="configuracionPruebaEntregaService" destination="configuracionPruebaEntregaService" fault="datosGeneralesProyectoService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
+	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
+	<mx:CallResponder id="responseProjectDone" result="responseProjectDone_resultHandler(event)"/>
+</mx:VBox>

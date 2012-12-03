@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" minWidth="955" minHeight="600">
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.utils.ObjectUtil;
+			protected function btnInvoqueEJB_clickHandler(event:MouseEvent):void
+			{
+				respuestaSaluda.token = fooService.saluda( this.txtInput.text );
+			}
+			
+			protected function respuestaSaluda_resultHandler(event:ResultEvent):void
+			{
+				this.lblResultado.text = event.result as String;
+			}
+			
+			protected function respuestaSaluda_faultHandler(event:FaultEvent):void
+			{
+				Alert.show("Error: " + ObjectUtil.toString( event.fault ), "Revisar Error");				
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:Label text="Ejemplo invocacion de un EJB 3" fontSize="20"/>
+	<mx:TextInput id="txtInput"/>
+	<mx:Button id="btnInvoqueEJB" label="Invocar" click="btnInvoqueEJB_clickHandler(event)"/>
+	<mx:Label id="lblResultado"/>
+	<mx:RemoteObject id="fooService" destination="fooBean"
+					 
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="respuestaSaluda" result="respuestaSaluda_resultHandler(event)" 
+					  fault="respuestaSaluda_faultHandler(event)"/>
+</mx:Application>

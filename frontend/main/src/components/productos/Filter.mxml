@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%"
+		 label="Filtro"
+		 creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import events.GenericEvent;
+			
+			import model.FiltroProducto;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.utils.ObjectUtil;
+			
+			protected function btnFilter_clickHandler(event:MouseEvent):void
+			{
+				var productFilter:FiltroProducto = new FiltroProducto();
+				productFilter.idCliente = Util.selectedId(cmbClient);
+				productFilter.tipoProyecto = Util.selectedLabel( cmbProjectType );
+				productFilter.tecnologia = Util.selectedLabel( cmbTechnology );
+				productFilter.equipo = Util.selectedLabel( cmbEquipment );
+				
+				var filterEvent:GenericEvent = new GenericEvent("filterCommand");
+				filterEvent.information = productFilter;
+				this.dispatchEvent( filterEvent );
+			}
+			
+			protected function responseGetEquipos_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbEquipment.dataProvider = Util.addEmptyCatalgo( data );
+			}
+			
+			protected function responseGetTecnologias_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbTechnology.dataProvider = Util.addEmptyCatalgo( data );
+			}
+			
+			protected function responseGetTiposProyecto_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbProjectType.dataProvider = Util.addEmptyCatalgo( data );
+			}
+			
+			protected function responseGetClientes_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbClient.dataProvider = Util.addEmptyCatalgo( data, "nombreComercial" );
+			}
+			
+			protected function productoService_faultHandler(event:FaultEvent):void
+			{
+				//Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+				Util.showErrorMessage( ObjectUtil.toString( event.fault ) );
+			}
+			
+			protected function clienteService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.fillCombos();
+			}
+			
+			private function fillCombos():void
+			{
+				this.responseGetClientes.token  = this.clienteService.getClientes();
+			}
+			
+			protected function cmbClient_changeHandler(event:ListEvent):void
+			{
+				var i:* = Util.selectedId( this.cmbClient );
+				if( i == undefined ||
+					i == 0 ){
+					return;
+				}
+				this.responseGetTiposProyecto.token = this.productoService.getTiposProyecto(i);
+			}
+			
+			protected function cmbProjectType_changeHandler(event:ListEvent):void
+			{
+				var i:String = Util.selectedLabel( this.cmbProjectType );
+				if( Util.validateEmpty( i) == null ){
+					cleanCombos( cmbProjectType.id );
+					return;
+				}
+				this.responseGetTecnologias.token = this.productoService.getTecnologias( Util.selectedId( this.cmbClient ),
+					i);
+			}
+			
+			protected function cmbTechnology_changeHandler(event:ListEvent):void
+			{
+				var i:String = Util.selectedLabel( this.cmbTechnology );
+				if( Util.validateEmpty( i) == null ){
+					cleanCombos( cmbTechnology.id );
+					return;
+				}
+				this.responseGetEquipos.token = this.productoService.getEquipos( Util.selectedId( this.cmbClient ),
+					Util.selectedLabel( this.cmbProjectType ),
+					i);
+			}
+			
+			private function cleanCombos(id:String):void
+			{
+				switch(id)
+				{
+					case cmbClient.id:
+					{
+						Util.freeDataProvider( cmbProjectType );
+						cmbProjectType.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
+						break;
+					}
+					case cmbProjectType.id:
+					{
+						Util.freeDataProvider( cmbTechnology );
+						cmbTechnology.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
+						break;
+					}
+					case cmbTechnology.id:
+					{
+						Util.freeDataProvider( cmbEquipment );
+						cmbEquipment.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
+						break;
+					}
+					default:
+					{
+						break;
+					}
+				}
+			}
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="filterCommand", type="events.GenericEvent")]
+	</mx:Metadata>
+	<mx:Form>
+		<mx:FormItem label="Cliente:">
+			<mx:ComboBox id="cmbClient" width="400"
+						 labelField="nombreComercial"
+						 change="cmbClient_changeHandler(event)"/>
+		</mx:FormItem>
+		<mx:FormItem label="Tipo de Proyecto:">
+			<mx:ComboBox id="cmbProjectType" width="300"
+						 labelField="etiqueta"
+						 change="cmbProjectType_changeHandler(event)"/>
+		</mx:FormItem>
+		<mx:FormItem label="Tecnología:">
+			<mx:ComboBox id="cmbTechnology" width="250"
+						 labelField="etiqueta"
+						 change="cmbTechnology_changeHandler(event)"/>
+		</mx:FormItem>
+		<mx:FormItem label="Equipo:">
+			<mx:ComboBox id="cmbEquipment" width="300"
+						 labelField="etiqueta"/>
+		</mx:FormItem>
+		<mx:FormItem>
+			<mx:Button id="btnFilter" label="Filtrar" click="btnFilter_clickHandler(event)"/>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:RemoteObject id="productoService" destination="productoService" fault="productoService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetTiposProyecto" result="responseGetTiposProyecto_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetTecnologias" result="responseGetTecnologias_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetEquipos" result="responseGetEquipos_resultHandler(event)"/>
+	<mx:RemoteObject id="clienteService" destination="clienteService" fault="clienteService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetClientes" result="responseGetClientes_resultHandler(event)"/>
+</mx:VBox>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
+		   width="100%" height="100%"
+		   xmlns:software="components.software.*"
+		   creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import events.GenericEvent;
+			
+			import model.Software;
+			
+			import mx.events.FlexEvent;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				
+			}
+			
+			protected function consult_softwareDetailHandler(event:GenericEvent):void
+			{
+				this.detail.software = event.information as model.Software;
+				this.navigator.selectedChild = this.detail;
+			}
+			
+			protected function register_softwareNewHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+			
+			protected function detail_softwareUpdatedHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:TabNavigator id="navigator" width="100%" height="100%" creationPolicy="all">
+		<software:Consult id="consult" softwareDetail="consult_softwareDetailHandler(event)"/>
+		<software:SoftwareView id="detail" update="true" softwareUpdated="detail_softwareUpdatedHandler(event)"/>
+		<software:SoftwareView id="register" registrer="true" softwareNew="register_softwareNewHandler(event)"/>
+	</mx:TabNavigator>
+</mx:Module>

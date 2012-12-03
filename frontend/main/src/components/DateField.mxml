@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:DateField xmlns:mx="http://www.adobe.com/2006/mxml" creationComplete="creationCompleteHandler(event)"
+			  width="100">
+	<mx:Script>
+		<![CDATA[
+			import model.Constants;
+			
+			import mx.events.FlexEvent;
+
+			public function reset():void{
+				textInput.text = "";
+				errorString = "";
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				var diasSemana:Array = new Array();
+				var meses:Array = new Array();
+				var FORMATO_DD_MM_YYYY:String = Constants.DATE_FORMAT;
+				diasSemana.push("D");
+				diasSemana.push("L");
+				diasSemana.push("M");
+				diasSemana.push("M");
+				diasSemana.push("J");
+				diasSemana.push("V");
+				diasSemana.push("S");
+				meses.push("Enero");						
+				meses.push("Febrero");
+				meses.push("Marzo");		
+				meses.push("Abril");		
+				meses.push("Mayo");	
+				meses.push("Junio");				
+				meses.push("Julio");
+				meses.push("Agosto");	
+				meses.push("Septiembre");			
+				meses.push("Octubre");	
+				meses.push("Noviembre");		
+				meses.push("Diciembre");
+				this.formatString = FORMATO_DD_MM_YYYY;
+				this.dayNames = diasSemana;								
+				this.monthNames = meses;
+			}
+		]]>
+	</mx:Script>
+</mx:DateField>

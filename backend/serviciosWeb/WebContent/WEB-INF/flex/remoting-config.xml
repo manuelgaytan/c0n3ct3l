@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<service id="remoting-service" 
+    class="flex.messaging.services.RemotingService">
+
+    <adapters>
+        <adapter-definition id="java-object" class="flex.messaging.services.remoting.adapters.JavaAdapter" default="true"/>
+    </adapters>
+
+    <default-channels>
+        <channel ref="my-amf"/>
+    </default-channels>
+
+	<destination id="fooBean">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/FooService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+	
+	<destination id="usuarioService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/UsuarioService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+
+	<destination id="clienteService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/ClienteService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+	
+	<destination id="productoService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/ProductoService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+	
+	<destination id="proyectoService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/ProyectoService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+	
+	<destination id="catalogoService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/CatalogoService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+	
+	<destination id="colaboradorService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/ColaboradorService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+	
+	<destination id="datosGeneralesService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/DatosGeneralesService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+	
+	<destination id="configuracionPruebaEntregaService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/ConfiguracionPruebaEntregaService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+	
+	<destination id="desarrolloProyectoABService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/DesarrolloProyectoABService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+	
+	<destination id="herramientaService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/HerramientaService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+	
+	<destination id="equipoMedicionService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/EquipoMedicionService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+	
+	<destination id="equipoTransporteService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/EquipoTransporteService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+	
+	<destination id="consumibleService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/ConsumibleService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+	
+	<destination id="hardwareService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/HardwareService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+	
+	<destination id="materialService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/MaterialService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+	
+	<destination id="softwareService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/SoftwareService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+	
+	<destination id="telefoniaMovilService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/TelefoniaMovilService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+	
+	<destination id="solicitudAlmacenService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/SolicitudAlmacenService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+</service>

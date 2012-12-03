@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<service id="remoting-service" 
+    class="flex.messaging.services.RemotingService">
+
+    <adapters>
+        <adapter-definition id="java-object" class="flex.messaging.services.remoting.adapters.JavaAdapter" default="true"/>
+    </adapters>
+
+    <default-channels>
+        <channel ref="my-amf"/>
+    </default-channels>
+
+	<destination id="fooBean">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/FooService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+	
+	<destination id="usuarioService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/UsuarioService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+
+	<destination id="clienteService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/ClienteService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+	
+	<destination id="productoService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/ProductoService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+	
+	<destination id="proyectoService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/ProyectoService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+	
+	<destination id="datosGeneralesService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/DatosGeneralesService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+	
+	<destination id="desarrolloProyectoABService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/DesarrolloProyectoABService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+	
+	<destination id="configuracionPruebaEntregaService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/ConfiguracionPruebaEntregaService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+</service>

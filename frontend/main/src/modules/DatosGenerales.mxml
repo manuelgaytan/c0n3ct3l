@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
+		   width="850" height="525"
+		   xmlns:datosgenerales="components.datosgenerales.*"
+		   creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import events.GenericEvent;
+			
+			import model.DatosGeneralesProyecto;
+			import model.Usuario;
+			
+			import mx.events.FlexEvent;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				
+			}
+			
+			protected function consult_generalDataProjectDetailHandler(event:GenericEvent):void
+			{
+				this.detail.generalDataProject = event.information as DatosGeneralesProyecto;
+				this.navigator.selectedChild = this.detail;
+			}
+			
+			protected function register_generalDataProjectNewHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+			
+			protected function detail_generalDataProjectUpdatedHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:TabNavigator id="navigator" width="100%" height="100%" creationPolicy="all">
+		<datosgenerales:Consult id="consult" generalDataProjectDetail="consult_generalDataProjectDetailHandler(event)"/>
+		<datosgenerales:GeneralData id="detail" update="true" generalDataProjectUpdated="detail_generalDataProjectUpdatedHandler(event)"/>
+		<datosgenerales:GeneralData id="register" registrer="true" generalDataProjectNew="register_generalDataProjectNewHandler(event)"/>
+	</mx:TabNavigator>
+</mx:Module>

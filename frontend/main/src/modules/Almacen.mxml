@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
+		   width="1000" height="500" creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import model.TipoAlmacen;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
+			import mx.events.ModuleEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			[Bindable]
+			private var stockTypes:ArrayCollection;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				/*
+				stockTypes = new ArrayCollection(['','Herramienta','Equipo de Medición',
+					'Equipo de Transporte','Materiales','Consumibles','Hardware','Software','Telefonía Móvil',
+					'Solicitudes al Almacén']);
+				*/
+				this.fillCombos();
+			}
+			
+			protected function cmbStockType_changeHandler(event:ListEvent):void
+			{
+				if( !Util.listBaseSelected( this.cmbStockType ) ){
+					return;
+				}
+				var moduleName:String = null;
+				cursorManager.setBusyCursor();
+				var option:* = (cmbStockType.selectedItem as TipoAlmacen).id;
+				switch(option){
+					case 1:
+						moduleName = "modules/Herramienta.swf";
+					break;
+					case 2:
+						moduleName = "modules/EquipoMedicion.swf";
+					break;
+					case 3:
+						moduleName = "modules/EquipoTransporte.swf";
+					break;
+					case 4:
+						moduleName = "modules/Materiales.swf";
+					break;
+					case 5:
+						moduleName = "modules/Consumibles.swf";
+					break;
+					case 6:
+						moduleName = "modules/HardwareModule.swf";
+					break;
+					case 7:
+						moduleName = "modules/SoftwareModule.swf";
+					break;
+					case 8:
+						moduleName = "modules/TelefoniaMovilModule.swf";
+					break;
+					case 9:
+						moduleName = "modules/SolicitudAlmacenModule.swf";
+					break;
+					default:
+						module.unloadModule();
+					break;
+				}
+				this.module.url = moduleName;
+			}
+			
+			protected function module_readyHandler(event:ModuleEvent):void
+			{
+				cursorManager.removeBusyCursor();
+			}
+			
+			protected function responseGetAlmacen_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				stockTypes = Util.addEmptyCatalgo( data );
+			}
+			
+			protected function catalogoService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			private function fillCombos():void
+			{
+				this.responseGetAlmacen.token = this.catalogoService.getTipoAlmacen();
+			}
+		]]>
+	</mx:Script>
+	<mx:ComboBox id="cmbStockType" dataProvider="{stockTypes}"
+				 change="cmbStockType_changeHandler(event)"
+				 labelField="etiqueta"/>
+	<mx:ModuleLoader id="module" width="100%" height="100%" ready="module_readyHandler(event)"/>
+	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="catalogoService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetAlmacen" result="responseGetAlmacen_resultHandler(event)"/>
+</mx:Module>

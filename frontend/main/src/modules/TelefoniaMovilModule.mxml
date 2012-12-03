@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
+		   width="100%" height="100%"
+		   xmlns:telefoniamovil="components.telefoniamovil.*"
+		   creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import events.GenericEvent;
+			
+			import model.TelefoniaMovil;
+			
+			import mx.events.FlexEvent;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				
+			}
+			
+			protected function consult_mobileTelephonyDetailHandler(event:GenericEvent):void
+			{
+				this.detail.mobileTelephony = event.information as model.TelefoniaMovil;
+				this.navigator.selectedChild = this.detail;
+			}
+			
+			protected function register_mobileTelephonyNewHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+			
+			protected function detail_mobileTelephonyUpdatedHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:TabNavigator id="navigator" width="100%" height="100%" creationPolicy="all">
+		<telefoniamovil:Consult id="consult" mobileTelephonyDetail="consult_mobileTelephonyDetailHandler(event)"/>
+		<telefoniamovil:MobileTelephony id="detail" update="true" mobileTelephonyUpdated="detail_mobileTelephonyUpdatedHandler(event)"/>
+		<telefoniamovil:MobileTelephony id="register" registrer="true" mobileTelephonyNew="register_mobileTelephonyNewHandler(event)"/>
+	</mx:TabNavigator>
+</mx:Module>

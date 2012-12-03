@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)"
+		 >
+	<mx:Script>
+		<![CDATA[
+			import model.Catalogo;
+			import model.Colaborador;
+			import model.Constants;
+			import model.EquipoMedicion;
+			import model.EstatusA;
+			import model.GrupoFamiliaA;
+			import model.Perfil;
+			import model.TipoAlmacen;
+			import model.TipoMantenimiento;
+			import model.UbicacionA;
+			import model.UbicacionB;
+			import model.UnidadA;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.com.gahm.componentes.validadores.ValidadorNumerico;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.utils.object_proxy;
+			
+			private var mode:String = null;
+			private var _item:EquipoMedicion;
+			private var validators:InicializaValidadoresEtiquetas;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				this.label = Constants.REGISTRAR;
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set measurementEquipment(value:EquipoMedicion):void{
+				if( value == null ){
+					return;
+				}
+				this._item = value;
+				this.setMeasurementEquipment(); 
+			}
+			
+			private function setMeasurementEquipment():void
+			{
+				if( this._item == null ){
+					return;
+				}
+				this.txtCode.text = this._item.codigo;
+				this.txtFamily.text = this._item.grupoFamilia;
+				this.txtDescription.text = this._item.descripcion;
+				this.txtSerie.text = this._item.noSerie;
+				this.txtTrade.text = this._item.marca;
+				this.txtModel.text = this._item.modelo;
+				this.dlvWarranty.delivers = this._item.polizaGarantia;
+				this.dlvInsurance.delivers = this._item.polizaSeguro;
+				if( Util.isFill( this.cmbLocation ) && this._item.ubicacionb != null ){
+					this.cmbLocation.selectedIndex = Util.selectedIndexFromCombo( this.cmbLocation.dataProvider as ArrayCollection, 
+						this._item.ubicacionb.id);
+				}
+				if( Util.isFill( this.cmbResponsible ) && this._item.responsable != null ){
+					this.cmbResponsible.selectedIndex = Util.selectedIndexFromCombo( this.cmbResponsible.dataProvider as ArrayCollection, 
+						this._item.responsable.id);
+				}
+				if( Util.isFill( this.cmbStatus ) && this._item.estatusa != null ){
+					this.cmbStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbStatus.dataProvider as ArrayCollection, 
+						this._item.estatusa.id);
+				}
+				this.txtCertificateNumber.text = this._item.noCertificado;
+				this.dtfCalibration.selectedDate = this._item.fechaCalibracion;
+				this.dtfNextCalibration.selectedDate = this._item.fechaProximaCalibracion;
+				this.dlvCalibrationCertificate.delivers = this._item.certificadoCalibracion;
+				if( Util.isFill( this.cmbService ) && this._item.tipomantenimiento != null ){
+					this.cmbService.selectedIndex = Util.selectedIndexFromCombo( this.cmbService.dataProvider as ArrayCollection, 
+						this._item.tipomantenimiento.id);
+				}
+				this.dtfServiceDate.selectedDate = this._item.fechaMantenimiento;
+				this.dlvServiceOrder.delivers = this._item.ordenMantenimiento;
+				this.comments.comments = this._item.comentarios;
+			}
+			
+			private function getMeasurementEquipment():EquipoMedicion{
+				var item:EquipoMedicion = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					item = new EquipoMedicion();
+				}else{
+					item = this._item;
+				}
+				item.tipoalmacen = TipoAlmacen.getEquipoMedicion();
+				item.fkTipoAlmacen = Util.extractId(item.tipoalmacen);
+				item.codigo = Util.validateEmpty( this.txtCode.text );
+				item.grupoFamilia = Util.validateEmpty( this.txtFamily.text );
+				item.descripcion = Util.validateEmpty( this.txtDescription.text );
+				item.noSerie = Util.validateEmpty( this.txtSerie.text );
+				item.marca = Util.validateEmpty( this.txtTrade.text );
+				item.modelo = Util.validateEmpty( this.txtModel.text );
+				item.polizaGarantia = this.dlvWarranty.delivers;
+				item.polizaSeguro = this.dlvInsurance.delivers;
+				item.ubicacionb = Util.validateCombo( this.cmbLocation ) as UbicacionB;
+				item.fkUbicacionB = Util.extractId(item.ubicacionb);
+				item.responsable = Util.validateCombo( this.cmbResponsible ) as Colaborador;
+				item.fkResponsable = Util.extractId(item.responsable);
+				item.estatusa = Util.validateCombo( this.cmbStatus ) as EstatusA;
+				item.fkEstatusA = Util.extractId(item.estatusa);
+				item.noCertificado = Util.validateEmpty( this.txtCertificateNumber.text );
+				item.fechaCalibracion = this.dtfCalibration.selectedDate;
+				item.fechaProximaCalibracion = this.dtfNextCalibration.selectedDate;
+				item.certificadoCalibracion = this.dlvCalibrationCertificate.delivers;
+				item.tipomantenimiento = Util.validateCombo( this.cmbService ) as TipoMantenimiento;
+				item.fkTipoMantenimiento = Util.extractId(item.tipomantenimiento);
+				item.fechaMantenimiento = this.dtfServiceDate.selectedDate;
+				item.ordenMantenimiento = this.dlvServiceOrder.delivers;
+				item.comentarios = this.comments.comments;
+				return item;
+			}
+			
+			private function fillCombos():void
+			{
+				this.responseGetUbicacionB.token = this.catalogoService.getUbicacionB();
+				this.responseGetColaborador.token = this.catalogoService.getColaborador();
+				this.responseGetEstatusA.token = this.catalogoService.getEstatusA();
+				this.responseGetTipoMantenimiento.token = this.catalogoService.getTipoMantenimiento();
+			}
+			
+			protected function equipoMedicionService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function btnAccept_clickHandler(event:MouseEvent):void
+			{
+				if( !this.validations() ){
+					Util.showMessageVerifyFields();
+					return;
+				}
+				if( this.mode == Constants.REGISTER_MODE ){
+					var measurementEquipment:EquipoMedicion = this.getMeasurementEquipment();
+					Util.showProperties( measurementEquipment );
+					this.responseSave.token = this.equipoMedicionService.save( measurementEquipment );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
+				}
+			}
+			
+			private function updateItem(event:CloseEvent):void{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var measurementEquipment:EquipoMedicion = this.getMeasurementEquipment();
+				Util.showProperties( measurementEquipment );
+				this.responseUpdate.token = this.equipoMedicionService.update( measurementEquipment );
+			}
+			
+			private function validations():Boolean
+			{
+				var value:Boolean = true;
+				value &&= this.validators.validarFormulario();
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+			}
+			
+			private function initializeValidators():void
+			{
+				this.validators = new InicializaValidadoresEtiquetas();
+				validators.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
+				validators.setRestrictor(txtCode, "generic");
+				validators.setRestrictor(txtFamily, "generic");
+				validators.setRestrictor(txtDescription, "generic");
+				validators.setRestrictor(txtSerie, "generic");
+				validators.setRestrictor(txtTrade, "generic");
+				validators.setRestrictor(txtModel, "generic");
+				validators.setRestrictor(txtCertificateNumber, "generic");
+			}
+			
+			protected function responseSave_resultHandler(event:ResultEvent):void
+			{
+				var eventMeasurementEquipmentNew:Event = new Event("measurementEquipmentNew");
+				this.dispatchEvent( eventMeasurementEquipmentNew );
+				this.cleanForm();
+			}
+			
+			private function cleanForm():void
+			{
+				this.txtCode.reset();
+				this.txtFamily.reset();
+				this.txtDescription.reset();
+				this.txtSerie.reset();
+				this.txtTrade.reset();
+				this.txtModel.reset();
+				this.dlvWarranty.reset();
+				this.dlvInsurance.reset();
+				this.cmbLocation.selectedIndex = 0;
+				this.cmbResponsible.selectedIndex = 0;
+				this.cmbStatus.selectedIndex = 0;
+				this.txtCertificateNumber.reset();
+				this.dtfCalibration.reset();
+				this.dtfNextCalibration.reset();
+				this.dlvCalibrationCertificate.reset();
+				this.cmbService.selectedIndex = 0;
+				this.dtfServiceDate.reset();
+				this.dlvServiceOrder.reset();
+				this.comments.reset();
+			}
+			
+			protected function responseUpdate_resultHandler(event:ResultEvent):void
+			{
+				var eventMeasurementEquipmentUpdated:Event = new Event("measurementEquipmentUpdated");
+				this.dispatchEvent( eventMeasurementEquipmentUpdated );
+				this.cleanForm();
+			}
+			
+			protected function responseGetUbicacionB_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbLocation.dataProvider = Util.addEmptyCatalgo( data );
+				if( this._item != null && this._item.ubicacionb != null ){
+					this.cmbLocation.selectedIndex = Util.selectedIndexFromCombo( this.cmbLocation.dataProvider as ArrayCollection, 
+						this._item.ubicacionb.id);
+				}
+			}
+			
+			protected function responseGetColaborador_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbResponsible.dataProvider = Util.addEmptyCatalgo( data, "nombreCompleto" );
+				if( this._item != null && this._item.responsable != null ){
+					this.cmbResponsible.selectedIndex = Util.selectedIndexFromCombo( this.cmbResponsible.dataProvider as ArrayCollection, 
+						this._item.responsable.id);
+				}
+			}
+			
+			protected function responseGetEstatusA_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbStatus.dataProvider = Util.addEmptyCatalgo( data );
+				if( this._item != null && this._item.estatusa != null ){
+					this.cmbStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbStatus.dataProvider as ArrayCollection, 
+						this._item.estatusa.id);
+				}
+			}
+			
+			protected function responseGetTipoMantenimiento_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbService.dataProvider = Util.addEmptyCatalgo( data );
+				if( this._item != null && this._item.tipomantenimiento != null ){
+					this.cmbService.selectedIndex = Util.selectedIndexFromCombo( this.cmbService.dataProvider as ArrayCollection, 
+						this._item.tipomantenimiento.id);
+				}
+			}
+			
+			protected function catalogoService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="measurementEquipmentNew", type="flash.events.Event")]
+		[Event(name="measurementEquipmentUpdated", type="flash.events.Event")]
+	</mx:Metadata>
+	<mx:Form id="form">
+		<mx:FormItem label="Código:">
+			<components:TextInput id="txtCode"/>
+		</mx:FormItem>
+		<mx:FormItem label="Grupo o Familia:">
+			<components:TextInput id="txtFamily"
+								  />
+		</mx:FormItem>
+		<mx:FormItem label="Descripción:">
+			<components:TextInput id="txtDescription" width="400"/>
+		</mx:FormItem>
+		<mx:FormItem label="No. de Serie:">
+			<components:TextInput id="txtSerie"/>
+		</mx:FormItem>
+		<mx:FormItem label="Marca:">
+			<components:TextInput id="txtTrade"
+								  />
+		</mx:FormItem>
+		<mx:FormItem label="Modelo:">
+			<components:TextInput id="txtModel"/>
+		</mx:FormItem>
+		<mx:FormItem label="Poliza de Garantía:">
+			<components:Deliver id="dlvWarranty"/>
+		</mx:FormItem>
+		<mx:FormItem label="Poliza de Seguro:">
+			<components:Deliver id="dlvInsurance"/>
+		</mx:FormItem>
+		<mx:FormItem label="Ubicación:">
+			<mx:ComboBox id="cmbLocation"
+						 labelField="etiqueta"
+						 />
+		</mx:FormItem>
+		<mx:FormItem label="Responsable:">
+			<mx:ComboBox id="cmbResponsible"
+						 labelField="nombreCompleto"
+						 />
+		</mx:FormItem>
+		<mx:FormItem label="Estatus:">
+			<mx:ComboBox id="cmbStatus"
+						 labelField="etiqueta"
+						 />
+		</mx:FormItem>
+		<mx:FormItem label="No. de Certificado:">
+			<components:TextInput id="txtCertificateNumber"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha de Calibración:">
+			<components:DateField id="dtfCalibration"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha Próxima Calibración:">
+			<components:DateField id="dtfNextCalibration"/>
+		</mx:FormItem>
+		<mx:FormItem label="Certificado de Calibración:">
+			<components:Deliver id="dlvCalibrationCertificate"/>
+		</mx:FormItem>
+		<mx:FormItem label="Mantenimiento o Servicio:">
+			<mx:ComboBox id="cmbService"
+						 labelField="etiqueta"
+						 />
+		</mx:FormItem>
+		<mx:FormItem label="Fecha de Mantenimiento o Servicio:">
+			<components:DateField id="dtfServiceDate"/>
+		</mx:FormItem>
+		<mx:FormItem label="Orden de Mantenimiento o Servicio:">
+			<components:Deliver id="dlvServiceOrder"/>
+		</mx:FormItem>
+		<components:Comments id="comments"/>
+		<mx:FormItem>
+			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:RemoteObject id="equipoMedicionService" destination="equipoMedicionService" fault="equipoMedicionService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
+	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
+	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="catalogoService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetUbicacionB" result="responseGetUbicacionB_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetColaborador" result="responseGetColaborador_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetEstatusA" result="responseGetEstatusA_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetTipoMantenimiento" result="responseGetTipoMantenimiento_resultHandler(event)"/>
+</mx:VBox>

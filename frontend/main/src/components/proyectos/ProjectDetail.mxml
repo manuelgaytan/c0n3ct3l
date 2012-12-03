@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*"
+		 label="Detalle">
+	<mx:Script>
+		<![CDATA[
+			import events.GenericEvent;
+			
+			import model.Constants;
+			import model.Estado;
+			import model.Proyecto;
+			import model.Util;
+			
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			private var _project:Proyecto;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+			}
+			
+			protected function btnCancel_clickHandler(event:MouseEvent):void
+			{
+				Alert.show("Confirme si desea cancelar el proyecto.","Advertencia",Alert.YES+Alert.NO,this, cancelItem); 
+			}
+			
+			private function cancelItem(event:CloseEvent):void
+			{
+				if( event.detail == Alert.YES ){
+					this.responseCancelProject.token = this.proyectoService.cancelarProyecto( this._project.id );
+				}
+			}
+			
+			public function set project(value:Proyecto):void{
+				if( value == null ){
+					return;
+				}
+				this._project = value;
+				this.setProject(); 
+			}
+			
+			private function setProject():void
+			{
+				if( this._project == null ){
+					return;
+				}
+				this.txtConectelID.text = Util.getIDConectelFormat( Util.extractObject( this._project, "id" ) );
+				this.txtCategory.text = Util.extractToText( this._project, "categoria.etiqueta" );
+				this.txtClient.text  = Util.extractToText( this._project, "producto.cliente.nombreComercial" );
+				this.txtProjectType.text = Util.extractToText( this._project, "producto.tipoProyecto" );
+				this.txtTechnology.text = Util.extractToText( this._project, "producto.teconologia" );
+				this.txtEquipment.text = Util.extractToText( this._project, "producto.equipo" );
+				this.txtActivity.text = Util.extractToText( this._project, "producto.actividadRealizar" );
+				this.txtModel.text = Util.extractToText( this._project, "producto.modelo" );
+				this.txtServiceDescription.text = Util.extractToText( this._project, "producto.descripcionServicio" );
+				this.txtServiceType.text = Util.extractToText( this._project, "producto.tipoServicio" );
+				this.txtCost.text = Util.formatNumber( Util.extractObject( this._project, "producto.costo") );
+				this.txtSite.text = Util.extractToText( this._project, "centralSitio");
+				this.validateStatus( Number( Util.extractObject( this._project, "estado.id") ) );
+			}
+			
+			private function getProject():Proyecto{
+				var project:Proyecto = null;
+				project = this._project;
+				return project;
+			}
+			
+			protected function proyectoServicio_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function responseCancelProject_resultHandler(event:ResultEvent):void
+			{
+				var cancelProject:Event = null;
+				cancelProject = new Event("projectCancelled");
+				this.dispatchEvent( cancelProject );
+			}
+			
+			private function validateStatus(idEstado:Number):void
+			{
+				var value:Boolean = true;
+				if( idEstado != Estado.ID_ALTA ){
+					value = false;
+				}
+				this.btnCancel.visible = value;
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="projectCancelled", type="flash.events.Event")]
+	</mx:Metadata>
+	<mx:Form>
+		<mx:FormItem label="ID Conectel:" direction="horizontal">
+			<components:TextInput id="txtConectelID" width="150" textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Categoría:">
+			<components:TextInput id="txtCategory" width="400"/>
+		</mx:FormItem>
+		<mx:FormItem label="Cliente:">
+			<components:TextInput id="txtClient" width="400"/>
+		</mx:FormItem>
+		<mx:FormItem label="Tipo de Proyecto:">
+			<components:TextInput id="txtProjectType" width="300"/>
+		</mx:FormItem>
+		<mx:FormItem label="Tecnología:">
+			<components:TextInput id="txtTechnology" width="250"/>
+		</mx:FormItem>
+		<mx:FormItem label="Equipo:">
+			<components:TextInput id="txtEquipment" width="300"/>
+		</mx:FormItem>
+		<mx:FormItem label="Actividad a Realizar:">
+			<components:TextInput id="txtActivity" width="500"/>
+		</mx:FormItem>
+		<mx:FormItem label="Modelo:">
+			<components:TextInput id="txtModel" width="250"/>
+		</mx:FormItem>
+		<mx:FormItem label="Descripción del Servicio:">
+			<components:TextInput id="txtServiceDescription" width="500"/>
+		</mx:FormItem>
+		<mx:FormItem label="Tipo de Servicio:">
+			<components:TextInput id="txtServiceType" width="250"/>
+		</mx:FormItem>
+		<mx:FormItem label="Costo:">
+			<components:TextInput id="txtCost" width="150" textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Central o Sitio:">
+			<components:TextInput id="txtSite" width="350"/>
+		</mx:FormItem>
+		<mx:FormItem>
+			<mx:Button id="btnCancel" label="Cancelar Proyecto"
+					   click="btnCancel_clickHandler(event)"/>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:RemoteObject id="proyectoService" destination="proyectoService" fault="proyectoServicio_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseCancelProject" result="responseCancelProject_resultHandler(event)"/>
+</mx:VBox>

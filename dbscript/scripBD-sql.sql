@@ -657,139 +657,145 @@
 
     /* Compras */
 
-CREATE TABLE TipoPago
-(
-id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
-tipo VARCHAR(100) NOT NULL UNIQUE,
-PRIMARY KEY (id)
-);
+	CREATE TABLE TipoPago
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	tipo VARCHAR(100) NOT NULL UNIQUE,
+	PRIMARY KEY (id)
+	);
 
-CREATE TABLE Pago
-(
-id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
-pago VARCHAR(100) NOT NULL UNIQUE,
-PRIMARY KEY (id)
-);
+	CREATE TABLE Pago
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	pago VARCHAR(100) NOT NULL UNIQUE,
+	PRIMARY KEY (id)
+	);
 
-CREATE TABLE TipoContrato
-(
-id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
-tipo VARCHAR(100) NOT NULL UNIQUE,
-PRIMARY KEY (id)
-);
+	CREATE TABLE TipoContrato
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	tipo VARCHAR(100) NOT NULL UNIQUE,
+	PRIMARY KEY (id)
+	);
 
-CREATE TABLE TipoPersona
-(
-id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
-tipo VARCHAR(255) NOT NULL,
-PRIMARY KEY (id)
-);
+	CREATE TABLE TipoPersona
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	tipo VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+	);
 
-CREATE TABLE Proveedor
-(
-id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
-fk_tipo_persona INTEGER UNSIGNED NOT NULL,
-nombre_comercial VARCHAR(255) NOT NULL,
-razon_social VARCHAR(255) NOT NULL,
-rfc VARCHAR(255) NOT NULL,
-direccion_fisica VARCHAR(255) NOT NULL,
-direccion_fiscal VARCHAR(255) NOT NULL,
-telefonos VARCHAR(255) NOT NULL,
-contacto VARCHAR(255),
-correo VARCHAR(255),
-pagina_web VARCHAR(255),
-PRIMARY KEY (id)
-);
+	CREATE TABLE Proveedor
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_tipo_persona INT(11) UNSIGNED NOT NULL,
+	nombre_comercial VARCHAR(255) NOT NULL,
+	razon_social VARCHAR(255) NOT NULL,
+	rfc VARCHAR(255) NOT NULL,
+	direccion_fisica VARCHAR(255) NOT NULL,
+	direccion_fiscal VARCHAR(255) NOT NULL,
+	telefonos VARCHAR(255) NOT NULL,
+	contacto VARCHAR(255),
+	correo VARCHAR(255),
+	pagina_web VARCHAR(255),
+	PRIMARY KEY (id)
+	);
 
-CREATE TABLE ProveedorMaquilador
-(
-id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
-fk_proveedor INT(11) UNSIGNED NOT NULL,
-fk_pago INT(11) UNSIGNED,
-cuenta_bancaria VARCHAR(255) NOT NULL,
-banco VARCHAR(255) NOT NULL,
-clabe_interbancaria VARCHAR(255) NOT NULL,
-nss VARCHAR(255) NOT NULL,
-curp VARCHAR(255) NOT NULL,
-fk_categoria_proyecto INT(11) UNSIGNED,
-fk_tipo_contrato INT(11) UNSIGNED,
-fecha_contrato DATE,
-PRIMARY KEY (id)
-);
+	CREATE TABLE ProveedorSeleccionado
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_proveedor INT(11) UNSIGNED NOT NULL,
+	PRIMARY KEY (id)
+	);
 
-CREATE TABLE DocumentoProveedorMaquilador
-(
-id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
-fk_proveedor_maquilador INT(11) UNSIGNED NOT NULL,
-documento VARCHAR(255) NOT NULL,
-PRIMARY KEY (id)
-);
+	CREATE TABLE FormaPago
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	forma VARCHAR(100) NOT NULL UNIQUE,
+	PRIMARY KEY (id)
+	);
 
-CREATE TABLE DocumentoLiderProveedorMaquilador
-(
-id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
-fk_proveedor_maquilador INT(11) UNSIGNED NOT NULL,
-documento VARCHAR(255) NOT NULL,
-PRIMARY KEY (id)
-);
+	CREATE TABLE ComentarioCompras
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fecha DATE NOT NULL,
+	fk_usuario INT(11) UNSIGNED NOT NULL,
+	comentario VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+	);
 
-CREATE TABLE ProveedorSeleccionado
-(
-id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
-fk_proveedor INT(11) UNSIGNED NOT NULL,
-PRIMARY KEY (id)
-);
+	CREATE TABLE DatoBancario
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	clabe_interbancaria VARCHAR(255) NOT NULL,
+	banco VARCHAR(255) NOT NULL,
+	cuenta_bancaria VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+	);
 
-CREATE TABLE FormaPago
-(
-id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
-forma VARCHAR(100) NOT NULL UNIQUE,
-PRIMARY KEY (id)
-);
+	CREATE TABLE ProveedorCalificado
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_proveedor_seleccionado INT(11) UNSIGNED NOT NULL,
+	fk_forma_pago INT(11) UNSIGNED NOT NULL,
+	fk_tipo_pago INT(11) UNSIGNED NOT NULL,
+	moneda VARCHAR(255),
+	limite_credito DECIMAL NOT NULL,
+	dias_credito INT NOT NULL,
+	descuentos DECIMAL NOT NULL,
+	fk_dato_bancario INT(11) UNSIGNED,
+	PRIMARY KEY (id)
+	);
 
-CREATE TABLE ProveedorCalificado
-(
-id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
-fk_proveedor_seleccionado INT(11) UNSIGNED NOT NULL,
-fk_forma_pago INT(11) UNSIGNED NOT NULL,
-fk_tipo_pago INT(11) UNSIGNED NOT NULL,
-moneda VARCHAR(255),
-limite_credito DECIMAL NOT NULL,
-dias_credito INT NOT NULL,
-descuentos DECIMAL NOT NULL,
-cuenta_bancaria VARCHAR(255) NOT NULL,
-banco VARCHAR(255) NOT NULL,
-clabe_interbancaria VARCHAR(255) NOT NULL,
-PRIMARY KEY (id)
-);
+	CREATE TABLE ComentarioProveedor
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_proveedor_calificado INT(11) UNSIGNED NOT NULL,
+	fk_comentario_compras INT(11) UNSIGNED NOT NULL,
+	PRIMARY KEY (id)
+	);
 
-CREATE TABLE ComentarioCompras
-(
-id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
-fecha DATE NOT NULL,
-fk_usuario INT(11) UNSIGNED NOT NULL,
-comentario VARCHAR(255) NOT NULL,
-PRIMARY KEY (id)
-);
+	CREATE TABLE ProveedorMaquilador
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_proveedor INT(11) UNSIGNED NOT NULL,
+	fk_pago INT(11) UNSIGNED,
+	fk_dato_bancario INTEGER UNSIGNED,
+	nss VARCHAR(255) NOT NULL,
+	curp VARCHAR(255) NOT NULL,
+	fk_categoria_proyecto INT(11) UNSIGNED,
+	fk_tipo_contrato INT(11) UNSIGNED,
+	fecha_contrato DATE,
+	PRIMARY KEY (id)
+	);
 
-CREATE TABLE ComentarioProveedor
-(
-id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
-fk_proveedor_calificado INT(11) UNSIGNED NOT NULL,
-fk_comentario_compras INT(11) UNSIGNED NOT NULL,
-PRIMARY KEY (id)
-);
+	CREATE TABLE DocumentoProveedorMaquilador
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_proveedor_maquilador INT(11) UNSIGNED NOT NULL,
+	documento VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+	);
 
-CREATE TABLE Ayudante
-(
-id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
-nombre VARCHAR(255) NOT NULL,
-rfc VARCHAR(255) NOT NULL,
-curp VARCHAR(255) NOT NULL,
-nss VARCHAR(255) NOT NULL,
-fk_proveedor_maquilador INT(11) UNSIGNED,
-PRIMARY KEY (id)
-);
+	CREATE TABLE Ayudante
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	nombre VARCHAR(255) NOT NULL,
+	rfc VARCHAR(255) NOT NULL,
+	curp VARCHAR(255) NOT NULL,
+	nss VARCHAR(255) NOT NULL,
+	fk_proveedor_maquilador INT(11) UNSIGNED,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE DocumentoLiderProveedorMaquilador
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_proveedor_maquilador INT(11) UNSIGNED NOT NULL,
+	documento VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
 
 /* Fin Compras */
 
@@ -979,35 +985,40 @@ PRIMARY KEY (id)
 
 	/* Compras */
 
-	ALTER TABLE Proveedor ADD FOREIGN KEY fk_tipo_persona_idxfk (fk_tipo_persona) REFERENCES TipoPersona (id);
+ALTER TABLE Proveedor ADD FOREIGN KEY fk_tipo_persona_idxfk (fk_tipo_persona) REFERENCES TipoPersona (id);
 
-	ALTER TABLE ProveedorMaquilador ADD FOREIGN KEY fk_proveedor_idxfk (fk_proveedor) REFERENCES Proveedor (id);
+ALTER TABLE ProveedorSeleccionado ADD FOREIGN KEY fk_proveedor_idxfk (fk_proveedor) REFERENCES Proveedor (id);
 
-	ALTER TABLE ProveedorMaquilador ADD FOREIGN KEY fk_pago_idxfk (fk_pago) REFERENCES Pago (id);
+ALTER TABLE ComentarioCompras ADD FOREIGN KEY fk_usuario_idxfk (fk_usuario) REFERENCES Usuario (id);
 
-	ALTER TABLE ProveedorMaquilador ADD FOREIGN KEY fk_categoria_proyecto_idxfk (fk_categoria_proyecto) REFERENCES CategoriaProyecto (id);
+ALTER TABLE ProveedorCalificado ADD FOREIGN KEY fk_proveedor_seleccionado_idxfk (fk_proveedor_seleccionado) REFERENCES ProveedorSeleccionado (id);
 
-	ALTER TABLE ProveedorMaquilador ADD FOREIGN KEY fk_tipo_contrato_idxfk (fk_tipo_contrato) REFERENCES TipoContrato (id);
+ALTER TABLE ProveedorCalificado ADD FOREIGN KEY fk_forma_pago_idxfk (fk_forma_pago) REFERENCES FormaPago (id);
 
-	ALTER TABLE DocumentoProveedorMaquilador ADD FOREIGN KEY fk_proveedor_maquilador_idxfk (fk_proveedor_maquilador) REFERENCES ProveedorMaquilador (id);
+ALTER TABLE ProveedorCalificado ADD FOREIGN KEY fk_tipo_pago_idxfk (fk_tipo_pago) REFERENCES TipoPago (id);
 
-	ALTER TABLE DocumentoLiderProveedorMaquilador ADD FOREIGN KEY fk_proveedor_maquilador_idxfk_1 (fk_proveedor_maquilador) REFERENCES ProveedorMaquilador (id);
+ALTER TABLE ProveedorCalificado ADD FOREIGN KEY fk_dato_bancario_idxfk (fk_dato_bancario) REFERENCES DatoBancario (id);
 
-	ALTER TABLE ProveedorSeleccionado ADD FOREIGN KEY fk_proveedor_idxfk_1 (fk_proveedor) REFERENCES Proveedor (id);
+ALTER TABLE ComentarioProveedor ADD FOREIGN KEY fk_proveedor_calificado_idxfk (fk_proveedor_calificado) REFERENCES ProveedorCalificado (id);
 
-	ALTER TABLE ProveedorCalificado ADD FOREIGN KEY fk_proveedor_seleccionado_idxfk (fk_proveedor_seleccionado) REFERENCES ProveedorSeleccionado (id);
+ALTER TABLE ComentarioProveedor ADD FOREIGN KEY fk_comentario_compras_idxfk (fk_comentario_compras) REFERENCES ComentarioCompras (id);
 
-	ALTER TABLE ProveedorCalificado ADD FOREIGN KEY fk_forma_pago_idxfk (fk_forma_pago) REFERENCES FormaPago (id);
+ALTER TABLE ProveedorMaquilador ADD FOREIGN KEY fk_proveedor_idxfk_1 (fk_proveedor) REFERENCES Proveedor (id);
 
-	ALTER TABLE ProveedorCalificado ADD FOREIGN KEY fk_tipo_pago_idxfk (fk_tipo_pago) REFERENCES TipoPago (id);
+ALTER TABLE ProveedorMaquilador ADD FOREIGN KEY fk_pago_idxfk (fk_pago) REFERENCES Pago (id);
 
-	ALTER TABLE ComentarioCompras ADD FOREIGN KEY fk_usuario_idxfk (fk_usuario) REFERENCES Usuario (id);
+ALTER TABLE ProveedorMaquilador ADD FOREIGN KEY fk_dato_bancario_idxfk_1 (fk_dato_bancario) REFERENCES DatoBancario (id);
 
-	ALTER TABLE ComentarioProveedor ADD FOREIGN KEY fk_proveedor_calificado_idxfk (fk_proveedor_calificado) REFERENCES ProveedorCalificado (id);
+ALTER TABLE ProveedorMaquilador ADD FOREIGN KEY fk_categoria_proyecto_idxfk (fk_categoria_proyecto) REFERENCES CategoriaProyecto (id);
 
-	ALTER TABLE ComentarioProveedor ADD FOREIGN KEY fk_comentario_compras_idxfk (fk_comentario_compras) REFERENCES ComentarioCompras (id);
+ALTER TABLE ProveedorMaquilador ADD FOREIGN KEY fk_tipo_contrato_idxfk (fk_tipo_contrato) REFERENCES TipoContrato (id);
 
-	ALTER TABLE Ayudante ADD FOREIGN KEY fk_proveedor_maquilador_idxfk_2 (fk_proveedor_maquilador) REFERENCES ProveedorMaquilador (id);
+ALTER TABLE DocumentoProveedorMaquilador ADD FOREIGN KEY fk_proveedor_maquilador_idxfk (fk_proveedor_maquilador) REFERENCES ProveedorMaquilador (id);
+
+ALTER TABLE Ayudante ADD FOREIGN KEY fk_proveedor_maquilador_idxfk_1 (fk_proveedor_maquilador) REFERENCES ProveedorMaquilador (id);
+
+ALTER TABLE DocumentoLiderProveedorMaquilador ADD FOREIGN KEY fk_proveedor_maquilador_idxfk_2 (fk_proveedor_maquilador) REFERENCES ProveedorMaquilador (id);
+
 
 	/* Fin Compras */
 

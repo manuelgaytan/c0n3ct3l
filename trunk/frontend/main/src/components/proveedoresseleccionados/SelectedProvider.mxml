@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)"
+		 >
+	<mx:Script>
+		<![CDATA[
+			import model.Catalogo;
+			import model.Colaborador;
+			import model.Constants;
+			import model.Consumible;
+			import model.EstatusC;
+			import model.GrupoFamiliaD;
+			import model.Perfil;
+			import model.TipoAlmacen;
+			import model.TipoMantenimiento;
+			import model.UbicacionC;
+			import model.UnidadB;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.com.gahm.componentes.validadores.ValidadorNumerico;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.utils.object_proxy;
+			
+			private var mode:String = null;
+			private var _item:Consumible;
+			private var validators:InicializaValidadoresEtiquetas;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				this.label = Constants.REGISTRAR;
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set consumable(value:Consumible):void{
+				if( value == null ){
+					return;
+				}
+				this._item = value;
+				this.setConsumable(); 
+			}
+			
+			private function setConsumable():void
+			{
+				if( this._item == null ){
+					return;
+				}
+			}
+			
+			private function getConsumable():Consumible{
+				var item:Consumible = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					item = new Consumible();
+				}else{
+					item = this._item;
+				}
+				item.tipoAlmacen = TipoAlmacen.getConsumibles();
+				item.fkTipoAlmacen = Util.extractId(item.tipoAlmacen);
+				item.fkGrupoFamiliaD = Util.extractId(item.grupoFamiliaD);
+				item.fkUnidadB = Util.extractId(item.unidadB);
+				item.fkUbicacionC = Util.extractId(item.ubicacionC);
+				item.fkResponsable = Util.extractId(item.responsable);
+				item.fkEstatusC = Util.extractId(item.estatusC);
+				return item;
+			}
+			
+			private function fillCombos():void
+			{
+			}
+			
+			protected function consumibleService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function btnAccept_clickHandler(event:MouseEvent):void
+			{
+				if( !this.validations() ){
+					Util.showMessageVerifyFields();
+					return;
+				}
+				if( this.mode == Constants.REGISTER_MODE ){
+					var consumable:Consumible = this.getConsumable();
+					Util.showProperties( consumable );
+					this.responseSave.token = this.consumibleService.save( consumable );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
+				}
+			}
+			
+			private function updateItem(event:CloseEvent):void{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var consumable:Consumible = this.getConsumable();
+				Util.showProperties( consumable );
+				this.responseUpdate.token = this.consumibleService.update( consumable );
+			}
+			
+			private function validations():Boolean
+			{
+				var value:Boolean = true;
+				value &&= this.validators.validarFormulario();
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+			}
+			
+			private function initializeValidators():void
+			{
+				this.validators = new InicializaValidadoresEtiquetas();
+			}
+			
+			protected function responseSave_resultHandler(event:ResultEvent):void
+			{
+				var eventConsumableNew:Event = new Event("consumableNew");
+				this.dispatchEvent( eventConsumableNew );
+				this.cleanForm();
+			}
+			
+			private function cleanForm():void
+			{
+				this.provider.cleanForm();
+			}
+			
+			protected function responseUpdate_resultHandler(event:ResultEvent):void
+			{
+				var eventConsumableUpdated:Event = new Event("consumableUpdated");
+				this.dispatchEvent( eventConsumableUpdated );
+				this.cleanForm();
+			}
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="consumableNew", type="flash.events.Event")]
+		[Event(name="consumableUpdated", type="flash.events.Event")]
+	</mx:Metadata>
+	<mx:Form id="form">
+		<components:Provider id="provider"/>
+		<mx:FormItem>
+			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:RemoteObject id="consumibleService" destination="consumibleService" fault="consumibleService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
+	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
+</mx:VBox>

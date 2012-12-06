@@ -73,5 +73,17 @@
 	<mx:VBox label="Almacén" width="100%" height="100%">
 		<mx:LinkButton label="Manejo Almacén" id="Almacen" click="clickMenuHandler(event)"/>
 	</mx:VBox>
+	<mx:VBox label="Compras" width="100%" height="100%">
+		<mx:LinkButton label="Proveedores Seleccionados" id="ProveedoresSeleccionados" click="clickMenuHandler(event)"/>
+		<mx:LinkButton label="Proveedores Calificados" id="ProveedoresCalificados" click="clickMenuHandler(event)"/>
+		<mx:LinkButton label="Proveedores Maquiladores" id="ProveedoresMaquiladores" click="clickMenuHandler(event)"/>
+		<mx:LinkButton label="Requisiciones de Compra" id="RequisicionesCompra" click="clickMenuHandler(event)"/>
+		<mx:LinkButton label="Solicitudes Servicio Maquilado" id="SolicitudServicioMaquilado" click="clickMenuHandler(event)"/>
+		<mx:LinkButton label="Cotizaciones" id="Cotizaciones" click="clickMenuHandler(event)"/>
+		<mx:LinkButton label="Ordenes de Compra de Almacén" id="OrdenesCompraAlmacen" click="clickMenuHandler(event)"/>
+		<mx:LinkButton label="Ordenes de Compra Servicio Maquilado" id="OrdenesCompraServicioMaquilado" click="clickMenuHandler(event)"/>
+		<mx:LinkButton label="Facturación de Compra" id="FacturacionCompra" click="clickMenuHandler(event)"/>
+		<mx:LinkButton label="Preciarios Maquiladores" id="PreciariosMaquiladores" click="clickMenuHandler(event)"/>
+	</mx:VBox>
 	<mx:VBox id="empty"/>
 </mx:Accordion>

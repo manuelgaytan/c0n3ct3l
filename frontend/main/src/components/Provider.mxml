@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Form xmlns:mx="http://www.adobe.com/2006/mxml"
+		 xmlns:components="components.*">
+	<mx:Script>
+		<![CDATA[
+			import model.Constants;
+			import model.Consumible;
+			import model.GrupoFamiliaD;
+			import model.TipoAlmacen;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			private var _item:Consumible;
+			private var validators:InicializaValidadoresEtiquetas;
+			private var mode:String = null;
+			
+			private function initializeValidators():void
+			{
+				this.validators = new InicializaValidadoresEtiquetas();
+				validators.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
+				validators.setRestrictor(txtCode, "generic");
+				validators.setRestrictor(txtDescription, "generic");
+				validators.crearValidadorRestrictor("number",ValidadorDecimal.nombre, 10, 4);
+				validators.setRestrictor(txtExistence, "number");
+			}
+			
+			private function setConsumable():void
+			{
+				if( this._item == null ){
+					return;
+				}
+				this.txtCode.text = this._item.codigo;
+				if( Util.isFill( this.cmbFamily ) && this._item.grupoFamiliaD != null ){
+					this.cmbFamily.selectedIndex = Util.selectedIndexFromCombo( this.cmbFamily.dataProvider as ArrayCollection, 
+						this._item.grupoFamiliaD.id);
+				}
+				this.txtDescription.text = this._item.descripcion;
+				this.txtExistence.text = Util.numberToString( this._item.existencia );
+			}
+			
+			private function getConsumable():Consumible{
+				var item:Consumible = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					item = new Consumible();
+				}else{
+					item = this._item;
+				}
+				item.tipoAlmacen = TipoAlmacen.getConsumibles();
+				item.fkTipoAlmacen = Util.extractId(item.tipoAlmacen);
+				item.codigo = Util.validateEmpty( this.txtCode.text );
+				item.grupoFamiliaD = Util.validateCombo( this.cmbFamily ) as GrupoFamiliaD;
+				item.fkGrupoFamiliaD = Util.extractId(item.grupoFamiliaD);
+				item.descripcion = Util.validateEmpty( this.txtDescription.text );
+				item.existencia = Util.stringToNumber( this.txtExistence.text );
+				item.fkUnidadB = Util.extractId(item.unidadB);
+				item.fkUbicacionC = Util.extractId(item.ubicacionC);
+				item.fkResponsable = Util.extractId(item.responsable);
+				item.fkEstatusC = Util.extractId(item.estatusC);
+				return item;
+			}
+			
+			protected function responseGetGrupoFamiliaD_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbFamily.dataProvider = Util.addEmptyCatalgo( data );
+				if( this._item != null && this._item.grupoFamiliaD != null ){
+					this.cmbFamily.selectedIndex = Util.selectedIndexFromCombo( this.cmbFamily.dataProvider as ArrayCollection, 
+						this._item.grupoFamiliaD.id);
+				}
+			}
+			
+			public function cleanForm():void
+			{
+				this.txtCode.reset();
+				this.cmbFamily.selectedIndex = 0;
+				this.txtDescription.reset();
+				this.txtExistence.reset();
+			}
+			
+			private function fillCombos():void
+			{
+				this.responseGetGrupoFamiliaD.token = this.catalogoService.getGrupoFamiliaD();
+			}
+			
+			protected function catalogoService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+		]]>
+	</mx:Script>
+	<mx:FormItem label="Persona:">
+		<mx:ComboBox id="cmbFamily"
+					 labelField="etiqueta"
+					 />
+	</mx:FormItem>
+	<mx:FormItem label="Nombre Comercial:">
+		<components:TextInput id="txtCode" width="300"/>
+	</mx:FormItem>
+	<mx:FormItem label="Razón Social:">
+		<components:TextInput id="txtDescription" width="300"/>
+	</mx:FormItem>
+	<mx:FormItem label="R.F.C.:">
+		<components:TextInput id="txtExistence"
+							  textAlign="right"/>
+	</mx:FormItem>
+	<mx:FormItem label="Dirección Física:">
+		<components:TextInput id="txtExistence2"
+							  width="400"/>
+	</mx:FormItem>
+	<mx:FormItem label="Dirección Fiscal:">
+		<components:TextInput id="txtExistence3"
+							  width="400"/>
+	</mx:FormItem>
+	<mx:FormItem label="Teléfonos:">
+		<components:TextInput id="txtExistence4"
+							  />
+	</mx:FormItem>
+	<mx:FormItem label="Contacto:">
+		<components:TextInput id="txtExistence5"
+							  width="300"/>
+	</mx:FormItem>
+	<mx:FormItem label="Correo:">
+		<components:TextInput id="txtExistence6"
+							  textAlign="right"/>
+	</mx:FormItem>
+	<mx:FormItem label="Página Web:">
+		<components:TextInput id="txtExistence7"
+							  textAlign="right"/>
+	</mx:FormItem>
+	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="catalogoService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetGrupoFamiliaD" result="responseGetGrupoFamiliaD_resultHandler(event)"/>
+</mx:Form>

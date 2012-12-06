@@ -1038,6 +1038,8 @@ ALTER TABLE DocumentoLiderProveedorMaquilador ADD FOREIGN KEY fk_proveedor_maqui
 	VALUES (5, 'Gerente Operativo');
 	INSERT INTO Perfil
 	VALUES (6, 'Coordinador Operativo');
+	INSERT INTO Perfil
+	VALUES (7, 'Compras');
 
 	/* Pantallas */
 	INSERT INTO Pantalla
@@ -1058,6 +1060,26 @@ ALTER TABLE DocumentoLiderProveedorMaquilador ADD FOREIGN KEY fk_proveedor_maqui
 	VALUES (8, 'Notificaciones');
 	INSERT INTO Pantalla
 	VALUES (9, 'Almacen');
+	INSERT INTO Pantalla
+	VALUES (10, 'ProveedoresSeleccionados');
+	INSERT INTO Pantalla
+	VALUES (11, 'ProveedoresCalificados');
+	INSERT INTO Pantalla
+	VALUES (12, 'ProveedoresMaquiladores');
+	INSERT INTO Pantalla
+	VALUES (13, 'RequisicionesCompra');
+	INSERT INTO Pantalla
+	VALUES (14, 'SolicitudServicioMaquilado');
+	INSERT INTO Pantalla
+	VALUES (15, 'Cotizaciones');
+	INSERT INTO Pantalla
+	VALUES (16, 'OrdenesCompraAlmacen');
+	INSERT INTO Pantalla
+	VALUES (17, 'OrdenesCompraServicioMaquilado');
+	INSERT INTO Pantalla
+	VALUES (18, 'FacturacionCompra');
+	INSERT INTO Pantalla
+	VALUES (19, 'PreciariosMaquiladores');
 
 	/* Perfil-Pantalla */
 	INSERT INTO PerfilPantalla
@@ -1092,6 +1114,46 @@ ALTER TABLE DocumentoLiderProveedorMaquilador ADD FOREIGN KEY fk_proveedor_maqui
 	VALUES (15, 1, 9);
 	INSERT INTO PerfilPantalla
 	VALUES (16, 3, 9);
+	INSERT INTO PerfilPantalla
+	VALUES (17, 1, 10);
+	INSERT INTO PerfilPantalla
+	VALUES (18, 1, 11);
+	INSERT INTO PerfilPantalla
+	VALUES (19, 1, 12);
+	INSERT INTO PerfilPantalla
+	VALUES (20, 1, 13);
+	INSERT INTO PerfilPantalla
+	VALUES (21, 1, 14);
+	INSERT INTO PerfilPantalla
+	VALUES (22, 1, 15);
+	INSERT INTO PerfilPantalla
+	VALUES (23, 1, 16);
+	INSERT INTO PerfilPantalla
+	VALUES (24, 1, 17);
+	INSERT INTO PerfilPantalla
+	VALUES (25, 1, 18);
+	INSERT INTO PerfilPantalla
+	VALUES (26, 1, 19);
+	INSERT INTO PerfilPantalla
+	VALUES (27, 7, 10);
+	INSERT INTO PerfilPantalla
+	VALUES (28, 7, 11);
+	INSERT INTO PerfilPantalla
+	VALUES (29, 7, 12);
+	INSERT INTO PerfilPantalla
+	VALUES (30, 7, 13);
+	INSERT INTO PerfilPantalla
+	VALUES (31, 7, 14);
+	INSERT INTO PerfilPantalla
+	VALUES (32, 7, 15);
+	INSERT INTO PerfilPantalla
+	VALUES (33, 7, 16);
+	INSERT INTO PerfilPantalla
+	VALUES (34, 7, 17);
+	INSERT INTO PerfilPantalla
+	VALUES (35, 7, 18);
+	INSERT INTO PerfilPantalla
+	VALUES (36, 7, 19);
 	
 	/* Usuarios */
 	INSERT INTO Usuario
@@ -1106,6 +1168,8 @@ ALTER TABLE DocumentoLiderProveedorMaquilador ADD FOREIGN KEY fk_proveedor_maqui
 	VALUES (5, 'GERENTE', 'NOTIENE', 'GERENTE OPERATIVO', 5, 1);
 	INSERT INTO Usuario
 	VALUES (6, 'COORDINADOR', 'NOTIENE', 'COORDINADOR OPERATIVO', 6, 1);
+	INSERT INTO Usuario
+	VALUES (7, 'COMPRAS', 'NOTIENE', 'COMPRAS', 7, 1);
 	
 	/* Categoria Proyecto */
 	INSERT INTO CategoriaProyecto

@@ -100,21 +100,29 @@
 		<mx:columns>
 			<mx:DataGridColumn id="dtgCode" headerText="{'Tipo \nPersona'}"
 							   dataField="tipoPersona.tipo"
-							   width="100"/>
+							   width="80"/>
 			<mx:DataGridColumn id="dtgFamily" headerText="{'Nombre \nComercial'}"
-							   width="260"
+							   width="120"
 							   dataField="grupoFamiliaD.etiqueta"
 							   labelFunction="labelFunctionGenerico"/>
 			<mx:DataGridColumn id="dtgDescription" headerText="{'Razón \nSocial'}"
 							   dataField="descripcion"
-							   width="260"/>
-			<mx:DataGridColumn id="dtgExistence" headerText="R.F.C."
+							   width="120"/>
+			<mx:DataGridColumn id="dtgFamily2" headerText="{'Forma \nde Pago'}"
+							   width="80"
+							   dataField="grupoFamiliaD.etiqueta"
+							   labelFunction="labelFunctionGenerico"/>
+			<mx:DataGridColumn id="dtgExistence2" headerText="Tecnología"
 							   dataField="existencia"
-							   width="120"
+							   width="80"
 							   textAlign="right"/>
-			<mx:DataGridColumn id="dtgUnit" headerText="Contacto"
-							   dataField="unidadB.etiqueta"
-							   width="150"
+			<mx:DataGridColumn id="dtgFamily3" headerText="{'Tipo de\nContrato'}"
+							   width="80"
+							   dataField="grupoFamiliaD.etiqueta"
+							   labelFunction="labelFunctionGenerico"/>
+			<mx:DataGridColumn id="dtgFamily4" headerText="{'Fecha de\nContrato'}"
+							   width="100"
+							   dataField="grupoFamiliaD.etiqueta"
 							   labelFunction="labelFunctionGenerico"/>
 		</mx:columns>
 	</mx:DataGrid>

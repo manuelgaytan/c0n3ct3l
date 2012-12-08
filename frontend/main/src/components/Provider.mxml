@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Form xmlns:mx="http://www.adobe.com/2006/mxml"
-		 xmlns:components="components.*">
+		 xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)">
 	<mx:Script>
 		<![CDATA[
 			import model.Constants;
@@ -13,12 +14,16 @@
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
 			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
 			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.events.FlexEvent;
 			import mx.rpc.events.FaultEvent;
 			import mx.rpc.events.ResultEvent;
 			
 			private var _item:Consumible;
 			private var validators:InicializaValidadoresEtiquetas;
 			private var mode:String = null;
+			
+			[Bindable]
+			public var limitedInformation:Boolean = true;
 			
 			private function initializeValidators():void
 			{
@@ -95,6 +100,15 @@
 			{
 				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
 			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				if( !this.limitedInformation ){
+					this.removeChild( this.frmItmContact );
+					this.removeChild( this.frmItmWebPage );
+				}
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:FormItem label="Persona:">
@@ -124,7 +138,7 @@
 		<components:TextInput id="txtExistence4"
 							  />
 	</mx:FormItem>
-	<mx:FormItem label="Contacto:">
+	<mx:FormItem id="frmItmContact" label="Contacto:">
 		<components:TextInput id="txtExistence5"
 							  width="300"/>
 	</mx:FormItem>
@@ -132,7 +146,7 @@
 		<components:TextInput id="txtExistence6"
 							  textAlign="right"/>
 	</mx:FormItem>
-	<mx:FormItem label="Página Web:">
+	<mx:FormItem id="frmItmWebPage" label="Página Web:">
 		<components:TextInput id="txtExistence7"
 							  textAlign="right"/>
 	</mx:FormItem>

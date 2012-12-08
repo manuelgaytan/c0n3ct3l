@@ -12,6 +12,7 @@
 			import components.DownloadFile;
 			import components.LoadFile;
 			import components.Observations;
+			import components.Provider;
 			import components.TextArea;
 			import components.TextInput;
 			
@@ -194,6 +195,7 @@
 			private var usuario:Usuario;
 			private var util:Util;
 			private var vBox:VBox;
+			private var provider:Provider;
 			
 			protected function login_readyHandler(event:ModuleEvent):void
 			{

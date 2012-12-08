@@ -98,24 +98,32 @@
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 				 allowMultipleSelection="true">
 		<mx:columns>
-			<mx:DataGridColumn id="dtgCode" headerText="{'Tipo \nPersona'}"
-							   dataField="tipoPersona.tipo"
-							   width="100"/>
-			<mx:DataGridColumn id="dtgFamily" headerText="{'Nombre \nComercial'}"
-							   width="260"
+			<mx:DataGridColumn id="dtgCode" headerText="Proveedor"
+							   dataField="codigo"
+							   width="160"/>
+			<mx:DataGridColumn id="dtgFamily" headerText="{'Forma \nde Pago'}"
+							   width="80"
 							   dataField="grupoFamiliaD.etiqueta"
 							   labelFunction="labelFunctionGenerico"/>
-			<mx:DataGridColumn id="dtgDescription" headerText="{'Razón \nSocial'}"
+			<mx:DataGridColumn id="dtgDescription" headerText="{'Tipo \nde Pago'}"
 							   dataField="descripcion"
-							   width="260"/>
-			<mx:DataGridColumn id="dtgExistence" headerText="R.F.C."
+							   width="80"/>
+			<mx:DataGridColumn id="dtgExistence" headerText="Moneda"
 							   dataField="existencia"
-							   width="120"
+							   width="80"
 							   textAlign="right"/>
-			<mx:DataGridColumn id="dtgUnit" headerText="Contacto"
+			<mx:DataGridColumn id="dtgUnit" headerText="{'Límite de\nCrédito'}"
 							   dataField="unidadB.etiqueta"
-							   width="150"
+							   width="80"
 							   labelFunction="labelFunctionGenerico"/>
+			<mx:DataGridColumn id="dtgStatus" headerText="{'Días de\nCrédito'}"
+							   dataField="estatusC.etiqueta"
+							   labelFunction="labelFunctionGenerico"
+							   width="70"/>
+			<mx:DataGridColumn id="dtgStatus2" headerText="Banco"
+							   dataField="estatusC.etiqueta"
+							   labelFunction="labelFunctionGenerico"
+							   width="120"/>
 		</mx:columns>
 	</mx:DataGrid>
 	<mx:HBox>

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+		 label="Consulta"
+		 horizontalAlign="right"
+		 creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import events.GenericEvent;
+			
+			import model.Consumible;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			[Bindable]
+			private var items:ArrayCollection = null;
+			
+			private var consumible:Consumible;
+			
+			protected function responseGetAll_resultHandler(event:ResultEvent):void
+			{
+				items = event.result as ArrayCollection;
+			}
+			
+			protected function consumibleService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.executeQuery();
+			}
+			
+			protected function datagrid_doubleClickHandler(event:MouseEvent):void
+			{
+				var item:Consumible = this.datagrid.selectedItem as Consumible;
+				if( item == null ){
+					return;
+				}
+				this.responseGetItem.token = this.consumibleService.getItem( item.id );
+			}
+			
+			protected function responseGetItem_resultHandler(event:ResultEvent):void
+			{
+				var item:Consumible = event.result as Consumible;
+				if( item == null ){
+					return;
+				}
+				var genericEvent:GenericEvent = new GenericEvent("consumableDetail");
+				genericEvent.information = item;
+				this.dispatchEvent( genericEvent );
+			}
+			
+			public function executeQuery():void
+			{
+				this.responseGetAll.token = this.consumibleService.getAll();
+			}
+			
+			protected function btnDelete_clickHandler(event:MouseEvent):void
+			{
+				if( this.datagrid.selectedItems == null ||
+					this.datagrid.selectedItems.length == 0 ){
+					Util.showErrorMessage("Debe seleccionar elementos de la tabla.");
+					return;
+				}
+				Alert.show("Confirme si desea eliminar los elementos.","Advertencia",Alert.YES+Alert.NO,this, deleteItems);
+			}
+			
+			private function deleteItems(event:CloseEvent):void
+			{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var items:ArrayCollection = Util.selectedIDs( this.datagrid.selectedItems ); 
+				this.responseDeleteItems.token = this.consumibleService.deleteItems( items );
+			}
+			
+			protected function responseDeleteItems_resultHandler(event:ResultEvent):void
+			{
+				this.executeQuery();
+			}
+			
+			private function labelFunctionGenerico(item:Object, column:DataGridColumn):String{
+				return Util.extractToText( item, column.dataField );
+			}
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="consumableDetail", type="events.GenericEvent")]
+	</mx:Metadata>
+	<mx:DataGrid id="datagrid" width="100%" height="100%" dataProvider="{items}"
+				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
+				 allowMultipleSelection="true">
+		<mx:columns>
+			<mx:DataGridColumn id="dtgCode" headerText="Folio"
+							   dataField="codigo"
+							   width="100"/>
+			<mx:DataGridColumn id="dtgFamily" headerText="{'Fecha de\nSolicitud'}"
+							   width="100"
+							   dataField="grupoFamiliaD.etiqueta"
+							   labelFunction="labelFunctionGenerico"/>
+			<mx:DataGridColumn id="dtgDescription" headerText="Prioridad"
+							   dataField="descripcion"
+							   width="100"/>
+			<mx:DataGridColumn id="dtgExistence" headerText="{'Área \nSolicitante'}"
+							   dataField="existencia"
+							   width="120"
+							   textAlign="right"/>
+			<mx:DataGridColumn id="dtgUnit" headerText="Descripción"
+							   dataField="unidadB.etiqueta"
+							   width="180"
+							   labelFunction="labelFunctionGenerico"/>
+			<mx:DataGridColumn id="dtgStatus" headerText="Estatus"
+							   dataField="estatusC.etiqueta"
+							   labelFunction="labelFunctionGenerico"
+							   width="100"/>
+		</mx:columns>
+	</mx:DataGrid>
+	<mx:HBox>
+		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>
+	</mx:HBox>
+	<mx:RemoteObject id="consumibleService" destination="consumibleService" fault="consumibleService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetAll" result="responseGetAll_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetItem" result="responseGetItem_resultHandler(event)"/>
+	<mx:CallResponder id="responseDeleteItems" result="responseDeleteItems_resultHandler(event)"/>
+</mx:VBox>

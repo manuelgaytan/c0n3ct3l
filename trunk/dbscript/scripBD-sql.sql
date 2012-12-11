@@ -796,8 +796,49 @@
 	PRIMARY KEY (id)
 	);
 
+	/* Fin Compras */
 
-/* Fin Compras */
+	/* Requisicion Compras */
+	CREATE TABLE EstatusRequisicionCompra
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	estatus VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE RequisicionCompra
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fecha_solicitud DATE NOT NULL,
+	motivo VARCHAR(255) NOT NULL,
+	fk_prioridad INT(11) UNSIGNED NOT NULL,
+	fk_area_solicitante INT(11) UNSIGNED NOT NULL,
+	central_sitio VARCHAR(255) NOT NULL,
+	codigo VARCHAR(255),
+	grupo_familia VARCHAR(255),
+	descripcion VARCHAR(255) NOT NULL,
+	cantidad VARCHAR(255) NOT NULL,
+	validacion VARCHAR(255) NOT NULL,
+	fk_estatus INT(11) UNSIGNED NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE SolicitanteRequisicion
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_requisicion_compra INT(11) UNSIGNED NOT NULL,
+	fk_colaborador INT(11) UNSIGNED NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE ComentarioRequisicion
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_requisicion_compra INT(11) UNSIGNED NOT NULL,
+	fk_comentario_compras INT(11) UNSIGNED NOT NULL,
+	PRIMARY KEY (id)
+	);
+	/* Fin Requisicion Compras */
 
 	ALTER TABLE Cliente ADD FOREIGN KEY id_contacto_idxfk (id_contacto) REFERENCES Contacto (id);
 
@@ -985,44 +1026,58 @@
 
 	/* Compras */
 
-ALTER TABLE Proveedor ADD FOREIGN KEY fk_tipo_persona_idxfk (fk_tipo_persona) REFERENCES TipoPersona (id);
+	ALTER TABLE Proveedor ADD FOREIGN KEY fk_tipo_persona_idxfk (fk_tipo_persona) REFERENCES TipoPersona (id);
 
-ALTER TABLE ProveedorSeleccionado ADD FOREIGN KEY fk_proveedor_idxfk (fk_proveedor) REFERENCES Proveedor (id);
+	ALTER TABLE ProveedorSeleccionado ADD FOREIGN KEY fk_proveedor_idxfk (fk_proveedor) REFERENCES Proveedor (id);
 
-ALTER TABLE ComentarioCompras ADD FOREIGN KEY fk_usuario_idxfk (fk_usuario) REFERENCES Usuario (id);
+	ALTER TABLE ComentarioCompras ADD FOREIGN KEY fk_usuario_idxfk (fk_usuario) REFERENCES Usuario (id);
 
-ALTER TABLE ProveedorCalificado ADD FOREIGN KEY fk_proveedor_seleccionado_idxfk (fk_proveedor_seleccionado) REFERENCES ProveedorSeleccionado (id);
+	ALTER TABLE ProveedorCalificado ADD FOREIGN KEY fk_proveedor_seleccionado_idxfk (fk_proveedor_seleccionado) REFERENCES ProveedorSeleccionado (id);
 
-ALTER TABLE ProveedorCalificado ADD FOREIGN KEY fk_forma_pago_idxfk (fk_forma_pago) REFERENCES FormaPago (id);
+	ALTER TABLE ProveedorCalificado ADD FOREIGN KEY fk_forma_pago_idxfk (fk_forma_pago) REFERENCES FormaPago (id);
 
-ALTER TABLE ProveedorCalificado ADD FOREIGN KEY fk_tipo_pago_idxfk (fk_tipo_pago) REFERENCES TipoPago (id);
+	ALTER TABLE ProveedorCalificado ADD FOREIGN KEY fk_tipo_pago_idxfk (fk_tipo_pago) REFERENCES TipoPago (id);
 
-ALTER TABLE ProveedorCalificado ADD FOREIGN KEY fk_dato_bancario_idxfk (fk_dato_bancario) REFERENCES DatoBancario (id);
+	ALTER TABLE ProveedorCalificado ADD FOREIGN KEY fk_dato_bancario_idxfk (fk_dato_bancario) REFERENCES DatoBancario (id);
 
-ALTER TABLE ComentarioProveedor ADD FOREIGN KEY fk_proveedor_calificado_idxfk (fk_proveedor_calificado) REFERENCES ProveedorCalificado (id);
+	ALTER TABLE ComentarioProveedor ADD FOREIGN KEY fk_proveedor_calificado_idxfk (fk_proveedor_calificado) REFERENCES ProveedorCalificado (id);
 
-ALTER TABLE ComentarioProveedor ADD FOREIGN KEY fk_comentario_compras_idxfk (fk_comentario_compras) REFERENCES ComentarioCompras (id);
+	ALTER TABLE ComentarioProveedor ADD FOREIGN KEY fk_comentario_compras_idxfk (fk_comentario_compras) REFERENCES ComentarioCompras (id);
 
-ALTER TABLE ProveedorMaquilador ADD FOREIGN KEY fk_proveedor_idxfk_1 (fk_proveedor) REFERENCES Proveedor (id);
+	ALTER TABLE ProveedorMaquilador ADD FOREIGN KEY fk_proveedor_idxfk_1 (fk_proveedor) REFERENCES Proveedor (id);
 
-ALTER TABLE ProveedorMaquilador ADD FOREIGN KEY fk_pago_idxfk (fk_pago) REFERENCES Pago (id);
+	ALTER TABLE ProveedorMaquilador ADD FOREIGN KEY fk_pago_idxfk (fk_pago) REFERENCES Pago (id);
 
-ALTER TABLE ProveedorMaquilador ADD FOREIGN KEY fk_dato_bancario_idxfk_1 (fk_dato_bancario) REFERENCES DatoBancario (id);
+	ALTER TABLE ProveedorMaquilador ADD FOREIGN KEY fk_dato_bancario_idxfk_1 (fk_dato_bancario) REFERENCES DatoBancario (id);
 
-ALTER TABLE ProveedorMaquilador ADD FOREIGN KEY fk_categoria_proyecto_idxfk (fk_categoria_proyecto) REFERENCES CategoriaProyecto (id);
+	ALTER TABLE ProveedorMaquilador ADD FOREIGN KEY fk_categoria_proyecto_idxfk (fk_categoria_proyecto) REFERENCES CategoriaProyecto (id);
 
-ALTER TABLE ProveedorMaquilador ADD FOREIGN KEY fk_tipo_contrato_idxfk (fk_tipo_contrato) REFERENCES TipoContrato (id);
+	ALTER TABLE ProveedorMaquilador ADD FOREIGN KEY fk_tipo_contrato_idxfk (fk_tipo_contrato) REFERENCES TipoContrato (id);
 
-ALTER TABLE DocumentoProveedorMaquilador ADD FOREIGN KEY fk_proveedor_maquilador_idxfk (fk_proveedor_maquilador) REFERENCES ProveedorMaquilador (id);
+	ALTER TABLE DocumentoProveedorMaquilador ADD FOREIGN KEY fk_proveedor_maquilador_idxfk (fk_proveedor_maquilador) REFERENCES ProveedorMaquilador (id);
 
-ALTER TABLE Ayudante ADD FOREIGN KEY fk_proveedor_maquilador_idxfk_1 (fk_proveedor_maquilador) REFERENCES ProveedorMaquilador (id);
+	ALTER TABLE Ayudante ADD FOREIGN KEY fk_proveedor_maquilador_idxfk_1 (fk_proveedor_maquilador) REFERENCES ProveedorMaquilador (id);
 
-ALTER TABLE DocumentoLiderProveedorMaquilador ADD FOREIGN KEY fk_proveedor_maquilador_idxfk_2 (fk_proveedor_maquilador) REFERENCES ProveedorMaquilador (id);
-
+	ALTER TABLE DocumentoLiderProveedorMaquilador ADD FOREIGN KEY fk_proveedor_maquilador_idxfk_2 (fk_proveedor_maquilador) REFERENCES ProveedorMaquilador (id);
 
 	/* Fin Compras */
 
+	/* Requisicion Compras */
+	ALTER TABLE RequisicionCompra ADD FOREIGN KEY fk_prioridad_idxfk (fk_prioridad) REFERENCES Prioridad (id);
 
+	ALTER TABLE RequisicionCompra ADD FOREIGN KEY fk_area_solicitante_idxfk (fk_area_solicitante) REFERENCES AreaSolicitante (id);
+
+	ALTER TABLE RequisicionCompra ADD FOREIGN KEY fk_estatus_idxfk (fk_estatus) REFERENCES EstatusRequisicionCompra (id);
+
+	ALTER TABLE SolicitanteRequisicion ADD FOREIGN KEY fk_requisicion_compra_idxfk (fk_requisicion_compra) REFERENCES RequisicionCompra (id);
+
+	ALTER TABLE SolicitanteRequisicion ADD FOREIGN KEY fk_colaborador_idxfk (fk_colaborador) REFERENCES Colaborador (id);
+
+	ALTER TABLE ComentarioRequisicion ADD FOREIGN KEY fk_requisicion_compra_idxfk_1 (fk_requisicion_compra) REFERENCES RequisicionCompra (id);
+
+	ALTER TABLE ComentarioRequisicion ADD FOREIGN KEY fk_comentario_compras_idxfk (fk_comentario_compras) REFERENCES ComentarioCompras (id);
+
+	/* Fin Requisicion Compras */
 
 
 	/* Perfiles */
@@ -1593,8 +1648,18 @@ ALTER TABLE DocumentoLiderProveedorMaquilador ADD FOREIGN KEY fk_proveedor_maqui
 	VALUES (2, 'Anual');
 	INSERT INTO TipoContrato
 	VALUES (3, 'Indefinido');
-	
-	/* Fin Compras */
+
+	/* Fin Compras */	
+
+	/* Requisicion Compras */
+	INSERT INTO EstatusRequisicionCompra
+	VALUES (1, 'Autorizada');
+	INSERT INTO EstatusRequisicionCompra
+	VALUES (2, 'Rechazada');
+	INSERT INTO EstatusRequisicionCompra
+	VALUES (3, 'Pendiente');
+
+	/* Fin Requisicion Compras */
 
 	/*
 	INSERT INTO 

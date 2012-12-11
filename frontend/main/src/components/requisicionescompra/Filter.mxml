@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%"
+		 label="Filtro" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import events.GenericEvent;
+			
+			import model.FiltroProyecto;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			protected function btnFilter_clickHandler(event:MouseEvent):void
+			{
+				/*
+				var productFilter:FiltroProyecto = new FiltroProyecto();
+				productFilter.idConectel = Util.stringToNumber( this.txtConectelID.text );
+				productFilter.idCategoria = Util.selectedId(cmbCategory);
+				productFilter.idCliente = Util.selectedId(cmbClient) == 0 ? undefined:Util.selectedId(cmbClient);
+				productFilter.tipoProyecto = Util.selectedLabel( cmbProjectType );
+				productFilter.tecnologia = Util.selectedLabel( cmbTechnology );
+				productFilter.equipo = Util.selectedLabel( cmbEquipment );
+				productFilter.actividadRealizar = Util.selectedLabel( cmbActivity );
+				productFilter.modelo = Util.selectedLabel( cmbModel );
+				productFilter.descripcionServicio = Util.selectedLabel( cmbServiceDescription );
+				productFilter.tipoServicio = Util.selectedLabel( cmbServiceType );
+				productFilter.idCosto = Util.selectedId( cmbCost );
+				*/
+				var filterEvent:GenericEvent = new GenericEvent("filterCommand");
+				//filterEvent.information = productFilter;
+				this.dispatchEvent( filterEvent );
+			}
+			
+			protected function proyectoService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.fillCombos();
+			}
+			
+			private function fillCombos():void
+			{
+			}
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="filterCommand", type="events.GenericEvent")]
+	</mx:Metadata>
+	<mx:Form>
+		<mx:FormItem label="Proveedores Seleccionados:">
+			<mx:CheckBox/>
+		</mx:FormItem>
+		<mx:FormItem label="Proveedores Calificados:">
+			<mx:CheckBox/>
+		</mx:FormItem>
+		<mx:FormItem label="Proveedores Maquiladores:">
+			<mx:CheckBox/>
+		</mx:FormItem>
+		<mx:FormItem>
+			<mx:Button id="btnFilter" label="Filtrar" click="btnFilter_clickHandler(event)"/>
+		</mx:FormItem>
+	</mx:Form>
+</mx:VBox>

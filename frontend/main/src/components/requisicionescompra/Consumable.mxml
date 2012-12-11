@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)"
+		 >
+	<mx:Script>
+		<![CDATA[
+			import components.consumibles.Consult;
+			import components.equiposmedicion.Consult;
+			import components.equipostransporte.Consult;
+			import components.hardware.Consult;
+			import components.herramientas.Consult;
+			import components.materiales.Consult;
+			import components.software.Consult;
+			import components.solicitudalmacen.Consult;
+			import components.telefoniamovil.Consult;
+			
+			import model.Catalogo;
+			import model.Colaborador;
+			import model.Constants;
+			import model.Consumible;
+			import model.EstatusC;
+			import model.GrupoFamiliaD;
+			import model.Perfil;
+			import model.TipoAlmacen;
+			import model.TipoMantenimiento;
+			import model.UbicacionC;
+			import model.UnidadB;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.com.gahm.componentes.validadores.ValidadorNumerico;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.utils.object_proxy;
+			
+			private var mode:String = null;
+			private var _item:Consumible;
+			private var validators:InicializaValidadoresEtiquetas;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				this.label = Constants.REGISTRAR;
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set consumable(value:Consumible):void{
+				if( value == null ){
+					return;
+				}
+				this._item = value;
+				this.setConsumable(); 
+			}
+			
+			private function setConsumable():void
+			{
+				if( this._item == null ){
+					return;
+				}
+				this.txtCode.text = this._item.codigo;
+				if( Util.isFill( this.cmbFamily ) && this._item.grupoFamiliaD != null ){
+					this.cmbFamily.selectedIndex = Util.selectedIndexFromCombo( this.cmbFamily.dataProvider as ArrayCollection, 
+						this._item.grupoFamiliaD.id);
+				}
+				this.txtDescription.text = this._item.descripcion;
+				this.txtExistence.text = Util.numberToString( this._item.existencia );
+				/* TODO: Hacer lo propio para el componente.
+				if( Util.isFill( this.cmbUnit ) && this._item.unidadB != null ){
+					this.cmbUnit.selectedIndex = Util.selectedIndexFromCombo( this.cmbUnit.dataProvider as ArrayCollection, 
+						this._item.unidadB.id);
+				}
+				 */
+				if( Util.isFill( this.cmbLocation ) && this._item.ubicacionC != null ){
+					this.cmbLocation.selectedIndex = Util.selectedIndexFromCombo( this.cmbLocation.dataProvider as ArrayCollection, 
+						this._item.ubicacionC.id);
+				}
+				if( Util.isFill( this.cmbProduct ) && this._item.responsable != null ){
+					this.cmbProduct.selectedIndex = Util.selectedIndexFromCombo( this.cmbProduct.dataProvider as ArrayCollection, 
+						this._item.responsable.id);
+				}
+				if( Util.isFill( this.cmbStatus ) && this._item.estatusC != null ){
+					this.cmbStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbStatus.dataProvider as ArrayCollection, 
+						this._item.estatusC.id);
+				}
+				this.comments.comments = this._item.comentarios;
+			}
+			
+			private function getConsumable():Consumible{
+				var item:Consumible = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					item = new Consumible();
+				}else{
+					item = this._item;
+				}
+				item.tipoAlmacen = TipoAlmacen.getConsumibles();
+				item.fkTipoAlmacen = Util.extractId(item.tipoAlmacen);
+				item.codigo = Util.validateEmpty( this.txtCode.text );
+				item.grupoFamiliaD = Util.validateCombo( this.cmbFamily ) as GrupoFamiliaD;
+				item.fkGrupoFamiliaD = Util.extractId(item.grupoFamiliaD);
+				item.descripcion = Util.validateEmpty( this.txtDescription.text );
+				item.existencia = Util.stringToNumber( this.txtExistence.text );
+				// TODO: Hacer lo propio para el componente.
+				//item.unidadB = Util.validateCombo( this.cmbUnit ) as UnidadB;
+				item.fkUnidadB = Util.extractId(item.unidadB);
+				item.ubicacionC = Util.validateCombo( this.cmbLocation ) as UbicacionC;
+				item.fkUbicacionC = Util.extractId(item.ubicacionC);
+				item.responsable = Util.validateCombo( this.cmbProduct ) as Colaborador;
+				item.fkResponsable = Util.extractId(item.responsable);
+				item.estatusC = Util.validateCombo( this.cmbStatus ) as EstatusC;
+				item.fkEstatusC = Util.extractId(item.estatusC);
+				item.comentarios = this.comments.comments;
+				return item;
+			}
+			
+			private function fillCombos():void
+			{
+				this.responseGetGrupoFamiliaD.token = this.catalogoService.getGrupoFamiliaD();
+				this.responseGetUnidadB.token = this.catalogoService.getUnidadB();
+				this.responseGetUbicacionC.token = this.catalogoService.getUbicacionC();
+				this.responseGetColaborador.token = this.catalogoService.getColaborador();
+				this.responseGetEstatusC.token = this.catalogoService.getEstatusC();
+				
+				this.responseGetAlmacen.token = this.catalogoService.getTipoAlmacen();
+			}
+			
+			
+			protected function responseGetGrupoFamiliaD_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbFamily.dataProvider = Util.addEmptyCatalgo( data );
+				if( this._item != null && this._item.grupoFamiliaD != null ){
+					this.cmbFamily.selectedIndex = Util.selectedIndexFromCombo( this.cmbFamily.dataProvider as ArrayCollection, 
+						this._item.grupoFamiliaD.id);
+				}
+			}
+			
+			protected function consumibleService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function btnAccept_clickHandler(event:MouseEvent):void
+			{
+				if( !this.validations() ){
+					Util.showMessageVerifyFields();
+					return;
+				}
+				if( this.mode == Constants.REGISTER_MODE ){
+					var consumable:Consumible = this.getConsumable();
+					Util.showProperties( consumable );
+					this.responseSave.token = this.consumibleService.save( consumable );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
+				}
+			}
+			
+			private function updateItem(event:CloseEvent):void{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var consumable:Consumible = this.getConsumable();
+				Util.showProperties( consumable );
+				this.responseUpdate.token = this.consumibleService.update( consumable );
+			}
+			
+			private function validations():Boolean
+			{
+				var value:Boolean = true;
+				value &&= this.validators.validarFormulario();
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+			}
+			
+			private function initializeValidators():void
+			{
+				this.validators = new InicializaValidadoresEtiquetas();
+				validators.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
+				validators.setRestrictor(txtCode, "generic");
+				validators.setRestrictor(txtDescription, "generic");
+				validators.crearValidadorRestrictor("number",ValidadorDecimal.nombre, 10, 4);
+				validators.setRestrictor(txtExistence, "number");
+			}
+			
+			protected function responseSave_resultHandler(event:ResultEvent):void
+			{
+				var eventConsumableNew:Event = new Event("consumableNew");
+				this.dispatchEvent( eventConsumableNew );
+				this.cleanForm();
+			}
+			
+			private function cleanForm():void
+			{
+				this.txtCode.reset();
+				this.cmbFamily.selectedIndex = 0;
+				this.txtDescription.reset();
+				this.txtExistence.reset();
+				// TODO: hacer lo propio para el componente.
+				//this.cmbUnit.selectedIndex = 0;
+				this.cmbLocation.selectedIndex = 0;
+				this.cmbProduct.selectedIndex = 0;
+				this.cmbStatus.selectedIndex = 0;
+				this.comments.reset();
+			}
+			
+			protected function responseUpdate_resultHandler(event:ResultEvent):void
+			{
+				var eventConsumableUpdated:Event = new Event("consumableUpdated");
+				this.dispatchEvent( eventConsumableUpdated );
+				this.cleanForm();
+			}
+			
+			protected function responseGetUnidadB_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				/* TODO: Hacer lo propio para el componente.
+				this.cmbUnit.dataProvider = Util.addEmptyCatalgo( data );
+				if( this._item != null && this._item.unidadB != null ){
+					this.cmbUnit.selectedIndex = Util.selectedIndexFromCombo( this.cmbUnit.dataProvider as ArrayCollection, 
+						this._item.unidadB.id);
+				}
+				*/
+			}
+			
+			protected function responseGetUbicacionC_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbLocation.dataProvider = Util.addEmptyCatalgo( data );
+				if( this._item != null && this._item.ubicacionC != null ){
+					this.cmbLocation.selectedIndex = Util.selectedIndexFromCombo( this.cmbLocation.dataProvider as ArrayCollection, 
+						this._item.ubicacionC.id);
+				}
+			}
+			
+			protected function responseGetColaborador_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbProduct.dataProvider = Util.addEmptyCatalgo( data, "nombreCompleto" );
+				if( this._item != null && this._item.responsable != null ){
+					this.cmbProduct.selectedIndex = Util.selectedIndexFromCombo( this.cmbProduct.dataProvider as ArrayCollection, 
+						this._item.responsable.id);
+				}
+			}
+			
+			protected function responseGetEstatusC_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbStatus.dataProvider = Util.addEmptyCatalgo( data );
+				if( this._item != null && this._item.estatusC != null ){
+					this.cmbStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbStatus.dataProvider as ArrayCollection, 
+						this._item.estatusC.id);
+				}
+			}
+			
+			protected function catalogoService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function chkOthres_changeHandler(event:Event):void
+			{
+				// Si es seleccionado otros, se deshabilita la tabla.
+				if( this.chkOthres.selected ){
+					this.txtCode.reset();
+					this.txtFamily.reset();
+				}
+			}
+			
+			protected function cmbProduct_changeHandler(event:ListEvent):void
+			{
+				var id:* = Util.selectedId(this.cmbProduct);
+				if( id == undefined ){
+					// TODO: Remover Tabla
+					return;
+				}
+				switch(id){
+					case 1:
+						// TODO: Realizar consulta para Herramientas y desplegarlas en el datagrid.
+						break;
+					case 2:
+						// TODO: Realizar consulta para Equipos de Medicion y desplegarlas en el datagrid.
+						break;
+					case 3:
+						// TODO: Realizar consulta para Equipos de Transporte y desplegarlas en el datagrid.
+						break;
+					case 4:
+						// TODO: Realizar consulta para Materialesy desplegarlas en el datagrid.
+						break;
+					case 5:
+						// TODO: Realizar consulta para Consumibles y desplegarlas en el datagrid.
+						break;
+					case 6:
+						// TODO: Realizar consulta para Hardware y desplegarlas en el datagrid.
+						break;
+					case 7:
+						// TODO: Realizar consulta para Software y desplegarlas en el datagrid.
+						break;
+					case 8:
+						// TODO: Realizar consulta para Telefonia Movil y desplegarlas en el datagrid.
+						break;
+					case 9:
+						// TODO: (esta en DUDA aun) Realizar consulta para Solicitud Almacen y desplegarlas en el datagrid.
+						break;
+				}
+				datagrid.invalidateDisplayList();
+			}
+			
+			protected function responseGetAlmacen_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbProduct.dataProvider = Util.addEmptyCatalgo( data );
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="consumableNew", type="flash.events.Event")]
+		[Event(name="consumableUpdated", type="flash.events.Event")]
+	</mx:Metadata>
+	<mx:Form id="form">
+		<mx:FormItem label="Folio:">
+			<components:TextInput id="txtID" editable="false"/> <!-- Es el ID de la table, solo es visible al modificar -->
+		</mx:FormItem>
+		<mx:FormItem label="Fecha de Solicitud:">
+			<components:DateField id="txtDescription" enabled="false" creationComplete="txtDescription.selectedDate = new Date()"/>
+		</mx:FormItem>
+		<mx:FormItem label="Motivo:">
+			<components:TextInput id="txtExistence"
+								  />
+		</mx:FormItem>
+		<mx:FormItem label="Prioridad:">
+			<mx:ComboBox id="cmbFamily"
+						 labelField="etiqueta"
+						 />
+		</mx:FormItem>
+		<mx:FormItem label="Nombres de los Solicitantes:">
+			<components:ComboList id="cmbUnit"
+						 />
+		</mx:FormItem>
+		<mx:FormItem label="Área Solicitante:">
+			<mx:ComboBox id="cmbLocation"
+						 labelField="etiqueta"
+						 />
+		</mx:FormItem>
+		<mx:FormItem label="Central o Sitio:">
+			<components:TextInput id="txtExistence2"
+								  />
+		</mx:FormItem>
+		<mx:FormItem label="Producto o Servicio Solicitado:" direction="horizontal">
+			<mx:ComboBox id="cmbProduct"
+						 labelField="etiqueta"
+						 change="cmbProduct_changeHandler(event)"
+						 />
+			<mx:CheckBox id="chkOthres" label="Otros" change="chkOthres_changeHandler(event)"/> 
+		</mx:FormItem>
+		<mx:DataGrid id="datagrid" width="100%" height="250">
+			<mx:columns>
+				<mx:DataGridColumn id="dtgCode" headerText="Código"
+								   dataField="codigo"
+								   width="80"/>
+				<mx:DataGridColumn id="dtgFamily" headerText="{'Grupo o\nFamilia'}"
+								   width="100"
+								   dataField="grupoFamiliaA.etiqueta"/>
+				<mx:DataGridColumn id="dtgDescription" headerText="Descripción"
+								   dataField="descripcion"
+								   width="160"/>
+				<mx:DataGridColumn id="dtgExistence" headerText="Existencia"
+								   dataField="existencia"
+								   width="60"
+								   textAlign="right"/>
+				<mx:DataGridColumn id="dtgExistence2" headerText="Unidad"
+								   dataField="existencia"
+								   width="60"
+								   textAlign="right"/>
+			</mx:columns>
+		</mx:DataGrid>
+		<mx:FormItem label="Código:">
+			<components:TextInput id="txtCode"
+								  editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Grupo o Familia:">
+			<components:TextInput id="txtFamily"
+								  editable="false"
+								  />
+		</mx:FormItem>
+		<mx:FormItem label="Descripción:">
+			<components:TextInput id="txtExistence3"
+								  width="400"
+								  />
+		</mx:FormItem>
+		<mx:FormItem label="Cantidad:">
+			<components:TextInput id="txtExistence4"
+								  textAlign="right"
+								  width="90"
+								  />
+		</mx:FormItem>
+		<mx:FormItem label="Validación:">
+			<components:TextInput id="txtExistence5"
+								  width="200"
+								  />
+		</mx:FormItem>
+		<mx:FormItem label="Estatus:">
+			<mx:ComboBox id="cmbStatus"
+						 labelField="etiqueta"
+						 />
+		</mx:FormItem>
+		<components:Comments id="comments"/>
+		<mx:FormItem>
+			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:RemoteObject id="consumibleService" destination="consumibleService" fault="consumibleService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
+	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
+	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="catalogoService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetGrupoFamiliaD" result="responseGetGrupoFamiliaD_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetUnidadB" result="responseGetUnidadB_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetUbicacionC" result="responseGetUbicacionC_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetColaborador" result="responseGetColaborador_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetEstatusC" result="responseGetEstatusC_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetAlmacen" result="responseGetAlmacen_resultHandler(event)"/>
+</mx:VBox>

@@ -840,6 +840,59 @@
 	);
 	/* Fin Requisicion Compras */
 
+	/* Cotizacion Compras */
+	CREATE TABLE Cotizacion
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	descripcion VARCHAR(255) NOT NULL,
+	emisor VARCHAR(255) NOT NULL,
+	fecha DATE NOT NULL,
+	nombre_archivo VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE ComentarioCotizacion
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_cotizacion INT(11) UNSIGNED NOT NULL,
+	fk_comentario_compras INT(11) UNSIGNED NOT NULL,
+	PRIMARY KEY (id)
+	);
+	/* Fin Cotizacion Compras */
+
+	/* Orden de Compra */
+	CREATE TABLE UnidadOrdenCompra
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	unidad VARCHAR(255) NOT NULL UNIQUE,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE OrdenCompra
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_cotizacion INT(11) UNSIGNED,
+	fecha VARCHAR(255) NOT NULL,
+	fk_proveedor_calificado INT(11) UNSIGNED NOT NULL,
+	fk_proyecto INT(11) UNSIGNED NOT NULL,
+	fk_requisicion_compra INT(11) UNSIGNED NOT NULL,
+	cantidad DECIMAL NOT NULL,
+	fk_unidad INT(11) NOT NULL,
+	descripcion VARCHAR(255) NOT NULL,
+	costo_unitario DECIMAL NOT NULL,
+	importe DECIMAL NOT NULL,
+	subtotal DECIMAL NOT NULL,
+	iva DECIMAL NOT NULL,
+	ieps DECIMAL,
+	retencion_isr DECIMAL,
+	retencion_iva DECIMAL,
+	otros_impuestos DECIMAL,
+	total DECIMAL NOT NULL,
+	fecha_entrega_almacen DATE NOT NULL,
+	PRIMARY KEY (id)
+	);
+	/* Fin Orden de Compra */
+
 	ALTER TABLE Cliente ADD FOREIGN KEY id_contacto_idxfk (id_contacto) REFERENCES Contacto (id);
 
 	ALTER TABLE Proyecto ADD FOREIGN KEY id_categoria_proyecto_idxfk (id_categoria_proyecto) REFERENCES CategoriaProyecto (id);
@@ -1076,8 +1129,25 @@
 	ALTER TABLE ComentarioRequisicion ADD FOREIGN KEY fk_requisicion_compra_idxfk_1 (fk_requisicion_compra) REFERENCES RequisicionCompra (id);
 
 	ALTER TABLE ComentarioRequisicion ADD FOREIGN KEY fk_comentario_compras_idxfk (fk_comentario_compras) REFERENCES ComentarioCompras (id);
-
 	/* Fin Requisicion Compras */
+
+	/* Cotizacion Compras */
+	ALTER TABLE ComentarioCotizacion ADD FOREIGN KEY fk_cotizacion_idxfk (fk_cotizacion) REFERENCES Cotizacion (id);
+
+	ALTER TABLE ComentarioCotizacion ADD FOREIGN KEY fk_comentario_compras_idxfk_1 (fk_comentario_compras) REFERENCES ComentarioCompras (id);
+	/* Fin Cotizacion Compras */
+
+	/* Orden de Compra */
+	ALTER TABLE OrdenCompra ADD FOREIGN KEY fk_cotizacion_idxfk_1 (fk_cotizacion) REFERENCES Cotizacion (id);
+
+	ALTER TABLE OrdenCompra ADD FOREIGN KEY fk_proveedor_calificado_idxfk (fk_proveedor_calificado) REFERENCES ProveedorCalificado (id);
+
+	ALTER TABLE OrdenCompra ADD FOREIGN KEY fk_proyecto_idxfk (fk_proyecto) REFERENCES Proyecto (id);
+
+	ALTER TABLE OrdenCompra ADD FOREIGN KEY fk_requisicion_compra_idxfk_2 (fk_requisicion_compra) REFERENCES RequisicionCompra (id);
+
+	ALTER TABLE OrdenCompra ADD FOREIGN KEY fk_unidad_idxfk (fk_unidad) REFERENCES UnidadOrdenCompra (unidad);
+	/* Fin Orden de Compra */
 
 
 	/* Perfiles */

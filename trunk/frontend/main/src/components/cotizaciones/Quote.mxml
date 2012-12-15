@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)"
+		 >
+	<mx:Script>
+		<![CDATA[
+			import model.Catalogo;
+			import model.Colaborador;
+			import model.Constants;
+			import model.Consumible;
+			import model.EstatusC;
+			import model.GrupoFamiliaD;
+			import model.Perfil;
+			import model.TipoAlmacen;
+			import model.TipoMantenimiento;
+			import model.UbicacionC;
+			import model.UnidadB;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.com.gahm.componentes.validadores.ValidadorNumerico;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.utils.object_proxy;
+			
+			private var mode:String = null;
+			private var _item:Consumible;
+			private var validators:InicializaValidadoresEtiquetas;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				this.label = Constants.REGISTRAR;
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set quote(value:Consumible):void{
+				if( value == null ){
+					return;
+				}
+				this._item = value;
+				this.setQuote(); 
+			}
+			
+			private function setQuote():void
+			{
+				if( this._item == null ){
+					return;
+				}
+				this.txtCode.text = this._item.codigo;
+				this.comments.comments = this._item.comentarios;
+			}
+			
+			private function getQuote():Consumible{
+				var item:Consumible = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					item = new Consumible();
+				}else{
+					item = this._item;
+				}
+				item.tipoAlmacen = TipoAlmacen.getConsumibles();
+				item.fkTipoAlmacen = Util.extractId(item.tipoAlmacen);
+				item.codigo = Util.validateEmpty( this.txtCode.text );
+				item.descripcion = Util.validateEmpty( this.txtDescription.text );
+				item.existencia = Util.stringToNumber( this.txtExistence.text );
+				item.comentarios = this.comments.comments;
+				return item;
+			}
+			
+			private function fillCombos():void
+			{
+			}
+			
+			protected function consumibleService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function btnAccept_clickHandler(event:MouseEvent):void
+			{
+				if( !this.validations() ){
+					Util.showMessageVerifyFields();
+					return;
+				}
+				if( this.mode == Constants.REGISTER_MODE ){
+					var quote:Consumible = this.getQuote();
+					Util.showProperties( quote );
+					this.responseSave.token = this.consumibleService.save( quote );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
+				}
+			}
+			
+			private function updateItem(event:CloseEvent):void{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var quote:Consumible = this.getQuote();
+				Util.showProperties( quote );
+				this.responseUpdate.token = this.consumibleService.update( quote );
+			}
+			
+			private function validations():Boolean
+			{
+				var value:Boolean = true;
+				value &&= this.validators.validarFormulario();
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+			}
+			
+			private function initializeValidators():void
+			{
+				this.validators = new InicializaValidadoresEtiquetas();
+				validators.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
+				validators.setRestrictor(txtCode, "generic");
+				validators.setRestrictor(txtDescription, "generic");
+				validators.crearValidadorRestrictor("number",ValidadorDecimal.nombre, 10, 4);
+				validators.setRestrictor(txtExistence, "number");
+			}
+			
+			protected function responseSave_resultHandler(event:ResultEvent):void
+			{
+				var eventQuoteNew:Event = new Event("quoteNew");
+				this.dispatchEvent( eventQuoteNew );
+				this.cleanForm();
+			}
+			
+			private function cleanForm():void
+			{
+				this.txtCode.reset();
+				this.txtDescription.reset();
+				this.txtExistence.reset();
+				this.comments.reset();
+			}
+			
+			protected function responseUpdate_resultHandler(event:ResultEvent):void
+			{
+				var eventQuoteUpdated:Event = new Event("quoteUpdated");
+				this.dispatchEvent( eventQuoteUpdated );
+				this.cleanForm();
+			}
+			
+			protected function catalogoService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="quoteNew", type="flash.events.Event")]
+		[Event(name="quoteUpdated", type="flash.events.Event")]
+	</mx:Metadata>
+	<mx:Form id="form">
+		<mx:FormItem label="ID:">
+			<components:TextInput id="txtCode"/><!-- Se muestra solo en el registro -->
+		</mx:FormItem>
+		<mx:FormItem label="Descripción:">
+			<components:TextInput id="txtDescription" width="400"/>
+		</mx:FormItem>
+		<mx:FormItem label="Emisor:">
+			<components:TextInput id="txtExistence"
+								  width="500"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha:">
+			<components:DateField/>
+		</mx:FormItem>
+		<mx:FormItem label="Nombre Archivo:">
+			<components:Deliver/>
+		</mx:FormItem>
+		<components:Comments id="comments"/>
+		<mx:FormItem>
+			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:RemoteObject id="consumibleService" destination="consumibleService" fault="consumibleService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
+	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
+</mx:VBox>

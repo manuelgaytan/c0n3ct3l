@@ -1728,8 +1728,30 @@
 	VALUES (2, 'Rechazada');
 	INSERT INTO EstatusRequisicionCompra
 	VALUES (3, 'Pendiente');
-
 	/* Fin Requisicion Compras */
+
+	/* Orden de Compra */
+	INSERT INTO UnidadOrdenCompra
+	VALUES (1, 'Bolsa');
+	INSERT INTO UnidadOrdenCompra
+	VALUES (2, 'Caja');
+	INSERT INTO UnidadOrdenCompra
+	VALUES (3, 'Juego');
+	INSERT INTO UnidadOrdenCompra
+	VALUES (4, 'Kilo');
+	INSERT INTO UnidadOrdenCompra
+	VALUES (5, 'Kit');
+	INSERT INTO UnidadOrdenCompra
+	VALUES (6, 'Litro');
+	INSERT INTO UnidadOrdenCompra
+	VALUES (7, 'Metro');
+	INSERT INTO UnidadOrdenCompra
+	VALUES (8, 'Paquete');
+	INSERT INTO UnidadOrdenCompra
+	VALUES (9, 'Pieza');
+	INSERT INTO UnidadOrdenCompra
+	VALUES (10, 'Otros');
+	/* Fin Orden de Compra */
 
 	/*
 	INSERT INTO 

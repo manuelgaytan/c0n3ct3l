@@ -877,7 +877,7 @@
 	fk_proyecto INT(11) UNSIGNED NOT NULL,
 	fk_requisicion_compra INT(11) UNSIGNED NOT NULL,
 	cantidad DECIMAL NOT NULL,
-	fk_unidad INT(11) NOT NULL,
+	fk_unidad INT(11) UNSIGNED NOT NULL,
 	descripcion VARCHAR(255) NOT NULL,
 	costo_unitario DECIMAL NOT NULL,
 	importe DECIMAL NOT NULL,
@@ -1144,11 +1144,10 @@
 
 	ALTER TABLE OrdenCompra ADD FOREIGN KEY fk_proyecto_idxfk (fk_proyecto) REFERENCES Proyecto (id);
 
-	ALTER TABLE OrdenCompra ADD FOREIGN KEY fk_requisicion_compra_idxfk_2 (fk_requisicion_compra) REFERENCES RequisicionCompra (id);
+	ALTER TABLE OrdenCompra ADD FOREIGN KEY fk_requisicion_compra_idxfk_1 (fk_requisicion_compra) REFERENCES RequisicionCompra (id);
 
-	ALTER TABLE OrdenCompra ADD FOREIGN KEY fk_unidad_idxfk (fk_unidad) REFERENCES UnidadOrdenCompra (unidad);
+	ALTER TABLE OrdenCompra ADD FOREIGN KEY fk_unidad_idxfk (fk_unidad) REFERENCES UnidadOrdenCompra (id);
 	/* Fin Orden de Compra */
-
 
 	/* Perfiles */
 	INSERT INTO Perfil

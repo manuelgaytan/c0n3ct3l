@@ -89,6 +89,10 @@
 			private function labelFunctionGenerico(item:Object, column:DataGridColumn):String{
 				return Util.extractToText( item, column.dataField );
 			}
+			
+			private function labelFunctionDate(object:Object, column:DataGridColumn):String{
+				return Util.formatDateToString( object[column.dataField] );
+			}
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -98,28 +102,45 @@
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 				 allowMultipleSelection="true">
 		<mx:columns>
-			<mx:DataGridColumn id="dtgCode" headerText="Código"
-							   dataField="codigo"
-							   width="100"/>
-			<mx:DataGridColumn id="dtgFamily" headerText="{'Grupo o\nFamilia'}"
-							   width="160"
-							   dataField="grupoFamiliaD.etiqueta"
+			<mx:DataGridColumn id="dtgID" headerText="ID"
+							   dataField="id"
+							   width="80"
+							   textAlign="right"/>
+			<mx:DataGridColumn id="dtgProjectID" headerText="{'ID \nProyecto'}"
+							   width="80"
+							   dataField="proyecto.id"
+							   labelFunction="labelFunctionGenerico"
+							   textAlign="right"/>
+			<mx:DataGridColumn id="dtgRequisicionID" headerText="{'ID \nRequisición'}"
+							   width="90"
+							   dataField="requisicionCompra.id"
+							   labelFunction="labelFunctionGenerico"
+							   textAlign="right"/>
+			<mx:DataGridColumn id="dtgQuotationID" headerText="{'ID \nCotización'}"
+							   width="80"
+							   dataField="cotizacion.id"
+							   labelFunction="labelFunctionGenerico"
+							   textAlign="right"/>
+			<mx:DataGridColumn id="dtgDate" headerText="Fecha"
+							   width="80"
+							   dataField="fecha"
+							   labelFunction="labelFunctionDate"
+							   textAlign="center"/>
+			<mx:DataGridColumn id="dtgSupplier" headerText="Proveedor"
+							   width="80"
+							   dataField="proveedorCalificado.proveedorSeleccionado.nombreComercial"
 							   labelFunction="labelFunctionGenerico"/>
 			<mx:DataGridColumn id="dtgDescription" headerText="Descripción"
 							   dataField="descripcion"
 							   width="120"/>
-			<mx:DataGridColumn id="dtgExistence" headerText="Existencia"
+			<mx:DataGridColumn id="dtgQuantity" headerText="Cantidad"
 							   dataField="existencia"
-							   width="120"
+							   width="80"
 							   textAlign="right"/>
 			<mx:DataGridColumn id="dtgUnit" headerText="Unidad"
-							   dataField="unidadB.etiqueta"
+							   dataField="unidadOrdenCompra.etiqueta"
 							   width="50"
 							   labelFunction="labelFunctionGenerico"/>
-			<mx:DataGridColumn id="dtgStatus" headerText="Estatus"
-							   dataField="estatusC.etiqueta"
-							   labelFunction="labelFunctionGenerico"
-							   width="120"/>
 		</mx:columns>
 	</mx:DataGrid>
 	<mx:HBox>

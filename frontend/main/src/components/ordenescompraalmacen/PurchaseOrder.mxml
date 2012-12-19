@@ -7,11 +7,14 @@
 			import model.Catalogo;
 			import model.Colaborador;
 			import model.Constants;
+			import model.Cotizacion;
 			import model.EstatusC;
 			import model.GrupoFamiliaD;
 			import model.OrdenCompraAlmacen;
 			import model.Perfil;
 			import model.ProveedorCalificado;
+			import model.Proyecto;
+			import model.RequisicionCompra;
 			import model.TipoAlmacen;
 			import model.TipoMantenimiento;
 			import model.UbicacionC;
@@ -71,7 +74,7 @@
 				this.txtID.text = Util.numberToString( this._item.id );
 				this.txtProjectID.text = Util.numberToString( this._item.proyecto.id );
 				this.txtRequisicionID.text = Util.numberToString( this._item.requisicionCompra.id );
-				this.txtQuotationID.text = Util.numberToString( this._item.cotizacion.id );DEFAULT_MAX_HEIGHT
+				this.txtQuotationID.text = Util.numberToString( this._item.cotizacion.id );
 				this.dtfDate.selectedDate = this._item.fecha;
 				/*
 				if( Util.isFill( this.cmbQualifiedSupplier ) && this._item.proveedorCalificado != null ){
@@ -115,14 +118,22 @@
 			}
 			
 			private function getPurchaseOrder():OrdenCompraAlmacen{
-				/*
 				var item:OrdenCompraAlmacen = null;
 				if( this.mode == Constants.REGISTER_MODE ){
 					item = new OrdenCompraAlmacen();
 				}else{
 					item = this._item;
 				}
-				item.tipoAlmacen = TipoAlmacen.getOrdenCompraAlmacens();
+				item.proyecto = new Proyecto();
+				item.proyecto.id = Util.stringToNumber( this.txtProjectID.text );
+				item.requisicionCompra = new RequisicionCompra();
+				item.requisicionCompra.id = Util.stringToNumber( this.txtRequisicionID.text );
+				item.cotizacion = new Cotizacion();
+				item.cotizacion.id = Util.stringToNumber( this.txtQuotationID.text );
+				item.fecha = this.dtfDate.selectedDate;
+				item.proveedorCalificado = new ProveedorCalificado();
+				/*
+				item.cantidad = Util.stringToNumber( this.txtQu.text );
 				item.fkTipoAlmacen = Util.extractId(item.tipoAlmacen);
 				item.codigo = Util.validateEmpty( this.txtCode.text );
 				item.grupoFamiliaD = Util.validateCombo( this.cmbFamily ) as GrupoFamiliaD;
@@ -329,7 +340,7 @@
 			<components:TextInput id="txtProjectID"/>
 			<mx:Button label="Ver Proyecto" id="btnProjectID"/>
 		</mx:FormItem>
-		<mx:FormItem label="ID Requisicion:" direction="horizontal">
+		<mx:FormItem label="ID Requisición:" direction="horizontal">
 			<components:TextInput id="txtRequisicionID"/>
 			<mx:Button label="Ver Requisición" id="btnRequisicionID"/>
 		</mx:FormItem>

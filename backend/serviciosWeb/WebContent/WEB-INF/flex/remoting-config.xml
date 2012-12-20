@@ -161,4 +161,15 @@
 			<scope>session</scope>
 		</properties>
 	</destination>
+	
+	<destination id="proveedorService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/ProveedorService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+	
+	
+
 </service>

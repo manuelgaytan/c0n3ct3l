@@ -58,11 +58,13 @@
 			import model.Model;
 			import model.NombreSolicitante;
 			import model.Observacion;
+			import model.OrdenCompraAlmacen;
 			import model.Pantalla;
 			import model.Perfil;
 			import model.PerfilPantalla;
 			import model.Prioridad;
 			import model.Producto;
+			import model.ProveedorCalificadoCombo;
 			import model.Proyecto;
 			import model.ProyectoEntregable;
 			import model.Requisicion;
@@ -82,6 +84,7 @@
 			import model.UnidadA;
 			import model.UnidadB;
 			import model.UnidadC;
+			import model.UnidadOrdenCompra;
 			import model.Usuario;
 			import model.Util;
 			
@@ -196,6 +199,9 @@
 			private var util:Util;
 			private var vBox:VBox;
 			private var provider:Provider;
+			private var proveedorCalificadoCombo:ProveedorCalificadoCombo;
+			private var ordenCompraAlmacen:OrdenCompraAlmacen;
+			private var unidadOrdenCompra:UnidadOrdenCompra;
 			
 			protected function login_readyHandler(event:ModuleEvent):void
 			{

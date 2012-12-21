@@ -150,7 +150,7 @@
 			private function fillCombos():void
 			{
 				this.responseGetUnidadOrdenCompra.token = this.catalogoService.getUnidadB();
-				this.responseGetColaborador.token = this.catalogoService.getColaborador();
+				this.responseGetProveedorCalificado.token = this.proveedorCalificadoService.getProveedorCalificado();
 			}
 			
 			protected function consumibleService_faultHandler(event:FaultEvent):void
@@ -252,17 +252,15 @@
 			
 			protected function responseGetColaborador_resultHandler(event:ResultEvent):void
 			{
-				/*
 				var data:ArrayCollection = event.result as ArrayCollection;
 				if( data == null ){
 					return;
 				}
-				this.cmbResponsible.dataProvider = Util.addEmptyCatalgo( data, "nombreCompleto" );
-				if( this._item != null && this._item.responsable != null ){
-					this.cmbResponsible.selectedIndex = Util.selectedIndexFromCombo( this.cmbResponsible.dataProvider as ArrayCollection, 
-						this._item.responsable.id);
+				this.cmbQualifiedSupplier.dataProvider = Util.addEmptyCatalgo( data );
+				if( this._item != null && this._item.proveedorCalificado != null ){
+					this.cmbQualifiedSupplier.selectedIndex = Util.selectedIndexFromCombo( this.cmbQualifiedSupplier.dataProvider as ArrayCollection, 
+						this._item.proveedorCalificado.id);
 				}
-				*/
 			}
 			
 			protected function catalogoService_faultHandler(event:FaultEvent):void
@@ -392,5 +390,5 @@
 	<mx:CallResponder id="responseGetUnidadOrdenCompra" result="responseGetUnidadOrdenCompra_resultHandler(event)"/>
 	<mx:RemoteObject id="proveedorCalificadoService" destination="proveedorCalificadoService" fault="catalogoService_faultHandler(event)"
 					 showBusyCursor="true"/>
-	<mx:CallResponder id="responseGetColaborador" result="responseGetColaborador_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetProveedorCalificado" result="responseGetColaborador_resultHandler(event)"/>
 </mx:VBox>

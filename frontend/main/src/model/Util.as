@@ -352,7 +352,6 @@ package model
 		
 		public static function showProperties(object:Object):void
 		{
-			return;
 			showErrorMessage( ObjectUtil.toString( object ) );
 		}
 		

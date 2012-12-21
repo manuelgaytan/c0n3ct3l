@@ -43,7 +43,7 @@
 				if( item == null ){
 					return;
 				}
-				this.responseGetItem.token = this.ordenCompraAlmacenService.getItem( item.id );
+				this.responseGetItem.token = this.ordenCompraService.getItem( item.id );
 			}
 			
 			protected function responseGetItem_resultHandler(event:ResultEvent):void
@@ -59,7 +59,7 @@
 			
 			public function executeQuery():void
 			{
-				this.responseGetAll.token = this.ordenCompraAlmacenService.getAll();
+				this.responseGetAll.token = this.ordenCompraService.getAll();
 			}
 			
 			protected function btnDelete_clickHandler(event:MouseEvent):void
@@ -78,7 +78,7 @@
 					return;
 				}
 				var items:ArrayCollection = Util.selectedIDs( this.datagrid.selectedItems ); 
-				this.responseDeleteItems.token = this.ordenCompraAlmacenService.deleteItems( items );
+				this.responseDeleteItems.token = this.ordenCompraService.deleteItems( items );
 			}
 			
 			protected function responseDeleteItems_resultHandler(event:ResultEvent):void
@@ -146,7 +146,7 @@
 	<mx:HBox>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>
 	</mx:HBox>
-	<mx:RemoteObject id="ordenCompraAlmacenService" destination="consumibleService" fault="ordenCompraAlmacenService_faultHandler(event)"
+	<mx:RemoteObject id="ordenCompraService" destination="ordenCompraService" fault="ordenCompraAlmacenService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetAll" result="responseGetAll_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetItem" result="responseGetItem_resultHandler(event)"/>

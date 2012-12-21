@@ -19,6 +19,7 @@
 			import model.TipoMantenimiento;
 			import model.UbicacionC;
 			import model.UnidadB;
+			import model.UnidadOrdenCompra;
 			import model.Util;
 			
 			import mx.collections.ArrayCollection;
@@ -76,13 +77,11 @@
 				this.txtRequisicionID.text = Util.numberToString( this._item.requisicionCompra.id );
 				this.txtQuotationID.text = Util.numberToString( this._item.cotizacion.id );
 				this.dtfDate.selectedDate = this._item.fecha;
-				/*
 				if( Util.isFill( this.cmbQualifiedSupplier ) && this._item.proveedorCalificado != null ){
 					this.cmbQualifiedSupplier.selectedIndex = Util.selectedIndexFromCombo( this.cmbQualifiedSupplier.dataProvider as ArrayCollection, 
 						this._item.proveedorCalificado.id);
 					
 				}
-				*/
 				this.txtQuantity.text = Util.numberToString( this._item.cantidad );
 				if( Util.isFill( this.cmbUnit ) && this._item.unidadOrdenCompra != null ){
 					this.cmbUnit.selectedIndex = Util.selectedIndexFromCombo( this.cmbUnit.dataProvider as ArrayCollection, 
@@ -131,52 +130,27 @@
 				item.cotizacion = new Cotizacion();
 				item.cotizacion.id = Util.stringToNumber( this.txtQuotationID.text );
 				item.fecha = this.dtfDate.selectedDate;
-				item.proveedorCalificado = new ProveedorCalificado();
-				/*
-				item.cantidad = Util.stringToNumber( this.txtQu.text );
-				item.fkTipoAlmacen = Util.extractId(item.tipoAlmacen);
-				item.codigo = Util.validateEmpty( this.txtCode.text );
-				item.grupoFamiliaD = Util.validateCombo( this.cmbFamily ) as GrupoFamiliaD;
-				item.fkGrupoFamiliaD = Util.extractId(item.grupoFamiliaD);
+				item.proveedorCalificado = Util.validateCombo( this.cmbQualifiedSupplier ) as ProveedorCalificado;
+				item.cantidad = Util.stringToNumber( this.txtQuantity.text );
+				item.unidadOrdenCompra = Util.validateCombo( this.cmbUnit ) as UnidadOrdenCompra;
 				item.descripcion = Util.validateEmpty( this.txtDescription.text );
-				item.existencia = Util.stringToNumber( this.txtExistence.text );
-				item.unidadB = Util.validateCombo( this.cmbUnit ) as UnidadB;
-				item.fkUnidadB = Util.extractId(item.unidadB);
-				item.ubicacionC = Util.validateCombo( this.cmbLocation ) as UbicacionC;
-				item.fkUbicacionC = Util.extractId(item.ubicacionC);
-				item.responsable = Util.validateCombo( this.cmbResponsible ) as Colaborador;
-				item.fkResponsable = Util.extractId(item.responsable);
-				item.estatusC = Util.validateCombo( this.cmbStatus ) as EstatusC;
-				item.fkEstatusC = Util.extractId(item.estatusC);
-				item.comentarios = this.comments.comments;
+				item.costoUnitario = Util.stringToNumber( this.txtUnitCost.text );
+				item.importe = Util.stringToNumber( this.txtAmount.text );
+				item.subtotal = Util.stringToNumber( this.txtSubtotal.text );
+				item.iva = Util.stringToNumber( this.txtIVA.text );
+				item.ieps = Util.stringToNumber( this.txtIEPS.text );
+				item.retencionISR = Util.stringToNumber( this.txtISRRetention.text );
+				item.retencionIVA = Util.stringToNumber( this.txtIVARetention.text );
+				item.otrosImpuestos = Util.stringToNumber( this.txtOtherTaxes.text );
+				item.total = Util.stringToNumber( this.txtTotal.text );
+				item.fechaEntregaAlmacen = this.dtfDate.selectedDate;
 				return item;
-				*/
-				return null;
 			}
 			
 			private function fillCombos():void
 			{
-				this.responseGetGrupoFamiliaD.token = this.catalogoService.getGrupoFamiliaD();
-				this.responseGetUnidadB.token = this.catalogoService.getUnidadB();
-				this.responseGetUbicacionC.token = this.catalogoService.getUbicacionC();
+				this.responseGetUnidadOrdenCompra.token = this.catalogoService.getUnidadB();
 				this.responseGetColaborador.token = this.catalogoService.getColaborador();
-				this.responseGetEstatusC.token = this.catalogoService.getEstatusC();
-			}
-			
-			
-			protected function responseGetGrupoFamiliaD_resultHandler(event:ResultEvent):void
-			{
-				/*
-				var data:ArrayCollection = event.result as ArrayCollection;
-				if( data == null ){
-					return;
-				}
-				this.cmbFamily.dataProvider = Util.addEmptyCatalgo( data );
-				if( this._item != null && this._item.grupoFamiliaD != null ){
-					this.cmbFamily.selectedIndex = Util.selectedIndexFromCombo( this.cmbFamily.dataProvider as ArrayCollection, 
-						this._item.grupoFamiliaD.id);
-				}
-				*/
 			}
 			
 			protected function consumibleService_faultHandler(event:FaultEvent):void
@@ -193,7 +167,7 @@
 				if( this.mode == Constants.REGISTER_MODE ){
 					var purchaseOrder:OrdenCompraAlmacen = this.getPurchaseOrder();
 					Util.showProperties( purchaseOrder );
-					this.responseSave.token = this.consumibleService.save( purchaseOrder );
+					this.responseSave.token = this.ordenCompraService.save( purchaseOrder );
 				}
 				if( this.mode == Constants.UPDATE_MODE ){
 					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
@@ -206,7 +180,7 @@
 				}
 				var purchaseOrder:OrdenCompraAlmacen = this.getPurchaseOrder();
 				Util.showProperties( purchaseOrder );
-				this.responseUpdate.token = this.consumibleService.update( purchaseOrder );
+				this.responseUpdate.token = this.ordenCompraService.update( purchaseOrder );
 			}
 			
 			private function validations():Boolean
@@ -261,32 +235,17 @@
 				this.cleanForm();
 			}
 			
-			protected function responseGetUnidadB_resultHandler(event:ResultEvent):void
+			protected function responseGetUnidadOrdenCompra_resultHandler(event:ResultEvent):void
 			{
 				/*
 				var data:ArrayCollection = event.result as ArrayCollection;
 				if( data == null ){
-					return;
+				return;
 				}
-				this.cmbUnit.dataProvider = Util.addEmptyCatalgo( data );
-				if( this._item != null && this._item.unidadB != null ){
-					this.cmbUnit.selectedIndex = Util.selectedIndexFromCombo( this.cmbUnit.dataProvider as ArrayCollection, 
-						this._item.unidadB.id);
-				}
-				*/
-			}
-			
-			protected function responseGetUbicacionC_resultHandler(event:ResultEvent):void
-			{
-				/*
-				var data:ArrayCollection = event.result as ArrayCollection;
-				if( data == null ){
-					return;
-				}
-				this.cmbLocation.dataProvider = Util.addEmptyCatalgo( data );
-				if( this._item != null && this._item.ubicacionC != null ){
-					this.cmbLocation.selectedIndex = Util.selectedIndexFromCombo( this.cmbLocation.dataProvider as ArrayCollection, 
-						this._item.ubicacionC.id);
+				this.cmbResponsible.dataProvider = Util.addEmptyCatalgo( data, "nombreCompleto" );
+				if( this._item != null && this._item.responsable != null ){
+				this.cmbResponsible.selectedIndex = Util.selectedIndexFromCombo( this.cmbResponsible.dataProvider as ArrayCollection, 
+				this._item.responsable.id);
 				}
 				*/
 			}
@@ -302,21 +261,6 @@
 				if( this._item != null && this._item.responsable != null ){
 					this.cmbResponsible.selectedIndex = Util.selectedIndexFromCombo( this.cmbResponsible.dataProvider as ArrayCollection, 
 						this._item.responsable.id);
-				}
-				*/
-			}
-			
-			protected function responseGetEstatusC_resultHandler(event:ResultEvent):void
-			{
-				/*
-				var data:ArrayCollection = event.result as ArrayCollection;
-				if( data == null ){
-					return;
-				}
-				this.cmbStatus.dataProvider = Util.addEmptyCatalgo( data );
-				if( this._item != null && this._item.estatusC != null ){
-					this.cmbStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbStatus.dataProvider as ArrayCollection, 
-						this._item.estatusC.id);
 				}
 				*/
 			}
@@ -352,7 +296,8 @@
 			<mx:DateField id="dtfDate" enabled="false" creationComplete="dtfDate.selectedDate=new Date()"/>
 		</mx:FormItem>
 		<mx:FormItem label="Proveedor Calificado:">
-			<components:ComboList id="cmbQualifiedSupplier"/>
+			<!--<components:ComboList id="cmbQualifiedSupplier"/>-->
+			<mx:ComboBox id="cmbQualifiedSupplier"/>
 		</mx:FormItem>
 		<!-- Campos de Seleccion Automatica por el Proveedor Calificado -->
 		<mx:FormItem label="Razón Social:">
@@ -438,15 +383,14 @@
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
 		</mx:FormItem>
 	</mx:Form>
-	<mx:RemoteObject id="consumibleService" destination="consumibleService" fault="consumibleService_faultHandler(event)"
+	<mx:RemoteObject id="ordenCompraService" destination="ordenCompraService" fault="consumibleService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
 	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
 	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="catalogoService_faultHandler(event)"
 					 showBusyCursor="true"/>
-	<mx:CallResponder id="responseGetGrupoFamiliaD" result="responseGetGrupoFamiliaD_resultHandler(event)"/>
-	<mx:CallResponder id="responseGetUnidadB" result="responseGetUnidadB_resultHandler(event)"/>
-	<mx:CallResponder id="responseGetUbicacionC" result="responseGetUbicacionC_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetUnidadOrdenCompra" result="responseGetUnidadOrdenCompra_resultHandler(event)"/>
+	<mx:RemoteObject id="proveedorCalificadoService" destination="proveedorCalificadoService" fault="catalogoService_faultHandler(event)"
+					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetColaborador" result="responseGetColaborador_resultHandler(event)"/>
-	<mx:CallResponder id="responseGetEstatusC" result="responseGetEstatusC_resultHandler(event)"/>
 </mx:VBox>

@@ -100,7 +100,7 @@
 				this.txtWarehouseDeliveryDate.text = Util.numberToString( this._item.fechaEntregaAlmacen );
 			}
 			
-			private function setQualifiedSupplierDate( supplier:ProveedorCalificado ):void{
+			private function setQualifiedSupplier( supplier:ProveedorCalificado ):void{
 				this.txtBusinessName.text = supplier.proveedorSeleccionado.razonSocial;
 				this.txtRFC.text = supplier.proveedorSeleccionado.rfc;
 				this.txtTaxAddress.text = supplier.proveedorSeleccionado.direccionFiscal;
@@ -186,7 +186,7 @@
 			private function validations():Boolean
 			{
 				var value:Boolean = true;
-				value &&= this.validators.validarFormulario();
+				//value &&= this.validators.validarFormulario();
 				return value;
 			}
 			
@@ -215,17 +215,42 @@
 			
 			private function cleanForm():void
 			{
-				/*
-				this.txtCode.reset();
-				this.cmbFamily.selectedIndex = 0;
+				this.txtID.reset();
+				this.txtProjectID.reset();
+				this.txtRequisicionID.reset();
+				this.txtQuotationID.reset();
+				this.dtfDate.reset();
+				this.cmbQualifiedSupplier.selectedIndex = 0; 
+				this.txtQuantity.reset();
+				this.cmbUnit.selectedIndex = 0; 
 				this.txtDescription.reset();
-				this.txtExistence.reset();
-				this.cmbUnit.selectedIndex = 0;
-				this.cmbLocation.selectedIndex = 0;
-				this.cmbResponsible.selectedIndex = 0;
-				this.cmbStatus.selectedIndex = 0;
-				this.comments.reset();
-				*/
+				this.txtUnitCost.reset();
+				this.txtAmount.reset();
+				this.txtSubtotal.reset();
+				this.txtIVA.reset();
+				this.txtIEPS.reset();
+				this.txtISRRetention.reset();
+				this.txtIVARetention.reset();
+				this.txtOtherTaxes.reset();
+				this.txtTotal.reset();
+				this.txtWarehouseDeliveryDate.reset();
+				this.cleanFormQualifiedSupplier();
+			}
+			
+			private function cleanFormQualifiedSupplier():void{
+				this.txtBusinessName.reset();
+				this.txtRFC.reset();
+				this.txtTaxAddress.reset();
+				this.txtPhones.reset();
+				this.txtContact.reset();
+				this.txtMail.reset();
+				this.txtWebPage.reset();
+				this.txtPaymentMethod.reset();
+				this.txtPaymentType.reset();
+				this.txtCurrency.reset();
+				this.txtCreditLimit.reset();
+				this.txtCreditDays.reset();
+				this.txtDiscount.reset();
 			}
 			
 			protected function responseUpdate_resultHandler(event:ResultEvent):void
@@ -237,17 +262,15 @@
 			
 			protected function responseGetUnidadOrdenCompra_resultHandler(event:ResultEvent):void
 			{
-				/*
 				var data:ArrayCollection = event.result as ArrayCollection;
 				if( data == null ){
 				return;
 				}
-				this.cmbResponsible.dataProvider = Util.addEmptyCatalgo( data, "nombreCompleto" );
-				if( this._item != null && this._item.responsable != null ){
-				this.cmbResponsible.selectedIndex = Util.selectedIndexFromCombo( this.cmbResponsible.dataProvider as ArrayCollection, 
-				this._item.responsable.id);
+				this.cmbUnit.dataProvider = Util.addEmptyCatalgo( data );
+				if( this._item != null && this._item.unidadOrdenCompra != null ){
+				this.cmbUnit.selectedIndex = Util.selectedIndexFromCombo( this.cmbUnit.dataProvider as ArrayCollection, 
+				this._item.unidadOrdenCompra.id);
 				}
-				*/
 			}
 			
 			protected function responseGetColaborador_resultHandler(event:ResultEvent):void
@@ -291,7 +314,7 @@
 			<mx:Button label="Ver Cotización" id="btnQuotationID"/>
 		</mx:FormItem>
 		<mx:FormItem label="Fecha:">
-			<mx:DateField id="dtfDate" enabled="false" creationComplete="dtfDate.selectedDate=new Date()"/>
+			<components:DateField id="dtfDate" enabled="false" creationComplete="dtfDate.selectedDate=new Date()"/>
 		</mx:FormItem>
 		<mx:FormItem label="Proveedor Calificado:">
 			<!--<components:ComboList id="cmbQualifiedSupplier"/>-->

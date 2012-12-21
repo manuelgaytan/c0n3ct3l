@@ -169,7 +169,20 @@
 			<scope>session</scope>
 		</properties>
 	</destination>
+		
+	<destination id="ordenCompraService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/OrdenCompraService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
 	
-	
-
+	<destination id="proveedorCalificadoService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/ProveedorCalificadoService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
 </service>

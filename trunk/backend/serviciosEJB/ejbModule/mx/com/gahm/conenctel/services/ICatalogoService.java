@@ -25,6 +25,7 @@ import mx.com.gahm.conenctel.entities.SeguimientoDO;
 import mx.com.gahm.conenctel.entities.ServicioSolicitadoDO;
 import mx.com.gahm.conenctel.entities.TipoAlmacenDO;
 import mx.com.gahm.conenctel.entities.TipoMantenimientoDO;
+import mx.com.gahm.conenctel.entities.TipoPersonaDO;
 import mx.com.gahm.conenctel.entities.UbicacionADO;
 import mx.com.gahm.conenctel.entities.UbicacionBDO;
 import mx.com.gahm.conenctel.entities.UbicacionCDO;
@@ -91,4 +92,6 @@ public interface ICatalogoService extends Serializable {
 
 	public List<DescripcionAlmacenDO> getDescripcionAlmacen()
 			throws ConectelException;
+	
+	public List<TipoPersonaDO> getTipoPersona() throws ConectelException ;
 }

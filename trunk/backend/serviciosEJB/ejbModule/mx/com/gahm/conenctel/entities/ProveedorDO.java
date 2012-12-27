@@ -7,6 +7,8 @@ import java.io.Serializable;
 
 import javax.persistence.Cacheable;
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,8 +25,39 @@ import javax.persistence.Table;
 @Cacheable(false)
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
+//@NamedQueries({
+//	@NamedQuery(name = "ProveedorDO.findAll", query = "select p from  ProveedorDO p")})
 @Table(name = "proveedor")
+@DiscriminatorColumn(name="type_Proveedor", discriminatorType=DiscriminatorType.INTEGER)
+
 public class ProveedorDO implements Serializable {
+	
+	
+
+
+	public ProveedorDO() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+
+	public ProveedorDO(long id, String nombreComercial, String razonSocial,
+			String rfc, String direccionFisica, String direccionFiscal,
+			String telefonos, String contacto, String correo, String paginaWeb) {
+		super();
+		this.id = id;
+		this.nombreComercial = nombreComercial;
+		this.razonSocial = razonSocial;
+		this.rfc = rfc;
+		this.direccionFisica = direccionFisica;
+		this.direccionFiscal = direccionFiscal;
+		this.telefonos = telefonos;
+		this.contacto = contacto;
+		this.correo = correo;
+		this.paginaWeb = paginaWeb;
+	}
+
+
 	private static final long serialVersionUID = 1L;
 
 		@Id
@@ -32,7 +65,7 @@ public class ProveedorDO implements Serializable {
 		private long id;
 		
 		@JoinColumn(name="fk_tipo_persona")
-		private String tipoPersona;
+		private TipoPersonaDO tipoPersona;
 		
 		@Column(name="nombre_comercial")
 		private String nombreComercial;
@@ -76,15 +109,6 @@ public class ProveedorDO implements Serializable {
 			this.id = id;
 		}
 
-
-		public String getTipoPersona() {
-			return tipoPersona;
-		}
-
-
-		public void setTipoPersona(String tipoPersona) {
-			this.tipoPersona = tipoPersona;
-		}
 
 
 		public String getNombreComercial() {
@@ -176,6 +200,16 @@ public class ProveedorDO implements Serializable {
 			this.paginaWeb = paginaWeb;
 		}
 		
+		
+		public TipoPersonaDO getTipoPersona() {
+			return tipoPersona;
+		}
+
+
+		public void setTipoPersona(TipoPersonaDO tipoPersona) {
+			this.tipoPersona = tipoPersona;
+		}
+
 
 		
 

@@ -1,4 +1,4 @@
-	/* SQLEditor (MySQL (2))*/
+﻿	/* SQLEditor (MySQL (2))*/
 
 	DROP DATABASE conectel;
 
@@ -698,6 +698,7 @@
 	contacto VARCHAR(255),
 	correo VARCHAR(255),
 	pagina_web VARCHAR(255),
+	type_Proveedor VARCHAR(31),
 	PRIMARY KEY (id)
 	);
 

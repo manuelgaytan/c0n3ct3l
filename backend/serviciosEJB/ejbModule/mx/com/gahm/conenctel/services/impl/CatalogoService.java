@@ -30,6 +30,7 @@ import mx.com.gahm.conenctel.entities.SeguimientoDO;
 import mx.com.gahm.conenctel.entities.ServicioSolicitadoDO;
 import mx.com.gahm.conenctel.entities.TipoAlmacenDO;
 import mx.com.gahm.conenctel.entities.TipoMantenimientoDO;
+import mx.com.gahm.conenctel.entities.TipoPersonaDO;
 import mx.com.gahm.conenctel.entities.UbicacionADO;
 import mx.com.gahm.conenctel.entities.UbicacionBDO;
 import mx.com.gahm.conenctel.entities.UbicacionCDO;
@@ -392,6 +393,20 @@ public class CatalogoService implements ICatalogoService {
 			throw new ConectelException("No existen Descripción Almacen registrados.");
 		}
 		return descripcionAlmacenList;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<TipoPersonaDO> getTipoPersona() throws ConectelException {
+		TypedQuery<TipoPersonaDO> query = entityManager.createNamedQuery(
+				"TipoPersonaDO.findAll", TipoPersonaDO.class);
+		List<TipoPersonaDO> tipoPersonaList;
+		try {
+			tipoPersonaList = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException(
+					"No existen TipoPersona.");
+		}
+		return tipoPersonaList;
 	}
 
 }

@@ -13,6 +13,7 @@
 			import model.OrdenCompraAlmacen;
 			import model.Perfil;
 			import model.ProveedorCalificado;
+			import model.ProveedorCalificadoCombo;
 			import model.Proyecto;
 			import model.RequisicionCompra;
 			import model.TipoAlmacen;
@@ -97,7 +98,7 @@
 				this.txtIVARetention.text = Util.numberToString( this._item.retencionIVA );
 				this.txtOtherTaxes.text = Util.numberToString( this._item.otrosImpuestos );
 				this.txtTotal.text = Util.numberToString( this._item.total );
-				this.txtWarehouseDeliveryDate.text = Util.numberToString( this._item.fechaEntregaAlmacen );
+				this.dtfWarehouseDeliveryDate.selectedDate = this._item.fechaEntregaAlmacen;
 			}
 			
 			private function setQualifiedSupplier( supplier:ProveedorCalificado ):void{
@@ -130,9 +131,11 @@
 				item.cotizacion = new Cotizacion();
 				item.cotizacion.id = Util.stringToNumber( this.txtQuotationID.text );
 				item.fecha = this.dtfDate.selectedDate;
-				item.proveedorCalificado = Util.validateCombo( this.cmbQualifiedSupplier ) as ProveedorCalificado;
+				item.proveedorCalificado = new ProveedorCalificado(); 
+				item.proveedorCalificado.id = (Util.validateCombo( this.cmbQualifiedSupplier ) as ProveedorCalificadoCombo).id;
 				item.cantidad = Util.stringToNumber( this.txtQuantity.text );
-				item.unidadOrdenCompra = Util.validateCombo( this.cmbUnit ) as UnidadOrdenCompra;
+				item.unidadOrdenCompra = new UnidadOrdenCompra();
+				item.unidadOrdenCompra.id = (Util.validateCombo( this.cmbUnit ) as UnidadB).id;
 				item.descripcion = Util.validateEmpty( this.txtDescription.text );
 				item.costoUnitario = Util.stringToNumber( this.txtUnitCost.text );
 				item.importe = Util.stringToNumber( this.txtAmount.text );
@@ -233,7 +236,7 @@
 				this.txtIVARetention.reset();
 				this.txtOtherTaxes.reset();
 				this.txtTotal.reset();
-				this.txtWarehouseDeliveryDate.reset();
+				this.dtfWarehouseDeliveryDate.reset();
 				this.cleanFormQualifiedSupplier();
 			}
 			
@@ -318,7 +321,7 @@
 		</mx:FormItem>
 		<mx:FormItem label="Proveedor Calificado:">
 			<!--<components:ComboList id="cmbQualifiedSupplier"/>-->
-			<mx:ComboBox id="cmbQualifiedSupplier"/>
+			<mx:ComboBox id="cmbQualifiedSupplier" labelField="etiqueta"/>
 		</mx:FormItem>
 		<!-- Campos de Seleccion Automatica por el Proveedor Calificado -->
 		<mx:FormItem label="Razón Social:">
@@ -398,7 +401,7 @@
 			<components:TextInput id="txtTotal" textAlign="right" width="200"/>
 		</mx:FormItem>
 		<mx:FormItem label="Fecha de Entrega Almacén:">
-			<components:TextInput id="txtWarehouseDeliveryDate" textAlign="right" width="200"/>
+			<components:DateField id="dtfWarehouseDeliveryDate" textAlign="right" width="200"/>
 		</mx:FormItem>
 		<mx:FormItem>
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>

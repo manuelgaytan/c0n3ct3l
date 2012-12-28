@@ -94,4 +94,6 @@ public interface ICatalogoService extends Serializable {
 			throws ConectelException;
 	
 	public List<TipoPersonaDO> getTipoPersona() throws ConectelException ;
+	List<UnidadOrdenCompraDO> getUnidadOrdenCompra()
+			throws ConectelException;
 }

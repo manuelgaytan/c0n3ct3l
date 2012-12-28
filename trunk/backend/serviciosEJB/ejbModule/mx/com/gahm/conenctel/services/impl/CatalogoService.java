@@ -408,5 +408,21 @@ public class CatalogoService implements ICatalogoService {
 		}
 		return tipoPersonaList;
 	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<UnidadOrdenCompraDO> getUnidadOrdenCompra()
+			throws ConectelException {
+		List<UnidadOrdenCompraDO> datos=null;
+		
+		TypedQuery<UnidadOrdenCompraDO> query = entityManager.createNamedQuery(
+				"UnidadOrdenCompraDO.findAll", UnidadOrdenCompraDO.class);
+		
+		try {
+			datos = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen informaci˜n para mostrar.");
+		}
+		return datos;
+	}
 
 }

@@ -52,6 +52,9 @@ public class ClienteServiceTestCase {
 		Contacto contact = new Contacto();
 		contact.setNombreCompleto("MANU MANITO");
 		client.setContacto(contact);
+		
+		
+		
 //		try {
 //			bean.save(client);
 //		} catch (ConectelException e) {

@@ -72,7 +72,10 @@
 		<class>mx.com.gahm.conenctel.entities.DatoBancarioDO</class>
 		<class>mx.com.gahm.conenctel.entities.ProveedorMaquiladorDO</class>
 		<class>mx.com.gahm.conenctel.entities.TipoContratoDO</class>
-		
+		<class>mx.com.gahm.conenctel.entities.OrdenCompraDO</class>	
+		<class>mx.com.gahm.conenctel.entities.UnidadOrdenCompraDO</class>
+		<class>mx.com.gahm.conenctel.entities.CotizacionDO</class>
+		<class>mx.com.gahm.conenctel.entities.RequisicionCompraDO</class>
 		
 		<properties>
 			<property name="eclipselink.logging.level" value="FINE"/> 

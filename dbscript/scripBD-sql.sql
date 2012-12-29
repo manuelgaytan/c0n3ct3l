@@ -815,10 +815,19 @@
 	fk_prioridad INT(11) UNSIGNED NOT NULL,
 	fk_area_solicitante INT(11) UNSIGNED NOT NULL,
 	central_sitio VARCHAR(255) NOT NULL,
+	fk_estatus INT(11) UNSIGNED NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE PartidaRequisicionCompra
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_requisicion_compra INTEGER UNSIGNED,
 	codigo VARCHAR(255),
 	grupo_familia VARCHAR(255),
 	descripcion VARCHAR(255) NOT NULL,
 	cantidad VARCHAR(255) NOT NULL,
+	unidad VARCHAR(255) NOT NULL,
 	validacion VARCHAR(255) NOT NULL,
 	fk_estatus INT(11) UNSIGNED NOT NULL,
 	PRIMARY KEY (id)

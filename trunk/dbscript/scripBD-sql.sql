@@ -1,4 +1,4 @@
-﻿	/* SQLEditor (MySQL (2))*/
+	/* SQLEditor (MySQL (2))*/
 
 	DROP DATABASE conectel;
 
@@ -649,7 +649,7 @@
 	(
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
 	fk_tipo_almacen INT(11) UNSIGNED NOT NULL,
-	fk_almacen INTEGER NOT NULL,
+	fk_almacen INT(11) NOT NULL,
 	fk_tipo_entregable INT(11) UNSIGNED NOT NULL,
 	nombre_archivo VARCHAR(255) NOT NULL,
 	PRIMARY KEY (id)
@@ -761,7 +761,7 @@
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
 	fk_proveedor INT(11) UNSIGNED NOT NULL,
 	fk_pago INT(11) UNSIGNED,
-	fk_dato_bancario INTEGER UNSIGNED,
+	fk_dato_bancario INT(11) UNSIGNED,
 	nss VARCHAR(255) NOT NULL,
 	curp VARCHAR(255) NOT NULL,
 	fk_categoria_proyecto INT(11) UNSIGNED,
@@ -822,7 +822,7 @@
 	CREATE TABLE PartidaRequisicionCompra
 	(
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
-	fk_requisicion_compra INTEGER UNSIGNED,
+	fk_requisicion_compra INT(11) UNSIGNED,
 	codigo VARCHAR(255),
 	grupo_familia VARCHAR(255),
 	descripcion VARCHAR(255) NOT NULL,
@@ -899,6 +899,21 @@
 	otros_impuestos DECIMAL,
 	total DECIMAL NOT NULL,
 	fecha_entrega_almacen DATE NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE ProyectoPadre
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	descripcion VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE ProyectoPadreHijo
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_proyecto_padre INT(11) UNSIGNED,
+	fk_proyecto INT(11) UNSIGNED,
 	PRIMARY KEY (id)
 	);
 	/* Fin Orden de Compra */
@@ -1139,6 +1154,10 @@
 	ALTER TABLE ComentarioRequisicion ADD FOREIGN KEY fk_requisicion_compra_idxfk_1 (fk_requisicion_compra) REFERENCES RequisicionCompra (id);
 
 	ALTER TABLE ComentarioRequisicion ADD FOREIGN KEY fk_comentario_compras_idxfk (fk_comentario_compras) REFERENCES ComentarioCompras (id);
+
+	ALTER TABLE PartidaRequisicionCompra ADD FOREIGN KEY fk_requisicion_compra_idxfk_3 (fk_requisicion_compra) REFERENCES RequisicionCompra (id);
+
+	ALTER TABLE PartidaRequisicionCompra ADD FOREIGN KEY fk_estatus_idxfk_1 (fk_estatus) REFERENCES EstatusRequisicionCompra (id);
 	/* Fin Requisicion Compras */
 
 	/* Cotizacion Compras */
@@ -1157,6 +1176,10 @@
 	ALTER TABLE OrdenCompra ADD FOREIGN KEY fk_requisicion_compra_idxfk_1 (fk_requisicion_compra) REFERENCES RequisicionCompra (id);
 
 	ALTER TABLE OrdenCompra ADD FOREIGN KEY fk_unidad_idxfk (fk_unidad) REFERENCES UnidadOrdenCompra (id);
+
+	ALTER TABLE ProyectoPadreHijo ADD FOREIGN KEY fk_proyecto_padre_idxfk (fk_proyecto_padre) REFERENCES ProyectoPadre (id);
+
+	ALTER TABLE ProyectoPadreHijo ADD FOREIGN KEY fk_proyecto_idxfk_1 (fk_proyecto) REFERENCES Proyecto (id);
 	/* Fin Orden de Compra */
 
 	/* Perfiles */

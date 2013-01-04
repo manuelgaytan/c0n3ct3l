@@ -9,7 +9,7 @@ public class ProveedorCalificadoComboDO implements Serializable {
 	 */
 	private static final long serialVersionUID = 7756902274495867632L;
 
-	private Integer id;
+	private long id;
 	private String etiqueta;
 
 	public ProveedorCalificadoComboDO() {
@@ -17,17 +17,17 @@ public class ProveedorCalificadoComboDO implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public ProveedorCalificadoComboDO(Integer id, String etiqueta) {
+	public ProveedorCalificadoComboDO(long id, String etiqueta) {
 		super();
 		this.id = id;
 		this.etiqueta = etiqueta;
 	}
 
-	public Integer getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 

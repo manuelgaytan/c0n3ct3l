@@ -25,7 +25,11 @@ import javax.persistence.Table;
 @Entity
 @NamedQueries({
 		@NamedQuery(name = "ProveedorCalificadoDO.findAll", query = "select p from ProveedorCalificadoDO p "),
-		@NamedQuery(name = "ClienteDO.findByName", query = "select c from ClienteDO c where c.nombreComercial = :nombre") })
+		@NamedQuery(name = "ClienteDO.findByName", query = "select c from ClienteDO c where c.nombreComercial = :nombre"),
+		@NamedQuery(name = "ProveedorCalificadoDO.findAllCombo", 
+		query = "select new mx.com.gahm.conenctel.entities.ProveedorCalificadoComboDO(pc.id,pc.proveedorSeleccionado.nombreComercial) "
+		+ " from ProveedorCalificadoDO pc")
+})
 @Table(name = "proveedorcalificado")
 public class ProveedorCalificadoDO implements Serializable {
 

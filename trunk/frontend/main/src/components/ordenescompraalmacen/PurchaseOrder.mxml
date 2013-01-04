@@ -153,7 +153,7 @@
 			private function fillCombos():void
 			{
 				this.responseGetUnidadOrdenCompra.token = this.catalogoService.getUnidadB();
-				this.responseGetProveedorCalificado.token = this.proveedorCalificadoService.getProveedorCalificado();
+				this.responseGetProveedorCalificado.token = this.proveedorCalificadoService.getProveedoresCalificadosCombo();
 			}
 			
 			protected function consumibleService_faultHandler(event:FaultEvent):void

@@ -37,6 +37,7 @@ import mx.com.gahm.conenctel.entities.UbicacionCDO;
 import mx.com.gahm.conenctel.entities.UnidadADO;
 import mx.com.gahm.conenctel.entities.UnidadBDO;
 import mx.com.gahm.conenctel.entities.UnidadCDO;
+import mx.com.gahm.conenctel.entities.UnidadOrdenCompraDO;
 import mx.com.gahm.conenctel.exceptions.ConectelException;
 import mx.com.gahm.conenctel.services.ICatalogoService;
 

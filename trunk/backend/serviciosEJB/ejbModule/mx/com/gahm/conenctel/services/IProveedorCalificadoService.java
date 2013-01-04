@@ -9,6 +9,7 @@ import java.util.List;
 import javax.ejb.Remote;
 
 import mx.com.gahm.conenctel.entities.ProductoDO;
+import mx.com.gahm.conenctel.entities.ProveedorCalificadoComboDO;
 import mx.com.gahm.conenctel.entities.ProveedorCalificadoDO;
 
 import mx.com.gahm.conenctel.exceptions.ConectelException;
@@ -30,5 +31,6 @@ public interface IProveedorCalificadoService extends Serializable{
 	public boolean deleteProveedoresCalificados(List<Long> ids) ;
 
 	public ProductoDO updateProveedorCalificado(ProveedorCalificadoDO proveedor) throws ConectelException ;
+	List<ProveedorCalificadoComboDO> getProveedoresCalificadosCombo() ;
 
 }

@@ -13,6 +13,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 import mx.com.gahm.conenctel.entities.ProductoDO;
+import mx.com.gahm.conenctel.entities.ProveedorCalificadoComboDO;
 import mx.com.gahm.conenctel.entities.ProveedorCalificadoDO;
 import mx.com.gahm.conenctel.exceptions.ConectelException;
 import mx.com.gahm.conenctel.services.IProveedorCalificadoService;
@@ -107,4 +108,17 @@ public class ProveedorCalificadoService implements IProveedorCalificadoService {
 		return null;
 	}
 
+	@Override
+	public List<ProveedorCalificadoComboDO> getProveedoresCalificadosCombo() {
+		
+		List<ProveedorCalificadoComboDO> datos= null;
+		TypedQuery<ProveedorCalificadoComboDO>  query =null;
+		query = entityManager.createNamedQuery("ProveedorCalificadoDO.findAllCombo",ProveedorCalificadoComboDO.class);
+		datos = query.getResultList();
+		
+		return datos;
+		
+	}
+	
+	
 }

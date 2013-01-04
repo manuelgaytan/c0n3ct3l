@@ -76,6 +76,7 @@
 		<class>mx.com.gahm.conenctel.entities.CotizacionDO</class>
 		<class>mx.com.gahm.conenctel.entities.RequisicionCompraDO</class>
 		<class>mx.com.gahm.conenctel.entities.FormaPagoDO</class>
+		<class>mx.com.gahm.conenctel.entities.PartidaRequisicionCompraDO</class>
 		
 		
 		<properties>

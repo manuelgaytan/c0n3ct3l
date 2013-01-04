@@ -3,6 +3,7 @@ package mx.com.gahm.conenctel.entities;
 import java.io.Serializable;
 
 import javax.persistence.Cacheable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -28,6 +29,7 @@ public class TipoPagoDO implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 
+	@Column(name = "tipo")
 	private String tipo;
 
 	/**

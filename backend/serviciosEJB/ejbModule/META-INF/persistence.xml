@@ -67,7 +67,6 @@
 		<class>mx.com.gahm.conenctel.entities.ProveedorSeleccionadoDO</class>
 		<class>mx.com.gahm.conenctel.entities.TipoPersonaDO</class>
 		<class>mx.com.gahm.conenctel.entities.ProveedorCalificadoDO</class>
-		<class>mx.com.gahm.conenctel.entities.FormaPagoDO</class>
 		<class>mx.com.gahm.conenctel.entities.TipoPagoDO</class>
 		<class>mx.com.gahm.conenctel.entities.DatoBancarioDO</class>
 		<class>mx.com.gahm.conenctel.entities.ProveedorMaquiladorDO</class>
@@ -76,6 +75,8 @@
 		<class>mx.com.gahm.conenctel.entities.UnidadOrdenCompraDO</class>
 		<class>mx.com.gahm.conenctel.entities.CotizacionDO</class>
 		<class>mx.com.gahm.conenctel.entities.RequisicionCompraDO</class>
+		<class>mx.com.gahm.conenctel.entities.FormaPagoDO</class>
+		
 		
 		<properties>
 			<property name="eclipselink.logging.level" value="FINE"/> 

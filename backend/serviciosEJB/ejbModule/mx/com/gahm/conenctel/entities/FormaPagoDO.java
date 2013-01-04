@@ -13,15 +13,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-
-
 /**
- * @author lespinosa
- *Clase de persistencia para forma de pago 
+ * @author lespinosa Clase de persistencia para forma de pago
  */
 @Cacheable(false)
 @Entity
-@Table(name="formapago")
+@Table(name = "formapago")
 public class FormaPagoDO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -29,9 +26,35 @@ public class FormaPagoDO implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	
-	@Column(name="forma")
+
+	@Column(name = "forma")
 	private String forma;
-	
-	
+
+	public FormaPagoDO() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public FormaPagoDO(long id, String forma) {
+		super();
+		this.id = id;
+		this.forma = forma;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public String getForma() {
+		return forma;
+	}
+
+	public void setForma(String forma) {
+		this.forma = forma;
+	}
+
 }

@@ -45,7 +45,7 @@ public class OrdenCompraServiceTestCase {
 		 
 	}
 	
-	@Test
+	//@Test
 	public void save(){
 		
 		OrdenCompraDO ordenCompra= new OrdenCompraDO();

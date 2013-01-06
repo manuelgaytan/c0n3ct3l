@@ -24,7 +24,7 @@ public class ProveedorCalificadoServiceTestCase {
 	@Test
 	public void testFindAll(){
 		
-		List<ProveedorCalificadoComboDO> items= bean.getProveedorCalificado();
+		List<ProveedorCalificadoComboDO> items= bean.getProveedoresCalificadosCombo();
 		
 		for (ProveedorCalificadoComboDO item : items) {
 			System.out.println("orden compra"+ item.getEtiqueta());

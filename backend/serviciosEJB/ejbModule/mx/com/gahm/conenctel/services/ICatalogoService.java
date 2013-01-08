@@ -13,6 +13,7 @@ import mx.com.gahm.conenctel.entities.DescripcionAlmacenDO;
 import mx.com.gahm.conenctel.entities.EstatusADO;
 import mx.com.gahm.conenctel.entities.EstatusBDO;
 import mx.com.gahm.conenctel.entities.EstatusCDO;
+import mx.com.gahm.conenctel.entities.EstatusRequisicionCompraDO;
 import mx.com.gahm.conenctel.entities.GrupoFamiliaADO;
 import mx.com.gahm.conenctel.entities.GrupoFamiliaBDO;
 import mx.com.gahm.conenctel.entities.GrupoFamiliaCDO;
@@ -96,5 +97,8 @@ public interface ICatalogoService extends Serializable {
 	
 	public List<TipoPersonaDO> getTipoPersona() throws ConectelException ;
 	List<UnidadOrdenCompraDO> getUnidadOrdenCompra()
+			throws ConectelException;
+	
+	List<EstatusRequisicionCompraDO> getEstadoRequiscionCompra()
 			throws ConectelException;
 }

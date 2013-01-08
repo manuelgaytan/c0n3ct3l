@@ -77,8 +77,7 @@
 		<class>mx.com.gahm.conenctel.entities.RequisicionCompraDO</class>
 		<class>mx.com.gahm.conenctel.entities.FormaPagoDO</class>
 		<class>mx.com.gahm.conenctel.entities.PartidaRequisicionCompraDO</class>
-		
-		
+		<class>mx.com.gahm.conenctel.entities.EstatusRequisicionCompraDO</class>
 		<properties>
 			<property name="eclipselink.logging.level" value="FINE"/> 
 			<property name="eclipselink.logging.parameters" value="true"/>

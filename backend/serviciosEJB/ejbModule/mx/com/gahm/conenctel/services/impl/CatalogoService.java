@@ -18,6 +18,7 @@ import mx.com.gahm.conenctel.entities.DescripcionAlmacenDO;
 import mx.com.gahm.conenctel.entities.EstatusADO;
 import mx.com.gahm.conenctel.entities.EstatusBDO;
 import mx.com.gahm.conenctel.entities.EstatusCDO;
+import mx.com.gahm.conenctel.entities.EstatusRequisicionCompraDO;
 import mx.com.gahm.conenctel.entities.GrupoFamiliaADO;
 import mx.com.gahm.conenctel.entities.GrupoFamiliaBDO;
 import mx.com.gahm.conenctel.entities.GrupoFamiliaCDO;
@@ -426,4 +427,20 @@ public class CatalogoService implements ICatalogoService {
 		return datos;
 	}
 
+	public List<EstatusRequisicionCompraDO> getEstadoRequiscionCompra()
+			throws ConectelException {
+
+		List<EstatusRequisicionCompraDO> datos = null;
+
+		TypedQuery<EstatusRequisicionCompraDO> query = entityManager
+				.createNamedQuery("EstatusRequisicionCompraDO.findAll",
+						EstatusRequisicionCompraDO.class);
+
+		try {
+			datos = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen informaci˜n para mostrar.");
+		}
+		return datos;
+	}
 }

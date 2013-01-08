@@ -24,6 +24,13 @@ public class TipoAlmacenDO implements Serializable {
 	@Column(name="tipo")
 	private String etiqueta;
 
+	public TipoAlmacenDO(Long id, String etiqueta) {
+		super();
+		this.id = id;
+		this.etiqueta = etiqueta;
+	}
+	
+	
 //	@OneToMany(mappedBy="fkTipoalmacen")
 //	private List<ComentarioDO> comentarios;
 //

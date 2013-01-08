@@ -193,4 +193,20 @@
 			<scope>session</scope>
 		</properties>
 	</destination>
+	
+	<destination id="cotizacionService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/CotizacionService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+	
+	<destination id="proyectoPadreService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/ProyectoPadreService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
 </service>

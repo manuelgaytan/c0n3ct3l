@@ -34,7 +34,7 @@
 			}
 			
 			public function set userAccess(user:Usuario):void{
-				//return;
+				return;
 				for each (var category:VBox in this.getChildren()) 
 				{
 					if( category == null ){

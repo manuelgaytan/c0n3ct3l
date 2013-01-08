@@ -1,12 +1,16 @@
 package mx.com.gahm.conenctel.entities;
 
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -14,6 +18,10 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "Cotizacion")
+@NamedQueries({
+	@NamedQuery(name = "CotizacionDO.findAll", query = "select c from CotizacionDO c"),
+	@NamedQuery(name = "CotizacionDO.findById", 
+				query = "select c from CotizacionDO c where c.id = :id")})
 public class CotizacionDO implements java.io.Serializable {
 
 	

@@ -30,7 +30,7 @@
 			
 			protected function enterButton_clickHandler(event:Event):void
 			{
-				/*
+				
 				var user:Usuario = new Usuario();
 				user.nombreCompleto = "DIRECTOR GENERAL";
 				user.perfil = new Perfil();
@@ -39,7 +39,7 @@
 				genericEvent.information = user; 
 				this.dispatchEvent( genericEvent );
 				return;
-				*/
+				/*
 				var user:String = StringUtil.trim( this.txtUser.text );
 				var password:String = StringUtil.trim( this.txtPassword.text );
 				
@@ -49,6 +49,7 @@
 				}
 				
 				this.responseLogin.token = this.usuarioService.login(user, password);
+				*/
 			}
 			
 			protected function creationCompleteHandler(event:FlexEvent):void

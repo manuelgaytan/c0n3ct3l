@@ -259,19 +259,19 @@
 				this.txtCardDelivered.reset();
 				this.txtAcceptationKey.reset();
 				this.dtfDeliveryDate.reset();
-				/* this.dlv.reset();
-				this.dlv.reset();
-				this.dlv.reset();
-				this.dlv.reset();
-				this.dlv.reset();
-				this.dlv.reset();
-				this.dlv.reset();
-				this.dlv.reset();
-				this.dlv.reset();
-				this.dlv.reset();
-				this.dlv.reset();
-				this.dlv.reset();
-				this.dlv.reset(); */
+				this.dlvSiteSurvey.reset();
+				this.dlvPlanes.reset();
+				this.dlvEngineering.reset();
+				this.dlvFeasibility.reset();
+				this.dlvAdministrativeFolder.reset();
+				this.dlvProtocol.reset();
+				this.dlvOT.reset();
+				this.dlvSatisfyCustomer.reset();
+				this.dlvInspectionChecklist.reset();
+				this.dlvPhotographChecklist.reset();
+				this.dlvASBuild.reset();
+				this.dlvXDelivery.reset();
+				this.dlvYDelivery.reset();
 				this.observations.reset();
 			}
 			

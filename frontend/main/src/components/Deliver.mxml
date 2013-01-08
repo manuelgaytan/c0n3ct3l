@@ -172,7 +172,6 @@
 				var downloadFile:DownloadFile = new DownloadFile( FILE_URL );
 				downloadFile.download();
 			}
-			
 		]]>
 	</mx:Script>
 	<mx:HTTPService id="exposeService" url="http://localhost:8080/serviciosWeb/exposing.jsp"

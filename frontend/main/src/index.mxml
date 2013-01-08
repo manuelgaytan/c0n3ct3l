@@ -42,6 +42,7 @@
 			import model.EstatusA;
 			import model.EstatusB;
 			import model.EstatusC;
+			import model.EstatusRequisicionCompra;
 			import model.FiltroProducto;
 			import model.FiltroProyecto;
 			import model.GrupoFamiliaA;
@@ -60,6 +61,7 @@
 			import model.Observacion;
 			import model.OrdenCompraAlmacen;
 			import model.Pantalla;
+			import model.PartidaRequisicionCompra;
 			import model.Perfil;
 			import model.PerfilPantalla;
 			import model.Prioridad;
@@ -68,6 +70,7 @@
 			import model.Proyecto;
 			import model.ProyectoEntregable;
 			import model.Requisicion;
+			import model.RequisicionCompra;
 			import model.Seguimiento;
 			import model.ServicioSolicitado;
 			import model.Software;
@@ -202,6 +205,9 @@
 			private var proveedorCalificadoCombo:ProveedorCalificadoCombo;
 			private var ordenCompraAlmacen:OrdenCompraAlmacen;
 			private var unidadOrdenCompra:UnidadOrdenCompra;
+			private var partidaRequisicionCompra:PartidaRequisicionCompra;
+			private var estatusRequisicionCompra:EstatusRequisicionCompra;
+			private var requisicionCompra:RequisicionCompra;
 			
 			protected function login_readyHandler(event:ModuleEvent):void
 			{

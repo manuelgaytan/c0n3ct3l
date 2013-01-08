@@ -10,40 +10,20 @@
 			import mx.events.CloseEvent;
 
 			[Bindable]
-			private var _delivers:ArrayCollection;
+			private var _items:ArrayCollection;
 			
-			private var textTypes:FileFilter = new FileFilter("Archivos de Texto (*.doc, *.docx, *.xls, *.xlsx, *.pdf)", "*.doc; *.docx; *.xls; *.xlsx; *.pdf");
-			private var allTypes:Array = new Array(textTypes);
-			private var fileRef:FileReference = null;
+			[Bindable]
+			private var _comboItems:ArrayCollection;
+			
+			[Bindable]
+			public var labelField:String="etiqueta";
 			
 			public function existElements():Boolean{
-				if( this._delivers == null ||
-					this._delivers.length == 0 ){
+				if( this._items == null ||
+					this._items.length == 0 ){
 					return false;
 				}
 				return true;
-			}
-			
-			protected function txtDeliver_clickHandler(event:MouseEvent):void
-			{
-				fileRef = new FileReference();
-				fileRef.addEventListener(Event.SELECT, selectHandler);
-				fileRef.addEventListener(Event.COMPLETE, completeHandler);
-				fileRef.browse(allTypes);
-			}
-			
-			private function selectHandler(event:Event):void
-			{
-				var request:URLRequest = new URLRequest("http://localhost:8080/serviciosWeb/file_upload.jsp")
-				try
-				{
-					this.txtDeliver.text = event.currentTarget.name;
-					fileRef.upload(request);
-				}
-				catch (error:Error)
-				{
-					trace("Unable to upload file.");
-				}
 			}
 			
 			public function reset():void{
@@ -63,48 +43,54 @@
 				if( event.detail == Alert.NO ){
 					return;
 				}
-				this._delivers.removeItemAt( this.lstDelivers.selectedIndex );
+				this._items.removeItemAt( this.lstDelivers.selectedIndex );
+			}
+			
+			public function set comboList(value:ArrayCollection):void{
+				if( value == null ){
+					return;
+				}
+				this._comboItems = value;
 			}
 			
 			public function set list(value:ArrayCollection):void{
 				if( value == null ){
 					return;
 				}
-				this._delivers = value;
+				this._items = value;
 			}
 			
-			public function get delivers():ArrayCollection{
-				return this._delivers;
+			public function get list():ArrayCollection{
+				return this._items;
 			}
 			
 			protected function btnAdd_clickHandler(event:MouseEvent):void
 			{
 				// TODO Auto-generated method stub
-				
 			}
 			
 			protected function completeHandler(event:Event):void
 			{
-				this.addDelivery( txtDeliver.text );
-				//this.txtDeliver.reset();
 			}
 			
 			private function addDelivery(text:String):void
 			{
-				if( this._delivers == null ){
-					this._delivers = new ArrayCollection();
+				if( this._items == null ){
+					this._items = new ArrayCollection();
 				}
-				this._delivers.addItem( text );
+				this._items.addItem( text );
 			}
 		]]>
 	</mx:Script>
 	<mx:HBox>
-		<mx:ComboBox id="txtDeliver" width="160"
-							  />
+		<mx:ComboBox id="cmbCombo" width="160"
+					 labelField="{this.labelField}"
+					 dataProvider="{this._comboItems}"/>
 		<mx:Button id="btnAdd" label="Agregar" click="btnAdd_clickHandler(event)"/>
 	</mx:HBox>
 	<mx:List id="lstDelivers" width="160" height="160"
-			 dataProvider="{_delivers}"
+			 labelField="{this.labelField}"
+			 dataProvider="{_items}"
 			 doubleClickEnabled="true" 
 			 doubleClick="lstDelivers_doubleClickHandler(event)"/>
 </mx:VBox>

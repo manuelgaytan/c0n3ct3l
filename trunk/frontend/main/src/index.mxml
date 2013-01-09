@@ -10,6 +10,7 @@
 			import components.DateField;
 			import components.Deliver;
 			import components.DownloadFile;
+			import components.FlatDeliver;
 			import components.LoadFile;
 			import components.Observations;
 			import components.Provider;
@@ -30,6 +31,7 @@
 			import model.Constants;
 			import model.Consumible;
 			import model.Contacto;
+			import model.Cotizacion;
 			import model.DatosComerciales;
 			import model.DatosGeneralesProyecto;
 			import model.DesarrolloProyecto;
@@ -69,6 +71,8 @@
 			import model.ProveedorCalificadoCombo;
 			import model.Proyecto;
 			import model.ProyectoEntregable;
+			import model.ProyectoPadre;
+			import model.ProyectoPadreHijo;
 			import model.Requisicion;
 			import model.RequisicionCompra;
 			import model.Seguimiento;
@@ -208,6 +212,10 @@
 			private var partidaRequisicionCompra:PartidaRequisicionCompra;
 			private var estatusRequisicionCompra:EstatusRequisicionCompra;
 			private var requisicionCompra:RequisicionCompra;
+			private var cotizacion:Cotizacion;
+			private var proyectoPadre:ProyectoPadre;
+			private var proyectoPadreHijo:ProyectoPadreHijo;
+			private var flatDelivery:FlatDeliver;
 			
 			protected function login_readyHandler(event:ModuleEvent):void
 			{

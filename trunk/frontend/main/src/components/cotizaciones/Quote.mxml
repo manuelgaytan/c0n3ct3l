@@ -4,17 +4,8 @@
 		 >
 	<mx:Script>
 		<![CDATA[
-			import model.Catalogo;
-			import model.Colaborador;
 			import model.Constants;
-			import model.Consumible;
-			import model.EstatusC;
-			import model.GrupoFamiliaD;
-			import model.Perfil;
-			import model.TipoAlmacen;
-			import model.TipoMantenimiento;
-			import model.UbicacionC;
-			import model.UnidadB;
+			import model.Cotizacion;
 			import model.Util;
 			
 			import mx.collections.ArrayCollection;
@@ -31,7 +22,7 @@
 			import mx.utils.object_proxy;
 			
 			private var mode:String = null;
-			private var _item:Consumible;
+			private var _item:Cotizacion;
 			private var validators:InicializaValidadoresEtiquetas;
 			
 			public function set registrer(value:Boolean):void{
@@ -54,7 +45,7 @@
 				this.fillCombos();
 			}
 			
-			public function set quote(value:Consumible):void{
+			public function set quote(value:Cotizacion):void{
 				if( value == null ){
 					return;
 				}
@@ -67,23 +58,29 @@
 				if( this._item == null ){
 					return;
 				}
-				this.txtCode.text = this._item.codigo;
-				this.comments.comments = this._item.comentarios;
+				this.txtID.text = String(this._item.id);
+				this.txtDescription.text = this._item.descripcion;
+				this.txtTransmitter.text = this._item.emisor;
+				this.dtfDate.selectedDate = this._item.fecha;
+				this.dlvFileName.delivers = new ArrayCollection([this._item.nombreArchivo]);
+				this.comments.comments = this._item.comentariosCotizacion;
 			}
 			
-			private function getQuote():Consumible{
-				var item:Consumible = null;
+			private function getQuote():Cotizacion{
+				var item:Cotizacion = null;
 				if( this.mode == Constants.REGISTER_MODE ){
-					item = new Consumible();
+					item = new Cotizacion();
 				}else{
 					item = this._item;
 				}
-				item.tipoAlmacen = TipoAlmacen.getConsumibles();
-				item.fkTipoAlmacen = Util.extractId(item.tipoAlmacen);
-				item.codigo = Util.validateEmpty( this.txtCode.text );
 				item.descripcion = Util.validateEmpty( this.txtDescription.text );
-				item.existencia = Util.stringToNumber( this.txtExistence.text );
-				item.comentarios = this.comments.comments;
+				item.emisor = Util.validateEmpty( this.txtTransmitter.text );
+				item.fecha = this.dtfDate.selectedDate;
+				if( !(this.dlvFileName.delivers == null) &&
+					(this.dlvFileName.delivers.length > 0) ){
+					item.nombreArchivo = this.dlvFileName.delivers.getItemAt(0) as String;
+				}
+				item.comentariosCotizacion = this.comments.comments;
 				return item;
 			}
 			
@@ -91,7 +88,7 @@
 			{
 			}
 			
-			protected function consumibleService_faultHandler(event:FaultEvent):void
+			protected function cotizacionService_faultHandler(event:FaultEvent):void
 			{
 				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
 			}
@@ -103,9 +100,9 @@
 					return;
 				}
 				if( this.mode == Constants.REGISTER_MODE ){
-					var quote:Consumible = this.getQuote();
+					var quote:Cotizacion = this.getQuote();
 					Util.showProperties( quote );
-					this.responseSave.token = this.consumibleService.save( quote );
+					this.responseSave.token = this.cotizacionService.save( quote );
 				}
 				if( this.mode == Constants.UPDATE_MODE ){
 					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
@@ -116,9 +113,9 @@
 				if( event.detail == Alert.NO ){
 					return;
 				}
-				var quote:Consumible = this.getQuote();
+				var quote:Cotizacion = this.getQuote();
 				Util.showProperties( quote );
-				this.responseUpdate.token = this.consumibleService.update( quote );
+				this.responseUpdate.token = this.cotizacionService.update( quote );
 			}
 			
 			private function validations():Boolean
@@ -130,16 +127,17 @@
 			
 			private function modeValidation():void
 			{
+				if( this.mode == Constants.REGISTER_MODE ){
+					form.removeChild( this.frmID );
+				}
 			}
 			
 			private function initializeValidators():void
 			{
 				this.validators = new InicializaValidadoresEtiquetas();
 				validators.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
-				validators.setRestrictor(txtCode, "generic");
 				validators.setRestrictor(txtDescription, "generic");
-				validators.crearValidadorRestrictor("number",ValidadorDecimal.nombre, 10, 4);
-				validators.setRestrictor(txtExistence, "number");
+				validators.setRestrictor(txtTransmitter, "generic");
 			}
 			
 			protected function responseSave_resultHandler(event:ResultEvent):void
@@ -151,9 +149,11 @@
 			
 			private function cleanForm():void
 			{
-				this.txtCode.reset();
+				this.txtID.reset();
 				this.txtDescription.reset();
-				this.txtExistence.reset();
+				this.txtTransmitter.reset();
+				this.dtfDate.reset();
+				this.dlvFileName.reset();
 				this.comments.reset();
 			}
 			
@@ -176,28 +176,28 @@
 		[Event(name="quoteUpdated", type="flash.events.Event")]
 	</mx:Metadata>
 	<mx:Form id="form">
-		<mx:FormItem label="ID:">
-			<components:TextInput id="txtCode"/><!-- Se muestra solo en el registro -->
+		<mx:FormItem label="ID:" id="frmID">
+			<components:TextInput id="txtID" textAlign="right" editable="false"/>
 		</mx:FormItem>
 		<mx:FormItem label="Descripción:">
 			<components:TextInput id="txtDescription" width="400"/>
 		</mx:FormItem>
 		<mx:FormItem label="Emisor:">
-			<components:TextInput id="txtExistence"
+			<components:TextInput id="txtTransmitter"
 								  width="500"/>
 		</mx:FormItem>
 		<mx:FormItem label="Fecha:">
-			<components:DateField/>
+			<components:DateField id="dtfDate"/>
 		</mx:FormItem>
 		<mx:FormItem label="Nombre Archivo:">
-			<components:Deliver/>
+			<components:FlatDeliver id="dlvFileName"/>
 		</mx:FormItem>
 		<components:Comments id="comments"/>
 		<mx:FormItem>
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
 		</mx:FormItem>
 	</mx:Form>
-	<mx:RemoteObject id="consumibleService" destination="consumibleService" fault="consumibleService_faultHandler(event)"
+	<mx:RemoteObject id="cotizacionService" destination="cotizacionService" fault="cotizacionService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
 	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>

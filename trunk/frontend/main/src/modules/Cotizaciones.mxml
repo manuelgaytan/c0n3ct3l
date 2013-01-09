@@ -7,7 +7,7 @@
 		<![CDATA[
 			import events.GenericEvent;
 			
-			import model.Consumible;
+			import model.Cotizacion;
 			
 			import mx.events.FlexEvent;
 			
@@ -18,7 +18,7 @@
 			
 			protected function consult_quoteDetailHandler(event:GenericEvent):void
 			{
-				this.detail.quote = event.information as model.Consumible;
+				this.detail.quote = event.information as Cotizacion;
 				this.navigator.selectedChild = this.detail;
 			}
 			
@@ -44,7 +44,7 @@
 		]]>
 	</mx:Script>
 	<mx:TabNavigator id="navigator" width="100%" height="100%" creationPolicy="all">
-		<cotizaciones:Filter id="filtro" filterCommand="filtro_filterCommandHandler(event)"/>
+		<!--<cotizaciones:Filter id="filtro" filterCommand="filtro_filterCommandHandler(event)"/>-->
 		<cotizaciones:Consult id="consult" quoteDetail="consult_quoteDetailHandler(event)"/>
 		<cotizaciones:Quote id="detail" update="true" quoteUpdated="detail_quoteUpdatedHandler(event)"/>
 		<cotizaciones:Quote id="register" registrer="true" quoteNew="register_quoteNewHandler(event)"/>

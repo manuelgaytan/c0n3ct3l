@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
-		 creationComplete="creationCompleteHandler(event)"
+		 creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*"
 		 >
 	<mx:Script>
 		<![CDATA[
 			import model.Constants;
-			import model.Cotizacion;
+			import model.ProyectoPadre;
 			import model.Util;
 			
 			import mx.collections.ArrayCollection;
@@ -22,7 +22,7 @@
 			import mx.utils.object_proxy;
 			
 			private var mode:String = null;
-			private var _item:Cotizacion;
+			private var _item:ProyectoPadre;
 			private var validators:InicializaValidadoresEtiquetas;
 			
 			public function set registrer(value:Boolean):void{
@@ -45,7 +45,7 @@
 				this.fillCombos();
 			}
 			
-			public function set quote(value:Cotizacion):void{
+			public function set parentProject(value:ProyectoPadre):void{
 				if( value == null ){
 					return;
 				}
@@ -58,29 +58,18 @@
 				if( this._item == null ){
 					return;
 				}
-				this.txtID.text = String(this._item.id);
 				this.txtDescription.text = this._item.descripcion;
-				this.txtTransmitter.text = this._item.emisor;
-				this.dtfDate.selectedDate = this._item.fecha;
-				this.dlvFileName.delivers = new ArrayCollection([this._item.nombreArchivo]);
-				this.comments.comments = this._item.comentariosCotizacion;
+				this.dtgProyectosAsociados.datagrid.dataProvider = this._item.proyectoPadreHijos;
 			}
 			
-			private function getQuote():Cotizacion{
-				var item:Cotizacion = null;
+			private function getQuote():ProyectoPadre{
+				var item:ProyectoPadre = null;
 				if( this.mode == Constants.REGISTER_MODE ){
-					item = new Cotizacion();
+					item = new ProyectoPadre();
 				}else{
 					item = this._item;
 				}
 				item.descripcion = Util.validateEmpty( this.txtDescription.text );
-				item.emisor = Util.validateEmpty( this.txtTransmitter.text );
-				item.fecha = this.dtfDate.selectedDate;
-				if( !(this.dlvFileName.delivers == null) &&
-					(this.dlvFileName.delivers.length > 0) ){
-					item.nombreArchivo = this.dlvFileName.delivers.getItemAt(0) as String;
-				}
-				item.comentariosCotizacion = this.comments.comments;
 				return item;
 			}
 			
@@ -88,7 +77,7 @@
 			{
 			}
 			
-			protected function cotizacionService_faultHandler(event:FaultEvent):void
+			protected function proyectoPadreService_faultHandler(event:FaultEvent):void
 			{
 				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
 			}
@@ -100,9 +89,9 @@
 					return;
 				}
 				if( this.mode == Constants.REGISTER_MODE ){
-					var quote:Cotizacion = this.getQuote();
-					Util.showProperties( quote );
-					this.responseSave.token = this.cotizacionService.save( quote );
+					var parentProject:ProyectoPadre = this.getQuote();
+					Util.showProperties( parentProject );
+					this.responseSave.token = this.proyectoPadreService.save( parentProject );
 				}
 				if( this.mode == Constants.UPDATE_MODE ){
 					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
@@ -113,9 +102,9 @@
 				if( event.detail == Alert.NO ){
 					return;
 				}
-				var quote:Cotizacion = this.getQuote();
-				Util.showProperties( quote );
-				this.responseUpdate.token = this.cotizacionService.update( quote );
+				var parentProject:ProyectoPadre = this.getQuote();
+				Util.showProperties( parentProject );
+				this.responseUpdate.token = this.proyectoPadreService.update( parentProject );
 			}
 			
 			private function validations():Boolean
@@ -129,6 +118,7 @@
 			{
 				if( this.mode == Constants.REGISTER_MODE ){
 					form.removeChild( this.frmID );
+					form.removeChild( this.frmProjectsAssociated );
 				}
 			}
 			
@@ -137,12 +127,11 @@
 				this.validators = new InicializaValidadoresEtiquetas();
 				validators.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
 				validators.setValidador(txtDescription, "generic");
-				validators.setValidador(txtTransmitter, "generic");
 			}
 			
 			protected function responseSave_resultHandler(event:ResultEvent):void
 			{
-				var eventQuoteNew:Event = new Event("quoteNew");
+				var eventQuoteNew:Event = new Event("parentProjectNew");
 				this.dispatchEvent( eventQuoteNew );
 				this.cleanForm();
 			}
@@ -151,15 +140,11 @@
 			{
 				this.txtID.reset();
 				this.txtDescription.reset();
-				this.txtTransmitter.reset();
-				this.dtfDate.reset();
-				this.dlvFileName.reset();
-				this.comments.reset();
 			}
 			
 			protected function responseUpdate_resultHandler(event:ResultEvent):void
 			{
-				var eventQuoteUpdated:Event = new Event("quoteUpdated");
+				var eventQuoteUpdated:Event = new Event("parentProjectUpdated");
 				this.dispatchEvent( eventQuoteUpdated );
 				this.cleanForm();
 			}
@@ -172,32 +157,26 @@
 		]]>
 	</mx:Script>
 	<mx:Metadata>
-		[Event(name="quoteNew", type="flash.events.Event")]
-		[Event(name="quoteUpdated", type="flash.events.Event")]
+		[Event(name="parentProjectNew", type="flash.events.Event")]
+		[Event(name="parentProjectUpdated", type="flash.events.Event")]
 	</mx:Metadata>
 	<mx:Form id="form">
 		<mx:FormItem label="ID:" id="frmID">
-			<components:TextInput id="txtID" textAlign="right" editable="false"/>
+			<components:TextInput id="txtID"
+								  textAlign="right"
+								  editable="false"/>
 		</mx:FormItem>
 		<mx:FormItem label="Descripción:">
 			<components:TextInput id="txtDescription" width="400"/>
 		</mx:FormItem>
-		<mx:FormItem label="Emisor:">
-			<components:TextInput id="txtTransmitter"
-								  width="500"/>
+		<mx:FormItem label="Proyectos Asociados:" id="frmProjectsAssociated">
+			<proyectos:Consult id="dtgProyectosAsociados"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha:">
-			<components:DateField id="dtfDate"/>
-		</mx:FormItem>
-		<mx:FormItem label="Nombre Archivo:">
-			<components:FlatDeliver id="dlvFileName"/>
-		</mx:FormItem>
-		<components:Comments id="comments"/>
 		<mx:FormItem>
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
 		</mx:FormItem>
 	</mx:Form>
-	<mx:RemoteObject id="cotizacionService" destination="cotizacionService" fault="cotizacionService_faultHandler(event)"
+	<mx:RemoteObject id="proyectoPadreService" destination="proyectoPadreService" fault="proyectoPadreService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
 	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>

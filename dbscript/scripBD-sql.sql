@@ -1261,6 +1261,8 @@
 	VALUES (18, 'FacturacionCompra');
 	INSERT INTO Pantalla
 	VALUES (19, 'PreciariosMaquiladores');
+	INSERT INTO Pantalla
+	VALUES (20, 'ProyectosPadres');
 
 	/* Perfil-Pantalla */
 	INSERT INTO PerfilPantalla
@@ -1335,6 +1337,10 @@
 	VALUES (35, 7, 18);
 	INSERT INTO PerfilPantalla
 	VALUES (36, 7, 19);
+	INSERT INTO PerfilPantalla
+	VALUES (37, 1, 20);
+	INSERT INTO PerfilPantalla
+	VALUES (38, 5, 20);
 	
 	/* Usuarios */
 	INSERT INTO Usuario

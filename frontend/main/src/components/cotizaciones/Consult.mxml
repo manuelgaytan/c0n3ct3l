@@ -7,7 +7,7 @@
 		<![CDATA[
 			import events.GenericEvent;
 			
-			import model.Consumible;
+			import model.Cotizacion;
 			import model.Util;
 			
 			import mx.collections.ArrayCollection;
@@ -20,7 +20,7 @@
 			[Bindable]
 			private var items:ArrayCollection = null;
 			
-			private var cotizacion:Consumible;
+			private var cotizacion:Cotizacion;
 			
 			protected function responseGetAll_resultHandler(event:ResultEvent):void
 			{
@@ -39,7 +39,7 @@
 			
 			protected function datagrid_doubleClickHandler(event:MouseEvent):void
 			{
-				var item:Consumible = this.datagrid.selectedItem as Consumible;
+				var item:Cotizacion = this.datagrid.selectedItem as Cotizacion;
 				if( item == null ){
 					return;
 				}
@@ -48,7 +48,7 @@
 			
 			protected function responseGetItem_resultHandler(event:ResultEvent):void
 			{
-				var item:Consumible = event.result as Consumible;
+				var item:Cotizacion = event.result as Cotizacion;
 				if( item == null ){
 					return;
 				}
@@ -89,6 +89,10 @@
 			private function labelFunctionGenerico(item:Object, column:DataGridColumn):String{
 				return Util.extractToText( item, column.dataField );
 			}
+			
+			private function labelFunctionDate(object:Object, column:DataGridColumn):String{
+				return Util.formatDateToString( object[column.dataField] );
+			}
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -98,34 +102,28 @@
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 				 allowMultipleSelection="true">
 		<mx:columns>
-			<mx:DataGridColumn id="dtgCode" headerText="Código"
-							   dataField="codigo"
-							   width="100"/>
-			<mx:DataGridColumn id="dtgFamily" headerText="{'Grupo o\nFamilia'}"
-							   width="160"
-							   dataField="grupoFamiliaD.etiqueta"
-							   labelFunction="labelFunctionGenerico"/>
+			<mx:DataGridColumn id="dtgID" headerText="ID"
+							   dataField="id"
+							   width="100"
+							   textAlign="right"/>
 			<mx:DataGridColumn id="dtgDescription" headerText="Descripción"
+							   width="160"
+							   dataField="descripcion"
+							   />
+			<mx:DataGridColumn id="dtgTransmitter" headerText="Emisor∑"
 							   dataField="descripcion"
 							   width="120"/>
-			<mx:DataGridColumn id="dtgExistence" headerText="Existencia"
-							   dataField="existencia"
+			<mx:DataGridColumn id="dtgDate" headerText="Fecha"
+							   dataField="fecha"
 							   width="120"
-							   textAlign="right"/>
-			<mx:DataGridColumn id="dtgUnit" headerText="Unidad"
-							   dataField="unidadB.etiqueta"
-							   width="50"
-							   labelFunction="labelFunctionGenerico"/>
-			<mx:DataGridColumn id="dtgStatus" headerText="Estatus"
-							   dataField="estatusC.etiqueta"
-							   labelFunction="labelFunctionGenerico"
-							   width="120"/>
+							   textAlign="center"
+							   labelFunction="labelFunctionDate"/>
 		</mx:columns>
 	</mx:DataGrid>
 	<mx:HBox>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>
 	</mx:HBox>
-	<mx:RemoteObject id="cotizacionService" destination="consumibleService" fault="cotizacionService_faultHandler(event)"
+	<mx:RemoteObject id="cotizacionService" destination="cotizacionService" fault="cotizacionService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetAll" result="responseGetAll_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetItem" result="responseGetItem_resultHandler(event)"/>

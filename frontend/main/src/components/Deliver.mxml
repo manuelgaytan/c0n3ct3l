@@ -16,7 +16,7 @@
 			import mx.rpc.events.ResultEvent;
 
 			[Bindable]
-			private var _delivers:ArrayCollection;
+			protected var _delivers:ArrayCollection;
 			
 			private var textTypes:FileFilter = new FileFilter("Archivos de Texto (*.doc, *.docx, *.xls, *.xlsx, *.pdf)", "*.doc; *.docx; *.xls; *.xlsx; *.pdf");
 			private var allTypes:Array = new Array(textTypes);
@@ -75,7 +75,7 @@
 			{
 				if( this.lstDelivers.selectedItem != null ){
 					var params:Object = new Object();
-					var fileName:String = (this.lstDelivers.selectedItem as ProyectoEntregable).entregable.nombreArchivo;
+					var fileName:String = this.getFileName();
 					params.document = fileName;
 					this.exposeService.send(params);
 				}
@@ -100,18 +100,13 @@
 				return this._delivers;
 			}
 			
-			protected function btnAdd_clickHandler(event:MouseEvent):void
-			{
-				// TODO Auto-generated method stub
-			}
-			
 			protected function completeHandler(event:Event):void
 			{
 				this.addDelivery( txtDeliver.text );
 				this.txtDeliver.reset();
 			}
 			
-			private function addDelivery(text:String):void
+			public function addDelivery(text:String):void
 			{
 				if( this._delivers == null ){
 					this._delivers = new ArrayCollection();
@@ -123,8 +118,8 @@
 				this._delivers.addItem( proyectoEntregable );
 			}
 			
-			private function formatFile( item:Object ):String{
-				var currentItem:String = (item as ProyectoEntregable).entregable.nombreArchivo;
+			protected function formatFile( item:Object ):String{
+				var currentItem:String = this.getFileName(item);
 				var index:int = currentItem.indexOf("_");
 				if( index == -1 ){
 					return currentItem;
@@ -167,11 +162,21 @@
 				if( event.detail == Alert.NO ){
 					return;
 				}
-				var fileName:String = (this.lstDelivers.selectedItem as ProyectoEntregable).entregable.nombreArchivo;
+				var fileName:String = this.getFileName();
 				var FILE_URL:String = "http://localhost:8080/serviciosWeb/output" + "/" + fileName;
 				var downloadFile:DownloadFile = new DownloadFile( FILE_URL );
 				downloadFile.download();
 			}
+			
+			public function getFileName(item:Object=null):String
+			{
+				if( item == null ){
+					return (this.lstDelivers.selectedItem as ProyectoEntregable).entregable.nombreArchivo;
+				}else{
+					return (item as ProyectoEntregable).entregable.nombreArchivo;
+				}
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:HTTPService id="exposeService" url="http://localhost:8080/serviciosWeb/exposing.jsp"

@@ -918,6 +918,26 @@
 	);
 	/* Fin Orden de Compra */
 
+	CREATE TABLE FacturaPorPagar
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_orden_compra INT(11) UNSIGNED,
+	fk_orden_compra_maquilado INT(11) UNSIGNED,
+	folio VARCHAR(255) NOT NULL,
+	fecha DATE NOT NULL,
+	fecha_pago DATE,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE OrdenCompraMaquilado
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_solicitud_servicio_maquilado INT(11) UNSIGNED NOT NULL,
+	fecha DATE NOT NULL,
+	fk_proveedor_maquilador INT(11) UNSIGNED NOT NULL,
+	PRIMARY KEY (id)
+	);
+
 	ALTER TABLE Cliente ADD FOREIGN KEY id_contacto_idxfk (id_contacto) REFERENCES Contacto (id);
 
 	ALTER TABLE Proyecto ADD FOREIGN KEY id_categoria_proyecto_idxfk (id_categoria_proyecto) REFERENCES CategoriaProyecto (id);
@@ -1181,6 +1201,10 @@
 
 	ALTER TABLE ProyectoPadreHijo ADD FOREIGN KEY fk_proyecto_idxfk_1 (fk_proyecto) REFERENCES Proyecto (id);
 	/* Fin Orden de Compra */
+
+	ALTER TABLE FacturaPorPagar ADD FOREIGN KEY fk_orden_compra_idxfk (fk_orden_compra) REFERENCES OrdenCompra (id);
+
+	ALTER TABLE FacturaPorPagar ADD FOREIGN KEY fk_orden_compra_maquilado_idxfk (fk_orden_compra_maquilado) REFERENCES OrdenCompraMaquilado (id);
 
 	/* Perfiles */
 	INSERT INTO Perfil

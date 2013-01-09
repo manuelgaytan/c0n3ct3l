@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
+		   width="600" height="400"
+		   xmlns:proyectospadres="components.proyectospadres.*"
+		   creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import events.GenericEvent;
+			
+			import model.ProyectoPadre;
+			
+			import mx.events.FlexEvent;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				
+			}
+			
+			protected function consult_parentProjectDetailHandler(event:GenericEvent):void
+			{
+				this.detail.parentProject = event.information as ProyectoPadre;
+				this.navigator.selectedChild = this.detail;
+			}
+			
+			protected function register_parentProjectNewHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+			
+			protected function detail_parentProjectUpdatedHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+		]]>
+	</mx:Script>
+	<mx:TabNavigator id="navigator" width="100%" height="100%" creationPolicy="all">
+		<proyectospadres:Consult id="consult" parentProjectDetail="consult_parentProjectDetailHandler(event)"/>
+		<proyectospadres:ParentProject id="detail" update="true" parentProjectUpdated="detail_parentProjectUpdatedHandler(event)"/>
+		<proyectospadres:ParentProject id="register" registrer="true" parentProjectNew="register_parentProjectNewHandler(event)"/>
+	</mx:TabNavigator>
+</mx:Module>

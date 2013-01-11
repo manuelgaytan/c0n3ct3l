@@ -118,6 +118,7 @@
 	descripcion_servicio VARCHAR(255),
 	tipo_servicio VARCHAR(255),
 	costo DECIMAL,
+	dias_implementacion INT(11),
 	PRIMARY KEY (id)
 	);
 

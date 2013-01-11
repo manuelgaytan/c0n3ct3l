@@ -391,7 +391,11 @@ package model
 			if( object == null ){
 				return null;
 			}else{
-				return object[ property ];
+				if( object.hasOwnProperty( property ) ){
+					return object[ property ];
+				}else{
+					return null;
+				}
 			}
 		}
 		

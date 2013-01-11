@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)"
+		 >
+	<mx:Script>
+		<![CDATA[
+			import events.GenericEvent;
+			
+			import model.Constants;
+			import model.FacturaPorPagar;
+			import model.OrdenCompraAlmacen;
+			import model.OrdenCompraMaquilado;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.com.gahm.componentes.validadores.ValidadorEntero;
+			import mx.com.gahm.componentes.validadores.ValidadorNumerico;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.utils.object_proxy;
+			
+			private var mode:String = null;
+			private var _item:FacturaPorPagar;
+			private var validators:InicializaValidadoresEtiquetas;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				this.label = Constants.REGISTRAR;
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set payableInvoice(value:FacturaPorPagar):void{
+				if( value == null ){
+					return;
+				}
+				this._item = value;
+				this.setPayableInvoice(); 
+			}
+			
+			private function setPayableInvoice():void
+			{
+				if( this._item == null ){
+					return;
+				}
+				this.txtID.text = String(this._item.id);
+				var purchaseOrderNumber:String;
+				var maquiladoraService:Boolean;
+				var supplier:String = null;
+				var subtotal:String;
+				var iva:String;
+				var ieps:String;
+				var isrRet:String;
+				var ivaRet:String;
+				var otherTaxes:String;
+				var total:String;
+				if( !(this._item.ordenCompra == null) ){
+					purchaseOrderNumber = String( this._item.ordenCompra.id );
+					maquiladoraService = false;
+					supplier = Util.extractToText( this._item, "ordenCompra.proveedorCalificado.proveedorSeleccionado.nombreComercial" );
+					subtotal = Util.extractToText( this._item, "ordenCompra.subtotal" );
+					iva = Util.extractToText( this._item, "ordenCompra.iva" );
+					ieps = Util.extractToText( this._item, "ordenCompra.ieps" );
+					isrRet = Util.extractToText( this._item, "ordenCompra.retencionISR" );
+					ivaRet = Util.extractToText( this._item, "ordenCompra.retencionIVA" );
+					otherTaxes = Util.extractToText( this._item, "ordenCompra.otrosImpuestos" );
+					total = Util.extractToText( this._item, "ordenCompra.total" );
+				}
+				if( !(this._item.ordenCompraMaquilado == null) ){
+					purchaseOrderNumber = String( this._item.ordenCompraMaquilado.id );
+					maquiladoraService = true;
+					supplier = Util.extractToText(this._item, "ordenCompraMaquilado.proveedorMaquilador.proveedorSeleccionado.razonSocial" );
+					supplier = Util.extractToText( this._item, "ordenCompraMaquilado.proveedorCalificado.proveedorSeleccionado.nombreComercial" );
+					subtotal = Util.extractToText( this._item, "ordenCompraMaquilado.subtotal" );
+					iva = Util.extractToText( this._item, "ordenCompraMaquilado.iva" );
+					ieps = Util.extractToText( this._item, "ordenCompraMaquilado.ieps" );
+					isrRet = Util.extractToText( this._item, "ordenCompraMaquilado.retencionISR" );
+					ivaRet = Util.extractToText( this._item, "ordenCompraMaquilado.retencionIVA" );
+					otherTaxes = Util.extractToText( this._item, "ordenCompraMaquilado.otrosImpuestos" );
+					total = Util.extractToText( this._item, "ordenCompraMaquilado.total" );
+				}
+				this.txtPurchaseOrder.text = purchaseOrderNumber;
+				this.lblSupplier.text = supplier;
+				this.chbMaquiladoraService.selected = maquiladoraService;
+				this.txtFolio.text = this._item.folio;
+				this.dtfDate.selectedDate = this._item.fecha;
+				this.lblSubtotal.text = subtotal;
+				this.lblIVA.text = iva;
+				this.lblIEPS.text = ieps;
+				this.lblISRRetention.text = isrRet;
+				this.lblIVARetention.text = ivaRet;
+				this.lblOtherTaxes.text = otherTaxes;
+				this.lblTotal.text = total;
+				this.dtfDate.selectedDate = this._item.fechaPago;
+			}
+			
+			private function getPayableInvoice():FacturaPorPagar{
+				var item:FacturaPorPagar = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					item = new FacturaPorPagar();
+				}else{
+					item = this._item;
+				}
+				if( this.chbMaquiladoraService == false ){
+					item.ordenCompra = new OrdenCompraAlmacen();
+					item.ordenCompra.id = Util.stringToNumber( this.txtPurchaseOrder.text );
+				}
+				if( this.chbMaquiladoraService == true ){
+					item.ordenCompraMaquilado = new OrdenCompraMaquilado();
+					item.ordenCompraMaquilado.id = Util.stringToNumber( this.txtPurchaseOrder.text );
+				}
+				item.folio = Util.validateEmpty( this.txtFolio.text );
+				item.fecha = this.dtfDate.selectedDate;
+				item.fechaPago = this.dtfPaymentDate.selectedDate;
+				return item;
+			}
+			
+			private function fillCombos():void
+			{
+			}
+			
+			protected function facturaPorPagarService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function btnAccept_clickHandler(event:MouseEvent):void
+			{
+				if( !this.validations() ){
+					Util.showMessageVerifyFields();
+					return;
+				}
+				if( this.mode == Constants.REGISTER_MODE ){
+					var payableInvoice:FacturaPorPagar = this.getPayableInvoice();
+					Util.showProperties( payableInvoice );
+					this.responseSave.token = this.facturaPorPagarService.save( payableInvoice );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
+				}
+			}
+			
+			private function updateItem(event:CloseEvent):void{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var payableInvoice:FacturaPorPagar = this.getPayableInvoice();
+				Util.showProperties( payableInvoice );
+				this.responseUpdate.token = this.facturaPorPagarService.update( payableInvoice );
+			}
+			
+			private function validations():Boolean
+			{
+				var value:Boolean = true;
+				value &&= this.validators.validarFormulario();
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+					form.removeChild( this.frmID );
+				}
+			}
+			
+			private function initializeValidators():void
+			{
+				this.validators = new InicializaValidadoresEtiquetas();
+				validators.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
+				validators.setValidador(txtFolio, "generic");
+				validators.crearValidadorRestrictor("integerGeneric",ValidadorEntero.nombre, 5);
+				validators.setValidador(txtPurchaseOrder, "integerGeneric");
+			}
+			
+			protected function responseSave_resultHandler(event:ResultEvent):void
+			{
+				var eventPayableInvoiceNew:Event = new Event("payableInvoiceNew");
+				this.dispatchEvent( eventPayableInvoiceNew );
+				this.cleanForm();
+			}
+			
+			private function cleanForm():void
+			{
+				this.txtID.reset();
+				this.txtPurchaseOrder.reset();
+				this.lblSupplier.text = "";
+				this.txtFolio.reset();
+				this.dtfDate.reset();
+				this.lblSubtotal.text = "";
+				this.lblIVA.text = "";
+				this.lblIEPS.text = "";
+				this.lblISRRetention.text = "";
+				this.lblIVARetention.text = "";
+				this.lblOtherTaxes.text = "";
+				this.lblTotal.text = "";
+				this.dtfPaymentDate.reset();
+			}
+			
+			protected function responseUpdate_resultHandler(event:ResultEvent):void
+			{
+				var eventPayableInvoiceUpdated:Event = new Event("payableInvoiceUpdated");
+				this.dispatchEvent( eventPayableInvoiceUpdated );
+				this.cleanForm();
+			}
+			
+			protected function catalogoService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function btnViewPurchaseOrder_clickHandler(mouseEvent:MouseEvent):void
+			{
+				var purchaseOrderNumber:* = Util.stringToNumber( this.txtPurchaseOrder.text );
+				if( purchaseOrderNumber == undefined ){
+					Util.showErrorMessage( "Primero debe colocar un número de Orden de Compra en el campo." );
+					return;
+				}
+				var event:GenericEvent = null;
+				if( this.chbMaquiladoraService.selected ){
+					event = new GenericEvent("seePurchaseOrdenMaquiladoraService");
+				}else{
+					event = new GenericEvent("seePurchaseOrdenStock");
+				}
+				event.information = purchaseOrderNumber;
+				this.dispatchEvent( event );
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="payableInvoiceNew", type="flash.events.Event")]
+		[Event(name="payableInvoiceUpdated", type="flash.events.Event")]
+		[Event(name="seePurchaseOrdenStock", type="events.GenericEvent")]
+		[Event(name="seePurchaseOrdenMaquiladoraService", type="events.GenericEvent")]
+	</mx:Metadata>
+	<mx:Form id="form">
+		<mx:FormItem label="ID:" id="frmID">
+			<components:TextInput id="txtID" textAlign="right" editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Número de Orden de Compra:" direction="horizontal">
+			<components:TextInput id="txtPurchaseOrder"
+								  width="500"/>
+			<mx:CheckBox id="chbMaquiladoraService" label="Orden de Compra Servicio Maquilado"/>
+			<mx:Button id="btnViewPurchaseOrder" label="Ver Orden de Compra"
+					   click="btnViewPurchaseOrder_clickHandler(event)"/>
+		</mx:FormItem>
+		<mx:FormItem label="Proveedor:">
+			<mx:Label id="lblSupplier"/>
+		</mx:FormItem>
+		<mx:FormItem label="Número de Folio ó Factura:">
+			<components:TextInput id="txtFolio" width="400"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha:">
+			<components:DateField id="dtfDate"/>
+		</mx:FormItem>
+		<mx:FormItem label="Subtotal:">
+			<mx:Label id="lblSubtotal" textAlign="right" width="200"/>
+		</mx:FormItem>
+		<mx:FormItem label="I.V.A.:">
+			<mx:Label id="lblIVA" textAlign="right" width="200"/>
+		</mx:FormItem>
+		<mx:FormItem label="I.E.P.S.:">
+			<mx:Label id="lblIEPS" textAlign="right" width="200"/>
+		</mx:FormItem>
+		<mx:FormItem label="Retención I.S.R.:">
+			<mx:Label id="lblISRRetention" textAlign="right" width="200"/>
+		</mx:FormItem>
+		<mx:FormItem label="Retención I.V.A.:">
+			<mx:Label id="lblIVARetention" textAlign="right" width="200"/>
+		</mx:FormItem>
+		<mx:FormItem label="Otros Impuestos:">
+			<mx:Label id="lblOtherTaxes" textAlign="right" width="200"/>
+		</mx:FormItem>
+		<mx:FormItem label="Total:">
+			<mx:Label id="lblTotal" textAlign="right" width="200"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha de Pago:">
+			<components:DateField id="dtfPaymentDate"/>
+		</mx:FormItem>
+		<mx:FormItem>
+			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:RemoteObject id="facturaPorPagarService" destination="facturaPorPagarService" fault="facturaPorPagarService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
+	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
+</mx:VBox>

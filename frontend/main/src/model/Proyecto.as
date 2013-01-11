@@ -14,6 +14,8 @@ package model
 		public var requisiciones:ArrayCollection;
 		public var observaciones:ArrayCollection;
 		public var proyectoEntregables:ArrayCollection; //ProyectoEntregableDO
+		public var proyectoPadre:ProyectoPadre;
+		public var proyectoPadreHijo:ProyectoPadreHijo;
 		
 		public function Proyecto()
 		{

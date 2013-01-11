@@ -13,6 +13,7 @@
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
 			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
 			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.com.gahm.componentes.validadores.ValidadorEntero;
 			import mx.controls.Alert;
 			import mx.events.CloseEvent;
 			import mx.events.FlexEvent;
@@ -42,7 +43,8 @@
 				this.txtModel.enabled = value;
 				this.txtServiceDescription.enabled = value;
 				this.txtServiceType.enabled = value;
-				this.txtCost.enabled = value;				
+				this.txtCost.enabled = value;		
+				this.txtImplementationDays.enabled = value;
 			}
 			
 			protected function creationCompleteHandler(event:FlexEvent):void
@@ -77,6 +79,7 @@
 				this.txtServiceDescription.text = this._product.descripcionServicio;
 				this.txtServiceType.text = this._product.tipoServicio;
 				this.txtCost.text = Util.formatNumber(this._product.costo);
+				this.txtImplementationDays.text = Util.numberToString(this._product.diasImplementacion);
 			}
 			
 			private function getClient():Producto{
@@ -97,6 +100,7 @@
 				product.descripcionServicio = Util.validateEmpty(this.txtServiceDescription.text);
 				product.tipoServicio  = Util.validateEmpty(this.txtServiceType.text);
 				product.costo = Util.stringToNumber(this.txtCost.text);
+				product.diasImplementacion = Util.stringToNumber( this.txtImplementationDays.text );
 				return product;
 			}
 			
@@ -166,6 +170,8 @@
 				validators.setValidador(txtServiceDescription, "a255");
 				validators.crearValidadorRestrictor("cost",ValidadorDecimal.nombre, 9, 2);
 				validators.setRestrictor(txtCost, "cost");
+				validators.crearValidadorRestrictor("implementationDays",ValidadorEntero.nombre, 5);
+				validators.setRestrictor(txtImplementationDays, "implementationDays");
 			}
 			
 			protected function responseSave_resultHandler(event:ResultEvent):void
@@ -186,6 +192,7 @@
 				this.txtServiceDescription.reset();
 				this.txtServiceType.reset();
 				this.txtCost.reset();
+				this.txtImplementationDays.reset();
 			}
 			
 			protected function responseUpdate_resultHandler(event:ResultEvent):void
@@ -252,6 +259,9 @@
 		</mx:FormItem>
 		<mx:FormItem label="Costo:">
 			<components:TextInput id="txtCost" width="150" textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Días de Implementación:">
+			<components:TextInput id="txtImplementationDays" width="150" textAlign="right"/>
 		</mx:FormItem>
 		<mx:FormItem>
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>

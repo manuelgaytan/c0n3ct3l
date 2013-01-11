@@ -13,6 +13,7 @@ package model
 		public var descripcionServicio:String;
 		public var tipoServicio:String;
 		public var costo:Number;
+		public var diasImplementacion:*;
 		
 		public function Producto()
 		{

@@ -196,6 +196,9 @@
 			<mx:DataGridColumn id="dtgCost" headerText="Costo" textAlign="right"
 							   dataField="costo"
 							   labelFunction="labelFunctionCosto"/>
+			<mx:DataGridColumn id="dtgImplementationDays" headerText="{'Días de\nImplementación'}" textAlign="right"
+							   dataField="diasImplementacion"
+							   />
 		</mx:columns>
 	</mx:DataGrid>
 	<mx:HBox>

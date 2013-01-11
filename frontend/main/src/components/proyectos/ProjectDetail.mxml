@@ -61,6 +61,7 @@
 				this.txtServiceType.text = Util.extractToText( this._project, "producto.tipoServicio" );
 				this.txtCost.text = Util.formatNumber( Util.extractObject( this._project, "producto.costo") );
 				this.txtSite.text = Util.extractToText( this._project, "centralSitio");
+				this.txtParentProject.text = Util.extractToText( this._project, "proyectoPadreHijo.proyectoPadre.descripcion");
 				this.validateStatus( Number( Util.extractObject( this._project, "estado.id") ) );
 			}
 			
@@ -132,6 +133,9 @@
 		</mx:FormItem>
 		<mx:FormItem label="Central o Sitio:">
 			<components:TextInput id="txtSite" width="350"/>
+		</mx:FormItem>
+		<mx:FormItem label="Proyecto Padre:">
+			<components:TextInput id="txtParentProject" width="450"/>
 		</mx:FormItem>
 		<mx:FormItem>
 			<mx:Button id="btnCancel" label="Cancelar Proyecto"

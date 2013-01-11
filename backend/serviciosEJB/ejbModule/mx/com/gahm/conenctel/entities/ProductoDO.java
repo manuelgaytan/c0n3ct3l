@@ -59,6 +59,9 @@ public class ProductoDO implements Serializable {
 
 	@Column(name = "tipo_servicio")
 	private String tipoServicio;
+	
+	@Column(name = "dias_implementacion")
+	private int diasImplementacion;
 
 	@JoinColumn(name = "id_cliente")
 	private ClienteDO cliente;
@@ -144,6 +147,14 @@ public class ProductoDO implements Serializable {
 
 	public void setCliente(ClienteDO cliente) {
 		this.cliente = cliente;
+	}
+
+	public int getDiasImplementacion() {
+		return diasImplementacion;
+	}
+
+	public void setDiasImplementacion(int diasImplementacion) {
+		this.diasImplementacion = diasImplementacion;
 	}
 
 }

@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -67,7 +68,7 @@ public class OrdenCompraMaquiladoDO implements java.io.Serializable {
 		this.fecha = fecha;
 	}
 
-	@Column(name = "fk_proveedor_maquilador", nullable = false)
+	@JoinColumn(name = "fk_proveedor_maquilador", nullable = false)
 	public ProveedorMaquiladorDO getProveedorMaquilador() {
 		return this.proveedorMaquilador;
 	}

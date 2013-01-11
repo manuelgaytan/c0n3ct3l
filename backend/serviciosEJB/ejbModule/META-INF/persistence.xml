@@ -80,6 +80,7 @@
 		<class>mx.com.gahm.conenctel.entities.EstatusRequisicionCompraDO</class>
 		<class>mx.com.gahm.conenctel.entities.ProyectoPadreDO</class>
 		<class>mx.com.gahm.conenctel.entities.ProyectoPadreHijoDO</class>
+		<class>mx.com.gahm.conenctel.entities.FacturaPorPagarDO</class>
 		<properties>
 			<property name="eclipselink.logging.level" value="FINE"/> 
 			<property name="eclipselink.logging.parameters" value="true"/>

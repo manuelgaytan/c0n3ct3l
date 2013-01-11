@@ -45,6 +45,7 @@
 			import model.EstatusB;
 			import model.EstatusC;
 			import model.EstatusRequisicionCompra;
+			import model.FacturaPorPagar;
 			import model.FiltroProducto;
 			import model.FiltroProyecto;
 			import model.GrupoFamiliaA;
@@ -62,6 +63,7 @@
 			import model.NombreSolicitante;
 			import model.Observacion;
 			import model.OrdenCompraAlmacen;
+			import model.OrdenCompraMaquilado;
 			import model.Pantalla;
 			import model.PartidaRequisicionCompra;
 			import model.Perfil;
@@ -69,6 +71,7 @@
 			import model.Prioridad;
 			import model.Producto;
 			import model.ProveedorCalificadoCombo;
+			import model.ProveedorMaquilador;
 			import model.Proyecto;
 			import model.ProyectoEntregable;
 			import model.ProyectoPadre;
@@ -216,6 +219,9 @@
 			private var proyectoPadre:ProyectoPadre;
 			private var proyectoPadreHijo:ProyectoPadreHijo;
 			private var flatDelivery:FlatDeliver;
+			private var facturaPorPagar:FacturaPorPagar;
+			private var ordenCompraMaquilado:OrdenCompraMaquilado;
+			private var proveedorMaquilador:ProveedorMaquilador;
 			
 			protected function login_readyHandler(event:ModuleEvent):void
 			{

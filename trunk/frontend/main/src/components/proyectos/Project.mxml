@@ -9,6 +9,7 @@
 			import model.Estado;
 			import model.Producto;
 			import model.Proyecto;
+			import model.ProyectoPadre;
 			import model.Util;
 			
 			import mx.collections.ArrayCollection;
@@ -28,6 +29,7 @@
 			{
 				this.responseGetCategorias.token  = this.proyectoService.getCategorias();
 				this.responseGetClientes.token  = this.clienteService.getClientes();
+				this.responseGetAll.token = this.proyectoPadreService.getAll();
 			}
 			
 			private function validations():Boolean
@@ -58,6 +60,7 @@
 				project.fechaCaptura = new Date();
 				project.estado = new Estado();
 				project.estado.id = Estado.ID_ALTA;
+				project.proyectoPadre = Util.validateCombo( this.cmbParentProject ) as ProyectoPadre;
 				return project;
 			}
 			
@@ -73,6 +76,7 @@
 				Util.freeDataProvider( this.cmbServiceDescription );
 				Util.freeDataProvider( this.cmbServiceType );
 				Util.freeDataProvider( this.cmbCost );
+				this.cmbParentProject.selectedIndex = 0;
 				this.txtSite.reset();
 			}
 
@@ -103,6 +107,11 @@
 			}
 			
 			protected function clienteService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function proyectoPadreService_faultHandler(event:FaultEvent):void
 			{
 				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
 			}
@@ -356,6 +365,26 @@
 				this.cmbCost.dataProvider = Util.addEmptyCatalgo( data );
 			}
 			
+			protected function responseGetAll_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				
+				var p1:ProyectoPadre = null;
+				p1 = new ProyectoPadre();
+				p1.id = 1;
+				p1.descripcion = "Combo Polanco";
+				var p2:ProyectoPadre = null;
+				p2 = new ProyectoPadre();
+				p2.id = 2;
+				p2.descripcion = "Estela de Luz";
+				data = new ArrayCollection([p1,p2]);
+				
+				if( data == null ){
+					return;
+				}
+				this.cmbParentProject.dataProvider = Util.addEmptyCatalgo( data, "descripcion" );
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -413,6 +442,10 @@
 		<mx:FormItem label="Central o Sitio:">
 			<components:TextInput id="txtSite" width="350"/>
 		</mx:FormItem>
+		<mx:FormItem label="Proyecto Padre:">
+			<mx:ComboBox id="cmbParentProject" width="450"
+						 labelField="descripcion"/>
+		</mx:FormItem>
 		<mx:FormItem>
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
 		</mx:FormItem>
@@ -434,4 +467,7 @@
 	<mx:RemoteObject id="clienteService" destination="clienteService" fault="clienteService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetClientes" result="responseGetClientes_resultHandler(event)"/>
+	<mx:RemoteObject id="proyectoPadreService" destination="proyectoPadreService" fault="proyectoPadreService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetAll" result="responseGetAll_resultHandler(event)"/>
 </mx:VBox>

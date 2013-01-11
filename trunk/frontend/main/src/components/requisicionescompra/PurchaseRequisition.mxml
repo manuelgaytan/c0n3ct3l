@@ -121,7 +121,7 @@
 				this.responseGetColaborador.token = this.catalogoService.getColaborador();
 				this.responseGetAreaSolicitante.token = this.catalogoService.getAreaSolicitante();
 				this.responseGetAlmacen.token = this.catalogoService.getTipoAlmacen();
-				this.responseGetEstatusRequisicionCompra.token = this.catalogoService.getEstatusRequisicionCompra();
+				this.responseGetEstatusRequisicionCompra.token = this.catalogoService.getEstadoRequiscionCompra();
 				
 			}
 			
@@ -207,8 +207,9 @@
 				this.cmbApplicantArea.selectedIndex = 0;
 				this.txtSite.reset();
 				this.cmbProduct.selectedIndex = 0;
+				this.dtgProducts.doubleClickEnabled = true;
 				this.chkOthres.selected = false;
-				Util.removeItems(this.datagrid.dataProvider);
+				Util.removeItems(this.dtgProducts.dataProvider);
 				this.txtCode.reset();
 				this.txtFamily.reset();
 				this.txtDescription.reset();
@@ -233,7 +234,7 @@
 				if( data == null ){
 					return;
 				}
-				this.cmbApplicantsNames.comboList = Util.addEmptyCatalgo( data );
+				this.cmbApplicantsNames.comboList = Util.addEmptyCatalgo( data, "nombreCompleto" );
 			}
 			
 			protected function responseGetAreaSolicitante_resultHandler(event:ResultEvent):void
@@ -265,50 +266,50 @@
 			
 			protected function chkOthres_changeHandler(event:Event):void
 			{
-				// Si es seleccionado otros, se deshabilita la tabla.
+				var enableNoOthers:Boolean = false;
 				if( this.chkOthres.selected ){
 					this.txtCode.reset();
 					this.txtFamily.reset();
 				}
+				enableNoOthers = !this.chkOthres.selected;
+				this.cmbProduct.enabled = enableNoOthers;
+				this.dtgProducts.doubleClickEnabled = enableNoOthers;
 			}
 			
 			protected function cmbProduct_changeHandler(event:ListEvent):void
 			{
 				var id:* = Util.selectedId(this.cmbProduct);
-				if( id == undefined ){
-					// TODO: Remover Tabla
+				if( id == 0 ){
+					Util.removeItems( this.dtgProducts.dataProvider );
+					//dtgProducts.invalidateDisplayList();
 					return;
 				}
 				switch(id){
 					case 1:
-						// TODO: Realizar consulta para Herramientas y desplegarlas en el datagrid.
+						this.responseGetAllAlmacen.token = herramientaService.getAll();
 						break;
 					case 2:
-						// TODO: Realizar consulta para Equipos de Medicion y desplegarlas en el datagrid.
+						this.responseGetAllAlmacen.token = equipoMedicionService.getAll();
 						break;
 					case 3:
-						// TODO: Realizar consulta para Equipos de Transporte y desplegarlas en el datagrid.
+						this.responseGetAllAlmacen.token = equipoTransporteService.getAll();
 						break;
 					case 4:
-						// TODO: Realizar consulta para Materialesy desplegarlas en el datagrid.
+						this.responseGetAllAlmacen.token = materialService.getAll();
 						break;
 					case 5:
-						// TODO: Realizar consulta para Consumibles y desplegarlas en el datagrid.
+						this.responseGetAllAlmacen.token = consumibleService.getAll();
 						break;
 					case 6:
-						// TODO: Realizar consulta para Hardware y desplegarlas en el datagrid.
+						this.responseGetAllAlmacen.token = hardwareService.getAll();
 						break;
 					case 7:
-						// TODO: Realizar consulta para Software y desplegarlas en el datagrid.
+						this.responseGetAllAlmacen.token = softwareService.getAll();
 						break;
 					case 8:
-						// TODO: Realizar consulta para Telefonia Movil y desplegarlas en el datagrid.
-						break;
-					case 9:
-						// TODO: (esta en DUDA aun) Realizar consulta para Solicitud Almacen y desplegarlas en el datagrid.
+						this.responseGetAllAlmacen.token = telefoniaMovilService.getAll();
 						break;
 				}
-				datagrid.invalidateDisplayList();
 			}
 			
 			protected function responseGetAlmacen_resultHandler(event:ResultEvent):void
@@ -317,7 +318,91 @@
 				if( data == null ){
 					return;
 				}
+				this.removerSolicitudAlmacen( data );
 				this.cmbProduct.dataProvider = Util.addEmptyCatalgo( data );
+			}
+
+			private function removerSolicitudAlmacen(data:ArrayCollection):void{
+				var item:TipoAlmacen = null; 
+				for(var i=0; i<data.length; i++) 
+				{
+					item = data.getItemAt( i ) as TipoAlmacen;
+					if( !(item == null) &&
+						item.id == 9 ){
+						data.removeItemAt( i );
+						break;
+					}
+				}
+			}
+			
+			protected function responseGetAllAlmacen_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.dtgProducts.dataProvider = data;
+			}
+			
+			private function labelFunctionGrupoFamilia(object:Object, column:DataGridColumn):String{
+				return this.findGrupoFamilia( object );
+			}
+			
+			private function labelFunctionUnidad(object:Object, column:DataGridColumn):String{
+				return this.findUnidad( object );
+			}
+			
+			protected function dtgProducts_doubleClickHandler(event:MouseEvent):void
+			{
+				var item:Object = this.dtgProducts.selectedItem;
+				if( item == null ){
+					return;
+				}
+				this.txtCode.text = Util.extractToText(item,"codigo");
+				this.txtFamily.text = this.findGrupoFamilia(item);
+				this.txtDescription.text = Util.extractToText(item,"descripcion");
+				this.txtUnit.text = this.findUnidad(item);
+				
+			}
+			
+			private function findGrupoFamilia(item:Object):String{
+				if( item == null ){
+					return "";
+				}
+				var grupoFamilia:String = "";
+				if( item.hasOwnProperty("grupoFamilia") ){
+					grupoFamilia = item["grupoFamilia"];
+				}else if( item.hasOwnProperty("grupoFamiliaA") ){
+					grupoFamilia = item["grupoFamiliaA"]["etiqueta"];
+				}else if( item.hasOwnProperty("grupoFamiliab") ){
+					grupoFamilia = item["grupoFamiliab"]["etiqueta"];
+				}else if( item.hasOwnProperty("grupoFamiliaC") ){
+					grupoFamilia = item["grupoFamiliaC"]["etiqueta"];
+				}else if( item.hasOwnProperty("grupoFamiliaD") ){
+					grupoFamilia = item["grupoFamiliaD"]["etiqueta"];
+				}else if( item.hasOwnProperty("grupoFamiliaE") ){
+					grupoFamilia = item["grupoFamiliaE"]["etiqueta"];
+				}else if( item.hasOwnProperty("grupoFamiliaF") ){
+					grupoFamilia = item["grupoFamiliaF"]["etiqueta"];
+				}
+				return grupoFamilia;
+			}
+			
+			private function findUnidad(item:Object):String{
+				if( item == null ){
+					return "";
+				}
+				var unidad:String = "";
+				if( item.hasOwnProperty("unidad") ){
+					unidad = item["unidad"];
+				}else if( item.hasOwnProperty("unidadA") ){
+					unidad = item["unidadA"]["etiqueta"];
+				}else if( item.hasOwnProperty("unidadb") ){
+					unidad = item["unidadB"]["etiqueta"];
+				}else if( item.hasOwnProperty("unidadC") ){
+					unidad = item["unidadC"]["etiqueta"];
+				}
+				return unidad;
 			}
 			
 		]]>
@@ -344,7 +429,7 @@
 						 />
 		</mx:FormItem>
 		<mx:FormItem label="Nombres de los Solicitantes:">
-			<components:ComboList id="cmbApplicantsNames"
+			<components:ComboList id="cmbApplicantsNames" labelField="nombreCompleto"
 						 />
 		</mx:FormItem>
 		<mx:FormItem label="Área Solicitante:">
@@ -363,14 +448,16 @@
 						 />
 			<mx:CheckBox id="chkOthres" label="Otros" change="chkOthres_changeHandler(event)"/> 
 		</mx:FormItem>
-		<mx:DataGrid id="datagrid" width="100%" height="250">
+		<mx:DataGrid id="dtgProducts" width="100%" height="250"
+					 doubleClickEnabled="true"
+					 doubleClick="dtgProducts_doubleClickHandler(event)">
 			<mx:columns>
 				<mx:DataGridColumn id="dtgCode" headerText="Código"
 								   dataField="codigo"
 								   width="80"/>
 				<mx:DataGridColumn id="dtgFamily" headerText="{'Grupo o\nFamilia'}"
 								   width="100"
-								   dataField="grupoFamiliaA.etiqueta"/>
+								   labelFunction="labelFunctionGrupoFamilia"/>
 				<mx:DataGridColumn id="dtgDescription" headerText="Descripción"
 								   dataField="descripcion"
 								   width="160"/>
@@ -378,10 +465,10 @@
 								   dataField="existencia"
 								   width="60"
 								   textAlign="right"/>
-				<mx:DataGridColumn id="dtgExistence2" headerText="Unidad"
-								   dataField="existencia"
+				<mx:DataGridColumn id="dtgUnit" headerText="Unidad"
 								   width="60"
-								   textAlign="right"/>
+								   textAlign="right"
+								   labelFunction="labelFunctionUnidad"/>
 			</mx:columns>
 		</mx:DataGrid>
 		<mx:FormItem label="Código:">
@@ -444,4 +531,23 @@
 	<mx:CallResponder id="responseGetAreaSolicitante" result="responseGetAreaSolicitante_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetAlmacen" result="responseGetAlmacen_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetEstatusRequisicionCompra" result="responseGetEstatusRequisicionCompra_resultHandler(event)"/>
+	<mx:RemoteObject id="telefoniaMovilService" destination="telefoniaMovilService" fault="requisicionService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:RemoteObject id="solicitudAlmacenService" destination="solicitudAlmacenService" fault="requisicionService_faultHandler(event)"
+					 showBusyCursor="true"/>	
+	<mx:RemoteObject id="softwareService" destination="softwareService" fault="requisicionService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:RemoteObject id="materialService" destination="materialService" fault="requisicionService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:RemoteObject id="herramientaService" destination="herramientaService" fault="requisicionService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:RemoteObject id="hardwareService" destination="hardwareService" fault="requisicionService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:RemoteObject id="equipoTransporteService" destination="equipoTransporteService" fault="requisicionService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:RemoteObject id="equipoMedicionService" destination="equipoMedicionService" fault="requisicionService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:RemoteObject id="consumibleService" destination="consumibleService" fault="requisicionService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetAllAlmacen" result="responseGetAllAlmacen_resultHandler(event)"/>
 </mx:VBox>

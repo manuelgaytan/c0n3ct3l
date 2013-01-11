@@ -36,7 +36,7 @@ public class ProductoService implements IProductoService {
 	@Inject
 	private EntityManager entityManager;
 
-	private static final String QUERY_EXPORT_ALL_PRODUCTO = "SELECT CONCAT(c.nombre_comercial,';',p.tipo_proyecto,';',p.teconologia,';',p.equipo,';',p.actividad_realizar,';',p.modelo,';',p.descripcion_servicio,';',p.tipo_servicio,';',p.costo) FROM producto p INNER JOIN cliente c ON p.id_cliente = c.id";
+	private static final String QUERY_EXPORT_ALL_PRODUCTO = "SELECT CONCAT(c.nombre_comercial,';',p.tipo_proyecto,';',p.teconologia,';',p.equipo,';',p.actividad_realizar,';',p.modelo,';',p.descripcion_servicio,';',p.tipo_servicio,';',p.costo,';',p.dias_implementacion) FROM producto p INNER JOIN cliente c ON p.id_cliente = c.id";
 
 //	@EJB
 //	private TransformacionServiceEJB transformacionService;

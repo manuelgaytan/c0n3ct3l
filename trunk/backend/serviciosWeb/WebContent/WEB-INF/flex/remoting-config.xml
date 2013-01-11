@@ -209,4 +209,12 @@
 			<scope>session</scope>
 		</properties>
 	</destination>
+	
+	<destination id="facturaPorPagarService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/FacturaPorPagarService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
 </service>

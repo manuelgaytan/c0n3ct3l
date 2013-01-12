@@ -100,7 +100,7 @@
 			
 			protected function btnAccept_clickHandler(event:MouseEvent):void
 			{
-				if( !this.validations() ){
+				if( !this.provider.validations() ){
 					Util.showMessageVerifyFields();
 					return;
 				}
@@ -123,12 +123,12 @@
 				this.responseUpdate.token = this.proveedorRO.updateProveedorSeleccionado( proveedorSeleccionado );
 			}
 			
-			private function validations():Boolean
+		/* 	private function validations():Boolean
 			{
 				var value:Boolean = true;
 				value &&= this.validators.validarFormulario();
 				return value;
-			}
+			} */
 			
 			private function modeValidation():void
 			{

@@ -34,7 +34,6 @@
 			}
 			
 			public function set userAccess(user:Usuario):void{
-				return;
 				for each (var category:VBox in this.getChildren()) 
 				{
 					if( category == null ){
@@ -42,7 +41,7 @@
 					}
 					for each (var button:LinkButton in category.getChildren()) 
 					{
-						button.includeInLayout = user.allowed( button.id );
+						button.visible = user.allowed( button.id );
 					}
 				}
 			}

@@ -66,7 +66,7 @@ public class ProveedorMaquiladorService implements IProveedorMaquiladorService {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public boolean deleteProveedoresMaquiladors(List<Long> ids) {
+	public boolean deleteProveedoresMaquiladores(List<Long> ids) {
 		List<Long> idList = (List) DataTypeUtil.convertToLong(ids);
 		boolean response = true;
 		for (Long id : idList) {

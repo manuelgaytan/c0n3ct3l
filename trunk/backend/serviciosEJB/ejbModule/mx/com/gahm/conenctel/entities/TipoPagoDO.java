@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 
@@ -18,6 +20,8 @@ import javax.persistence.Table;
  */
 @Cacheable(false)
 @Entity
+@NamedQueries({
+	@NamedQuery(name = "TipoPagoDO.findAll", query = "select tp from TipoPagoDO tp ")})
 @Table(name="tipopago")
 public class TipoPagoDO implements Serializable {
 	

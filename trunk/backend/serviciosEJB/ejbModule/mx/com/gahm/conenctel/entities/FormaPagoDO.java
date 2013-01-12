@@ -6,6 +6,8 @@ package mx.com.gahm.conenctel.entities;
 import java.io.Serializable;
 
 import javax.persistence.Cacheable;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,6 +20,8 @@ import javax.persistence.Id;
  */
 @Cacheable(false)
 @Entity
+@NamedQueries({
+	@NamedQuery(name = "FormaPagoDO.findAll", query = "select f from FormaPagoDO f ")})
 @Table(name = "formapago")
 public class FormaPagoDO implements Serializable {
 

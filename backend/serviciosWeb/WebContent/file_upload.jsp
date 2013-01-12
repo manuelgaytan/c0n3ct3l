@@ -7,11 +7,29 @@
 
 
 <%
+	String repository = null;
+	String tempRepository = null; 
+	Properties prop = new Properties();
+	try {
+		//load a properties file
+		prop.load(application.getResourceAsStream("/file.properties"));
+		//get the property value and print it out
+	    System.out.println(prop.getProperty("repositoryPath"));
+		System.out.println(prop.getProperty("tempRepository"));
+		repository = prop.getProperty("repositoryPath") + "/";
+		tempRepository = prop.getProperty("tempRepository");
+	
+	} catch (IOException ex) {
+		System.out.println("Error al cargar el archivo de propiedades.");
+		repository = "c:/repository/";
+		tempRepository = "C:/temp";
+		ex.printStackTrace();
+	}
    File file ;
    int maxFileSize = 5000 * 1024;
    int maxMemSize = 5000 * 1024;
    ServletContext context = pageContext.getServletContext();
-   String filePath = "c:\\repository\\";//context.getInitParameter("file-upload");
+   String filePath = repository;
    String prefix = request.getParameter("prefix");
 
    // Verify the content type
@@ -22,7 +40,7 @@
       // maximum size that will be stored in memory
       factory.setSizeThreshold(maxMemSize);
       // Location to save data that is larger than maxMemSize.
-      factory.setRepository(new File("c:\\temp"));
+      factory.setRepository(new File( tempRepository ));
 
       // Create a new file upload handler
       ServletFileUpload upload = new ServletFileUpload(factory);

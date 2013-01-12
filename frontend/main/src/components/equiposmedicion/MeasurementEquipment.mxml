@@ -189,12 +189,12 @@
 			{
 				this.validators = new InicializaValidadoresEtiquetas();
 				validators.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
-				validators.setRestrictor(txtCode, "generic");
+				validators.setValidador(txtCode, "generic");
 				validators.setRestrictor(txtFamily, "generic");
-				validators.setRestrictor(txtDescription, "generic");
-				validators.setRestrictor(txtSerie, "generic");
-				validators.setRestrictor(txtTrade, "generic");
-				validators.setRestrictor(txtModel, "generic");
+				validators.setValidador(txtDescription, "generic");
+				validators.setValidador(txtSerie, "generic");
+				validators.setValidador(txtTrade, "generic");
+				validators.setValidador(txtModel, "generic");
 				validators.setRestrictor(txtCertificateNumber, "generic");
 			}
 			
@@ -241,7 +241,7 @@
 				if( data == null ){
 					return;
 				}
-				this.cmbLocation.dataProvider = Util.addEmptyCatalgo( data );
+				this.cmbLocation.dataProvider = data;//Util.addEmptyCatalgo( data );
 				if( this._item != null && this._item.ubicacionb != null ){
 					this.cmbLocation.selectedIndex = Util.selectedIndexFromCombo( this.cmbLocation.dataProvider as ArrayCollection, 
 						this._item.ubicacionb.id);
@@ -254,7 +254,7 @@
 				if( data == null ){
 					return;
 				}
-				this.cmbResponsible.dataProvider = Util.addEmptyCatalgo( data, "nombreCompleto" );
+				this.cmbResponsible.dataProvider = data;//Util.addEmptyCatalgo( data, "nombreCompleto" );
 				if( this._item != null && this._item.responsable != null ){
 					this.cmbResponsible.selectedIndex = Util.selectedIndexFromCombo( this.cmbResponsible.dataProvider as ArrayCollection, 
 						this._item.responsable.id);
@@ -267,7 +267,7 @@
 				if( data == null ){
 					return;
 				}
-				this.cmbStatus.dataProvider = Util.addEmptyCatalgo( data );
+				this.cmbStatus.dataProvider = data;//Util.addEmptyCatalgo( data );
 				if( this._item != null && this._item.estatusa != null ){
 					this.cmbStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbStatus.dataProvider as ArrayCollection, 
 						this._item.estatusa.id);
@@ -280,7 +280,7 @@
 				if( data == null ){
 					return;
 				}
-				this.cmbService.dataProvider = Util.addEmptyCatalgo( data );
+				this.cmbService.dataProvider = data;//Util.addEmptyCatalgo( data );
 				if( this._item != null && this._item.tipomantenimiento != null ){
 					this.cmbService.selectedIndex = Util.selectedIndexFromCombo( this.cmbService.dataProvider as ArrayCollection, 
 						this._item.tipomantenimiento.id);

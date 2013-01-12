@@ -50,19 +50,20 @@
 					return;
 				}
 				this._item = value;
-				this.setQuote(); 
+				this.setParentProject(); 
 			}
 			
-			private function setQuote():void
+			private function setParentProject():void
 			{
 				if( this._item == null ){
 					return;
 				}
+				this.txtID.text = Util.numberToString( this._item.id );
 				this.txtDescription.text = this._item.descripcion;
 				this.dtgProyectosAsociados.datagrid.dataProvider = this._item.proyectoPadreHijos;
 			}
 			
-			private function getQuote():ProyectoPadre{
+			private function getParentProject():ProyectoPadre{
 				var item:ProyectoPadre = null;
 				if( this.mode == Constants.REGISTER_MODE ){
 					item = new ProyectoPadre();
@@ -89,7 +90,7 @@
 					return;
 				}
 				if( this.mode == Constants.REGISTER_MODE ){
-					var parentProject:ProyectoPadre = this.getQuote();
+					var parentProject:ProyectoPadre = this.getParentProject();
 					Util.showProperties( parentProject );
 					this.responseSave.token = this.proyectoPadreService.save( parentProject );
 				}
@@ -102,7 +103,7 @@
 				if( event.detail == Alert.NO ){
 					return;
 				}
-				var parentProject:ProyectoPadre = this.getQuote();
+				var parentProject:ProyectoPadre = this.getParentProject();
 				Util.showProperties( parentProject );
 				this.responseUpdate.token = this.proyectoPadreService.update( parentProject );
 			}
@@ -131,8 +132,8 @@
 			
 			protected function responseSave_resultHandler(event:ResultEvent):void
 			{
-				var eventQuoteNew:Event = new Event("parentProjectNew");
-				this.dispatchEvent( eventQuoteNew );
+				var eventParentProjectNew:Event = new Event("parentProjectNew");
+				this.dispatchEvent( eventParentProjectNew );
 				this.cleanForm();
 			}
 			
@@ -144,8 +145,8 @@
 			
 			protected function responseUpdate_resultHandler(event:ResultEvent):void
 			{
-				var eventQuoteUpdated:Event = new Event("parentProjectUpdated");
-				this.dispatchEvent( eventQuoteUpdated );
+				var eventParentProjectUpdated:Event = new Event("parentProjectUpdated");
+				this.dispatchEvent( eventParentProjectUpdated );
 				this.cleanForm();
 			}
 			

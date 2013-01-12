@@ -119,14 +119,14 @@
 			
 			protected function btnExport_clickHandler(event:MouseEvent):void
 			{
-				var filePath:String = Constants.REPOSITORY_PATH + "/" + this.getExportFileName();
+				var filePath:String = Model.getInstance().repositoryPath + "/" + this.getExportFileName();
 				trace("filePath: " + filePath);
 				this.responseExportProductos.token = this.productoService.export( filePath );
 			}
 			
 			protected function fileLoaded(event:Event):void
 			{
-				var filePath:String = Constants.REPOSITORY_PATH + "/" + event.currentTarget.fileName;
+				var filePath:String = Model.getInstance().repositoryPath + "/" + event.currentTarget.fileName;
 				trace("filePath: " + filePath);
 				this.responseImportProductos.token = this.productoService.importProductos( filePath );
 			}
@@ -138,7 +138,7 @@
 			
 			protected function responseExportProductos_resultHandler(event:ResultEvent):void
 			{
-				var filePath:String = Constants.REPOSITORY_PATH + "/" + this.getExportFileName();
+				var filePath:String = Model.getInstance().repositoryPath + "/" + this.getExportFileName();
 				var params:Object = new Object();
 				params.document = this.getExportFileName();
 				this.exposeService.send(params);
@@ -152,7 +152,8 @@
 			private function downloadItem(event:CloseEvent):void
 			{
 				if( event.detail == Alert.YES ){
-					var downloadFile:DownloadFile = new DownloadFile("http://localhost:8080/serviciosWeb/output/"+this.getExportFileName());
+					//var downloadFile:DownloadFile = new DownloadFile("http://localhost:8080/serviciosWeb/output/"+this.getExportFileName());
+					var downloadFile:DownloadFile = new DownloadFile(Model.getInstance().urlBase + "output/"+this.getExportFileName());
 					downloadFile.download();
 				}
 			}
@@ -213,7 +214,7 @@
 	<mx:CallResponder id="responseGetAllByFiltro" result="responseGetAll_resultHandler(event)"/>
 	<mx:CallResponder id="responseImportProductos" result="responseImportProductos_resultHandler(event)"/>
 	<mx:CallResponder id="responseExportProductos" result="responseExportProductos_resultHandler(event)"/>
-	<mx:HTTPService id="exposeService" url="http://localhost:8080/serviciosWeb/exposing.jsp"
+	<mx:HTTPService id="exposeService" url="{Model.getInstance().urlBase}exposing.jsp"
 					result="exposeService_resultHandler(event)" fault="exposeService_faultHandler(event)"
 					showBusyCursor="true"/>
 </mx:VBox>

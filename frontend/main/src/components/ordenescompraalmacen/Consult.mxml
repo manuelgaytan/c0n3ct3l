@@ -7,6 +7,8 @@
 		<![CDATA[
 			import events.GenericEvent;
 			
+			import flash.net.navigateToURL;
+			
 			import model.OrdenCompraAlmacen;
 			import model.Util;
 			
@@ -93,6 +95,16 @@
 			private function labelFunctionDate(object:Object, column:DataGridColumn):String{
 				return Util.formatDateToString( object[column.dataField] );
 			}
+			
+			protected function btnViewFormat_clickHandler(event:MouseEvent):void
+			{
+				if( this.datagrid.selectedItem == null ){
+					Util.showErrorMessage("Debe seleccionar un elemento de la tabla.");
+					return;
+				}
+				navigateToURL(new URLRequest(""+this.datagrid.selectedItem.id));
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -144,6 +156,7 @@
 		</mx:columns>
 	</mx:DataGrid>
 	<mx:HBox>
+		<mx:Button id="btnViewFormat" label="Visualizar Formato" click="btnViewFormat_clickHandler(event)"/>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>
 	</mx:HBox>
 	<mx:RemoteObject id="ordenCompraService" destination="ordenCompraService" fault="ordenCompraAlmacenService_faultHandler(event)"

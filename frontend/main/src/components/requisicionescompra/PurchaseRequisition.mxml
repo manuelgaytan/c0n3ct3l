@@ -18,6 +18,7 @@
 			import model.Colaborador;
 			import model.Constants;
 			import model.EstatusRequisicionCompra;
+			import model.PartidaRequisicionCompra;
 			import model.Perfil;
 			import model.Prioridad;
 			import model.RequisicionCompra;
@@ -42,6 +43,7 @@
 			private var mode:String = null;
 			private var _item:RequisicionCompra;
 			private var validators:InicializaValidadoresEtiquetas;
+			private var validatorsEntry:InicializaValidadoresEtiquetas;
 			
 			public function set registrer(value:Boolean):void{
 				mode = Constants.REGISTER_MODE;
@@ -131,7 +133,7 @@
 				if( data == null ){
 					return;
 				}
-				this.cmbPriority.dataProvider = Util.addEmptyCatalgo( data );
+				this.cmbPriority.dataProvider = data; //Util.addEmptyCatalgo( data );
 				if( this._item != null && this._item.prioridad != null ){
 					this.cmbPriority.selectedIndex = Util.selectedIndexFromCombo( this.cmbPriority.dataProvider as ArrayCollection, 
 						this._item.prioridad.id);
@@ -188,6 +190,12 @@
 				validators.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
 				validators.setRestrictor(txtReason, "generic");
 				validators.setRestrictor(txtSite, "generic");
+				this.validatorsEntry = new InicializaValidadoresEtiquetas();
+				validatorsEntry.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
+				validatorsEntry.setValidador(txtDescription, "generic");
+				validatorsEntry.setValidador(txtQuantity, "generic");
+				validatorsEntry.setRestrictor(txtUnit, "generic");
+				validatorsEntry.setRestrictor(txtValidation, "generic");
 			}
 			
 			protected function responseSave_resultHandler(event:ResultEvent):void
@@ -216,7 +224,8 @@
 				this.txtQuantity.reset();
 				this.txtUnit.reset();
 				this.txtValidation.reset();
-				this.cmbItemStatus.selectedIndex = 0;
+				this.itemsManagement.reset();
+				//this.cmbItemStatus.selectedIndex = 0;
 				this.cmbStatus.selectedIndex = 0;
 				this.comments.reset();
 			}
@@ -243,7 +252,7 @@
 				if( data == null ){
 					return;
 				}
-				this.cmbApplicantArea.dataProvider = Util.addEmptyCatalgo( data );
+				this.cmbApplicantArea.dataProvider = data; //Util.addEmptyCatalgo( data );
 			}
 			
 			protected function responseGetEstatusRequisicionCompra_resultHandler(event:ResultEvent):void
@@ -252,7 +261,7 @@
 				if( data == null ){
 					return;
 				}
-				this.cmbStatus.dataProvider = Util.addEmptyCatalgo( data );
+				this.cmbStatus.dataProvider = data; //Util.addEmptyCatalgo( data, "estatus" );
 				if( this._item != null && this._item.estatusRequisicionCompra != null ){
 					this.cmbStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbStatus.dataProvider as ArrayCollection, 
 						this._item.estatusRequisicionCompra.id);
@@ -281,7 +290,6 @@
 				var id:* = Util.selectedId(this.cmbProduct);
 				if( id == 0 ){
 					Util.removeItems( this.dtgProducts.dataProvider );
-					//dtgProducts.invalidateDisplayList();
 					return;
 				}
 				switch(id){
@@ -405,6 +413,37 @@
 				return unidad;
 			}
 			
+			protected function btnAddItem_clickHandler(event:MouseEvent):void
+			{
+				var entry:PartidaRequisicionCompra  = this.getValidEntry();
+				if( entry == false ){
+					Util.showErrorMessage("Valide los campos de la Partida");
+					return;
+				}
+				this.itemsManagement.addItem( entry );
+			}
+			
+			private function getValidEntry():PartidaRequisicionCompra
+			{
+				var entry:PartidaRequisicionCompra = null;
+				if( !this.isValidEntry() ){
+					return entry;
+				}
+				entry = new PartidaRequisicionCompra();
+				entry.codigo = Util.validateEmpty( this.txtCode.text );
+				entry.grupoFamilia = Util.validateEmpty( this.txtFamily.text );
+				entry.descripcion = Util.validateEmpty( this.txtDescription.text );
+				entry.cantidad = Util.validateEmpty( this.txtQuantity.text );
+				entry.unidad = Util.validateEmpty( this.txtUnit.text );
+				entry.validacion = Util.validateEmpty( this.txtValidation.text );
+				return entry;
+			}
+			
+			private function isValidEntry():Boolean
+			{
+				return this.validatorsEntry.validarFormulario();
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -501,18 +540,18 @@
 								  width="200"
 								  />
 		</mx:FormItem>
-		<mx:FormItem label="Estatus:">
+		<!--<mx:FormItem label="Estatus:">
 			<mx:ComboBox id="cmbItemStatus"
-						 labelField="etiqueta"
+						 labelField="estatus"
 						 />
-		</mx:FormItem>
+		</mx:FormItem>-->
 		<mx:FormItem>
-			<mx:Button id="btnAddItem" label="Agregar Partida"/>
+			<mx:Button id="btnAddItem" label="Agregar Partida" click="btnAddItem_clickHandler(event)"/>
 		</mx:FormItem>
 		<requisicionescompra:ItemsManagement id="itemsManagement"/>
 		<mx:FormItem label="Estatus:">
 			<mx:ComboBox id="cmbStatus"
-						 labelField="etiqueta"
+						 labelField="estatus"
 						 />
 		</mx:FormItem>
 		<components:Comments id="comments"/>
@@ -520,7 +559,7 @@
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
 		</mx:FormItem>
 	</mx:Form>
-	<mx:RemoteObject id="requisicionService" destination="requisicionService" fault="requisicionService_faultHandler(event)"
+	<mx:RemoteObject id="requisicionService" destination="requisicionCompraService" fault="requisicionService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
 	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>

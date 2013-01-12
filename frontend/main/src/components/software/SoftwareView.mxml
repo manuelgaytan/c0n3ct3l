@@ -153,6 +153,8 @@
 			{
 				var value:Boolean = true;
 				value &&= this.validators.validarFormulario();
+				value &&= this.dtfInitialLicensing.selectedDate != null;
+				value &&= this.dtfFinalLicensing.selectedDate != null;
 				return value;
 			}
 			
@@ -164,12 +166,12 @@
 			{
 				this.validators = new InicializaValidadoresEtiquetas();
 				validators.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
-				validators.setRestrictor(txtCode, "generic");
-				validators.setRestrictor(txtDescription, "generic");
-				validators.setRestrictor(txtSerie, "generic");
+				validators.setValidador(txtCode, "generic");
+				validators.setValidador(txtDescription, "generic");
+				validators.setValidador(txtSerie, "generic");
 				validators.setRestrictor(txtUnit, "generic");
 				validators.crearValidadorRestrictor("number",ValidadorDecimal.nombre, 10, 4);
-				validators.setRestrictor(txtExistence, "number");
+				validators.setValidador(txtExistence, "number");
 			}
 			
 			protected function responseSave_resultHandler(event:ResultEvent):void
@@ -208,7 +210,7 @@
 				if( data == null ){
 					return;
 				}
-				this.cmbLocation.dataProvider = Util.addEmptyCatalgo( data );
+				this.cmbLocation.dataProvider = data;//Util.addEmptyCatalgo( data );
 				if( this._item != null && this._item.ubicacionB != null ){
 					this.cmbLocation.selectedIndex = Util.selectedIndexFromCombo( this.cmbLocation.dataProvider as ArrayCollection, 
 						this._item.ubicacionB.id);
@@ -221,7 +223,7 @@
 				if( data == null ){
 					return;
 				}
-				this.cmbResponsible.dataProvider = Util.addEmptyCatalgo( data, "nombreCompleto" );
+				this.cmbResponsible.dataProvider = data;//Util.addEmptyCatalgo( data, "nombreCompleto" );
 				if( this._item != null && this._item.responsable != null ){
 					this.cmbResponsible.selectedIndex = Util.selectedIndexFromCombo( this.cmbResponsible.dataProvider as ArrayCollection, 
 						this._item.responsable.id);

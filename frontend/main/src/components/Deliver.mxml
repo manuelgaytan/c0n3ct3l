@@ -45,7 +45,7 @@
 			{
 				var type:String = Constants.PROJECT_TYPE;
 				var prefix:String = Util.createPrefix( type, Model.getInstance().user.usuario );
-				var urlRequest:String = "http://localhost:8080/serviciosWeb/file_upload.jsp";
+				var urlRequest:String = Model.getInstance().urlBase+"file_upload.jsp";
 				urlRequest += "?prefix=" + prefix;
 				var request:URLRequest = new URLRequest( urlRequest );
 				
@@ -163,7 +163,7 @@
 					return;
 				}
 				var fileName:String = this.getFileName();
-				var FILE_URL:String = "http://localhost:8080/serviciosWeb/output" + "/" + fileName;
+				var FILE_URL:String = Model.getInstance().urlBase+"output" + "/" + fileName;
 				var downloadFile:DownloadFile = new DownloadFile( FILE_URL );
 				downloadFile.download();
 			}
@@ -179,7 +179,7 @@
 			
 		]]>
 	</mx:Script>
-	<mx:HTTPService id="exposeService" url="http://localhost:8080/serviciosWeb/exposing.jsp"
+	<mx:HTTPService id="exposeService" url="{Model.getInstance().urlBase}exposing.jsp"
 					result="exposeService_resultHandler(event)" fault="exposeService_faultHandler(event)"/>
 	<mx:HBox>
 		<components:TextInput id="txtDeliver" width="160"

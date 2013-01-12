@@ -27,7 +27,7 @@
 				items = event.result as ArrayCollection;
 			}
 			
-			protected function consumibleService_faultHandler(event:FaultEvent):void
+			protected function requisicionService_faultHandler(event:FaultEvent):void
 			{
 				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
 			}
@@ -43,7 +43,7 @@
 				if( item == null ){
 					return;
 				}
-				this.responseGetItem.token = this.consumibleService.getItem( item.id );
+				this.responseGetItem.token = this.requisicionService.getItem( item.id );
 			}
 			
 			protected function responseGetItem_resultHandler(event:ResultEvent):void
@@ -59,7 +59,7 @@
 			
 			public function executeQuery():void
 			{
-				this.responseGetAll.token = this.consumibleService.getAll();
+				this.responseGetAll.token = this.requisicionService.getAll();
 			}
 			
 			protected function btnDelete_clickHandler(event:MouseEvent):void
@@ -78,7 +78,7 @@
 					return;
 				}
 				var items:ArrayCollection = Util.selectedIDs( this.datagrid.selectedItems ); 
-				this.responseDeleteItems.token = this.consumibleService.deleteItems( items );
+				this.responseDeleteItems.token = this.requisicionService.deleteItems( items );
 			}
 			
 			protected function responseDeleteItems_resultHandler(event:ResultEvent):void
@@ -125,7 +125,7 @@
 	<mx:HBox>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>
 	</mx:HBox>
-	<mx:RemoteObject id="consumibleService" destination="consumibleService" fault="consumibleService_faultHandler(event)"
+	<mx:RemoteObject id="requisicionService" destination="requisicionCompraService" fault="requisicionService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetAll" result="responseGetAll_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetItem" result="responseGetItem_resultHandler(event)"/>

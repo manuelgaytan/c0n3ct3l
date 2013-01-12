@@ -2,6 +2,7 @@
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
 				xmlns:components="components.*"
 				currentState="login"
+				initialize="initializeHandler(event)"
 				creationComplete="creationCompleteHandler(event)">
 	<mx:Script>
 		<![CDATA[
@@ -114,6 +115,8 @@
 			import mx.events.FlexEvent;
 			import mx.events.ModuleEvent;
 			import mx.modules.Module;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
 			import mx.rpc.remoting.mxml.RemoteObject;
 			
 			private var alert:Alert;
@@ -247,6 +250,23 @@
 				workSpace.menuOption = menuOption;
 			}
 			
+			protected function initializeHandler(event:FlexEvent):void
+			{
+				Model.getInstance().urlBase = Util.rootServerURI();
+				httpService.send();
+			}
+			
+			protected function httpService_fault(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function httpService_result(event:ResultEvent):void
+			{
+				var modelInstance:Model = Model.getInstance();
+				modelInstance.repositoryPath = event.result["repositoryPath"];
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:Style source="assets/css/styles.css"/>
@@ -269,4 +289,9 @@
 			<components:WorkSpace id="workSpace"/>
 		</mx:HBox>
 	</mx:HBox>
+	<mx:HTTPService id="httpService"
+					url="properties.xml"
+					resultFormat="flashvars"
+					fault="httpService_fault(event)"
+					result="httpService_result(event)"/>
 </mx:Application>

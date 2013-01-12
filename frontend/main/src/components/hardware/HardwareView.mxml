@@ -156,7 +156,7 @@
 				if( data == null ){
 					return;
 				}
-				this.cmbFamily.dataProvider = Util.addEmptyCatalgo( data );
+				this.cmbFamily.dataProvider = data;//Util.addEmptyCatalgo( data );
 				if( this._item != null && this._item.grupoFamiliaE != null ){
 					this.cmbFamily.selectedIndex = Util.selectedIndexFromCombo( this.cmbFamily.dataProvider as ArrayCollection, 
 						this._item.grupoFamiliaE.id);
@@ -208,13 +208,13 @@
 			{
 				this.validators = new InicializaValidadoresEtiquetas();
 				validators.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
-				validators.setRestrictor(txtCode, "generic");
-				validators.setRestrictor(txtDescription, "generic");
-				validators.setRestrictor(txtSerie, "generic");
-				validators.setRestrictor(txtTrade, "generic");
-				validators.setRestrictor(txtModel, "generic");
+				validators.setValidador(txtCode, "generic");
+				validators.setValidador(txtDescription, "generic");
+				validators.setValidador(txtSerie, "generic");
+				validators.setValidador(txtTrade, "generic");
+				validators.setValidador(txtModel, "generic");
 				validators.crearValidadorRestrictor("number",ValidadorDecimal.nombre, 10, 4);
-				validators.setRestrictor(txtExistence, "number");
+				validators.setValidador(txtExistence, "number");
 			}
 			
 			protected function responseSave_resultHandler(event:ResultEvent):void
@@ -258,7 +258,7 @@
 				if( data == null ){
 					return;
 				}
-				this.cmbUnit.dataProvider = Util.addEmptyCatalgo( data );
+				this.cmbUnit.dataProvider = data;//Util.addEmptyCatalgo( data );
 				if( this._item != null && this._item.unidadC != null ){
 					this.cmbUnit.selectedIndex = Util.selectedIndexFromCombo( this.cmbUnit.dataProvider as ArrayCollection, 
 						this._item.unidadC.id);
@@ -271,7 +271,7 @@
 				if( data == null ){
 					return;
 				}
-				this.cmbLocation.dataProvider = Util.addEmptyCatalgo( data );
+				this.cmbLocation.dataProvider = data;//Util.addEmptyCatalgo( data );
 				if( this._item != null && this._item.ubicacionB != null ){
 					this.cmbLocation.selectedIndex = Util.selectedIndexFromCombo( this.cmbLocation.dataProvider as ArrayCollection, 
 						this._item.ubicacionB.id);
@@ -284,7 +284,7 @@
 				if( data == null ){
 					return;
 				}
-				this.cmbResponsible.dataProvider = Util.addEmptyCatalgo( data, "nombreCompleto" );
+				this.cmbResponsible.dataProvider = data;//Util.addEmptyCatalgo( data, "nombreCompleto" );
 				if( this._item != null && this._item.responsable != null ){
 					this.cmbResponsible.selectedIndex = Util.selectedIndexFromCombo( this.cmbResponsible.dataProvider as ArrayCollection, 
 						this._item.responsable.id);
@@ -297,7 +297,7 @@
 				if( data == null ){
 					return;
 				}
-				this.cmbStatus.dataProvider = Util.addEmptyCatalgo( data );
+				this.cmbStatus.dataProvider = data;//Util.addEmptyCatalgo( data );
 				if( this._item != null && this._item.estatusB != null ){
 					this.cmbStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbStatus.dataProvider as ArrayCollection, 
 						this._item.estatusB.id);
@@ -310,7 +310,7 @@
 				if( data == null ){
 					return;
 				}
-				this.cmbService.dataProvider = Util.addEmptyCatalgo( data );
+				this.cmbService.dataProvider = data;//Util.addEmptyCatalgo( data );
 				if( this._item != null && this._item.tipoMantenimiento != null ){
 					this.cmbService.selectedIndex = Util.selectedIndexFromCombo( this.cmbService.dataProvider as ArrayCollection, 
 						this._item.tipoMantenimiento.id);

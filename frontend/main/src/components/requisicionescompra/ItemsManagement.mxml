@@ -1,7 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:DataGrid xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="250">
+<mx:DataGrid xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="250"
+			 dataProvider="{this._items}">
 	<mx:Script>
 		<![CDATA[
+			import model.PartidaRequisicionCompra;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			
+			[Bindable]
+			private var _items:ArrayCollection = new ArrayCollection();
+			
+			public function addItem(entry:PartidaRequisicionCompra):void{
+				if( entry == null ){
+					return;
+				}
+				this._items.addItem( entry );
+			}
+			
+			public function reset():void
+			{
+				Util.removeItems( this._items );
+			}
 		]]>
 	</mx:Script>
 	<mx:columns>
@@ -10,7 +30,7 @@
 						   width="80"/>
 		<mx:DataGridColumn id="dtgItemFamily" headerText="{'Grupo o\nFamilia'}"
 						   width="100"
-						   dataField="grupoFamiliaA.etiqueta"/>
+						   dataField="grupoFamilia"/>
 		<mx:DataGridColumn id="dtgItemDescription" headerText="Descripción"
 						   dataField="descripcion"
 						   width="160"/>
@@ -26,7 +46,7 @@
 						   dataField="validacion"
 						   width="80"/>
 		<mx:DataGridColumn id="dtgItemEstatus" headerText="Estatus"
-						   dataField="estatusRequisicionCompra.etiqueta"
+						   dataField="estatusRequisicionCompra.estatus"
 						   width="80"/>
 	</mx:columns>
 </mx:DataGrid>	

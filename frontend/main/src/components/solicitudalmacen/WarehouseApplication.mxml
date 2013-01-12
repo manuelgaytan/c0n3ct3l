@@ -179,6 +179,8 @@
 			{
 				var value:Boolean = true;
 				value &&= this.validators.validarFormulario();
+				value &&= this.dtfApplicationDate.selectedDate != null;
+				value &&= this.dtfAllocationDate.selectedDate != null;
 				return value;
 			}
 			
@@ -195,7 +197,7 @@
 				validators.setRestrictor(txtSite, "generic");
 				validators.setRestrictor(txtObservation, "generic");
 				validators.setRestrictor(txtAuthorizes, "generic");
-				validators.setRestrictor(txtDelivery, "generic");
+				validators.setValidador(txtDelivery, "generic");
 				validators.setRestrictor(txtVoucher, "generic");
 				validators.crearValidadorRestrictor("number",ValidadorDecimal.nombre, 10, 4);
 				validators.setRestrictor(txtCode, "number");
@@ -243,7 +245,7 @@
 				if( data == null ){
 					return;
 				}
-				this.cmbUnit.dataProvider = Util.addEmptyCatalgo( data );
+				this.cmbUnit.dataProvider = data;//Util.addEmptyCatalgo( data );
 				if( this._item != null && this._item.unidadB != null ){
 					this.cmbUnit.selectedIndex = Util.selectedIndexFromCombo( this.cmbUnit.dataProvider as ArrayCollection, 
 						this._item.unidadB.id);
@@ -256,7 +258,7 @@
 				if( data == null ){
 					return;
 				}
-				this.cmbPriority.dataProvider = Util.addEmptyCatalgo( data );
+				this.cmbPriority.dataProvider = data;//Util.addEmptyCatalgo( data );
 				if( this._item != null && this._item.prioridad != null ){
 					this.cmbPriority.selectedIndex = Util.selectedIndexFromCombo( this.cmbPriority.dataProvider as ArrayCollection, 
 						this._item.prioridad.id);
@@ -284,7 +286,7 @@
 				if( data == null ){
 					return;
 				}
-				this.cmbApplicantArea.dataProvider = Util.addEmptyCatalgo( data );
+				this.cmbApplicantArea.dataProvider = data;//Util.addEmptyCatalgo( data );
 				if( this._item != null && this._item.areaSolicitante != null ){
 					this.cmbApplicantArea.selectedIndex = Util.selectedIndexFromCombo( this.cmbApplicantArea.dataProvider as ArrayCollection, 
 						this._item.areaSolicitante.id);
@@ -297,7 +299,7 @@
 				if( data == null ){
 					return;
 				}
-				this.cmbServiceRequested.dataProvider = Util.addEmptyCatalgo( data );
+				this.cmbServiceRequested.dataProvider = data;//Util.addEmptyCatalgo( data );
 				if( this._item != null && this._item.servicioSolicitado != null ){
 					this.cmbServiceRequested.selectedIndex = Util.selectedIndexFromCombo( this.cmbServiceRequested.dataProvider as ArrayCollection, 
 						this._item.servicioSolicitado.id);
@@ -310,7 +312,7 @@
 				if( data == null ){
 					return;
 				}
-				this.autCmpDescription.dataProvider = Util.addEmptyCatalgo( data );
+				this.autCmpDescription.dataProvider = data;//Util.addEmptyCatalgo( data );
 				if( this._item != null && this._item.descripcionAlmacen != null ){
 					this.autCmpDescription.selectedItemId = Util.selectedIndexFromCombo( this.autCmpDescription.dataProvider as ArrayCollection, 
 						this._item.descripcionAlmacen.id);

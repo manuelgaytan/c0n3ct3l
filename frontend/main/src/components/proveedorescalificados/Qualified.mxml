@@ -196,10 +196,14 @@
 			{
 				this.validators = new InicializaValidadoresEtiquetas();
 				validators.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
-				/* validators.setRestrictor(txtCode, "generic");
-				validators.setRestrictor(txtDescription, "generic");
+				 validators.setRestrictor(txtBanco, "generic");
+				 validators.setRestrictor(txtCLBInterbancaria, "generic");
+				 validators.setRestrictor(txtCuenta, "generic");
+				validators.setRestrictor(txtMoneda, "generic");
 				validators.crearValidadorRestrictor("number",ValidadorDecimal.nombre, 10, 4);
-				validators.setRestrictor(txtExistence, "number"); */
+				validators.setRestrictor(txtDescuentos, "number");
+				validators.setRestrictor(txtDiasCredito, "number"); 
+				validators.setRestrictor(txttLimiteCredito, "number"); 
 			}
 			
 			protected function responseSave_resultHandler(event:ResultEvent):void
@@ -216,13 +220,16 @@
 			
 			private function cleanForm():void
 			{
-				/* this.txtCode.reset();
-				this.cmbFamily.selectedIndex = 0;
-				this.txtDescription.reset();
-				this.txtExistence.reset();
-				this.cmbUnit.selectedIndex = 0;
-				this.cmbLocation.selectedIndex = 0;
-				this.comments.reset(); */
+				this.txtMoneda.reset();
+				this.cmbProveedor.selectedIndex = 0;
+				this.cmbFormaPago.selectedIndex	=0;
+				this.cmbTipPago.selectedIndex=0;
+				this.txttLimiteCredito.reset();
+				this.txtBanco.reset();
+				this.txtCLBInterbancaria.reset();
+				this.txtCuenta.reset();
+				this.txtDescuentos.reset(); 
+				this.txtDiasCredito.reset();
 			}
 			
 			protected function responseUpdate_resultHandler(event:ResultEvent):void

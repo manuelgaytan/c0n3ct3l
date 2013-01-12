@@ -47,6 +47,9 @@ public class ProyectoDO implements Serializable {
 	@OneToMany(mappedBy="proyecto", fetch = FetchType.EAGER)
 	private List<ProyectoEntregableDO> proyectoEntregables;
 
+	@Transient
+	private ProyectoPadreDO proyectoPadre;
+	
 	public ProyectoDO() {
 	}
 
@@ -123,4 +126,11 @@ public class ProyectoDO implements Serializable {
 		this.proyectoEntregables = proyectoEntregables;
 	}
 
+	public ProyectoPadreDO getProyectoPadre() {
+		return proyectoPadre;
+	}
+
+	public void setProyectoPadre(ProyectoPadreDO proyectoPadre) {
+		this.proyectoPadre = proyectoPadre;
+	}
 }

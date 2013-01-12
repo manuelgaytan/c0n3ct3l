@@ -1,3 +1,5 @@
+<%@page import="java.io.IOException"%>
+<%@page import="java.util.Properties"%>
 <%@page import="java.io.OutputStream"%>
 <%@page import="java.io.InputStream"%>
 <%@page import="java.io.FileOutputStream"%>
@@ -14,11 +16,36 @@
 </head>
 <body>
 	<%
-		String urlOutput = "http://localhost:8080/serviciosWeb/output";
-		String repository = "c:/repository";
-		String webRepositiry = "C:/Users/Manuel/Documents/conectel/entregas/glassfish3/glassfish/domains/domain1/eclipseApps/servicios/serviciosWeb_war/output";
+		String scheme = request.getScheme();             
+		String serverName = request.getServerName(); 
+		int serverPort = request.getServerPort();    
+		String uri = request.getContextPath();
+		String url = scheme + "://" +serverName + ":" + serverPort + uri + "/output";
+		String urlOutput = url; //"http://localhost:8080/serviciosWeb/output";
+		
+		String repository = null; //"/Users/manuel/Projects/c0n3ct3l/temp";//"c:/repository";
+		String webRepositiry = null; //"/Applications/glassfish3/glassfish/domains/domain1/eclipseApps/servicios/serviciosWeb_war/output";//"C:/Users/Manuel/Documents/conectel/entregas/glassfish3/glassfish/domains/domain1/eclipseApps/servicios/serviciosWeb_war/output";
+	
+		Properties prop = new Properties();
+		try {
+			//load a properties file
+			prop.load(application.getResourceAsStream("/file.properties"));
+			//get the property value and print it out
+            System.out.println(prop.getProperty("repositoryPath"));
+			System.out.println(prop.getProperty("webRepositiry"));
+			repository = prop.getProperty("repositoryPath");
+			webRepositiry = prop.getProperty("webRepositiry");
+	
+		} catch (IOException ex) {
+			System.out.println("Error al cargar el archivo de propiedades.");
+			repository = "c:/repository";
+			webRepositiry = "C:/glassfish3/glassfish/domains/domain1/eclipse/servicios/serviciosWeb_war/output";
+			ex.printStackTrace();
+	    }
+
 		String fileName = request.getParameter("document");
 		
+		if( !(fileName == null) ){
 		String filePath = repository + "/" + fileName;
 		String copyFilePath = webRepositiry + "/" + fileName;
 		
@@ -79,6 +106,9 @@
 			}
 		}
 		*/
+		}else{
+			out.write("No existe nombre del archivo.");
+		}
 	%>
 </body>
 </html>

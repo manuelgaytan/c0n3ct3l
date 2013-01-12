@@ -367,6 +367,7 @@ public class ProductoService implements IProductoService {
 			producto.setDescripcionServicio((String) t.getValueAt(x, 6));
 			producto.setTipoServicio((String) t.getValueAt(x, 7));
 			producto.setCosto(Double.valueOf((String) t.getValueAt(x, 8)));
+			producto.setDiasImplementacion(Integer.valueOf((String) t.getValueAt(x, 9)));
 			entityManager.persist(producto);
 		}
 	}

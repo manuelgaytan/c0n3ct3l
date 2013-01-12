@@ -217,4 +217,12 @@
 			<scope>session</scope>
 		</properties>
 	</destination>
+	
+	<destination id="requisicionCompraService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/RequisicionCompraService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
 </service>

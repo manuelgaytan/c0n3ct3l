@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.util.Date;
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -19,6 +20,8 @@ import mx.com.gahm.conenctel.entities.CategoriaDO;
 import mx.com.gahm.conenctel.entities.EstadoDO;
 import mx.com.gahm.conenctel.entities.ObservacionDO;
 import mx.com.gahm.conenctel.entities.ProyectoDO;
+import mx.com.gahm.conenctel.entities.ProyectoPadreDO;
+import mx.com.gahm.conenctel.entities.ProyectoPadreHijoDO;
 import mx.com.gahm.conenctel.entities.RequisicionDO;
 import mx.com.gahm.conenctel.exceptions.ConectelException;
 import mx.com.gahm.conenctel.model.FiltroProyecto;
@@ -81,17 +84,17 @@ public class ProyectoService implements IProyectoService {
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public ProyectoDO save(ProyectoDO project) throws ConectelException {
-		/*try {
-			ProyectoDO current = transformacionService
-					.map(project, ProyectoDO.class);*/
-		
-			entityManager.persist(project);
-		/*} catch (ConectelMappingException e) {
-			throw new ConectelException("Error de sistema.");
-		}*/
+		entityManager.persist(project);
+		ProyectoPadreHijoDO proyectoPadreHijoDO = new ProyectoPadreHijoDO();
+		proyectoPadreHijoDO.setProyecto(project);
+		proyectoPadreHijoDO.setProyectoPadre(project.getProyectoPadre());
+		entityManager.persist(proyectoPadreHijoDO);
+		/*
+		 * 	entityManager.persist(project);
+		 */
 		return null;
 	}
-
+	
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public ProyectoDO update(ProyectoDO project) throws ConectelException {
 		if (project.getRequisiciones() != null) {

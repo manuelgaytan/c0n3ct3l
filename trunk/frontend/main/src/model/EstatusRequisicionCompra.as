@@ -4,7 +4,7 @@ package model
 	public class EstatusRequisicionCompra
 	{
 		public var id:*;
-		public var etiqueta:String;
+		public var estatus:String;
 		public static var ID_AUTORIZADA:Number = 1;
 		public static var ID_RECHAZADA:Number = 2;
 		public static var ID_PENDIENTE:Number = 3;
@@ -15,7 +15,7 @@ package model
 		public function EstatusRequisicionCompra()
 		{
 			id = undefined;
-			etiqueta = "";
+			estatus = "";
 		}
 	}
 }

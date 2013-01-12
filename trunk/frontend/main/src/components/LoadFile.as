@@ -36,7 +36,7 @@ package components
 		private function selectHandler(event:Event):void
 		{
 			var prefix:String = Util.createPrefix( type, Model.getInstance().user.usuario );
-			var urlRequest:String = "http://localhost:8080/serviciosWeb/file_upload.jsp";
+			var urlRequest:String = Model.getInstance().urlBase+"file_upload.jsp";
 			urlRequest += "?prefix=" + prefix;
 			urlRequest += "&type=" + type;
 			var request:URLRequest = new URLRequest( urlRequest );

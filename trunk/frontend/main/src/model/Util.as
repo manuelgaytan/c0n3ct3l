@@ -15,7 +15,9 @@ package model
 	import mx.formatters.CurrencyFormatter;
 	import mx.formatters.DateFormatter;
 	import mx.formatters.NumberFormatter;
+	import mx.managers.BrowserManager;
 	import mx.managers.FocusManager;
+	import mx.managers.IBrowserManager;
 	import mx.resources.ResourceManager;
 	import mx.utils.ObjectUtil;
 	import mx.utils.StringUtil;
@@ -352,7 +354,7 @@ package model
 		
 		public static function showProperties(object:Object):void
 		{
-			showErrorMessage( ObjectUtil.toString( object ) );
+			//showErrorMessage( ObjectUtil.toString( object ) );
 		}
 		
 		public static function isFill(cmbProfile:ComboBox):Boolean
@@ -488,6 +490,23 @@ package model
 				}
 			}
 			return filterEntregables;
+		}
+		
+		/**
+		 * The root URI (that is scheme + hierarchical part) of the server the application
+		 * will connect to. <br/>
+		 * If the application is executing locally, this is the #localServerRootURI. <br/>
+		 * Else it is determined from the application #url. <br/>
+		 */ 
+		public static function rootServerURI() : String
+		{
+			var url:String = Application.application.url;
+			var i:int = url.indexOf("serviciosWeb");
+			if( !(i == -1) ){
+				return url.substring( 0, i+ "serviciosWeb".length + 1 );
+			}else{
+				return null;
+			}
 		}
 	}
 }

@@ -368,17 +368,6 @@
 			protected function responseGetAll_resultHandler(event:ResultEvent):void
 			{
 				var data:ArrayCollection = event.result as ArrayCollection;
-				
-				var p1:ProyectoPadre = null;
-				p1 = new ProyectoPadre();
-				p1.id = 1;
-				p1.descripcion = "Combo Polanco";
-				var p2:ProyectoPadre = null;
-				p2 = new ProyectoPadre();
-				p2.id = 2;
-				p2.descripcion = "Estela de Luz";
-				data = new ArrayCollection([p1,p2]);
-				
 				if( data == null ){
 					return;
 				}

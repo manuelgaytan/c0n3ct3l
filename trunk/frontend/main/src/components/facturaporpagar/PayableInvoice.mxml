@@ -259,7 +259,8 @@
 		</mx:FormItem>
 		<mx:FormItem label="Número de Orden de Compra:" direction="horizontal">
 			<components:TextInput id="txtPurchaseOrder"
-								  width="500"/>
+								  width="150"
+								  enter="creationCompleteHandler(event)"/>
 			<mx:CheckBox id="chbMaquiladoraService" label="Orden de Compra Servicio Maquilado"/>
 			<mx:Button id="btnViewPurchaseOrder" label="Ver Orden de Compra"
 					   click="btnViewPurchaseOrder_clickHandler(event)"/>
@@ -268,7 +269,7 @@
 			<mx:Label id="lblSupplier"/>
 		</mx:FormItem>
 		<mx:FormItem label="Número de Folio ó Factura:">
-			<components:TextInput id="txtFolio" width="400"/>
+			<components:TextInput id="txtFolio" width="150"/>
 		</mx:FormItem>
 		<mx:FormItem label="Fecha:">
 			<components:DateField id="dtfDate"/>

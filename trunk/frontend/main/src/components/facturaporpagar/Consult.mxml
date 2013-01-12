@@ -106,15 +106,20 @@
 							   dataField="id"
 							   width="60"
 							   textAlign="right"/>
-			<mx:DataGridColumn id="dtgDescription" headerText="Descripción"
+			<mx:DataGridColumn id="dtgDescription" headerText="Orden de Compra"
 							   width="260"
-							   dataField="descripcion"
+							   dataField="ordenCompra.id"
 							   />
-			<mx:DataGridColumn id="dtgTransmitter" headerText="Emisor"
-							   dataField="emisor"
+			<mx:DataGridColumn id="dtgTransmitter" headerText="Folio"
+							   dataField="folio"
 							   width="120"/>
 			<mx:DataGridColumn id="dtgDate" headerText="Fecha"
 							   dataField="fecha"
+							   width="60"
+							   textAlign="center"
+							   labelFunction="labelFunctionDate"/>
+			<mx:DataGridColumn id="dtgPaymentDate" headerText="Fecha Pago"
+							   dataField="fechaPago"
 							   width="60"
 							   textAlign="center"
 							   labelFunction="labelFunctionDate"/>

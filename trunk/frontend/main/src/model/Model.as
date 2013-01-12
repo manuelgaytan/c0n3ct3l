@@ -6,6 +6,9 @@ package model
 		
 		public var user:Usuario = null;
 		
+		public var urlBase:String = null;
+		public var repositoryPath:String = null;
+		
 		public static function getInstance():Model{
 			if( _model == null ){
 				_model = new Model();

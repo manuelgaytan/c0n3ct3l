@@ -14,6 +14,7 @@ import mx.com.gahm.conenctel.entities.EstatusADO;
 import mx.com.gahm.conenctel.entities.EstatusBDO;
 import mx.com.gahm.conenctel.entities.EstatusCDO;
 import mx.com.gahm.conenctel.entities.EstatusRequisicionCompraDO;
+import mx.com.gahm.conenctel.entities.FormaPagoDO;
 import mx.com.gahm.conenctel.entities.GrupoFamiliaADO;
 import mx.com.gahm.conenctel.entities.GrupoFamiliaBDO;
 import mx.com.gahm.conenctel.entities.GrupoFamiliaCDO;
@@ -25,7 +26,9 @@ import mx.com.gahm.conenctel.entities.PrioridadDO;
 import mx.com.gahm.conenctel.entities.SeguimientoDO;
 import mx.com.gahm.conenctel.entities.ServicioSolicitadoDO;
 import mx.com.gahm.conenctel.entities.TipoAlmacenDO;
+import mx.com.gahm.conenctel.entities.TipoContratoDO;
 import mx.com.gahm.conenctel.entities.TipoMantenimientoDO;
+import mx.com.gahm.conenctel.entities.TipoPagoDO;
 import mx.com.gahm.conenctel.entities.TipoPersonaDO;
 import mx.com.gahm.conenctel.entities.UbicacionADO;
 import mx.com.gahm.conenctel.entities.UbicacionBDO;
@@ -100,5 +103,12 @@ public interface ICatalogoService extends Serializable {
 			throws ConectelException;
 	
 	List<EstatusRequisicionCompraDO> getEstadoRequiscionCompra()
-			throws ConectelException;
+	throws ConectelException;
+
+	public List<FormaPagoDO> getFormaPago() throws ConectelException;
+
+	public List<TipoPagoDO> getTipoPago() throws ConectelException;
+	
+	public List<TipoContratoDO> getTipoContrato() throws ConectelException;
+
 }

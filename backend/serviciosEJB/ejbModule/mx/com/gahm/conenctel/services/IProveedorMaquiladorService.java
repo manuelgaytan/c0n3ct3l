@@ -23,7 +23,7 @@ public interface IProveedorMaquiladorService extends Serializable {
 	
 	public ProveedorMaquiladorDO saveProveedorMaquilador(ProveedorMaquiladorDO proveedor) throws ConectelException ;
 	
-	public boolean deleteProveedoresMaquiladors(List<Long> ids) ;
+	public boolean deleteProveedoresMaquiladores(List<Long> ids) ;
 
 	public ProductoDO updateProveedorMaquilador(ProveedorMaquiladorDO proveedor) throws ConectelException ;
 

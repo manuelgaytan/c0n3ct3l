@@ -6,12 +6,14 @@ package mx.com.gahm.conenctel.entities;
 import java.io.Serializable;
 
 import javax.persistence.Cacheable;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -60,6 +62,7 @@ public class ProveedorCalificadoDO implements Serializable {
 	@Column(name = "descuentos")
 	private Double descuentos;
 
+	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name = "fk_dato_bancario")
 	private DatoBancarioDO datoBancario;
 

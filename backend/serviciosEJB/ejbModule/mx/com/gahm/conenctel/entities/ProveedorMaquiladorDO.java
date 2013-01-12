@@ -7,6 +7,7 @@ import java.util.Date;
 
 
 /**
+ *  @author lespinosa
  * The persistent class for the proveedormaquilador database table.
  * 
  */
@@ -34,7 +35,8 @@ public class ProveedorMaquiladorDO extends ProveedorDO implements Serializable{
 
 	@JoinColumn(name="fk_categoria_proyecto")
 	private  CategoriaDO categoriaProyecto;
-
+	
+	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="fk_dato_bancario")
 	private DatoBancarioDO datoBancario;
 
@@ -53,13 +55,6 @@ public class ProveedorMaquiladorDO extends ProveedorDO implements Serializable{
 	public ProveedorMaquiladorDO() {
 	}
 
-//	public int getId() {
-//		return this.id;
-//	}
-//
-//	public void setId(int id) {
-//		this.id = id;
-//	}
 
 	public String getCurp() {
 		return this.curp;

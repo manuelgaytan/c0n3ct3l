@@ -19,6 +19,7 @@ import mx.com.gahm.conenctel.entities.EstatusADO;
 import mx.com.gahm.conenctel.entities.EstatusBDO;
 import mx.com.gahm.conenctel.entities.EstatusCDO;
 import mx.com.gahm.conenctel.entities.EstatusRequisicionCompraDO;
+import mx.com.gahm.conenctel.entities.FormaPagoDO;
 import mx.com.gahm.conenctel.entities.GrupoFamiliaADO;
 import mx.com.gahm.conenctel.entities.GrupoFamiliaBDO;
 import mx.com.gahm.conenctel.entities.GrupoFamiliaCDO;
@@ -30,7 +31,9 @@ import mx.com.gahm.conenctel.entities.PrioridadDO;
 import mx.com.gahm.conenctel.entities.SeguimientoDO;
 import mx.com.gahm.conenctel.entities.ServicioSolicitadoDO;
 import mx.com.gahm.conenctel.entities.TipoAlmacenDO;
+import mx.com.gahm.conenctel.entities.TipoContratoDO;
 import mx.com.gahm.conenctel.entities.TipoMantenimientoDO;
+import mx.com.gahm.conenctel.entities.TipoPagoDO;
 import mx.com.gahm.conenctel.entities.TipoPersonaDO;
 import mx.com.gahm.conenctel.entities.UbicacionADO;
 import mx.com.gahm.conenctel.entities.UbicacionBDO;
@@ -443,4 +446,60 @@ public class CatalogoService implements ICatalogoService {
 		}
 		return datos;
 	}
+	
+	public List<TipoPagoDO> getTipoPago()
+			throws ConectelException {
+
+		List<TipoPagoDO> datos = null;
+
+		TypedQuery<TipoPagoDO> query = entityManager
+				.createNamedQuery("TipoPagoDO.findAll",
+						TipoPagoDO.class);
+
+		try {
+			datos = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen informaci˜n para mostrar.");
+		}
+		return datos;
+	}
+	
+	public List<FormaPagoDO> getFormaPago()
+			throws ConectelException {
+
+		List<FormaPagoDO> datos = null;
+
+		TypedQuery<FormaPagoDO> query = entityManager
+				.createNamedQuery("FormaPagoDO.findAll",
+						FormaPagoDO.class);
+
+		try {
+			datos = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen informaci˜n para mostrar.");
+		}
+		return datos;
+	}
+	
+	public List<TipoContratoDO> getTipoContrato()
+			throws ConectelException {
+
+		List<TipoContratoDO> datos = null;
+
+		TypedQuery<TipoContratoDO> query = entityManager
+				.createNamedQuery("TipoContratoDO.findAll",
+						TipoContratoDO.class);
+
+		try {
+			datos = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen informaci˜n para mostrar.");
+		}
+		return datos;
+	}
+	
+	
+	
+	
+	
 }

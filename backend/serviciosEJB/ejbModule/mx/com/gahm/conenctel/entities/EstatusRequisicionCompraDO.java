@@ -24,14 +24,14 @@ public class EstatusRequisicionCompraDO implements java.io.Serializable {
 	 */
 	private static final long serialVersionUID = -8548327481470328507L;
 	private Integer id;
-	private String estatus;
+	private String etiqueta;
 
 
 	public EstatusRequisicionCompraDO() {
 	}
 
-	public EstatusRequisicionCompraDO(String estatus) {
-		this.estatus = estatus;
+	public EstatusRequisicionCompraDO(String etiqueta) {
+		this.etiqueta = etiqueta;
 	}
 
 	@Id
@@ -46,12 +46,12 @@ public class EstatusRequisicionCompraDO implements java.io.Serializable {
 	}
 
 	@Column(name = "estatus", nullable = false)
-	public String getEstatus() {
-		return this.estatus;
+	public String getEtiqueta() {
+		return this.etiqueta;
 	}
 
-	public void setEstatus(String estatus) {
-		this.estatus = estatus;
+	public void setEtiqueta(String etiqueta) {
+		this.etiqueta = etiqueta;
 	}
 
 }

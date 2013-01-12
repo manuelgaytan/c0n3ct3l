@@ -10,7 +10,7 @@ package model
 		public static var UPDATE_MODE:String = "update";
 		public static var DATE_FORMAT:String = "DD/MM/YYYY";
 		
-		public static const REPOSITORY_PATH:String = "/Users/manuel/Projects/c0n3ct3l/temp";
+		public static const REPOSITORY_PATH:String = "c:/repository";
 		public static const PROJECT_TYPE:String = "PROJECT";
 		public static const IMPORT_PRODUCTS_TYPE:String = "IMPORT-PRODUCTS";
 		public static const TEXT_FILES_FILTER_TEXT_SHOWED:String = "Archivos de Texto (*.doc, *.docx, *.xls, *.xlsx, *.pdf)";

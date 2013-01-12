@@ -35,10 +35,25 @@
 			{
 				this.validators = new InicializaValidadoresEtiquetas();
 				validators.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
-				/* validators.setRestrictor(txtCode, "generic");
-				validators.setRestrictor(txtDescription, "generic");
-				validators.crearValidadorRestrictor("number",ValidadorDecimal.nombre, 10, 4);
-				validators.setRestrictor(txtExistence, "number"); */
+				validators.setRestrictor(txtNombreComercial, "generic");
+				validators.setRestrictor(txtRazonSocial, "generic");
+				validators.setRestrictor(txtRFC, "generic");
+				validators.setRestrictor(txtDireccionFisica, "generic");
+				validators.setRestrictor(txtDireccionFiscal, "generic");
+				validators.setRestrictor(txtTelefonos, "generic");
+				validators.setRestrictor(txtCorreo, "generic");
+				validators.setRestrictor(txtPaginaWeb, "generic");
+				
+				
+				/* validators.crearValidadorRestrictor("number",ValidadorDecimal.nombre, 10, 4);
+				validators.setRestrictor(txtExistence, "number"); */ 
+			}
+			
+			public function validations():Boolean
+			{
+				var value:Boolean = true;
+				value &&= this.validators.validarFormulario();
+				return value;
 			}
 			
 			public function set proveedorSeleccionadoForm(value:ProveedorSeleccionado):void{
@@ -144,6 +159,7 @@
 			//	item.paginaWeb=Util.validateEmpty(this.txtPaginaWeb.text); */
 				return item;
 			}
+			
 			 protected function responseGetTipoPersona_resultHandler(event:ResultEvent):void
 			{
 				var data:ArrayCollection = event.result as ArrayCollection;
@@ -163,8 +179,21 @@
 				this.cmbFamily.selectedIndex = 0;
 				this.txtDescription.reset();
 				this.txtExistence.reset(); */
+				this.txtNombreComercial.reset()
+				this.txtRazonSocial.reset();
+				this.txtRFC.reset()
+				this.txtDireccionFisica.reset()
+				this.txtDireccionFiscal.reset()
+				this.txtTelefonos.reset()
+				//this.txtContacto.text= this._itemMaquilado.contacto;
+				this.txtCorreo.reset()
+				//this.txtPaginaWeb.text= this._itemMaquilado.paginaWeb; */
+				this.cmbPersona.selectedIndex = 0
+					if(limitedInformation==true){
+						this.txtContacto.reset();
+						this.txtPaginaWeb.reset();
+					}
 			}
-			
 			public function fillCombos():void
 				
 			{
@@ -183,6 +212,7 @@
 					this.removeChild( this.frmItmContact );
 					this.removeChild( this.frmItmWebPage );
 				}
+				this.initializeValidators();
 			}
 			
 		]]>

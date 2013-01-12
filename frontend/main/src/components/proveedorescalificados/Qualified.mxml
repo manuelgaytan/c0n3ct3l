@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)"
+		 >
+	<mx:Script>
+		<![CDATA[
+			import model.Catalogo;
+			import model.Colaborador;
+			import model.Constants;
+			import model.DatoBancario;
+			import model.EstatusC;
+			import model.FormaPago;
+			import model.GrupoFamiliaD;
+			import model.Perfil;
+			import model.ProveedorCalificado;
+			import model.ProveedorSeleccionado;
+			import model.TipoAlmacen;
+			import model.TipoMantenimiento;
+			import model.TipoPago;
+			import model.UbicacionC;
+			import model.UnidadB;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.com.gahm.componentes.validadores.ValidadorNumerico;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.utils.object_proxy;
+			
+			private var mode:String = null;
+			private var _item:ProveedorCalificado;
+			private var validators:InicializaValidadoresEtiquetas;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				this.label = Constants.REGISTRAR;
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set proveedor(value:ProveedorCalificado):void{
+				if( value == null ){
+					return;
+				}
+				this._item = value;
+				this.setProveedor(); 
+			}
+			
+			private function setProveedor():void
+			{
+				 if( this._item == null ){
+					return;
+				}
+				this.txtMoneda.text = this._item.moneda;
+				
+				if( Util.isFill( this.cmbProveedor ) && this._item.proveedorSeleccionado != null ){
+					this.cmbProveedor.selectedIndex = Util.selectedIndexFromCombo( this.cmbProveedor.dataProvider as ArrayCollection, 
+						this._item.proveedorSeleccionado.id);
+				}
+				if( Util.isFill( this.cmbFormaPago ) && this._item.formaPago != null ){
+					this.cmbFormaPago.selectedIndex = Util.selectedIndexFromCombo( this.cmbFormaPago.dataProvider as ArrayCollection, 
+						this._item.formaPago.id);
+				}
+				if( Util.isFill( this.cmbTipPago ) && this._item.tipoPago != null ){
+					this.cmbTipPago.selectedIndex = Util.selectedIndexFromCombo( this.cmbTipPago.dataProvider as ArrayCollection, 
+						this._item.tipoPago.id);
+				}
+				this.txttLimiteCredito.text = Util.numberToString(this._item.limiteCredito);
+				this.txtBanco.text= this._item.datoBancario.banco;
+				this.txtCLBInterbancaria.text = this._item.datoBancario.clabeInterbancaria;
+				this.txtCuenta.text = this._item.datoBancario.cuentaBancaria;
+				this.txtDescuentos.text=Util.numberToString(this._item.descuentos); 
+				this.txtDiasCredito.text=Util.numberToString(  this._item.diasCredito);
+				
+
+				
+				//this.comments.comments = this._item.comentarios;
+			}
+			
+			private function getProveedor():ProveedorCalificado{
+				var item:ProveedorCalificado = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					item = new ProveedorCalificado();
+				}else{
+					item = this._item;
+				}
+				//item.datoBancario = new DatoBancario();
+				//item.datoBancario.id= (this.cmbPersona.selectedItem as TipoPersona).id;
+				item.proveedorSeleccionado = new ProveedorSeleccionado();
+				item.proveedorSeleccionado.id = ((this.cmbProveedor.selectedItem as ProveedorSeleccionado).id);
+				item.formaPago = new FormaPago();
+				item.formaPago.id = ((this.cmbFormaPago.selectedItem as FormaPago).id);
+				item.tipoPago = new TipoPago();
+				item.tipoPago.id = ((this.cmbTipPago.selectedItem as TipoPago).id);
+				item.limiteCredito= Util.stringToNumber(this.txttLimiteCredito.text);
+				item.datoBancario = new DatoBancario();
+				item.datoBancario.banco= Util.validateEmpty(txtBanco.text);
+				item.datoBancario.clabeInterbancaria= Util.validateEmpty(txtCLBInterbancaria.text);
+				item.datoBancario.cuentaBancaria= Util.validateEmpty(txtCuenta.text);
+				item.descuentos= Util.stringToNumber(this.txtDescuentos.text);
+				item.diasCredito= Util.stringToNumber(this.txtDiasCredito.text);
+				item.moneda= Util.validateEmpty(txtMoneda.text);
+				
+				
+				
+				
+				
+				
+				return item; 
+			}
+			
+			private function fillCombos():void
+			{
+				
+				this.responseProveedor.token= this.proveedorRO.getProveedoresSeleccionados();
+				this.responseFormaPago.token= this.catalogoService.getFormaPago();
+				this.responseTiposPago.token= this.catalogoService.getTipoPago();
+			}
+			
+			
+			protected function responseGetGrupoFamiliaD_resultHandler(event:ResultEvent):void
+			{
+				/* var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbFamily.dataProvider = Util.addEmptyCatalgo( data );
+				if( this._item != null && this._item.grupoFamiliaD != null ){
+					this.cmbFamily.selectedIndex = Util.selectedIndexFromCombo( this.cmbFamily.dataProvider as ArrayCollection, 
+						this._item.grupoFamiliaD.id);
+				} */
+			}
+			
+			protected function ProveedorCalificadoService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function btnAccept_clickHandler(event:MouseEvent):void
+			{
+				if( !this.validations() ){
+					Util.showMessageVerifyFields();
+					return;
+				}
+				 if( this.mode == Constants.REGISTER_MODE ){
+					var proveedor:ProveedorCalificado = this.getProveedor();
+					//Util.showProperties( proveedor );
+					this.responseSave.token = this.ProveedorCalificadoService.saveProveedorCalificado( proveedor );
+				} 
+				if( this.mode == Constants.UPDATE_MODE ){
+					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
+				}
+			}
+			
+			private function updateItem(event:CloseEvent):void{
+				 if( event.detail == Alert.NO ){
+					return;
+				}
+				var proveedor:ProveedorCalificado = this.getProveedor();
+				//Util.showProperties( proveedor );
+				this.responseUpdate.token = this.ProveedorCalificadoService.updateProveedorCalificado( proveedor ); 
+			}
+			
+			private function validations():Boolean
+			{
+				var value:Boolean = true;
+				value &&= this.validators.validarFormulario();
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+			}
+			
+			private function initializeValidators():void
+			{
+				this.validators = new InicializaValidadoresEtiquetas();
+				validators.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
+				/* validators.setRestrictor(txtCode, "generic");
+				validators.setRestrictor(txtDescription, "generic");
+				validators.crearValidadorRestrictor("number",ValidadorDecimal.nombre, 10, 4);
+				validators.setRestrictor(txtExistence, "number"); */
+			}
+			
+			protected function responseSave_resultHandler(event:ResultEvent):void
+			{
+				var eventProveedorNew:Event = new Event("proveedorNew");
+				this.dispatchEvent( eventProveedorNew );
+				this.cleanForm();
+			}
+			
+			
+			
+			
+			
+			
+			private function cleanForm():void
+			{
+				/* this.txtCode.reset();
+				this.cmbFamily.selectedIndex = 0;
+				this.txtDescription.reset();
+				this.txtExistence.reset();
+				this.cmbUnit.selectedIndex = 0;
+				this.cmbLocation.selectedIndex = 0;
+				this.comments.reset(); */
+			}
+			
+			protected function responseUpdate_resultHandler(event:ResultEvent):void
+			{
+				var eventProveedorUpdated:Event = new Event("proveedorUpdated");
+				this.dispatchEvent( eventProveedorUpdated );
+				this.cleanForm();
+			}
+			
+			protected function responseGetUnidadB_resultHandler(event:ResultEvent):void
+			{
+				/* var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbUnit.dataProvider = Util.addEmptyCatalgo( data );
+				if( this._item != null && this._item.unidadB != null ){
+					this.cmbUnit.selectedIndex = Util.selectedIndexFromCombo( this.cmbUnit.dataProvider as ArrayCollection, 
+						this._item.unidadB.id);
+				} */
+			}
+			
+			protected function responseGetUbicacionC_resultHandler(event:ResultEvent):void
+			{
+				/* var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbLocation.dataProvider = Util.addEmptyCatalgo( data );
+				if( this._item != null && this._item.ubicacionC != null ){
+					this.cmbLocation.selectedIndex = Util.selectedIndexFromCombo( this.cmbLocation.dataProvider as ArrayCollection, 
+						this._item.ubicacionC.id);
+				} */
+			}
+			
+			protected function catalogoService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function responseProveedor_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+				return;
+				}
+				this.cmbProveedor.dataProvider = Util.addEmptyCatalgo( data, "nombreComercial" );
+				if( this._item != null && this._item.proveedorSeleccionado != null ){
+				this.cmbProveedor.selectedIndex = Util.selectedIndexFromCombo( this.cmbProveedor.dataProvider as ArrayCollection, 
+				this._item.proveedorSeleccionado.id);
+				} 
+			}
+			
+			protected function responseFormaPago_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbFormaPago.dataProvider = Util.addEmptyCatalgo( data ,"forma");
+				if( this._item != null && this._item.formaPago != null ){
+					this.cmbFormaPago.selectedIndex = Util.selectedIndexFromCombo( this.cmbFormaPago.dataProvider as ArrayCollection, 
+						this._item.formaPago.id);
+				} 
+				
+			}
+			
+			protected function responseTiposPago_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbTipPago.dataProvider = Util.addEmptyCatalgo( data, "tipo" );
+				if( this._item != null && this._item.tipoPago != null ){
+					this.cmbTipPago.selectedIndex = Util.selectedIndexFromCombo( this.cmbTipPago.dataProvider as ArrayCollection, 
+						this._item.tipoPago.id);
+				} 
+				
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="proveedorNew", type="flash.events.Event")]
+		[Event(name="proveedorUpdated", type="flash.events.Event")]
+	</mx:Metadata>
+	<mx:Form id="form">
+		<mx:FormItem label="Proveedor Seleccionado:">
+			<mx:ComboBox id="cmbProveedor"
+						 labelField="nombreComercial"
+						 />
+		</mx:FormItem>
+		<mx:FormItem label="Forma de Pago:">
+			<mx:ComboBox id="cmbFormaPago"
+						 labelField="forma"
+						 />
+		</mx:FormItem>
+		<mx:FormItem label="Tipo de Pago:">
+			<mx:ComboBox id="cmbTipPago"
+						 labelField="tipo"
+						 />
+		</mx:FormItem>
+		<mx:FormItem label="Moneda:">
+			<components:TextInput id="txtMoneda"/>
+		</mx:FormItem>
+		<mx:FormItem label="Límite de Crédito:">
+			<components:TextInput id="txttLimiteCredito" textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Días de Crédito:">
+			<components:TextInput id="txtDiasCredito"
+								  textAlign="right" width="70"/>
+		</mx:FormItem>
+		<mx:FormItem label="Descuentos:">
+			<components:TextInput id="txtDescuentos" textAlign="right"
+						 />
+		</mx:FormItem>
+		<mx:FormItem label="Cuenta Bancaria:">
+			<components:TextInput id="txtCuenta"
+						 />
+		</mx:FormItem>
+		<mx:FormItem label="Banco:">
+			<components:TextInput id="txtBanco"
+								   width="300"/>
+		</mx:FormItem>
+		<mx:FormItem label="CLABE Interbancaria:">
+			<components:TextInput id="txtCLBInterbancaria"
+								 />
+		</mx:FormItem>
+		<components:Comments id="comments"/>
+		<mx:FormItem>
+			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:RemoteObject id="proveedorRO" destination="proveedorService" fault="ProveedorCalificadoService_faultHandler(event)"/>
+		
+	
+	<mx:RemoteObject id="ProveedorCalificadoService" destination="proveedorCalificadoService" fault="ProveedorCalificadoService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseProveedor" result="responseProveedor_resultHandler(event)"/>
+	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
+	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
+	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="catalogoService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseFormaPago" result="responseFormaPago_resultHandler(event)"/>
+
+	<mx:CallResponder id="responseTiposPago" result="responseTiposPago_resultHandler(event)" />
+</mx:VBox>

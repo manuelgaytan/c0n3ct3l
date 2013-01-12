@@ -7,8 +7,13 @@
 			import model.Constants;
 			import model.Consumible;
 			import model.GrupoFamiliaD;
+			import model.ProveedorMaquilador;
+			import model.ProveedorSeleccionado;
 			import model.TipoAlmacen;
+			import model.TipoPersona;
 			import model.Util;
+			
+			import modules.ProveedoresMaquiladores;
 			
 			import mx.collections.ArrayCollection;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
@@ -18,9 +23,10 @@
 			import mx.rpc.events.FaultEvent;
 			import mx.rpc.events.ResultEvent;
 			
-			private var _item:Consumible;
+			private var _item:ProveedorSeleccionado;
+			private var _itemMaquilado:ProveedorMaquilador;
 			private var validators:InicializaValidadoresEtiquetas;
-			private var mode:String = null;
+			public var mode:String = null;
 			
 			[Bindable]
 			public var limitedInformation:Boolean = true;
@@ -29,71 +35,141 @@
 			{
 				this.validators = new InicializaValidadoresEtiquetas();
 				validators.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
-				validators.setRestrictor(txtCode, "generic");
+				/* validators.setRestrictor(txtCode, "generic");
 				validators.setRestrictor(txtDescription, "generic");
 				validators.crearValidadorRestrictor("number",ValidadorDecimal.nombre, 10, 4);
-				validators.setRestrictor(txtExistence, "number");
+				validators.setRestrictor(txtExistence, "number"); */
 			}
 			
-			private function setConsumable():void
+			public function set proveedorSeleccionadoForm(value:ProveedorSeleccionado):void{
+				if( value == null ){
+					return;
+				}
+				this._item = value;
+				this.setProveedorSeleccionado(); 
+			}
+			
+			public function set proveedorMaquiladorForm(value:ProveedorMaquilador):void{
+				if( value == null ){
+					return;
+				}
+				this._itemMaquilado = value;
+				this.setProveedorMaquilador(); 
+			}
+			
+			private function setProveedorSeleccionado():void
 			{
 				if( this._item == null ){
 					return;
 				}
-				this.txtCode.text = this._item.codigo;
-				if( Util.isFill( this.cmbFamily ) && this._item.grupoFamiliaD != null ){
-					this.cmbFamily.selectedIndex = Util.selectedIndexFromCombo( this.cmbFamily.dataProvider as ArrayCollection, 
-						this._item.grupoFamiliaD.id);
+				this.txtNombreComercial.text= this._item.nombreComercial;
+				this.txtRazonSocial.text= this._item.razonSocial;
+				this.txtRFC.text= this._item.rfc;
+				this.txtDireccionFisica.text= this._item.direccionFisica;
+				this.txtDireccionFiscal.text= this._item.direccionFiscal;
+				this.txtTelefonos.text= this._item.telefonos;
+				this.txtContacto.text= this._item.contacto;
+				this.txtCorreo.text= this._item.correo;
+				this.txtPaginaWeb.text= this._item.paginaWeb;
+				if( Util.isFill( this.cmbPersona ) && this._item.tipoPersona != null ){
+					this.cmbPersona.selectedIndex = Util.selectedIndexFromCombo( this.cmbPersona.dataProvider as ArrayCollection, 
+						this._item.tipoPersona.id);
 				}
+				/*
 				this.txtDescription.text = this._item.descripcion;
-				this.txtExistence.text = Util.numberToString( this._item.existencia );
+				this.txtExistence.text = Util.numberToString( this._item.existencia ); */
 			}
 			
-			private function getConsumable():Consumible{
-				var item:Consumible = null;
+			private function setProveedorMaquilador():void
+			{
+				if( this._itemMaquilado == null ){
+					return;
+				}
+				this.txtNombreComercial.text= this._itemMaquilado.nombreComercial;
+				this.txtRazonSocial.text= this._itemMaquilado.razonSocial;
+				this.txtRFC.text= this._itemMaquilado.rfc;
+				this.txtDireccionFisica.text= this._itemMaquilado.direccionFisica;
+				this.txtDireccionFiscal.text= this._itemMaquilado.direccionFiscal;
+				this.txtTelefonos.text= this._itemMaquilado.telefonos;
+				//this.txtContacto.text= this._itemMaquilado.contacto;
+				 this.txtCorreo.text= this._itemMaquilado.correo;
+				//this.txtPaginaWeb.text= this._itemMaquilado.paginaWeb; */
+				if( Util.isFill( this.cmbPersona ) && this._itemMaquilado.tipoPersona != null ){
+					this.cmbPersona.selectedIndex = Util.selectedIndexFromCombo( this.cmbPersona.dataProvider as ArrayCollection, 
+						this._itemMaquilado.tipoPersona.id);
+				}
+				/*
+				this.txtDescription.text = this._item.descripcion;
+				this.txtExistence.text = Util.numberToString( this._item.existencia ); */
+			}
+			
+			public function getProveedorSeleccionado():ProveedorSeleccionado{
+				var item:ProveedorSeleccionado = null;
 				if( this.mode == Constants.REGISTER_MODE ){
-					item = new Consumible();
+					item = new ProveedorSeleccionado();
 				}else{
 					item = this._item;
 				}
-				item.tipoAlmacen = TipoAlmacen.getConsumibles();
-				item.fkTipoAlmacen = Util.extractId(item.tipoAlmacen);
-				item.codigo = Util.validateEmpty( this.txtCode.text );
-				item.grupoFamiliaD = Util.validateCombo( this.cmbFamily ) as GrupoFamiliaD;
-				item.fkGrupoFamiliaD = Util.extractId(item.grupoFamiliaD);
-				item.descripcion = Util.validateEmpty( this.txtDescription.text );
-				item.existencia = Util.stringToNumber( this.txtExistence.text );
-				item.fkUnidadB = Util.extractId(item.unidadB);
-				item.fkUbicacionC = Util.extractId(item.ubicacionC);
-				item.fkResponsable = Util.extractId(item.responsable);
-				item.fkEstatusC = Util.extractId(item.estatusC);
+				item.tipoPersona= new TipoPersona();
+				item.tipoPersona.id= (this.cmbPersona.selectedItem as TipoPersona).id;
+			    item.nombreComercial=	Util.validateEmpty(this.txtNombreComercial.text);
+				item.razonSocial= Util.validateEmpty(this.txtRazonSocial.text);
+				item.rfc=  Util.validateEmpty(this.txtRFC.text);
+				item.direccionFisica= Util.validateEmpty(this.txtDireccionFisica.text);
+				item.direccionFiscal= Util.validateEmpty(this.txtDireccionFiscal.text);
+				item.telefonos=Util.validateEmpty(this.txtTelefonos.text);
+				item.contacto=Util.validateEmpty(this.txtContacto.text);
+				item.correo=Util.validateEmpty(this.txtCorreo.text);
+				item.paginaWeb=Util.validateEmpty(this.txtPaginaWeb.text);
 				return item;
 			}
 			
-			protected function responseGetGrupoFamiliaD_resultHandler(event:ResultEvent):void
+			public function getProveedorMaquilador():ProveedorMaquilador{
+				var item:ProveedorMaquilador = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					item = new ProveedorMaquilador();
+				}else{
+					item = this._itemMaquilado;
+				}
+				item.tipoPersona= new TipoPersona();
+				item.tipoPersona.id= (this.cmbPersona.selectedItem as TipoPersona).id;
+				item.nombreComercial=	Util.validateEmpty(this.txtNombreComercial.text);
+				item.razonSocial= Util.validateEmpty(this.txtRazonSocial.text);
+				item.rfc=  Util.validateEmpty(this.txtRFC.text);
+				item.direccionFisica= Util.validateEmpty(this.txtDireccionFisica.text);
+				item.direccionFiscal= Util.validateEmpty(this.txtDireccionFiscal.text);
+				item.telefonos=Util.validateEmpty(this.txtTelefonos.text);
+				//item.contacto=Util.validateEmpty(this.txtContacto.text);
+				 item.correo=Util.validateEmpty(this.txtCorreo.text);
+			//	item.paginaWeb=Util.validateEmpty(this.txtPaginaWeb.text); */
+				return item;
+			}
+			 protected function responseGetTipoPersona_resultHandler(event:ResultEvent):void
 			{
 				var data:ArrayCollection = event.result as ArrayCollection;
 				if( data == null ){
 					return;
 				}
-				this.cmbFamily.dataProvider = Util.addEmptyCatalgo( data );
-				if( this._item != null && this._item.grupoFamiliaD != null ){
-					this.cmbFamily.selectedIndex = Util.selectedIndexFromCombo( this.cmbFamily.dataProvider as ArrayCollection, 
-						this._item.grupoFamiliaD.id);
-				}
-			}
+				this.cmbPersona.dataProvider = Util.addEmptyCatalgo( data, "tipo" );
+				/* if( this._item != null && this._item.tipoPersona != null ){
+					this.cmbPersona.selectedIndex = Util.selectedIndexFromCombo( this.cmbPersona.dataProvider as ArrayCollection, 
+						this._item.tipoPersona.id);
+				} */
+			} 
 			
 			public function cleanForm():void
 			{
-				this.txtCode.reset();
+				/* this.txtCode.reset();
 				this.cmbFamily.selectedIndex = 0;
 				this.txtDescription.reset();
-				this.txtExistence.reset();
+				this.txtExistence.reset(); */
 			}
 			
-			private function fillCombos():void
+			public function fillCombos():void
+				
 			{
-				this.responseGetGrupoFamiliaD.token = this.catalogoService.getGrupoFamiliaD();
+				this.responseGetTipoPersona.token = this.catalogoService.getTipoPersona()
+				//this.responseGetTipoPersona.token = this.catalogoService.getGrupoFamiliaD();
 			}
 			
 			protected function catalogoService_faultHandler(event:FaultEvent):void
@@ -112,45 +188,46 @@
 		]]>
 	</mx:Script>
 	<mx:FormItem label="Persona:">
-		<mx:ComboBox id="cmbFamily"
-					 labelField="etiqueta"
+		<mx:ComboBox id="cmbPersona"
+					 labelField="tipo"
 					 />
 	</mx:FormItem>
 	<mx:FormItem label="Nombre Comercial:">
-		<components:TextInput id="txtCode" width="300"/>
+		<components:TextInput id="txtNombreComercial" width="300"/>
 	</mx:FormItem>
 	<mx:FormItem label="Razón Social:">
-		<components:TextInput id="txtDescription" width="300"/>
+		<components:TextInput id="txtRazonSocial" width="300"/>
 	</mx:FormItem>
 	<mx:FormItem label="R.F.C.:">
-		<components:TextInput id="txtExistence"
-							  textAlign="right"/>
+		<components:TextInput id="txtRFC"
+							  />
 	</mx:FormItem>
 	<mx:FormItem label="Dirección Física:">
-		<components:TextInput id="txtExistence2"
+		<components:TextInput id="txtDireccionFisica"
 							  width="400"/>
 	</mx:FormItem>
 	<mx:FormItem label="Dirección Fiscal:">
-		<components:TextInput id="txtExistence3"
+		<components:TextInput id="txtDireccionFiscal"
 							  width="400"/>
 	</mx:FormItem>
 	<mx:FormItem label="Teléfonos:">
-		<components:TextInput id="txtExistence4"
+		<components:TextInput id="txtTelefonos"
 							  />
 	</mx:FormItem>
 	<mx:FormItem id="frmItmContact" label="Contacto:">
-		<components:TextInput id="txtExistence5"
+		<components:TextInput id="txtContacto"
 							  width="300"/>
 	</mx:FormItem>
 	<mx:FormItem label="Correo:">
-		<components:TextInput id="txtExistence6"
-							  textAlign="right"/>
+		<components:TextInput id="txtCorreo"
+							  />
 	</mx:FormItem>
 	<mx:FormItem id="frmItmWebPage" label="Página Web:">
-		<components:TextInput id="txtExistence7"
-							  textAlign="right"/>
+		<components:TextInput id="txtPaginaWeb"
+							  />
 	</mx:FormItem>
 	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="catalogoService_faultHandler(event)"
 					 showBusyCursor="true"/>
-	<mx:CallResponder id="responseGetGrupoFamiliaD" result="responseGetGrupoFamiliaD_resultHandler(event)"/>
+	<!--<mx:CallResponder id="responseGetGrupoFamiliaD" result="responseGetGrupoFamiliaD_resultHandler(event)"/>-->
+	<mx:CallResponder id="responseGetTipoPersona" result="responseGetTipoPersona_resultHandler(event)"/>
 </mx:Form>

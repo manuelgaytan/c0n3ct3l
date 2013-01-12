@@ -1,17 +1,28 @@
 package model
 {
+	import flash.external.ExternalInterface;
+
 	[RemoteClass(alias="mx.com.gahm.conenctel.entities.ProveedorMaquiladorDO")]
-	public class ProveedorMaquilador
+	public class ProveedorMaquilador extends Proveedor
 	{
-		public var id:*;
-		public var moneda:Number;
-		public var limiteCredito:Number;
-		public var diasCredito:Number;
-		public var descuentos:Number
 		
-		public var proveedorSeleccionado:ProveedorSeleccionado;
-		public var formaPago:FormaPago;
-		public var tipoPago:TipoPago;
+		public var curp:String;
+		
+		public var fechaContrato:Date;
+		
+		public var categoriaProyecto:Categoria;
+		
 		public var datoBancario:DatoBancario;
+		
+		public var pago:TipoPago;
+		
+		
+		public var  tipoContrato:TipoContrato;
+		
+		public var  nss:String;
+		
+		public function ProveedorMaquilador()
+		{
+		}
 	}
 }

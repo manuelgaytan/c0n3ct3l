@@ -5,6 +5,8 @@ package model
 	{
 		public var id:*;
 		public var etiqueta:String;
+		public var tipo:String;
+		
 		
 		public function TipoPago()
 		{

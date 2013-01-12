@@ -4,5 +4,13 @@ package model
 	public class DatoBancario
 	{
 		public var id:*;
+		
+		
+		public var  banco:String;
+		
+		public var clabeInterbancaria:String;
+		
+		public var cuentaBancaria:String;
+
 	}
 }

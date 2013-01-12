@@ -8,6 +8,7 @@
 			import events.GenericEvent;
 			
 			import model.Consumible;
+			import model.ProveedorMaquilador;
 			
 			import mx.events.FlexEvent;
 			
@@ -16,19 +17,19 @@
 				
 			}
 			
-			protected function consult_consumableDetailHandler(event:GenericEvent):void
+			protected function consult_proveedorDetailHandler(event:GenericEvent):void
 			{
-				this.detail.consumable = event.information as model.Consumible;
+				this.detail.proveedor = event.information as model.ProveedorMaquilador;
 				this.navigator.selectedChild = this.detail;
 			}
 			
-			protected function register_consumableNewHandler(event:Event):void
+			protected function register_proveedorNewHandler(event:Event):void
 			{
 				this.navigator.selectedChild = this.consult;
 				this.consult.executeQuery();
 			}
 			
-			protected function detail_consumableUpdatedHandler(event:Event):void
+			protected function detail_proveedorUpdatedHandler(event:Event):void
 			{
 				this.navigator.selectedChild = this.consult;
 				this.consult.executeQuery();
@@ -37,8 +38,8 @@
 		]]>
 	</mx:Script>
 	<mx:TabNavigator id="navigator" width="100%" height="100%" creationPolicy="all">
-		<proveedoresmaquiladores:Consult id="consult" consumableDetail="consult_consumableDetailHandler(event)"/>
-		<proveedoresmaquiladores:Consumable id="detail" update="true" consumableUpdated="detail_consumableUpdatedHandler(event)"/>
-		<proveedoresmaquiladores:Consumable id="register" registrer="true" consumableNew="register_consumableNewHandler(event)"/>
+		<proveedoresmaquiladores:Consult id="consult" proveedorDetail="consult_proveedorDetailHandler(event)"/>
+		<proveedoresmaquiladores:Maquiladora id="detail" update="true" proveedorUpdated="detail_proveedorUpdatedHandler(event)"/>
+		<proveedoresmaquiladores:Maquiladora id="register" registrer="true" proveedorNew="register_proveedorNewHandler(event)"/>
 	</mx:TabNavigator>
 </mx:Module>

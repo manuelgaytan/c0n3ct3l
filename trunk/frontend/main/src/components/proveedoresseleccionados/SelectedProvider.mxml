@@ -11,6 +11,7 @@
 			import model.EstatusC;
 			import model.GrupoFamiliaD;
 			import model.Perfil;
+			import model.ProveedorSeleccionado;
 			import model.TipoAlmacen;
 			import model.TipoMantenimiento;
 			import model.UbicacionC;
@@ -31,7 +32,7 @@
 			import mx.utils.object_proxy;
 			
 			private var mode:String = null;
-			private var _item:Consumible;
+			private var _item:ProveedorSeleccionado;
 			private var validators:InicializaValidadoresEtiquetas;
 			
 			public function set registrer(value:Boolean):void{
@@ -54,43 +55,45 @@
 				this.fillCombos();
 			}
 			
-			public function set consumable(value:Consumible):void{
+			public function set proveedorSeleccionado(value:ProveedorSeleccionado):void{
 				if( value == null ){
 					return;
 				}
 				this._item = value;
-				this.setConsumable(); 
+				this.setProveedorSeleccionado(); 
 			}
 			
-			private function setConsumable():void
+			private function setProveedorSeleccionado():void
 			{
 				if( this._item == null ){
 					return;
 				}
+				provider.proveedorSeleccionadoForm=_item;
 			}
 			
-			private function getConsumable():Consumible{
-				var item:Consumible = null;
+			private function getProveedorSeleccionado():ProveedorSeleccionado{
+				var item:ProveedorSeleccionado = null;
 				if( this.mode == Constants.REGISTER_MODE ){
-					item = new Consumible();
+					item = new ProveedorSeleccionado();
 				}else{
 					item = this._item;
 				}
-				item.tipoAlmacen = TipoAlmacen.getConsumibles();
-				item.fkTipoAlmacen = Util.extractId(item.tipoAlmacen);
+				item=provider.getProveedorSeleccionado();
+				/* item.fkTipoAlmacen = Util.extractId(item.tipoAlmacen);
 				item.fkGrupoFamiliaD = Util.extractId(item.grupoFamiliaD);
 				item.fkUnidadB = Util.extractId(item.unidadB);
 				item.fkUbicacionC = Util.extractId(item.ubicacionC);
 				item.fkResponsable = Util.extractId(item.responsable);
-				item.fkEstatusC = Util.extractId(item.estatusC);
+				item.fkEstatusC = Util.extractId(item.estatusC); */
 				return item;
 			}
 			
 			private function fillCombos():void
 			{
+				provider.fillCombos();
 			}
 			
-			protected function consumibleService_faultHandler(event:FaultEvent):void
+			protected function proveedorSeleccionadoService_faultHandler(event:FaultEvent):void
 			{
 				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
 			}
@@ -102,9 +105,9 @@
 					return;
 				}
 				if( this.mode == Constants.REGISTER_MODE ){
-					var consumable:Consumible = this.getConsumable();
-					Util.showProperties( consumable );
-					this.responseSave.token = this.consumibleService.save( consumable );
+					var proveedorSeleccionado:ProveedorSeleccionado = this.getProveedorSeleccionado();
+					//Util.showProperties( proveedorSeleccionado );
+					this.responseSave.token = this.proveedorRO.saveProveedorSeleccionado( proveedorSeleccionado );
 				}
 				if( this.mode == Constants.UPDATE_MODE ){
 					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
@@ -115,9 +118,9 @@
 				if( event.detail == Alert.NO ){
 					return;
 				}
-				var consumable:Consumible = this.getConsumable();
-				Util.showProperties( consumable );
-				this.responseUpdate.token = this.consumibleService.update( consumable );
+				var proveedorSeleccionado:ProveedorSeleccionado = this.getProveedorSeleccionado();
+				//Util.showProperties( proveedorSeleccionado );
+				this.responseUpdate.token = this.proveedorRO.updateProveedorSeleccionado( proveedorSeleccionado );
 			}
 			
 			private function validations():Boolean
@@ -138,8 +141,8 @@
 			
 			protected function responseSave_resultHandler(event:ResultEvent):void
 			{
-				var eventConsumableNew:Event = new Event("consumableNew");
-				this.dispatchEvent( eventConsumableNew );
+				var eventProveedorSeleccionadoNew:Event = new Event("proveedorSeleccionadoNew");
+				this.dispatchEvent( eventProveedorSeleccionadoNew );
 				this.cleanForm();
 			}
 			
@@ -150,23 +153,30 @@
 			
 			protected function responseUpdate_resultHandler(event:ResultEvent):void
 			{
-				var eventConsumableUpdated:Event = new Event("consumableUpdated");
-				this.dispatchEvent( eventConsumableUpdated );
+				var eventProveedorSeleccionadoUpdated:Event = new Event("proveedorSeleccionadoUpdated");
+				this.dispatchEvent( eventProveedorSeleccionadoUpdated );
 				this.cleanForm();
 			}
+			
+			protected function provider_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				provider.mode=this.mode;
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:Metadata>
-		[Event(name="consumableNew", type="flash.events.Event")]
-		[Event(name="consumableUpdated", type="flash.events.Event")]
+		[Event(name="proveedorSeleccionadoNew", type="flash.events.Event")]
+		[Event(name="proveedorSeleccionadoUpdated", type="flash.events.Event")]
 	</mx:Metadata>
 	<mx:Form id="form">
-		<components:Provider id="provider"/>
+		<components:Provider id="provider" creationComplete="provider_creationCompleteHandler(event)"/>
 		<mx:FormItem>
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
 		</mx:FormItem>
 	</mx:Form>
-	<mx:RemoteObject id="consumibleService" destination="consumibleService" fault="consumibleService_faultHandler(event)"
+	<mx:RemoteObject id="proveedorRO" destination="proveedorService" fault="proveedorSeleccionadoService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
 	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>

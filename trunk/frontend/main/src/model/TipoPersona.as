@@ -4,12 +4,14 @@ package model
 	public class TipoPersona
 	{
 		public var id:*;
+		public var tipo:String;
 		public var etiqueta:String;
 		
 		public function TipoPersona()
 		{
 			id = undefined;
 			etiqueta = "";
+			
 		}
 	}
 }

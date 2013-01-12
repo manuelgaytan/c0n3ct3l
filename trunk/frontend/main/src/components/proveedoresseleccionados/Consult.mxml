@@ -8,6 +8,8 @@
 			import events.GenericEvent;
 			
 			import model.Consumible;
+			import model.Proveedor;
+			import model.ProveedorSeleccionado;
 			import model.Util;
 			
 			import mx.collections.ArrayCollection;
@@ -39,27 +41,27 @@
 			
 			protected function datagrid_doubleClickHandler(event:MouseEvent):void
 			{
-				var item:Consumible = this.datagrid.selectedItem as Consumible;
+				var item:ProveedorSeleccionado = this.datagrid.selectedItem as ProveedorSeleccionado;
 				if( item == null ){
 					return;
 				}
-				this.responseGetItem.token = this.consumibleService.getItem( item.id );
+				this.responseGetItem.token = this.proveedorRO.getProveedor( item.id );
 			}
 			
 			protected function responseGetItem_resultHandler(event:ResultEvent):void
 			{
-				var item:Consumible = event.result as Consumible;
+				var item:ProveedorSeleccionado = event.result as ProveedorSeleccionado;
 				if( item == null ){
 					return;
 				}
-				var genericEvent:GenericEvent = new GenericEvent("consumableDetail");
+				var genericEvent:GenericEvent = new GenericEvent("proveedorSeleccionadoDetail");
 				genericEvent.information = item;
 				this.dispatchEvent( genericEvent );
 			}
 			
 			public function executeQuery():void
 			{
-				this.responseGetAll.token = this.consumibleService.getAll();
+				this.responseGetAll.token = this.proveedorRO.getProveedoresSeleccionados();
 			}
 			
 			protected function btnDelete_clickHandler(event:MouseEvent):void
@@ -78,7 +80,7 @@
 					return;
 				}
 				var items:ArrayCollection = Util.selectedIDs( this.datagrid.selectedItems ); 
-				this.responseDeleteItems.token = this.consumibleService.deleteItems( items );
+				this.responseDeleteItems.token = this.proveedorRO.deleteProveedoresSeleccionados( items );
 			}
 			
 			protected function responseDeleteItems_resultHandler(event:ResultEvent):void
@@ -92,7 +94,7 @@
 		]]>
 	</mx:Script>
 	<mx:Metadata>
-		[Event(name="consumableDetail", type="events.GenericEvent")]
+		[Event(name="proveedorSeleccionadoDetail", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:DataGrid id="datagrid" width="100%" height="100%" dataProvider="{items}"
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
@@ -101,27 +103,48 @@
 			<mx:DataGridColumn id="dtgCode" headerText="{'Tipo \nPersona'}"
 							   dataField="tipoPersona.tipo"
 							   width="100"/>
-			<mx:DataGridColumn id="dtgFamily" headerText="{'Nombre \nComercial'}"
+			<mx:DataGridColumn id="dtgNombreComercial" headerText="{'Nombre \nComercial'}"
 							   width="260"
-							   dataField="grupoFamiliaD.etiqueta"
+							   dataField="nombreComercial"
 							   labelFunction="labelFunctionGenerico"/>
-			<mx:DataGridColumn id="dtgDescription" headerText="{'Razón \nSocial'}"
-							   dataField="descripcion"
+			<mx:DataGridColumn id="dtgRazonSocial" headerText="{'Razón \nSocial'}"
+							   dataField="razonSocial"
 							   width="260"/>
-			<mx:DataGridColumn id="dtgExistence" headerText="R.F.C."
-							   dataField="existencia"
+			<mx:DataGridColumn id="dtgRFC" headerText="R.F.C."
+							   dataField="rfc"
 							   width="120"
 							   textAlign="right"/>
-			<mx:DataGridColumn id="dtgUnit" headerText="Contacto"
-							   dataField="unidadB.etiqueta"
+			<mx:DataGridColumn id="dtgDirFisica" headerText="{'Dirección  \n Física'}"
+							   dataField="direccionFisica"
 							   width="150"
-							   labelFunction="labelFunctionGenerico"/>
+							   />
+			<mx:DataGridColumn id="dtgDirFiscal" headerText="{'Dirección  \n Fiscal'}"
+							   dataField="direccionFisica"
+							   width="150"
+							   />
+			<mx:DataGridColumn id="dtgTelefono" headerText="Teléfonos"
+							   dataField="telefonos"
+							   width="150"
+							   />
+			<mx:DataGridColumn id="dtgContacto" headerText="Contacto"
+							   dataField="contacto"
+							   width="150"
+							   />
+			<mx:DataGridColumn id="dtgCorreo" headerText="Correo"
+							   dataField="contacto"
+							   width="150"
+							   />
+			
+			<mx:DataGridColumn id="dtgPaginaWeb" headerText="Pagina Web"
+							   dataField="paginaWeb"
+							   width="150"
+							   />
 		</mx:columns>
 	</mx:DataGrid>
 	<mx:HBox>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>
 	</mx:HBox>
-	<mx:RemoteObject id="consumibleService" destination="consumibleService" fault="consumibleService_faultHandler(event)"
+	<mx:RemoteObject id="proveedorRO" destination="proveedorService" fault="consumibleService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetAll" result="responseGetAll_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetItem" result="responseGetItem_resultHandler(event)"/>

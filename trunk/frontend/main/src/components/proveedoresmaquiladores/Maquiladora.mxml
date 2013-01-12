@@ -7,11 +7,13 @@
 			import model.Catalogo;
 			import model.Colaborador;
 			import model.Constants;
-			import model.Consumible;
+			import model.DatoBancario;
 			import model.EstatusC;
 			import model.GrupoFamiliaD;
 			import model.Perfil;
+			import model.ProveedorMaquilador;
 			import model.TipoAlmacen;
+			import model.TipoContrato;
 			import model.TipoMantenimiento;
 			import model.UbicacionC;
 			import model.UnidadB;
@@ -31,7 +33,7 @@
 			import mx.utils.object_proxy;
 			
 			private var mode:String = null;
-			private var _item:Consumible;
+			private var _item:ProveedorMaquilador;
 			private var validators:InicializaValidadoresEtiquetas;
 			
 			public function set registrer(value:Boolean):void{
@@ -54,50 +56,65 @@
 				this.fillCombos();
 			}
 			
-			public function set consumable(value:Consumible):void{
+			public function set proveedor(value:ProveedorMaquilador):void{
 				if( value == null ){
 					return;
 				}
 				this._item = value;
-				this.setConsumable(); 
+				this.setProveedor(); 
 			}
 			
-			private function setConsumable():void
+			private function setProveedor():void
 			{
 				if( this._item == null ){
 					return;
 				}
-				if( Util.isFill( this.cmbLocation ) && this._item.ubicacionC != null ){
-					this.cmbLocation.selectedIndex = Util.selectedIndexFromCombo( this.cmbLocation.dataProvider as ArrayCollection, 
-						this._item.ubicacionC.id);
+				provider.proveedorMaquiladorForm=_item;
+				this.txtBanco.text= this._item.datoBancario.banco;
+				this.txtCLBInterbancaria.text = this._item.datoBancario.clabeInterbancaria;
+				this.txtCuenta.text = this._item.datoBancario.cuentaBancaria;
+				this.txtCURP.text= this._item.curp;
+				this.txtNSS.text= _item.nss;
+				
+				if( Util.isFill( this.cmbTipoContrato ) && this._item.tipoContrato != null ){
+					this.cmbTipoContrato.selectedIndex = Util.selectedIndexFromCombo( this.cmbTipoContrato.dataProvider as ArrayCollection, 
+						this._item.tipoContrato.id);
 				}
+				
+				
 			}
 			
-			private function getConsumable():Consumible{
-				var item:Consumible = null;
+			private function getProveedor():ProveedorMaquilador{
+				var item:ProveedorMaquilador = null;
 				if( this.mode == Constants.REGISTER_MODE ){
-					item = new Consumible();
+					item = new ProveedorMaquilador();
 				}else{
 					item = this._item;
 				}
-				item.tipoAlmacen = TipoAlmacen.getConsumibles();
-				item.fkTipoAlmacen = Util.extractId(item.tipoAlmacen);
-				item.grupoFamiliaD = Util.validateCombo( this.cmbFamily ) as GrupoFamiliaD;
-				item.fkGrupoFamiliaD = Util.extractId(item.grupoFamiliaD);
-				item.unidadB = Util.validateCombo( this.cmbUnit ) as UnidadB;
-				item.fkUnidadB = Util.extractId(item.unidadB);
-				item.ubicacionC = Util.validateCombo( this.cmbLocation ) as UbicacionC;
-				item.fkUbicacionC = Util.extractId(item.ubicacionC);
-				item.fkResponsable = Util.extractId(item.responsable);
-				item.fkEstatusC = Util.extractId(item.estatusC);
+				item=this.provider.getProveedorMaquilador();
+				/* item.formaPago = new FormaPago();
+				item.formaPago.id = ((this.cmbFormaPago.selectedItem as FormaPago).id); */
+				item.datoBancario = new DatoBancario();
+				item.datoBancario.banco= Util.validateEmpty(txtBanco.text);
+				item.datoBancario.clabeInterbancaria= Util.validateEmpty(txtCLBInterbancaria.text);
+				item.datoBancario.cuentaBancaria= Util.validateEmpty(txtCuenta.text);
+				item.nss=Util.validateEmpty(txtNSS.text);
+				item.curp=Util.validateEmpty(txtCURP.text);
+				
+				item.tipoContrato= new TipoContrato;
+				item.tipoContrato.id = ((this.cmbTipoContrato.selectedItem as TipoContrato).id); 
+				item.fechaContrato= this.dtfFechaContrato.selectedDate;
+				
 				return item;
 			}
 			
 			private function fillCombos():void
 			{
+				provider.fillCombos();
 				this.responseGetGrupoFamiliaD.token = this.catalogoService.getGrupoFamiliaD();
 				this.responseGetUnidadB.token = this.catalogoService.getUnidadB();
 				this.responseGetUbicacionC.token = this.catalogoService.getUbicacionC();
+				this.responseGetTipoContrato.token = this.catalogoService.getTipoContrato();
 			}
 			
 			protected function responseGetGrupoFamiliaD_resultHandler(event:ResultEvent):void
@@ -106,11 +123,11 @@
 				if( data == null ){
 					return;
 				}
-				this.cmbFamily.dataProvider = Util.addEmptyCatalgo( data );
+				/* this.cmbFamily.dataProvider = Util.addEmptyCatalgo( data );
 				if( this._item != null && this._item.grupoFamiliaD != null ){
 					this.cmbFamily.selectedIndex = Util.selectedIndexFromCombo( this.cmbFamily.dataProvider as ArrayCollection, 
 						this._item.grupoFamiliaD.id);
-				}
+				} */
 			}
 			
 			protected function consumibleService_faultHandler(event:FaultEvent):void
@@ -125,9 +142,9 @@
 					return;
 				}
 				if( this.mode == Constants.REGISTER_MODE ){
-					var consumable:Consumible = this.getConsumable();
-					Util.showProperties( consumable );
-					this.responseSave.token = this.consumibleService.save( consumable );
+					var proveedor:ProveedorMaquilador = this.getProveedor();
+					Util.showProperties( proveedor );
+					this.responseSave.token = this.proveedorMaquiladorRO.saveProveedorMaquilador( proveedor );
 				}
 				if( this.mode == Constants.UPDATE_MODE ){
 					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
@@ -138,9 +155,9 @@
 				if( event.detail == Alert.NO ){
 					return;
 				}
-				var consumable:Consumible = this.getConsumable();
-				Util.showProperties( consumable );
-				this.responseUpdate.token = this.consumibleService.update( consumable );
+				var proveedor:ProveedorMaquilador = this.getProveedor();
+				Util.showProperties( proveedor );
+				this.responseUpdate.token = this.proveedorMaquiladorRO.updateProveedorMaquilador( proveedor );
 			}
 			
 			private function validations():Boolean
@@ -163,22 +180,22 @@
 			
 			protected function responseSave_resultHandler(event:ResultEvent):void
 			{
-				var eventConsumableNew:Event = new Event("consumableNew");
-				this.dispatchEvent( eventConsumableNew );
+				var eventProveedorNew:Event = new Event("proveedorNew");
+				this.dispatchEvent( eventProveedorNew );
 				this.cleanForm();
 			}
 			
 			private function cleanForm():void
 			{
-				this.cmbFamily.selectedIndex = 0;
+				/* this.cmbFamily.selectedIndex = 0;
 				this.cmbUnit.selectedIndex = 0;
-				this.cmbLocation.selectedIndex = 0;
+				this.cmbLocation.selectedIndex = 0; */
 			}
 			
 			protected function responseUpdate_resultHandler(event:ResultEvent):void
 			{
-				var eventConsumableUpdated:Event = new Event("consumableUpdated");
-				this.dispatchEvent( eventConsumableUpdated );
+				var eventProveedorUpdated:Event = new Event("proveedorUpdated");
+				this.dispatchEvent( eventProveedorUpdated );
 				this.cleanForm();
 			}
 			
@@ -188,11 +205,11 @@
 				if( data == null ){
 					return;
 				}
-				this.cmbUnit.dataProvider = Util.addEmptyCatalgo( data );
+				/* this.cmbUnit.dataProvider = Util.addEmptyCatalgo( data );
 				if( this._item != null && this._item.unidadB != null ){
 					this.cmbUnit.selectedIndex = Util.selectedIndexFromCombo( this.cmbUnit.dataProvider as ArrayCollection, 
 						this._item.unidadB.id);
-				}
+				} */
 			}
 			
 			protected function responseGetUbicacionC_resultHandler(event:ResultEvent):void
@@ -201,11 +218,11 @@
 				if( data == null ){
 					return;
 				}
-				this.cmbLocation.dataProvider = Util.addEmptyCatalgo( data );
+				/* this.cmbLocation.dataProvider = Util.addEmptyCatalgo( data );
 				if( this._item != null && this._item.ubicacionC != null ){
 					this.cmbLocation.selectedIndex = Util.selectedIndexFromCombo( this.cmbLocation.dataProvider as ArrayCollection, 
 						this._item.ubicacionC.id);
-				}
+				} */
 			}
 			
 			protected function catalogoService_faultHandler(event:FaultEvent):void
@@ -213,51 +230,71 @@
 				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
 			}
 			
+			protected function provider_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				provider.mode=this.mode;
+			}
+			
+			protected function responseGetTipoContrato_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbTipoContrato.dataProvider = Util.addEmptyCatalgo( data, "tipo" );
+				if( this._item != null && this._item.tipoContrato != null ){
+					this.cmbTipoContrato.selectedIndex = Util.selectedIndexFromCombo( this.cmbTipoContrato.dataProvider as ArrayCollection, 
+						this._item.tipoContrato.id);
+				} 
+				
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:Metadata>
-		[Event(name="consumableNew", type="flash.events.Event")]
-		[Event(name="consumableUpdated", type="flash.events.Event")]
+		[Event(name="proveedorNew", type="flash.events.Event")]
+		[Event(name="proveedorUpdated", type="flash.events.Event")]
 	</mx:Metadata>
 	<mx:Form id="form">
-		<components:Provider limitedInformation="false"/>
-		<mx:FormItem label="Forma de Pago:">
-			<mx:ComboBox id="cmbUnit"
-						 labelField="etiqueta"
+		<components:Provider limitedInformation="false" creationComplete="provider_creationCompleteHandler(event)" id="provider"/>
+		<!--<mx:FormItem label="Forma de Pago:">
+			<mx:ComboBox id="cmbFormaPago"
+						 labelField="forma"
 						 />
-		</mx:FormItem>
+		</mx:FormItem>-->
 		<mx:FormItem label="Cuenta Bancaria:">
-			<components:TextInput id="cmbStatus"
+			<components:TextInput id="txtCuenta"
 								  />
 		</mx:FormItem>
 		<mx:FormItem label="Banco:">
-			<components:TextInput id="txtExistence2"
-								  textAlign="right" width="300"/>
+			<components:TextInput id="txtBanco"
+								   width="300"/>
 		</mx:FormItem>
 		<mx:FormItem label="CLABE Interbancaria:">
-			<components:TextInput id="txtExistence3"
-								  textAlign="right"/>
+			<components:TextInput id="txtCLBInterbancaria"
+								  />
 		</mx:FormItem>
 		<mx:FormItem label="NSS:">
-			<components:TextInput id="txtExistence4"
-								  textAlign="right"/>
+			<components:TextInput id="txtNSS"
+								  />
 		</mx:FormItem>
 		<mx:FormItem label="C.U.R.P.:">
-			<components:TextInput id="txtExistence5"
-								  textAlign="right"/>
+			<components:TextInput id="txtCURP"
+								  />
 		</mx:FormItem>
-		<mx:FormItem label="Tecnología:">
-			<mx:ComboBox id="cmbFamily"
+		<!--<mx:FormItem label="Tecnología:">
+			<mx:ComboBox id="cmbTecnologia"
 						 labelField="etiqueta"
 						 />
-		</mx:FormItem>
+		</mx:FormItem>-->
 		<mx:FormItem label="Tipo de Contrato:">
-			<mx:ComboBox id="cmbLocation"
-						 labelField="etiqueta"
+			<mx:ComboBox id="cmbTipoContrato"
+						 labelField="tipo"
 						 />
 		</mx:FormItem>
 		<mx:FormItem label="Fecha de Contrato:">
-			<components:DateField/>
+			<components:DateField id="dtfFechaContrato" />
 		</mx:FormItem>
 		<mx:FormItem label="Documentos de Líder:">
 			<components:Deliver/>
@@ -266,7 +303,7 @@
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
 		</mx:FormItem>
 	</mx:Form>
-	<mx:RemoteObject id="consumibleService" destination="consumibleService" fault="consumibleService_faultHandler(event)"
+	<mx:RemoteObject id="proveedorMaquiladorRO" destination="proveedorMaquiladorService" fault="consumibleService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
 	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
@@ -275,4 +312,5 @@
 	<mx:CallResponder id="responseGetGrupoFamiliaD" result="responseGetGrupoFamiliaD_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetUnidadB" result="responseGetUnidadB_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetUbicacionC" result="responseGetUbicacionC_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetTipoContrato" result="responseGetTipoContrato_resultHandler(event)" />
 </mx:VBox>

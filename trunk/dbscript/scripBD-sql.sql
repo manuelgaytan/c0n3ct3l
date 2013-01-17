@@ -1815,7 +1815,27 @@
 	INSERT INTO UnidadOrdenCompra
 	VALUES (10, 'Otros');
 	/* Fin Orden de Compra */
+/*
+	INSERT INTO Proveedor
+	VALUES (1, 1, 'ACME', 'ALMEIRA CASTAÑEDA MELIA', 'ALCM900622DF7', 'REFORMA 34, COL. JUÁREZ, DELG. CUAUHTEMOC', 'REFORMA 34, COL. JUÁREZ, DELG. CUAUHTEMOC', '57115887','MELIA ALMEIRA','melia347@yahoo.com','','');
+	INSERT INTO Proveedor
+	VALUES (2, 2, 'ALMEX', 'ALMEX SA DE CV', 'ALM830214347', 'PLAZA DE LA REPÚBLICA 43, COL. INDUSTRIAL, DELG. AZCAPOTZALCO', 'PLAZA DE LA REPÚBLICA 43, COL. INDUSTRIAL, DELG. AZCAPOTZALCO', '55674356','JUAN RULFO','jrulfo@amex.com.mx','www.amex.com.mx','');
 
+	INSERT INTO ProveedorSeleccionado 
+	VALUES (1, 1);
+	INSERT INTO ProveedorSeleccionado
+	VALUES (2, 2);
+
+	INSERT INTO ProveedorCalificado
+	VALUES (1, 1, 1, 1, 'PESO MEXICANO', 347000, 12, 0, null);
+	*/
+/*
+	INSERT INTO RequisicionCompra
+	VALUES (1, '2013-01-11', 'Material',1,1,'Sitio 347',1);
+
+	INSERT INTO OrdenCompra
+	VALUES (1, 1, '2013-01-11', 1, 1, 1, 123, 1, 'COMPRA DE MATERIAL PARA EL PROYECTO', 1, 1, 1, 1, 1, 1, 1, 1, 1, '2013-01-30');
+*/
 	/*
 	INSERT INTO 
 	VALUES (1, '');

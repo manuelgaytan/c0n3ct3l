@@ -117,7 +117,10 @@
 	modelo VARCHAR(255),
 	descripcion_servicio VARCHAR(255),
 	tipo_servicio VARCHAR(255),
-	costo DECIMAL,
+	costo_local_cliente DECIMAL,
+	costo_foraneo_cliente DECIMAL,
+	costo_local_proveedor DECIMAL,
+	costo_foraneo_proveedor DECIMAL,
 	dias_implementacion INT(11),
 	PRIMARY KEY (id)
 	);

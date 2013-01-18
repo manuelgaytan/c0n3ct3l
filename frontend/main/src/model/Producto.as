@@ -12,7 +12,10 @@ package model
 		public var modelo:String;
 		public var descripcionServicio:String;
 		public var tipoServicio:String;
-		public var costo:Number;
+		public var costoLocalCliente:Number;
+		public var costoForaneoCliente:Number;
+		public var costoLocalProveedor:Number;
+		public var costoForaneoProveedor:Number;
 		public var diasImplementacion:*;
 		
 		public function Producto()

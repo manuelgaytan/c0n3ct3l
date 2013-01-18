@@ -36,7 +36,7 @@ public class ProductoService implements IProductoService {
 	@Inject
 	private EntityManager entityManager;
 
-	private static final String QUERY_EXPORT_ALL_PRODUCTO = "SELECT CONCAT(c.nombre_comercial,';',p.tipo_proyecto,';',p.teconologia,';',p.equipo,';',p.actividad_realizar,';',p.modelo,';',p.descripcion_servicio,';',p.tipo_servicio,';',p.costo,';',p.dias_implementacion) FROM producto p INNER JOIN cliente c ON p.id_cliente = c.id";
+	private static final String QUERY_EXPORT_ALL_PRODUCTO = "SELECT CONCAT(c.nombre_comercial,',',p.tipo_proyecto,',',p.teconologia,',',p.equipo,',',p.actividad_realizar,',',p.modelo,',',p.descripcion_servicio,',',p.tipo_servicio,',',p.costo_local_cliente,',',p.costo_foraneo_cliente,',',p.costo_local_proveedor,',',p.costo_foraneo_proveedor,',',p.dias_implementacion) FROM producto p INNER JOIN cliente c ON p.id_cliente = c.id";
 
 //	@EJB
 //	private TransformacionServiceEJB transformacionService;
@@ -286,10 +286,97 @@ public class ProductoService implements IProductoService {
 	}
 	
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
-	public List<Catalogo> getCosto(Long idCliente, String tipoProyecto, String tecnologia, String equipo, String actividadRealizar, String modelo, String descripcionServicio, String tipoServicio) {
+	public List<Catalogo> getCostoLocalCliente(Long idCliente, String tipoProyecto, String tecnologia, String equipo, String actividadRealizar, String modelo, String descripcionServicio, String tipoServicio) {
 		Long id = (Long) DataTypeUtil.convertToLong(idCliente);
 		TypedQuery<Object[]> query = entityManager.createNamedQuery(
-				"ProductoDO.findCosto", Object[].class);
+				"ProductoDO.findCostoLocalCliente", Object[].class);
+		query.setParameter("idCliente", id);
+		query.setParameter("tipoProyecto", tipoProyecto);
+		query.setParameter("tecnologia", tecnologia);
+		query.setParameter("equipo", equipo);
+		query.setParameter("actividadRealizar", actividadRealizar);
+		query.setParameter("modelo", modelo);
+		query.setParameter("descripcionServicio", descripcionServicio);
+		query.setParameter("tipoServicio", tipoServicio);
+		List<Object[]> tipoProyectoList = null;
+		try {
+			tipoProyectoList = query.getResultList();
+		} catch(NoResultException e) {
+		}
+		List<Catalogo> responseList = new ArrayList<Catalogo>();
+		Catalogo costo;
+		for (Object[] current:tipoProyectoList) {
+			costo = new Catalogo();
+			costo.setId((Long) current[0]);
+			costo.setEtiqueta(String.valueOf(current[1]));
+			responseList.add(costo);
+		}
+		return responseList;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<Catalogo> getCostoForaneoCliente(Long idCliente, String tipoProyecto, String tecnologia, String equipo, String actividadRealizar, String modelo, String descripcionServicio, String tipoServicio) {
+		Long id = (Long) DataTypeUtil.convertToLong(idCliente);
+		TypedQuery<Object[]> query = entityManager.createNamedQuery(
+				"ProductoDO.findCostoForaneoCliente", Object[].class);
+		query.setParameter("idCliente", id);
+		query.setParameter("tipoProyecto", tipoProyecto);
+		query.setParameter("tecnologia", tecnologia);
+		query.setParameter("equipo", equipo);
+		query.setParameter("actividadRealizar", actividadRealizar);
+		query.setParameter("modelo", modelo);
+		query.setParameter("descripcionServicio", descripcionServicio);
+		query.setParameter("tipoServicio", tipoServicio);
+		List<Object[]> tipoProyectoList = null;
+		try {
+			tipoProyectoList = query.getResultList();
+		} catch(NoResultException e) {
+		}
+		List<Catalogo> responseList = new ArrayList<Catalogo>();
+		Catalogo costo;
+		for (Object[] current:tipoProyectoList) {
+			costo = new Catalogo();
+			costo.setId((Long) current[0]);
+			costo.setEtiqueta(String.valueOf(current[1]));
+			responseList.add(costo);
+		}
+		return responseList;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<Catalogo> getCostoLocalProveedor(Long idCliente, String tipoProyecto, String tecnologia, String equipo, String actividadRealizar, String modelo, String descripcionServicio, String tipoServicio) {
+		Long id = (Long) DataTypeUtil.convertToLong(idCliente);
+		TypedQuery<Object[]> query = entityManager.createNamedQuery(
+				"ProductoDO.findCostoLocalProveedor", Object[].class);
+		query.setParameter("idCliente", id);
+		query.setParameter("tipoProyecto", tipoProyecto);
+		query.setParameter("tecnologia", tecnologia);
+		query.setParameter("equipo", equipo);
+		query.setParameter("actividadRealizar", actividadRealizar);
+		query.setParameter("modelo", modelo);
+		query.setParameter("descripcionServicio", descripcionServicio);
+		query.setParameter("tipoServicio", tipoServicio);
+		List<Object[]> tipoProyectoList = null;
+		try {
+			tipoProyectoList = query.getResultList();
+		} catch(NoResultException e) {
+		}
+		List<Catalogo> responseList = new ArrayList<Catalogo>();
+		Catalogo costo;
+		for (Object[] current:tipoProyectoList) {
+			costo = new Catalogo();
+			costo.setId((Long) current[0]);
+			costo.setEtiqueta(String.valueOf(current[1]));
+			responseList.add(costo);
+		}
+		return responseList;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<Catalogo> getCostoForaneoProveedor(Long idCliente, String tipoProyecto, String tecnologia, String equipo, String actividadRealizar, String modelo, String descripcionServicio, String tipoServicio) {
+		Long id = (Long) DataTypeUtil.convertToLong(idCliente);
+		TypedQuery<Object[]> query = entityManager.createNamedQuery(
+				"ProductoDO.findCostoForaneoProveedor", Object[].class);
 		query.setParameter("idCliente", id);
 		query.setParameter("tipoProyecto", tipoProyecto);
 		query.setParameter("tecnologia", tecnologia);
@@ -366,7 +453,10 @@ public class ProductoService implements IProductoService {
 			producto.setModelo((String) t.getValueAt(x, 5));
 			producto.setDescripcionServicio((String) t.getValueAt(x, 6));
 			producto.setTipoServicio((String) t.getValueAt(x, 7));
-			producto.setCosto(Double.valueOf((String) t.getValueAt(x, 8)));
+			producto.setCostoLocalCliente(Double.valueOf((String) t.getValueAt(x, 8)));
+			producto.setCostoForaneoCliente(Double.valueOf((String) t.getValueAt(x, 8)));
+			producto.setCostoLocalProveedor(Double.valueOf((String) t.getValueAt(x, 8)));
+			producto.setCostoForaneoProveedor(Double.valueOf((String) t.getValueAt(x, 8)));
 			producto.setDiasImplementacion(Integer.valueOf((String) t.getValueAt(x, 9)));
 			entityManager.persist(producto);
 		}

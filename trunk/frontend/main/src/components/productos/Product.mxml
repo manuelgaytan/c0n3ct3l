@@ -43,7 +43,10 @@
 				this.txtModel.enabled = value;
 				this.txtServiceDescription.enabled = value;
 				this.txtServiceType.enabled = value;
-				this.txtCost.enabled = value;		
+				this.txtLocalCostCustomer.enabled = value;
+				this.txtForaneoCostCustomer.enabled = value;
+				this.txtLocalCostSupplier.enabled = value;
+				this.txtForaneoCostSupplier.enabled = value;
 				this.txtImplementationDays.enabled = value;
 			}
 			
@@ -78,7 +81,10 @@
 				this.txtModel.text = this._product.modelo;
 				this.txtServiceDescription.text = this._product.descripcionServicio;
 				this.txtServiceType.text = this._product.tipoServicio;
-				this.txtCost.text = Util.formatNumber(this._product.costo);
+				this.txtLocalCostCustomer.text = Util.formatNumber(this._product.costoLocalCliente);
+				this.txtForaneoCostCustomer.text = Util.formatNumber(this._product.costoForaneoCliente);
+				this.txtLocalCostSupplier.text = Util.formatNumber(this._product.costoLocalProveedor);
+				this.txtForaneoCostSupplier.text = Util.formatNumber(this._product.costoForaneoProveedor);
 				this.txtImplementationDays.text = Util.numberToString(this._product.diasImplementacion);
 			}
 			
@@ -99,7 +105,10 @@
 				product.modelo = Util.validateEmpty(this.txtModel.text);
 				product.descripcionServicio = Util.validateEmpty(this.txtServiceDescription.text);
 				product.tipoServicio  = Util.validateEmpty(this.txtServiceType.text);
-				product.costo = Util.stringToNumber(this.txtCost.text);
+				product.costoLocalCliente = Util.stringToNumber(this.txtLocalCostCustomer.text);
+				product.costoForaneoCliente = Util.stringToNumber(this.txtForaneoCostCustomer.text);
+				product.costoLocalProveedor = Util.stringToNumber(this.txtLocalCostSupplier.text);
+				product.costoForaneoProveedor = Util.stringToNumber(this.txtForaneoCostSupplier.text);
 				product.diasImplementacion = Util.stringToNumber( this.txtImplementationDays.text );
 				return product;
 			}
@@ -169,7 +178,10 @@
 				validators.setValidador(txtActivity, "a255");
 				validators.setValidador(txtServiceDescription, "a255");
 				validators.crearValidadorRestrictor("cost",ValidadorDecimal.nombre, 9, 2);
-				validators.setRestrictor(txtCost, "cost");
+				validators.setRestrictor(txtLocalCostCustomer, "cost");
+				validators.setRestrictor(txtForaneoCostCustomer, "cost");
+				validators.setRestrictor(txtLocalCostSupplier, "cost");
+				validators.setRestrictor(txtForaneoCostSupplier, "cost");
 				validators.crearValidadorRestrictor("implementationDays",ValidadorEntero.nombre, 5);
 				validators.setRestrictor(txtImplementationDays, "implementationDays");
 			}
@@ -191,7 +203,10 @@
 				this.txtModel.reset();
 				this.txtServiceDescription.reset();
 				this.txtServiceType.reset();
-				this.txtCost.reset();
+				this.txtLocalCostCustomer.reset();
+				this.txtForaneoCostCustomer.reset();
+				this.txtLocalCostSupplier.reset();
+				this.txtForaneoCostSupplier.reset();
 				this.txtImplementationDays.reset();
 			}
 			
@@ -257,8 +272,17 @@
 		<mx:FormItem label="Tipo de Servicio:">
 			<components:TextInput id="txtServiceType" width="250"/>
 		</mx:FormItem>
-		<mx:FormItem label="Costo:">
-			<components:TextInput id="txtCost" width="150" textAlign="right"/>
+		<mx:FormItem label="Costo Local Cliente:">
+			<components:TextInput id="txtLocalCostCustomer" width="150" textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Costo Foraneo Cliente:">
+			<components:TextInput id="txtForaneoCostCustomer" width="150" textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Costo Local Proveedor:">
+			<components:TextInput id="txtLocalCostSupplier" width="150" textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Costo Foraneo Proveedor:">
+			<components:TextInput id="txtForaneoCostSupplier" width="150" textAlign="right"/>
 		</mx:FormItem>
 		<mx:FormItem label="Días de Implementación:">
 			<components:TextInput id="txtImplementationDays" width="150" textAlign="right"/>

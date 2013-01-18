@@ -11,6 +11,7 @@ package model
 	import mx.controls.ComboBox;
 	import mx.controls.DataGrid;
 	import mx.controls.List;
+	import mx.controls.dataGridClasses.DataGridColumn;
 	import mx.core.Application;
 	import mx.formatters.CurrencyFormatter;
 	import mx.formatters.DateFormatter;
@@ -118,7 +119,7 @@ package model
 			if( StringUtil.trim( text ) == "" ){
 				return undefined;
 			}
-			return Number(text);
+			return Number(text.replace(",",""));
 		}
 		
 		public static function validateEmpty(text:String):String
@@ -507,6 +508,10 @@ package model
 			}else{
 				return null;
 			}
+		}
+		
+		public static function labelFunctionCurrency(object:Object, column:DataGridColumn):String{
+			return Util.formatCurrency(Util.extractObject(object,column.dataField));
 		}
 	}
 }

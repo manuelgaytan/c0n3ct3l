@@ -168,6 +168,10 @@
 				//Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
 				this.exposeService_resultHandler();
 			}
+			
+			private function labelFunctionCurrency(object:Object, column:DataGridColumn):String{
+				return Util.formatCurrency(Util.extractObject(object,column.dataField));
+			}
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -186,7 +190,7 @@
 							   dataField="teconologia"/>
 			<mx:DataGridColumn id="dtgEquipment" headerText="Equipo"
 							   dataField="equipo"/>
-			<mx:DataGridColumn id="dtgActivity" headerText="{'Actividad\na Realizar'}" width="180"
+			<mx:DataGridColumn id="dtgActivity" headerText="{'Actividad\na Realizar'}" width="165"
 							   dataField="actividadRealizar"/>
 			<mx:DataGridColumn id="dtgModel" headerText="Modelo"
 							   dataField="modelo"/>
@@ -194,11 +198,25 @@
 							   dataField="descripcionServicio"/>
 			<mx:DataGridColumn id="dtgServiceType" headerText="{'Tipo de\nServicio'}"
 							   dataField="tipoServicio"/>
-			<mx:DataGridColumn id="dtgCost" headerText="Costo" textAlign="right"
-							   dataField="costo"
-							   labelFunction="labelFunctionCosto"/>
+			<mx:DataGridColumn id="dtgLocalCostCustomer" headerText="{'Costo\nLocal\nCliente'}" textAlign="right"
+							   dataField="costoLocalCliente"
+							   labelFunction="{Util.labelFunctionCurrency}"
+							   width="85"/>
+			<mx:DataGridColumn id="dtgForaneoCostCustomer" headerText="{'Costo\nForaneo\nCliente'}" textAlign="right"
+							   dataField="costoForaneoCliente"
+							   labelFunction="{Util.labelFunctionCurrency}"
+							   width="85"/>
+			<mx:DataGridColumn id="dtgLocalCostSupplier" headerText="{'Costo\nLocal\nProveedor'}" textAlign="right"
+							   dataField="costoLocalProveedor"
+							   labelFunction="{Util.labelFunctionCurrency}"
+							   width="96"/>
+			<mx:DataGridColumn id="dtgForaneoCostSupplier" headerText="{'Costo\nForaneo\nProveedor'}" textAlign="right"
+							   dataField="costoForaneoProveedor"
+							   labelFunction="{Util.labelFunctionCurrency}"
+							   width="96"/>
 			<mx:DataGridColumn id="dtgImplementationDays" headerText="{'Días de\nImplementación'}" textAlign="right"
 							   dataField="diasImplementacion"
+							   width="110"
 							   />
 		</mx:columns>
 	</mx:DataGrid>

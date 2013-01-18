@@ -28,7 +28,6 @@
 				productFilter.modelo = Util.selectedLabel( cmbModel );
 				productFilter.descripcionServicio = Util.selectedLabel( cmbServiceDescription );
 				productFilter.tipoServicio = Util.selectedLabel( cmbServiceType );
-				productFilter.idCosto = Util.selectedId( cmbCost );
 				
 				var filterEvent:GenericEvent = new GenericEvent("filterCommand");
 				filterEvent.information = productFilter;
@@ -132,15 +131,6 @@
 				this.cmbServiceType.dataProvider = Util.addEmptyCatalgo( data );
 			}
 			
-			protected function responseGetCosto_resultHandler(event:ResultEvent):void
-			{
-				var data:ArrayCollection = event.result as ArrayCollection;
-				if( data == null ){
-					return;
-				}
-				this.cmbCost.dataProvider = Util.addEmptyCatalgo( data );
-			}
-			
 			protected function cmbClient_changeHandler(event:ListEvent):void
 			{
 				var i:* = Util.selectedId( this.cmbClient );
@@ -240,14 +230,6 @@
 					cleanCombos( cmbServiceType.id );
 					return;
 				}
-				this.responseGetCosto.token = this.productoService.getCosto( Util.selectedId( this.cmbClient ),
-					Util.selectedLabel( this.cmbProjectType ),
-					Util.selectedLabel( this.cmbTechnology ),
-					Util.selectedLabel( this.cmbEquipment ),
-					Util.selectedLabel( this.cmbActivity ),
-					Util.selectedLabel( this.cmbModel ),
-					Util.selectedLabel( this.cmbServiceDescription ),
-					i);
 			}
 			
 			private function cleanCombos(id:String):void
@@ -294,12 +276,6 @@
 					{
 						Util.freeDataProvider( cmbServiceType );
 						cmbServiceType.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
-						break;
-					}
-					case cmbServiceType.id:
-					{
-						Util.freeDataProvider( cmbCost );
-						cmbCost.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
 						break;
 					}
 					default:
@@ -364,10 +340,6 @@
 						 change="cmbServiceType_changeHandler(event)"
 						 labelField="etiqueta"/>
 		</mx:FormItem>
-		<mx:FormItem label="Costo:">
-			<mx:ComboBox id="cmbCost" width="250" textAlign="right"
-						 labelField="etiqueta"/>
-		</mx:FormItem>
 		<mx:FormItem>
 			<mx:Button id="btnFilter" label="Filtrar" click="btnFilter_clickHandler(event)"/>
 		</mx:FormItem>
@@ -387,5 +359,4 @@
 	<mx:CallResponder id="responseGetModelo" result="responseGetModelo_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetDescripcionServicio" result="responseGetDescripcionServicio_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetTipoServicio" result="responseGetTipoServicio_resultHandler(event)"/>
-	<mx:CallResponder id="responseGetCosto" result="responseGetCosto_resultHandler(event)"/>
 </mx:VBox>

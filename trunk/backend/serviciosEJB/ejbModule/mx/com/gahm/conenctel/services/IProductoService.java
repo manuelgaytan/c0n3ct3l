@@ -41,7 +41,19 @@ public interface IProductoService {
 			String tipoProyecto, String tecnologia, String equipo,
 			String actividadRealizar, String modelo, String descripcionServicio);
 
-	public List<Catalogo> getCosto(Long idCliente, String tipoProyecto,
+	public List<Catalogo> getCostoLocalCliente(Long idCliente, String tipoProyecto,
+			String tecnologia, String equipo, String actividadRealizar,
+			String modelo, String descripcionServicio, String tipoServicio);
+	
+	public List<Catalogo> getCostoForaneoCliente(Long idCliente, String tipoProyecto,
+			String tecnologia, String equipo, String actividadRealizar,
+			String modelo, String descripcionServicio, String tipoServicio);
+	
+	public List<Catalogo> getCostoLocalProveedor(Long idCliente, String tipoProyecto,
+			String tecnologia, String equipo, String actividadRealizar,
+			String modelo, String descripcionServicio, String tipoServicio);
+	
+	public List<Catalogo> getCostoForaneoProveedor(Long idCliente, String tipoProyecto,
 			String tecnologia, String equipo, String actividadRealizar,
 			String modelo, String descripcionServicio, String tipoServicio);
 	

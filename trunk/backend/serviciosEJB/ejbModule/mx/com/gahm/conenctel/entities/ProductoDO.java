@@ -30,7 +30,10 @@ import javax.persistence.Table;
 		@NamedQuery(name = "ProductoDO.findModelo", query = "select distinct p.modelo from ProductoDO p where p.cliente.id = :idCliente and p.tipoProyecto = :tipoProyecto and p.teconologia = :tecnologia and p.equipo = :equipo and p.actividadRealizar = :actividadRealizar"),
 		@NamedQuery(name = "ProductoDO.findDescripcionServicio", query = "select distinct p.descripcionServicio from ProductoDO p where p.cliente.id = :idCliente and p.tipoProyecto = :tipoProyecto and p.teconologia = :tecnologia and p.equipo = :equipo and p.actividadRealizar = :actividadRealizar and p.modelo = :modelo"),
 		@NamedQuery(name = "ProductoDO.findTipoServicio", query = "select distinct p.tipoServicio from ProductoDO p where p.cliente.id = :idCliente and p.tipoProyecto = :tipoProyecto and p.teconologia = :tecnologia and p.equipo = :equipo and p.actividadRealizar = :actividadRealizar and p.modelo = :modelo and p.descripcionServicio = :descripcionServicio"),
-		@NamedQuery(name = "ProductoDO.findCosto", query = "select p.id, p.costo from ProductoDO p where p.cliente.id = :idCliente and p.tipoProyecto = :tipoProyecto and p.teconologia = :tecnologia and p.equipo = :equipo and p.actividadRealizar = :actividadRealizar and p.modelo = :modelo and p.descripcionServicio = :descripcionServicio and p.tipoServicio = :tipoServicio")})
+		@NamedQuery(name = "ProductoDO.findCostoLocalCliente", query = "select p.id, p.costoLocalCliente from ProductoDO p where p.cliente.id = :idCliente and p.tipoProyecto = :tipoProyecto and p.teconologia = :tecnologia and p.equipo = :equipo and p.actividadRealizar = :actividadRealizar and p.modelo = :modelo and p.descripcionServicio = :descripcionServicio and p.tipoServicio = :tipoServicio"),
+		@NamedQuery(name = "ProductoDO.findCostoForaneoCliente", query = "select p.id, p.costoForaneoCliente from ProductoDO p where p.cliente.id = :idCliente and p.tipoProyecto = :tipoProyecto and p.teconologia = :tecnologia and p.equipo = :equipo and p.actividadRealizar = :actividadRealizar and p.modelo = :modelo and p.descripcionServicio = :descripcionServicio and p.tipoServicio = :tipoServicio"),
+		@NamedQuery(name = "ProductoDO.findCostoLocalProveedor", query = "select p.id, p.costoLocalProveedor from ProductoDO p where p.cliente.id = :idCliente and p.tipoProyecto = :tipoProyecto and p.teconologia = :tecnologia and p.equipo = :equipo and p.actividadRealizar = :actividadRealizar and p.modelo = :modelo and p.descripcionServicio = :descripcionServicio and p.tipoServicio = :tipoServicio"),
+		@NamedQuery(name = "ProductoDO.findCostoForaneoProveedor", query = "select p.id, p.costoForaneoProveedor from ProductoDO p where p.cliente.id = :idCliente and p.tipoProyecto = :tipoProyecto and p.teconologia = :tecnologia and p.equipo = :equipo and p.actividadRealizar = :actividadRealizar and p.modelo = :modelo and p.descripcionServicio = :descripcionServicio and p.tipoServicio = :tipoServicio")})
 
 @Table(name = "producto")
 public class ProductoDO implements Serializable {
@@ -43,7 +46,17 @@ public class ProductoDO implements Serializable {
 	@Column(name = "actividad_realizar")
 	private String actividadRealizar;
 
-	private Double costo;
+	@Column(name = "costo_local_cliente")
+	private Double costoLocalCliente;
+	
+	@Column(name = "costo_foraneo_cliente")
+	private Double costoForaneoCliente;
+	
+	@Column(name = "costo_local_proveedor")
+	private Double costoLocalProveedor;
+	
+	@Column(name = "costo_foraneo_proveedor")
+	private Double costoForaneoProveedor;
 
 	@Column(name = "descripcion_servicio")
 	private String descripcionServicio;
@@ -85,12 +98,36 @@ public class ProductoDO implements Serializable {
 		this.actividadRealizar = actividadRealizar;
 	}
 
-	public Double getCosto() {
-		return this.costo;
+	public Double getCostoLocalCliente() {
+		return this.costoLocalCliente;
 	}
 
-	public void setCosto(Double costo) {
-		this.costo = costo;
+	public void setCostoLocalCliente(Double costo) {
+		this.costoLocalCliente = costo;
+	}
+
+	public Double getCostoForaneoCliente() {
+		return costoForaneoCliente;
+	}
+
+	public void setCostoForaneoCliente(Double costoForaneoCliente) {
+		this.costoForaneoCliente = costoForaneoCliente;
+	}
+
+	public Double getCostoLocalProveedor() {
+		return costoLocalProveedor;
+	}
+
+	public void setCostoLocalProveedor(Double costoLocalProveedor) {
+		this.costoLocalProveedor = costoLocalProveedor;
+	}
+
+	public Double getCostoForaneoProveedor() {
+		return costoForaneoProveedor;
+	}
+
+	public void setCostoForaneoProveedor(Double costoForaneoProveedor) {
+		this.costoForaneoProveedor = costoForaneoProveedor;
 	}
 
 	public String getDescripcionServicio() {

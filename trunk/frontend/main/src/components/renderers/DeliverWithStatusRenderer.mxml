@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml"
+		 verticalScrollPolicy="off"
+		 horizontalScrollPolicy="off"
+		 width="315"
+		 horizontalGap="0">
+	<mx:Script>
+		<![CDATA[
+			import model.EstatusProyectoEntregable;
+			import model.ProyectoEntregable;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.events.ListEvent;
+			
+			protected function formatFile( item:Object ):String{
+				var currentItem:String = this.getFileName(item);
+				var index:int = currentItem.indexOf("_");
+				if( index == -1 ){
+					return currentItem;
+				}else{
+					index++;
+					return currentItem.substring( index );
+				}
+			}
+			
+			public function getFileName(item:Object=null):String
+			{
+				if( !(item == null) ){
+					return (item as ProyectoEntregable).entregable.nombreArchivo;
+				}
+				return "";
+			}
+			
+			public override function set data(value:Object):void{
+				if( value == null ){
+					return;
+				}
+				super.data = value;
+				var item:ProyectoEntregable = value as ProyectoEntregable;
+				if( item == null ){
+					return;
+				}
+				this.lblFileName.text=this.formatFile( item );
+				this.cmbStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbStatus.dataProvider as ArrayCollection, item.estatus);
+			}
+			
+			protected function cmbStatus_changeHandler(event:ListEvent):void
+			{
+				this.data.estatus = Util.selectedId( this.cmbStatus );
+				if( this.data.estatus == undefined ){
+					this.data.estatus = EstatusProyectoEntregable.ID_PENDIENTE;
+				}
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:Label id="lblFileName" width="205"/>
+	<mx:ComboBox id="cmbStatus" dataProvider="{EstatusProyectoEntregable.getComboList()}"
+				 labelField="estatus"
+				 width="110"
+				 change="cmbStatus_changeHandler(event)"/>
+</mx:HBox>

@@ -343,43 +343,43 @@
 			<components:DateField id="dtfDeliveryDate"/>
 		</mx:FormItem>
 		<mx:FormItem label="Site Survey:">
-			<components:Deliver id="dlvSiteSurvey" deliveryType="{TipoEntregable.SITE_SURVEY}"/>
+			<components:DeliverWithStatus id="dlvSiteSurvey" deliveryType="{TipoEntregable.SITE_SURVEY}"/>
 		</mx:FormItem>
 		<mx:FormItem label="Planos:">
-			<components:Deliver id="dlvPlanes" deliveryType="{TipoEntregable.PLANOS}"/>
+			<components:DeliverWithStatus id="dlvPlanes" deliveryType="{TipoEntregable.PLANOS}"/>
 		</mx:FormItem>
 		<mx:FormItem label="Ingeniería:">
-			<components:Deliver id="dlvEngineering" deliveryType="{TipoEntregable.INGENIERIA}"/>
+			<components:DeliverWithStatus id="dlvEngineering" deliveryType="{TipoEntregable.INGENIERIA}"/>
 		</mx:FormItem>
 		<mx:FormItem label="Visita de Factibilidad:">
-			<components:Deliver id="dlvFeasibility" deliveryType="{TipoEntregable.VISITA_FACTIBILIDAD}"/>
+			<components:DeliverWithStatus id="dlvFeasibility" deliveryType="{TipoEntregable.VISITA_FACTIBILIDAD}"/>
 		</mx:FormItem>
 		<mx:FormItem label="Carpeta Administrativa:">
-			<components:Deliver id="dlvAdministrativeFolder" deliveryType="{TipoEntregable.CARPETA_ADMINISTRATIVA}"/>
+			<components:DeliverWithStatus id="dlvAdministrativeFolder" deliveryType="{TipoEntregable.CARPETA_ADMINISTRATIVA}"/>
 		</mx:FormItem>
 		<mx:FormItem label="Protocolo:">
-			<components:Deliver id="dlvProtocol" deliveryType="{TipoEntregable.PROTOCOLO}"/>
+			<components:DeliverWithStatus id="dlvProtocol" deliveryType="{TipoEntregable.PROTOCOLO}"/>
 		</mx:FormItem>
 		<mx:FormItem label="OT:">
-			<components:Deliver id="dlvOT" deliveryType="{TipoEntregable.OT}"/>
+			<components:DeliverWithStatus id="dlvOT" deliveryType="{TipoEntregable.OT}"/>
 		</mx:FormItem>
 		<mx:FormItem label="Cliente Satisfecho:">
-			<components:Deliver id="dlvSatisfyCustomer" deliveryType="{TipoEntregable.CLIENTE_SATISFECHO}"/>
+			<components:DeliverWithStatus id="dlvSatisfyCustomer" deliveryType="{TipoEntregable.CLIENTE_SATISFECHO}"/>
 		</mx:FormItem>
 		<mx:FormItem label="Checklist de Inspección:">
-			<components:Deliver id="dlvInspectionChecklist" deliveryType="{TipoEntregable.CHECKLIST_INSPECCION}"/>
+			<components:DeliverWithStatus id="dlvInspectionChecklist" deliveryType="{TipoEntregable.CHECKLIST_INSPECCION}"/>
 		</mx:FormItem>
 		<mx:FormItem label="Checklist Fotográfico:">
-			<components:Deliver id="dlvPhotographChecklist" deliveryType="{TipoEntregable.CHECKLIST_FOTOGRAFICO}"/>
+			<components:DeliverWithStatus id="dlvPhotographChecklist" deliveryType="{TipoEntregable.CHECKLIST_FOTOGRAFICO}"/>
 		</mx:FormItem>
 		<mx:FormItem label="ASBuild:">
-			<components:Deliver id="dlvASBuild" deliveryType="{TipoEntregable.ASBUILD}"/>
+			<components:DeliverWithStatus id="dlvASBuild" deliveryType="{TipoEntregable.ASBUILD}"/>
 		</mx:FormItem>
 		<mx:FormItem label="Entregable X:">
-			<components:Deliver id="dlvXDelivery" deliveryType="{TipoEntregable.ENTREGABLE_X}"/>
+			<components:DeliverWithStatus id="dlvXDelivery" deliveryType="{TipoEntregable.ENTREGABLE_X}"/>
 		</mx:FormItem>
 		<mx:FormItem label="Entregable Y:">
-			<components:Deliver id="dlvYDelivery" deliveryType="{TipoEntregable.ENTREGABLE_Y}"/>
+			<components:DeliverWithStatus id="dlvYDelivery" deliveryType="{TipoEntregable.ENTREGABLE_Y}"/>
 		</mx:FormItem>
 		<components:Observations id="observations"/>
 		<mx:FormItem direction="horizontal">

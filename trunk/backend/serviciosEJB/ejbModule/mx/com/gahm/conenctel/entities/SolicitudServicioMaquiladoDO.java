@@ -14,6 +14,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -24,6 +26,10 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "SolicitudServicioMaquilado")
+@NamedQueries({
+	@NamedQuery(name = "SolicitudServicioMaquiladoDO.findAll", query = "select so from SolicitudServicioMaquiladoDO so"),
+	@NamedQuery(name = "SolicitudServicioMaquiladoDO.findById", 
+				query = "select so from SolicitudServicioMaquiladoDO so where so.id = :id")})
 public class SolicitudServicioMaquiladoDO implements Serializable {
 
 	/**

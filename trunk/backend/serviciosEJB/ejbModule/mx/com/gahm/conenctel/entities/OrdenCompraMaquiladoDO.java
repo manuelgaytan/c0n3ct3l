@@ -9,12 +9,18 @@ import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "OrdenCompraMaquilado")
+@NamedQueries({
+	@NamedQuery(name = "OrdenCompraMaquiladoDO.findAll", query = "select oc from OrdenCompraMaquiladoDO oc"),
+	@NamedQuery(name = "OrdenCompraMaquiladoDO.findById", 
+				query = "select oc from OrdenCompraMaquiladoDO oc where oc.id = :id")})
 public class OrdenCompraMaquiladoDO implements java.io.Serializable {
 
 

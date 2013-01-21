@@ -51,6 +51,7 @@
 	central_sitio VARCHAR(255),
 	id_estato INT(11) UNSIGNED NOT NULL,
 	fecha_captura DATE NOT NULL,
+	fk_estado_solicitud_servicio_maquilado INT(11) UNSIGNED,
 	PRIMARY KEY (id)
 	);
 
@@ -910,6 +911,7 @@
 	(
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
 	descripcion VARCHAR(255) NOT NULL,
+	fecha_creacion DATE NOT NULL,
 	PRIMARY KEY (id)
 	);
 
@@ -942,6 +944,22 @@
 	PRIMARY KEY (id)
 	);
 
+	CREATE TABLE SolicitudServicioMaquilado
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fecha DATE NOT NULL,
+	fk_proyecto_padre INT(11) UNSIGNED,
+	fk_proyecto INT(11) UNSIGNED,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE EstadoSolicitudServicioMaquilado
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	estado VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
 	ALTER TABLE Cliente ADD FOREIGN KEY id_contacto_idxfk (id_contacto) REFERENCES Contacto (id);
 
 	ALTER TABLE Proyecto ADD FOREIGN KEY id_categoria_proyecto_idxfk (id_categoria_proyecto) REFERENCES CategoriaProyecto (id);
@@ -949,6 +967,8 @@
 	ALTER TABLE Proyecto ADD FOREIGN KEY id_producto_idxfk (id_producto) REFERENCES Producto (id);
 
 	ALTER TABLE Proyecto ADD FOREIGN KEY id_estato_idxfk (id_estato) REFERENCES EstadoProyecto (id);
+
+	ALTER TABLE Proyecto ADD FOREIGN KEY fk_estado_solicitud_servicio_maquilado_idxfk (fk_estado_solicitud_servicio_maquilado) REFERENCES EstadoSolicitudServicioMaquilado (id);
 
 	ALTER TABLE Usuario ADD FOREIGN KEY fk_perfil_idxfk (fk_perfil) REFERENCES Perfil (id);
 
@@ -1209,6 +1229,10 @@
 	ALTER TABLE FacturaPorPagar ADD FOREIGN KEY fk_orden_compra_idxfk (fk_orden_compra) REFERENCES OrdenCompra (id);
 
 	ALTER TABLE FacturaPorPagar ADD FOREIGN KEY fk_orden_compra_maquilado_idxfk (fk_orden_compra_maquilado) REFERENCES OrdenCompraMaquilado (id);
+
+	ALTER TABLE SolicitudServicioMaquilado ADD FOREIGN KEY fk_proyecto_padre_idxfk (fk_proyecto_padre) REFERENCES ProyectoPadre (id);
+
+	ALTER TABLE SolicitudServicioMaquilado ADD FOREIGN KEY fk_proyecto_idxfk (fk_proyecto) REFERENCES Proyecto (id);
 
 	/* Perfiles */
 	INSERT INTO Perfil

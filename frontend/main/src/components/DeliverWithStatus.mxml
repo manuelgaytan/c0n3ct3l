@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<components:Deliver xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+					creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import components.renderers.DeliverWithStatusRenderer;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.lstDelivers.width = 320;
+				this.lstDelivers.itemRenderer = new ClassFactory(DeliverWithStatusRenderer);
+			}
+			
+		]]>
+	</mx:Script>
+</components:Deliver>

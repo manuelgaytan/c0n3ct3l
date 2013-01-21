@@ -45,6 +45,7 @@
 			import model.EstatusA;
 			import model.EstatusB;
 			import model.EstatusC;
+			import model.EstatusProyectoEntregable;
 			import model.EstatusRequisicionCompra;
 			import model.FacturaPorPagar;
 			import model.FiltroProducto;
@@ -225,6 +226,7 @@
 			private var facturaPorPagar:FacturaPorPagar;
 			private var ordenCompraMaquilado:OrdenCompraMaquilado;
 			private var proveedorMaquilador:ProveedorMaquilador;
+			private var estatusProyectoEntregable:EstatusProyectoEntregable;
 			
 			protected function login_readyHandler(event:ModuleEvent):void
 			{

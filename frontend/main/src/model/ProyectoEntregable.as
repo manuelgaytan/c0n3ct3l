@@ -6,6 +6,7 @@ package model
 		public var id:*;
 		public var entregable:Entregable;
 		public var proyecto:Proyecto;
+		public var estatus:Number = EstatusProyectoEntregable.ID_PENDIENTE;
 		
 		public function ProyectoEntregable()
 		{

@@ -85,11 +85,13 @@
 				 backgroundImage="assets/images/candado.jpeg"
 				 backgroundAlpha="0.5">
 			<mx:FormItem required="true" label="Usuario:">
-				<components:TextInput id="txtUser" text="DIRECTOR"/>
+				<components:TextInput id="txtUser"
+									  text="DIRECTOR"/>
 			</mx:FormItem>
 			<mx:FormItem required="true" label="Contraseña:">
 				<components:TextInput id="txtPassword" displayAsPassword="true"
-									  enter="enterButton_clickHandler(event)" text="NOTIENE"/>
+									  enter="enterButton_clickHandler(event)"
+									  text="NOTIENE"/>
 			</mx:FormItem>
 			<mx:FormItem>
 				<mx:Button label="Entrar" id="enterButton" click="enterButton_clickHandler(event)"/>

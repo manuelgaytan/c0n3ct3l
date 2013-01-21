@@ -15,6 +15,7 @@ import mx.com.gahm.conenctel.entities.AreaSolicitanteDO;
 import mx.com.gahm.conenctel.entities.ColaboradorDO;
 import mx.com.gahm.conenctel.entities.CompaniaDO;
 import mx.com.gahm.conenctel.entities.DescripcionAlmacenDO;
+import mx.com.gahm.conenctel.entities.EstadoSolicitudServicioMaquiladoDO;
 import mx.com.gahm.conenctel.entities.EstatusADO;
 import mx.com.gahm.conenctel.entities.EstatusBDO;
 import mx.com.gahm.conenctel.entities.EstatusCDO;
@@ -429,7 +430,7 @@ public class CatalogoService implements ICatalogoService {
 		}
 		return datos;
 	}
-
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public List<EstatusRequisicionCompraDO> getEstadoRequiscionCompra()
 			throws ConectelException {
 
@@ -498,7 +499,21 @@ public class CatalogoService implements ICatalogoService {
 		return datos;
 	}
 	
-	
+	public List<EstadoSolicitudServicioMaquiladoDO> getEstadoSolicitudServicioMaquilado() throws ConectelException {
+
+		List<EstadoSolicitudServicioMaquiladoDO> datos = null;
+
+		TypedQuery<EstadoSolicitudServicioMaquiladoDO> query = entityManager
+				.createNamedQuery("EstadoSolicitudServicioMaquiladoDO.findAll",
+						EstadoSolicitudServicioMaquiladoDO.class);
+
+		try {
+			datos = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen informaci˜n para mostrar.");
+		}
+		return datos;
+	}
 	
 	
 	

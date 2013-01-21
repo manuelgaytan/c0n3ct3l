@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -22,7 +23,7 @@ public class OrdenCompraMaquiladoDO implements java.io.Serializable {
 	 */
 	private static final long serialVersionUID = -2659817735727555176L;
 	private Integer id;
-	private Integer fkSolicitudServicioMaquilado;
+	private SolicitudServicioMaquiladoDO solicitudServicioMaquilado;
 	private Date fecha;
 	private ProveedorMaquiladorDO proveedorMaquilador;
 
@@ -30,9 +31,9 @@ public class OrdenCompraMaquiladoDO implements java.io.Serializable {
 	public OrdenCompraMaquiladoDO() {
 	}
 
-	public OrdenCompraMaquiladoDO(Integer fkSolicitudServicioMaquilado,
+	public OrdenCompraMaquiladoDO(SolicitudServicioMaquiladoDO solicitudServicioMaquilado,
 			Date fecha, ProveedorMaquiladorDO proveedorMaquilador) {
-		this.fkSolicitudServicioMaquilado = fkSolicitudServicioMaquilado;
+		this.solicitudServicioMaquilado = solicitudServicioMaquilado;
 		this.fecha = fecha;
 		this.proveedorMaquilador = proveedorMaquilador;
 	}
@@ -48,14 +49,15 @@ public class OrdenCompraMaquiladoDO implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@Column(name = "fk_solicitud_servicio_maquilado", nullable = false)
-	public Integer getFkSolicitudServicioMaquilado() {
-		return this.fkSolicitudServicioMaquilado;
+	@ManyToOne
+   	@JoinColumn(name="fk_solicitud_servicio_maquilado", nullable = false)
+	public SolicitudServicioMaquiladoDO getSolicitudServicioMaquilado() {
+		return this.solicitudServicioMaquilado;
 	}
 
-	public void setFkSolicitudServicioMaquilado(
-			Integer fkSolicitudServicioMaquilado) {
-		this.fkSolicitudServicioMaquilado = fkSolicitudServicioMaquilado;
+	public void setSolicitudServicioMaquilado(
+			SolicitudServicioMaquiladoDO solicitudServicioMaquilado) {
+		this.solicitudServicioMaquilado = solicitudServicioMaquilado;
 	}
 
 	@Temporal(TemporalType.DATE)
@@ -68,7 +70,8 @@ public class OrdenCompraMaquiladoDO implements java.io.Serializable {
 		this.fecha = fecha;
 	}
 
-	@JoinColumn(name = "fk_proveedor_maquilador", nullable = false)
+	@ManyToOne
+   	@JoinColumn(name="fk_proveedor_maquilador", nullable = false)
 	public ProveedorMaquiladorDO getProveedorMaquilador() {
 		return this.proveedorMaquilador;
 	}

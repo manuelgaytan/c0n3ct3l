@@ -199,6 +199,9 @@
 	tarjetas_entregadas VARCHAR(255),
 	clave_aceptacion VARCHAR(255),
 	fecha_entrega DATE,
+	entregables_completos BOOLEAN,
+	fk_estatus_validacion_operativa INT(11) UNSIGNED NOT NULL,
+	fecha_validacion_operativa DATE,
 	PRIMARY KEY (id)
 	);
 
@@ -1010,6 +1013,8 @@
 	ALTER TABLE PerfilPantalla ADD FOREIGN KEY id_pantalla_idxfk (id_pantalla) REFERENCES Pantalla (id);
 
 	ALTER TABLE ConfiguracionPruebaEntrega ADD FOREIGN KEY id_proyecto_idxfk_2 (id_proyecto) REFERENCES Proyecto (id);
+
+	ALTER TABLE ConfiguracionPruebaEntrega ADD FOREIGN KEY fk_estatus_validacion_operativa_idxfk (fk_estatus_validacion_operativa) REFERENCES EstadoValidacionOperativa (id);
 
 	ALTER TABLE Colaborador ADD FOREIGN KEY id_tipo_colaborador_idxfk (id_tipo_colaborador) REFERENCES TipoColaborador (id);
 

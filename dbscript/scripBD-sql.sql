@@ -1312,6 +1312,16 @@
 	VALUES (19, 'PreciariosMaquiladores');
 	INSERT INTO Pantalla
 	VALUES (20, 'ProyectosPadres');
+	INSERT INTO Pantalla
+	VALUES (21, 'ValidacionesProyectos');
+	INSERT INTO Pantalla
+	VALUES (22, 'OrdenesCompraClientes');
+	INSERT INTO Pantalla
+	VALUES (23, 'ValidacionesCostos');
+	INSERT INTO Pantalla
+	VALUES (24, 'ValidacionesAdministrativas');
+	INSERT INTO Pantalla
+	VALUES (25, 'ConcentradoOrdenesCompra');
 
 	/* Perfil-Pantalla */
 	INSERT INTO PerfilPantalla
@@ -1390,6 +1400,26 @@
 	VALUES (37, 1, 20);
 	INSERT INTO PerfilPantalla
 	VALUES (38, 5, 20);
+	INSERT INTO PerfilPantalla
+	VALUES (39, 1, 21);
+	INSERT INTO PerfilPantalla
+	VALUES (40, 1, 22);
+	INSERT INTO PerfilPantalla
+	VALUES (41, 1, 23);
+	INSERT INTO PerfilPantalla
+	VALUES (42, 1, 24);
+	INSERT INTO PerfilPantalla
+	VALUES (43, 1, 25);
+	INSERT INTO PerfilPantalla
+	VALUES (44, 5, 21);
+	INSERT INTO PerfilPantalla
+	VALUES (45, 5, 22);
+	INSERT INTO PerfilPantalla
+	VALUES (46, 5, 23);
+	INSERT INTO PerfilPantalla
+	VALUES (47, 5, 24);
+	INSERT INTO PerfilPantalla
+	VALUES (48, 5, 25);
 	
 	/* Usuarios */
 	INSERT INTO Usuario

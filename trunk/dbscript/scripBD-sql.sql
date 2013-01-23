@@ -961,6 +961,22 @@
 	PRIMARY KEY (id)
 	);
 
+	CREATE TABLE EstadoValidacionOperativa
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	estado VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE ValidacionProyecto
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fecha DATE NOT NULL,
+	fk_estado_validacion_operativa INT(11) UNSIGNED NOT NULL,
+	fk_proyecto INT(11) UNSIGNED NOT NULL,
+	PRIMARY KEY (id)
+	);
+
 	ALTER TABLE Cliente ADD FOREIGN KEY id_contacto_idxfk (id_contacto) REFERENCES Contacto (id);
 
 	ALTER TABLE Proyecto ADD FOREIGN KEY id_categoria_proyecto_idxfk (id_categoria_proyecto) REFERENCES CategoriaProyecto (id);
@@ -1234,6 +1250,10 @@
 	ALTER TABLE SolicitudServicioMaquilado ADD FOREIGN KEY fk_proyecto_padre_idxfk (fk_proyecto_padre) REFERENCES ProyectoPadre (id);
 
 	ALTER TABLE SolicitudServicioMaquilado ADD FOREIGN KEY fk_proyecto_idxfk (fk_proyecto) REFERENCES Proyecto (id);
+
+	ALTER TABLE ValidacionProyecto ADD FOREIGN KEY fk_estado_validacion_operativa_idxfk (fk_estado_validacion_operativa) REFERENCES EstadoValidacionOperativa (id);
+
+	ALTER TABLE ValidacionProyecto ADD FOREIGN KEY fk_proyecto_idxfk (fk_proyecto) REFERENCES Proyecto (id);
 
 	/* Perfiles */
 	INSERT INTO Perfil
@@ -1851,7 +1871,12 @@
 	INSERT INTO EstadoSolicitudServicioMaquilado
 	VALUES (3, 'Rechazado');
 
-
+	INSERT INTO EstadoValidacionOperativa
+	VALUES (1, 'No Validado');
+	INSERT INTO EstadoValidacionOperativa
+	VALUES (2, 'Validado');
+	INSERT INTO EstadoValidacionOperativa
+	VALUES (3, 'Parcial');
 /*
 	INSERT INTO Proveedor
 	VALUES (1, 1, 'ACME', 'ALMEIRA CASTAÑEDA MELIA', 'ALCM900622DF7', 'REFORMA 34, COL. JUÁREZ, DELG. CUAUHTEMOC', 'REFORMA 34, COL. JUÁREZ, DELG. CUAUHTEMOC', '57115887','MELIA ALMEIRA','melia347@yahoo.com','','');

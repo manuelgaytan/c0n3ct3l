@@ -24,6 +24,8 @@ public class ProyectoEntregableDO implements Serializable {
 
 	@JoinColumn(name="id_entregable")
 	private EntregableDO entregable;
+	
+	private long estatus;
 
 	public ProyectoEntregableDO() {
 	}
@@ -50,6 +52,14 @@ public class ProyectoEntregableDO implements Serializable {
 
 	public void setEntregable(EntregableDO entregable) {
 		this.entregable = entregable;
+	}
+
+	public long getEstatus() {
+		return estatus;
+	}
+
+	public void setEstatus(long estatus) {
+		this.estatus = estatus;
 	}
 
 }

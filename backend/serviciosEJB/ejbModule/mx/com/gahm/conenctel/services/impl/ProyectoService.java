@@ -17,6 +17,7 @@ import javax.swing.table.TableModel;
 
 import mx.com.gahm.conenctel.constants.EstadoProyecto;
 import mx.com.gahm.conenctel.entities.CategoriaDO;
+import mx.com.gahm.conenctel.entities.DesarrolloProyectoABDO;
 import mx.com.gahm.conenctel.entities.EstadoDO;
 import mx.com.gahm.conenctel.entities.ObservacionDO;
 import mx.com.gahm.conenctel.entities.ProyectoDO;
@@ -52,7 +53,7 @@ public class ProyectoService implements IProyectoService {
 		query.setParameter("modelo", projectFilter.getModelo());
 		query.setParameter("descripcionServicio", projectFilter.getDescripcionServicio());
 		query.setParameter("tipoServicio", projectFilter.getTipoServicio());
-		query.setParameter("costo", projectFilter.getCosto());
+		//query.setParameter("costo", projectFilter.getCosto());
 		//query.setParameter("idEstado", 1);
 		List<ProyectoDO> projectList;
 		try {
@@ -97,13 +98,20 @@ public class ProyectoService implements IProyectoService {
 	
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public ProyectoDO update(ProyectoDO project) throws ConectelException {
+		ProyectoDO regProject = entityManager.find(ProyectoDO.class, project.getId());
 		if (project.getRequisiciones() != null) {
+			for (RequisicionDO current:regProject.getRequisiciones()) {
+				entityManager.remove(current);
+			}
 			for (RequisicionDO current:project.getRequisiciones()) {
 				current.setProyecto(project);
 				entityManager.persist(current);
 			}
 		}
 		if (project.getObservaciones() != null) {
+			for (ObservacionDO current:regProject.getObservaciones()) {
+				entityManager.remove(current);
+			}
 			for (ObservacionDO current:project.getObservaciones()) {
 				current.setProyecto(project);
 				current.setEstado(project.getEstado());

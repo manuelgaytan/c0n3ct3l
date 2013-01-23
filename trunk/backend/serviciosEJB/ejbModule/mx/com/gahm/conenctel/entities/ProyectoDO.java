@@ -47,6 +47,9 @@ public class ProyectoDO implements Serializable {
 	@OneToMany(mappedBy="proyecto", fetch = FetchType.EAGER)
 	private List<ProyectoEntregableDO> proyectoEntregables;
 
+	@JoinColumn(name = "fk_estado_solicitud_servicio_maquilado")
+	private EstadoSolicitudServicioMaquiladoDO estadoSolicitudServicioMaquilado;
+	
 	@Transient
 	private ProyectoPadreDO proyectoPadre;
 	
@@ -132,5 +135,14 @@ public class ProyectoDO implements Serializable {
 
 	public void setProyectoPadre(ProyectoPadreDO proyectoPadre) {
 		this.proyectoPadre = proyectoPadre;
+	}
+
+	public EstadoSolicitudServicioMaquiladoDO getEstadoSolicitudServicioMaquilado() {
+		return estadoSolicitudServicioMaquilado;
+	}
+
+	public void setEstadoSolicitudServicioMaquilado(
+			EstadoSolicitudServicioMaquiladoDO estadoSolicitudServicioMaquilado) {
+		this.estadoSolicitudServicioMaquilado = estadoSolicitudServicioMaquilado;
 	}
 }

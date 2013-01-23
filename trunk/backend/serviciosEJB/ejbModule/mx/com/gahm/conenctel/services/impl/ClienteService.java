@@ -93,7 +93,7 @@ public class ClienteService implements IClienteService {
 						"ProductoDO.findByFilter", ProductoDO.class);
 				query.setParameter("idCliente", current.getId());
 				query.setParameter("tipoProyecto", null);
-				query.setParameter("tipoServicio", null);
+				query.setParameter("teconologia", null);
 				query.setParameter("equipo", null);
 				List<ProductoDO> productList = query.getResultList();
 				for (ProductoDO product:productList) {

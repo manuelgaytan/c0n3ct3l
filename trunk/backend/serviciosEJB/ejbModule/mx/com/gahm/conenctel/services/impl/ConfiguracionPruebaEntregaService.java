@@ -168,6 +168,59 @@ public class ConfiguracionPruebaEntregaService implements IConfiguracionPruebaEn
 				entityManager.remove(current);
 			}
 		}
+		
+		for (ProyectoEntregableDO current : config.getSiteSurvey()) {
+			current.getEntregable().setId(0l);
+			current.setId(0l);
+		}
+		for (ProyectoEntregableDO current : config.getPlanos()) {
+			current.getEntregable().setId(0l);
+			current.setId(0l);
+		}
+		for (ProyectoEntregableDO current : config.getIngenieria()) {
+			current.getEntregable().setId(0l);
+			current.setId(0l);
+		}
+		for (ProyectoEntregableDO current : config.getVisitaFactibilidad()) {
+			current.getEntregable().setId(0l);
+			current.setId(0l);
+		}
+		for (ProyectoEntregableDO current : config.getCarpetaAdministrativa()) {
+			current.getEntregable().setId(0l);
+			current.setId(0l);
+		}
+		for (ProyectoEntregableDO current : config.getProtocolo()) {
+			current.getEntregable().setId(0l);
+			current.setId(0l);
+		}
+		for (ProyectoEntregableDO current : config.getOt()) {
+			current.getEntregable().setId(0l);
+			current.setId(0l);
+		}
+		for (ProyectoEntregableDO current : config.getClienteSatisfecho()) {
+			current.getEntregable().setId(0l);
+			current.setId(0l);
+		}
+		for (ProyectoEntregableDO current : config.getChecklistInspeccion()) {
+			current.getEntregable().setId(0l);
+			current.setId(0l);
+		}
+		for (ProyectoEntregableDO current : config.getChecklistFotografico()) {
+			current.getEntregable().setId(0l);
+			current.setId(0l);
+		}
+		for (ProyectoEntregableDO current : config.getAsBuild()) {
+			current.getEntregable().setId(0l);
+			current.setId(0l);
+		}
+		for (ProyectoEntregableDO current : config.getEntregableX()) {
+			current.getEntregable().setId(0l);
+			current.setId(0l);
+		}
+		for (ProyectoEntregableDO current : config.getEntregableY()) {
+			current.getEntregable().setId(0l);
+			current.setId(0l);
+		}
 
 		agregarProyectoEntregable(config.getSiteSurvey(), config.getProyecto());
 		agregarProyectoEntregable(config.getPlanos(), config.getProyecto());

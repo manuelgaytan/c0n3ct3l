@@ -253,6 +253,7 @@
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
 	id_proyecto INT(11) UNSIGNED NOT NULL,
 	id_entregable INT(11) UNSIGNED NOT NULL,
+	estatus INT(11) UNSIGNED NOT NULL,
 	PRIMARY KEY (id)
 	);
 
@@ -1842,6 +1843,15 @@
 	INSERT INTO UnidadOrdenCompra
 	VALUES (10, 'Otros');
 	/* Fin Orden de Compra */
+
+	INSERT INTO EstadoSolicitudServicioMaquilado
+	VALUES (1, 'Pendiente');
+	INSERT INTO EstadoSolicitudServicioMaquilado
+	VALUES (2, 'Aceptado');
+	INSERT INTO EstadoSolicitudServicioMaquilado
+	VALUES (3, 'Rechazado');
+
+
 /*
 	INSERT INTO Proveedor
 	VALUES (1, 1, 'ACME', 'ALMEIRA CASTAÑEDA MELIA', 'ALCM900622DF7', 'REFORMA 34, COL. JUÁREZ, DELG. CUAUHTEMOC', 'REFORMA 34, COL. JUÁREZ, DELG. CUAUHTEMOC', '57115887','MELIA ALMEIRA','melia347@yahoo.com','','');

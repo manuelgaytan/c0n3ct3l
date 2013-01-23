@@ -4,6 +4,7 @@
 		 paddingTop="5" paddingBottom="5">
 	<mx:Script>
 		<![CDATA[
+			import model.Estado;
 			import model.Imputable;
 			import model.Model;
 			import model.Observacion;
@@ -19,6 +20,9 @@
 			
 			[Bindable]
 			private var _observations:ArrayCollection;
+			
+			[Bindable]
+			public var fase:Estado;
 			
 			protected function creationCompleteHandler(event:FlexEvent):void
 			{
@@ -76,7 +80,8 @@
 				observation.fechaCaptura = new Date();
 				observation.imputable = this.cmbImputable.selectedItem as Imputable;
 				observation.usuario = Model.getInstance().user;
-				observation.requisicion = Util.validateEmpty(this.txtObservation.text); 
+				observation.requisicion = Util.validateEmpty(this.txtObservation.text);
+				observation.estado = this.fase;
 				this._observations.addItem( observation );
 				this.cleanForm();
 			}

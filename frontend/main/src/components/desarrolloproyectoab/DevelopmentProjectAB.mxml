@@ -396,8 +396,16 @@
 					return;
 				}
 				if( this.mode == Constants.UPDATE_MODE ){
-					Alert.show("Confirme si desea dar por terminada la fase.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
+					Alert.show("Confirme si desea dar por terminada la fase.","Advertencia",Alert.YES+Alert.NO,this, faseDone);
 				}
+			}
+			
+			private function faseDone(event:CloseEvent):void{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				Util.showProperties( this._developmentProjectAB.proyecto.id );
+				this.responseUpdate.token = this.desarrolloProyectoABService.hechoFase( this._developmentProjectAB.proyecto.id );
 			}
 			
 			protected function responseDone_resultHandler(event:ResultEvent):void
@@ -535,7 +543,7 @@
 			<mx:ComboBox id="cmbBase" width="250"
 						 labelField="etiqueta"/>
 		</mx:FormItem>
-		<components:Observations id="observations"/>
+		<components:Observations id="observations" fase="{Estado.createEstado(Estado.ID_DESARROLLO_PROYECTO_A_Y_B, Estado.DESARROLLO_PROYECTO_A_Y_B)}"/>
 		<mx:FormItem direction="horizontal">
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
 			<mx:Button id="btnDone" label="Hecho" click="btnHecho_clickHandler(event)"/>

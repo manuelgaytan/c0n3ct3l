@@ -43,6 +43,9 @@
 			
 			protected function datagrid_doubleClickHandler(event:MouseEvent):void
 			{
+				if( event.currentTarget.selectedItem == null ){
+					return;
+				}
 				var generalDataProject:ConfiguracionPruebaEntrega = this.datagrid.selectedItem as ConfiguracionPruebaEntrega;
 				this.responseGetDatosGeneralesProyecto.token = this.configuracionPruebaEntregaService.getConfigPruebaEntrega( generalDataProject.id );
 			}

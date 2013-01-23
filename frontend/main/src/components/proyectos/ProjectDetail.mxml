@@ -8,6 +8,7 @@
 			
 			import model.Constants;
 			import model.Estado;
+			import model.Producto;
 			import model.Proyecto;
 			import model.Util;
 			
@@ -59,7 +60,14 @@
 				this.txtModel.text = Util.extractToText( this._project, "producto.modelo" );
 				this.txtServiceDescription.text = Util.extractToText( this._project, "producto.descripcionServicio" );
 				this.txtServiceType.text = Util.extractToText( this._project, "producto.tipoServicio" );
-				this.txtCost.text = Util.formatNumber( Util.extractObject( this._project, "producto.costo") );
+				var costo:String = "producto.costo";
+				if( this.txtServiceType.text == Producto.TIPO_SERVICIO_LOCAL ){
+					costo = "producto.costoLocalCliente";	
+				}
+				if( this.txtServiceType.text == Producto.TIPO_SERVICIO_FORANEO ){
+					costo = "producto.costoForaneoCliente";	
+				}				
+				this.txtCost.text = Util.formatNumber( Util.extractObject( this._project, costo) );
 				this.txtSite.text = Util.extractToText( this._project, "centralSitio");
 				this.txtParentProject.text = Util.extractToText( this._project, "proyectoPadreHijo.proyectoPadre.descripcion");
 				this.validateStatus( Number( Util.extractObject( this._project, "estado.id") ) );

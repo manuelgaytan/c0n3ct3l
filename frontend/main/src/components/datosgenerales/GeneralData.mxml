@@ -254,6 +254,14 @@
 				this.responseUpdate.token = this.datosGeneralesService.update( generalDataProject );
 			}
 			
+			private function faseDone(event:CloseEvent):void{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				Util.showProperties( this._generalDataProject.proyecto.id );
+				this.responseUpdate.token = this.datosGeneralesService.hechoFase( this._generalDataProject.proyecto.id );
+			}
+			
 			private function validations():Boolean
 			{
 				var value:Boolean = true;
@@ -361,7 +369,7 @@
 					return;
 				}
 				if( this.mode == Constants.UPDATE_MODE ){
-					Alert.show("Confirme si desea dar por terminada la fase.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
+					Alert.show("Confirme si desea dar por terminada la fase.","Advertencia",Alert.YES+Alert.NO,this, faseDone);
 				}
 			}
 			
@@ -474,7 +482,7 @@
 		<mx:FormItem label="Entregable Ingeniería:">
 			<components:Deliver id="dlvEngineeringDeliverable" deliveryType="{TipoEntregable.ENTREGABLE_INGENIERIA}"/>
 		</mx:FormItem>
-		<components:Observations id="observations"/>
+		<components:Observations id="observations" fase="{Estado.createEstado(Estado.ID_DATOS_GENERALES, Estado.DATOS_GENERALES)}"/>
 		<mx:FormItem direction="horizontal">
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
 			<mx:Button id="btnDone" label="Hecho" click="btnHecho_clickHandler(event)"/>

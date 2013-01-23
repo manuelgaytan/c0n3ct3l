@@ -39,7 +39,7 @@
 					return null;
 				}
 				var _requirement:Requisicion = new Requisicion();
-				//_requirement. = this.txtRequirement.text;
+				_requirement.requisicion = this.txtRequirement.text;
 				return _requirement; 
 			}
 			

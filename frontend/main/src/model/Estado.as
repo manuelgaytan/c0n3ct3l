@@ -21,5 +21,15 @@ package model
 		public function Estado()
 		{
 		}
+		
+		public static function createEstado(id:Number, estado:String):Estado{
+			if( isNaN( id ) || estado == null ){
+				return null;
+			}
+			var item:Estado = new Estado();
+			item.id = id;
+			item.etiqueta = estado;
+			return item;
+		}
 	}
 }

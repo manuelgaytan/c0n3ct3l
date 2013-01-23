@@ -113,9 +113,12 @@
 			<mx:DataGridColumn id="dtgServiceType" headerText="{'Tipo de\nServicio'}"
 							   dataField="producto.tipoServicio"
 							   labelFunction="labelFunctionGenerico"/>
-			<mx:DataGridColumn id="dtgCost" headerText="Costo" textAlign="right"
-							   dataField="producto.costo"
-							   labelFunction="labelFunctionGenerico"/>
+			<mx:DataGridColumn id="dtgLocalCost" headerText="{'Costo\nLocal'}" textAlign="right"
+							   dataField="producto.costoLocalCliente"
+							   labelFunction="{Util.labelFunctionCurrency}"/>
+			<mx:DataGridColumn id="dtgForaneoCost" headerText="{'Costo\nForaneo'}" textAlign="right"
+							   dataField="producto.costoForaneoCliente"
+							   labelFunction="{Util.labelFunctionCurrency}"/>
 		</mx:columns>
 	</mx:DataGrid>
 	<mx:HBox>

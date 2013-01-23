@@ -42,6 +42,7 @@
 			import model.EquipoMedicion;
 			import model.EquipoTransporte;
 			import model.Estado;
+			import model.EstadoSolicitudServicioMaquilado;
 			import model.EstatusA;
 			import model.EstatusB;
 			import model.EstatusC;
@@ -227,6 +228,7 @@
 			private var ordenCompraMaquilado:OrdenCompraMaquilado;
 			private var proveedorMaquilador:ProveedorMaquilador;
 			private var estatusProyectoEntregable:EstatusProyectoEntregable;
+			private var estadoSolicitudServicioMaquilado:EstadoSolicitudServicioMaquilado;
 			
 			protected function login_readyHandler(event:ModuleEvent):void
 			{

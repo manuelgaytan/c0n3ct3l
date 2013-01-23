@@ -90,7 +90,7 @@
 		[Event(name="projectUpdated", type="flash.events.Event")]
 	</mx:Metadata>
 	<proyectos:FormRequirements id="requirements"/>
- 	<components:Observations id="observations"/>
+ 	<components:Observations id="observations" fase="{Estado.createEstado(Estado.ID_ALTA, Estado.ALTA)}"/>
 	<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
 	<mx:RemoteObject id="proyectoService" destination="proyectoService" fault="proyectoService_faultHandler(event)"
 					 showBusyCursor="true"/>

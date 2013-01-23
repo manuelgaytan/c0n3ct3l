@@ -215,14 +215,26 @@
 					cleanCombos( cmbServiceType.id );
 					return;
 				}
-				this.responseGetCostos.token = this.productoService.getCosto( Util.selectedId( this.cmbClient ),
-					Util.selectedLabel( this.cmbProjectType ),
-					Util.selectedLabel( this.cmbTechnology ),
-					Util.selectedLabel( this.cmbEquipment ),
-					Util.selectedLabel( this.cmbActivity ),
-					Util.selectedLabel( this.cmbModel ),
-					Util.selectedLabel( this.cmbServiceDescription ),
-					i);
+				if( i == Producto.TIPO_SERVICIO_LOCAL ){
+					this.responseGetCostos.token = this.productoService.getCostoLocalCliente( Util.selectedId( this.cmbClient ),
+						Util.selectedLabel( this.cmbProjectType ),
+						Util.selectedLabel( this.cmbTechnology ),
+						Util.selectedLabel( this.cmbEquipment ),
+						Util.selectedLabel( this.cmbActivity ),
+						Util.selectedLabel( this.cmbModel ),
+						Util.selectedLabel( this.cmbServiceDescription ),
+						i);
+				}
+				if( i == Producto.TIPO_SERVICIO_FORANEO ){
+					this.responseGetCostos.token = this.productoService.getCostoForaneoCliente( Util.selectedId( this.cmbClient ),
+						Util.selectedLabel( this.cmbProjectType ),
+						Util.selectedLabel( this.cmbTechnology ),
+						Util.selectedLabel( this.cmbEquipment ),
+						Util.selectedLabel( this.cmbActivity ),
+						Util.selectedLabel( this.cmbModel ),
+						Util.selectedLabel( this.cmbServiceDescription ),
+						i);
+				}
 			}
 			
 			private function cleanCombos(id:String):void

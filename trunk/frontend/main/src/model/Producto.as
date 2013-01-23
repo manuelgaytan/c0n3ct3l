@@ -3,6 +3,9 @@ package model
 	[RemoteClass(alias="mx.com.gahm.conenctel.entities.ProductoDO")]
 	public class Producto
 	{
+		public static const TIPO_SERVICIO_LOCAL:String = "LOCAL";
+		public static const TIPO_SERVICIO_FORANEO:String = "FORANEO";
+		
 		public var id:*;
 		public var cliente:Cliente;
 		public var tipoProyecto:String;

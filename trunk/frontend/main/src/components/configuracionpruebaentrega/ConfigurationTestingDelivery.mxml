@@ -109,7 +109,7 @@
 					this.dlvSatisfyCustomer.delivers = this._configurationTestingDelivery.clienteSatisfecho;
 				}
 				if( this._configurationTestingDelivery.checklistInspeccion == null ){
-					this.dlvPhotographChecklist.delivers = Util.getEntregables( this._configurationTestingDelivery.proyecto.proyectoEntregables, TipoEntregable.CHECKLIST_INSPECCION );
+					this.dlvInspectionChecklist.delivers = Util.getEntregables( this._configurationTestingDelivery.proyecto.proyectoEntregables, TipoEntregable.CHECKLIST_INSPECCION );
 				}else{
 					this.dlvInspectionChecklist.delivers = this._configurationTestingDelivery.checklistInspeccion;
 				}
@@ -289,17 +289,17 @@
 					return;
 				}
 				if( this.mode == Constants.UPDATE_MODE ){
-					Alert.show("Confirme si desea dar por terminado el proyecto.","Advertencia",Alert.YES+Alert.NO,this, projectDone);
+					Alert.show("Confirme si desea dar por terminado el proyecto.","Advertencia",Alert.YES+Alert.NO,this, faseDone);
 				}
 			}
 			
-			private function projectDone(event:CloseEvent):void
+			private function faseDone(event:CloseEvent):void
 			{
 				if( event.detail == Alert.NO ){
 					return;
 				}
-				var generalDataProject:ConfiguracionPruebaEntrega = this.getGeneralDataProject();
-				this.responseUpdate.token = this.configuracionPruebaEntregaService.projectDone( generalDataProject );
+				Util.showProperties( this._configurationTestingDelivery.proyecto.id );
+				this.responseUpdate.token = this.configuracionPruebaEntregaService.terminarProyecto( this._configurationTestingDelivery.proyecto.id );
 			}
 			
 			protected function responseProjectDone_resultHandler(event:ResultEvent):void
@@ -381,7 +381,7 @@
 		<mx:FormItem label="Entregable Y:">
 			<components:DeliverWithStatus id="dlvYDelivery" deliveryType="{TipoEntregable.ENTREGABLE_Y}"/>
 		</mx:FormItem>
-		<components:Observations id="observations"/>
+		<components:Observations id="observations" fase="{Estado.createEstado(Estado.ID_CONFIGURACION_PRUEBA_Y_ENTREGA, Estado.CONFIGURACION_PRUEBA_Y_ENTREGA)}"/>
 		<mx:FormItem direction="horizontal">
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
 			<mx:Button id="btnProjectDone" label="Terminar Proyecto" click="btnProjectDone_clickHandler(event)"/>

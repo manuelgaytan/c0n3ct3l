@@ -46,6 +46,17 @@ public class ConfigPruebaEntregaDO implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="id_proyecto")
 	private ProyectoDO proyecto;
+	
+	@Column(name="entregables_completos")
+	private Boolean entregablesCompletos;
+	
+	@ManyToOne
+	@JoinColumn(name="fk_estatus_validacion_operativa")
+	private EstadoValidacionOperativaDO estadoValidacionOperativa;
+	
+	@Column(name="fecha_validacion_operativa")
+	@Temporal(javax.persistence.TemporalType.DATE)
+	private Date fechaValidacionOperativa;
 
 	@Transient
 	public List<ProyectoEntregableDO> siteSurvey;
@@ -254,6 +265,31 @@ public class ConfigPruebaEntregaDO implements Serializable {
 
 	public void setEntregableY(List<ProyectoEntregableDO> entregableY) {
 		this.entregableY = entregableY;
+	}
+
+	public Boolean getEntregablesCompletos() {
+		return entregablesCompletos;
+	}
+
+	public void setEntregablesCompletos(Boolean entregablesCompletos) {
+		this.entregablesCompletos = entregablesCompletos;
+	}
+
+	public EstadoValidacionOperativaDO getEstadoValidacionOperativa() {
+		return estadoValidacionOperativa;
+	}
+
+	public void setEstadoValidacionOperativa(
+			EstadoValidacionOperativaDO estadoValidacionOperativa) {
+		this.estadoValidacionOperativa = estadoValidacionOperativa;
+	}
+
+	public Date getFechaValidacionOperativa() {
+		return fechaValidacionOperativa;
+	}
+
+	public void setFechaValidacionOperativa(Date fechaValidacionOperativa) {
+		this.fechaValidacionOperativa = fechaValidacionOperativa;
 	}
 
 }

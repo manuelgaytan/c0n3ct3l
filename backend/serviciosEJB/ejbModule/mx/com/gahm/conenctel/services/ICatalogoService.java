@@ -11,6 +11,7 @@ import mx.com.gahm.conenctel.entities.ColaboradorDO;
 import mx.com.gahm.conenctel.entities.CompaniaDO;
 import mx.com.gahm.conenctel.entities.DescripcionAlmacenDO;
 import mx.com.gahm.conenctel.entities.EstadoSolicitudServicioMaquiladoDO;
+import mx.com.gahm.conenctel.entities.EstadoValidacionOperativaDO;
 import mx.com.gahm.conenctel.entities.EstatusADO;
 import mx.com.gahm.conenctel.entities.EstatusBDO;
 import mx.com.gahm.conenctel.entities.EstatusCDO;
@@ -113,5 +114,7 @@ public interface ICatalogoService extends Serializable {
 	public List<TipoContratoDO> getTipoContrato() throws ConectelException;
 	
 	List<EstadoSolicitudServicioMaquiladoDO> getEstadoSolicitudServicioMaquilado() throws ConectelException;
+	
+	List<EstadoValidacionOperativaDO> getEstadoValidacionOperativaDO() throws ConectelException;
 
 }

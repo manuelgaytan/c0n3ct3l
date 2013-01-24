@@ -16,6 +16,7 @@ import mx.com.gahm.conenctel.entities.ColaboradorDO;
 import mx.com.gahm.conenctel.entities.CompaniaDO;
 import mx.com.gahm.conenctel.entities.DescripcionAlmacenDO;
 import mx.com.gahm.conenctel.entities.EstadoSolicitudServicioMaquiladoDO;
+import mx.com.gahm.conenctel.entities.EstadoValidacionOperativaDO;
 import mx.com.gahm.conenctel.entities.EstatusADO;
 import mx.com.gahm.conenctel.entities.EstatusBDO;
 import mx.com.gahm.conenctel.entities.EstatusCDO;
@@ -515,6 +516,20 @@ public class CatalogoService implements ICatalogoService {
 		return datos;
 	}
 	
-	
+	public List<EstadoValidacionOperativaDO> getEstadoValidacionOperativaDO() throws ConectelException {
+
+		List<EstadoValidacionOperativaDO> datos = null;
+
+		TypedQuery<EstadoValidacionOperativaDO> query = entityManager
+				.createNamedQuery("EstadoValidacionOperativaDO.findAll",
+						EstadoValidacionOperativaDO.class);
+
+		try {
+			datos = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen informaci˜n para mostrar.");
+		}
+		return datos;
+	}
 	
 }

@@ -15,6 +15,9 @@ package model
 		public var claveAceptacion:String;
 		public var fechaEntrega:Date;
 		public var observaciones:ArrayCollection;
+		public var entregablesCompletos:Boolean;
+		public var estadoValidacionOperativa:EstadoValidacionOperativa;
+		public var fechaValidacionOperativa:Date;
 		public var siteSurvey:ArrayCollection;
 		public var planos:ArrayCollection;
 		public var ingenieria:ArrayCollection;

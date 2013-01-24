@@ -8,6 +8,7 @@ package model
 		public var id:*;
 		public var descripcion:String;
 		public var proyectoPadreHijos:ArrayCollection;
+		public var fechaCreacion:Date;
 		
 		public function ProyectoPadre()
 		{

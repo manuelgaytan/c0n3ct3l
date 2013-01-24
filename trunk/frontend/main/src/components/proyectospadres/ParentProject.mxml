@@ -60,6 +60,7 @@
 				}
 				this.txtID.text = Util.numberToString( this._item.id );
 				this.txtDescription.text = this._item.descripcion;
+				this.txtCreationDate.text = Util.formatDateToString( this._item.fechaCreacion );
 				this.dtgProyectosAsociados.datagrid.dataProvider = this._item.proyectoPadreHijos;
 			}
 			
@@ -71,6 +72,7 @@
 					item = this._item;
 				}
 				item.descripcion = Util.validateEmpty( this.txtDescription.text );
+				item.fechaCreacion = new Date();
 				return item;
 			}
 			
@@ -119,6 +121,7 @@
 			{
 				if( this.mode == Constants.REGISTER_MODE ){
 					form.removeChild( this.frmID );
+					form.removeChild( this.frmCreationDate );
 					form.removeChild( this.frmProjectsAssociated );
 				}
 			}
@@ -141,6 +144,7 @@
 			{
 				this.txtID.reset();
 				this.txtDescription.reset();
+				this.txtCreationDate.reset();
 			}
 			
 			protected function responseUpdate_resultHandler(event:ResultEvent):void
@@ -169,6 +173,9 @@
 		</mx:FormItem>
 		<mx:FormItem label="Descripción:">
 			<components:TextInput id="txtDescription" width="400"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha Creación:" id="frmCreationDate">
+			<components:TextInput id="txtCreationDate" width="80" editable="false"/>
 		</mx:FormItem>
 		<mx:FormItem label="Proyectos Asociados:" id="frmProjectsAssociated">
 			<proyectos:Consult id="dtgProyectosAsociados"/>

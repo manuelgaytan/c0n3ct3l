@@ -80,7 +80,21 @@
 				if( data == null ){
 					return;
 				}
+				removerSolicitudAlmacen( data );
 				stockTypes = Util.addEmptyCatalgo( data );
+			}
+			
+			public static function removerSolicitudAlmacen(data:ArrayCollection):void{
+				var item:TipoAlmacen = null; 
+				for(var i=0; i<data.length; i++) 
+				{
+					item = data.getItemAt( i ) as TipoAlmacen;
+					if( !(item == null) &&
+						item.id == 9 ){
+						data.removeItemAt( i );
+						break;
+					}
+				}
 			}
 			
 			protected function catalogoService_faultHandler(event:FaultEvent):void

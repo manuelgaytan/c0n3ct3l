@@ -75,6 +75,8 @@
 	<mx:VBox label="Almacén" width="100%" height="100%">
 		<mx:LinkButton label="Manejo Almacén" id="Almacen" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/servicios.png')"/>
+		<mx:LinkButton label="Solicitud Almacén" id="SolicitudAlmacenModule" click="clickMenuHandler(event)"
+					   icon="@Embed(source='assets/images/clientes.png')"/>
 	</mx:VBox>
 	<mx:VBox label="Compras" width="100%" height="100%">
 		<mx:LinkButton label="Proveedores Seleccionados" id="ProveedoresSeleccionados" click="clickMenuHandler(event)"
@@ -97,6 +99,18 @@
 					   icon="@Embed(source='assets/images/clientes.png')"/>
 		<!--<mx:LinkButton label="Preciarios Maquiladores" id="PreciariosMaquiladores" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/servicios.png')"/>-->
+	</mx:VBox>
+	<mx:VBox label="Validación Administrativa" width="100%" height="100%">
+		<mx:LinkButton label="Validación del Proyecto" id="ValidacionesProyectos" click="clickMenuHandler(event)"
+					   icon="@Embed(source='assets/images/clientes.png')"/>
+		<mx:LinkButton label="Ordenes de Compra Clientes" id="OrdenesCompraClientes" click="clickMenuHandler(event)"
+					   icon="@Embed(source='assets/images/servicios.png')"/>
+		<mx:LinkButton label="Validación del Costo" id="ValidacionesCostos" click="clickMenuHandler(event)"
+					   icon="@Embed(source='assets/images/servicios.png')"/>
+		<mx:LinkButton label="Validación Adminsitrativa" id="ValidacionesAdministrativas" click="clickMenuHandler(event)"
+					   icon="@Embed(source='assets/images/clientes.png')"/>
+		<mx:LinkButton label="Concentrado Ordenes de Compra" id="ConcentradoOrdenesCompra" click="clickMenuHandler(event)"
+					   icon="@Embed(source='assets/images/servicios.png')"/>
 	</mx:VBox>
 	<mx:VBox id="empty"/>
 </mx:Accordion>

@@ -107,43 +107,56 @@
 	</mx:Metadata>
 	<mx:Form>
 		<mx:FormItem label="ID Conectel:" direction="horizontal">
-			<components:TextInput id="txtConectelID" width="150" textAlign="right"/>
+			<components:TextInput id="txtConectelID" width="150" textAlign="right"
+								  editable="false"/>
 		</mx:FormItem>
 		<mx:FormItem label="Categoría:">
-			<components:TextInput id="txtCategory" width="400"/>
+			<components:TextInput id="txtCategory" width="400"
+								  editable="false"/>
 		</mx:FormItem>
 		<mx:FormItem label="Cliente:">
-			<components:TextInput id="txtClient" width="400"/>
+			<components:TextInput id="txtClient" width="400"
+								  editable="false"/>
 		</mx:FormItem>
 		<mx:FormItem label="Tipo de Proyecto:">
-			<components:TextInput id="txtProjectType" width="300"/>
+			<components:TextInput id="txtProjectType" width="300"
+								  editable="false"/>
 		</mx:FormItem>
 		<mx:FormItem label="Tecnología:">
-			<components:TextInput id="txtTechnology" width="250"/>
+			<components:TextInput id="txtTechnology" width="250"
+								  editable="false"/>
 		</mx:FormItem>
 		<mx:FormItem label="Equipo:">
-			<components:TextInput id="txtEquipment" width="300"/>
+			<components:TextInput id="txtEquipment" width="300"
+								  editable="false"/>
 		</mx:FormItem>
 		<mx:FormItem label="Actividad a Realizar:">
-			<components:TextInput id="txtActivity" width="500"/>
+			<components:TextInput id="txtActivity" width="500"
+								  editable="false"/>
 		</mx:FormItem>
 		<mx:FormItem label="Modelo:">
-			<components:TextInput id="txtModel" width="250"/>
+			<components:TextInput id="txtModel" width="250"
+								  editable="false"/>
 		</mx:FormItem>
 		<mx:FormItem label="Descripción del Servicio:">
-			<components:TextInput id="txtServiceDescription" width="500"/>
+			<components:TextInput id="txtServiceDescription" width="500"
+								  editable="false"/>
 		</mx:FormItem>
 		<mx:FormItem label="Tipo de Servicio:">
-			<components:TextInput id="txtServiceType" width="250"/>
+			<components:TextInput id="txtServiceType" width="250"
+								  editable="false"/>
 		</mx:FormItem>
 		<mx:FormItem label="Costo:">
-			<components:TextInput id="txtCost" width="150" textAlign="right"/>
+			<components:TextInput id="txtCost" width="150" textAlign="right"
+								  editable="false"/>
 		</mx:FormItem>
 		<mx:FormItem label="Central o Sitio:">
-			<components:TextInput id="txtSite" width="350"/>
+			<components:TextInput id="txtSite" width="350"
+								  editable="false"/>
 		</mx:FormItem>
 		<mx:FormItem label="Proyecto Padre:">
-			<components:TextInput id="txtParentProject" width="450"/>
+			<components:TextInput id="txtParentProject" width="450"
+								  editable="false"/>
 		</mx:FormItem>
 		<mx:FormItem>
 			<mx:Button id="btnCancel" label="Cancelar Proyecto"

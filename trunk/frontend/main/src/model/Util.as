@@ -513,5 +513,9 @@ package model
 		public static function labelFunctionCurrency(object:Object, column:DataGridColumn):String{
 			return Util.formatCurrency(Util.extractObject(object,column.dataField));
 		}
+		
+		public static function labelFunctionDate(object:Object, column:DataGridColumn):String{
+			return Util.formatDateToString( object[column.dataField] );
+		}
 	}
 }

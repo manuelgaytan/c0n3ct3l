@@ -395,7 +395,7 @@
 		</mx:FormItem>
 		<mx:FormItem direction="horizontal">
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
-			<mx:Button id="btnOrdenCompra" label="Generar Orden de Compra" click="btnAccept_clickHandler(event)"/>
+			<!--<mx:Button id="btnOrdenCompra" label="Generar Orden de Compra" click="btnAccept_clickHandler(event)"/>-->
 			<mx:Button id="btnPrint" label="Imprimir"/>
 		</mx:FormItem>
 	</mx:Form>

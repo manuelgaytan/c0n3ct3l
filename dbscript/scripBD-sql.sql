@@ -1275,6 +1275,8 @@
 	VALUES (6, 'Coordinador Operativo');
 	INSERT INTO Perfil
 	VALUES (7, 'Compras');
+	INSERT INTO Perfil
+	VALUES (8, 'Público');
 
 	/* Pantallas */
 	INSERT INTO Pantalla
@@ -1327,6 +1329,8 @@
 	VALUES (24, 'ValidacionesAdministrativas');
 	INSERT INTO Pantalla
 	VALUES (25, 'ConcentradoOrdenesCompra');
+	INSERT INTO Pantalla
+	VALUES (26, 'SolicitudAlmacenModule');	
 
 	/* Perfil-Pantalla */
 	INSERT INTO PerfilPantalla
@@ -1425,7 +1429,25 @@
 	VALUES (47, 5, 24);
 	INSERT INTO PerfilPantalla
 	VALUES (48, 5, 25);
-	
+	INSERT INTO PerfilPantalla
+	VALUES (49, 1, 26);
+	INSERT INTO PerfilPantalla
+	VALUES (50, 1, 26);
+	INSERT INTO PerfilPantalla
+	VALUES (51, 2, 26);
+	INSERT INTO PerfilPantalla
+	VALUES (52, 3, 26);
+	INSERT INTO PerfilPantalla
+	VALUES (53, 4, 26);
+	INSERT INTO PerfilPantalla
+	VALUES (54, 5, 26);
+	INSERT INTO PerfilPantalla
+	VALUES (55, 6, 26);
+	INSERT INTO PerfilPantalla
+	VALUES (56, 7, 26);
+	INSERT INTO PerfilPantalla
+	VALUES (57, 8, 26);
+
 	/* Usuarios */
 	INSERT INTO Usuario
 	VALUES (1, 'DIRECTOR', 'NOTIENE', 'DIRECTOR GENERAL', 1, 1);

@@ -17,8 +17,15 @@ public class ProyectoPadreHijoDO implements java.io.Serializable {
 
 
 	private static final long serialVersionUID = -2270310946849740625L;
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "id", unique = true, nullable = false)
 	private Integer id;
+	@ManyToOne
+	@JoinColumn(name="fk_proyecto_padre")
 	private ProyectoPadreDO proyectoPadre;
+	@ManyToOne
+	@JoinColumn(name="fk_proyecto")
 	private ProyectoDO proyecto;
 
 
@@ -30,9 +37,7 @@ public class ProyectoPadreHijoDO implements java.io.Serializable {
 		this.proyecto = proyecto;
 	}
 
-	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "id", unique = true, nullable = false)
+
 	public Integer getId() {
 		return this.id;
 	}
@@ -41,8 +46,7 @@ public class ProyectoPadreHijoDO implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@ManyToOne
-	@JoinColumn(name="fk_proyecto_padre")
+
 	public ProyectoPadreDO getProyectoPadre() {
 		return this.proyectoPadre;
 	}
@@ -51,8 +55,7 @@ public class ProyectoPadreHijoDO implements java.io.Serializable {
 		this.proyectoPadre = proyectoPadre;
 	}
 
-	@ManyToOne
-	@JoinColumn(name="fk_proyecto")
+	
 	public ProyectoDO getProyecto() {
 		return this.proyecto;
 	}

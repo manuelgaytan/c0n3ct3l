@@ -1,6 +1,7 @@
 package mx.com.gahm.conenctel.entities;
 
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -12,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
@@ -30,13 +33,29 @@ public class ProyectoPadreDO implements java.io.Serializable {
 	/**
 	 * 
 	 */
+
 	private static final long serialVersionUID = -5698717757882464506L;
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "id", unique = true, nullable = false)
 	private Integer id;
+	@Column(name = "descripcion", nullable = false)
 	private String descripcion;
-	/*
+	@Temporal(TemporalType.DATE)
+	@Column(name = "fecha_creacion", nullable = false, length = 10)
+	private Date fechaCreacion;
 	@OneToMany(mappedBy="proyectoPadre", fetch = FetchType.EAGER)
 	private List<ProyectoPadreHijoDO> proyectoPadreHijos;
-	*/
+	public Date getFechaCreacion() {
+		return fechaCreacion;
+	}
+
+	public void setFechaCreacion(Date fechaCreacion) {
+		this.fechaCreacion = fechaCreacion;
+	}
+
+	
+	
 
 	public ProyectoPadreDO() {
 	}
@@ -44,10 +63,7 @@ public class ProyectoPadreDO implements java.io.Serializable {
 	public ProyectoPadreDO(String descripcion) {
 		this.descripcion = descripcion;
 	}
-
-	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "id", unique = true, nullable = false)
+	
 	public Integer getId() {
 		return this.id;
 	}
@@ -56,7 +72,6 @@ public class ProyectoPadreDO implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@Column(name = "descripcion", nullable = false)
 	public String getDescripcion() {
 		return this.descripcion;
 	}
@@ -64,7 +79,7 @@ public class ProyectoPadreDO implements java.io.Serializable {
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
-	/*
+	
 	public List<ProyectoPadreHijoDO> getProyectoPadreHijos() {
 		return proyectoPadreHijos;
 	}
@@ -72,5 +87,5 @@ public class ProyectoPadreDO implements java.io.Serializable {
 	public void setProyectoPadreHijos(List<ProyectoPadreHijoDO> proyectoPadreHijos) {
 		this.proyectoPadreHijos = proyectoPadreHijos;
 	}
-	*/
+	
 }

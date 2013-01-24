@@ -120,6 +120,11 @@
 							   labelFunction="labelFunctionProjectsAssociatedNumber"
 							   textAlign="center"
 							   />
+			<mx:DataGridColumn id="dtgDate" headerText="{'Fecha\nCreación'}"
+							   width="100"
+							   dataField="fechaCreacion"
+							   labelFunction="{Util.labelFunctionDate}"
+							   textAlign="center"/>
 		</mx:columns>
 	</mx:DataGrid>
 	<mx:HBox>

@@ -26,6 +26,8 @@
 			import model.TipoMantenimiento;
 			import model.Util;
 			
+			import modules.Almacen;
+			
 			import mx.collections.ArrayCollection;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
 			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
@@ -326,23 +328,10 @@
 				if( data == null ){
 					return;
 				}
-				this.removerSolicitudAlmacen( data );
+				Almacen.removerSolicitudAlmacen( data );
 				this.cmbProduct.dataProvider = Util.addEmptyCatalgo( data );
 			}
 
-			private function removerSolicitudAlmacen(data:ArrayCollection):void{
-				var item:TipoAlmacen = null; 
-				for(var i=0; i<data.length; i++) 
-				{
-					item = data.getItemAt( i ) as TipoAlmacen;
-					if( !(item == null) &&
-						item.id == 9 ){
-						data.removeItemAt( i );
-						break;
-					}
-				}
-			}
-			
 			protected function responseGetAllAlmacen_resultHandler(event:ResultEvent):void
 			{
 				var data:ArrayCollection = event.result as ArrayCollection;

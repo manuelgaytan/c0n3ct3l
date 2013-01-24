@@ -115,6 +115,7 @@
 			<mx:DataGridColumn id="dtgEndDateReal" headerText="{'Fecha\nFin\nReal'}"
 							   dataField="fechaTerminoReal"
 							   labelFunction="labelFunctionDate"
+							   textAlign="center"
 							   width="100"/>		
 		</mx:columns>
 	</mx:DataGrid>

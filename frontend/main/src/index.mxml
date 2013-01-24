@@ -43,6 +43,7 @@
 			import model.EquipoTransporte;
 			import model.Estado;
 			import model.EstadoSolicitudServicioMaquilado;
+			import model.EstadoValidacionOperativa;
 			import model.EstatusA;
 			import model.EstatusB;
 			import model.EstatusC;
@@ -229,6 +230,7 @@
 			private var proveedorMaquilador:ProveedorMaquilador;
 			private var estatusProyectoEntregable:EstatusProyectoEntregable;
 			private var estadoSolicitudServicioMaquilado:EstadoSolicitudServicioMaquilado;
+			private var estadoValidacionOperativa:EstadoValidacionOperativa;
 			
 			protected function login_readyHandler(event:ModuleEvent):void
 			{

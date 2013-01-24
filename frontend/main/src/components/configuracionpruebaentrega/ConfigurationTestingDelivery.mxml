@@ -8,6 +8,7 @@
 			import model.ConfiguracionPruebaEntrega;
 			import model.Constants;
 			import model.Estado;
+			import model.EstadoValidacionOperativa;
 			import model.Proyecto;
 			import model.TipoEntregable;
 			import model.Util;
@@ -133,6 +134,12 @@
 				}else{
 					this.dlvYDelivery.delivers = this._configurationTestingDelivery.entregableY;
 				}
+				this.chbWholeDeliveries.selected = this._configurationTestingDelivery.entregablesCompletos;
+				if( Util.isFill( this.cmbOperationalValidationStatus ) ){
+					this.cmbOperationalValidationStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbOperationalValidationStatus.dataProvider as ArrayCollection, 
+						this._configurationTestingDelivery.estadoValidacionOperativa.id);
+				}
+				this.dtfOperationalValidationDate.selectedDate = this._configurationTestingDelivery.fechaValidacionOperativa;
 				this.observations.observations = this._configurationTestingDelivery.proyecto.observaciones;
 			}
 			
@@ -167,12 +174,16 @@
 				configurationTestingDelivery.asBuild = this.dlvASBuild.delivers;
 				configurationTestingDelivery.entregableX = this.dlvXDelivery.delivers;
 				configurationTestingDelivery.entregableY = this.dlvYDelivery.delivers;
+				configurationTestingDelivery.entregablesCompletos = this.chbWholeDeliveries.selected;
+				configurationTestingDelivery.estadoValidacionOperativa = Util.validateCombo( this.cmbOperationalValidationStatus ) as EstadoValidacionOperativa;
+				configurationTestingDelivery.fechaValidacionOperativa = this.dtfOperationalValidationDate.selectedDate;
 				configurationTestingDelivery.proyecto.observaciones = this.observations.observations;
 				return configurationTestingDelivery;
 			}
 			
 			private function fillCombos():void
 			{
+				this.responseGetEstadoValidacionOperativaDO.token = this.catalogoService.getEstadoValidacionOperativaDO();
 			}
 			
 			
@@ -272,6 +283,9 @@
 				this.dlvASBuild.reset();
 				this.dlvXDelivery.reset();
 				this.dlvYDelivery.reset();
+				this.chbWholeDeliveries.selected = false;
+				this.cmbOperationalValidationStatus.selectedIndex = 0;
+				this.dtfOperationalValidationDate.reset();
 				this.observations.reset();
 			}
 			
@@ -307,6 +321,19 @@
 				var eventGeneralDataProjectUpdated:Event = new Event("configurationTestingDeliveryProjectDone");
 				this.dispatchEvent( eventGeneralDataProjectUpdated );
 				this.cleanForm();
+			}
+			
+			protected function responseGetEstadoValidacionOperativaDO_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbOperationalValidationStatus.dataProvider = data;
+				if( this._configurationTestingDelivery != null ){
+					this.cmbOperationalValidationStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbOperationalValidationStatus.dataProvider as ArrayCollection, 
+						this._configurationTestingDelivery.estadoValidacionOperativa.id);
+				}
 			}
 			
 		]]>
@@ -381,6 +408,15 @@
 		<mx:FormItem label="Entregable Y:">
 			<components:DeliverWithStatus id="dlvYDelivery" deliveryType="{TipoEntregable.ENTREGABLE_Y}"/>
 		</mx:FormItem>
+		<mx:FormItem label="Entregables Completos:">
+			<mx:CheckBox id="chbWholeDeliveries"/>
+		</mx:FormItem>
+		<mx:FormItem label="Estatus de Validación Operativa:">
+			<mx:ComboBox id="cmbOperationalValidationStatus" labelField="etiqueta"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha de Validación Operativa:">
+			<components:DateField id="dtfOperationalValidationDate"/>
+		</mx:FormItem>
 		<components:Observations id="observations" fase="{Estado.createEstado(Estado.ID_CONFIGURACION_PRUEBA_Y_ENTREGA, Estado.CONFIGURACION_PRUEBA_Y_ENTREGA)}"/>
 		<mx:FormItem direction="horizontal">
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
@@ -392,4 +428,7 @@
 	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
 	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
 	<mx:CallResponder id="responseProjectDone" result="responseProjectDone_resultHandler(event)"/>
+	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="datosGeneralesProyectoService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetEstadoValidacionOperativaDO" result="responseGetEstadoValidacionOperativaDO_resultHandler(event)"/>
 </mx:VBox>

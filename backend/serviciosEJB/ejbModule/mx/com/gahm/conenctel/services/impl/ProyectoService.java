@@ -86,10 +86,8 @@ public class ProyectoService implements IProyectoService {
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public ProyectoDO save(ProyectoDO project) throws ConectelException {
 		entityManager.persist(project);
-		ProyectoPadreHijoDO proyectoPadreHijoDO = new ProyectoPadreHijoDO();
-		proyectoPadreHijoDO.setProyecto(project);
-		proyectoPadreHijoDO.setProyectoPadre(project.getProyectoPadre());
-		entityManager.persist(proyectoPadreHijoDO);
+		project.getProyectoPadreHijo().setProyecto(project);
+		entityManager.persist(project.getProyectoPadreHijo());
 		/*
 		 * 	entityManager.persist(project);
 		 */

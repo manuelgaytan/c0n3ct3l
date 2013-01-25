@@ -6,6 +6,7 @@
 		<![CDATA[
 			import model.Constants;
 			import model.ProyectoPadre;
+			import model.ProyectoPadreHijo;
 			import model.Util;
 			
 			import mx.collections.ArrayCollection;
@@ -61,7 +62,16 @@
 				this.txtID.text = Util.numberToString( this._item.id );
 				this.txtDescription.text = this._item.descripcion;
 				this.txtCreationDate.text = Util.formatDateToString( this._item.fechaCreacion );
-				this.dtgProyectosAsociados.datagrid.dataProvider = this._item.proyectoPadreHijos;
+				this.dtgProyectosAsociados.datagrid.dataProvider = this.extractProjects(this._item.proyectoPadreHijos);
+			}
+			
+			private function extractProjects(proyectoPadreHijos:ArrayCollection):ArrayCollection{
+				var projects:ArrayCollection = new ArrayCollection();
+				for each (var i:ProyectoPadreHijo in proyectoPadreHijos) 
+				{
+					projects.addItem( i.proyecto );
+				}
+				return projects;
 			}
 			
 			private function getParentProject():ProyectoPadre{

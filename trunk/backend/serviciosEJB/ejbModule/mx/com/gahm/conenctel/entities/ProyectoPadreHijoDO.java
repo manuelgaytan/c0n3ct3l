@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
@@ -24,7 +25,7 @@ public class ProyectoPadreHijoDO implements java.io.Serializable {
 	@ManyToOne
 	@JoinColumn(name="fk_proyecto_padre")
 	private ProyectoPadreDO proyectoPadre;
-	@ManyToOne
+	@OneToOne
 	@JoinColumn(name="fk_proyecto")
 	private ProyectoDO proyecto;
 

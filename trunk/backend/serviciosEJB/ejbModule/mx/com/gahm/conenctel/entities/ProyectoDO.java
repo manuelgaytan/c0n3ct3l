@@ -50,8 +50,8 @@ public class ProyectoDO implements Serializable {
 	@JoinColumn(name = "fk_estado_solicitud_servicio_maquilado")
 	private EstadoSolicitudServicioMaquiladoDO estadoSolicitudServicioMaquilado;
 	
-	@Transient
-	private ProyectoPadreDO proyectoPadre;
+	@OneToOne(mappedBy="proyecto")
+	private ProyectoPadreHijoDO proyectoPadreHijo;
 	
 	public ProyectoDO() {
 	}
@@ -129,12 +129,12 @@ public class ProyectoDO implements Serializable {
 		this.proyectoEntregables = proyectoEntregables;
 	}
 
-	public ProyectoPadreDO getProyectoPadre() {
-		return proyectoPadre;
+	public ProyectoPadreHijoDO getProyectoPadreHijo() {
+		return proyectoPadreHijo;
 	}
 
-	public void setProyectoPadre(ProyectoPadreDO proyectoPadre) {
-		this.proyectoPadre = proyectoPadre;
+	public void setProyectoPadreHijo(ProyectoPadreHijoDO proyectoPadreHijo) {
+		this.proyectoPadreHijo = proyectoPadreHijo;
 	}
 
 	public EstadoSolicitudServicioMaquiladoDO getEstadoSolicitudServicioMaquilado() {

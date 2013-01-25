@@ -1,6 +1,7 @@
 package mx.com.gahm.conenctel.entities;
 
 
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,7 +12,7 @@ import javax.persistence.OneToOne;
 import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
+@Cacheable(false)
 @Entity
 @Table(name = "ProyectoPadreHijo")
 public class ProyectoPadreHijoDO implements java.io.Serializable {

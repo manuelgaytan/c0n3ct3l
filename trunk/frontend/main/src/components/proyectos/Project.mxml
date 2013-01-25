@@ -10,6 +10,7 @@
 			import model.Producto;
 			import model.Proyecto;
 			import model.ProyectoPadre;
+			import model.ProyectoPadreHijo;
 			import model.Util;
 			
 			import mx.collections.ArrayCollection;
@@ -60,7 +61,8 @@
 				project.fechaCaptura = new Date();
 				project.estado = new Estado();
 				project.estado.id = Estado.ID_ALTA;
-				project.proyectoPadre = Util.validateCombo( this.cmbParentProject ) as ProyectoPadre;
+				project.proyectoPadreHijo = new ProyectoPadreHijo();
+				project.proyectoPadreHijo.proyectoPadre = Util.validateCombo( this.cmbParentProject ) as ProyectoPadre;
 				return project;
 			}
 			

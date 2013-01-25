@@ -22,13 +22,13 @@ package model
 		
 		public static function getComboList():ArrayCollection{
 			var array:ArrayCollection = new ArrayCollection();
-			array.addItem( createItemEstadoSolicitudServicioMaquilado( ID_PENDIENTE, PENDIENTE ) );
-			array.addItem( createItemEstadoSolicitudServicioMaquilado( ID_AUTORIZADO, AUTORIZADO ) );
-			array.addItem( createItemEstadoSolicitudServicioMaquilado( ID_RECHAZADO, RECHAZADO ) );
+			array.addItem( createItemEstadoValidacionOperativa( ID_PENDIENTE, PENDIENTE ) );
+			array.addItem( createItemEstadoValidacionOperativa( ID_AUTORIZADO, AUTORIZADO ) );
+			array.addItem( createItemEstadoValidacionOperativa( ID_RECHAZADO, RECHAZADO ) );
 			return array;
 		}
 		
-		private static function createItemEstadoSolicitudServicioMaquilado(id:Number, etiqueta:String):EstadoSolicitudServicioMaquilado{
+		private static function createItemEstadoValidacionOperativa(id:Number, etiqueta:String):EstadoSolicitudServicioMaquilado{
 			var item:EstadoSolicitudServicioMaquilado = null;
 			item = new EstadoSolicitudServicioMaquilado();
 			item.id = id;

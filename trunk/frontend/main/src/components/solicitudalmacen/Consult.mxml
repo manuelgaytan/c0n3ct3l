@@ -29,7 +29,7 @@
 			
 			protected function solicitudAlmacenService_faultHandler(event:FaultEvent):void
 			{
-				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+				//Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
 			}
 			
 			protected function creationCompleteHandler(event:FlexEvent):void

@@ -298,15 +298,6 @@
 	PRIMARY KEY (id)
 	);
 
-	/* SQLEditor (MySQL (2))*/
-
-	CREATE TABLE DescripcionAlmacen
-	(
-	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
-	descripcion VARCHAR(255) NOT NULL,
-	PRIMARY KEY (id)
-	);
-
 	CREATE TABLE UnidadC
 	(
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
@@ -359,23 +350,17 @@
 	CREATE TABLE SolicitudAlmacen
 	(
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
-	fk_tipo_almacen INT(11) UNSIGNED NOT NULL,
-	folio DECIMAL,
+	fk_usuario INT(11) UNSIGNED NOT NULL,
 	fecha_solicitud DATE NOT NULL,
 	motivo VARCHAR(255),
 	fk_prioridad INT(11) UNSIGNED NOT NULL,
 	fk_area_solicitante INT(11) UNSIGNED NOT NULL,
 	central_sitio VARCHAR(255),
-	fk_servicio_solicitado INT(11) UNSIGNED NOT NULL,
-	descripcion INT(11) UNSIGNED NOT NULL,
-	cantidad DECIMAL,
-	fk_unidad_b INT(11) UNSIGNED NOT NULL,
-	observaciones VARCHAR(255),
-	autoriza VARCHAR(255),
-	entrega VARCHAR(255) NOT NULL,
-	fecha_asignacion DATE NOT NULL,
-	fecha_retorno DATE,
-	vale_abierto_cerrado VARCHAR(255),
+	fk_estado_solicitud_almacen INTEGER UNSIGNED NOT NULL,
+	nombre_solicitante VARCHAR(255) NOT NULL,
+	fk_autoriza INT(11) UNSIGNED NOT NULL,
+	fk_entrega INT(11) UNSIGNED NOT NULL,
+	recibe VARCHAR(255) NOT NULL,
 	PRIMARY KEY (id)
 	);
 
@@ -980,6 +965,24 @@
 	PRIMARY KEY (id)
 	);
 
+	CREATE TABLE EstadoSolicitudAlmacen
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	estado VARBINARY(255) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE HerramientaSolicitudAlmacen
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_solicitud_almacen INT(11) UNSIGNED NOT NULL,
+	fk_herramienta INT(11) UNSIGNED NOT NULL,
+	cantidad_solicitada DECIMAL(12,5) NOT NULL,
+	regreso_almacen BOOLEAN,
+	observacion VARCHAR(255),
+	PRIMARY KEY (id)
+	);
+
 	ALTER TABLE Cliente ADD FOREIGN KEY id_contacto_idxfk (id_contacto) REFERENCES Contacto (id);
 
 	ALTER TABLE Proyecto ADD FOREIGN KEY id_categoria_proyecto_idxfk (id_categoria_proyecto) REFERENCES CategoriaProyecto (id);
@@ -1050,17 +1053,17 @@
 
 	ALTER TABLE DesarrolloProyectoAyB ADD FOREIGN KEY id_fibra_cliente_final_idxfk (id_fibra_cliente_final) REFERENCES Seguimiento (id);
 
-	ALTER TABLE SolicitudAlmacen ADD FOREIGN KEY fk_prioridad_idxfk (fk_prioridad) REFERENCES Prioridad (id);
+	ALTER TABLE SolicitudAlmacen ADD FOREIGN KEY fk_usuario_idxfk_1 (fk_usuario) REFERENCES Usuario (id);
 
-	ALTER TABLE SolicitudAlmacen ADD FOREIGN KEY fk_tipo_almacen_idxfk (fk_tipo_almacen) REFERENCES TipoAlmacen (id);
+	ALTER TABLE SolicitudAlmacen ADD FOREIGN KEY fk_prioridad_idxfk (fk_prioridad) REFERENCES Prioridad (id);
 
 	ALTER TABLE SolicitudAlmacen ADD FOREIGN KEY fk_area_solicitante_idxfk (fk_area_solicitante) REFERENCES AreaSolicitante (id);
 
-	ALTER TABLE SolicitudAlmacen ADD FOREIGN KEY fk_servicio_solicitado_idxfk (fk_servicio_solicitado) REFERENCES ServicioSolicitado (id);
+	ALTER TABLE SolicitudAlmacen ADD FOREIGN KEY fk_estado_solicitud_almacen_idxfk (fk_estado_solicitud_almacen) REFERENCES EstadoSolicitudAlmacen (id);
 
-	ALTER TABLE SolicitudAlmacen ADD FOREIGN KEY descripcion_idxfk (descripcion) REFERENCES DescripcionAlmacen (id);
+	ALTER TABLE SolicitudAlmacen ADD FOREIGN KEY fk_autoriza_idxfk (fk_autoriza) REFERENCES Colaborador (id);
 
-	ALTER TABLE SolicitudAlmacen ADD FOREIGN KEY fk_unidad_b_idxfk (fk_unidad_b) REFERENCES UnidadB (id);
+	ALTER TABLE SolicitudAlmacen ADD FOREIGN KEY fk_entrega_idxfk (fk_entrega) REFERENCES Colaborador (id);
 
 	ALTER TABLE Software ADD FOREIGN KEY fk_tipo_almacen_idxfk_1 (fk_tipo_almacen) REFERENCES TipoAlmacen (id);
 
@@ -1259,6 +1262,11 @@
 	ALTER TABLE ValidacionProyecto ADD FOREIGN KEY fk_estado_validacion_operativa_idxfk (fk_estado_validacion_operativa) REFERENCES EstadoValidacionOperativa (id);
 
 	ALTER TABLE ValidacionProyecto ADD FOREIGN KEY fk_proyecto_idxfk (fk_proyecto) REFERENCES Proyecto (id);
+
+	ALTER TABLE HerramientaSolicitudAlmacen ADD FOREIGN KEY fk_solicitud_almacen_idxfk_1 (fk_solicitud_almacen) REFERENCES SolicitudAlmacen (id);
+
+	ALTER TABLE HerramientaSolicitudAlmacen ADD FOREIGN KEY fk_herramienta_idxfk (fk_herramienta) REFERENCES Herramienta (id);
+
 
 	/* Perfiles */
 	INSERT INTO Perfil
@@ -1813,48 +1821,6 @@
 	VALUES (4, 'No Aplica');
 	INSERT INTO Seguimiento
 	VALUES (5, 'En Proceso');
-	
-	/* Descripcion Almacen */
-	INSERT INTO DescripcionAlmacen
-	VALUES (1, 'Pinza');
-	INSERT INTO DescripcionAlmacen
-	VALUES (2, 'Vernier');
-	INSERT INTO DescripcionAlmacen
-	VALUES (3, 'Windows XP SP2');
-	INSERT INTO DescripcionAlmacen
-	VALUES (4, 'Leon Sport');
-	INSERT INTO DescripcionAlmacen
-	VALUES (5, 'Pantalla LCD 18"');
-	INSERT INTO DescripcionAlmacen
-	VALUES (6, 'Cartucho LexMart 2500L');
-	INSERT INTO DescripcionAlmacen
-	VALUES (7, 'Cable No. 14');
-	INSERT INTO DescripcionAlmacen
-	VALUES (8, 'iPhone 3GS 8 GB');
-	INSERT INTO DescripcionAlmacen
-	VALUES (9, 'Taladro 2.5 HP');
-	INSERT INTO DescripcionAlmacen
-	VALUES (10, 'Flexometro');
-	INSERT INTO DescripcionAlmacen
-	VALUES (11, 'Snow Leopard MacOSX');
-	INSERT INTO DescripcionAlmacen
-	VALUES (12, 'Vagoneta Express');
-	INSERT INTO DescripcionAlmacen
-	VALUES (13, 'Flat 20"');
-	INSERT INTO DescripcionAlmacen
-	VALUES (14, 'Paquete de 500 hojas bold');
-	INSERT INTO DescripcionAlmacen
-	VALUES (15, 'Antena transmisor GAHM830214');
-	INSERT INTO DescripcionAlmacen
-	VALUES (16, 'iPhone 5, 16 GB');
-	INSERT INTO DescripcionAlmacen
-	VALUES (17, 'Nextel 4500');
-	INSERT INTO DescripcionAlmacen
-	VALUES (18, 'Pinzas de Presión');
-	INSERT INTO DescripcionAlmacen
-	VALUES (19, 'Pinzas de Electricista');
-	INSERT INTO DescripcionAlmacen
-	VALUES (20, 'Pinzas de corte');
 
 	/* Compras */
 	
@@ -1934,6 +1900,14 @@
 	VALUES (2, 'Validado');
 	INSERT INTO EstadoValidacionOperativa
 	VALUES (3, 'Parcial');
+
+	INSERT INTO EstadoSolicitudAlmacen
+	VALUES (1, 'Abierto');
+	INSERT INTO EstadoSolicitudAlmacen
+	VALUES (2, 'Pendiente');
+	INSERT INTO EstadoSolicitudAlmacen
+	VALUES (3, 'Cerrado');
+
 /*
 	INSERT INTO Proveedor
 	VALUES (1, 1, 'ACME', 'ALMEIRA CASTAÑEDA MELIA', 'ALCM900622DF7', 'REFORMA 34, COL. JUÁREZ, DELG. CUAUHTEMOC', 'REFORMA 34, COL. JUÁREZ, DELG. CUAUHTEMOC', '57115887','MELIA ALMEIRA','melia347@yahoo.com','','');

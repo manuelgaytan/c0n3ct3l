@@ -355,7 +355,7 @@ package model
 		
 		public static function showProperties(object:Object):void
 		{
-			showErrorMessage( ObjectUtil.toString( object ) );
+			//showErrorMessage( ObjectUtil.toString( object ) );
 		}
 		
 		public static function isFill(cmbProfile:ComboBox):Boolean

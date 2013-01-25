@@ -10,6 +10,7 @@ import mx.com.gahm.conenctel.entities.AreaSolicitanteDO;
 import mx.com.gahm.conenctel.entities.ColaboradorDO;
 import mx.com.gahm.conenctel.entities.CompaniaDO;
 import mx.com.gahm.conenctel.entities.DescripcionAlmacenDO;
+import mx.com.gahm.conenctel.entities.EstadoSolicitudAlmacenDO;
 import mx.com.gahm.conenctel.entities.EstadoSolicitudServicioMaquiladoDO;
 import mx.com.gahm.conenctel.entities.EstadoValidacionOperativaDO;
 import mx.com.gahm.conenctel.entities.EstatusADO;
@@ -115,6 +116,8 @@ public interface ICatalogoService extends Serializable {
 	
 	List<EstadoSolicitudServicioMaquiladoDO> getEstadoSolicitudServicioMaquilado() throws ConectelException;
 	
-	List<EstadoValidacionOperativaDO> getEstadoValidacionOperativaDO() throws ConectelException;
+	List<EstadoValidacionOperativaDO> getEstadoValidacionOperativa() throws ConectelException;
+	
+	List<EstadoSolicitudAlmacenDO> getEstadoSolicitudAlmacen() throws ConectelException;
 
 }

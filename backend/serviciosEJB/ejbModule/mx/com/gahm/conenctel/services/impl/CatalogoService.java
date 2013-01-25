@@ -15,6 +15,7 @@ import mx.com.gahm.conenctel.entities.AreaSolicitanteDO;
 import mx.com.gahm.conenctel.entities.ColaboradorDO;
 import mx.com.gahm.conenctel.entities.CompaniaDO;
 import mx.com.gahm.conenctel.entities.DescripcionAlmacenDO;
+import mx.com.gahm.conenctel.entities.EstadoSolicitudAlmacenDO;
 import mx.com.gahm.conenctel.entities.EstadoSolicitudServicioMaquiladoDO;
 import mx.com.gahm.conenctel.entities.EstadoValidacionOperativaDO;
 import mx.com.gahm.conenctel.entities.EstatusADO;
@@ -516,13 +517,29 @@ public class CatalogoService implements ICatalogoService {
 		return datos;
 	}
 	
-	public List<EstadoValidacionOperativaDO> getEstadoValidacionOperativaDO() throws ConectelException {
+	public List<EstadoValidacionOperativaDO> getEstadoValidacionOperativa() throws ConectelException {
 
 		List<EstadoValidacionOperativaDO> datos = null;
 
 		TypedQuery<EstadoValidacionOperativaDO> query = entityManager
 				.createNamedQuery("EstadoValidacionOperativaDO.findAll",
 						EstadoValidacionOperativaDO.class);
+
+		try {
+			datos = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen informaci˜n para mostrar.");
+		}
+		return datos;
+	}
+	
+	public List<EstadoSolicitudAlmacenDO> getEstadoSolicitudAlmacen() throws ConectelException {
+
+		List<EstadoSolicitudAlmacenDO> datos = null;
+
+		TypedQuery<EstadoSolicitudAlmacenDO> query = entityManager
+				.createNamedQuery("EstadoSolicitudAlmacenDO.findAll",
+						EstadoSolicitudAlmacenDO.class);
 
 		try {
 			datos = query.getResultList();

@@ -183,7 +183,7 @@
 			
 			private function fillCombos():void
 			{
-				this.responseGetEstadoValidacionOperativaDO.token = this.catalogoService.getEstadoValidacionOperativaDO();
+				this.responseGetEstadoValidacionOperativa.token = this.catalogoService.getEstadoValidacionOperativa();
 			}
 			
 			
@@ -323,7 +323,7 @@
 				this.cleanForm();
 			}
 			
-			protected function responseGetEstadoValidacionOperativaDO_resultHandler(event:ResultEvent):void
+			protected function responseGetEstadoValidacionOperativa_resultHandler(event:ResultEvent):void
 			{
 				var data:ArrayCollection = event.result as ArrayCollection;
 				if( data == null ){
@@ -430,5 +430,5 @@
 	<mx:CallResponder id="responseProjectDone" result="responseProjectDone_resultHandler(event)"/>
 	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="datosGeneralesProyectoService_faultHandler(event)"
 					 showBusyCursor="true"/>
-	<mx:CallResponder id="responseGetEstadoValidacionOperativaDO" result="responseGetEstadoValidacionOperativaDO_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetEstadoValidacionOperativa" result="responseGetEstadoValidacionOperativa_resultHandler(event)"/>
 </mx:VBox>

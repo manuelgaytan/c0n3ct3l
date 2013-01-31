@@ -8,6 +8,7 @@ import java.util.List;
 import javax.ejb.Remote;
 
 import mx.com.gahm.conenctel.entities.ProyectoPadreDO;
+import mx.com.gahm.conenctel.entities.ProyectoPadreHijoDO;
 
 /**
  * @author MHDolores
@@ -21,5 +22,5 @@ public interface IProyectoPadreService {
 	ProyectoPadreDO save( ProyectoPadreDO item );
 	ProyectoPadreDO update( ProyectoPadreDO item );
 	ProyectoPadreDO getItem( Integer id );
-	
+	ProyectoPadreHijoDO getItemHijo(Integer id);
 }

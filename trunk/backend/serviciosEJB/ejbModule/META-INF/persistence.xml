@@ -86,6 +86,7 @@
 		<class>mx.com.gahm.conenctel.entities.EstadoValidacionOperativaDO</class>
 		<class>mx.com.gahm.conenctel.entities.HerramientaSolicitudAlmacenDO</class>
 		<class>mx.com.gahm.conenctel.entities.EstadoSolicitudAlmacenDO</class>
+		<class>mx.com.gahm.conenctel.entities.ValidacionProyectoDO</class>
 		<properties>
 			<property name="eclipselink.logging.level" value="FINE"/> 
 			<property name="eclipselink.logging.parameters" value="true"/>

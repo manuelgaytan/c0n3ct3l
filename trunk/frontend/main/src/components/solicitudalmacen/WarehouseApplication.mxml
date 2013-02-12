@@ -9,7 +9,9 @@
 			import model.Colaborador;
 			import model.Constants;
 			import model.DescripcionAlmacen;
+			import model.EstadoSolicitudAlmacen;
 			import model.GrupoFamiliaA;
+			import model.Model;
 			import model.PartidaRequisicionCompra;
 			import model.Perfil;
 			import model.Prioridad;
@@ -73,36 +75,32 @@
 				if( this._item == null ){
 					return;
 				}
-				/*
-				this.txtCode.text = Util.numberToString( this._item.folio );
+				this.txtCode.text = Util.numberToString( this._item.id );
 				this.dtfApplicationDate.selectedDate = this._item.fechaSolicitud;
 				this.txtMotive.text = this._item.motivo;
 				if( Util.isFill( this.cmbPriority ) && this._item.prioridad != null ){
 					this.cmbPriority.selectedIndex = Util.selectedIndexFromCombo( this.cmbPriority.dataProvider as ArrayCollection, 
 						this._item.prioridad.id);
 				}
-				this.cmbLstApplicatNames.list = this._item.nombresSolicitantes;
 				if( Util.isFill( this.cmbApplicantArea ) && this._item.areaSolicitante != null ){
 					this.cmbApplicantArea.selectedIndex = Util.selectedIndexFromCombo( this.cmbApplicantArea.dataProvider as ArrayCollection, 
 						this._item.areaSolicitante.id);
 				}
 				this.txtSite.text = this._item.centralSitio;
-				if( Util.isFill( this.cmbAuthorizedBy ) && this._item.servicioSolicitado != null ){
+				if( Util.isFill( this.cmbApplicantState ) && this._item.estadoSolicitudAlmacen != null ){
+					this.cmbApplicantState.selectedIndex = Util.selectedIndexFromCombo( this.cmbApplicantState.dataProvider as ArrayCollection, 
+						this._item.estadoSolicitudAlmacen.id);
+				}
+				this.txtApplicantName.text = this._item.nombreSolicitante;
+				if( Util.isFill( this.cmbAuthorizedBy ) && this._item.autoriza != null ){
 					this.cmbAuthorizedBy.selectedIndex = Util.selectedIndexFromCombo( this.cmbAuthorizedBy.dataProvider as ArrayCollection, 
-						this._item.servicioSolicitado.id);
+						this._item.autoriza.id);
 				}
-				this.txtQuantity.text = Util.numberToString( this._item.cantidad );
-				if( Util.isFill( this.cmbUnit ) && this._item.unidadB != null ){
-					this.cmbUnit.selectedIndex = Util.selectedIndexFromCombo( this.cmbUnit.dataProvider as ArrayCollection, 
-						this._item.unidadB.id);
+				if( Util.isFill( this.cmbDeliver ) && this._item.autoriza != null ){
+					this.cmbDeliver.selectedIndex = Util.selectedIndexFromCombo( this.cmbDeliver.dataProvider as ArrayCollection, 
+						this._item.entrega.id);
 				}
-				this.txtObservation.text = this._item.observaciones;
-				this.txtAuthorizes.text = this._item.autoriza;
-				this.txtDelivery.text = this._item.entrega;
-				this.dtfAllocationDate.selectedDate = this._item.fechaAsignacion;
-				this.dtfReturnDate.selectedDate = this._item.fechaRetorno;
-				this.txtVoucher.text = this._item.valeAbiertoCerrado;
-				*/
+				this.txtReceives.text = this._item.recibe;
 			}
 			
 			private function getWarehouseApplication():SolicitudAlmacen{
@@ -112,23 +110,17 @@
 				}else{
 					item = this._item;
 				}
-				item.tipoAlmacen = TipoAlmacen.getSolicitudesAlmacen();
-				item.fkTipoAlmacen = Util.extractId(item.tipoAlmacen);
-				item.folio = Util.stringToNumber( this.txtCode.text );
 				item.fechaSolicitud = this.dtfApplicationDate.selectedDate;
 				item.motivo = Util.validateEmpty( this.txtMotive.text );
 				item.prioridad = Util.validateCombo( this.cmbPriority ) as Prioridad;
-				item.fkPrioridad = Util.extractId(item.prioridad);
-				//item.nombresSolicitantes = cmbLstApplicatNames.list;
 				item.areaSolicitante = Util.validateCombo( this.cmbApplicantArea ) as AreaSolicitante;
-				item.fkAreaSolicitante = Util.extractId(item.areaSolicitante);
 				item.centralSitio = Util.validateEmpty( this.txtSite.text );
-				item.servicioSolicitado = Util.validateCombo( this.cmbAuthorizedBy ) as ServicioSolicitado;
-				item.fkServicioSolicitado = Util.extractId(item.servicioSolicitado);
-				//item.descripcionAlmacen = Util.validateCombo( this.cmbDeliver as ComboBox ) as DescripcionAlmacen;
-				item.cantidad = Util.stringToNumber( this.txtQuantity.text );
-				item.fkUnidadB = Util.extractId(item.unidadB);
-				item.observaciones = Util.validateEmpty( this.txtObservation.text );
+				item.estadoSolicitudAlmacen = Util.validateCombo( this.cmbApplicantState ) as EstadoSolicitudAlmacen;
+				item.nombreSolicitante = Util.validateEmpty( this.txtApplicantName.text );
+				item.autoriza = Util.validateCombo( this.cmbAuthorizedBy ) as Colaborador;
+				item.entrega = Util.validateCombo( this.cmbDeliver ) as Colaborador;
+				item.recibe = Util.validateEmpty( this.txtReceives.text );
+				item.usuario = Model.getInstance().user;
 				return item;
 			}
 			

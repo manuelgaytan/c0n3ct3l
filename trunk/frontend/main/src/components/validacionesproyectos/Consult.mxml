@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+		 label="Consulta"
+		 creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import events.GenericEvent;
+			
+			import model.ConfiguracionPruebaEntrega;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			[Bindable]
+			private var generalDataProjects:ArrayCollection = null;
+			
+			private var configuracionPruebaEntrega:ConfiguracionPruebaEntrega;
+			
+			protected function responseGetAll_resultHandler(event:ResultEvent):void
+			{
+				generalDataProjects = event.result as ArrayCollection;
+			}
+			
+			protected function datosGeneralesProyectoService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.executeQuery();
+			}
+			
+			private function labelFunctionProfile(object:Object, column:DataGridColumn):String{
+				return object["perfil"]["etiqueta"];
+			}
+			
+			protected function datagrid_doubleClickHandler(event:MouseEvent):void
+			{
+				if( event.currentTarget.selectedItem == null ){
+					return;
+				}
+				var generalDataProject:ConfiguracionPruebaEntrega = this.datagrid.selectedItem as ConfiguracionPruebaEntrega;
+				this.responseGetDatosGeneralesProyecto.token = this.configuracionPruebaEntregaService.getConfigPruebaEntrega( generalDataProject.id );
+			}
+			
+			protected function responseGetDatosGeneralesProyecto_resultHandler(event:ResultEvent):void
+			{
+				var generalDataProject:ConfiguracionPruebaEntrega = event.result as ConfiguracionPruebaEntrega;
+				if( generalDataProject == null ){
+					return;
+				}
+				var genericEvent:GenericEvent = new GenericEvent("generalDataProjectDetail");
+				genericEvent.information = generalDataProject;
+				this.dispatchEvent( genericEvent );
+			}
+			
+			public function executeQuery():void
+			{
+				this.responseGetAll.token = this.configuracionPruebaEntregaService.getAll();
+			}
+			
+			private function labelFunctionDate(object:Object, column:DataGridColumn):String{
+				return Util.formatDateToString( object[column.dataField] );
+			}
+			
+			private function labelFunctionIDProyecto(item:Object, column:DataGridColumn):String{
+				return Util.getIDConectelFormat( Util.extractObject(item, column.dataField) );
+			}
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="generalDataProjectDetail", type="events.GenericEvent")]
+	</mx:Metadata>
+	<mx:VBox width="{parent.parent.width-5}" height="100%">
+	<mx:DataGrid id="datagrid" width="2000" height="100%" dataProvider="{generalDataProjects}"
+				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
+				 allowMultipleSelection="true"
+				 >
+		<mx:columns>
+			<mx:DataGridColumn id="dtgProjectID" headerText="{'ID\nProyecto'}"
+							   dataField="proyecto.id"
+							   labelFunction="labelFunctionIDProyecto"
+							   width="130"/>
+			<mx:DataGridColumn id="dtgProjectState" headerText="{'Validación\nProyecto'}"
+							   dataField="estado.etiqueta"/>
+			<mx:DataGridColumn id="dtgCategoria" headerText="Categoria"
+							   dataField="categoria.etiqueta"
+							   />
+			<mx:DataGridColumn id="dtgClient" headerText="Cliente"
+							   dataField="producto.cliente.nombreComercial"
+							   />
+			<mx:DataGridColumn id="dtgProjectType" headerText="{'Tipo de\nProyecto'}"
+							   dataField="producto.tipoProyecto"
+							   />
+			<mx:DataGridColumn id="dtgTechnology" headerText="Tecnología"
+							   dataField="producto.teconologia"
+							   />
+			<mx:DataGridColumn id="dtgEquipment" headerText="Equipo"
+							   dataField="producto.equipo"
+							   />
+			<mx:DataGridColumn id="dtgActivity" headerText="{'Actividad\na Realizar'}" width="180"
+							   dataField="producto.actividadRealizar"
+							   />
+			<mx:DataGridColumn id="dtgModel" headerText="Modelo"
+							   dataField="producto.modelo"
+							   />
+			<mx:DataGridColumn id="dtgServiceDescription" headerText="{'Descripción\ndel Servicio'}"
+							   dataField="producto.descripcionServicio"
+							   width="80"/>
+			<mx:DataGridColumn id="dtgServiceType" headerText="{'Tipo de\nServicio'}"
+							   dataField="producto.tipoServicio"
+							   />
+			<mx:DataGridColumn id="dtgSite" headerText="{'Central\nó Sitio'}"
+							   dataField="producto.tipoServicio"
+							   />
+			<mx:DataGridColumn id="dtgDivision" headerText="{'División\no Región'}"
+							   dataField="divisionRegion"
+							   width="70"/>
+			<mx:DataGridColumn id="dtgArea" headerText="{'Area/GOA'}"
+							   dataField="areaGoa"
+							   width="120"/>
+			<mx:DataGridColumn id="dtgFinalClient" headerText="{'Cliente Final'}"
+							   dataField="clienteFinal"
+							   width="110"/>
+			<mx:DataGridColumn id="dtgConectelResponsable" headerText="{'Responsable\nConectel'}"
+							   dataField="reponsableConectel.nombreCompleto"
+							   width="105"/>
+			<mx:DataGridColumn id="dtgImplementationResponsable" headerText="{'Responsable\nImplementación'}"
+							   dataField="responsableImpl.nombreCompleto"
+							   width="105"/>
+			<mx:DataGridColumn id="dtgStartDateReal" headerText="{'Fecha\nInicio\nReal'}"
+							   dataField="fechaInicioReal"
+							   width="100"/>
+			<mx:DataGridColumn id="dtgEndDateReal" headerText="{'Fecha\nFin\nReal'}"
+							   dataField="fechaTerminoReal"
+							   textAlign="center"
+							   width="100"/>	
+		</mx:columns>
+	</mx:DataGrid>
+	</mx:VBox>
+	<mx:HBox>
+		<!--<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>-->
+	</mx:HBox>
+	<mx:RemoteObject id="configuracionPruebaEntregaService" destination="configuracionPruebaEntregaService" fault="datosGeneralesProyectoService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetAll" result="responseGetAll_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetDatosGeneralesProyecto" result="responseGetDatosGeneralesProyecto_resultHandler(event)"/>
+</mx:VBox>

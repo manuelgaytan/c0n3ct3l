@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
+		   width="850" height="525"
+		   xmlns:validacionesproyectos="components.validacionesproyectos.*"
+		   creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import events.GenericEvent;
+			
+			import model.ConfiguracionPruebaEntrega;
+			import model.Usuario;
+			
+			import mx.events.FlexEvent;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				
+			}
+			
+			protected function consult_projectValidationDetailHandler(event:GenericEvent):void
+			{
+				this.detail.projectValidation = event.information as model.ConfiguracionPruebaEntrega;
+				this.navigator.selectedChild = this.detail;
+			}
+			
+			protected function register_projectValidationNewHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+			
+			protected function detail_projectValidationUpdatedHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:TabNavigator id="navigator" width="100%" height="100%" creationPolicy="all">
+		<validacionesproyectos:Consult id="consult" generalDataProjectDetail="consult_projectValidationDetailHandler(event)"/>
+		<validacionesproyectos:ProjectValidation id="detail" update="true" projectValidationUpdated="detail_projectValidationUpdatedHandler(event)"/>
+		<validacionesproyectos:ProjectValidation id="register" registrer="true" projectValidationNew="register_projectValidationNewHandler(event)"/>
+	</mx:TabNavigator>
+</mx:Module>

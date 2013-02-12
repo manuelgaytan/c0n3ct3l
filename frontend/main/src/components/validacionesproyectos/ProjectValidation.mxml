@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)"
+		 >
+	<mx:Script>
+		<![CDATA[
+			import model.Catalogo;
+			import model.ConfiguracionPruebaEntrega;
+			import model.Constants;
+			import model.Estado;
+			import model.EstadoValidacionOperativa;
+			import model.Proyecto;
+			import model.TipoEntregable;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorEntero;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			private var mode:String = null;
+			private var _projectValidation:ConfiguracionPruebaEntrega;
+			private var validators:InicializaValidadoresEtiquetas;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				this.label = Constants.REGISTRAR;
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set projectValidation(value:ConfiguracionPruebaEntrega):void{
+				if( value == null ){
+					return;
+				}
+				this._projectValidation = value;
+				this.setConfigurationTestingDelivery(); 
+			}
+			
+			private function setConfigurationTestingDelivery():void
+			{
+				if( this._projectValidation == null ){
+					return;
+				}
+				this.txtConectelID.text = Util.numberToString( this._projectValidation.proyecto.id );
+				this.observations.observations = this._projectValidation.proyecto.observaciones;
+			}
+			
+			private function getGeneralDataProject():ConfiguracionPruebaEntrega{
+				var projectValidation:ConfiguracionPruebaEntrega = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					projectValidation = new ConfiguracionPruebaEntrega();
+				}else{
+					projectValidation = this._projectValidation;
+				}
+				projectValidation.proyecto = new Proyecto();
+				projectValidation.proyecto.id = Util.stringToNumber( this.txtConectelID.text );
+				projectValidation.proyecto.estado = new Estado();
+				projectValidation.proyecto.estado.id = Estado.ID_CONFIGURACION_PRUEBA_Y_ENTREGA;
+				projectValidation.proyecto.observaciones = this.observations.observations;
+				return projectValidation;
+			}
+			
+			private function fillCombos():void
+			{
+				this.responseGetEstadoValidacionOperativa.token = this.catalogoService.getEstadoValidacionOperativa();
+			}
+			
+			
+			protected function datosGeneralesProyectoService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function btnAccept_clickHandler(event:MouseEvent):void
+			{
+				if( !this.validations() ){
+					Util.showMessageVerifyFields();
+					return;
+				}
+				if( this.mode == Constants.REGISTER_MODE ){
+					var generalDataProject:ConfiguracionPruebaEntrega = this.getGeneralDataProject();
+					Util.showProperties( generalDataProject );
+					this.responseSave.token = this.configuracionPruebaEntregaService.save( generalDataProject );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
+				}
+			}
+			
+			private function updateItem(event:CloseEvent):void{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var generalDataProject:ConfiguracionPruebaEntrega = this.getGeneralDataProject();
+				Util.showProperties( generalDataProject );
+				this.responseUpdate.token = this.configuracionPruebaEntregaService.update( generalDataProject );
+			}
+			
+			private function validations():Boolean
+			{
+				var value:Boolean = true;
+				value &&= this.validators.validarFormulario();
+				/* value &&= this.dlvEngineeringDeliverable.existElements(); */
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+					this.btnProjectDone.visible = false;
+					this.txtConectelID.editable = true;
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+					this.txtConectelID.editable = false;
+				}
+			}
+			
+			private function initializeValidators():void
+			{
+				this.validators = new InicializaValidadoresEtiquetas();
+				validators.crearValidadorRestrictor("numerico11",ValidadorEntero.nombre, 11);
+				validators.setValidador(txtConectelID, "numerico11");
+				validators.crearValidadorRestrictor("alfanumerico100",ValidadorAlfanumerico.nombre, 0, 100, true);
+				validators.crearValidadorRestrictor("alfanumerico200",ValidadorAlfanumerico.nombre, 0, 200, true);
+				validators.crearValidadorRestrictor("alfanumerico150",ValidadorAlfanumerico.nombre, 0, 150, true);
+			}
+			
+			protected function responseSave_resultHandler(event:ResultEvent):void
+			{
+				var eventGeneralDataProjectNew:Event = new Event("projectValidationNew");
+				this.dispatchEvent( eventGeneralDataProjectNew );
+				this.cleanForm();
+			}
+			
+			private function cleanForm():void
+			{
+				this.txtConectelID.reset();
+				this.observations.reset();
+			}
+			
+			protected function responseUpdate_resultHandler(event:ResultEvent):void
+			{
+				var eventGeneralDataProjectUpdated:Event = new Event("projectValidationUpdated");
+				this.dispatchEvent( eventGeneralDataProjectUpdated );
+				this.cleanForm();
+			}
+			
+			protected function btnProjectDone_clickHandler(event:MouseEvent):void
+			{
+				if( !this.validations() ){
+					Util.showMessageVerifyFields();
+					return;
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+					Alert.show("Confirme si desea dar por terminado el proyecto.","Advertencia",Alert.YES+Alert.NO,this, faseDone);
+				}
+			}
+			
+			private function faseDone(event:CloseEvent):void
+			{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				Util.showProperties( this._projectValidation.proyecto.id );
+				this.responseUpdate.token = this.configuracionPruebaEntregaService.terminarProyecto( this._projectValidation.proyecto.id );
+			}
+			
+			protected function responseProjectDone_resultHandler(event:ResultEvent):void
+			{
+				var eventGeneralDataProjectUpdated:Event = new Event("projectValidationProjectDone");
+				this.dispatchEvent( eventGeneralDataProjectUpdated );
+				this.cleanForm();
+			}
+			
+			protected function responseGetEstadoValidacionOperativa_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				/* this.cmbOperationalValidationStatus.dataProvider = data;
+				if( this._projectValidation != null ){
+					this.cmbOperationalValidationStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbOperationalValidationStatus.dataProvider as ArrayCollection, 
+						this._projectValidation.estadoValidacionOperativa.id);
+				} */
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="projectValidationNew", type="flash.events.Event")]
+		[Event(name="projectValidationUpdated", type="flash.events.Event")]
+		[Event(name="projectValidationProjectDone", type="flash.events.Event")]
+	</mx:Metadata>
+	<mx:Form id="form">
+		<mx:FormItem label="ID Conectel:" direction="horizontal">
+			<components:TextInput id="txtConectelID" width="150" textAlign="right"
+								  editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Categoría:">
+			<components:TextInput id="txtCategory" width="400"
+								  editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Cliente:">
+			<components:TextInput id="txtClient" width="400"
+								  editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Tipo de Proyecto:">
+			<components:TextInput id="txtProjectType" width="300"
+								  editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Tecnología:">
+			<components:TextInput id="txtTechnology" width="250"
+								  editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Equipo:">
+			<components:TextInput id="txtEquipment" width="300"
+								  editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Actividad a Realizar:">
+			<components:TextInput id="txtActivity" width="500"
+								  editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Modelo:">
+			<components:TextInput id="txtModel" width="250"
+								  editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Descripción del Servicio:">
+			<components:TextInput id="txtServiceDescription" width="500"
+								  editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Tipo de Servicio:">
+			<components:TextInput id="txtServiceType" width="250"
+								  editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Central o Sitio:">
+			<components:TextInput id="txtSite" width="350"
+								  editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Proyecto Padre:">
+			<components:TextInput id="txtParentProject" width="450"
+								  editable="false"/>
+		</mx:FormItem>
+		
+		<mx:FormItem label="Divisón o Región:">
+			<components:TextInput id="txtDivision" width="200"/>
+		</mx:FormItem>
+		<mx:FormItem label="Area/GOA:">
+			<components:TextInput id="txtArea" width="300"/>
+		</mx:FormItem>
+		<mx:FormItem label="Cliente Final:">
+			<components:TextInput id="txtFinalClient" width="400"/>
+		</mx:FormItem>
+		<mx:FormItem label="ID Ciente:">
+			<components:TextInput id="txtClientID" width="200"/>
+		</mx:FormItem>
+		<mx:FormItem label="ID Nodo:">
+			<components:TextInput id="txtNodeID" width="200"/>
+		</mx:FormItem>
+		<mx:FormItem label="Grafo:">
+			<components:TextInput id="txtGraph" width="200"/>
+		</mx:FormItem>
+		<mx:FormItem label="Pedido Cliente:">
+			<components:TextInput id="txtClientOrder" width="300"/>
+		</mx:FormItem>
+		<mx:FormItem label="Elemento PEP:">
+			<components:TextInput id="txtPEPElement" width="300"/>
+		</mx:FormItem>
+		<mx:FormItem label="Responsable Cliente:">
+			<components:TextInput id="txtClientResponsable" width="400"/>
+		</mx:FormItem>
+		<mx:FormItem label="Semana:">
+			<components:TextInput id="txtWeek" width="300"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha Asignación Cliente:">
+			<components:DateField id="dtfAsignDateClient"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha Inicio Programada:">
+			<components:DateField id="dtfStartDateProgramming"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha Fin Programada:">
+			<components:DateField id="dtfEndDateProgramming"/>
+		</mx:FormItem>
+		<mx:FormItem label="Responsable Conectel:">
+			<mx:ComboBox id="cmbConectelResponsable" width="400"
+						 labelField="nombreCompleto"/>
+		</mx:FormItem>
+		<mx:FormItem label="Responsable Implementación:">
+			<mx:ComboBox id="cmbImplementationResponsable" width="400"
+						 labelField="nombreCompleto"/>
+		</mx:FormItem>
+		<mx:FormItem label="Material:">
+			<mx:ComboBox id="cmbMaterial" width="300"
+						 labelField="etiqueta"/>
+		</mx:FormItem>
+		<mx:FormItem label="Herramienta:">
+			<mx:ComboBox id="cmbTool" width="300"
+						 labelField="etiqueta"/>
+		</mx:FormItem>
+		<mx:FormItem label="Equipo:">
+			<mx:ComboBox id="cmbEquipment" width="300"
+						 labelField="etiqueta"/>
+		</mx:FormItem>
+		<mx:FormItem label="Unidad:">
+			<mx:ComboBox id="cmbVehicle" width="300"
+						 labelField="etiqueta"/>
+		</mx:FormItem>
+		<mx:FormItem label="Viáticos:">
+			<mx:ComboBox id="cmbPerDiem" width="300"
+						 labelField="etiqueta"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha Inicio Real:">
+			<components:DateField id="dtfStartDateReal"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha Término Real:">
+			<components:DateField id="dtfEndDateReal"/>
+		</mx:FormItem>
+		<mx:FormItem label="Entregable Ingeniería:">
+			<components:Deliver id="dlvEngineeringDeliverable" deliveryType="{TipoEntregable.ENTREGABLE_INGENIERIA}"/>
+		</mx:FormItem>
+		<components:Observations id="observations" fase="{Estado.createEstado(Estado.ID_DATOS_GENERALES, Estado.DATOS_GENERALES)}"/>
+		<mx:FormItem direction="horizontal">
+			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
+			<mx:Button id="btnProjectDone" label="Terminar Proyecto" click="btnProjectDone_clickHandler(event)"/>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:RemoteObject id="configuracionPruebaEntregaService" destination="configuracionPruebaEntregaService" fault="datosGeneralesProyectoService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
+	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
+	<mx:CallResponder id="responseProjectDone" result="responseProjectDone_resultHandler(event)"/>
+	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="datosGeneralesProyectoService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetEstadoValidacionOperativa" result="responseGetEstadoValidacionOperativa_resultHandler(event)"/>
+</mx:VBox>

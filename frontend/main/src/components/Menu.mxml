@@ -87,18 +87,18 @@
 					   icon="@Embed(source='assets/images/clientes.png')"/>
 		<mx:LinkButton label="Requisiciones de Compra" id="RequisicionesCompra" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/servicios.png')"/>
-		<!--<mx:LinkButton label="Solicitudes Servicio Maquilado" id="SolicitudServicioMaquilado" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/clientes.png')"/>-->
+		<mx:LinkButton label="Solicitudes Servicio Maquilado" id="SolicitudServicioMaquilado" click="clickMenuHandler(event)"
+					   icon="@Embed(source='assets/images/clientes.png')"/>
 		<mx:LinkButton label="Cotizaciones" id="Cotizaciones" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/servicios.png')"/>
 		<mx:LinkButton label="Ordenes de Compra de Almacén" id="OrdenesCompraAlmacen" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/clientes.png')"/>
-		<!--<mx:LinkButton label="Ordenes de Compra Servicio Maquilado" id="OrdenesCompraServicioMaquilado" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/servicios.png')"/>-->
+		<mx:LinkButton label="Ordenes de Compra Servicio Maquilado" id="OrdenesCompraServicioMaquilado" click="clickMenuHandler(event)"
+					   icon="@Embed(source='assets/images/servicios.png')"/>
 		<mx:LinkButton label="Facturación de Compra" id="FacturacionCompra" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/clientes.png')"/>
-		<!--<mx:LinkButton label="Preciarios Maquiladores" id="PreciariosMaquiladores" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/servicios.png')"/>-->
+		<mx:LinkButton label="Preciarios Maquiladores" id="PreciariosMaquiladores" click="clickMenuHandler(event)"
+					   icon="@Embed(source='assets/images/servicios.png')"/>
 	</mx:VBox>
 	<mx:VBox label="Validación Administrativa" width="100%" height="100%">
 		<mx:LinkButton label="Validación del Proyecto" id="ValidacionesProyectos" click="clickMenuHandler(event)"

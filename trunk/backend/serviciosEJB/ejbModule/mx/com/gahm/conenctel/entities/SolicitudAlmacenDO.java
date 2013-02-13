@@ -35,177 +35,103 @@ public class SolicitudAlmacenDO implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
-
-	private String autoriza;
-
-	private Double cantidad;
-
-	@Column(name="central_sitio")
-	private String centralSitio;
-
-	private String entrega;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_asignacion")
-	private Date fechaAsignacion;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_retorno")
-	private Date fechaRetorno;
-
+	
+	@ManyToOne
+	@JoinColumn(name="fk_usuario")
+	private UsuarioDO usuario;
+	
 	@Temporal(TemporalType.DATE)
 	@Column(name="fecha_solicitud")
 	private Date fechaSolicitud;
-
-	private Double folio;
-
+	
+	@Column(name="motivo")
 	private String motivo;
-
-	private String observaciones;
-
-	@Column(name="vale_abierto_cerrado")
-	private String valeAbiertoCerrado;
-
-	@OneToMany(mappedBy="fkSolicitudAlmacen", fetch = FetchType.EAGER)
-	private List<NombreSolicitanteDO> nombresSolicitantes;
-
-	@ManyToOne
-	@JoinColumn(name="fk_unidad_b")
-	private UnidadBDO unidadB;
-
+	
 	@ManyToOne
 	@JoinColumn(name="fk_prioridad")
 	private PrioridadDO prioridad;
-
-	@ManyToOne
-	@JoinColumn(name="fk_tipo_almacen")
-	private TipoAlmacenDO tipoAlmacen;
-
+	
 	@ManyToOne
 	@JoinColumn(name="fk_area_solicitante")
 	private AreaSolicitanteDO areaSolicitante;
+	
+	@Column(name="central_sitio")
+	private String centralSitio;
+	
+	@ManyToOne
+	@JoinColumn(name="fk_estado_solicitud_almacen")
+	private EstadoSolicitudAlmacenDO estadoSolicitudAlmacen;
+	
+	@Column(name="nombre_solicitante")
+	private String nombreSolicitante;
+	
+	@ManyToOne
+	@JoinColumn(name="fk_autoriza")
+	private ColaboradorDO autoriza;
 
 	@ManyToOne
-	@JoinColumn(name="fk_servicio_solicitado")
-	private ServicioSolicitadoDO servicioSolicitado;
-
-	@ManyToOne
-	@JoinColumn(name="descripcion")
-	private DescripcionAlmacenDO descripcionAlmacen;
+	@JoinColumn(name="fk_entrega")
+	private ColaboradorDO entrega;
+	
+	@Column(name="recibe")
+	private String recibe;
 
 	public SolicitudAlmacenDO() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public SolicitudAlmacenDO(Long id, UsuarioDO usuario, Date fechaSolicitud,
+			String motivo, PrioridadDO prioridad,
+			AreaSolicitanteDO areaSolicitante, String centralSitio,
+			EstadoSolicitudAlmacenDO estadoSolicitudAlmacen,
+			String nombreSolicitante, ColaboradorDO autoriza,
+			ColaboradorDO entrega, String recibe) {
+		super();
+		this.id = id;
+		this.usuario = usuario;
+		this.fechaSolicitud = fechaSolicitud;
+		this.motivo = motivo;
+		this.prioridad = prioridad;
+		this.areaSolicitante = areaSolicitante;
+		this.centralSitio = centralSitio;
+		this.estadoSolicitudAlmacen = estadoSolicitudAlmacen;
+		this.nombreSolicitante = nombreSolicitante;
+		this.autoriza = autoriza;
+		this.entrega = entrega;
+		this.recibe = recibe;
 	}
 
 	public Long getId() {
-		return this.id;
+		return id;
 	}
 
 	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public String getAutoriza() {
-		return this.autoriza;
+	public UsuarioDO getUsuario() {
+		return usuario;
 	}
 
-	public void setAutoriza(String autoriza) {
-		this.autoriza = autoriza;
-	}
-
-	public Double getCantidad() {
-		return this.cantidad;
-	}
-
-	public void setCantidad(Double cantidad) {
-		this.cantidad = cantidad;
-	}
-
-	public String getCentralSitio() {
-		return this.centralSitio;
-	}
-
-	public void setCentralSitio(String centralSitio) {
-		this.centralSitio = centralSitio;
-	}
-
-	public String getEntrega() {
-		return this.entrega;
-	}
-
-	public void setEntrega(String entrega) {
-		this.entrega = entrega;
-	}
-
-	public Date getFechaAsignacion() {
-		return this.fechaAsignacion;
-	}
-
-	public void setFechaAsignacion(Date fechaAsignacion) {
-		this.fechaAsignacion = fechaAsignacion;
-	}
-
-	public Date getFechaRetorno() {
-		return this.fechaRetorno;
-	}
-
-	public void setFechaRetorno(Date fechaRetorno) {
-		this.fechaRetorno = fechaRetorno;
+	public void setUsuario(UsuarioDO usuario) {
+		this.usuario = usuario;
 	}
 
 	public Date getFechaSolicitud() {
-		return this.fechaSolicitud;
+		return fechaSolicitud;
 	}
 
 	public void setFechaSolicitud(Date fechaSolicitud) {
 		this.fechaSolicitud = fechaSolicitud;
 	}
 
-	public Double getFolio() {
-		return this.folio;
-	}
-
-	public void setFolio(Double folio) {
-		this.folio = folio;
-	}
-
 	public String getMotivo() {
-		return this.motivo;
+		return motivo;
 	}
 
 	public void setMotivo(String motivo) {
 		this.motivo = motivo;
-	}
-
-	public String getObservaciones() {
-		return this.observaciones;
-	}
-
-	public void setObservaciones(String observaciones) {
-		this.observaciones = observaciones;
-	}
-
-	public String getValeAbiertoCerrado() {
-		return this.valeAbiertoCerrado;
-	}
-
-	public void setValeAbiertoCerrado(String valeAbiertoCerrado) {
-		this.valeAbiertoCerrado = valeAbiertoCerrado;
-	}
-
-	public List<NombreSolicitanteDO> getNombresSolicitantes() {
-		return nombresSolicitantes;
-	}
-
-	public void setNombresSolicitantes(List<NombreSolicitanteDO> nombresSolicitantes) {
-		this.nombresSolicitantes = nombresSolicitantes;
-	}
-
-	public UnidadBDO getUnidadB() {
-		return unidadB;
-	}
-
-	public void setUnidadB(UnidadBDO unidadB) {
-		this.unidadB = unidadB;
 	}
 
 	public PrioridadDO getPrioridad() {
@@ -216,14 +142,6 @@ public class SolicitudAlmacenDO implements Serializable {
 		this.prioridad = prioridad;
 	}
 
-	public TipoAlmacenDO getTipoAlmacen() {
-		return tipoAlmacen;
-	}
-
-	public void setTipoAlmacen(TipoAlmacenDO tipoAlmacen) {
-		this.tipoAlmacen = tipoAlmacen;
-	}
-
 	public AreaSolicitanteDO getAreaSolicitante() {
 		return areaSolicitante;
 	}
@@ -232,20 +150,56 @@ public class SolicitudAlmacenDO implements Serializable {
 		this.areaSolicitante = areaSolicitante;
 	}
 
-	public ServicioSolicitadoDO getServicioSolicitado() {
-		return servicioSolicitado;
+	public String getCentralSitio() {
+		return centralSitio;
 	}
 
-	public void setServicioSolicitado(ServicioSolicitadoDO servicioSolicitado) {
-		this.servicioSolicitado = servicioSolicitado;
+	public void setCentralSitio(String centralSitio) {
+		this.centralSitio = centralSitio;
 	}
 
-	public DescripcionAlmacenDO getDescripcionAlmacen() {
-		return descripcionAlmacen;
+	public EstadoSolicitudAlmacenDO getEstadoSolicitudAlmacen() {
+		return estadoSolicitudAlmacen;
 	}
 
-	public void setDescripcionAlmacen(DescripcionAlmacenDO descripcionAlmacen) {
-		this.descripcionAlmacen = descripcionAlmacen;
+	public void setEstadoSolicitudAlmacen(
+			EstadoSolicitudAlmacenDO estadoSolicitudAlmacen) {
+		this.estadoSolicitudAlmacen = estadoSolicitudAlmacen;
 	}
 
+	public String getNombreSolicitante() {
+		return nombreSolicitante;
+	}
+
+	public void setNombreSolicitante(String nombreSolicitante) {
+		this.nombreSolicitante = nombreSolicitante;
+	}
+
+	public ColaboradorDO getAutoriza() {
+		return autoriza;
+	}
+
+	public void setAutoriza(ColaboradorDO autoriza) {
+		this.autoriza = autoriza;
+	}
+
+	public ColaboradorDO getEntrega() {
+		return entrega;
+	}
+
+	public void setEntrega(ColaboradorDO entrega) {
+		this.entrega = entrega;
+	}
+
+	public String getRecibe() {
+		return recibe;
+	}
+
+	public void setRecibe(String recibe) {
+		this.recibe = recibe;
+	}
+	
+	
+	
+	
 }

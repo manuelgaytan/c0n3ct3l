@@ -41,46 +41,71 @@ public class SolicitudServicioMaquiladoDO implements Serializable {
 	@Column(name = "id", unique = true, nullable = false)
 	private Integer id;
 	@Temporal(TemporalType.DATE)
-	@Column(name = "fecha_operacion", nullable = false, length = 10)
-	private Date fechaOperacion;
+	@Column(name = "fecha", nullable = false, length = 10)
+	private Date fecha;
 	@ManyToOne
    	@JoinColumn(name="fk_proyecto_padre")
 	private ProyectoPadreDO proyectoPadre;
 	@ManyToOne
-   	@JoinColumn(name="fk_estado_solicitud_servicio_maquilado")
-	private EstadoSolicitudServicioMaquiladoDO estadoSolicitudServicioMaquilado;
+   	@JoinColumn(name="fk_proyecto")
+	private ProyectoDO proyecto;
+	
+	
+	public SolicitudServicioMaquiladoDO() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+
+	public SolicitudServicioMaquiladoDO(Integer id, Date fecha,
+			ProyectoPadreDO proyectoPadre, ProyectoDO proyecto) {
+		super();
+		this.id = id;
+		this.fecha = fecha;
+		this.proyectoPadre = proyectoPadre;
+		this.proyecto = proyecto;
+	}
+
 
 	public Integer getId() {
 		return id;
 	}
 
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	public Date getFechaOperacion() {
-		return fechaOperacion;
+
+	public Date getFecha() {
+		return fecha;
 	}
 
-	public void setFechaOperacion(Date fechaOperacion) {
-		this.fechaOperacion = fechaOperacion;
+
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
 	}
+
 
 	public ProyectoPadreDO getProyectoPadre() {
 		return proyectoPadre;
 	}
 
+
 	public void setProyectoPadre(ProyectoPadreDO proyectoPadre) {
 		this.proyectoPadre = proyectoPadre;
 	}
 
-	public EstadoSolicitudServicioMaquiladoDO getEstadoSolicitudServicioMaquilado() {
-		return estadoSolicitudServicioMaquilado;
+
+	public ProyectoDO getProyecto() {
+		return proyecto;
 	}
 
-	public void setEstadoSolicitudServicioMaquilado(
-			EstadoSolicitudServicioMaquiladoDO estadoSolicitudServicioMaquilado) {
-		this.estadoSolicitudServicioMaquilado = estadoSolicitudServicioMaquilado;
+
+	public void setProyecto(ProyectoDO proyecto) {
+		this.proyecto = proyecto;
 	}
+
+
 
 }

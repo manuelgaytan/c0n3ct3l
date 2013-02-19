@@ -3,7 +3,7 @@
 			 dataProvider="{this._items}">
 	<mx:Script>
 		<![CDATA[
-			import model.PartidaRequisicionCompra;
+			import model.PartidaSolicitudAlmacen;
 			import model.Util;
 			
 			import mx.collections.ArrayCollection;
@@ -11,7 +11,7 @@
 			[Bindable]
 			private var _items:ArrayCollection = new ArrayCollection();
 			
-			public function addItem(entry:PartidaRequisicionCompra):void{
+			public function addItem(entry:PartidaSolicitudAlmacen):void{
 				if( entry == null ){
 					return;
 				}
@@ -25,6 +25,9 @@
 		]]>
 	</mx:Script>
 	<mx:columns>
+		<mx:DataGridColumn id="dtgStockType" headerText="{'Tipo \nAlmacén'}"
+						   width="100"
+						   dataField="tipoAlmacen.etiqueta"/>
 		<mx:DataGridColumn id="dtgItemCode" headerText="Código"
 						   dataField="codigo"
 						   width="80"/>
@@ -43,10 +46,12 @@
 						   width="60"
 						   textAlign="right"/>
 		<mx:DataGridColumn id="dtgItemValidation" headerText="{'Regreso al\nAlmacén'}"
-						   dataField="validacion"
-						   width="80"/>
+						   dataField="regresoAlmacen"
+						   width="80"
+						   itemRenderer="mx.controls.CheckBox"
+						   textAlign="center"/>
 		<mx:DataGridColumn id="dtgItemEstatus" headerText="Observación"
-						   dataField="estatusRequisicionCompra.estatus"
+						   dataField="observacion"
 						   width="80"/>
 	</mx:columns>
 </mx:DataGrid>	

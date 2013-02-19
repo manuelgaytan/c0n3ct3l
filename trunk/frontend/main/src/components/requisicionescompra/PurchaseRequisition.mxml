@@ -394,7 +394,7 @@
 					unidad = item["unidad"];
 				}else if( item.hasOwnProperty("unidadA") ){
 					unidad = item["unidadA"]["etiqueta"];
-				}else if( item.hasOwnProperty("unidadb") ){
+				}else if( item.hasOwnProperty("unidadB") ){
 					unidad = item["unidadB"]["etiqueta"];
 				}else if( item.hasOwnProperty("unidadC") ){
 					unidad = item["unidadC"]["etiqueta"];

@@ -31,6 +31,7 @@
 			import model.ConfiguracionPruebaEntrega;
 			import model.Constants;
 			import model.Consumible;
+			import model.ConsumibleSolicitudAlmacen;
 			import model.Contacto;
 			import model.Cotizacion;
 			import model.DatosComerciales;
@@ -40,7 +41,9 @@
 			import model.DocumentoAlmacen;
 			import model.Entregable;
 			import model.EquipoMedicion;
+			import model.EquipoMedicionSolicitudAlmacen;
 			import model.EquipoTransporte;
+			import model.EquipoTransporteSolicitudAlmacen;
 			import model.Estado;
 			import model.EstadoSolicitudAlmacen;
 			import model.EstadoSolicitudServicioMaquilado;
@@ -60,9 +63,12 @@
 			import model.GrupoFamiliaE;
 			import model.GrupoFamiliaF;
 			import model.Hardware;
+			import model.HardwareSolicitudAlmacen;
 			import model.Herramienta;
+			import model.HerramientaSolicitudAlmacen;
 			import model.Imputable;
 			import model.Material;
+			import model.MaterialSolicitudAlmacen;
 			import model.MenuOption;
 			import model.Model;
 			import model.NombreSolicitante;
@@ -71,6 +77,7 @@
 			import model.OrdenCompraMaquilado;
 			import model.Pantalla;
 			import model.PartidaRequisicionCompra;
+			import model.PartidaSolicitudAlmacen;
 			import model.Perfil;
 			import model.PerfilPantalla;
 			import model.Prioridad;
@@ -86,8 +93,10 @@
 			import model.Seguimiento;
 			import model.ServicioSolicitado;
 			import model.Software;
+			import model.SoftwareSolicitudAlmacen;
 			import model.SolicitudAlmacen;
 			import model.TelefoniaMovil;
+			import model.TelefoniaMovilSolicitudAlmacen;
 			import model.TipoAlmacen;
 			import model.TipoColaborador;
 			import model.TipoDocumentoAlmacen;
@@ -233,6 +242,15 @@
 			private var estadoSolicitudServicioMaquilado:EstadoSolicitudServicioMaquilado;
 			private var estadoValidacionOperativa:EstadoValidacionOperativa;
 			private var estadoSolicitudAlmacen:EstadoSolicitudAlmacen;
+			private var partidaSolicitudAlmacen:PartidaSolicitudAlmacen;
+			private var telefoniaMovilSolicitudAlmacen:TelefoniaMovilSolicitudAlmacen;
+			private var softwareSolicitudAlmacen:SoftwareSolicitudAlmacen;
+			private var materialSolicitudAlmacen:MaterialSolicitudAlmacen;
+			private var hardwareSolicitudAlmacen:HardwareSolicitudAlmacen;
+			private var equipoTransporteSolicitudAlmacen:EquipoTransporteSolicitudAlmacen;
+			private var equipoMedicionSolicitudAlmacen:EquipoMedicionSolicitudAlmacen;
+			private var herramientaSolicitudAlmacen:HerramientaSolicitudAlmacen;
+			private var consumibleSolicitudAlmacen:ConsumibleSolicitudAlmacen;
 			
 			protected function login_readyHandler(event:ModuleEvent):void
 			{

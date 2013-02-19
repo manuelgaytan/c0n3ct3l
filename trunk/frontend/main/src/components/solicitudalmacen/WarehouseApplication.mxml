@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
-		 creationComplete="creationCompleteHandler(event)" xmlns:components1="com.hillelcoren.components.*" xmlns:solicitudalmacen="components.solicitudalmacen.*"
+		 creationComplete="creationCompleteHandler(event)" xmlns:solicitudalmacen="components.solicitudalmacen.*"
 		 >
 	<mx:Script>
 		<![CDATA[
@@ -13,6 +13,7 @@
 			import model.GrupoFamiliaA;
 			import model.Model;
 			import model.PartidaRequisicionCompra;
+			import model.PartidaSolicitudAlmacen;
 			import model.Perfil;
 			import model.Prioridad;
 			import model.ServicioSolicitado;
@@ -75,7 +76,7 @@
 				if( this._item == null ){
 					return;
 				}
-				this.txtCode.text = Util.numberToString( this._item.id );
+				this.txtFolio.text = Util.numberToString( this._item.id );
 				this.dtfApplicationDate.selectedDate = this._item.fechaSolicitud;
 				this.txtMotive.text = this._item.motivo;
 				if( Util.isFill( this.cmbPriority ) && this._item.prioridad != null ){
@@ -110,10 +111,10 @@
 				}else{
 					item = this._item;
 				}
-				item.fechaSolicitud = this.dtfApplicationDate.selectedDate;
 				item.motivo = Util.validateEmpty( this.txtMotive.text );
 				item.prioridad = Util.validateCombo( this.cmbPriority ) as Prioridad;
 				item.areaSolicitante = Util.validateCombo( this.cmbApplicantArea ) as AreaSolicitante;
+				item.fechaSolicitud = this.dtfApplicationDate.selectedDate;
 				item.centralSitio = Util.validateEmpty( this.txtSite.text );
 				item.estadoSolicitudAlmacen = Util.validateCombo( this.cmbApplicantState ) as EstadoSolicitudAlmacen;
 				item.nombreSolicitante = Util.validateEmpty( this.txtApplicantName.text );
@@ -186,13 +187,21 @@
 			{
 				this.validators = new InicializaValidadoresEtiquetas();
 				validators.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
-				validators.setRestrictor(txtCode, "generic");
 				validators.setRestrictor(txtMotive, "generic");
 				validators.setRestrictor(txtSite, "generic");
-				validators.setRestrictor(txtObservation, "generic");
-				validators.crearValidadorRestrictor("number",ValidadorDecimal.nombre, 10, 4);
-				validators.setRestrictor(txtCode, "number");
-				validators.setRestrictor(txtQuantity, "number");
+				validators.setValidador(txtApplicantName, "generic");
+				validators.setValidador(txtReceives, "generic");
+				
+				this.validatorsEntry = new InicializaValidadoresEtiquetas();
+				validatorsEntry.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
+				//validatorsEntry.setRestrictor(txtStockType, "generic");
+				validatorsEntry.setRestrictor(txtCode, "generic");
+				validatorsEntry.setRestrictor(txtFamily, "generic");
+				validatorsEntry.setRestrictor(txtDescription, "generic");
+				validatorsEntry.setRestrictor(txtUnit, "generic");
+				validatorsEntry.setRestrictor(txtObservation, "generic");
+				validatorsEntry.crearValidadorRestrictor("number",ValidadorDecimal.nombre, 10, 4);
+				validatorsEntry.setRestrictor(txtQuantity, "number");
 			}
 			
 			protected function responseSave_resultHandler(event:ResultEvent):void
@@ -390,11 +399,12 @@
 				if( item == null ){
 					return;
 				}
+				this.cmbStockType.dataProvider = [ this.cmbProduct.selectedItem ];
+				this.txtId.text = Util.extractToText(item,"id");
 				this.txtCode.text = Util.extractToText(item,"codigo");
 				this.txtFamily.text = this.findGrupoFamilia(item);
 				this.txtDescription.text = Util.extractToText(item,"descripcion");
 				this.txtUnit.text = this.findUnidad(item);
-				
 			}
 			
 			private function findGrupoFamilia(item:Object):String{
@@ -429,7 +439,7 @@
 					unidad = item["unidad"];
 				}else if( item.hasOwnProperty("unidadA") ){
 					unidad = item["unidadA"]["etiqueta"];
-				}else if( item.hasOwnProperty("unidadb") ){
+				}else if( item.hasOwnProperty("unidadB") ){
 					unidad = item["unidadB"]["etiqueta"];
 				}else if( item.hasOwnProperty("unidadC") ){
 					unidad = item["unidadC"]["etiqueta"];
@@ -439,7 +449,7 @@
 			
 			protected function btnAddItem_clickHandler(event:MouseEvent):void
 			{
-				var entry:PartidaRequisicionCompra = this.getValidEntry();
+				var entry:PartidaSolicitudAlmacen = this.getValidEntry();
 				if( entry == false ){
 					Util.showErrorMessage("Valide los campos de la Partida");
 					return;
@@ -447,19 +457,22 @@
 				this.itemsManagement.addItem( entry );
 			}
 			
-			private function getValidEntry():PartidaRequisicionCompra
+			private function getValidEntry():PartidaSolicitudAlmacen
 			{
-				var entry:PartidaRequisicionCompra = null;
+				var entry:PartidaSolicitudAlmacen = null;
 				if( !this.isValidEntry() ){
 					return entry;
 				}
-				entry = new PartidaRequisicionCompra();
+				entry = new PartidaSolicitudAlmacen();
+				entry.id = Util.validateEmpty( this.txtId.text );
+				entry.tipoAlmacen = this.cmbStockType.selectedItem as TipoAlmacen; 
 				entry.codigo = Util.validateEmpty( this.txtCode.text );
 				entry.grupoFamilia = Util.validateEmpty( this.txtFamily.text );
 				entry.descripcion = Util.validateEmpty( this.txtDescription.text );
 				entry.cantidad = Util.validateEmpty( this.txtQuantity.text );
 				entry.unidad = Util.validateEmpty( this.txtUnit.text );
-				//entry.validacion = Util.validateEmpty( this.txtValidation.text );
+				entry.regresoAlmacen = this.chkStockReturn.selected;
+				entry.observacion = Util.validateEmpty( this.txtObservation.text );
 				return entry;
 			}
 			
@@ -492,7 +505,9 @@
 	<mx:Form id="form">
 		<mx:FormItem id="frmItmCode" label="Folio:">
 			<components:TextInput id="txtFolio"
-								  textAlign="right"/>
+								  width="70"
+								  textAlign="right"
+								  editable="false"/>
 		</mx:FormItem>
 		<mx:FormItem label="Motivo:">
 			<components:TextInput id="txtMotive"/>
@@ -545,8 +560,14 @@
 			</mx:columns>
 		</mx:DataGrid>
 		<mx:FormItem label="Tipo Almacén:">
-			<components:TextInput id="txtStockType"
-								  editable="false"/>
+			<mx:ComboBox id="cmbStockType"
+						 labelField="etiqueta"/>
+		</mx:FormItem>
+		<mx:FormItem label="ID:">
+			<components:TextInput id="txtId"
+								  editable="false"
+								  width="70"
+								  textAlign="right"/>
 		</mx:FormItem>
 		<mx:FormItem label="Código:">
 			<components:TextInput id="txtCode"

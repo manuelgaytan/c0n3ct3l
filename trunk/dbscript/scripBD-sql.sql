@@ -1138,6 +1138,14 @@
 	PRIMARY KEY (id)
 	);
 
+	CREATE TABLE ComentarioConcentradoOrdenCompraCliente
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_concentrado_orden_compra_cliente INT(11) UNSIGNED NOT NULL,
+	fk_comentario_validacion_administrativa INT(11) UNSIGNED NOT NULL,
+	PRIMARY KEY (id)
+	);
+
 	ALTER TABLE Cliente ADD FOREIGN KEY id_contacto_idxfk (id_contacto) REFERENCES Contacto (id);
 
 	ALTER TABLE Proyecto ADD FOREIGN KEY id_categoria_proyecto_idxfk (id_categoria_proyecto) REFERENCES CategoriaProyecto (id);
@@ -1469,6 +1477,10 @@
 	ALTER TABLE ComentarioValidacionCostoOrdenCompraCliente ADD FOREIGN KEY fk_orden_compra_cliente_idxfk_1 (fk_orden_compra_cliente) REFERENCES OrdenCompraCliente (id);
 
 	ALTER TABLE ComentarioValidacionCostoOrdenCompraCliente ADD FOREIGN KEY fk_comentario_validacion_administrativa_idxfk_1 (fk_comentario_validacion_administrativa) REFERENCES ComentarioValidacionAdministrativa (id);
+
+	ALTER TABLE ComentarioConcentradoOrdenCompraCliente ADD FOREIGN KEY fk_concentrado_orden_compra_cliente_idxfk_1 (fk_concentrado_orden_compra_cliente) REFERENCES ConcentradoOrdenCompraCliente (id);
+
+	ALTER TABLE ComentarioConcentradoOrdenCompraCliente ADD FOREIGN KEY fk_comentario_validacion_administrativa_idxfk (fk_comentario_validacion_administrativa) REFERENCES ComentarioValidacionAdministrativa (id);
 
 	/* Perfiles */
 	INSERT INTO Perfil

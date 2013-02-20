@@ -177,6 +177,7 @@
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
 	requisicion VARCHAR(50) NOT NULL,
 	id_proyecto INT(11) UNSIGNED NOT NULL,
+	numero_requisicion_cliente VARCHAR(255),
 	PRIMARY KEY (id)
 	);
 
@@ -983,6 +984,160 @@
 	PRIMARY KEY (id)
 	);
 
+	CREATE TABLE MaterialSolicitudAlmacen
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_solicitud_almacen INT(11) UNSIGNED NOT NULL,
+	fk_material INT(11) UNSIGNED NOT NULL,
+	cantidad_solicitada DECIMAL(12,5) NOT NULL,
+	regreso_almacen BOOLEAN,
+	observacion VARCHAR(255),
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE ConsumibleSolicitudAlmacen
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_solicitud_almacen INT(11) UNSIGNED NOT NULL,
+	fk_consumible INT(11) UNSIGNED NOT NULL,
+	cantidad_solicitada DECIMAL(12,5) NOT NULL,
+	regreso_almacen BOOLEAN,
+	observacion VARCHAR(255),
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE TelefoniaMovilSolicitudAlmacen
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_solicitud_almacen INT(11) UNSIGNED NOT NULL,
+	fk_telefonia_movil INT(11) UNSIGNED NOT NULL,
+	cantidad_solicitada DECIMAL(12,5) NOT NULL,
+	regreso_almacen BOOLEAN,
+	observacion VARCHAR(255),
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE EquipoMedicionSolicitudAlmacen
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_solicitud_almacen INT(11) UNSIGNED NOT NULL,
+	fk_equipo_medicion INT(11) UNSIGNED NOT NULL,
+	cantidad_solicitada DECIMAL(12,5) NOT NULL,
+	regreso_almacen BOOLEAN,
+	observacion VARCHAR(255),
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE EquipoTransporteSolicitudAlmacen
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_solicitud_almacen INT(11) UNSIGNED NOT NULL,
+	fk_equipo_transporte INT(11) UNSIGNED NOT NULL,
+	cantidad_solicitada DECIMAL(12,5) NOT NULL,
+	regreso_almacen BOOLEAN,
+	observacion VARCHAR(255),
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE HardwareSolicitudAlmacen
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_solicitud_almacen INT(11) UNSIGNED NOT NULL,
+	fk_hardware INT(11) UNSIGNED NOT NULL,
+	cantidad_solicitada DECIMAL(12,5) NOT NULL,
+	regreso_almacen BOOLEAN,
+	observacion VARCHAR(255),
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE SoftwareSolicitudAlmacen
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_solicitud_almacen INT(11) UNSIGNED NOT NULL,
+	fk_software INT(11) UNSIGNED NOT NULL,
+	cantidad_solicitada DECIMAL(12,5) NOT NULL,
+	regreso_almacen BOOLEAN,
+	observacion VARCHAR(255),
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE EstadoValidacionCosto
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	estado VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+
+	CREATE TABLE ComentarioValidacionAdministrativa
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fecha DATE NOT NULL,
+	fk_usuario INT(11) UNSIGNED NOT NULL,
+	comentario VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE EstadoOrdenCompra
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	estado VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE OrdenCompraCliente
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_proyecto INT(11) UNSIGNED NOT NULL,
+	orden_compra BOOLEAN,
+	numero_orden_compra VARCHAR(255),
+	fecha_orden_compra DATE,
+	costo_orden_compra DECIMAL,
+	fk_validacion_costo INT(11) UNSIGNED,
+	fk_estado_orden_compra INT(11) UNSIGNED,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE ComentarioValidacionCostoOrdenCompraCliente
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_orden_compra_cliente INT(11) UNSIGNED NOT NULL,
+	fk_comentario_validacion_administrativa INT(11) UNSIGNED NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE ComentarioOrdenCompraCliente
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_orden_compra_cliente INT(11) UNSIGNED NOT NULL,
+	fk_comentario_validacion_administrativa INT(11) UNSIGNED NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE ConcentradoOrdenCompraCliente
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_cliente INT(11) UNSIGNED NOT NULL,
+	orden_compra VARCHAR(255) NOT NULL,
+	fecha_orden_compra DATE NOT NULL,
+	num_requisicion VARCHAR(255),
+	central_sitio VARCHAR(255),
+	id_sitio VARCHAR(255),
+	local_foraneo VARCHAR(255),
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE PartidaConcentradoOrdenCompraCliente
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_concentrado_orden_compra_cliente INT(11) UNSIGNED NOT NULL,
+	item INT(11) NOT NULL,
+	codigo VARCHAR(255) NOT NULL,
+	descripcion VARCHAR(255) NOT NULL,
+	precio_unitario DECIMAl NOT NULL,
+	PRIMARY KEY (id)
+	);
+
 	ALTER TABLE Cliente ADD FOREIGN KEY id_contacto_idxfk (id_contacto) REFERENCES Contacto (id);
 
 	ALTER TABLE Proyecto ADD FOREIGN KEY id_categoria_proyecto_idxfk (id_categoria_proyecto) REFERENCES CategoriaProyecto (id);
@@ -1267,6 +1422,53 @@
 
 	ALTER TABLE HerramientaSolicitudAlmacen ADD FOREIGN KEY fk_herramienta_idxfk (fk_herramienta) REFERENCES Herramienta (id);
 
+	ALTER TABLE MaterialSolicitudAlmacen ADD FOREIGN KEY fk_solicitud_almacen_idxfk_7 (fk_solicitud_almacen) REFERENCES SolicitudAlmacen (id);
+
+	ALTER TABLE MaterialSolicitudAlmacen ADD FOREIGN KEY fk_material_idxfk (fk_material) REFERENCES Material (id);
+
+	ALTER TABLE ConsumibleSolicitudAlmacen ADD FOREIGN KEY fk_solicitud_almacen_idxfk (fk_solicitud_almacen) REFERENCES SolicitudAlmacen (id);
+
+	ALTER TABLE ConsumibleSolicitudAlmacen ADD FOREIGN KEY fk_consumible_idxfk (fk_consumible) REFERENCES Consumible (id);
+
+	ALTER TABLE TelefoniaMovilSolicitudAlmacen ADD FOREIGN KEY fk_solicitud_almacen_idxfk_1 (fk_solicitud_almacen) REFERENCES SolicitudAlmacen (id);
+
+	ALTER TABLE TelefoniaMovilSolicitudAlmacen ADD FOREIGN KEY fk_telefonia_movil_idxfk (fk_telefonia_movil) REFERENCES TelefoniaMovil (id);
+
+	ALTER TABLE EquipoMedicionSolicitudAlmacen ADD FOREIGN KEY fk_solicitud_almacen_idxfk_2 (fk_solicitud_almacen) REFERENCES SolicitudAlmacen (id);
+
+	ALTER TABLE EquipoMedicionSolicitudAlmacen ADD FOREIGN KEY fk_equipo_medicion_idxfk (fk_equipo_medicion) REFERENCES EquipoMedicion (id);
+
+	ALTER TABLE EquipoTransporteSolicitudAlmacen ADD FOREIGN KEY fk_solicitud_almacen_idxfk_3 (fk_solicitud_almacen) REFERENCES SolicitudAlmacen (id);
+
+	ALTER TABLE EquipoTransporteSolicitudAlmacen ADD FOREIGN KEY fk_equipo_transporte_idxfk (fk_equipo_transporte) REFERENCES EquipoTransporte (id);
+
+	ALTER TABLE HardwareSolicitudAlmacen ADD FOREIGN KEY fk_solicitud_almacen_idxfk_4 (fk_solicitud_almacen) REFERENCES SolicitudAlmacen (id);
+
+	ALTER TABLE HardwareSolicitudAlmacen ADD FOREIGN KEY fk_hardware_idxfk (fk_hardware) REFERENCES Hardware (id);
+
+	ALTER TABLE SoftwareSolicitudAlmacen ADD FOREIGN KEY fk_solicitud_almacen_idxfk_5 (fk_solicitud_almacen) REFERENCES SolicitudAlmacen (id);
+
+	ALTER TABLE SoftwareSolicitudAlmacen ADD FOREIGN KEY fk_software_idxfk (fk_software) REFERENCES Software (id);
+
+	ALTER TABLE ComentarioValidacionAdministrativa ADD FOREIGN KEY fk_usuario_idxfk (fk_usuario) REFERENCES Usuario (id);
+
+	ALTER TABLE OrdenCompraCliente ADD FOREIGN KEY fk_proyecto_idxfk (fk_proyecto) REFERENCES Proyecto (id);
+
+	ALTER TABLE OrdenCompraCliente ADD FOREIGN KEY fk_validacion_costo_idxfk (fk_validacion_costo) REFERENCES EstadoValidacionCosto (id);
+
+	ALTER TABLE OrdenCompraCliente ADD FOREIGN KEY fk_estado_orden_compra_idxfk (fk_estado_orden_compra) REFERENCES EstadoOrdenCompra (id);
+
+	ALTER TABLE ConcentradoOrdenCompraCliente ADD FOREIGN KEY fk_cliente_idxfk (fk_cliente) REFERENCES Cliente (id);
+
+	ALTER TABLE PartidaConcentradoOrdenCompraCliente ADD FOREIGN KEY fk_concentrado_orden_compra_cliente_idxfk (fk_concentrado_orden_compra_cliente) REFERENCES ConcentradoOrdenCompraCliente (id);
+
+	ALTER TABLE ComentarioOrdenCompraCliente ADD FOREIGN KEY fk_orden_compra_cliente_idxfk (fk_orden_compra_cliente) REFERENCES OrdenCompraCliente (id);
+
+	ALTER TABLE ComentarioOrdenCompraCliente ADD FOREIGN KEY fk_comentario_validacion_administrativa_idxfk (fk_comentario_validacion_administrativa) REFERENCES ComentarioValidacionAdministrativa (id);
+
+	ALTER TABLE ComentarioValidacionCostoOrdenCompraCliente ADD FOREIGN KEY fk_orden_compra_cliente_idxfk_1 (fk_orden_compra_cliente) REFERENCES OrdenCompraCliente (id);
+
+	ALTER TABLE ComentarioValidacionCostoOrdenCompraCliente ADD FOREIGN KEY fk_comentario_validacion_administrativa_idxfk_1 (fk_comentario_validacion_administrativa) REFERENCES ComentarioValidacionAdministrativa (id);
 
 	/* Perfiles */
 	INSERT INTO Perfil

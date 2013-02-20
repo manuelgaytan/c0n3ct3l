@@ -111,6 +111,7 @@
 			import model.UnidadOrdenCompra;
 			import model.Usuario;
 			import model.Util;
+			import model.ValidacionProyecto;
 			
 			import mx.containers.Form;
 			import mx.containers.FormItem;
@@ -251,6 +252,7 @@
 			private var equipoMedicionSolicitudAlmacen:EquipoMedicionSolicitudAlmacen;
 			private var herramientaSolicitudAlmacen:HerramientaSolicitudAlmacen;
 			private var consumibleSolicitudAlmacen:ConsumibleSolicitudAlmacen;
+			private var validacionProyecto:ValidacionProyecto;
 			
 			protected function login_readyHandler(event:ModuleEvent):void
 			{

@@ -7,7 +7,7 @@
 		<![CDATA[
 			import events.GenericEvent;
 			
-			import model.ConfiguracionPruebaEntrega;
+			import model.Proyecto;
 			import model.Usuario;
 			
 			import mx.events.FlexEvent;
@@ -19,7 +19,7 @@
 			
 			protected function consult_projectValidationDetailHandler(event:GenericEvent):void
 			{
-				this.detail.projectValidation = event.information as model.ConfiguracionPruebaEntrega;
+				this.detail.projectValidation = event.information as model.Proyecto;
 				this.navigator.selectedChild = this.detail;
 			}
 			
@@ -38,8 +38,7 @@
 		]]>
 	</mx:Script>
 	<mx:TabNavigator id="navigator" width="100%" height="100%" creationPolicy="all">
-		<validacionesproyectos:Consult id="consult" generalDataProjectDetail="consult_projectValidationDetailHandler(event)"/>
+		<validacionesproyectos:Consult id="consult" itemDetail="consult_projectValidationDetailHandler(event)"/>
 		<validacionesproyectos:ProjectValidation id="detail" update="true" projectValidationUpdated="detail_projectValidationUpdatedHandler(event)"/>
-		<validacionesproyectos:ProjectValidation id="register" registrer="true" projectValidationNew="register_projectValidationNewHandler(event)"/>
 	</mx:TabNavigator>
 </mx:Module>

@@ -7,6 +7,8 @@
 			import events.GenericEvent;
 			
 			import model.ConfiguracionPruebaEntrega;
+			import model.FiltroProyecto;
+			import model.Proyecto;
 			import model.Util;
 			
 			import mx.collections.ArrayCollection;
@@ -17,13 +19,13 @@
 			import mx.rpc.events.ResultEvent;
 			
 			[Bindable]
-			private var generalDataProjects:ArrayCollection = null;
+			private var items:ArrayCollection = null;
 			
 			private var configuracionPruebaEntrega:ConfiguracionPruebaEntrega;
 			
 			protected function responseGetAll_resultHandler(event:ResultEvent):void
 			{
-				generalDataProjects = event.result as ArrayCollection;
+				items = event.result as ArrayCollection;
 			}
 			
 			protected function datosGeneralesProyectoService_faultHandler(event:FaultEvent):void
@@ -45,24 +47,35 @@
 				if( event.currentTarget.selectedItem == null ){
 					return;
 				}
-				var generalDataProject:ConfiguracionPruebaEntrega = this.datagrid.selectedItem as ConfiguracionPruebaEntrega;
-				this.responseGetDatosGeneralesProyecto.token = this.configuracionPruebaEntregaService.getConfigPruebaEntrega( generalDataProject.id );
+				var item:Proyecto = this.datagrid.selectedItem as Proyecto;
+				this.responseGetProyecto.token = this.proyectoService.getProyecto( item.id );
 			}
 			
-			protected function responseGetDatosGeneralesProyecto_resultHandler(event:ResultEvent):void
+			protected function responseGetItem_resultHandler(event:ResultEvent):void
 			{
-				var generalDataProject:ConfiguracionPruebaEntrega = event.result as ConfiguracionPruebaEntrega;
-				if( generalDataProject == null ){
+				var item:Proyecto = event.result as Proyecto;
+				if( item == null ){
 					return;
 				}
-				var genericEvent:GenericEvent = new GenericEvent("generalDataProjectDetail");
-				genericEvent.information = generalDataProject;
+				var genericEvent:GenericEvent = new GenericEvent("itemDetail");
+				genericEvent.information = item;
 				this.dispatchEvent( genericEvent );
 			}
 			
 			public function executeQuery():void
 			{
-				this.responseGetAll.token = this.configuracionPruebaEntregaService.getAll();
+				var filter:FiltroProyecto = new FiltroProyecto();
+				filter.idConectel = "1";
+				filter.idCategoria = undefined;
+				filter.idCliente = undefined;
+				filter.tipoProyecto = undefined;
+				filter.tecnologia = undefined;
+				filter.equipo = undefined;
+				filter.actividadRealizar = undefined;
+				filter.modelo = undefined;
+				filter.descripcionServicio = undefined;
+				filter.tipoServicio = undefined;
+				this.responseGetAllByFiltro.token = this.proyectoService.getAllByFiltro(filter);
 			}
 			
 			private function labelFunctionDate(object:Object, column:DataGridColumn):String{
@@ -75,16 +88,16 @@
 		]]>
 	</mx:Script>
 	<mx:Metadata>
-		[Event(name="generalDataProjectDetail", type="events.GenericEvent")]
+		[Event(name="itemDetail", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:VBox width="{parent.parent.width-5}" height="100%">
-	<mx:DataGrid id="datagrid" width="2000" height="100%" dataProvider="{generalDataProjects}"
+	<mx:DataGrid id="datagrid" width="2000" height="100%" dataProvider="{items}"
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 				 allowMultipleSelection="true"
 				 >
 		<mx:columns>
 			<mx:DataGridColumn id="dtgProjectID" headerText="{'ID\nProyecto'}"
-							   dataField="proyecto.id"
+							   dataField="id"
 							   labelFunction="labelFunctionIDProyecto"
 							   width="130"/>
 			<mx:DataGridColumn id="dtgProjectState" headerText="{'Validación\nProyecto'}"
@@ -115,40 +128,15 @@
 							   width="80"/>
 			<mx:DataGridColumn id="dtgServiceType" headerText="{'Tipo de\nServicio'}"
 							   dataField="producto.tipoServicio"
-							   />
-			<mx:DataGridColumn id="dtgSite" headerText="{'Central\nó Sitio'}"
-							   dataField="producto.tipoServicio"
-							   />
-			<mx:DataGridColumn id="dtgDivision" headerText="{'División\no Región'}"
-							   dataField="divisionRegion"
-							   width="70"/>
-			<mx:DataGridColumn id="dtgArea" headerText="{'Area/GOA'}"
-							   dataField="areaGoa"
-							   width="120"/>
-			<mx:DataGridColumn id="dtgFinalClient" headerText="{'Cliente Final'}"
-							   dataField="clienteFinal"
-							   width="110"/>
-			<mx:DataGridColumn id="dtgConectelResponsable" headerText="{'Responsable\nConectel'}"
-							   dataField="reponsableConectel.nombreCompleto"
-							   width="105"/>
-			<mx:DataGridColumn id="dtgImplementationResponsable" headerText="{'Responsable\nImplementación'}"
-							   dataField="responsableImpl.nombreCompleto"
-							   width="105"/>
-			<mx:DataGridColumn id="dtgStartDateReal" headerText="{'Fecha\nInicio\nReal'}"
-							   dataField="fechaInicioReal"
-							   width="100"/>
-			<mx:DataGridColumn id="dtgEndDateReal" headerText="{'Fecha\nFin\nReal'}"
-							   dataField="fechaTerminoReal"
-							   textAlign="center"
-							   width="100"/>	
+							   />	
 		</mx:columns>
 	</mx:DataGrid>
 	</mx:VBox>
 	<mx:HBox>
 		<!--<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>-->
 	</mx:HBox>
-	<mx:RemoteObject id="configuracionPruebaEntregaService" destination="configuracionPruebaEntregaService" fault="datosGeneralesProyectoService_faultHandler(event)"
+	<mx:RemoteObject id="proyectoService" destination="proyectoService" fault="datosGeneralesProyectoService_faultHandler(event)"
 					 showBusyCursor="true"/>
-	<mx:CallResponder id="responseGetAll" result="responseGetAll_resultHandler(event)"/>
-	<mx:CallResponder id="responseGetDatosGeneralesProyecto" result="responseGetDatosGeneralesProyecto_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetAllByFiltro" result="responseGetAll_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetProyecto" result="responseGetItem_resultHandler(event)"/>
 </mx:VBox>

@@ -16,6 +16,7 @@ package model
 		public var proyectoEntregables:ArrayCollection; //ProyectoEntregableDO
 		public var proyectoPadreHijo:ProyectoPadreHijo;
 		public var estadoSolicitudServicioMaquilado:EstadoSolicitudServicioMaquilado;
+		public var validacionProyecto:ValidacionProyecto;
 		
 		public function Proyecto()
 		{

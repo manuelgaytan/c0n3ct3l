@@ -15,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -45,7 +46,7 @@ public class ValidacionProyectoDO implements Serializable {
 	@JoinColumn(name = "fk_estado_validacion_operativa")
 	private EstadoValidacionOperativaDO estadoValidacionOperativa;
 
-	@ManyToOne
+	@OneToOne
 	@JoinColumn(name = "fk_proyecto")
 	private ProyectoDO proyecto;
 

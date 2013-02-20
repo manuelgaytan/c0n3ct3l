@@ -53,6 +53,9 @@ public class ProyectoDO implements Serializable {
 	@OneToOne(mappedBy="proyecto")
 	private ProyectoPadreHijoDO proyectoPadreHijo;
 	
+	@OneToOne(mappedBy="proyecto")
+	private ValidacionProyectoDO validacionProyecto;
+	
 	public ProyectoDO() {
 	}
 
@@ -144,5 +147,13 @@ public class ProyectoDO implements Serializable {
 	public void setEstadoSolicitudServicioMaquilado(
 			EstadoSolicitudServicioMaquiladoDO estadoSolicitudServicioMaquilado) {
 		this.estadoSolicitudServicioMaquilado = estadoSolicitudServicioMaquilado;
+	}
+
+	public ValidacionProyectoDO getValidacionProyecto() {
+		return validacionProyecto;
+	}
+
+	public void setValidacionProyecto(ValidacionProyectoDO validacionProyecto) {
+		this.validacionProyecto = validacionProyecto;
 	}
 }

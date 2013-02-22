@@ -10,8 +10,15 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
-import mx.com.gahm.conenctel.entities.NombreSolicitanteDO;
+import mx.com.gahm.conenctel.entities.ConsumibleSolicitudAlmacenDO;
+import mx.com.gahm.conenctel.entities.EquipoMedicionSolicitudAlmacenDO;
+import mx.com.gahm.conenctel.entities.EquipoTransporteSolicitudAlmacenDO;
+import mx.com.gahm.conenctel.entities.HardwareSolicitudAlmacenDO;
+import mx.com.gahm.conenctel.entities.HerramientaSolicitudAlmacenDO;
+import mx.com.gahm.conenctel.entities.MaterialSolicitudAlmacenDO;
+import mx.com.gahm.conenctel.entities.SoftwareSolicitudAlmacenDO;
 import mx.com.gahm.conenctel.entities.SolicitudAlmacenDO;
+import mx.com.gahm.conenctel.entities.TelefoniaMovilSolicitudAlmacenDO;
 import mx.com.gahm.conenctel.exceptions.ConectelException;
 import mx.com.gahm.conenctel.services.ISolicitudAlmacenService;
 import mx.com.gahm.conenctel.util.DataTypeUtil;
@@ -53,13 +60,63 @@ public class SolicitudAlmacenService implements ISolicitudAlmacenService {
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public SolicitudAlmacenDO save(SolicitudAlmacenDO item) {
-		if (item.getNombresSolicitantes() != null) {
-			for (NombreSolicitanteDO current:item.getNombresSolicitantes()) {
-				entityManager.persist(current);
-			}
-		}
+		
 		entityManager.persist(item);
-		return null;
+		/*
+
+
+
+		 */
+		
+		if(item.getHerramientasSolicitudAlmacen()!=null && 
+				!item.getHerramientasSolicitudAlmacen().isEmpty()){
+			for (HerramientaSolicitudAlmacenDO dato : item.getHerramientasSolicitudAlmacen()) {
+				dato.setSolicitudAlmacen(item);	
+			}
+		}else
+			if(item.getSoftwareSolicitudAlmacen()!=null && 
+				!item.getSoftwareSolicitudAlmacen().isEmpty()){
+			for (SoftwareSolicitudAlmacenDO dato : item.getSoftwareSolicitudAlmacen()) {
+				dato.setSolicitudAlmacen(item);	
+			}
+		}else
+			if(item.getConsumiblesSolicitudAlmacen()!=null && 
+				!item.getConsumiblesSolicitudAlmacen().isEmpty()){
+			for (ConsumibleSolicitudAlmacenDO dato : item.getConsumiblesSolicitudAlmacen()) {
+				dato.setSolicitudAlmacen(item);	
+			}
+		}else
+			if(item.getHardwareSolicitudAlmacen()!=null && 
+				!item.getHardwareSolicitudAlmacen().isEmpty()){
+			for (HardwareSolicitudAlmacenDO dato : item.getHardwareSolicitudAlmacen()) {
+				dato.setSolicitudAlmacen(item);	
+			}
+		}else
+			if(item.getTelefoniaMovilSolicitudAlmacen()!=null && 
+				!item.getTelefoniaMovilSolicitudAlmacen().isEmpty()){
+			for (TelefoniaMovilSolicitudAlmacenDO dato : item.getTelefoniaMovilSolicitudAlmacen()) {
+				dato.setSolicitudAlmacen(item);	
+			}
+		}else
+			if(item.getEquipoMedicionSolicitudAlmacen()!=null && 
+				!item.getEquipoMedicionSolicitudAlmacen().isEmpty()){
+			for (EquipoMedicionSolicitudAlmacenDO dato : item.getEquipoMedicionSolicitudAlmacen()) {
+				dato.setSolicitudAlmacen(item);	
+			}
+		}else
+			if(item.getEquipoTransporteSolicitudAlmacen()!=null && 
+				!item.getEquipoTransporteSolicitudAlmacen().isEmpty()){
+				for (EquipoTransporteSolicitudAlmacenDO dato : item.getEquipoTransporteSolicitudAlmacen()) {
+					dato.setSolicitudAlmacen(item);	
+				}
+		}else
+			if(item.getMaterialesSolicitudAlmacen()!=null && 
+				!item.getMaterialesSolicitudAlmacen().isEmpty()){
+				for (MaterialSolicitudAlmacenDO dato : item.getMaterialesSolicitudAlmacen()) {
+					dato.setSolicitudAlmacen(item);	
+				}
+			}
+			return null;
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)

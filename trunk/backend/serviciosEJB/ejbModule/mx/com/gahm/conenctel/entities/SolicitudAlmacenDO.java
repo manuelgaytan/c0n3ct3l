@@ -75,7 +75,32 @@ public class SolicitudAlmacenDO implements Serializable {
 	
 	@Column(name="recibe")
 	private String recibe;
+	
+	@OneToMany(mappedBy="solicitudAlmacen", fetch = FetchType.EAGER)
+	private List<HerramientaSolicitudAlmacenDO> herramientasSolicitudAlmacen;
 
+	@OneToMany(mappedBy="solicitudAlmacen", fetch = FetchType.EAGER)
+	private List<HardwareSolicitudAlmacenDO> hardwareSolicitudAlmacen;
+	
+	@OneToMany(mappedBy="solicitudAlmacen", fetch = FetchType.EAGER)
+	private List<SoftwareSolicitudAlmacenDO> softwareSolicitudAlmacen;
+	
+	@OneToMany(mappedBy="solicitudAlmacen", fetch = FetchType.EAGER)
+	private List<ConsumibleSolicitudAlmacenDO> consumiblesSolicitudAlmacen;
+	
+	@OneToMany(mappedBy="solicitudAlmacen", fetch = FetchType.EAGER)
+	private List<TelefoniaMovilSolicitudAlmacenDO> telefoniaMovilSolicitudAlmacen;
+	
+	@OneToMany(mappedBy="solicitudAlmacen", fetch = FetchType.EAGER)
+	private List<MaterialSolicitudAlmacenDO> materialesSolicitudAlmacen;
+	
+	@OneToMany(mappedBy="solicitudAlmacen", fetch = FetchType.EAGER)
+	private List<EquipoTransporteSolicitudAlmacenDO> equipoTransporteSolicitudAlmacen;
+	
+	@OneToMany(mappedBy="solicitudAlmacen", fetch = FetchType.EAGER)
+	private List<EquipoMedicionSolicitudAlmacenDO> equipoMedicionSolicitudAlmacen;
+	
+	
 	public SolicitudAlmacenDO() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -197,6 +222,78 @@ public class SolicitudAlmacenDO implements Serializable {
 
 	public void setRecibe(String recibe) {
 		this.recibe = recibe;
+	}
+
+	public List<HerramientaSolicitudAlmacenDO> getHerramientasSolicitudAlmacen() {
+		return herramientasSolicitudAlmacen;
+	}
+
+	public void setHerramientasSolicitudAlmacen(
+			List<HerramientaSolicitudAlmacenDO> herramientasSolicitudAlmacen) {
+		this.herramientasSolicitudAlmacen = herramientasSolicitudAlmacen;
+	}
+
+	public List<HardwareSolicitudAlmacenDO> getHardwareSolicitudAlmacen() {
+		return hardwareSolicitudAlmacen;
+	}
+
+	public void setHardwareSolicitudAlmacen(
+			List<HardwareSolicitudAlmacenDO> hardwareSolicitudAlmacen) {
+		this.hardwareSolicitudAlmacen = hardwareSolicitudAlmacen;
+	}
+
+	public List<SoftwareSolicitudAlmacenDO> getSoftwareSolicitudAlmacen() {
+		return softwareSolicitudAlmacen;
+	}
+
+	public void setSoftwareSolicitudAlmacen(
+			List<SoftwareSolicitudAlmacenDO> softwareSolicitudAlmacen) {
+		this.softwareSolicitudAlmacen = softwareSolicitudAlmacen;
+	}
+
+	public List<ConsumibleSolicitudAlmacenDO> getConsumiblesSolicitudAlmacen() {
+		return consumiblesSolicitudAlmacen;
+	}
+
+	public void setConsumiblesSolicitudAlmacen(
+			List<ConsumibleSolicitudAlmacenDO> consumiblesSolicitudAlmacen) {
+		this.consumiblesSolicitudAlmacen = consumiblesSolicitudAlmacen;
+	}
+
+	public List<TelefoniaMovilSolicitudAlmacenDO> getTelefoniaMovilSolicitudAlmacen() {
+		return telefoniaMovilSolicitudAlmacen;
+	}
+
+	public void setTelefoniaMovilSolicitudAlmacen(
+			List<TelefoniaMovilSolicitudAlmacenDO> telefoniaMovilSolicitudAlmacen) {
+		this.telefoniaMovilSolicitudAlmacen = telefoniaMovilSolicitudAlmacen;
+	}
+
+	public List<MaterialSolicitudAlmacenDO> getMaterialesSolicitudAlmacen() {
+		return materialesSolicitudAlmacen;
+	}
+
+	public void setMaterialesSolicitudAlmacen(
+			List<MaterialSolicitudAlmacenDO> materialesSolicitudAlmacen) {
+		this.materialesSolicitudAlmacen = materialesSolicitudAlmacen;
+	}
+
+	public List<EquipoTransporteSolicitudAlmacenDO> getEquipoTransporteSolicitudAlmacen() {
+		return equipoTransporteSolicitudAlmacen;
+	}
+
+	public void setEquipoTransporteSolicitudAlmacen(
+			List<EquipoTransporteSolicitudAlmacenDO> equipoTransporteSolicitudAlmacen) {
+		this.equipoTransporteSolicitudAlmacen = equipoTransporteSolicitudAlmacen;
+	}
+
+	public List<EquipoMedicionSolicitudAlmacenDO> getEquipoMedicionSolicitudAlmacen() {
+		return equipoMedicionSolicitudAlmacen;
+	}
+
+	public void setEquipoMedicionSolicitudAlmacen(
+			List<EquipoMedicionSolicitudAlmacenDO> equipoMedicionSolicitudAlmacen) {
+		this.equipoMedicionSolicitudAlmacen = equipoMedicionSolicitudAlmacen;
 	}
 	
 	

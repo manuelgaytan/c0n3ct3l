@@ -30,6 +30,7 @@
 			private var _filter:FiltroProducto;
 			private var loadFile:LoadFile;
 			private var typeImportFile:String = "IMPORT-PRODUCTS";
+			private var _preciarios:Boolean = false;
 			
 			protected function responseGetAll_resultHandler(event:ResultEvent):void
 			{
@@ -43,6 +44,9 @@
 			
 			protected function creationCompleteHandler(event:FlexEvent):void
 			{
+				if( this._preciarios ){
+					
+				}
 			}
 			
 			protected function datagrid_doubleClickHandler(event:MouseEvent):void
@@ -172,6 +176,10 @@
 			private function labelFunctionCurrency(object:Object, column:DataGridColumn):String{
 				return Util.formatCurrency(Util.extractObject(object,column.dataField));
 			}
+			
+			public function set preciarios(value:Boolean):void{
+				this._preciarios = true;
+			}
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -201,11 +209,13 @@
 			<mx:DataGridColumn id="dtgLocalCostCustomer" headerText="{'Costo\nLocal\nCliente'}" textAlign="right"
 							   dataField="costoLocalCliente"
 							   labelFunction="{Util.labelFunctionCurrency}"
-							   width="85"/>
+							   width="85"
+							   visible="{!this._preciarios}"/>
 			<mx:DataGridColumn id="dtgForaneoCostCustomer" headerText="{'Costo\nForaneo\nCliente'}" textAlign="right"
 							   dataField="costoForaneoCliente"
 							   labelFunction="{Util.labelFunctionCurrency}"
-							   width="85"/>
+							   width="85"
+							   visible="{!this._preciarios}"/>
 			<mx:DataGridColumn id="dtgLocalCostSupplier" headerText="{'Costo\nLocal\nProveedor'}" textAlign="right"
 							   dataField="costoLocalProveedor"
 							   labelFunction="{Util.labelFunctionCurrency}"

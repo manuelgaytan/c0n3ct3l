@@ -23,6 +23,7 @@
 			private var mode:String = null;
 			private var _product:Producto;
 			private var validators:InicializaValidadoresEtiquetas;
+			private var _preciarios:Boolean = false;
 			
 			public function set registrer(value:Boolean):void{
 				mode = Constants.REGISTER_MODE;
@@ -32,6 +33,12 @@
 			public function set update(value:Boolean):void{
 				mode = Constants.UPDATE_MODE;
 				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set preciarios(value:Boolean):void{
+				this._preciarios = true;
+				mode = Constants.DETAIL_MODE;
+				this.label = Constants.DETALLE;
 			}
 			
 			public function set enabledComponents(value:Boolean):void{
@@ -240,6 +247,11 @@
 				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
 			}
 			
+			protected function btnPrint_clickHandler(event:MouseEvent):void
+			{
+				Alert.show("En construccion ...","Info");
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -272,10 +284,16 @@
 		<mx:FormItem label="Tipo de Servicio:">
 			<components:TextInput id="txtServiceType" width="250"/>
 		</mx:FormItem>
-		<mx:FormItem label="Costo Local Cliente:">
+		<mx:FormItem label="Costo Local Cliente:"
+					 id="frmItmLocalCostCustomer"
+					 includeInLayout="{!this._preciarios}"
+					 visible="{!this._preciarios}">
 			<components:TextInput id="txtLocalCostCustomer" width="150" textAlign="right"/>
 		</mx:FormItem>
-		<mx:FormItem label="Costo Foraneo Cliente:">
+		<mx:FormItem label="Costo Foraneo Cliente:"
+					 id="frmItmForaneoCostCustomer"
+					 includeInLayout="{!this._preciarios}"
+					 visible="{!this._preciarios}">
 			<components:TextInput id="txtForaneoCostCustomer" width="150" textAlign="right"/>
 		</mx:FormItem>
 		<mx:FormItem label="Costo Local Proveedor:">
@@ -287,8 +305,11 @@
 		<mx:FormItem label="Días de Implementación:">
 			<components:TextInput id="txtImplementationDays" width="150" textAlign="right"/>
 		</mx:FormItem>
-		<mx:FormItem>
-			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
+		<mx:FormItem direction="horizontal">
+			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"
+					   visible="{!this._preciarios}"/>
+			<mx:Button id="btnPrint" label="Imprimir" click="btnPrint_clickHandler(event)"
+					   visible="{this._preciarios}"/>
 		</mx:FormItem>
 	</mx:Form>
 	<mx:RemoteObject id="productoService" destination="productoService" fault="productoService_faultHandler(event)"

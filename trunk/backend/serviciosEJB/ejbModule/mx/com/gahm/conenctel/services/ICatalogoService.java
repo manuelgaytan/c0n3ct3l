@@ -121,5 +121,6 @@ public interface ICatalogoService extends Serializable {
 	
 	List<EstadoSolicitudAlmacenDO> getEstadoSolicitudAlmacen() throws ConectelException;
 	List<TipoEmpleadoDO> getTipoEmpleado() throws ConectelException;
+	public List<ColaboradorDO> getColaboradorByTipoColaborador(Long idTipoColaborador) throws ConectelException;
 
 }

@@ -565,4 +565,19 @@ public class CatalogoService implements ICatalogoService {
 		}
 		return datos;
 	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<ColaboradorDO> getColaboradorByTipoColaborador(Long idTipoColaborador) throws ConectelException {
+		TypedQuery<ColaboradorDO> query = entityManager.createNamedQuery(
+				"ColaboradorDO.getColaboradorByTipo", ColaboradorDO.class);
+		
+		query.setParameter("idTipoColaborado", idTipoColaborador);
+		List<ColaboradorDO> colaboradorList;
+		try {
+			colaboradorList = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen Colaborador registrados.");
+		}
+		return colaboradorList;
+	}
 }

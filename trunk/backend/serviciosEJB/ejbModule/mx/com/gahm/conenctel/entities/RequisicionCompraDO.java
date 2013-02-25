@@ -37,14 +37,24 @@ public class RequisicionCompraDO implements java.io.Serializable {
 	@Column(name = "fecha_solicitud", nullable = false, length = 10)
 	@Temporal(javax.persistence.TemporalType.DATE)
 	private Date fechaSolicitud;
+	@Column(name = "motivo", nullable = false)
 	private String motivo;
+	@ManyToOne
+	@JoinColumn(name = "fk_prioridad", nullable = false)
 	private PrioridadDO prioridad;
+	@ManyToOne
+	@JoinColumn(name = "fk_area_solicitante", nullable = false)
 	private AreaSolicitanteDO areaSolicitante;
 	@Column(name = "central_sitio", nullable = false)
 	private String centralSitio;
+	@ManyToOne
+	@JoinColumn(name = "fk_estatus", nullable = false)
 	private EstatusRequisicionCompraDO estatusRequisicionCompra;
+	@OneToMany(mappedBy="requisicionCompra", fetch = FetchType.EAGER)
 	private List<SolicitanteRequisicionDO> solicitantesRequisicion;
+	@OneToMany(mappedBy="requisicionCompra", fetch = FetchType.EAGER)
     private List<PartidaRequisicionCompraDO> partidasRequisicionCompra;
+	@OneToMany(mappedBy="requisicionCompra", fetch = FetchType.EAGER)
     private List<ComentarioRequisicionDO> comentariosRequisicion;
     
 	public RequisicionCompraDO() {
@@ -97,7 +107,7 @@ public class RequisicionCompraDO implements java.io.Serializable {
 		this.fechaSolicitud = fechaSolicitud;
 	}
 
-	@Column(name = "motivo", nullable = false)
+	
 	public String getMotivo() {
 		return this.motivo;
 	}
@@ -106,8 +116,7 @@ public class RequisicionCompraDO implements java.io.Serializable {
 		this.motivo = motivo;
 	}
 
-	@ManyToOne
-	@JoinColumn(name = "fk_prioridad", nullable = false)
+	
 	public PrioridadDO getPrioridad() {
 		return this.prioridad;
 	}
@@ -116,8 +125,7 @@ public class RequisicionCompraDO implements java.io.Serializable {
 		this.prioridad = prioridad;
 	}
 
-	@ManyToOne
-	@JoinColumn(name = "fk_area_solicitante", nullable = false)
+	
 	public AreaSolicitanteDO getAreaSolicitante() {
 		return this.areaSolicitante;
 	}
@@ -134,8 +142,7 @@ public class RequisicionCompraDO implements java.io.Serializable {
 		this.centralSitio = centralSitio;
 	}
 
-	@ManyToOne
-	@JoinColumn(name = "fk_estatus", nullable = false)
+	
 	public EstatusRequisicionCompraDO getEstatusRequisicionCompra() {
 		return this.estatusRequisicionCompra;
 	}
@@ -145,7 +152,7 @@ public class RequisicionCompraDO implements java.io.Serializable {
 		this.estatusRequisicionCompra = estatusRequisicionCompra;
 	}
 	
-	@OneToMany(mappedBy="requisicionCompra", fetch = FetchType.EAGER)
+	
 	public List<PartidaRequisicionCompraDO> getPartidasReqisicionCompra() {
 		return partidasRequisicionCompra;
 	}

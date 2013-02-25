@@ -23,6 +23,7 @@
 			import mx.controls.Alert;
 			import mx.events.CloseEvent;
 			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
 			import mx.rpc.events.FaultEvent;
 			import mx.rpc.events.ResultEvent;
 			
@@ -81,10 +82,17 @@
 					this.cmbConectelResponsable.selectedIndex = Util.selectedIndexFromCombo( this.cmbConectelResponsable.dataProvider as ArrayCollection, 
 					this._generalDataProject.reponsableConectel.id);
 				}
+				if( Util.isFill( this.cmbColaboratorType ) && Util.extractObject(this._generalDataProject,"responsableImpl.tipoColaborador") != null ){
+					this.cmbColaboratorType.selectedIndex = Util.selectedIndexFromCombo( this.cmbColaboratorType.dataProvider as ArrayCollection, 
+						this._generalDataProject.responsableImpl.tipoColaborador.id);
+					this.cmbColaboratorType.dispatchEvent( new ListEvent(ListEvent.CHANGE) );
+				}
+				/*
 				if( Util.isFill( this.cmbImplementationResponsable ) && !(this._generalDataProject.responsableImpl == null) ){
 					this.cmbImplementationResponsable.selectedIndex = Util.selectedIndexFromCombo( this.cmbImplementationResponsable.dataProvider as ArrayCollection, 
 						this._generalDataProject.responsableImpl.id);
 				}
+				*/
 				if( Util.isFill( this.cmbMaterial ) && !(this._generalDataProject.material == null) ){
 					this.cmbMaterial.selectedIndex = Util.selectedIndexFromCombo( this.cmbMaterial.dataProvider as ArrayCollection, 
 						this._generalDataProject.material.id);
@@ -155,7 +163,8 @@
 			private function fillCombos():void
 			{
 				this.responseGetResponsableConectel.token = this.colaboradorService.getColaborador();
-				this.responseGetResponsableImplementacion.token = this.colaboradorService.getColaborador();
+				this.responseGetTipoColaborador.token = this.catalogoService.getTipoColaborador();
+				//this.responseGetResponsableImplementacion.token = this.colaboradorService.getColaborador();
 				this.responseGetAplica.token = this.catalogoService.getAplica();
 			}
 			
@@ -178,7 +187,7 @@
 					return;
 				}
 				this.cmbImplementationResponsable.dataProvider = Util.addEmptyCatalgo( data, "nombreCompleto" );
-				if( Util.extractObject(this._generalDataProject,"responsableImplementacion") != null ){
+				if( Util.extractObject(this._generalDataProject,"responsableImpl") != null ){
 					this.cmbImplementationResponsable.selectedIndex = Util.selectedIndexFromCombo( this.cmbImplementationResponsable.dataProvider as ArrayCollection, 
 						this._generalDataProject.responsableImpl.id);
 				}
@@ -392,6 +401,28 @@
 				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
 			}
 			
+			protected function responseGetTipoColaborador_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbColaboratorType.dataProvider = Util.addEmptyCatalgo( data, "tipo" );
+				if( Util.extractObject(this._generalDataProject,"responsableImpl") != null ){
+					this.cmbColaboratorType.selectedIndex = Util.selectedIndexFromCombo( this.cmbColaboratorType.dataProvider as ArrayCollection, 
+						this._generalDataProject.responsableImpl.tipoColaborador.id);
+				}
+			}
+			
+			protected function cmbColaboratorType_changeHandler(event:ListEvent):void
+			{
+				var idColaboratorType:* = Util.selectedId( this.cmbColaboratorType );
+				if( idColaboratorType == undefined ){
+					return;
+				}
+				this.responseGetResponsableImplementacion.token = this.colaboradorService.getColaborador();//idColaboratorType
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -446,7 +477,11 @@
 			<mx:ComboBox id="cmbConectelResponsable" width="400"
 						 labelField="nombreCompleto"/>
 		</mx:FormItem>
-		<mx:FormItem label="Responsable Implementación:">
+		<mx:FormItem label="Responsable Implementación:"
+					 direction="horizontal">
+			<mx:ComboBox id="cmbColaboratorType" width="200"
+						 labelField="tipo"
+						 change="cmbColaboratorType_changeHandler(event)"/>
 			<mx:ComboBox id="cmbImplementationResponsable" width="400"
 						 labelField="nombreCompleto"/>
 		</mx:FormItem>
@@ -504,4 +539,5 @@
 	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="catalogoService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetAplica" result="responseGetAplica_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetTipoColaborador" result="responseGetTipoColaborador_resultHandler(event)"/>
 </mx:VBox>

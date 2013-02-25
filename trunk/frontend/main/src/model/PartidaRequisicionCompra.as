@@ -6,14 +6,15 @@ package model
 	public class PartidaRequisicionCompra
 	{
 		public var id:*;
-		public var requisicionCompra:Requisicion;
+		public var requisicionCompra:RequisicionCompra;
 		public var codigo:String;
 		public var grupoFamilia:String;
 		public var descripcion:String;
 		public var cantidad:String;
 		public var unidad:String;
 		public var validacion:String;
-		public var estatusRequisicionCompra:EstatusRequisicionCompra;
+		public var fkEstatus:Number;
+		//public var estatusRequisicionCompra:EstatusRequisicionCompra;
 		
 		public function PartidaRequisicionCompra()
 		{

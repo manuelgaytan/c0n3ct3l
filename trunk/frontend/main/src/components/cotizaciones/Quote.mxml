@@ -122,6 +122,7 @@
 			{
 				var value:Boolean = true;
 				value &&= this.validators.validarFormulario();
+				value &&= this.dlvFileName.existElements();
 				return value;
 			}
 			

@@ -25,28 +25,18 @@
 		]]>
 	</mx:Script>
 	<mx:columns>
-		<mx:DataGridColumn id="dtgItemCode" headerText="Código"
+		<mx:DataGridColumn id="dtgItemCode" headerText="Ítem"
 						   dataField="codigo"
 						   width="80"/>
-		<mx:DataGridColumn id="dtgItemFamily" headerText="{'Grupo o\nFamilia'}"
+		<mx:DataGridColumn id="dtgItemFamily" headerText="Código"
 						   width="100"
 						   dataField="grupoFamilia"/>
 		<mx:DataGridColumn id="dtgItemDescription" headerText="Descripción"
 						   dataField="descripcion"
 						   width="160"/>
-		<mx:DataGridColumn id="dtgItemQuantity" headerText="Cantidad"
+		<mx:DataGridColumn id="dtgItemQuantity" headerText="{'Precio\nUnitario'}"
 						   dataField="cantidad"
 						   width="60"
 						   textAlign="right"/>
-		<mx:DataGridColumn id="dtgItemUnit" headerText="Unidad"
-						   dataField="unidad"
-						   width="60"
-						   textAlign="right"/>
-		<mx:DataGridColumn id="dtgItemValidation" headerText="Validación"
-						   dataField="validacion"
-						   width="80"/>
-		<mx:DataGridColumn id="dtgItemEstatus" headerText="Estatus"
-						   dataField="fkEstatus"
-						   width="80"/>
 	</mx:columns>
 </mx:DataGrid>	

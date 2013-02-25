@@ -162,9 +162,8 @@
 			
 			private function fillCombos():void
 			{
-				this.responseGetResponsableConectel.token = this.colaboradorService.getColaborador();
+				this.responseGetResponsableConectel.token = this.catalogoService.getColaboradorByTipoColaborador(2);
 				this.responseGetTipoColaborador.token = this.catalogoService.getTipoColaborador();
-				//this.responseGetResponsableImplementacion.token = this.colaboradorService.getColaborador();
 				this.responseGetAplica.token = this.catalogoService.getAplica();
 			}
 			
@@ -420,7 +419,7 @@
 				if( idColaboratorType == undefined ){
 					return;
 				}
-				this.responseGetResponsableImplementacion.token = this.colaboradorService.getColaborador();//idColaboratorType
+				this.responseGetResponsableImplementacion.token = this.catalogoService.getColaboradorByTipoColaborador(idColaboratorType);
 			}
 			
 		]]>

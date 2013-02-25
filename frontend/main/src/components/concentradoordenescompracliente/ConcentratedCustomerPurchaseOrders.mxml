@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)" xmlns:requisicionescompra="components.requisicionescompra.*"
+		 >
+	<mx:Script>
+		<![CDATA[
+			import components.equiposmedicion.Consult;
+			import components.equipostransporte.Consult;
+			import components.hardware.Consult;
+			import components.herramientas.Consult;
+			import components.materiales.Consult;
+			import components.software.Consult;
+			import components.solicitudalmacen.Consult;
+			import components.telefoniamovil.Consult;
+			
+			import model.AreaSolicitante;
+			import model.Catalogo;
+			import model.Colaborador;
+			import model.Constants;
+			import model.EstatusRequisicionCompra;
+			import model.PartidaRequisicionCompra;
+			import model.Perfil;
+			import model.Prioridad;
+			import model.RequisicionCompra;
+			import model.TipoAlmacen;
+			import model.TipoMantenimiento;
+			import model.Util;
+			
+			import modules.Almacen;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.com.gahm.componentes.validadores.ValidadorNumerico;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.utils.object_proxy;
+			
+			private var mode:String = null;
+			private var _item:RequisicionCompra;
+			private var validators:InicializaValidadoresEtiquetas;
+			private var validatorsEntry:InicializaValidadoresEtiquetas;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				this.label = Constants.REGISTRAR;
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set purchaseRequisition(value:RequisicionCompra):void{
+				if( value == null ){
+					return;
+				}
+				this._item = value;
+				this.setPurchaseRequisition(); 
+			}
+			
+			private function setPurchaseRequisition():void
+			{
+				if( this._item == null ){
+					return;
+				}
+				/*
+				this.txtID.text = this._item.id;
+				this.dtfApplicationDate.selectedDate = this._item.fechaSolicitud;
+				this.txtReason.text = this._item.motivo;
+				if( Util.isFill( this.cmbPriority ) && this._item.prioridad != null ){
+					this.cmbPriority.selectedIndex = Util.selectedIndexFromCombo( this.cmbPriority.dataProvider as ArrayCollection, 
+						this._item.prioridad.id);
+				}
+				
+				this.cmbApplicantsNames.list = this._item.solicitantesRequisicion;
+				if( Util.isFill( this.cmbApplicantArea ) && this._item.areaSolicitante != null ){
+					this.cmbApplicantArea.selectedIndex = Util.selectedIndexFromCombo( this.cmbApplicantArea.dataProvider as ArrayCollection, 
+						this._item.areaSolicitante.id);
+				}
+				this.txtSite.text = this._item.centralSitio;
+				this.itemsManagement.dataProvider = this._item.partidasRequisicionCompra;
+				if( Util.isFill( this.cmbStatus ) && this._item.estatusRequisicionCompra != null ){
+					this.cmbStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbStatus.dataProvider as ArrayCollection, 
+						this._item.estatusRequisicionCompra.id);
+				}		
+				this.comments.comments = this._item.comentariosRequisicion;
+				*/
+			}
+			
+			private function getPurchaseRequisition():RequisicionCompra{
+				var item:RequisicionCompra = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					item = new RequisicionCompra();
+				}else{
+					item = this._item;
+				}
+				/*
+				item.fechaSolicitud= this.dtfApplicationDate.selectedDate;
+				item.motivo= Util.validateEmpty( this.txtReason.text );
+				item.prioridad = Util.validateCombo( this.cmbPriority ) as Prioridad;
+				item.areaSolicitante = Util.validateCombo( this.cmbApplicantArea ) as AreaSolicitante;
+				item.centralSitio = Util.validateEmpty( this.txtSite.text );
+				item.estatusRequisicionCompra = Util.validateCombo( this.cmbStatus ) as EstatusRequisicionCompra;
+				item.solicitantesRequisicion = this.cmbApplicantsNames.list;
+				item.partidasRequisicionCompra = this.itemsManagement.dataProvider as ArrayCollection;
+				item.comentariosRequisicion = this.comments.comments;
+				*/
+				return item;
+			}
+			
+			private function fillCombos():void
+			{
+				this.responseGetPrioridad.token = this.catalogoService.getPrioridad();
+				this.responseGetAreaSolicitante.token = this.catalogoService.getAreaSolicitante();
+				
+			}
+			
+			protected function responseGetPrioridad_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbPriority.dataProvider = data; //Util.addEmptyCatalgo( data );
+				if( this._item != null && this._item.prioridad != null ){
+					this.cmbPriority.selectedIndex = Util.selectedIndexFromCombo( this.cmbPriority.dataProvider as ArrayCollection, 
+						this._item.prioridad.id);
+				}
+			}
+			
+			protected function requisicionService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function btnAccept_clickHandler(event:MouseEvent):void
+			{
+				if( !this.validations() ){
+					Util.showMessageVerifyFields();
+					return;
+				}
+				if( this.mode == Constants.REGISTER_MODE ){
+					var purchaseRequisition:RequisicionCompra = this.getPurchaseRequisition();
+					Util.showProperties( purchaseRequisition );
+					this.responseSave.token = this.requisicionService.save( purchaseRequisition );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
+				}
+			}
+			
+			private function updateItem(event:CloseEvent):void{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var purchaseRequisition:RequisicionCompra = this.getPurchaseRequisition();
+				Util.showProperties( purchaseRequisition );
+				this.responseUpdate.token = this.requisicionService.update( purchaseRequisition );
+			}
+			
+			private function validations():Boolean
+			{
+				var value:Boolean = true;
+				value &&= this.validators.validarFormulario();
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+					form.removeChild( this.frmID );
+				}
+			}
+			
+			private function initializeValidators():void
+			{
+				this.validators = new InicializaValidadoresEtiquetas();
+				validators.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
+				validators.setRestrictor(txtReason, "generic");
+				validators.setRestrictor(txtSite, "generic");
+				this.validatorsEntry = new InicializaValidadoresEtiquetas();
+				validatorsEntry.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
+				validatorsEntry.setValidador(txtDescription, "generic");
+				validatorsEntry.setValidador(txtQuantity, "generic");
+				/*
+				validatorsEntry.setRestrictor(txtUnit, "generic");
+				validatorsEntry.setRestrictor(txtValidation, "generic");
+				*/
+			}
+			
+			protected function responseSave_resultHandler(event:ResultEvent):void
+			{
+				var eventPurchaseRequisitionNew:Event = new Event("purchaseRequisitionNew");
+				this.dispatchEvent( eventPurchaseRequisitionNew );
+				this.cleanForm();
+			}
+			
+			private function cleanForm():void
+			{
+				this.txtID.reset();
+				this.dtfApplicationDate.reset();
+				this.txtReason.reset();
+				this.cmbPriority.selectedIndex = 0;
+				/*
+				this.cmbApplicantArea.selectedIndex = 0;
+				this.cmbApplicantArea.selectedIndex = 0;
+				this.txtSite.reset();
+				this.cmbProduct.selectedIndex = 0;
+				this.dtgProducts.doubleClickEnabled = true;
+				this.chkOthres.selected = false;
+				Util.removeItems(this.dtgProducts.dataProvider);
+				this.txtCode.reset();
+				this.txtFamily.reset();
+				this.txtDescription.reset();
+				this.txtQuantity.reset();
+				this.txtUnit.reset();
+				this.txtValidation.reset();
+				this.itemsManagement.reset();
+				//this.cmbItemStatus.selectedIndex = 0;
+				this.cmbStatus.selectedIndex = 0;
+				*/
+				this.comments.reset();
+			}
+			
+			protected function responseUpdate_resultHandler(event:ResultEvent):void
+			{
+				var eventPurchaseRequisitionUpdated:Event = new Event("purchaseRequisitionUpdated");
+				this.dispatchEvent( eventPurchaseRequisitionUpdated );
+				this.cleanForm();
+			}
+			
+			protected function responseGetAreaSolicitante_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				//this.cmbApplicantArea.dataProvider = data; //Util.addEmptyCatalgo( data );
+			}
+			
+			protected function catalogoService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="purchaseRequisitionNew", type="flash.events.Event")]
+		[Event(name="purchaseRequisitionUpdated", type="flash.events.Event")]
+	</mx:Metadata>
+	<mx:Form id="form">
+		<mx:FormItem id="frmID" label="ID:">
+			<components:TextInput id="txtID" editable="false"
+								  textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Cliente:">
+			<mx:ComboBox id="cmbPriority"
+						 labelField="etiqueta"
+						 />
+		</mx:FormItem>
+		<mx:FormItem label="Orden de Compra:">
+			<components:TextInput id="txtReason"
+								  />
+		</mx:FormItem>
+		<mx:FormItem label="Fecha de Orden de Compra:">
+			<components:DateField id="dtfApplicationDate" creationComplete="dtfApplicationDate.selectedDate = new Date()"/>
+		</mx:FormItem>
+		<mx:FormItem label="Número de Requisición:">
+			<components:TextInput id="txtRequisitionNumber"
+								  />
+		</mx:FormItem>
+		<requisicionescompra:ItemsManagement id="itemsManagement"/>
+		<mx:FormItem label="Sitio:">
+			<components:TextInput id="txtSite"/>
+		</mx:FormItem>
+		<mx:FormItem label="ID Sitio:">
+			<components:TextInput id="txtSiteID"
+								  />
+		</mx:FormItem>
+		<mx:FormItem label="Local/Foráneo:">
+			<components:TextInput id="txtDescription"
+								  width="120"
+								  />
+		</mx:FormItem>
+		<mx:FormItem label="Condiciones de Pago:">
+			<components:TextInput id="txtQuantity"
+								  textAlign="right"
+								  width="400"
+								  />
+		</mx:FormItem>
+		<components:Comments id="comments"/>
+		<mx:FormItem>
+			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:RemoteObject id="requisicionService" destination="requisicionCompraService" fault="requisicionService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
+	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
+	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="catalogoService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetPrioridad" result="responseGetPrioridad_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetAreaSolicitante" result="responseGetAreaSolicitante_resultHandler(event)"/>
+	<mx:RemoteObject id="telefoniaMovilService" destination="telefoniaMovilService" fault="requisicionService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:RemoteObject id="solicitudAlmacenService" destination="solicitudAlmacenService" fault="requisicionService_faultHandler(event)"
+					 showBusyCursor="true"/>	
+	<mx:RemoteObject id="softwareService" destination="softwareService" fault="requisicionService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:RemoteObject id="materialService" destination="materialService" fault="requisicionService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:RemoteObject id="herramientaService" destination="herramientaService" fault="requisicionService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:RemoteObject id="hardwareService" destination="hardwareService" fault="requisicionService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:RemoteObject id="equipoTransporteService" destination="equipoTransporteService" fault="requisicionService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:RemoteObject id="equipoMedicionService" destination="equipoMedicionService" fault="requisicionService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:RemoteObject id="consumibleService" destination="consumibleService" fault="requisicionService_faultHandler(event)"
+					 showBusyCursor="true"/>
+</mx:VBox>

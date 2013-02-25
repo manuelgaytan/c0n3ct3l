@@ -23,6 +23,17 @@
 			private var proyecto:Proyecto;
 			private var _filter:FiltroProyecto;
 			
+			public function selectedProyect():Proyecto
+			{
+				var project:Proyecto = this.datagrid.selectedItem as Proyecto;
+				return project;
+			}
+			
+			public function setDataGridData(datas:ArrayCollection):void
+			{
+				projects = datas;
+			}
+			
 			protected function responseGetAll_resultHandler(event:ResultEvent):void
 			{
 				projects = event.result as ArrayCollection;
@@ -119,6 +130,9 @@
 			<mx:DataGridColumn id="dtgForaneoCost" headerText="{'Costo\nForaneo'}" textAlign="right"
 							   dataField="producto.costoForaneoCliente"
 							   labelFunction="{Util.labelFunctionCurrency}"/>
+			<mx:DataGridColumn id="dtgSite" headerText="{'Central\no Sitio'}" textAlign="right"
+							   dataField="centralSitio"
+							   />
 		</mx:columns>
 	</mx:DataGrid>
 	<mx:HBox>

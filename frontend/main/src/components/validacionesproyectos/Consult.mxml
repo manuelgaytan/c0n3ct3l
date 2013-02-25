@@ -65,7 +65,7 @@
 			public function executeQuery():void
 			{
 				var filter:FiltroProyecto = new FiltroProyecto();
-				filter.idConectel = "1";
+				filter.idConectel = null;
 				filter.idCategoria = undefined;
 				filter.idCliente = undefined;
 				filter.tipoProyecto = undefined;

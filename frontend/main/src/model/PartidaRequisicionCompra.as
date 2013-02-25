@@ -13,7 +13,7 @@ package model
 		public var cantidad:String;
 		public var unidad:String;
 		public var validacion:String;
-		public var fkEstatus:Number;
+		public var fkEstatus:Number = 1;
 		//public var estatusRequisicionCompra:EstatusRequisicionCompra;
 		
 		public function PartidaRequisicionCompra()

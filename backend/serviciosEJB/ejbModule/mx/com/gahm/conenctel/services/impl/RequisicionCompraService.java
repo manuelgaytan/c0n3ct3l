@@ -79,7 +79,9 @@ public class RequisicionCompraService  implements IRequisicionCompraService{
 	}
 	
 	private void savePartidas(Integer idRequisicionCompra,List<PartidaRequisicionCompraDO> partidas){
-		
+		if( partidas == null ){
+			return;
+		}
 		for (PartidaRequisicionCompraDO partida : partidas) {
 			partida.setRequisicionCompra(new RequisicionCompraDO());
 			partida.getRequisicionCompra().setId(idRequisicionCompra);

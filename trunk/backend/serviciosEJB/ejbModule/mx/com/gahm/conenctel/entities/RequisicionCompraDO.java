@@ -106,7 +106,6 @@ public class RequisicionCompraDO implements java.io.Serializable {
 	public void setFechaSolicitud(Date fechaSolicitud) {
 		this.fechaSolicitud = fechaSolicitud;
 	}
-
 	
 	public String getMotivo() {
 		return this.motivo;
@@ -115,7 +114,6 @@ public class RequisicionCompraDO implements java.io.Serializable {
 	public void setMotivo(String motivo) {
 		this.motivo = motivo;
 	}
-
 	
 	public PrioridadDO getPrioridad() {
 		return this.prioridad;
@@ -125,7 +123,6 @@ public class RequisicionCompraDO implements java.io.Serializable {
 		this.prioridad = prioridad;
 	}
 
-	
 	public AreaSolicitanteDO getAreaSolicitante() {
 		return this.areaSolicitante;
 	}
@@ -142,7 +139,6 @@ public class RequisicionCompraDO implements java.io.Serializable {
 		this.centralSitio = centralSitio;
 	}
 
-	
 	public EstatusRequisicionCompraDO getEstatusRequisicionCompra() {
 		return this.estatusRequisicionCompra;
 	}
@@ -152,23 +148,22 @@ public class RequisicionCompraDO implements java.io.Serializable {
 		this.estatusRequisicionCompra = estatusRequisicionCompra;
 	}
 	
-	
-	public List<PartidaRequisicionCompraDO> getPartidasReqisicionCompra() {
+	public List<PartidaRequisicionCompraDO> getPartidasRequisicionCompra() {
 		return partidasRequisicionCompra;
 	}
 
-	public void setPartidasReqisicionCompra(
-			List<PartidaRequisicionCompraDO> partidasReqisicionCompra) {
-		this.partidasRequisicionCompra = partidasReqisicionCompra;
+	public void setPartidasRequisicionCompra(
+			List<PartidaRequisicionCompraDO> partidasRequisicionCompra) {
+		this.partidasRequisicionCompra = partidasRequisicionCompra;
 	}
 
 	public List<SolicitanteRequisicionDO> getSolicitanteRequisicion() {
 		return solicitantesRequisicion;
 	}
 
-	public void setSolicitanteRequisicion(
-			List<SolicitanteRequisicionDO> solicitanteRequisicion) {
-		this.solicitantesRequisicion = solicitanteRequisicion;
+	public void setSolicitantesRequisicion(
+			List<SolicitanteRequisicionDO> solicitantesRequisicion) {
+		this.solicitantesRequisicion = solicitantesRequisicion;
 	}
 
 	public List<ComentarioRequisicionDO> getComentariosRequisicion() {
@@ -179,6 +174,4 @@ public class RequisicionCompraDO implements java.io.Serializable {
 			List<ComentarioRequisicionDO> comentariosRequisicion) {
 		this.comentariosRequisicion = comentariosRequisicion;
 	}
-
-
 }

@@ -34,6 +34,7 @@ import mx.com.gahm.conenctel.entities.PrioridadDO;
 import mx.com.gahm.conenctel.entities.SeguimientoDO;
 import mx.com.gahm.conenctel.entities.ServicioSolicitadoDO;
 import mx.com.gahm.conenctel.entities.TipoAlmacenDO;
+import mx.com.gahm.conenctel.entities.TipoColaboradorDO;
 import mx.com.gahm.conenctel.entities.TipoContratoDO;
 import mx.com.gahm.conenctel.entities.TipoEmpleadoDO;
 import mx.com.gahm.conenctel.entities.TipoMantenimientoDO;
@@ -550,6 +551,21 @@ public class CatalogoService implements ICatalogoService {
 		return datos;
 	}
 	
+	public List<TipoColaboradorDO> getTipoColaborador() throws ConectelException {
+
+		List<TipoColaboradorDO> datos = null;
+
+		TypedQuery<TipoColaboradorDO> query = entityManager
+				.createNamedQuery("TipoColaboradorDO.findAll",
+						TipoColaboradorDO.class);
+
+		try {
+			datos = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen informaci˜n para mostrar.");
+		}
+		return datos;
+	}
 	public List<TipoEmpleadoDO> getTipoEmpleado() throws ConectelException {
 
 		List<TipoEmpleadoDO> datos = null;

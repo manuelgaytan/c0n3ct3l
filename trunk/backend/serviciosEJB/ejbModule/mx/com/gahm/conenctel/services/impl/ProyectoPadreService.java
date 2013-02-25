@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 import mx.com.gahm.conenctel.entities.ProyectoPadreDO;
+import mx.com.gahm.conenctel.entities.ProyectoPadreHijoDO;
 import mx.com.gahm.conenctel.services.IProyectoPadreService;
 
 @Stateless(mappedName = "ejb/ProyectoPadreService")
@@ -54,6 +55,12 @@ public class ProyectoPadreService implements IProyectoPadreService{
 	public ProyectoPadreDO getItem(Integer id) {
 		ProyectoPadreDO proyecto = entityManager.find(ProyectoPadreDO.class,id);
 		return proyecto;
+	}
+
+	@Override
+	public ProyectoPadreHijoDO getItemHijo(Integer id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	

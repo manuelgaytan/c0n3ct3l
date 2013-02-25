@@ -30,40 +30,44 @@ public class RequisicionCompraDO implements java.io.Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 221968463812549205L;
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "id", unique = true, nullable = false)
 	private Integer id;
+	@Column(name = "fecha_solicitud", nullable = false, length = 10)
+	@Temporal(javax.persistence.TemporalType.DATE)
 	private Date fechaSolicitud;
 	private String motivo;
 	private PrioridadDO prioridad;
 	private AreaSolicitanteDO areaSolicitante;
+	@Column(name = "central_sitio", nullable = false)
 	private String centralSitio;
-	private String codigo;
-	private String grupoFamilia;
-	private String descripcion;
-	private String cantidad;
-	private String validacion;
 	private EstatusRequisicionCompraDO estatusRequisicionCompra;
-    private List<PartidaRequisicionCompraDO> partidasReqisicionCompra; 
-	
+	private List<SolicitanteRequisicionDO> solicitantesRequisicion;
+    private List<PartidaRequisicionCompraDO> partidasRequisicionCompra;
+    private List<ComentarioRequisicionDO> comentariosRequisicion;
+    
 	public RequisicionCompraDO() {
 	}
 
+	/** full constructor */
 	public RequisicionCompraDO(Date fechaSolicitud, String motivo,
 			PrioridadDO prioridad, AreaSolicitanteDO areaSolicitante,
-			String centralSitio, String descripcion, String cantidad,
-			String validacion,
-			EstatusRequisicionCompraDO estatusRequisicionCompra) {
+			String centralSitio,
+			EstatusRequisicionCompraDO estatusRequisicionCompra,
+			List<SolicitanteRequisicionDO> solicitanteRequisicion,
+			List<PartidaRequisicionCompraDO> partidasRequisicionCompra
+			) {
 		this.fechaSolicitud = fechaSolicitud;
 		this.motivo = motivo;
 		this.prioridad = prioridad;
 		this.areaSolicitante = areaSolicitante;
 		this.centralSitio = centralSitio;
-		this.descripcion = descripcion;
-		this.cantidad = cantidad;
-		this.validacion = validacion;
 		this.estatusRequisicionCompra = estatusRequisicionCompra;
+		this.solicitantesRequisicion = solicitanteRequisicion;
+		this.partidasRequisicionCompra = partidasRequisicionCompra;
 	}
 
-	/** full constructor */
 	public RequisicionCompraDO(Date fechaSolicitud, String motivo,
 			PrioridadDO prioridad, AreaSolicitanteDO areaSolicitante,
 			String centralSitio, String codigo, String grupoFamilia,
@@ -74,17 +78,9 @@ public class RequisicionCompraDO implements java.io.Serializable {
 		this.prioridad = prioridad;
 		this.areaSolicitante = areaSolicitante;
 		this.centralSitio = centralSitio;
-		this.codigo = codigo;
-		this.grupoFamilia = grupoFamilia;
-		this.descripcion = descripcion;
-		this.cantidad = cantidad;
-		this.validacion = validacion;
 		this.estatusRequisicionCompra = estatusRequisicionCompra;
 	}
 
-	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "id", unique = true, nullable = false)
 	public Integer getId() {
 		return this.id;
 	}
@@ -93,8 +89,6 @@ public class RequisicionCompraDO implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@Temporal(TemporalType.DATE)
-	@Column(name = "fecha_solicitud", nullable = false, length = 10)
 	public Date getFechaSolicitud() {
 		return this.fechaSolicitud;
 	}
@@ -132,58 +126,12 @@ public class RequisicionCompraDO implements java.io.Serializable {
 		this.areaSolicitante = areaSolicitante;
 	}
 
-	@Column(name = "central_sitio", nullable = false)
 	public String getCentralSitio() {
 		return this.centralSitio;
 	}
 
 	public void setCentralSitio(String centralSitio) {
 		this.centralSitio = centralSitio;
-	}
-
-	@Column(name = "codigo")
-	public String getCodigo() {
-		return this.codigo;
-	}
-
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
-	}
-
-	@Column(name = "grupo_familia")
-	public String getGrupoFamilia() {
-		return this.grupoFamilia;
-	}
-
-	public void setGrupoFamilia(String grupoFamilia) {
-		this.grupoFamilia = grupoFamilia;
-	}
-
-	@Column(name = "descripcion", nullable = false)
-	public String getDescripcion() {
-		return this.descripcion;
-	}
-
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
-	}
-
-	@Column(name = "cantidad", nullable = false)
-	public String getCantidad() {
-		return this.cantidad;
-	}
-
-	public void setCantidad(String cantidad) {
-		this.cantidad = cantidad;
-	}
-
-	@Column(name = "validacion", nullable = false)
-	public String getValidacion() {
-		return this.validacion;
-	}
-
-	public void setValidacion(String validacion) {
-		this.validacion = validacion;
 	}
 
 	@ManyToOne
@@ -199,12 +147,30 @@ public class RequisicionCompraDO implements java.io.Serializable {
 	
 	@OneToMany(mappedBy="requisicionCompra", fetch = FetchType.EAGER)
 	public List<PartidaRequisicionCompraDO> getPartidasReqisicionCompra() {
-		return partidasReqisicionCompra;
+		return partidasRequisicionCompra;
 	}
 
 	public void setPartidasReqisicionCompra(
 			List<PartidaRequisicionCompraDO> partidasReqisicionCompra) {
-		this.partidasReqisicionCompra = partidasReqisicionCompra;
+		this.partidasRequisicionCompra = partidasReqisicionCompra;
+	}
+
+	public List<SolicitanteRequisicionDO> getSolicitanteRequisicion() {
+		return solicitantesRequisicion;
+	}
+
+	public void setSolicitanteRequisicion(
+			List<SolicitanteRequisicionDO> solicitanteRequisicion) {
+		this.solicitantesRequisicion = solicitanteRequisicion;
+	}
+
+	public List<ComentarioRequisicionDO> getComentariosRequisicion() {
+		return comentariosRequisicion;
+	}
+
+	public void setComentariosRequisicion(
+			List<ComentarioRequisicionDO> comentariosRequisicion) {
+		this.comentariosRequisicion = comentariosRequisicion;
 	}
 
 

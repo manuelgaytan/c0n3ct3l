@@ -4,6 +4,7 @@ package mx.com.gahm.conenctel.entities;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
@@ -16,7 +17,9 @@ import javax.persistence.Table;
 @Table(name = "PartidaRequisicionCompra", catalog = "conectel")
 public class PartidaRequisicionCompraDO implements java.io.Serializable {
 
-
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "id", unique = true, nullable = false)
 	private Integer id;
 	@ManyToOne
 	@JoinColumn(name="fk_requisicion_compra")
@@ -55,9 +58,6 @@ public class PartidaRequisicionCompraDO implements java.io.Serializable {
 		this.fkEstatus = fkEstatus;
 	}
 
-	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "id", unique = true, nullable = false)
 	public Integer getId() {
 		return this.id;
 	}

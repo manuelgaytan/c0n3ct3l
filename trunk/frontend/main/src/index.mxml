@@ -95,6 +95,7 @@
 			import model.Software;
 			import model.SoftwareSolicitudAlmacen;
 			import model.SolicitudAlmacen;
+			import model.SolicitudServicioMaquilado;
 			import model.TelefoniaMovil;
 			import model.TelefoniaMovilSolicitudAlmacen;
 			import model.TipoAlmacen;
@@ -253,6 +254,7 @@
 			private var herramientaSolicitudAlmacen:HerramientaSolicitudAlmacen;
 			private var consumibleSolicitudAlmacen:ConsumibleSolicitudAlmacen;
 			private var validacionProyecto:ValidacionProyecto;
+			private var solicitudServicioMaquilado:SolicitudServicioMaquilado;
 			
 			protected function login_readyHandler(event:ModuleEvent):void
 			{

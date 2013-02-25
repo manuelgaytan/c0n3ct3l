@@ -22,6 +22,24 @@
 			
 			private var proyectoPadre:ProyectoPadre;
 			
+			[Bindable]
+			private var _consultOnly:Boolean = false;
+			
+			public function set consultOnly(value:Boolean):void{
+				this._consultOnly = value;
+			}
+			
+			public function selectedParentProyect():ProyectoPadre
+			{
+				var item:ProyectoPadre = this.datagrid.selectedItem as ProyectoPadre;
+				return item;
+			}
+			
+			public function setDataGridData(datas:ArrayCollection):void
+			{
+				items = datas;
+			}
+			
 			protected function responseGetAll_resultHandler(event:ResultEvent):void
 			{
 				items = event.result as ArrayCollection;
@@ -128,7 +146,8 @@
 		</mx:columns>
 	</mx:DataGrid>
 	<mx:HBox>
-		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>
+		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"
+				   visible="{!this._consultOnly}"/>
 	</mx:HBox>
 	<mx:RemoteObject id="proyectoPadreService" destination="proyectoPadreService" fault="proyectoPadreService_faultHandler(event)"
 					 showBusyCursor="true"/>

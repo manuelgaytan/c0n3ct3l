@@ -517,5 +517,14 @@ package model
 		public static function labelFunctionDate(object:Object, column:DataGridColumn):String{
 			return Util.formatDateToString( object[column.dataField] );
 		}
+		
+		public static function asArrayCollection(object:Object){
+			if( object == null ){
+				return null;
+			}
+			var arrayCollection:ArrayCollection = new ArrayCollection();
+			arrayCollection.addItem( object );
+			return arrayCollection;
+		}
 	}
 }

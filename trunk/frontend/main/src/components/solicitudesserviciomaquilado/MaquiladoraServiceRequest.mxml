@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)" xmlns:proyectospadres="components.proyectospadres.*" xmlns:proyectos="components.proyectos.*"
+		 >
+	<mx:Script>
+		<![CDATA[
+			import model.Constants;
+			import model.FiltroProyecto;
+			import model.SolicitudServicioMaquilado;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.com.gahm.componentes.validadores.ValidadorNumerico;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.utils.object_proxy;
+			
+			private var mode:String = null;
+			private var _item:SolicitudServicioMaquilado;
+			private var validators:InicializaValidadoresEtiquetas;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				this.label = Constants.REGISTRAR;
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set maquiladoraServiceRequest(value:SolicitudServicioMaquilado):void{
+				if( value == null ){
+					return;
+				}
+				this._item = value;
+				this.setMaquiladoraServiceRequest(); 
+			}
+			
+			private function setMaquiladoraServiceRequest():void
+			{
+				if( this._item == null ){
+					return;
+				}
+				this.txtID.text = String(this._item.id);
+				this.dtfDate.selectedDate = this._item.fecha;
+				this.parentProjectsConsult.setDataGridData( Util.asArrayCollection(this._item.proyectoPadre) );
+				this.projectsConsult.setDataGridData( Util.asArrayCollection(this._item.proyecto) );
+				this.comments.comments = this._item.comentariosSolicitudServicioMaquilado;
+			}
+			
+			private function getMaquiladoraServiceRequest():SolicitudServicioMaquilado{
+				var item:SolicitudServicioMaquilado = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					item = new SolicitudServicioMaquilado();
+				}else{
+					item = this._item;
+				}
+				item.fecha = this.dtfDate.selectedDate;
+				item.proyectoPadre = this.parentProjectsConsult.selectedParentProyect();
+				item.proyecto = this.projectsConsult.selectedProyect();
+				item.comentariosSolicitudServicioMaquilado = this.comments.comments;
+				return item;
+			}
+			
+			private function fillCombos():void
+			{
+				this.executeProjectQuery();
+			}
+			
+			protected function SolicitudServicioMaquiladoService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function btnAccept_clickHandler(event:MouseEvent):void
+			{
+				if( !this.validations() ){
+					Util.showMessageVerifyFields();
+					return;
+				}
+				if( this.mode == Constants.REGISTER_MODE ){
+					var maquiladoraServiceRequest:SolicitudServicioMaquilado = this.getMaquiladoraServiceRequest();
+					Util.showProperties( maquiladoraServiceRequest );
+					this.responseSave.token = this.solicitudServicioMaquiladoService.save( maquiladoraServiceRequest );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
+				}
+			}
+			
+			private function updateItem(event:CloseEvent):void{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var maquiladoraServiceRequest:SolicitudServicioMaquilado = this.getMaquiladoraServiceRequest();
+				Util.showProperties( maquiladoraServiceRequest );
+				this.responseUpdate.token = this.solicitudServicioMaquiladoService.update( maquiladoraServiceRequest );
+			}
+			
+			private function validations():Boolean
+			{
+				var value:Boolean = true;
+				value &&= this.validators.validarFormulario();
+				value &&= !(this.dtfDate.selectedDate == null);
+				value &&= ( !(this.parentProjectsConsult.selectedParentProyect() == null) ||
+						  	!(this.projectsConsult.selectedProyect() == null) );
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+					form.removeChild( this.frmID );
+				}
+			}
+			
+			private function initializeValidators():void
+			{
+				this.validators = new InicializaValidadoresEtiquetas();
+			}
+			
+			protected function responseSave_resultHandler(event:ResultEvent):void
+			{
+				var eventMaquiladoraServiceRequestNew:Event = new Event("maquiladoraServiceRequestNew");
+				this.dispatchEvent( eventMaquiladoraServiceRequestNew );
+				this.cleanForm();
+			}
+			
+			private function cleanForm():void
+			{
+				this.txtID.reset();
+				this.dtfDate.reset();
+				this.parentProjectsConsult.setDataGridData( new ArrayCollection() );
+				this.projectsConsult.setDataGridData( new ArrayCollection() );
+				this.comments.reset();
+			}
+			
+			protected function responseUpdate_resultHandler(event:ResultEvent):void
+			{
+				var eventMaquiladoraServiceRequestUpdated:Event = new Event("maquiladoraServiceRequestUpdated");
+				this.dispatchEvent( eventMaquiladoraServiceRequestUpdated );
+				this.cleanForm();
+			}
+			
+			protected function catalogoService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			private function executeProjectQuery():void
+			{
+				var filter:FiltroProyecto = new FiltroProyecto();
+				filter.idConectel = null;
+				filter.idCategoria = undefined;
+				filter.idCliente = undefined;
+				filter.tipoProyecto = undefined;
+				filter.tecnologia = undefined;
+				filter.equipo = undefined;
+				filter.actividadRealizar = undefined;
+				filter.modelo = undefined;
+				filter.descripcionServicio = undefined;
+				filter.tipoServicio = undefined;
+				this.responseGetAllByFiltro.token = this.proyectoService.getAllByFiltro(filter);
+			}
+			
+			protected function responseGetAll_resultHandler(event:ResultEvent):void
+			{
+				projectsConsult.setDataGridData( event.result as ArrayCollection );
+			}
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="maquiladoraServiceRequestNew", type="flash.events.Event")]
+		[Event(name="maquiladoraServiceRequestUpdated", type="flash.events.Event")]
+	</mx:Metadata>
+	<mx:Form id="form">
+		<mx:FormItem label="ID:" id="frmID">
+			<components:TextInput id="txtID" textAlign="right" editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha:">
+			<components:DateField id="dtfDate"/>
+		</mx:FormItem>
+		<proyectospadres:Consult id="parentProjectsConsult" width="500" consultOnly="true"/>
+		<proyectos:Consult id="projectsConsult"/>
+		<components:Comments id="comments" includeInLayout="false" visible="false"/>
+		<mx:FormItem>
+			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:RemoteObject id="solicitudServicioMaquiladoService" destination="solicitudServicioMaquilado" fault="SolicitudServicioMaquiladoService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
+	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
+	<mx:RemoteObject id="proyectoService" destination="proyectoService" fault="SolicitudServicioMaquiladoService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetAllByFiltro" result="responseGetAll_resultHandler(event)"/>
+</mx:VBox>

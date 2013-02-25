@@ -1,15 +1,18 @@
 package mx.com.gahm.conenctel.entities;
 
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-
 
 @Entity
 @Table(name = "SolicitanteRequisicion")
@@ -23,10 +26,18 @@ public class SolicitanteRequisicionDO implements java.io.Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 5103801106130001615L;
+	
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "id", unique = true, nullable = false)
 	private Integer id;
+	
 	@ManyToOne
 	@JoinColumn(name="fk_requisicion_compra")
 	private RequisicionCompraDO requisicionCompra;
+	
+	@ManyToOne
+	@JoinColumn(name="fk_colaborador")
 	private ColaboradorDO colaborador;
 
 	public SolicitanteRequisicionDO() {
@@ -37,8 +48,6 @@ public class SolicitanteRequisicionDO implements java.io.Serializable {
 		this.colaborador = colaboradorDO;
 	}
 
-	@Id
-	@Column(name = "id", unique = true, nullable = false)
 	public Integer getId() {
 		return this.id;
 	}

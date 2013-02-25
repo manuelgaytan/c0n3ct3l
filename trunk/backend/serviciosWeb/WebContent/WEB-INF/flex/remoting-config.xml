@@ -225,4 +225,12 @@
 			<scope>session</scope>
 		</properties>
 	</destination>
+	
+	<destination id="validacionProyectoService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/ValidacionProyectoService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
 </service>

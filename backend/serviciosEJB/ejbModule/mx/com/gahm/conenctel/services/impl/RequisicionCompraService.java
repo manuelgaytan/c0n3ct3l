@@ -33,7 +33,7 @@ public class RequisicionCompraService  implements IRequisicionCompraService{
 		RequisicionCompraDO requisicion =null;
 		for (Integer id : idsItems) {
 			requisicion = entityManager.find(RequisicionCompraDO.class, id);
-			deletePartidas(requisicion.getPartidasReqisicionCompra());
+			deletePartidas(requisicion.getPartidasRequisicionCompra());
 			entityManager.remove(requisicion);
 		}
 	}
@@ -41,14 +41,14 @@ public class RequisicionCompraService  implements IRequisicionCompraService{
 	@Override
 	public RequisicionCompraDO save(RequisicionCompraDO item) {
 		entityManager.persist(item);
-		savePartidas(item.getId(), item.getPartidasReqisicionCompra());
+		savePartidas(item.getId(), item.getPartidasRequisicionCompra());
 		return item;
 	}
 
 	@Override
 	public RequisicionCompraDO update(RequisicionCompraDO item) {
-		deletePartidas(item.getPartidasReqisicionCompra());
-		savePartidas(item.getId(), item.getPartidasReqisicionCompra());
+		deletePartidas(item.getPartidasRequisicionCompra());
+		savePartidas(item.getId(), item.getPartidasRequisicionCompra());
 		
 		return item;
 	}
@@ -68,6 +68,9 @@ public class RequisicionCompraService  implements IRequisicionCompraService{
 	
 	
 	private void deletePartidas(List<PartidaRequisicionCompraDO> partidas){
+		if( partidas == null ){
+			return;
+		}
 		PartidaRequisicionCompraDO partidaDO =null;
 		for (PartidaRequisicionCompraDO partida : partidas) {
 			partidaDO = entityManager.find(PartidaRequisicionCompraDO.class, partida.getId());

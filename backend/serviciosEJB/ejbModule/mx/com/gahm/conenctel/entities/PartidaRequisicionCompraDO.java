@@ -25,11 +25,17 @@ public class PartidaRequisicionCompraDO implements java.io.Serializable {
 	@JoinColumn(name="fk_requisicion_compra")
 	private RequisicionCompraDO requisicionCompra;
 	private String codigo;
+	@Column(name = "grupo_familia", nullable = true)
 	private String grupoFamilia;
+	@Column( nullable = false)
 	private String descripcion;
+	@Column( nullable = false)
 	private String cantidad;
+	@Column( nullable = false)
 	private String unidad;
+	@Column( nullable = false)
 	private String validacion;
+	@Column(name = "fk_estatus", nullable = false)
 	private Integer fkEstatus;
 
 	public PartidaRequisicionCompraDO() {

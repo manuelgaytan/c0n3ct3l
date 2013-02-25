@@ -11,12 +11,12 @@ package model
 		public var prioridad:Prioridad;
 		public var areaSolicitante:AreaSolicitante;
 		public var centralSitio:String;
-		public var solicitantesRequisicion:ArrayCollection;
 		public var estatusRequisicionCompra:EstatusRequisicionCompra;
-		public var partidasReqisicionCompra:ArrayCollection;
+		public var solicitantesRequisicion:ArrayCollection;
+		public var partidasRequisicionCompra:ArrayCollection;
 		public var comentariosRequisicion:ArrayCollection;
 		
-		public function Requisicion()
+		public function RequisicionCompra()
 		{
 		}
 	}

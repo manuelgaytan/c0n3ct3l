@@ -18,6 +18,8 @@ public class PartidaRequisicionCompraDO implements java.io.Serializable {
 
 
 	private Integer id;
+	@ManyToOne
+	@JoinColumn(name="fk_requisicion_compra")
 	private RequisicionCompraDO requisicionCompra;
 	private String codigo;
 	private String grupoFamilia;

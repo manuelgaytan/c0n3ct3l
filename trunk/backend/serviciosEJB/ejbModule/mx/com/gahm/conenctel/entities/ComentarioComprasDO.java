@@ -16,13 +16,13 @@ import javax.persistence.TemporalType;
 
 
 /**
- * Clase de persistencia para la tabla comentarioherramienta.
+ * Clase de persistencia para la tabla comentario compras.
  * 
  * @author Manuel Gayt&aacute;n
  */
 @Entity
-@Table(name="comentarioherramienta")
-public class ComentarioHerramientaDO implements Serializable {
+@Table(name="ComentarioCompras")
+public class ComentarioComprasDO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -39,11 +39,7 @@ public class ComentarioHerramientaDO implements Serializable {
 	@JoinColumn(name="fk_usuario")
 	private UsuarioDO usuario;
 
-	@ManyToOne
-	@JoinColumn(name="fk_herramienta")
-	private HerramientaDO herramienta;
-
-	public ComentarioHerramientaDO() {
+	public ComentarioComprasDO() {
 	}
 
 	public Long getId() {
@@ -76,13 +72,5 @@ public class ComentarioHerramientaDO implements Serializable {
 
 	public void setUsuario(UsuarioDO usuario) {
 		this.usuario = usuario;
-	}
-
-	public HerramientaDO getHerramienta() {
-		return herramienta;
-	}
-
-	public void setHerramienta(HerramientaDO herramienta) {
-		this.herramienta = herramienta;
 	}
 }

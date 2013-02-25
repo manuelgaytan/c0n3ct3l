@@ -10,18 +10,20 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 
 /**
- * Clase de persistencia para la tabla comentarioherramienta.
+ * Clase de persistencia para la tabla comentario requisicion.
  * 
  * @author Manuel Gayt&aacute;n
  */
 @Entity
-@Table(name="comentarioherramienta")
+@Table(name="ComentarioRequisicion")
 public class ComentarioRequisicionDO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -29,60 +31,41 @@ public class ComentarioRequisicionDO implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 
-	private String comentario;
-
-	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_captura")
-	private Date fechaCaptura;
-
 	@ManyToOne
-	@JoinColumn(name="fk_usuario")
-	private UsuarioDO usuario;
-
-	@ManyToOne
-	@JoinColumn(name="fk_herramienta")
-	private HerramientaDO herramienta;
+	@JoinColumn(name="fk_requisicion_compra")
+	private RequisicionCompraDO requisicionCompra;
+	
+	@OneToOne  
+    @JoinColumn(name = "fk_comentario_compras")
+	private ComentarioComprasDO comentarioCompras;
 
 	public ComentarioRequisicionDO() {
 	}
 
 	public Long getId() {
-		return this.id;
+		return id;
 	}
 
 	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public String getComentario() {
-		return this.comentario;
+	public RequisicionCompraDO getRequisicionCompra() {
+		return requisicionCompra;
 	}
 
-	public void setComentario(String comentario) {
-		this.comentario = comentario;
+	public void setRequisicionCompra(RequisicionCompraDO requisicionCompra) {
+		this.requisicionCompra = requisicionCompra;
 	}
 
-	public Date getFechaCaptura() {
-		return this.fechaCaptura;
+	public ComentarioComprasDO getComentarioCompras() {
+		return comentarioCompras;
 	}
 
-	public void setFechaCaptura(Date fechaCaptura) {
-		this.fechaCaptura = fechaCaptura;
+	public void setComentarioCompras(ComentarioComprasDO comentarioCompras) {
+		this.comentarioCompras = comentarioCompras;
 	}
+	
+	
 
-	public UsuarioDO getUsuario() {
-		return usuario;
-	}
-
-	public void setUsuario(UsuarioDO usuario) {
-		this.usuario = usuario;
-	}
-
-	public HerramientaDO getHerramienta() {
-		return herramienta;
-	}
-
-	public void setHerramienta(HerramientaDO herramienta) {
-		this.herramienta = herramienta;
-	}
 }

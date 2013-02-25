@@ -233,4 +233,13 @@
 			<scope>session</scope>
 		</properties>
 	</destination>
+	
+	<destination id="solicitudServicioMaquilado">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/SolicitudServicioMaquilado</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+	
 </service>

@@ -89,6 +89,8 @@
 		<class>mx.com.gahm.conenctel.entities.ValidacionProyectoDO</class>
 		<class>mx.com.gahm.conenctel.entities.ComentarioComprasDO</class>
 		<class>mx.com.gahm.conenctel.entities.ComentarioRequisicionDO</class>
+		<class>mx.com.gahm.conenctel.entities.SolicitudServicioMaquiladoDO</class>
+		<class>mx.com.gahm.conenctel.entities.ConcentradoOrdenCompraClienteDO</class>
 		<properties>
 			<property name="eclipselink.logging.level" value="FINE"/> 
 			<property name="eclipselink.logging.parameters" value="true"/>

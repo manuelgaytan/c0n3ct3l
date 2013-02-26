@@ -5,7 +5,7 @@
 	<mx:Script>
 		<![CDATA[
 			import model.Comentario;
-			import model.ComentarioHerramienta;
+			import model.ComentarioGenerico;
 			import model.Model;
 			import model.Proyecto;
 			import model.Util;
@@ -68,7 +68,7 @@
 					Util.showMessageVerifyFields();
 					return;
 				}
-				var comment:ComentarioHerramienta = new ComentarioHerramienta();
+				var comment:ComentarioGenerico = new ComentarioGenerico();
 				comment.fechaCaptura = new Date();
 				comment.usuario = Model.getInstance().user;
 				comment.comentario = Util.validateEmpty(this.txtObservation.text); 

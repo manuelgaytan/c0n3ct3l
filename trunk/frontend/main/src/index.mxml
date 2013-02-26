@@ -27,6 +27,9 @@
 			import model.Cliente;
 			import model.Colaborador;
 			import model.Comentario;
+			import model.ComentarioCompras;
+			import model.ComentarioGenerico;
+			import model.ComentarioRequisicion;
 			import model.Compania;
 			import model.ConfiguracionPruebaEntrega;
 			import model.Constants;
@@ -255,6 +258,9 @@
 			private var consumibleSolicitudAlmacen:ConsumibleSolicitudAlmacen;
 			private var validacionProyecto:ValidacionProyecto;
 			private var solicitudServicioMaquilado:SolicitudServicioMaquilado;
+			private var comentarioCompras:ComentarioCompras;
+			private var comentarioGenerico:ComentarioGenerico;
+			private var comentarioRequisicion:ComentarioRequisicion;
 			
 			protected function login_readyHandler(event:ModuleEvent):void
 			{

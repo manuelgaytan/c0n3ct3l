@@ -3,6 +3,7 @@ package mx.com.gahm.conenctel.entities;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -35,7 +36,7 @@ public class ComentarioRequisicionDO implements Serializable {
 	@JoinColumn(name="fk_requisicion_compra")
 	private RequisicionCompraDO requisicionCompra;
 	
-	@OneToOne  
+	@OneToOne
     @JoinColumn(name = "fk_comentario_compras")
 	private ComentarioComprasDO comentarioCompras;
 

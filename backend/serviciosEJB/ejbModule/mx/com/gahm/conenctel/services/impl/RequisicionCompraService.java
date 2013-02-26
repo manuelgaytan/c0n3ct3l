@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import mx.com.gahm.conenctel.entities.ComentarioComprasDO;
 import mx.com.gahm.conenctel.entities.ComentarioRequisicionDO;
 import mx.com.gahm.conenctel.entities.PartidaRequisicionCompraDO;
 import mx.com.gahm.conenctel.entities.RequisicionCompraDO;
@@ -45,25 +46,22 @@ public class RequisicionCompraService  implements IRequisicionCompraService{
 		List<SolicitanteRequisicionDO> solicitantesRequisicion = item.getSolicitanteRequisicion();
 		List<PartidaRequisicionCompraDO> partidasRequisicionCompra = item.getPartidasRequisicionCompra();
 		List<ComentarioRequisicionDO> comentariosRequisicion = item.getComentariosRequisicion();
-		
 		item.setSolicitantesRequisicion(null);
 		item.setPartidasRequisicionCompra(null);
 		item.setComentariosRequisicion(null);
-		
+
 		entityManager.persist(item);
-	
 		
-		savePartidas(item.getId(),partidasRequisicionCompra);
-		saveComentariosRequisicion(item.getId(), comentariosRequisicion);
-		saveSolicitantesRequisicion(item.getId(), solicitantesRequisicion);
-		
+		savePartidas(item,partidasRequisicionCompra);
+		saveComentariosRequisicion(item, comentariosRequisicion);
+		saveSolicitantesRequisicion(item, solicitantesRequisicion);
 		return item;
 	}
 
 	@Override
 	public RequisicionCompraDO update(RequisicionCompraDO item) {
 		deletePartidas(item.getPartidasRequisicionCompra());
-		savePartidas(item.getId(), item.getPartidasRequisicionCompra());
+		savePartidas(item, item.getPartidasRequisicionCompra());
 		
 		return item;
 	}
@@ -96,37 +94,37 @@ public class RequisicionCompraService  implements IRequisicionCompraService{
 		 
 	}
 	
-	private void savePartidas(Integer idRequisicionCompra,List<PartidaRequisicionCompraDO> partidas){
+	private void savePartidas(RequisicionCompraDO requisicionCompra,List<PartidaRequisicionCompraDO> partidas){
 		if( partidas == null ){
 			return;
 		}
 		for (PartidaRequisicionCompraDO partida : partidas) {
-			partida.setRequisicionCompra(new RequisicionCompraDO());
-			partida.getRequisicionCompra().setId(idRequisicionCompra);
+			partida.setRequisicionCompra(requisicionCompra);
 			entityManager.persist(partida);
 		}
 		
 	}
 	
-	private void saveSolicitantesRequisicion(Integer idRequisicionCompra,List<SolicitanteRequisicionDO> datos){
+	private void saveSolicitantesRequisicion(RequisicionCompraDO requisicionCompra,List<SolicitanteRequisicionDO> datos){
 		if( datos == null ){
 			return;
 		}
 		for (SolicitanteRequisicionDO dato : datos) {
-			dato.setRequisicionCompra(new RequisicionCompraDO());
-			dato.getRequisicionCompra().setId(idRequisicionCompra);
+			dato.setRequisicionCompra(requisicionCompra);
 			entityManager.persist(dato);
 		}
 		
 	}
 	
-	private void saveComentariosRequisicion(Integer idRequisicionCompra,List<ComentarioRequisicionDO> datos){
+	private void saveComentariosRequisicion(RequisicionCompraDO requisicionCompra,List<ComentarioRequisicionDO> datos){
 		if( datos == null ){
 			return;
 		}
 		for (ComentarioRequisicionDO dato : datos) {
-			dato.setRequisicionCompra(new RequisicionCompraDO());
-			dato.getRequisicionCompra().setId(idRequisicionCompra);
+			ComentarioComprasDO comentarioComprasDO = dato.getComentarioCompras();
+			entityManager.persist(comentarioComprasDO);
+			dato.setComentarioCompras(comentarioComprasDO);
+			dato.setRequisicionCompra(requisicionCompra);
 			entityManager.persist(dato);
 		}
 		

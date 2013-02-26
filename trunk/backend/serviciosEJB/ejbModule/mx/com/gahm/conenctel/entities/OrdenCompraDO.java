@@ -55,7 +55,7 @@ public class OrdenCompraDO  implements java.io.Serializable {
      private CotizacionDO cotizacion;
      private RequisicionCompraDO requisicionCompra;
      
-
+     	
 
     public OrdenCompraDO() {
     }

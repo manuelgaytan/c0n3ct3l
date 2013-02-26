@@ -97,6 +97,7 @@
 			import model.ServicioSolicitado;
 			import model.Software;
 			import model.SoftwareSolicitudAlmacen;
+			import model.SolicitanteRequisicion;
 			import model.SolicitudAlmacen;
 			import model.SolicitudServicioMaquilado;
 			import model.TelefoniaMovil;
@@ -261,6 +262,7 @@
 			private var comentarioCompras:ComentarioCompras;
 			private var comentarioGenerico:ComentarioGenerico;
 			private var comentarioRequisicion:ComentarioRequisicion;
+			private var solicitanteRequisicion:SolicitanteRequisicion;
 			
 			protected function login_readyHandler(event:ModuleEvent):void
 			{

@@ -27,7 +27,7 @@
 			}
 			
 			public function reset():void{
-				//txtDeliver.reset();
+				cmbCombo.selectedIndex = -1;
 				Util.freeListDataProvider( this.lstDelivers );  
 			}
 			
@@ -64,21 +64,39 @@
 				return this._items;
 			}
 			
+			public function getListsAsInWith(transformTo:String, inOf:String, withProperty:String):ArrayCollection{
+				if( this._items.length == 0 ||
+					transformTo == null ||
+					inOf == null ||
+					withProperty == null ){
+					return null;
+				}
+				var objectType:Class = null;
+				var item:Object = null;
+				var datas:ArrayCollection = new ArrayCollection();
+				for each (var object:Object in this._items) 
+				{
+					objectType = getDefinitionByName(inOf) as Class;
+					item = new(objectType)();
+					item[withProperty] = object;
+					datas.addItem( item );
+				}
+				return datas;
+			}
+			
 			protected function btnAdd_clickHandler(event:MouseEvent):void
 			{
-				// TODO Auto-generated method stub
-			}
-			
-			protected function completeHandler(event:Event):void
-			{
-			}
-			
-			private function addDelivery(text:String):void
-			{
+				if( this.cmbCombo.selectedItem == null ){
+					return;
+				}
 				if( this._items == null ){
 					this._items = new ArrayCollection();
 				}
-				this._items.addItem( text );
+				this._items.addItem( this.cmbCombo.selectedItem );
+			}
+			
+			protected function completeHandler(event:Event):void 
+			{
 			}
 		]]>
 	</mx:Script>

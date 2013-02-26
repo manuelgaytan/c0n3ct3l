@@ -98,17 +98,16 @@
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 				 allowMultipleSelection="true">
 		<mx:columns>
-			<mx:DataGridColumn id="dtgID" headerText="Folio"
+			<mx:DataGridColumn id="dtgID" headerText="ID"
 							   dataField="id"
 							   width="80"
 							   textAlign="right"/>
-			<mx:DataGridColumn id="dtgApplicationDate" headerText="{'Fecha de\nSolicitud'}"
-							   width="80"
-							   dataField="fechaSolicitud"
-							   labelFunction="{Util.labelFunctionDate}"
+			<mx:DataGridColumn id="dtgClient" headerText="Cliente"
+							   width="110"
+							   dataField="cliente.nombreComercial"
 							   textAlign="center"/>
-			<mx:DataGridColumn id="dtgMotive" headerText="Motivo"
-							   dataField="motivo"
+			<mx:DataGridColumn id="dtgPurchaseOrder" headerText="{'Orden de\nCompra'}"
+							   dataField="ordenCompra"
 							   width="200"/>
 			<mx:DataGridColumn id="dtgPriority" headerText="Prioridad"
 							   dataField="prioridad.etiqueta"

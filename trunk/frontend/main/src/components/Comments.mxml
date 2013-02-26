@@ -4,6 +4,8 @@
 		 paddingTop="5" paddingBottom="5">
 	<mx:Script>
 		<![CDATA[
+			import flash.utils.getDefinitionByName;
+			
 			import model.Comentario;
 			import model.ComentarioGenerico;
 			import model.Model;
@@ -43,6 +45,48 @@
 				}
 				return this._comments;
 			}
+			
+			public function getCommentsAs(transformTo:String):ArrayCollection{
+				if( this._comments.length == 0 ||
+					transformTo == null ){
+					return null;
+				}
+				var objectType:Class = null;
+				var item:Object = null;
+				var datas:ArrayCollection = new ArrayCollection();
+				for each (var comentarioGenerico:ComentarioGenerico in this._comments) 
+				{
+					objectType = getDefinitionByName(transformTo) as Class;
+					item = new(objectType)();
+					item.id = comentarioGenerico.id;
+					item.fechaCaptura = comentarioGenerico.fechaCaptura;
+					item.comentario = comentarioGenerico.comentario;
+					item.usuario = comentarioGenerico.usuario;
+					datas.addItem( item );
+				}
+				return datas;
+			}
+			
+			public function getCommentsAsInWith(transformTo:String, inOf:String, withProperty:String):ArrayCollection{
+				if( this._comments.length == 0 ||
+					transformTo == null ||
+					inOf == null ||
+					withProperty == null ){
+					return null;
+				}
+				var objectType:Class = null;
+				var item:Object = null;
+				var datas:ArrayCollection = new ArrayCollection();
+				var items:ArrayCollection = this.getCommentsAs( transformTo );
+				for each (var comentario:Object in items) 
+				{
+					objectType = getDefinitionByName(inOf) as Class;
+					item = new(objectType)();
+					item[withProperty] = comentario;
+					datas.addItem( item );
+				}
+				return datas;
+			} 
 			
 			protected function proyectoService_faultHandler(event:FaultEvent):void
 			{

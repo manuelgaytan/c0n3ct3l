@@ -7,8 +7,10 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import mx.com.gahm.conenctel.entities.ComentarioRequisicionDO;
 import mx.com.gahm.conenctel.entities.PartidaRequisicionCompraDO;
 import mx.com.gahm.conenctel.entities.RequisicionCompraDO;
+import mx.com.gahm.conenctel.entities.SolicitanteRequisicionDO;
 import mx.com.gahm.conenctel.services.IRequisicionCompraService;
 
 @Stateless(mappedName = "ejb/RequisicionCompraService")
@@ -40,8 +42,21 @@ public class RequisicionCompraService  implements IRequisicionCompraService{
 
 	@Override
 	public RequisicionCompraDO save(RequisicionCompraDO item) {
+		List<SolicitanteRequisicionDO> solicitantesRequisicion = item.getSolicitanteRequisicion();
+		List<PartidaRequisicionCompraDO> partidasRequisicionCompra = item.getPartidasRequisicionCompra();
+		List<ComentarioRequisicionDO> comentariosRequisicion = item.getComentariosRequisicion();
+		
+		item.setSolicitantesRequisicion(null);
+		item.setPartidasRequisicionCompra(null);
+		item.setComentariosRequisicion(null);
+		
 		entityManager.persist(item);
-		savePartidas(item.getId(), item.getPartidasRequisicionCompra());
+	
+		
+		savePartidas(item.getId(),partidasRequisicionCompra);
+		saveComentariosRequisicion(item.getId(), comentariosRequisicion);
+		saveSolicitantesRequisicion(item.getId(), solicitantesRequisicion);
+		
 		return item;
 	}
 
@@ -93,4 +108,27 @@ public class RequisicionCompraService  implements IRequisicionCompraService{
 		
 	}
 	
+	private void saveSolicitantesRequisicion(Integer idRequisicionCompra,List<SolicitanteRequisicionDO> datos){
+		if( datos == null ){
+			return;
+		}
+		for (SolicitanteRequisicionDO dato : datos) {
+			dato.setRequisicionCompra(new RequisicionCompraDO());
+			dato.getRequisicionCompra().setId(idRequisicionCompra);
+			entityManager.persist(dato);
+		}
+		
+	}
+	
+	private void saveComentariosRequisicion(Integer idRequisicionCompra,List<ComentarioRequisicionDO> datos){
+		if( datos == null ){
+			return;
+		}
+		for (ComentarioRequisicionDO dato : datos) {
+			dato.setRequisicionCompra(new RequisicionCompraDO());
+			dato.getRequisicionCompra().setId(idRequisicionCompra);
+			entityManager.persist(dato);
+		}
+		
+	}
 }

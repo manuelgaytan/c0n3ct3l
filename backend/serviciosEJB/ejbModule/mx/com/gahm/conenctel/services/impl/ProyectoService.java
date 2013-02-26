@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.util.Date;
 import java.util.List;
 
-import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -17,12 +16,9 @@ import javax.swing.table.TableModel;
 
 import mx.com.gahm.conenctel.constants.EstadoProyecto;
 import mx.com.gahm.conenctel.entities.CategoriaDO;
-import mx.com.gahm.conenctel.entities.DesarrolloProyectoABDO;
 import mx.com.gahm.conenctel.entities.EstadoDO;
 import mx.com.gahm.conenctel.entities.ObservacionDO;
 import mx.com.gahm.conenctel.entities.ProyectoDO;
-import mx.com.gahm.conenctel.entities.ProyectoPadreDO;
-import mx.com.gahm.conenctel.entities.ProyectoPadreHijoDO;
 import mx.com.gahm.conenctel.entities.RequisicionDO;
 import mx.com.gahm.conenctel.exceptions.ConectelException;
 import mx.com.gahm.conenctel.model.FiltroProyecto;

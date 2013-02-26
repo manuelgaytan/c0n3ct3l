@@ -4,7 +4,6 @@ package mx.com.gahm.conenctel.entities;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
@@ -17,6 +16,10 @@ import javax.persistence.Table;
 @Table(name = "PartidaRequisicionCompra", catalog = "conectel")
 public class PartidaRequisicionCompraDO implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id", unique = true, nullable = false)
@@ -72,8 +75,6 @@ public class PartidaRequisicionCompraDO implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@ManyToOne
-	@JoinColumn(name="fk_requisicion_compra")
 	public RequisicionCompraDO getRequisicionCompra() {
 		return this.requisicionCompra;
 	}
@@ -82,7 +83,6 @@ public class PartidaRequisicionCompraDO implements java.io.Serializable {
 		this.requisicionCompra = eequisicionCompra;
 	}
 
-	@Column(name = "codigo")
 	public String getCodigo() {
 		return this.codigo;
 	}
@@ -91,7 +91,6 @@ public class PartidaRequisicionCompraDO implements java.io.Serializable {
 		this.codigo = codigo;
 	}
 
-	@Column(name = "grupo_familia")
 	public String getGrupoFamilia() {
 		return this.grupoFamilia;
 	}
@@ -100,7 +99,6 @@ public class PartidaRequisicionCompraDO implements java.io.Serializable {
 		this.grupoFamilia = grupoFamilia;
 	}
 
-	@Column(name = "descripcion", nullable = false)
 	public String getDescripcion() {
 		return this.descripcion;
 	}
@@ -109,7 +107,6 @@ public class PartidaRequisicionCompraDO implements java.io.Serializable {
 		this.descripcion = descripcion;
 	}
 
-	@Column(name = "cantidad", nullable = false)
 	public String getCantidad() {
 		return this.cantidad;
 	}
@@ -118,7 +115,6 @@ public class PartidaRequisicionCompraDO implements java.io.Serializable {
 		this.cantidad = cantidad;
 	}
 
-	@Column(name = "unidad", nullable = false)
 	public String getUnidad() {
 		return this.unidad;
 	}
@@ -127,7 +123,6 @@ public class PartidaRequisicionCompraDO implements java.io.Serializable {
 		this.unidad = unidad;
 	}
 
-	@Column(name = "validacion", nullable = false)
 	public String getValidacion() {
 		return this.validacion;
 	}
@@ -136,7 +131,6 @@ public class PartidaRequisicionCompraDO implements java.io.Serializable {
 		this.validacion = validacion;
 	}
 
-	@Column(name = "fk_estatus", nullable = false)
 	public Integer getFkEstatus() {
 		return this.fkEstatus;
 	}

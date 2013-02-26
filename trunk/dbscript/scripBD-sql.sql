@@ -714,7 +714,7 @@
 	CREATE TABLE ComentarioCompras
 	(
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
-	fecha DATE NOT NULL,
+	fecha_captura DATE NOT NULL,
 	fk_usuario INT(11) UNSIGNED NOT NULL,
 	comentario VARCHAR(255) NOT NULL,
 	PRIMARY KEY (id)
@@ -1072,7 +1072,7 @@
 	CREATE TABLE ComentarioValidacionAdministrativa
 	(
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
-	fecha DATE NOT NULL,
+	fecha_captura DATE NOT NULL,
 	fk_usuario INT(11) UNSIGNED NOT NULL,
 	comentario VARCHAR(255) NOT NULL,
 	PRIMARY KEY (id)

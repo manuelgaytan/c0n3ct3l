@@ -22,7 +22,7 @@ import javax.persistence.Table;
 @Entity
 @NamedQueries({
 	@NamedQuery(name = "ColaboradorDO.findAll", query = "select c from ColaboradorDO c"),
-	@NamedQuery(name = "ColaboradorDO.getColaboradorByTipo", query = "select c from ColaboradorDO c where c.tipoColaborador.id=:idTipoColaborador")})
+	@NamedQuery(name = "ColaboradorDO.getColaboradorByTipo", query = "select c from ColaboradorDO c where c.tipoColaborador.id=:idTipoColaborado")})
 @Table(name="colaborador")
 public class ColaboradorDO implements Serializable {
 	private static final long serialVersionUID = 1L;

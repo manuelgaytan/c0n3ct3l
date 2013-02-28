@@ -100,11 +100,11 @@ public class DatosGrlsProyectoDO implements Serializable {
 
 	@OneToMany(mappedBy="datosgeneralesproyecto", fetch = FetchType.EAGER)
 	private List<DatosGrlsProyectoImplDO> datosGrlsProyectoImplList;
-
+/*
 	@ManyToOne
 	@JoinColumn(name="fk_tipo_empleado")
 	private TipoEmpleadoDO tipoEmpleado;
-
+*/
 	
 	public long getId() {
 		return this.id;

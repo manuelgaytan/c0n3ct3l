@@ -2199,6 +2199,28 @@
 	INSERT INTO EstadoSolicitudAlmacen
 	VALUES (3, 'Cerrado');
 
+	INSERT INTO EstadoValidacionAdministrativa
+	VALUES (1, 'Validado');
+	INSERT INTO EstadoValidacionAdministrativa
+	VALUES (2, 'No Validado');
+	
+	INSERT INTO TipoValidacionAdministrativa
+	VALUES (1, 'Parcial');
+	INSERT INTO TipoValidacionAdministrativa
+	VALUES (2, 'Total');
+
+	INSERT INTO EstadoValidacionCobro
+	VALUES (1, 'Realizar Cobro');
+	INSERT INTO EstadoValidacionCobro
+	VALUES (2, 'Cancelar Cobro');
+	INSERT INTO EstadoValidacionCobro
+	VALUES (3, 'Sustituir Cobro');
+
+	INSERT INTO EstadoFinalValidacion
+	VALUES (1, 'Terminado');
+	INSERT INTO EstadoFinalValidacion
+	VALUES (2, 'Parcial');
+
 /*
 	INSERT INTO Proveedor
 	VALUES (1, 1, 'ACME', 'ALMEIRA CASTAÑEDA MELIA', 'ALCM900622DF7', 'REFORMA 34, COL. JUÁREZ, DELG. CUAUHTEMOC', 'REFORMA 34, COL. JUÁREZ, DELG. CUAUHTEMOC', '57115887','MELIA ALMEIRA','melia347@yahoo.com','','');

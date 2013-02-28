@@ -1146,6 +1146,65 @@
 	PRIMARY KEY (id)
 	);
 
+	CREATE TABLE ValidacionAdministrativa
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_estado_validacion_administrativa INT(11) UNSIGNED NOT NULL,
+	fk_tipo_validacion_administrativa INT(11) UNSIGNED NOT NULL,
+	porcentaje_1 DECIMAL,
+	clave_validacion_1 VARCHAR(255),
+	fecha_validacion_1 DATE,
+	fk_estado_validacion_cobro_1 INT(11) UNSIGNED,
+	porcentaje_2 DECIMAL,
+	clave_validacion_2 VARCHAR(255),
+	fecha_validacion_2 DATE,
+	fk_estado_validacion_cobro_2 INT(11) UNSIGNED,
+	porcentaje_3 DECIMAL,
+	clave_validacion_3 VARCHAR(255),
+	fecha_validacion_3 DATE,
+	fk_estado_validacion_cobro_3 INT(11) UNSIGNED,
+	porcentaje_total_cobro DECIMAL,
+	fk_estado_final_validacion INT(11) UNSIGNED NOT NULL,
+	fk_imputable INT(11) UNSIGNED NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE EstadoValidacionAdministrativa
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	estado VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE TipoValidacionAdministrativa
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	estado VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE EstadoValidacionCobro
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	estado VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE EstadoFinalValidacion
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	estado VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE ComentarioPantallaValidacionAdministrativa
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_validacion_administrativa INT(11) UNSIGNED NOT NULL,
+	fk_comentario_validacion_administrativa INT(11) UNSIGNED NOT NULL,
+	PRIMARY KEY (id)
+	);
+
 	ALTER TABLE Cliente ADD FOREIGN KEY id_contacto_idxfk (id_contacto) REFERENCES Contacto (id);
 
 	ALTER TABLE Proyecto ADD FOREIGN KEY id_categoria_proyecto_idxfk (id_categoria_proyecto) REFERENCES CategoriaProyecto (id);
@@ -1481,6 +1540,24 @@
 	ALTER TABLE ComentarioConcentradoOrdenCompraCliente ADD FOREIGN KEY fk_concentrado_orden_compra_cliente_idxfk_1 (fk_concentrado_orden_compra_cliente) REFERENCES ConcentradoOrdenCompraCliente (id);
 
 	ALTER TABLE ComentarioConcentradoOrdenCompraCliente ADD FOREIGN KEY fk_comentario_validacion_administrativa_idxfk (fk_comentario_validacion_administrativa) REFERENCES ComentarioValidacionAdministrativa (id);
+
+	ALTER TABLE ComentarioPantallaValidacionAdministrativa ADD FOREIGN KEY fk_validacion_administrativa_idxfk (fk_validacion_administrativa) REFERENCES ValidacionAdministrativa (id);
+
+	ALTER TABLE ComentarioPantallaValidacionAdministrativa ADD FOREIGN KEY fk_comentario_validacion_administrativa_idxfk_2 (fk_comentario_validacion_administrativa) REFERENCES ComentarioValidacionAdministrativa (id);
+
+	ALTER TABLE ValidacionAdministrativa ADD FOREIGN KEY fk_estado_validacion_administrativa_idxfk (fk_estado_validacion_administrativa) REFERENCES EstadoValidacionAdministrativa (id);
+
+	ALTER TABLE ValidacionAdministrativa ADD FOREIGN KEY fk_tipo_validacion_administrativa_idxfk (fk_tipo_validacion_administrativa) REFERENCES TipoValidacionAdministrativa (id);
+
+	ALTER TABLE ValidacionAdministrativa ADD FOREIGN KEY fk_estado_validacion_cobro_1_idxfk (fk_estado_validacion_cobro_1) REFERENCES EstadoValidacionCobro (id);
+
+	ALTER TABLE ValidacionAdministrativa ADD FOREIGN KEY fk_estado_validacion_cobro_2_idxfk (fk_estado_validacion_cobro_2) REFERENCES EstadoValidacionCobro (id);
+
+	ALTER TABLE ValidacionAdministrativa ADD FOREIGN KEY fk_estado_validacion_cobro_3_idxfk (fk_estado_validacion_cobro_3) REFERENCES EstadoValidacionCobro (id);
+
+	ALTER TABLE ValidacionAdministrativa ADD FOREIGN KEY fk_estado_final_validacion_idxfk (fk_estado_final_validacion) REFERENCES EstadoFinalValidacion (id);
+
+	ALTER TABLE ValidacionAdministrativa ADD FOREIGN KEY fk_imputable_idxfk (fk_imputable) REFERENCES Imputable (id);
 
 	/* Perfiles */
 	INSERT INTO Perfil

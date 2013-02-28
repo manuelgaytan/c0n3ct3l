@@ -33,6 +33,7 @@
 			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
 			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
 			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.com.gahm.componentes.validadores.ValidadorEntero;
 			import mx.com.gahm.componentes.validadores.ValidadorNumerico;
 			import mx.controls.Alert;
 			import mx.events.CloseEvent;
@@ -132,15 +133,15 @@
 				
 			}
 			
-			protected function responseGetPrioridad_resultHandler(event:ResultEvent):void
+			protected function responseGetAllClient_resultHandler(event:ResultEvent):void
 			{
 				var data:ArrayCollection = event.result as ArrayCollection;
 				if( data == null ){
 					return;
 				}
-				this.cmbPriority.dataProvider = data; //Util.addEmptyCatalgo( data );
+				this.cmbClient.dataProvider = data;
 				if( this._item != null && this._item.prioridad != null ){
-					this.cmbPriority.selectedIndex = Util.selectedIndexFromCombo( this.cmbPriority.dataProvider as ArrayCollection, 
+					this.cmbClient.selectedIndex = Util.selectedIndexFromCombo( this.cmbClient.dataProvider as ArrayCollection, 
 						this._item.prioridad.id);
 				}
 			}
@@ -179,6 +180,7 @@
 			{
 				var value:Boolean = true;
 				value &&= this.validators.validarFormulario();
+				value &&= !(this.dtfPurchaseOrderDate.selectedDate == null);
 				return value;
 			}
 			
@@ -193,16 +195,20 @@
 			{
 				this.validators = new InicializaValidadoresEtiquetas();
 				validators.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
-				validators.setRestrictor(txtReason, "generic");
+				validators.setValidador(txtPurchaseOrder, "generic");
+				validators.setValidador(txtSite, "generic");
+				validators.setRestrictor(txtRequisitionNumber, "generic");
 				validators.setRestrictor(txtSite, "generic");
+				validators.setRestrictor(txtSiteID, "generic");
+				validators.setRestrictor(txtServiceType, "generic");
 				this.validatorsEntry = new InicializaValidadoresEtiquetas();
 				validatorsEntry.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
+				validatorsEntry.setValidador(txtCode, "generic");
 				validatorsEntry.setValidador(txtDescription, "generic");
-				validatorsEntry.setValidador(txtQuantity, "generic");
-				/*
-				validatorsEntry.setRestrictor(txtUnit, "generic");
-				validatorsEntry.setRestrictor(txtValidation, "generic");
-				*/
+				validatorsEntry.crearValidadorRestrictor("generic",ValidadorEntero.nombre, 0, 99);
+				validatorsEntry.setValidador(txtItem, "generic");
+				validatorsEntry.crearValidadorRestrictor("generic",ValidadorDecimal.nombre, 9, 2);
+				validatorsEntry.setValidador(txtPrice, "generic");
 			}
 			
 			protected function responseSave_resultHandler(event:ResultEvent):void
@@ -215,27 +221,15 @@
 			private function cleanForm():void
 			{
 				this.txtID.reset();
-				this.dtfApplicationDate.reset();
-				this.txtReason.reset();
-				this.cmbPriority.selectedIndex = 0;
-				/*
-				this.cmbApplicantArea.selectedIndex = 0;
-				this.cmbApplicantArea.selectedIndex = 0;
-				this.txtSite.reset();
-				this.cmbProduct.selectedIndex = 0;
-				this.dtgProducts.doubleClickEnabled = true;
-				this.chkOthres.selected = false;
-				Util.removeItems(this.dtgProducts.dataProvider);
-				this.txtCode.reset();
-				this.txtFamily.reset();
-				this.txtDescription.reset();
-				this.txtQuantity.reset();
-				this.txtUnit.reset();
-				this.txtValidation.reset();
+				this.cmbClient.selectedIndex = 0;
+				this.txtPurchaseOrder.reset();
+				this.dtfPurchaseOrderDate.reset();
+				this.txtRequisitionNumber.reset();
 				this.itemsManagement.reset();
-				//this.cmbItemStatus.selectedIndex = 0;
-				this.cmbStatus.selectedIndex = 0;
-				*/
+				this.txtSite.reset();
+				this.txtSiteID.reset();
+				this.txtServiceType.reset();
+				this.txtPayConditions.reset();
 				this.comments.reset();
 			}
 			
@@ -259,6 +253,44 @@
 			{
 				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
 			}
+			
+			protected function btnAddItem_clickHandler(event:MouseEvent):void
+			{
+				var entry:PartidaRequisicionCompra  = this.getValidEntry();
+				if( entry == false ){
+					Util.showErrorMessage("Valide los campos de la Partida");
+					return;
+				}
+				this.itemsManagement.addItem( entry );
+				this.cleanFormEntry();
+			}
+			
+			private function getValidEntry():PartidaRequisicionCompra
+			{
+				var entry:PartidaRequisicionCompra = null;
+				if( !this.isValidEntry() ){
+					return entry;
+				}
+				entry = new PartidaRequisicionCompra();
+				entry.codigo = Util.validateEmpty( this.txtItem.text );
+				entry.grupoFamilia = Util.validateEmpty( this.txtCode.text );
+				entry.descripcion = Util.validateEmpty( this.txtDescription.text );
+				entry.cantidad = Util.validateEmpty( this.txtPrice.text );
+				return entry;
+			}
+			
+			private function isValidEntry():Boolean
+			{
+				return this.validatorsEntry.validarFormulario();
+			}
+			
+			private function cleanFormEntry():void
+			{
+				this.txtItem.reset();
+				this.txtCode.reset();
+				this.txtDescription.reset();
+				this.txtPrice.reset();
+			}
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -271,20 +303,43 @@
 								  textAlign="right"/>
 		</mx:FormItem>
 		<mx:FormItem label="Cliente:">
-			<mx:ComboBox id="cmbPriority"
+			<mx:ComboBox id="cmbClient"
 						 labelField="etiqueta"
 						 />
 		</mx:FormItem>
 		<mx:FormItem label="Orden de Compra:">
-			<components:TextInput id="txtReason"
+			<components:TextInput id="txtPurchaseOrder"
 								  />
 		</mx:FormItem>
 		<mx:FormItem label="Fecha de Orden de Compra:">
-			<components:DateField id="dtfApplicationDate" creationComplete="dtfApplicationDate.selectedDate = new Date()"/>
+			<components:DateField id="dtfPurchaseOrderDate" creationComplete="dtfPurchaseOrderDate.selectedDate = new Date()"/>
 		</mx:FormItem>
 		<mx:FormItem label="Número de Requisición:">
 			<components:TextInput id="txtRequisitionNumber"
 								  />
+		</mx:FormItem>
+		<mx:FormItem label="Ítem:">
+			<components:TextInput id="txtItem"
+								  width="60"
+								  textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Código:">
+			<components:TextInput id="txtCode"
+								  />
+		</mx:FormItem>
+		<mx:FormItem label="Descripción:">
+			<components:TextInput id="txtDescription"
+								  width="400"
+								  />
+		</mx:FormItem>
+		<mx:FormItem label="Precio Unitario:">
+			<components:TextInput id="txtPrice"
+								  textAlign="right"
+								  width="90"
+								  />
+		</mx:FormItem>
+		<mx:FormItem>
+			<mx:Button id="btnAddItem" label="Agregar Partida" click="btnAddItem_clickHandler(event)"/>
 		</mx:FormItem>
 		<requisicionescompra:ItemsManagement id="itemsManagement"/>
 		<mx:FormItem label="Sitio:">
@@ -295,14 +350,15 @@
 								  />
 		</mx:FormItem>
 		<mx:FormItem label="Local/Foráneo:">
-			<components:TextInput id="txtDescription"
+			<components:TextInput id="txtServiceType"
 								  width="120"
 								  />
 		</mx:FormItem>
 		<mx:FormItem label="Condiciones de Pago:">
-			<components:TextInput id="txtQuantity"
+			<components:TextArea id="txtPayConditions"
 								  textAlign="right"
 								  width="400"
+								  maxChars="255"
 								  />
 		</mx:FormItem>
 		<components:Comments id="comments"/>
@@ -316,24 +372,8 @@
 	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
 	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="catalogoService_faultHandler(event)"
 					 showBusyCursor="true"/>
-	<mx:CallResponder id="responseGetPrioridad" result="responseGetPrioridad_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetPrioridad" result="responseGetAllClient_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetAreaSolicitante" result="responseGetAreaSolicitante_resultHandler(event)"/>
-	<mx:RemoteObject id="telefoniaMovilService" destination="telefoniaMovilService" fault="requisicionService_faultHandler(event)"
-					 showBusyCursor="true"/>
-	<mx:RemoteObject id="solicitudAlmacenService" destination="solicitudAlmacenService" fault="requisicionService_faultHandler(event)"
-					 showBusyCursor="true"/>	
-	<mx:RemoteObject id="softwareService" destination="softwareService" fault="requisicionService_faultHandler(event)"
-					 showBusyCursor="true"/>
-	<mx:RemoteObject id="materialService" destination="materialService" fault="requisicionService_faultHandler(event)"
-					 showBusyCursor="true"/>
-	<mx:RemoteObject id="herramientaService" destination="herramientaService" fault="requisicionService_faultHandler(event)"
-					 showBusyCursor="true"/>
-	<mx:RemoteObject id="hardwareService" destination="hardwareService" fault="requisicionService_faultHandler(event)"
-					 showBusyCursor="true"/>
-	<mx:RemoteObject id="equipoTransporteService" destination="equipoTransporteService" fault="requisicionService_faultHandler(event)"
-					 showBusyCursor="true"/>
-	<mx:RemoteObject id="equipoMedicionService" destination="equipoMedicionService" fault="requisicionService_faultHandler(event)"
-					 showBusyCursor="true"/>
-	<mx:RemoteObject id="consumibleService" destination="consumibleService" fault="requisicionService_faultHandler(event)"
+	<mx:RemoteObject id="clientesService" destination="telefoniaMovilService" fault="requisicionService_faultHandler(event)"
 					 showBusyCursor="true"/>
 </mx:VBox>

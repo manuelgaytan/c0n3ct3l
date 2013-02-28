@@ -47,6 +47,42 @@
 						   width="80"/>
 		<mx:DataGridColumn id="dtgItemEstatus" headerText="Estatus"
 						   dataField="fkEstatus"
-						   width="80"/>
+						   width="80"
+						   >
+			<mx:itemRenderer>
+				<mx:Component>
+					<mx:ComboBox dataProvider="{this.items}"
+								 enabled="{Model.getInstance().user.allowedPerfil(1)}"
+								 labelField="estatus"
+								 creationComplete="creationCompleteHandler(event)"
+								 preinitialize="preinitializeHandler(event)">
+						<mx:Script>
+							<![CDATA[
+								import model.EstatusRequisicionCompra;
+								import model.Model;
+								import model.Util;
+								
+								import mx.collections.ArrayCollection;
+								import mx.events.FlexEvent;
+								
+								[Bindable]
+								private var items:ArrayCollection;
+								
+								protected function preinitializeHandler(event:FlexEvent):void
+								{
+									this.items = EstatusRequisicionCompra.getAll();
+								}
+								
+								protected function creationCompleteHandler(event:FlexEvent):void
+								{
+									this.selectedIndex=Util.selectedIndexFromCombo(this.items, data.fkEstatus);
+								}
+								
+							]]>
+						</mx:Script>
+					</mx:ComboBox>
+				</mx:Component>
+			</mx:itemRenderer>
+		</mx:DataGridColumn>
 	</mx:columns>
 </mx:DataGrid>	

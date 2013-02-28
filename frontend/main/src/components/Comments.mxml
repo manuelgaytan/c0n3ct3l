@@ -24,7 +24,7 @@
 			
 			protected function creationCompleteHandler(event:FlexEvent):void
 			{
-				this._comments = new ArrayCollection()
+				this._comments = new ArrayCollection();
 				this.initializeCombos();
 			}
 			
@@ -37,6 +37,24 @@
 					return;
 				}
 				this._comments = value;
+			}
+			
+			public function setCommentsIn(comments:ArrayCollection,property:String):void{
+				if( comments == null ||
+					comments.length == 0 ||
+					property == null ){
+					return;
+				}
+				Util.removeItems( this._comments );
+				var genericComment:ComentarioGenerico = null;
+				for each (var item:Object in comments) 
+				{
+					if( item[property] == null ){
+						continue;
+					}
+					genericComment = item[property] as ComentarioGenerico;
+					this._comments.addItem( genericComment );
+				}
 			}
 			
 			public function get comments():ArrayCollection{
@@ -103,7 +121,7 @@
 			
 			public function reset():void
 			{
-				
+				Util.removeItems( this._comments );
 			}
 			
 			protected function btnAddObservation_clickHandler(event:MouseEvent):void

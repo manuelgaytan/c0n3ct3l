@@ -85,10 +85,6 @@
 			{
 				this.executeQuery();
 			}
-			
-			private function labelFunctionGenerico(item:Object, column:DataGridColumn):String{
-				return Util.extractToText( item, column.dataField );
-			}
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -105,25 +101,26 @@
 			<mx:DataGridColumn id="dtgClient" headerText="Cliente"
 							   width="110"
 							   dataField="cliente.nombreComercial"
-							   textAlign="center"/>
+							   />
 			<mx:DataGridColumn id="dtgPurchaseOrder" headerText="{'Orden de\nCompra'}"
 							   dataField="ordenCompra"
 							   width="200"/>
-			<mx:DataGridColumn id="dtgPriority" headerText="Prioridad"
-							   dataField="prioridad.etiqueta"
-							   width="80"
-							   textAlign="center"/>
-			<mx:DataGridColumn id="dtgApplicationArea" headerText="{'Área \nSolicitante'}"
-							   dataField="areaSolicitante.etiqueta"
+			<mx:DataGridColumn id="dtgPurchaseOrderDate" headerText="{'Fecha Orden\nde Compra'}"
+							   dataField="fechaSolicitud"
+							   width="95"
+							   textAlign="center"
+							   labelFunction="{Util.labelFunctionDate}"/>
+			<mx:DataGridColumn id="dtgRequisitionNumber" headerText="{'Número de\nRequisición'}"
+							   dataField="numRequisicion"
 							   width="100"
+							   textAlign="right"
 							   />
 			<mx:DataGridColumn id="dtgSite" headerText="{'Central\no Sitio'}"
 							   dataField="centralSitio"
 							   width="100"
-							   labelFunction="labelFunctionGenerico"/>
-			<mx:DataGridColumn id="dtgStatus" headerText="Estatus"
-							   dataField="estatusRequisicionCompra.estatus"
-							   labelFunction="labelFunctionGenerico"
+							   />
+			<mx:DataGridColumn id="dtgStatus" headerText="{'Local/\nForáneo'}"
+							   dataField="localForaneo"
 							   width="80"
 							   textAlign="center"/>
 		</mx:columns>

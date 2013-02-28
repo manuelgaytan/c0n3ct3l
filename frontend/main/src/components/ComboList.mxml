@@ -60,6 +60,24 @@
 				this._items = value;
 			}
 			
+			public function setListIn(value:ArrayCollection,property:String):void{
+				if( value == null ||
+					value.length == 0 ||
+					property == null ){
+					return;
+				}
+				Util.removeItems( this._items );
+				var object:Object = null;
+				for each (var item:Object in value) 
+				{
+					if( item[property] == null ){
+						continue;
+					}
+					object = item[property];
+					this._items.addItem( object );
+				}
+			}
+			
 			public function get list():ArrayCollection{
 				return this._items;
 			}

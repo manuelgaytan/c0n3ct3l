@@ -87,7 +87,7 @@
 					this.cmbPriority.selectedIndex = Util.selectedIndexFromCombo( this.cmbPriority.dataProvider as ArrayCollection, 
 						this._item.prioridad.id);
 				}
-				this.cmbApplicantsNames.list = this._item.solicitantesRequisicion;
+				this.cmbApplicantsNames.setListIn( this._item.solicitantesRequisicion, "colaborador" );
 				if( Util.isFill( this.cmbApplicantArea ) && this._item.areaSolicitante != null ){
 					this.cmbApplicantArea.selectedIndex = Util.selectedIndexFromCombo( this.cmbApplicantArea.dataProvider as ArrayCollection, 
 						this._item.areaSolicitante.id);
@@ -98,7 +98,7 @@
 					this.cmbStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbStatus.dataProvider as ArrayCollection, 
 						this._item.estatusRequisicionCompra.id);
 				}		
-				this.comments.comments = this._item.comentariosRequisicion;
+				this.comments.setCommentsIn( this._item.comentariosRequisicion, "comentarioCompras");
 			}
 			
 			private function getPurchaseRequisition():RequisicionCompra{

@@ -31,5 +31,14 @@ package model
 			}
 			return false;
 		}
+		
+		public function allowedPerfil(idPerfil:Number):Boolean
+		{
+			if( this.perfil == null ||
+				isNaN(idPerfil) ){
+				return false;
+			}
+			return ( perfil.id == idPerfil );
+		}
 	}
 }

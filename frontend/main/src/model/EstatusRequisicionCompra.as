@@ -1,5 +1,7 @@
 package model
 {
+	import mx.collections.ArrayCollection;
+
 	[RemoteClass(alias="mx.com.gahm.conenctel.entities.EstatusRequisicionCompraDO")]
 	public class EstatusRequisicionCompra
 	{
@@ -16,6 +18,24 @@ package model
 		{
 			id = undefined;
 			estatus = "";
+		}
+		
+		public static function getAll():ArrayCollection{
+			var items:ArrayCollection = new ArrayCollection();
+			var estatusRequisicionCompra:EstatusRequisicionCompra = null;
+			estatusRequisicionCompra = new EstatusRequisicionCompra();
+			estatusRequisicionCompra.id = ID_AUTORIZADA;
+			estatusRequisicionCompra.estatus = AUTORIZADA;
+			items.addItem( estatusRequisicionCompra );
+			estatusRequisicionCompra = new EstatusRequisicionCompra();
+			estatusRequisicionCompra.id = ID_RECHAZADA;
+			estatusRequisicionCompra.estatus = RECHAZADA;
+			items.addItem( estatusRequisicionCompra );
+			estatusRequisicionCompra = new EstatusRequisicionCompra();
+			estatusRequisicionCompra.id = ID_PENDIENTE;
+			estatusRequisicionCompra.estatus = PENDIENTE;
+			items.addItem( estatusRequisicionCompra );
+			return items;
 		}
 	}
 }

@@ -92,6 +92,13 @@
 		<class>mx.com.gahm.conenctel.entities.SolicitudServicioMaquiladoDO</class>
 		<class>mx.com.gahm.conenctel.entities.ConcentradoOrdenCompraClienteDO</class>
 		<class>mx.com.gahm.conenctel.entities.SolicitanteRequisicionDO</class>
+		<class>mx.com.gahm.conenctel.entities.ValidacionAdministrativaDO</class>
+		<class>mx.com.gahm.conenctel.entities.EstadoValidacionAdministrativaDO</class>
+		<class>mx.com.gahm.conenctel.entities.TipoValidacionAdministrativaDO</class>
+		<class>mx.com.gahm.conenctel.entities.EstadoValidacionCobroDO</class>
+		<class>mx.com.gahm.conenctel.entities.EstadoFinalValidacionDO</class>
+		<class>mx.com.gahm.conenctel.entities.ComentarioValidacionAdministrativaDO</class>
+		<class>mx.com.gahm.conenctel.entities.ComentarioPantallaValidacionAdministrativaDO</class>
 		<properties>
 			<property name="eclipselink.logging.level" value="FINE"/> 
 			<property name="eclipselink.logging.parameters" value="true"/>

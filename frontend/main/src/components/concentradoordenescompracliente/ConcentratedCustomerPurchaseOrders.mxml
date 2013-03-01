@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
-		 creationComplete="creationCompleteHandler(event)" xmlns:requisicionescompra="components.requisicionescompra.*"
+		 creationComplete="creationCompleteHandler(event)" xmlns:concentradoordenescompracliente="components.concentradoordenescompracliente.*"
 		 >
 	<mx:Script>
 		<![CDATA[
@@ -15,13 +15,13 @@
 			
 			import model.AreaSolicitante;
 			import model.Catalogo;
+			import model.Cliente;
 			import model.Colaborador;
+			import model.ConcentradoOrdenCompraCliente;
 			import model.Constants;
-			import model.EstatusRequisicionCompra;
-			import model.PartidaRequisicionCompra;
+			import model.PartidaConcentradoOrdenCompraCliente;
 			import model.Perfil;
 			import model.Prioridad;
-			import model.RequisicionCompra;
 			import model.TipoAlmacen;
 			import model.TipoMantenimiento;
 			import model.Util;
@@ -44,7 +44,7 @@
 			import mx.utils.object_proxy;
 			
 			private var mode:String = null;
-			private var _item:RequisicionCompra;
+			private var _item:ConcentradoOrdenCompraCliente;
 			private var validators:InicializaValidadoresEtiquetas;
 			private var validatorsEntry:InicializaValidadoresEtiquetas;
 			
@@ -68,69 +68,58 @@
 				this.fillCombos();
 			}
 			
-			public function set purchaseRequisition(value:RequisicionCompra):void{
+			public function set concentratedCustomerPurchaseOrders(value:ConcentradoOrdenCompraCliente):void{
 				if( value == null ){
 					return;
 				}
 				this._item = value;
-				this.setPurchaseRequisition(); 
+				this.setConcentratedCustomerPurchaseOrders(); 
 			}
 			
-			private function setPurchaseRequisition():void
+			private function setConcentratedCustomerPurchaseOrders():void
 			{
 				if( this._item == null ){
 					return;
 				}
-				/*
 				this.txtID.text = this._item.id;
-				this.dtfApplicationDate.selectedDate = this._item.fechaSolicitud;
-				this.txtReason.text = this._item.motivo;
-				if( Util.isFill( this.cmbPriority ) && this._item.prioridad != null ){
-					this.cmbPriority.selectedIndex = Util.selectedIndexFromCombo( this.cmbPriority.dataProvider as ArrayCollection, 
-						this._item.prioridad.id);
+				if( Util.isFill( this.cmbClient ) && this._item.cliente != null ){
+					this.cmbClient.selectedIndex = Util.selectedIndexFromCombo( this.cmbClient.dataProvider as ArrayCollection, 
+						this._item.cliente.id);
 				}
-				
-				this.cmbApplicantsNames.list = this._item.solicitantesRequisicion;
-				if( Util.isFill( this.cmbApplicantArea ) && this._item.areaSolicitante != null ){
-					this.cmbApplicantArea.selectedIndex = Util.selectedIndexFromCombo( this.cmbApplicantArea.dataProvider as ArrayCollection, 
-						this._item.areaSolicitante.id);
-				}
+				this.txtPurchaseOrder.text = this._item.ordenCompra;
+				this.dtfPurchaseOrderDate.selectedDate = this._item.fechaOrdenCompra;
+				this.txtRequisitionNumber.text = this._item.numRequisicion.toString();
+				this.itemsManagement.dataProvider = this._item.partidasConcentradoOrdenCompraCliente;
 				this.txtSite.text = this._item.centralSitio;
-				this.itemsManagement.dataProvider = this._item.partidasRequisicionCompra;
-				if( Util.isFill( this.cmbStatus ) && this._item.estatusRequisicionCompra != null ){
-					this.cmbStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbStatus.dataProvider as ArrayCollection, 
-						this._item.estatusRequisicionCompra.id);
-				}		
-				this.comments.comments = this._item.comentariosRequisicion;
-				*/
+				this.txtSiteID.text = this._item.idSitio;
+				this.txtServiceType.text = this._item.localForaneo;
+				this.txtPayCondition.text = this._item.idSitio;
+				this.comments.comments = this._item.comentariosConcentradoOrdenCompraCliente;
 			}
 			
-			private function getPurchaseRequisition():RequisicionCompra{
-				var item:RequisicionCompra = null;
+			private function getConcentratedCustomerPurchaseOrders():ConcentradoOrdenCompraCliente{
+				var item:ConcentradoOrdenCompraCliente = null;
 				if( this.mode == Constants.REGISTER_MODE ){
-					item = new RequisicionCompra();
+					item = new ConcentradoOrdenCompraCliente();
 				}else{
 					item = this._item;
 				}
-				/*
-				item.fechaSolicitud= this.dtfApplicationDate.selectedDate;
-				item.motivo= Util.validateEmpty( this.txtReason.text );
-				item.prioridad = Util.validateCombo( this.cmbPriority ) as Prioridad;
-				item.areaSolicitante = Util.validateCombo( this.cmbApplicantArea ) as AreaSolicitante;
-				item.centralSitio = Util.validateEmpty( this.txtSite.text );
-				item.estatusRequisicionCompra = Util.validateCombo( this.cmbStatus ) as EstatusRequisicionCompra;
-				item.solicitantesRequisicion = this.cmbApplicantsNames.list;
-				item.partidasRequisicionCompra = this.itemsManagement.dataProvider as ArrayCollection;
-				item.comentariosRequisicion = this.comments.comments;
-				*/
+				item.cliente = Util.validateCombo( this.cmbClient ) as Cliente;
+				item.ordenCompra = Util.validateEmpty( this.txtPurchaseOrder.text );
+				item.fechaOrdenCompra = this.dtfPurchaseOrderDate.selectedDate;
+				item.numRequisicion = Util.stringToNumber(this.txtRequisitionNumber.text);
+				item.partidasConcentradoOrdenCompraCliente = this.itemsManagement.dataProvider as ArrayCollection;
+				item.centralSitio = Util.validateEmpty(this.txtSite.text);
+				item.idSitio = Util.validateEmpty(this.txtSiteID.text);
+				item.localForaneo = Util.validateEmpty(this.txtServiceType.text);
+				item.condicionPago = Util.validateEmpty(this.txtPayCondition.text);
+				item.comentariosConcentradoOrdenCompraCliente = this.comments.comments;
 				return item;
 			}
 			
 			private function fillCombos():void
 			{
-				this.responseGetPrioridad.token = this.catalogoService.getPrioridad();
-				this.responseGetAreaSolicitante.token = this.catalogoService.getAreaSolicitante();
-				
+				this.responseGetAll.token = this.clienteService.getAll();
 			}
 			
 			protected function responseGetAllClient_resultHandler(event:ResultEvent):void
@@ -140,9 +129,9 @@
 					return;
 				}
 				this.cmbClient.dataProvider = data;
-				if( this._item != null && this._item.prioridad != null ){
+				if( this._item != null && this._item.cliente != null ){
 					this.cmbClient.selectedIndex = Util.selectedIndexFromCombo( this.cmbClient.dataProvider as ArrayCollection, 
-						this._item.prioridad.id);
+						this._item.cliente.id);
 				}
 			}
 			
@@ -158,9 +147,9 @@
 					return;
 				}
 				if( this.mode == Constants.REGISTER_MODE ){
-					var purchaseRequisition:RequisicionCompra = this.getPurchaseRequisition();
-					Util.showProperties( purchaseRequisition );
-					this.responseSave.token = this.requisicionService.save( purchaseRequisition );
+					var concentratedCustomerPurchaseOrders:ConcentradoOrdenCompraCliente = this.getConcentratedCustomerPurchaseOrders();
+					Util.showProperties( concentratedCustomerPurchaseOrders );
+					this.responseSave.token = this.concentradoOrdenCompraClienteService.save( concentratedCustomerPurchaseOrders );
 				}
 				if( this.mode == Constants.UPDATE_MODE ){
 					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
@@ -171,9 +160,9 @@
 				if( event.detail == Alert.NO ){
 					return;
 				}
-				var purchaseRequisition:RequisicionCompra = this.getPurchaseRequisition();
-				Util.showProperties( purchaseRequisition );
-				this.responseUpdate.token = this.requisicionService.update( purchaseRequisition );
+				var concentratedCustomerPurchaseOrders:ConcentradoOrdenCompraCliente = this.getConcentratedCustomerPurchaseOrders();
+				Util.showProperties( concentratedCustomerPurchaseOrders );
+				this.responseUpdate.token = this.concentradoOrdenCompraClienteService.update( concentratedCustomerPurchaseOrders );
 			}
 			
 			private function validations():Boolean
@@ -213,8 +202,8 @@
 			
 			protected function responseSave_resultHandler(event:ResultEvent):void
 			{
-				var eventPurchaseRequisitionNew:Event = new Event("purchaseRequisitionNew");
-				this.dispatchEvent( eventPurchaseRequisitionNew );
+				var eventconcentratedCustomerPurchaseOrdersNew:Event = new Event("concentratedCustomerPurchaseOrdersNew");
+				this.dispatchEvent( eventconcentratedCustomerPurchaseOrdersNew );
 				this.cleanForm();
 			}
 			
@@ -229,24 +218,15 @@
 				this.txtSite.reset();
 				this.txtSiteID.reset();
 				this.txtServiceType.reset();
-				this.txtPayConditions.reset();
+				this.txtPayCondition.reset();
 				this.comments.reset();
 			}
 			
 			protected function responseUpdate_resultHandler(event:ResultEvent):void
 			{
-				var eventPurchaseRequisitionUpdated:Event = new Event("purchaseRequisitionUpdated");
-				this.dispatchEvent( eventPurchaseRequisitionUpdated );
+				var eventconcentratedCustomerPurchaseOrdersUpdated:Event = new Event("concentratedCustomerPurchaseOrdersUpdated");
+				this.dispatchEvent( eventconcentratedCustomerPurchaseOrdersUpdated );
 				this.cleanForm();
-			}
-			
-			protected function responseGetAreaSolicitante_resultHandler(event:ResultEvent):void
-			{
-				var data:ArrayCollection = event.result as ArrayCollection;
-				if( data == null ){
-					return;
-				}
-				//this.cmbApplicantArea.dataProvider = data; //Util.addEmptyCatalgo( data );
 			}
 			
 			protected function catalogoService_faultHandler(event:FaultEvent):void
@@ -256,7 +236,7 @@
 			
 			protected function btnAddItem_clickHandler(event:MouseEvent):void
 			{
-				var entry:PartidaRequisicionCompra  = this.getValidEntry();
+				var entry:PartidaConcentradoOrdenCompraCliente = this.getValidEntry();
 				if( entry == false ){
 					Util.showErrorMessage("Valide los campos de la Partida");
 					return;
@@ -265,17 +245,17 @@
 				this.cleanFormEntry();
 			}
 			
-			private function getValidEntry():PartidaRequisicionCompra
+			private function getValidEntry():PartidaConcentradoOrdenCompraCliente
 			{
-				var entry:PartidaRequisicionCompra = null;
+				var entry:PartidaConcentradoOrdenCompraCliente = null;
 				if( !this.isValidEntry() ){
 					return entry;
 				}
-				entry = new PartidaRequisicionCompra();
-				entry.codigo = Util.validateEmpty( this.txtItem.text );
-				entry.grupoFamilia = Util.validateEmpty( this.txtCode.text );
+				entry = new PartidaConcentradoOrdenCompraCliente();
+				entry.item = Util.stringToNumber( this.txtItem.text );
+				entry.codigo = Util.validateEmpty( this.txtCode.text );
 				entry.descripcion = Util.validateEmpty( this.txtDescription.text );
-				entry.cantidad = Util.validateEmpty( this.txtPrice.text );
+				entry.precioUnitario = Util.stringToNumber( this.txtPrice.text );
 				return entry;
 			}
 			
@@ -294,8 +274,8 @@
 		]]>
 	</mx:Script>
 	<mx:Metadata>
-		[Event(name="purchaseRequisitionNew", type="flash.events.Event")]
-		[Event(name="purchaseRequisitionUpdated", type="flash.events.Event")]
+		[Event(name="concentratedCustomerPurchaseOrdersNew", type="flash.events.Event")]
+		[Event(name="concentratedCustomerPurchaseOrdersUpdated", type="flash.events.Event")]
 	</mx:Metadata>
 	<mx:Form id="form">
 		<mx:FormItem id="frmID" label="ID:">
@@ -304,7 +284,7 @@
 		</mx:FormItem>
 		<mx:FormItem label="Cliente:">
 			<mx:ComboBox id="cmbClient"
-						 labelField="etiqueta"
+						 labelField="nombreComercial"
 						 />
 		</mx:FormItem>
 		<mx:FormItem label="Orden de Compra:">
@@ -341,7 +321,7 @@
 		<mx:FormItem>
 			<mx:Button id="btnAddItem" label="Agregar Partida" click="btnAddItem_clickHandler(event)"/>
 		</mx:FormItem>
-		<requisicionescompra:ItemsManagement id="itemsManagement"/>
+		<concentradoordenescompracliente:ItemsManagement id="itemsManagement"/>
 		<mx:FormItem label="Sitio:">
 			<components:TextInput id="txtSite"/>
 		</mx:FormItem>
@@ -355,8 +335,7 @@
 								  />
 		</mx:FormItem>
 		<mx:FormItem label="Condiciones de Pago:">
-			<components:TextArea id="txtPayConditions"
-								  textAlign="right"
+			<components:TextArea id="txtPayCondition"
 								  width="400"
 								  maxChars="255"
 								  />
@@ -366,14 +345,11 @@
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
 		</mx:FormItem>
 	</mx:Form>
-	<mx:RemoteObject id="requisicionService" destination="requisicionCompraService" fault="requisicionService_faultHandler(event)"
+	<mx:RemoteObject id="concentradoOrdenCompraClienteService" destination="concentradoOrdenCompraClienteService" fault="requisicionService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
 	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
-	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="catalogoService_faultHandler(event)"
+	<mx:RemoteObject id="clienteService" destination="clienteService" fault="requisicionService_faultHandler(event)"
 					 showBusyCursor="true"/>
-	<mx:CallResponder id="responseGetPrioridad" result="responseGetAllClient_resultHandler(event)"/>
-	<mx:CallResponder id="responseGetAreaSolicitante" result="responseGetAreaSolicitante_resultHandler(event)"/>
-	<mx:RemoteObject id="clientesService" destination="telefoniaMovilService" fault="requisicionService_faultHandler(event)"
-					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetAll" result="responseGetAllClient_resultHandler(event)" fault="requisicionService_faultHandler(event)"/>
 </mx:VBox>

@@ -28,8 +28,10 @@
 			import model.Colaborador;
 			import model.Comentario;
 			import model.ComentarioCompras;
+			import model.ComentarioConcentradoOrdenCompraCliente;
 			import model.ComentarioGenerico;
 			import model.ComentarioRequisicion;
+			import model.ComentarioValidacionAdministrativa;
 			import model.Compania;
 			import model.ConfiguracionPruebaEntrega;
 			import model.Constants;
@@ -79,6 +81,7 @@
 			import model.OrdenCompraAlmacen;
 			import model.OrdenCompraMaquilado;
 			import model.Pantalla;
+			import model.PartidaConcentradoOrdenCompraCliente;
 			import model.PartidaRequisicionCompra;
 			import model.PartidaSolicitudAlmacen;
 			import model.Perfil;
@@ -263,6 +266,9 @@
 			private var comentarioGenerico:ComentarioGenerico;
 			private var comentarioRequisicion:ComentarioRequisicion;
 			private var solicitanteRequisicion:SolicitanteRequisicion;
+			private var comentarioConcentradoOrdenCompraCliente:ComentarioConcentradoOrdenCompraCliente;
+			private var comentarioValidacionAdministrativa:ComentarioValidacionAdministrativa;
+			private var partidaConcentradoOrdenCompraCliente:PartidaConcentradoOrdenCompraCliente;
 			
 			protected function login_readyHandler(event:ModuleEvent):void
 			{

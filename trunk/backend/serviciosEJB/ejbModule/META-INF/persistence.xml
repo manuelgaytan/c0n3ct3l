@@ -99,6 +99,8 @@
 		<class>mx.com.gahm.conenctel.entities.EstadoFinalValidacionDO</class>
 		<class>mx.com.gahm.conenctel.entities.ComentarioValidacionAdministrativaDO</class>
 		<class>mx.com.gahm.conenctel.entities.ComentarioPantallaValidacionAdministrativaDO</class>
+		<class>mx.com.gahm.conenctel.entities.PartidaConcentradoOrdenCompraClienteDO</class>
+		<class>mx.com.gahm.conenctel.entities.ComentarioConcentradoOrdenCompraClienteDO</class>
 		<properties>
 			<property name="eclipselink.logging.level" value="FINE"/> 
 			<property name="eclipselink.logging.parameters" value="true"/>

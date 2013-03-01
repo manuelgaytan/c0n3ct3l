@@ -3,15 +3,12 @@
 			 dataProvider="{new ArrayCollection()}">
 	<mx:Script>
 		<![CDATA[
-			import model.PartidaRequisicionCompra;
+			import model.PartidaConcentradoOrdenCompraCliente;
 			import model.Util;
 			
 			import mx.collections.ArrayCollection;
 			
-			[Bindable]
-			private var _items:ArrayCollection = new ArrayCollection();
-			
-			public function addItem(entry:PartidaRequisicionCompra):void{
+			public function addItem(entry:PartidaConcentradoOrdenCompraCliente):void{
 				if( entry == null ){
 					return;
 				}
@@ -26,16 +23,16 @@
 	</mx:Script>
 	<mx:columns>
 		<mx:DataGridColumn id="dtgItemCode" headerText="Ítem"
-						   dataField="codigo"
+						   dataField="item"
 						   width="80"/>
 		<mx:DataGridColumn id="dtgItemFamily" headerText="Código"
 						   width="100"
-						   dataField="grupoFamilia"/>
+						   dataField="codigo"/>
 		<mx:DataGridColumn id="dtgItemDescription" headerText="Descripción"
 						   dataField="descripcion"
 						   width="160"/>
 		<mx:DataGridColumn id="dtgItemQuantity" headerText="{'Precio\nUnitario'}"
-						   dataField="cantidad"
+						   dataField="precioUnitario"
 						   width="60"
 						   textAlign="right"/>
 	</mx:columns>

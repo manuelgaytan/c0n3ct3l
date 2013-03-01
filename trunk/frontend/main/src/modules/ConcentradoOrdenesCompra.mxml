@@ -7,7 +7,7 @@
 		<![CDATA[
 			import events.GenericEvent;
 			
-			import model.RequisicionCompra;
+			import model.ConcentradoOrdenCompraCliente;
 			
 			import mx.events.FlexEvent;
 			
@@ -16,19 +16,19 @@
 				
 			}
 			
-			protected function consult_purchaseRequisitionDetailHandler(event:GenericEvent):void
+			protected function consult_concentratedCustomerPurchaseOrdersDetailHandler(event:GenericEvent):void
 			{
-				this.detail.purchaseRequisition = event.information as model.RequisicionCompra;
+				this.detail.concentratedCustomerPurchaseOrders = event.information as model.ConcentradoOrdenCompraCliente;
 				this.navigator.selectedChild = this.detail;
 			}
 			
-			protected function register_purchaseRequisitionNewHandler(event:Event):void
+			protected function register_concentratedCustomerPurchaseOrdersNewHandler(event:Event):void
 			{
 				this.navigator.selectedChild = this.consult;
 				this.consult.executeQuery();
 			}
 			
-			protected function detail_purchaseRequisitionUpdatedHandler(event:Event):void
+			protected function detail_concentratedCustomerPurchaseOrdersUpdatedHandler(event:Event):void
 			{
 				this.navigator.selectedChild = this.consult;
 				this.consult.executeQuery();
@@ -36,8 +36,8 @@
 		]]>
 	</mx:Script>
 	<mx:TabNavigator id="navigator" width="100%" height="100%" creationPolicy="all">
-		<concentradoordenescompracliente:Consult id="consult" purchaseRequisitionDetail="consult_purchaseRequisitionDetailHandler(event)"/>
-		<concentradoordenescompracliente:ConcentratedCustomerPurchaseOrders id="detail" update="true" purchaseRequisitionUpdated="detail_purchaseRequisitionUpdatedHandler(event)"/>
-		<concentradoordenescompracliente:ConcentratedCustomerPurchaseOrders id="register" registrer="true" purchaseRequisitionNew="register_purchaseRequisitionNewHandler(event)"/>
+		<concentradoordenescompracliente:Consult id="consult" concentratedCustomerPurchaseOrdersDetail="consult_concentratedCustomerPurchaseOrdersDetailHandler(event)"/>
+		<concentradoordenescompracliente:ConcentratedCustomerPurchaseOrders id="detail" update="true" concentratedCustomerPurchaseOrdersUpdated="detail_concentratedCustomerPurchaseOrdersUpdatedHandler(event)"/>
+		<concentradoordenescompracliente:ConcentratedCustomerPurchaseOrders id="register" registrer="true" concentratedCustomerPurchaseOrdersNew="register_concentratedCustomerPurchaseOrdersNewHandler(event)"/>
 	</mx:TabNavigator>
 </mx:Module>

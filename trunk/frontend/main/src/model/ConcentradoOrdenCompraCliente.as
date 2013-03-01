@@ -13,5 +13,8 @@ package model
 		public var centralSitio:String;
 		public var idSitio:String;
 		public var localForaneo:String;
+		public var condicionPago:String;
+		public var partidasConcentradoOrdenCompraCliente:ArrayCollection;
+		public var comentariosConcentradoOrdenCompraCliente:ArrayCollection;
 	}
 }

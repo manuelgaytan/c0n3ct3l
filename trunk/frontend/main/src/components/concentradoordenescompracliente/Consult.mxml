@@ -7,7 +7,7 @@
 		<![CDATA[
 			import events.GenericEvent;
 			
-			import model.RequisicionCompra;
+			import model.ConcentradoOrdenCompraCliente;
 			import model.Util;
 			
 			import mx.collections.ArrayCollection;
@@ -20,7 +20,7 @@
 			[Bindable]
 			private var items:ArrayCollection = null;
 			
-			private var requisicionCompra:RequisicionCompra;
+			private var concentradoOrdenCompraCliente:ConcentradoOrdenCompraCliente;
 			
 			protected function responseGetAll_resultHandler(event:ResultEvent):void
 			{
@@ -39,27 +39,27 @@
 			
 			protected function datagrid_doubleClickHandler(event:MouseEvent):void
 			{
-				var item:RequisicionCompra = this.datagrid.selectedItem as RequisicionCompra;
+				var item:ConcentradoOrdenCompraCliente = this.datagrid.selectedItem as ConcentradoOrdenCompraCliente;
 				if( item == null ){
 					return;
 				}
-				this.responseGetItem.token = this.requisicionService.getItem( item.id );
+				this.responseGetItem.token = this.concentradoOrdenCompraClienteService.getItem( item.id );
 			}
 			
 			protected function responseGetItem_resultHandler(event:ResultEvent):void
 			{
-				var item:RequisicionCompra = event.result as RequisicionCompra;
+				var item:ConcentradoOrdenCompraCliente = event.result as ConcentradoOrdenCompraCliente;
 				if( item == null ){
 					return;
 				}
-				var genericEvent:GenericEvent = new GenericEvent("purchaseRequisitionDetail");
+				var genericEvent:GenericEvent = new GenericEvent("concentratedCustomerPurchaseOrdersDetail");
 				genericEvent.information = item;
 				this.dispatchEvent( genericEvent );
 			}
 			
 			public function executeQuery():void
 			{
-				this.responseGetAll.token = this.requisicionService.getAll();
+				this.responseGetAll.token = this.concentradoOrdenCompraClienteService.getAll();
 			}
 			
 			protected function btnDelete_clickHandler(event:MouseEvent):void
@@ -78,7 +78,7 @@
 					return;
 				}
 				var items:ArrayCollection = Util.selectedIDs( this.datagrid.selectedItems ); 
-				this.responseDeleteItems.token = this.requisicionService.deleteItems( items );
+				this.responseDeleteItems.token = this.concentradoOrdenCompraClienteService.deleteItems( items );
 			}
 			
 			protected function responseDeleteItems_resultHandler(event:ResultEvent):void
@@ -88,7 +88,7 @@
 		]]>
 	</mx:Script>
 	<mx:Metadata>
-		[Event(name="purchaseRequisitionDetail", type="events.GenericEvent")]
+		[Event(name="concentratedCustomerPurchaseOrdersDetail", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:DataGrid id="datagrid" width="100%" height="100%" dataProvider="{items}"
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
@@ -106,7 +106,7 @@
 							   dataField="ordenCompra"
 							   width="200"/>
 			<mx:DataGridColumn id="dtgPurchaseOrderDate" headerText="{'Fecha Orden\nde Compra'}"
-							   dataField="fechaSolicitud"
+							   dataField="fechaOrdenCompra"
 							   width="95"
 							   textAlign="center"
 							   labelFunction="{Util.labelFunctionDate}"/>
@@ -128,7 +128,7 @@
 	<mx:HBox>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>
 	</mx:HBox>
-	<mx:RemoteObject id="requisicionService" destination="requisicionCompraService" fault="requisicionService_faultHandler(event)"
+	<mx:RemoteObject id="concentradoOrdenCompraClienteService" destination="concentradoOrdenCompraClienteService" fault="requisicionService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetAll" result="responseGetAll_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetItem" result="responseGetItem_resultHandler(event)"/>

@@ -3,6 +3,7 @@
  */
 package mx.com.gahm.conenctel.entities;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -26,10 +27,10 @@ import javax.persistence.TemporalType;
 @Entity
 @NamedQueries({ @NamedQuery(name = "ConcentradoOrdenCompraClienteDO.findAll", query = "select c from ConcentradoOrdenCompraClienteDO c") })
 @Table(name = "ConcentradoOrdenCompraCliente")
-public class ConcentradoOrdenCompraClienteDO {
+public class ConcentradoOrdenCompraClienteDO implements Serializable{
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	@ManyToOne
 	@JoinColumn(name = "fk_cliente")
@@ -47,6 +48,8 @@ public class ConcentradoOrdenCompraClienteDO {
 	private String idSitio;
 	@Column(name = "local_foraneo")
 	private String localForaneo;
+	@Column(name = "condicion_pago")
+	private String condicionPago;
 
 	public ConcentradoOrdenCompraClienteDO() {
 		super();
@@ -129,6 +132,14 @@ public class ConcentradoOrdenCompraClienteDO {
 
 	public void setLocalForaneo(String localForaneo) {
 		this.localForaneo = localForaneo;
+	}
+
+	public String getCondicionPago() {
+		return condicionPago;
+	}
+
+	public void setCondicionPago(String condicionPago) {
+		this.condicionPago = condicionPago;
 	}
 
 }

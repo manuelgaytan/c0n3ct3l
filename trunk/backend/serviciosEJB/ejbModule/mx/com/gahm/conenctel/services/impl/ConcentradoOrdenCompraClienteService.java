@@ -10,7 +10,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
+import mx.com.gahm.conenctel.entities.ComentarioConcentradoOrdenCompraClienteDO;
 import mx.com.gahm.conenctel.entities.ConcentradoOrdenCompraClienteDO;
+import mx.com.gahm.conenctel.entities.PartidaConcentradoOrdenCompraClienteDO;
 import mx.com.gahm.conenctel.exceptions.ConectelException;
 import mx.com.gahm.conenctel.services.IConcentradoOrdenCompraClienteService;
 import mx.com.gahm.conenctel.util.DataTypeUtil;
@@ -54,6 +56,17 @@ public class ConcentradoOrdenCompraClienteService implements IConcentradoOrdenCo
 		
 		entityManager.persist(item);
 		
+		List<ComentarioConcentradoOrdenCompraClienteDO> comentarios =item.getComentariosConcentradoOrdenCompraCliente();
+		for (ComentarioConcentradoOrdenCompraClienteDO comentario : comentarios) {
+			comentario.setConcentradoOrdenCompraCliente(item);
+			entityManager.persist(comentario);
+		}
+		List<PartidaConcentradoOrdenCompraClienteDO> partidas= item.getPartidasConcentradoOrdenCompraCliente();
+		
+		for (PartidaConcentradoOrdenCompraClienteDO partida : partidas) {
+			partida.setConcentradoOrdenCompraCliente(item);
+			entityManager.persist(partida);
+		}
 			return null;
 	}
 

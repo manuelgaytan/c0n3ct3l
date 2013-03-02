@@ -1124,6 +1124,7 @@
 	central_sitio VARCHAR(255),
 	id_sitio VARCHAR(255),
 	local_foraneo VARCHAR(255),
+	condicion_pago VARCHAR(255),
 	PRIMARY KEY (id)
 	);
 

@@ -26,7 +26,10 @@ import javax.persistence.TemporalType;
 @NamedQueries({
 	@NamedQuery(name = "OrdenCompraDO.findAll", query = "select oc from OrdenCompraDO oc"),
 	@NamedQuery(name = "OrdenCompraDO.findById", 
-				query = "select oc from OrdenCompraDO oc where oc.id = :id")})
+				query = "select oc from OrdenCompraDO oc where oc.id = :id"),
+	@NamedQuery(name = "OrdenCompraDO.findByProveedor", 
+				query = "select oc from OrdenCompraDO oc where oc.proveedorCalificado.proveedorSeleccionado.id = :id")			
+	})
 
 public class OrdenCompraDO  implements java.io.Serializable {
 

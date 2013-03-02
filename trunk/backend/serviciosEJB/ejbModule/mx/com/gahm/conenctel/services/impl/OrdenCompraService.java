@@ -76,5 +76,21 @@ public class OrdenCompraService  implements IOrdenCompraService{
 		
 		return ordenCompraDO;
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<OrdenCompraDO> getOrdenCompraByProveedor(Long idProveedor) {
+		List<OrdenCompraDO> datos= null;
+		Query query =null;
+		query = entityManager.createNamedQuery("OrdenCompraDO.findByProveedor");
+		query.setParameter("id", idProveedor);
+		datos = query.getResultList();
+		
+		return datos;
+	}
 
+
+	
+	
+	
 }

@@ -16,6 +16,8 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
@@ -25,8 +27,9 @@ import javax.persistence.Table;
 @Cacheable(false)
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
-//@NamedQueries({
-//	@NamedQuery(name = "ProveedorDO.findAll", query = "select p from  ProveedorDO p")})
+@NamedQueries({
+	@NamedQuery(name = "ProveedorDO.findAll", query = "select p from  ProveedorDO p")
+	})
 @Table(name = "proveedor")
 @DiscriminatorColumn(name="type_Proveedor", discriminatorType=DiscriminatorType.INTEGER)
 

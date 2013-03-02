@@ -26,6 +26,7 @@ import mx.com.gahm.conenctel.entities.GrupoFamiliaEDO;
 import mx.com.gahm.conenctel.entities.GrupoFamiliaFDO;
 import mx.com.gahm.conenctel.entities.ImputableDO;
 import mx.com.gahm.conenctel.entities.PrioridadDO;
+import mx.com.gahm.conenctel.entities.ProveedorDO;
 import mx.com.gahm.conenctel.entities.SeguimientoDO;
 import mx.com.gahm.conenctel.entities.ServicioSolicitadoDO;
 import mx.com.gahm.conenctel.entities.TipoAlmacenDO;
@@ -127,4 +128,5 @@ public interface ICatalogoService extends Serializable {
 	public List<ColaboradorDO> getColaboradorByTipoColaborador(Long idTipoColaborador) throws ConectelException;
 	
 	List<TipoColaboradorDO> getTipoColaborador() throws ConectelException;
+	List<ProveedorDO> getProveedores() throws ConectelException;
 }

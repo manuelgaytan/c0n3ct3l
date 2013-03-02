@@ -20,4 +20,5 @@ public interface IOrdenCompraService {
 	OrdenCompraDO save( OrdenCompraDO item );
 	OrdenCompraDO update( OrdenCompraDO item );
 	OrdenCompraDO getItem( Integer id );
+	List<OrdenCompraDO> getOrdenCompraByProveedor(Long idProveedor);
 }

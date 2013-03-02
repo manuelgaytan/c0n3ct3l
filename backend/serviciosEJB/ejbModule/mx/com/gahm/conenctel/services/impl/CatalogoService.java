@@ -31,6 +31,7 @@ import mx.com.gahm.conenctel.entities.GrupoFamiliaEDO;
 import mx.com.gahm.conenctel.entities.GrupoFamiliaFDO;
 import mx.com.gahm.conenctel.entities.ImputableDO;
 import mx.com.gahm.conenctel.entities.PrioridadDO;
+import mx.com.gahm.conenctel.entities.ProveedorDO;
 import mx.com.gahm.conenctel.entities.SeguimientoDO;
 import mx.com.gahm.conenctel.entities.ServicioSolicitadoDO;
 import mx.com.gahm.conenctel.entities.TipoAlmacenDO;
@@ -589,6 +590,20 @@ public class CatalogoService implements ICatalogoService {
 		
 		query.setParameter("idTipoColaborado", idTipoColaborador);
 		List<ColaboradorDO> colaboradorList;
+		try {
+			colaboradorList = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen Colaborador registrados.");
+		}
+		return colaboradorList;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<ProveedorDO> getProveedores() throws ConectelException {
+		TypedQuery<ProveedorDO> query = entityManager.createNamedQuery(
+				"ProveedorDO.findAll", ProveedorDO.class);
+		
+		List<ProveedorDO> colaboradorList;
 		try {
 			colaboradorList = query.getResultList();
 		} catch (NoResultException e) {

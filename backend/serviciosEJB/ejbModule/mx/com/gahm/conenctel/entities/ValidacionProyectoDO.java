@@ -25,7 +25,8 @@ import javax.persistence.TemporalType;
  * 
  */
 @Entity
-@NamedQueries({ @NamedQuery(name = "ValidacionProyectoDO.findAll", query = "select s from ValidacionProyectoDO s") })
+@NamedQueries({ @NamedQuery(name = "ValidacionProyectoDO.findAll", 
+query = "select s from ValidacionProyectoDO s where s.estadoValidacionOperativa.id=2") })
 @Table(name = "ValidacionProyecto")
 public class ValidacionProyectoDO implements Serializable {
 

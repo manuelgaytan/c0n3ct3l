@@ -32,7 +32,7 @@ public class ComentarioPantallaValidacionAdministrativaDO implements Serializabl
 	private ValidacionAdministrativaDO validacionAdministrativa;
 	
 	@ManyToOne
-	@JoinColumn(name="fk_validacion_administrativa")
+	@JoinColumn(name="fk_comentario_validacion_administrativa")
 	private ComentarioValidacionAdministrativaDO comentarioValidacionAdministrativa;
 
 	public ComentarioPantallaValidacionAdministrativaDO() {

@@ -55,6 +55,9 @@ public class RequisicionCompraService  implements IRequisicionCompraService{
 		savePartidas(item,partidasRequisicionCompra);
 		saveComentariosRequisicion(item, comentariosRequisicion);
 		saveSolicitantesRequisicion(item, solicitantesRequisicion);
+		item.setSolicitantesRequisicion(solicitantesRequisicion);
+		item.setPartidasRequisicionCompra(partidasRequisicionCompra);
+		item.setComentariosRequisicion(comentariosRequisicion);
 		return item;
 	}
 

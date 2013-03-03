@@ -142,17 +142,6 @@
 							   width="80"
 							   dataField="proveedorCalificado.proveedorSeleccionado.nombreComercial"
 							   labelFunction="labelFunctionGenerico"/>
-			<mx:DataGridColumn id="dtgDescription" headerText="Descripción"
-							   dataField="descripcion"
-							   width="120"/>
-			<mx:DataGridColumn id="dtgQuantity" headerText="Cantidad"
-							   dataField="existencia"
-							   width="80"
-							   textAlign="right"/>
-			<mx:DataGridColumn id="dtgUnit" headerText="Unidad"
-							   dataField="unidadOrdenCompra.etiqueta"
-							   width="50"
-							   labelFunction="labelFunctionGenerico"/>
 		</mx:columns>
 	</mx:DataGrid>
 	<mx:HBox>

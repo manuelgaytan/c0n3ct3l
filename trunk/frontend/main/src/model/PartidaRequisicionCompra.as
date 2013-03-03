@@ -14,6 +14,8 @@ package model
 		public var unidad:String;
 		public var validacion:String;
 		public var fkEstatus:Number = EstatusRequisicionCompra.ID_PENDIENTE;
+		public var costo:*;
+		public var importe:*;
 		//public var estatusRequisicionCompra:EstatusRequisicionCompra;
 		
 		public function PartidaRequisicionCompra()

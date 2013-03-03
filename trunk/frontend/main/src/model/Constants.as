@@ -2,6 +2,8 @@ package model
 {
 	public class Constants
 	{
+		public static const IVA:Number = 0.16;
+		
 		public static const ERROR:String = "Error";
 		public static const REQUIRED_FIELD:String = "Por favor requisite los campos requeridos.";
 		public static var REGISTRAR:String = "Registrar";

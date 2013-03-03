@@ -6,6 +6,7 @@
 		<![CDATA[
 			import events.GenericEvent;
 			
+			import model.Catalogo;
 			import model.Constants;
 			import model.FacturaPorPagar;
 			import model.OrdenCompraAlmacen;
@@ -22,6 +23,7 @@
 			import mx.controls.Alert;
 			import mx.events.CloseEvent;
 			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
 			import mx.rpc.events.FaultEvent;
 			import mx.rpc.events.ResultEvent;
 			import mx.utils.object_proxy;
@@ -29,6 +31,25 @@
 			private var mode:String = null;
 			private var _item:FacturaPorPagar;
 			private var validators:InicializaValidadoresEtiquetas;
+			
+			private static const ID_ODC_ALMACEN:int = 1;
+			private static const ID_ODC_SERVICIO:int = 2;
+			private static const ODC_ALMACEN:String = "Orden de Compra Álmacen";
+			private static const ODC_SERVICIO:String = "Orden de Compra Servicio Maquilado";
+			
+			private static function getDataProviderODC():ArrayCollection{
+				var catalago:Catalogo = null;
+				var data:ArrayCollection = new ArrayCollection();
+				catalago = new Catalogo();
+				catalago.id = ID_ODC_ALMACEN;
+				catalago.etiqueta = ODC_ALMACEN;
+				data.addItem( catalago );
+				catalago = new Catalogo();
+				catalago.id = ID_ODC_SERVICIO;
+				catalago.etiqueta = ODC_SERVICIO;
+				data.addItem( catalago );
+				return Util.addEmptyCatalgo(data);
+			}
 			
 			public function set registrer(value:Boolean):void{
 				mode = Constants.REGISTER_MODE;
@@ -81,8 +102,8 @@
 					subtotal = Util.extractToText( this._item, "ordenCompra.subtotal" );
 					iva = Util.extractToText( this._item, "ordenCompra.iva" );
 					ieps = Util.extractToText( this._item, "ordenCompra.ieps" );
-					isrRet = Util.extractToText( this._item, "ordenCompra.retencionISR" );
-					ivaRet = Util.extractToText( this._item, "ordenCompra.retencionIVA" );
+					isrRet = Util.extractToText( this._item, "ordenCompra.retencionIsr" );
+					ivaRet = Util.extractToText( this._item, "ordenCompra.retencionIva" );
 					otherTaxes = Util.extractToText( this._item, "ordenCompra.otrosImpuestos" );
 					total = Util.extractToText( this._item, "ordenCompra.total" );
 				}
@@ -94,14 +115,23 @@
 					subtotal = Util.extractToText( this._item, "ordenCompraMaquilado.subtotal" );
 					iva = Util.extractToText( this._item, "ordenCompraMaquilado.iva" );
 					ieps = Util.extractToText( this._item, "ordenCompraMaquilado.ieps" );
-					isrRet = Util.extractToText( this._item, "ordenCompraMaquilado.retencionISR" );
-					ivaRet = Util.extractToText( this._item, "ordenCompraMaquilado.retencionIVA" );
+					isrRet = Util.extractToText( this._item, "ordenCompraMaquilado.retencionIsr" );
+					ivaRet = Util.extractToText( this._item, "ordenCompraMaquilado.retencionIva" );
 					otherTaxes = Util.extractToText( this._item, "ordenCompraMaquilado.otrosImpuestos" );
 					total = Util.extractToText( this._item, "ordenCompraMaquilado.total" );
 				}
-				this.txtPurchaseOrder.text = purchaseOrderNumber;
+				if( Util.isFill( this.cmbPurchaseOrderType )  ){
+					var purchaseOrderType:Number = maquiladoraService == false ? ID_ODC_ALMACEN : ID_ODC_SERVICIO;
+					this.cmbPurchaseOrderType.selectedIndex = Util.selectedIndexFromCombo( this.cmbPurchaseOrderType.dataProvider as ArrayCollection, purchaseOrderType);  
+				}
+				var arrayPurchaseOrder:Array = null;
+				if( maquiladoraService ){
+					arrayPurchaseOrder = [this._item.ordenCompraMaquilado];
+				}else{
+					arrayPurchaseOrder = [this._item.ordenCompra];
+				}
+				this.dtgPurchaseOrder.dataProvider = arrayPurchaseOrder;
 				this.lblSupplier.text = supplier;
-				this.chbMaquiladoraService.selected = maquiladoraService;
 				this.txtFolio.text = this._item.folio;
 				this.dtfDate.selectedDate = this._item.fecha;
 				this.lblSubtotal.text = subtotal;
@@ -111,23 +141,22 @@
 				this.lblIVARetention.text = ivaRet;
 				this.lblOtherTaxes.text = otherTaxes;
 				this.lblTotal.text = total;
-				this.dtfDate.selectedDate = this._item.fechaPago;
+				this.dtfPaymentDate.selectedDate = this._item.fechaPago;
 			}
 			
 			private function getPayableInvoice():FacturaPorPagar{
 				var item:FacturaPorPagar = null;
 				if( this.mode == Constants.REGISTER_MODE ){
 					item = new FacturaPorPagar();
+					var purchaseOrderType:* = Util.selectedId(this.cmbPurchaseOrderType);
+					if( purchaseOrderType == ID_ODC_ALMACEN ){
+						item.ordenCompra = this.dtgPurchaseOrder.selectedItem as OrdenCompraAlmacen;
+					}
+					if( purchaseOrderType == ID_ODC_SERVICIO ){
+						item.ordenCompraMaquilado = this.dtgPurchaseOrder.selectedItem as OrdenCompraMaquilado;
+					}
 				}else{
 					item = this._item;
-				}
-				if( this.chbMaquiladoraService == false ){
-					item.ordenCompra = new OrdenCompraAlmacen();
-					item.ordenCompra.id = Util.stringToNumber( this.txtPurchaseOrder.text );
-				}
-				if( this.chbMaquiladoraService == true ){
-					item.ordenCompraMaquilado = new OrdenCompraMaquilado();
-					item.ordenCompraMaquilado.id = Util.stringToNumber( this.txtPurchaseOrder.text );
 				}
 				item.folio = Util.validateEmpty( this.txtFolio.text );
 				item.fecha = this.dtfDate.selectedDate;
@@ -180,16 +209,16 @@
 			{
 				if( this.mode == Constants.REGISTER_MODE ){
 					form.removeChild( this.frmID );
+				}else{
+					this.cmbPurchaseOrderType.enabled = false;
+					this.dtgPurchaseOrder.enabled = false;
+					this.dtgPurchaseOrder.doubleClickEnabled = false;
 				}
 			}
 			
 			private function initializeValidators():void
 			{
 				this.validators = new InicializaValidadoresEtiquetas();
-				validators.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
-				validators.setValidador(txtFolio, "generic");
-				validators.crearValidadorRestrictor("integerGeneric",ValidadorEntero.nombre, 5);
-				validators.setValidador(txtPurchaseOrder, "integerGeneric");
 			}
 			
 			protected function responseSave_resultHandler(event:ResultEvent):void
@@ -199,10 +228,13 @@
 				this.cleanForm();
 			}
 			
-			private function cleanForm():void
+			private function cleanForm(labels:Boolean = false):void
 			{
+				if( !labels ){
 				this.txtID.reset();
-				this.txtPurchaseOrder.reset();
+				this.cmbPurchaseOrderType.selectedIndex = 0;
+				Util.removeItems(this.dtgPurchaseOrder.dataProvider);
+				}
 				this.lblSupplier.text = "";
 				this.txtFolio.reset();
 				this.dtfDate.reset();
@@ -228,23 +260,76 @@
 				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
 			}
 			
-			protected function btnViewPurchaseOrder_clickHandler(mouseEvent:MouseEvent):void
+			protected function cmbPurchaseOrderType_changeHandler(event:ListEvent):void
 			{
-				var purchaseOrderNumber:* = Util.stringToNumber( this.txtPurchaseOrder.text );
-				if( purchaseOrderNumber == undefined ){
-					Util.showErrorMessage( "Primero debe colocar un número de Orden de Compra en el campo." );
+				var odcType:* = Util.selectedId(this.cmbPurchaseOrderType); 
+				if( odcType == undefined ){
+					this.cleanForm();
 					return;
 				}
-				var event:GenericEvent = null;
-				if( this.chbMaquiladoraService.selected ){
-					event = new GenericEvent("seePurchaseOrdenMaquiladoraService");
+				if( odcType == ID_ODC_ALMACEN ){
+					responseGetAllODCAlmacen.token = this.ordenCompraService.getAll();
 				}else{
-					event = new GenericEvent("seePurchaseOrdenStock");
+					
 				}
-				event.information = purchaseOrderNumber;
-				this.dispatchEvent( event );
 			}
 			
+			protected function responseGetAllODCAlmacen_resultHandler(event:ResultEvent):void
+			{
+				this.dtgRequisicionID.dataField = "requisicionCompra.id";
+				this.dtgPurchaseOrder.dataProvider = event.result as ArrayCollection;
+			}
+			
+			protected function dtgPurchaseOrder_doubleClickHandler(event:MouseEvent):void
+			{
+				var odcType:* = Util.selectedId(this.cmbPurchaseOrderType); 
+				if( odcType == undefined ||
+					this.dtgPurchaseOrder.selectedItem == null ){
+					this.cleanForm(true);
+					return;
+				}
+				var purchaseOrderNumber:String;
+				var maquiladoraService:Boolean;
+				var supplier:String = null;
+				var subtotal:String;
+				var iva:String;
+				var ieps:String;
+				var isrRet:String;
+				var ivaRet:String;
+				var otherTaxes:String;
+				var total:String;
+				if( odcType == ID_ODC_ALMACEN ){
+					maquiladoraService = false;
+					var ordenCompraAlmacen:OrdenCompraAlmacen = this.dtgPurchaseOrder.selectedItem as OrdenCompraAlmacen;
+					supplier = Util.extractToText( ordenCompraAlmacen, "proveedorCalificado.proveedorSeleccionado.nombreComercial" );
+					subtotal = Util.extractToText( ordenCompraAlmacen, "subtotal" );
+					iva = Util.extractToText( ordenCompraAlmacen, "iva" );
+					ieps = Util.extractToText( ordenCompraAlmacen, "ieps" );
+					isrRet = Util.extractToText( ordenCompraAlmacen, "retencionIsr" );
+					ivaRet = Util.extractToText( ordenCompraAlmacen, "retencionIva" );
+					otherTaxes = Util.extractToText( ordenCompraAlmacen, "otrosImpuestos" );
+					total = Util.extractToText( ordenCompraAlmacen, "total" );
+				}else{
+					maquiladoraService = true;
+					var ordenCompraMaquilado:OrdenCompraMaquilado = this.dtgPurchaseOrder.selectedItem as OrdenCompraMaquilado;
+					supplier = Util.extractToText( ordenCompraMaquilado, "proveedorCalificado.proveedorSeleccionado.nombreComercial" );
+					subtotal = Util.extractToText( ordenCompraMaquilado, "subtotal" );
+					iva = Util.extractToText( ordenCompraMaquilado, "iva" );
+					ieps = Util.extractToText( ordenCompraMaquilado, "ieps" );
+					isrRet = Util.extractToText( ordenCompraMaquilado, "retencionIsr" );
+					ivaRet = Util.extractToText( ordenCompraMaquilado, "retencionIva" );
+					otherTaxes = Util.extractToText( ordenCompraMaquilado, "otrosImpuestos" );
+					total = Util.extractToText( ordenCompraMaquilado, "total" );
+				}
+				this.lblSupplier.text = supplier;
+				this.lblSubtotal.text = subtotal;
+				this.lblIVA.text = iva;
+				this.lblIEPS.text = ieps;
+				this.lblISRRetention.text = isrRet;
+				this.lblIVARetention.text = ivaRet;
+				this.lblOtherTaxes.text = otherTaxes;
+				this.lblTotal.text = total;
+			}
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -257,14 +342,39 @@
 		<mx:FormItem label="ID:" id="frmID">
 			<components:TextInput id="txtID" textAlign="right" editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Número de Orden de Compra:" direction="horizontal">
-			<components:TextInput id="txtPurchaseOrder"
-								  width="150"
-								  enter="creationCompleteHandler(event)"/>
-			<mx:CheckBox id="chbMaquiladoraService" label="Orden de Compra Servicio Maquilado"/>
-			<mx:Button id="btnViewPurchaseOrder" label="Ver Orden de Compra"
-					   click="btnViewPurchaseOrder_clickHandler(event)"/>
+		<mx:FormItem label="Tipo de Orden Compra:" direction="horizontal">
+			<mx:ComboBox id="cmbPurchaseOrderType"
+						 dataProvider="{getDataProviderODC()}"
+						 change="cmbPurchaseOrderType_changeHandler(event)"
+						 labelField="etiqueta"/>
 		</mx:FormItem>
+		<mx:DataGrid id="dtgPurchaseOrder"
+					 doubleClick="dtgPurchaseOrder_doubleClickHandler(event)"
+					 doubleClickEnabled="true">
+			<mx:columns>
+				<mx:DataGridColumn id="dtgID" headerText="ID"
+								   dataField="id"
+								   width="80"
+								   textAlign="right"/>
+				<mx:DataGridColumn id="dtgProjectID" headerText="{'ID \nProyecto'}"
+								   width="80"
+								   dataField="proyecto.id"
+								   textAlign="right"/>
+				<mx:DataGridColumn id="dtgRequisicionID" headerText="{'ID \nRequisición/\nSolicitud'}"
+								   width="90"
+								   dataField="requisicionCompra.id"
+								   textAlign="right"/>
+				<mx:DataGridColumn id="dtgDate" headerText="Fecha"
+								   width="80"
+								   dataField="fecha"
+								   labelFunction="{Util.labelFunctionDate}"
+								   textAlign="center"/>
+				<mx:DataGridColumn id="dtgSupplier" headerText="Proveedor"
+								   width="200"
+								   dataField="proveedorCalificado.proveedorSeleccionado.nombreComercial"
+								   />
+			</mx:columns>
+		</mx:DataGrid>
 		<mx:FormItem label="Proveedor:">
 			<mx:Label id="lblSupplier"/>
 		</mx:FormItem>
@@ -306,4 +416,7 @@
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
 	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
+	<mx:RemoteObject id="ordenCompraService" destination="ordenCompraService" fault="facturaPorPagarService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetAllODCAlmacen" result="responseGetAllODCAlmacen_resultHandler(event)"/>
 </mx:VBox>

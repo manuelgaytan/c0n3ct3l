@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
-		 creationComplete="creationCompleteHandler(event)"
+		 creationComplete="creationCompleteHandler(event)" xmlns:requisicionescompra="components.requisicionescompra.*"
 		 >
 	<mx:Script>
 		<![CDATA[
@@ -11,6 +11,7 @@
 			import model.EstatusC;
 			import model.GrupoFamiliaD;
 			import model.OrdenCompraAlmacen;
+			import model.PartidaRequisicionCompra;
 			import model.Perfil;
 			import model.ProveedorCalificado;
 			import model.ProveedorCalificadoCombo;
@@ -24,12 +25,14 @@
 			import model.Util;
 			
 			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.Constantes;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
 			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
 			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
 			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
 			import mx.com.gahm.componentes.validadores.ValidadorNumerico;
 			import mx.controls.Alert;
+			import mx.controls.List;
 			import mx.events.CloseEvent;
 			import mx.events.FlexEvent;
 			import mx.events.ListEvent;
@@ -77,12 +80,13 @@
 				this.txtID.text = Util.numberToString( this._item.id );
 				this.txtProjectID.text = Util.numberToString( this._item.proyecto.id );
 				this.txtRequisicionID.text = Util.numberToString( this._item.requisicionCompra.id );
+				this.txtRequisicionID.dispatchEvent( new FocusEvent(FocusEvent.FOCUS_OUT) );
 				this.txtQuotationID.text = Util.numberToString( this._item.cotizacion.id );
 				this.dtfDate.selectedDate = this._item.fecha;
 				if( Util.isFill( this.cmbQualifiedSupplier ) && this._item.proveedorCalificado != null ){
 					this.cmbQualifiedSupplier.selectedIndex = Util.selectedIndexFromCombo( this.cmbQualifiedSupplier.dataProvider as ArrayCollection, 
 						this._item.proveedorCalificado.id);
-					this.cmbQualifiedSupplier.dispatchEvent( new Event(Event.CHANGE) );
+					this.cmbQualifiedSupplier.dispatchEvent( new ListEvent(ListEvent.CHANGE) );
 				}
 				this.txtSubtotal.text = Util.numberToString( this._item.subtotal );
 				this.txtIVA.text = Util.numberToString( this._item.iva );
@@ -145,7 +149,7 @@
 				this.responseGetProveedoresCalificados.token = this.proveedorCalificadoService.getProveedoresCalificadosCombo();
 			}
 			
-			protected function consumibleService_faultHandler(event:FaultEvent):void
+			protected function ordenCompraService_faultHandler(event:FaultEvent):void
 			{
 				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
 			}
@@ -289,6 +293,44 @@
 				this.setQualifiedSupplier( event.result as ProveedorCalificado );
 			}
 			
+			protected function txtRequisicionID_enterHandler():void
+			{
+				var idRequisicion:* = Util.stringToNumber(this.txtRequisicionID.text);
+				if( idRequisicion == undefined ){
+					return;
+				}
+				this.responseGetRequisicionCompra.token = this.requisicionCompraService.getItem(idRequisicion);
+			}
+			
+			protected function txtRequisicionID_focusOutHandler():void
+			{
+				this.txtRequisicionID_enterHandler();
+			}
+			
+			protected function responseGetRequisicionCompra_resultHandler(event:ResultEvent):void
+			{
+				if( event != null &&
+					event.result != null ){
+					itemsManagement.dataProvider = event.result.partidasRequisicionCompra;
+				}
+			}
+			
+			protected function btnUpdate_clickHandler(event:MouseEvent):void
+			{
+				var datas:ArrayCollection = this.itemsManagement.dataProvider as ArrayCollection;
+				var subtotal:Number = 0;
+				for each (var i:PartidaRequisicionCompra in datas) 
+				{
+					i.importe = Util.stringToNumber(i.cantidad) * i.costo;
+					if( i.importe != undefined ){
+						subtotal += i.importe;
+					}
+				}
+				this.txtSubtotal.text = subtotal.toString();
+				this.txtIVA.text = (subtotal*Constants.IVA).toString();
+				this.txtTotal.text = (subtotal*Constants.IVA+subtotal).toString();
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -297,18 +339,20 @@
 	</mx:Metadata>
 	<mx:Form id="form">
 		<mx:FormItem label="ID:" id="frmID">
-			<components:TextInput id="txtID"/>
+			<components:TextInput id="txtID" textAlign="right"/>
 		</mx:FormItem>
 		<mx:FormItem label="ID Proyecto:" direction="horizontal">
-			<components:TextInput id="txtProjectID"/>
+			<components:TextInput id="txtProjectID" textAlign="right"/>
 			<!--<mx:Button label="Ver Proyecto" id="btnProjectID"/>-->
 		</mx:FormItem>
 		<mx:FormItem label="ID Requisición:" direction="horizontal">
-			<components:TextInput id="txtRequisicionID"/>
+			<components:TextInput id="txtRequisicionID" textAlign="right"
+								  enter="txtRequisicionID_enterHandler()"
+								  focusOut="txtRequisicionID_focusOutHandler()"/>
 			<!--<mx:Button label="Ver Requisición" id="btnRequisicionID"/>-->
 		</mx:FormItem>
 		<mx:FormItem label="ID Cotización:" direction="horizontal">
-			<components:TextInput id="txtQuotationID"/>
+			<components:TextInput id="txtQuotationID" textAlign="right"/>
 			<!--<mx:Button label="Ver Cotización" id="btnQuotationID"/>-->
 		</mx:FormItem>
 		<mx:FormItem label="Fecha:">
@@ -360,35 +404,40 @@
 			<components:TextInput id="txtDiscount" editable="false" textAlign="right" width="80"/>
 		</mx:FormItem>
 		<!-- Fin Campos de Seleccion Automatica por el Proveedor Calificado -->
+		<mx:VBox>
+			<requisicionescompra:ItemsManagement id="itemsManagement" purchaseOrderMode="true"/>
+			<mx:Button id="btnUpdate" label="Actualiazar" click="btnUpdate_clickHandler(event)"/>
+		</mx:VBox>
+		
 		<mx:FormItem label="Subtotal:">
-			<components:TextInput id="txtSubtotal" textAlign="right" width="200"/>
+			<components:TextInput id="txtSubtotal" textAlign="right" width="110"/>
 		</mx:FormItem>
 		<mx:FormItem label="I.V.A.:">
-			<components:TextInput id="txtIVA" textAlign="right" width="200"/>
+			<components:TextInput id="txtIVA" textAlign="right" width="110"/>
 		</mx:FormItem>
 		<mx:FormItem label="I.E.P.S.:">
-			<components:TextInput id="txtIEPS" textAlign="right" width="200"/>
+			<components:TextInput id="txtIEPS" textAlign="right" width="110"/>
 		</mx:FormItem>
 		<mx:FormItem label="Retención I.S.R.:">
-			<components:TextInput id="txtISRRetention" textAlign="right" width="200"/>
+			<components:TextInput id="txtISRRetention" textAlign="right" width="110"/>
 		</mx:FormItem>
 		<mx:FormItem label="Retención I.V.A.:">
-			<components:TextInput id="txtIVARetention" textAlign="right" width="200"/>
+			<components:TextInput id="txtIVARetention" textAlign="right" width="110"/>
 		</mx:FormItem>
 		<mx:FormItem label="Otros Impuestos:">
-			<components:TextInput id="txtOtherTaxes" textAlign="right" width="200"/>
+			<components:TextInput id="txtOtherTaxes" textAlign="right" width="110"/>
 		</mx:FormItem>
 		<mx:FormItem label="Total:">
-			<components:TextInput id="txtTotal" textAlign="right" width="200"/>
+			<components:TextInput id="txtTotal" textAlign="right" width="110"/>
 		</mx:FormItem>
 		<mx:FormItem label="Fecha de Entrega Almacén:">
-			<components:DateField id="dtfWarehouseDeliveryDate" textAlign="right" width="200"/>
+			<components:DateField id="dtfWarehouseDeliveryDate" textAlign="right"/>
 		</mx:FormItem>
 		<mx:FormItem>
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
 		</mx:FormItem>
 	</mx:Form>
-	<mx:RemoteObject id="ordenCompraService" destination="ordenCompraService" fault="consumibleService_faultHandler(event)"
+	<mx:RemoteObject id="ordenCompraService" destination="ordenCompraService" fault="ordenCompraService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
 	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
@@ -398,4 +447,7 @@
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetProveedoresCalificados" result="responseGetProveedoresCalificados_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetProveedorCalificado" result="responseGetProveedorCalificado_resultHandler(event)"/>
+	<mx:RemoteObject id="requisicionCompraService" destination="requisicionCompraService" fault="ordenCompraService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetRequisicionCompra" result="responseGetRequisicionCompra_resultHandler(event)"/>
 </mx:VBox>

@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)" xmlns:concentradoordenescompracliente="components.concentradoordenescompracliente.*"
+		 >
+	<mx:Script>
+		<![CDATA[
+			import components.equiposmedicion.Consult;
+			import components.equipostransporte.Consult;
+			import components.hardware.Consult;
+			import components.herramientas.Consult;
+			import components.materiales.Consult;
+			import components.software.Consult;
+			import components.solicitudalmacen.Consult;
+			import components.telefoniamovil.Consult;
+			
+			import model.AreaSolicitante;
+			import model.Catalogo;
+			import model.Cliente;
+			import model.Colaborador;
+			import model.Constants;
+			import model.EstadoFinalValidacion;
+			import model.EstadoValidacionAdministrativa;
+			import model.EstadoValidacionCobro;
+			import model.EstadoValidacionOperativa;
+			import model.Imputable;
+			import model.Perfil;
+			import model.Prioridad;
+			import model.TipoAlmacen;
+			import model.TipoMantenimiento;
+			import model.TipoValidacionAdministrativa;
+			import model.Util;
+			import model.ValidacionAdministrativa;
+			
+			import modules.Almacen;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.com.gahm.componentes.validadores.ValidadorEntero;
+			import mx.com.gahm.componentes.validadores.ValidadorNumerico;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.utils.object_proxy;
+			
+			private var mode:String = null;
+			private var _item:ValidacionAdministrativa;
+			private var validators:InicializaValidadoresEtiquetas;
+			private var validatorsEntry:InicializaValidadoresEtiquetas;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				this.label = Constants.REGISTRAR;
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set validationAdministrative(value:ValidacionAdministrativa):void{
+				if( value == null ){
+					return;
+				}
+				this._item = value;
+				this.setConcentratedCustomerPurchaseOrders(); 
+			}
+			
+			private function setConcentratedCustomerPurchaseOrders():void
+			{
+				if( this._item == null ){
+					return;
+				}
+				this.txtID.text = this._item.id;
+				if( Util.isFill( this.cmbAdministrativeValidationStatus ) && this._item.estadoValidacionAdministrativa != null ){
+					this.cmbAdministrativeValidationStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbAdministrativeValidationStatus.dataProvider as ArrayCollection, 
+						this._item.estadoValidacionAdministrativa.id);
+				}
+				if( Util.isFill( this.cmbTypeValidationAdministrative ) && this._item.tipoValidacionAdministrativa != null ){
+					this.cmbTypeValidationAdministrative.selectedIndex = Util.selectedIndexFromCombo( this.cmbTypeValidationAdministrative.dataProvider as ArrayCollection, 
+						this._item.tipoValidacionAdministrativa.id);
+				}
+				this.txtPorcentage1.text = Util.extractToText(this._item,"porcentaje1");
+				this.txtKeyValidation1.text = this._item.claveValidacion1;
+				this.dtfValidationDate1.selectedDate = this._item.fechaValidacion1;
+				if( Util.isFill( this.cmbValidationRecoveryStatus1 ) && this._item.etadoValidacionCobro1 != null ){
+					this.cmbValidationRecoveryStatus1.selectedIndex = Util.selectedIndexFromCombo( this.cmbValidationRecoveryStatus1.dataProvider as ArrayCollection, 
+						this._item.etadoValidacionCobro1.id);
+				}
+				this.txtPorcentage2.text = Util.extractToText(this._item,"porcentaje2");
+				this.txtKeyValidation2.text = this._item.claveValidacion2;
+				this.dtfValidationDate2.selectedDate = this._item.fechaValidacion2;
+				if( Util.isFill( this.cmbValidationRecoveryStatus2 ) && this._item.etadoValidacionCobro2 != null ){
+					this.cmbValidationRecoveryStatus2.selectedIndex = Util.selectedIndexFromCombo( this.cmbValidationRecoveryStatus2.dataProvider as ArrayCollection, 
+						this._item.etadoValidacionCobro2.id);
+				}
+				this.txtPorcentage3.text = Util.extractToText(this._item,"porcentaje3");
+				this.txtKeyValidation3.text = this._item.claveValidacion3;
+				this.dtfValidationDate3.selectedDate = this._item.fechaValidacion3;
+				if( Util.isFill( this.cmbValidationRecoveryStatus3 ) && this._item.etadoValidacionCobro3 != null ){
+					this.cmbValidationRecoveryStatus3.selectedIndex = Util.selectedIndexFromCombo( this.cmbValidationRecoveryStatus3.dataProvider as ArrayCollection, 
+						this._item.etadoValidacionCobro3.id);
+				}
+				this.txtTotalPorcentageRecovery.text = Util.extractToText(this._item,"porcentajeTotalCobro");
+				if( Util.isFill( this.cmbFinalValidationStatus ) && this._item.etadoValidacionFinal != null ){
+					this.cmbFinalValidationStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbFinalValidationStatus.dataProvider as ArrayCollection, 
+						this._item.etadoValidacionFinal.id);
+				}
+				if( Util.isFill( this.cmbAttributable ) && this._item.imputable != null ){
+					this.cmbAttributable.selectedIndex = Util.selectedIndexFromCombo( this.cmbAttributable.dataProvider as ArrayCollection, 
+						this._item.imputable.id);
+				}
+				this.comments.setCommentsIn( this._item.comentariosPantallaValidacionAdministrativa, "comentarioValidacionAdministrativa");
+			}
+			
+			private function getConcentratedCustomerPurchaseOrders():ValidacionAdministrativa{
+				var item:ValidacionAdministrativa = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					item = new ValidacionAdministrativa();
+				}else{
+					item = this._item;
+				}
+				item.estadoValidacionAdministrativa = Util.validateCombo( this.cmbAdministrativeValidationStatus ) as EstadoValidacionAdministrativa;
+				item.tipoValidacionAdministrativa = Util.validateCombo( this.cmbTypeValidationAdministrative ) as TipoValidacionAdministrativa;
+				item.porcentaje1 = Util.stringToNumber(this.txtPorcentage1.text);
+				item.claveValidacion1 = Util.validateEmpty( this.txtKeyValidation1.text );
+				item.fechaValidacion1 = this.dtfValidationDate1.selectedDate;
+				item.etadoValidacionCobro1 = Util.validateCombo( this.cmbValidationRecoveryStatus1 ) as EstadoValidacionCobro;
+				item.porcentaje2 = Util.stringToNumber(this.txtPorcentage2.text);
+				item.claveValidacion2 = Util.validateEmpty( this.txtKeyValidation2.text );
+				item.fechaValidacion2 = this.dtfValidationDate2.selectedDate;
+				item.etadoValidacionCobro2 = Util.validateCombo( this.cmbValidationRecoveryStatus2 ) as EstadoValidacionCobro;
+				item.porcentaje3 = Util.stringToNumber(this.txtPorcentage3.text);
+				item.claveValidacion3 = Util.validateEmpty( this.txtKeyValidation3.text );
+				item.fechaValidacion3 = this.dtfValidationDate3.selectedDate;
+				item.etadoValidacionCobro3 = Util.validateCombo( this.cmbValidationRecoveryStatus3 ) as EstadoValidacionCobro;
+				item.porcentajeTotalCobro = Util.stringToNumber(this.txtTotalPorcentageRecovery.text);
+				item.etadoValidacionFinal = Util.validateCombo( this.cmbFinalValidationStatus ) as EstadoFinalValidacion;
+				item.imputable = Util.validateCombo( this.cmbAttributable ) as Imputable;
+				item.comentariosPantallaValidacionAdministrativa = this.comments.getCommentsAsInWith("model.ComentarioValidacionAdministrativa","model.ComentarioPantallaValidacionAdministrativa","comentarioValidacionAdministrativa");
+				return item;
+			}
+			
+			private function fillCombos():void
+			{
+				this.responseGetEstadoValidacionAdministrativa.token = this.catalogoService.getEstadoValidacionAdministrativa();
+				this.responseGetTipoValidacionAdministrativa.token = this.catalogoService.getTipoValidacionAdministrativa();
+				this.responseGetEstadoValidacionCobro.token = this.catalogoService.getEstadoValidacionCobro();
+				this.responseGetEstadoFinalValidacion.token = this.catalogoService.getEstadoFinalValidacion();
+				this.responseGetImputable.token = this.catalogoService.getImputable();
+			}
+			
+			protected function requisicionService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function btnAccept_clickHandler(event:MouseEvent):void
+			{
+				if( !this.validations() ){
+					Util.showMessageVerifyFields();
+					return;
+				}
+				if( this.mode == Constants.REGISTER_MODE ){
+					var validationAdministrative:ValidacionAdministrativa = this.getConcentratedCustomerPurchaseOrders();
+					Util.showProperties( validationAdministrative );
+					this.responseSave.token = this.validacionAdministrativaService.save( validationAdministrative );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
+				}
+			}
+			
+			private function updateItem(event:CloseEvent):void{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var validationAdministrative:ValidacionAdministrativa = this.getConcentratedCustomerPurchaseOrders();
+				Util.showProperties( validationAdministrative );
+				this.responseUpdate.token = this.validacionAdministrativaService.update( validationAdministrative );
+			}
+			
+			private function validations():Boolean
+			{
+				var value:Boolean = true;
+				value &&= this.validators.validarFormulario();
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+					form.removeChild( this.frmID );
+				}
+			}
+			
+			private function initializeValidators():void
+			{
+				this.validators = new InicializaValidadoresEtiquetas();
+				validators.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
+				validators.setRestrictor(txtKeyValidation1, "generic");
+				validators.setRestrictor(txtKeyValidation2, "generic");
+				validators.setRestrictor(txtKeyValidation3, "generic");
+				validators.crearValidadorRestrictor("genericDecimal",ValidadorDecimal.nombre, 9, 2);
+				validators.setRestrictor(txtPorcentage1, "genericDecimal");
+				validators.setRestrictor(txtPorcentage2, "genericDecimal");
+				validators.setRestrictor(txtPorcentage3, "genericDecimal");
+				validators.setRestrictor(txtTotalPorcentageRecovery, "genericDecimal");
+			}
+			
+			protected function responseSave_resultHandler(event:ResultEvent):void
+			{
+				var eventvalidationAdministrativeNew:Event = new Event("validationAdministrativeNew");
+				this.dispatchEvent( eventvalidationAdministrativeNew );
+				this.cleanForm();
+			}
+			
+			private function cleanForm():void
+			{
+				this.txtID.reset();
+				this.cmbAdministrativeValidationStatus.selectedIndex = 0;
+				this.cmbTypeValidationAdministrative.selectedIndex = 0;
+				this.txtPorcentage1.reset();
+				this.txtKeyValidation1.reset();
+				this.dtfValidationDate1.reset();
+				this.cmbValidationRecoveryStatus1.selectedIndex = 0;
+				this.txtPorcentage2.reset();
+				this.txtKeyValidation2.reset();
+				this.dtfValidationDate2.reset();
+				this.cmbValidationRecoveryStatus2.selectedIndex = 0;
+				this.txtPorcentage3.reset();
+				this.txtKeyValidation3.reset();
+				this.dtfValidationDate3.reset();
+				this.cmbValidationRecoveryStatus3.selectedIndex = 0;
+				this.txtTotalPorcentageRecovery.reset();
+				this.cmbFinalValidationStatus.selectedIndex = 0;
+				this.cmbAttributable.selectedIndex = 0;
+				this.comments.reset();
+			}
+			
+			protected function responseUpdate_resultHandler(event:ResultEvent):void
+			{
+				var eventvalidationAdministrativeUpdated:Event = new Event("validationAdministrativeUpdated");
+				this.dispatchEvent( eventvalidationAdministrativeUpdated );
+				this.cleanForm();
+			}
+			
+			protected function catalogoService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function responseGetEstadoValidacionAdministrativa_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbAdministrativeValidationStatus.dataProvider = data;
+				if( this._item != null && this._item.estadoValidacionAdministrativa != null ){
+					this.cmbAdministrativeValidationStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbAdministrativeValidationStatus.dataProvider as ArrayCollection, 
+						this._item.estadoValidacionAdministrativa.id);
+				}
+			}
+			
+			protected function responseGetTipoValidacionAdministrativa_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbTypeValidationAdministrative.dataProvider = data;
+				if( this._item != null && this._item.tipoValidacionAdministrativa != null ){
+					this.cmbTypeValidationAdministrative.selectedIndex = Util.selectedIndexFromCombo( this.cmbTypeValidationAdministrative.dataProvider as ArrayCollection, 
+						this._item.tipoValidacionAdministrativa.id);
+				}
+			}
+			
+			protected function responseGetEstadoValidacionCobro_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				data = Util.addEmptyCatalgo(data);
+				this.cmbValidationRecoveryStatus1.dataProvider = data; 
+				this.cmbValidationRecoveryStatus2.dataProvider = data;
+				this.cmbValidationRecoveryStatus3.dataProvider = data;
+				if( this._item != null && this._item.etadoValidacionCobro1 != null ){
+					this.cmbValidationRecoveryStatus1.selectedIndex = Util.selectedIndexFromCombo( this.cmbValidationRecoveryStatus1.dataProvider as ArrayCollection, 
+						this._item.etadoValidacionCobro1.id);
+				}
+				if( this._item != null && this._item.etadoValidacionCobro2 != null ){
+					this.cmbValidationRecoveryStatus2.selectedIndex = Util.selectedIndexFromCombo( this.cmbValidationRecoveryStatus2.dataProvider as ArrayCollection, 
+						this._item.etadoValidacionCobro2.id);
+				}
+				if( this._item != null && this._item.etadoValidacionCobro3 != null ){
+					this.cmbValidationRecoveryStatus3.selectedIndex = Util.selectedIndexFromCombo( this.cmbValidationRecoveryStatus3.dataProvider as ArrayCollection, 
+						this._item.etadoValidacionCobro3.id);
+				}
+			}
+			
+			protected function responseGetEstadoFinalValidacion_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbFinalValidationStatus.dataProvider = data;
+				if( this._item != null && this._item.etadoValidacionFinal != null ){
+					this.cmbFinalValidationStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbFinalValidationStatus.dataProvider as ArrayCollection, 
+						this._item.etadoValidacionFinal.id);
+				}
+			}
+			
+			protected function responseGetImputable_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbAttributable.dataProvider = data;
+				if( this._item != null && this._item.imputable != null ){
+					this.cmbAttributable.selectedIndex = Util.selectedIndexFromCombo( this.cmbAttributable.dataProvider as ArrayCollection, 
+						this._item.imputable.id);
+				}
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="validationAdministrativeNew", type="flash.events.Event")]
+		[Event(name="validationAdministrativeUpdated", type="flash.events.Event")]
+	</mx:Metadata>
+	<mx:Form id="form">
+		<mx:FormItem id="frmID" label="ID:">
+			<components:TextInput id="txtID" editable="false"
+								  textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Estado Validación Operativa:">
+			<mx:ComboBox id="cmbAdministrativeValidationStatus"
+						 labelField="etiqueta"
+						 />
+		</mx:FormItem>
+		<mx:FormItem label="Tipo Validación Administrativa:">
+			<mx:ComboBox id="cmbTypeValidationAdministrative"
+						 labelField="etiqueta"
+						 />
+		</mx:FormItem>
+		<mx:FormItem label="Porcentaje 1:">
+			<components:TextInput id="txtPorcentage1"
+								  textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Clave Validación 1:">
+			<components:TextInput id="txtKeyValidation1"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha Validación 1:">
+			<components:DateField id="dtfValidationDate1"
+						 />
+		</mx:FormItem>
+		<mx:FormItem label="Estado Validación Cobro 1:">
+			<mx:ComboBox id="cmbValidationRecoveryStatus1"
+						 labelField="etiqueta"
+						 />
+		</mx:FormItem>
+		<mx:FormItem label="Porcentaje 2:">
+			<components:TextInput id="txtPorcentage2"
+								  textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Clave Validación 2:">
+			<components:TextInput id="txtKeyValidation2"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha Validación 2:">
+			<components:DateField id="dtfValidationDate2"
+								  />
+		</mx:FormItem>
+		<mx:FormItem label="Estado Validación Cobro 2:">
+			<mx:ComboBox id="cmbValidationRecoveryStatus2"
+						 labelField="etiqueta"
+						 />
+		</mx:FormItem>
+		<mx:FormItem label="Porcentaje 3:">
+			<components:TextInput id="txtPorcentage3"
+								  textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Clave Validación 3:">
+			<components:TextInput id="txtKeyValidation3"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha Validación 3:">
+			<components:DateField id="dtfValidationDate3"
+								  />
+		</mx:FormItem>
+		<mx:FormItem label="Estado Validación Cobro 3:">
+			<mx:ComboBox id="cmbValidationRecoveryStatus3"
+						 labelField="etiqueta"
+						 />
+		</mx:FormItem>
+		<mx:FormItem label="Porcentaje Total Cobro:">
+			<components:TextInput id="txtTotalPorcentageRecovery"
+								  textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Estado Final Validación:">
+			<mx:ComboBox id="cmbFinalValidationStatus"
+						 labelField="etiqueta"
+						 />
+		</mx:FormItem>
+		<mx:FormItem label="Imputabilidad:">
+			<mx:ComboBox id="cmbAttributable"
+						 labelField="etiqueta"
+						 />
+		</mx:FormItem>
+		<components:Comments id="comments" />
+		<mx:FormItem>
+			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:RemoteObject id="validacionAdministrativaService" destination="validacionAdministrativaService" fault="requisicionService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
+	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
+	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="requisicionService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetEstadoValidacionAdministrativa" result="responseGetEstadoValidacionAdministrativa_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetTipoValidacionAdministrativa" result="responseGetTipoValidacionAdministrativa_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetEstadoValidacionCobro" result="responseGetEstadoValidacionCobro_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetEstadoFinalValidacion" result="responseGetEstadoFinalValidacion_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetImputable" result="responseGetImputable_resultHandler(event)"/>
+</mx:VBox>

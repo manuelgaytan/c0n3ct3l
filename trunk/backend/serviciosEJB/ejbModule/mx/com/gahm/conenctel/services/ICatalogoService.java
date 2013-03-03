@@ -10,8 +10,11 @@ import mx.com.gahm.conenctel.entities.AreaSolicitanteDO;
 import mx.com.gahm.conenctel.entities.ColaboradorDO;
 import mx.com.gahm.conenctel.entities.CompaniaDO;
 import mx.com.gahm.conenctel.entities.DescripcionAlmacenDO;
+import mx.com.gahm.conenctel.entities.EstadoFinalValidacionDO;
 import mx.com.gahm.conenctel.entities.EstadoSolicitudAlmacenDO;
 import mx.com.gahm.conenctel.entities.EstadoSolicitudServicioMaquiladoDO;
+import mx.com.gahm.conenctel.entities.EstadoValidacionAdministrativaDO;
+import mx.com.gahm.conenctel.entities.EstadoValidacionCobroDO;
 import mx.com.gahm.conenctel.entities.EstadoValidacionOperativaDO;
 import mx.com.gahm.conenctel.entities.EstatusADO;
 import mx.com.gahm.conenctel.entities.EstatusBDO;
@@ -36,6 +39,7 @@ import mx.com.gahm.conenctel.entities.TipoEmpleadoDO;
 import mx.com.gahm.conenctel.entities.TipoMantenimientoDO;
 import mx.com.gahm.conenctel.entities.TipoPagoDO;
 import mx.com.gahm.conenctel.entities.TipoPersonaDO;
+import mx.com.gahm.conenctel.entities.TipoValidacionAdministrativaDO;
 import mx.com.gahm.conenctel.entities.UbicacionADO;
 import mx.com.gahm.conenctel.entities.UbicacionBDO;
 import mx.com.gahm.conenctel.entities.UbicacionCDO;
@@ -129,4 +133,8 @@ public interface ICatalogoService extends Serializable {
 	
 	List<TipoColaboradorDO> getTipoColaborador() throws ConectelException;
 	List<ProveedorDO> getProveedores() throws ConectelException;
+	List<EstadoFinalValidacionDO> getEstadoFinalValidacion() throws ConectelException;
+	List<EstadoValidacionCobroDO> getEstadoValidacionCobro() throws ConectelException;
+	List<TipoValidacionAdministrativaDO> getTipoValidacionAdministrativa() throws ConectelException;
+	List<EstadoValidacionAdministrativaDO> getEstadoValidacionAdministrativa() throws ConectelException;
 }

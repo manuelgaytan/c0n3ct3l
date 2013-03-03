@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
+		   width="690" height="500"
+		   xmlns:validacionesadministrativas="components.validacionesadministrativas.*"
+		   creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import events.GenericEvent;
+			
+			import model.ValidacionAdministrativa;
+			
+			import mx.events.FlexEvent;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				
+			}
+			
+			protected function consult_validationAdministrativeDetailHandler(event:GenericEvent):void
+			{
+				this.detail.validationAdministrative = event.information as model.ValidacionAdministrativa;
+				this.navigator.selectedChild = this.detail;
+			}
+			
+			protected function register_validationAdministrativeNewHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+			
+			protected function detail_validationAdministrativeUpdatedHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+		]]>
+	</mx:Script>
+	<mx:TabNavigator id="navigator" width="100%" height="100%" creationPolicy="all">
+		<validacionesadministrativas:Consult id="consult" validationAdministrativeDetail="consult_validationAdministrativeDetailHandler(event)"/>
+		<validacionesadministrativas:ValidationAdministrative id="detail" update="true" validationAdministrativeUpdated="detail_validationAdministrativeUpdatedHandler(event)"/>
+		<validacionesadministrativas:ValidationAdministrative id="register" registrer="true" validationAdministrativeNew="register_validationAdministrativeNewHandler(event)"/>
+	</mx:TabNavigator>
+</mx:Module>

@@ -30,6 +30,7 @@
 			import model.ComentarioCompras;
 			import model.ComentarioConcentradoOrdenCompraCliente;
 			import model.ComentarioGenerico;
+			import model.ComentarioPantallaValidacionAdministrativa;
 			import model.ComentarioRequisicion;
 			import model.ComentarioValidacionAdministrativa;
 			import model.Compania;
@@ -50,8 +51,11 @@
 			import model.EquipoTransporte;
 			import model.EquipoTransporteSolicitudAlmacen;
 			import model.Estado;
+			import model.EstadoFinalValidacion;
 			import model.EstadoSolicitudAlmacen;
 			import model.EstadoSolicitudServicioMaquilado;
+			import model.EstadoValidacionAdministrativa;
+			import model.EstadoValidacionCobro;
 			import model.EstadoValidacionOperativa;
 			import model.EstatusA;
 			import model.EstatusB;
@@ -110,6 +114,7 @@
 			import model.TipoDocumentoAlmacen;
 			import model.TipoEntregable;
 			import model.TipoMantenimiento;
+			import model.TipoValidacionAdministrativa;
 			import model.UbicacionA;
 			import model.UbicacionB;
 			import model.UbicacionC;
@@ -119,6 +124,7 @@
 			import model.UnidadOrdenCompra;
 			import model.Usuario;
 			import model.Util;
+			import model.ValidacionAdministrativa;
 			import model.ValidacionProyecto;
 			
 			import mx.containers.Form;
@@ -269,6 +275,12 @@
 			private var comentarioConcentradoOrdenCompraCliente:ComentarioConcentradoOrdenCompraCliente;
 			private var comentarioValidacionAdministrativa:ComentarioValidacionAdministrativa;
 			private var partidaConcentradoOrdenCompraCliente:PartidaConcentradoOrdenCompraCliente;
+			private var validacionAdministrativa:ValidacionAdministrativa;
+			private var estadoValidacionAdministrativa:EstadoValidacionAdministrativa;
+			private var tipoValidacionAdministrativa:TipoValidacionAdministrativa;
+			private var estadoValidacionCobro:EstadoValidacionCobro;
+			private var estadoFinalValidacion:EstadoFinalValidacion;
+			private var comentarioPantallaValidacionAdministrativa:ComentarioPantallaValidacionAdministrativa;
 			
 			protected function login_readyHandler(event:ModuleEvent):void
 			{

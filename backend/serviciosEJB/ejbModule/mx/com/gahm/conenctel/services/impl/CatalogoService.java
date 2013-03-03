@@ -15,8 +15,11 @@ import mx.com.gahm.conenctel.entities.AreaSolicitanteDO;
 import mx.com.gahm.conenctel.entities.ColaboradorDO;
 import mx.com.gahm.conenctel.entities.CompaniaDO;
 import mx.com.gahm.conenctel.entities.DescripcionAlmacenDO;
+import mx.com.gahm.conenctel.entities.EstadoFinalValidacionDO;
 import mx.com.gahm.conenctel.entities.EstadoSolicitudAlmacenDO;
 import mx.com.gahm.conenctel.entities.EstadoSolicitudServicioMaquiladoDO;
+import mx.com.gahm.conenctel.entities.EstadoValidacionAdministrativaDO;
+import mx.com.gahm.conenctel.entities.EstadoValidacionCobroDO;
 import mx.com.gahm.conenctel.entities.EstadoValidacionOperativaDO;
 import mx.com.gahm.conenctel.entities.EstatusADO;
 import mx.com.gahm.conenctel.entities.EstatusBDO;
@@ -41,6 +44,7 @@ import mx.com.gahm.conenctel.entities.TipoEmpleadoDO;
 import mx.com.gahm.conenctel.entities.TipoMantenimientoDO;
 import mx.com.gahm.conenctel.entities.TipoPagoDO;
 import mx.com.gahm.conenctel.entities.TipoPersonaDO;
+import mx.com.gahm.conenctel.entities.TipoValidacionAdministrativaDO;
 import mx.com.gahm.conenctel.entities.UbicacionADO;
 import mx.com.gahm.conenctel.entities.UbicacionBDO;
 import mx.com.gahm.conenctel.entities.UbicacionCDO;
@@ -604,6 +608,61 @@ public class CatalogoService implements ICatalogoService {
 				"ProveedorDO.findAll", ProveedorDO.class);
 		
 		List<ProveedorDO> colaboradorList;
+		try {
+			colaboradorList = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen Colaborador registrados.");
+		}
+		return colaboradorList;
+	}
+	
+	///////
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<EstadoValidacionAdministrativaDO> getEstadoValidacionAdministrativa() throws ConectelException {
+		TypedQuery<EstadoValidacionAdministrativaDO> query = entityManager.createNamedQuery(
+				"EstadoValidacionAdministrativaDO.findAll", EstadoValidacionAdministrativaDO.class);
+		
+		List<EstadoValidacionAdministrativaDO> colaboradorList;
+		try {
+			colaboradorList = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen Colaborador registrados.");
+		}
+		return colaboradorList;
+	}
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<TipoValidacionAdministrativaDO> getTipoValidacionAdministrativa() throws ConectelException {
+		TypedQuery<TipoValidacionAdministrativaDO> query = entityManager.createNamedQuery(
+				"TipoValidacionAdministrativaDO.findAll", TipoValidacionAdministrativaDO.class);
+		
+		List<TipoValidacionAdministrativaDO> colaboradorList;
+		try {
+			colaboradorList = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen Colaborador registrados.");
+		}
+		return colaboradorList;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<EstadoValidacionCobroDO> getEstadoValidacionCobro() throws ConectelException {
+		TypedQuery<EstadoValidacionCobroDO> query = entityManager.createNamedQuery(
+				"EstadoValidacionCobroDO.findAll", EstadoValidacionCobroDO.class);
+		
+		List<EstadoValidacionCobroDO> colaboradorList;
+		try {
+			colaboradorList = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen Colaborador registrados.");
+		}
+		return colaboradorList;
+	}
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<EstadoFinalValidacionDO> getEstadoFinalValidacion() throws ConectelException {
+		TypedQuery<EstadoFinalValidacionDO> query = entityManager.createNamedQuery(
+				"EstadoFinalValidacionDO.findAll", EstadoFinalValidacionDO.class);
+		
+		List<EstadoFinalValidacionDO> colaboradorList;
 		try {
 			colaboradorList = query.getResultList();
 		} catch (NoResultException e) {

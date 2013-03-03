@@ -111,6 +111,11 @@
 							   dataField="id"
 							   textAlign="right"
 							   width="80"/>
+			<mx:DataGridColumn id="dtgRequestDate" headerText="{'Fecha\nSolicitud'}"
+							   dataField="fecha"
+							   labelFunction="{Util.labelFunctionDate}"
+							   width="80"
+							   textAlign="center"/>
 			<mx:DataGridColumn id="dtgParentProject" headerText="{'Proyecto\nPadre'}"
 							   dataField="proyectoPadre.descripcion"
 							   width="130"/>
@@ -148,14 +153,14 @@
 							   dataField="proyecto.producto.tipoServicio"
 							   />	
 			<mx:DataGridColumn id="dtgSite" headerText="{'Central\no Sitio'}"
-							   dataField="proyecto.producto.centralSitio"
+							   dataField="proyecto.centralSitio"
 							   />
 		</mx:columns>
 	</mx:DataGrid>
 	<mx:HBox>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>
 	</mx:HBox>
-	<mx:RemoteObject id="solicitudServicioMaquiladoService" destination="solicitudServicioMaquilado" fault="solicitudServicioMaquiladoService_faultHandler(event)"
+	<mx:RemoteObject id="solicitudServicioMaquiladoService" destination="solicitudServicioMaquiladoService" fault="solicitudServicioMaquiladoService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetAll" result="responseGetAll_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetItem" result="responseGetItem_resultHandler(event)"/>

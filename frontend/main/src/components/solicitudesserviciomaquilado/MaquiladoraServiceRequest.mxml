@@ -193,7 +193,8 @@
 	</mx:Metadata>
 	<mx:Form id="form">
 		<mx:FormItem label="ID:" id="frmID">
-			<components:TextInput id="txtID" textAlign="right" editable="false"/>
+			<components:TextInput id="txtID" textAlign="right" editable="false"
+								  width="80"/>
 		</mx:FormItem>
 		<mx:FormItem label="Fecha:">
 			<components:DateField id="dtfDate"/>
@@ -205,7 +206,7 @@
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
 		</mx:FormItem>
 	</mx:Form>
-	<mx:RemoteObject id="solicitudServicioMaquiladoService" destination="solicitudServicioMaquilado" fault="SolicitudServicioMaquiladoService_faultHandler(event)"
+	<mx:RemoteObject id="solicitudServicioMaquiladoService" destination="solicitudServicioMaquiladoService" fault="SolicitudServicioMaquiladoService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
 	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>

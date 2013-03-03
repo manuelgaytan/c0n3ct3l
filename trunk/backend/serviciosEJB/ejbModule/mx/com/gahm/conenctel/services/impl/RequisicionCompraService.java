@@ -65,7 +65,7 @@ public class RequisicionCompraService  implements IRequisicionCompraService{
 	public RequisicionCompraDO update(RequisicionCompraDO item) {
 		deletePartidas(item.getPartidasRequisicionCompra());
 		savePartidas(item, item.getPartidasRequisicionCompra());
-		
+		entityManager.merge(item);
 		return item;
 	}
 

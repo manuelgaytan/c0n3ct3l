@@ -40,11 +40,6 @@ public class OrdenCompraDO  implements java.io.Serializable {
 	 private Integer id;
      private Date fecha;
      private ProyectoDO proyecto;
-     private Long cantidad;
-     private UnidadOrdenCompraDO unidadOrdenCompra;
-     private String descripcion;
-     private Long costoUnitario;
-     private Long importe;
      private Long subtotal;
      private Long iva;
      private Long ieps;
@@ -63,33 +58,23 @@ public class OrdenCompraDO  implements java.io.Serializable {
     public OrdenCompraDO() {
     }
 
-	public OrdenCompraDO(Date fecha,ProveedorCalificadoDO proveedorCalificado, ProyectoDO proyecto, RequisicionCompraDO requisicionCompra, Long cantidad, UnidadOrdenCompraDO unidadOrdenCompra, String descripcion, Long costoUnitario, Long importe, Long subtotal, Long iva, Long total, Date fechaEntregaAlmacen) {
+	public OrdenCompraDO(Date fecha,ProveedorCalificadoDO proveedorCalificado, ProyectoDO proyecto, RequisicionCompraDO requisicionCompra, Long subtotal, Long iva, Long total, Date fechaEntregaAlmacen) {
         this.fecha = fecha;
         this.proveedorCalificado = proveedorCalificado;
         this.proyecto = proyecto;
         this.requisicionCompra = requisicionCompra;
-        this.cantidad = cantidad;
-        this.unidadOrdenCompra = unidadOrdenCompra;
-        this.descripcion = descripcion;
-        this.costoUnitario = costoUnitario;
-        this.importe = importe;
         this.subtotal = subtotal;
         this.iva = iva;
         this.total = total;
         this.fechaEntregaAlmacen = fechaEntregaAlmacen;
     }
     
-    public OrdenCompraDO(CotizacionDO cotizacion, Date fecha, ProveedorCalificadoDO proveedorCalificado, ProyectoDO proyecto, RequisicionCompraDO requisicionCompra, Long cantidad, UnidadOrdenCompraDO unidadOrdenCompra, String descripcion, Long costoUnitario, Long importe, Long subtotal, Long iva, Long ieps, Long retencionIsr, Long retencionIva, Long otrosImpuestos, Long total, Date fechaEntregaAlmacen) {
+    public OrdenCompraDO(CotizacionDO cotizacion, Date fecha, ProveedorCalificadoDO proveedorCalificado, ProyectoDO proyecto, RequisicionCompraDO requisicionCompra, Long subtotal, Long iva, Long ieps, Long retencionIsr, Long retencionIva, Long otrosImpuestos, Long total, Date fechaEntregaAlmacen) {
         this.cotizacion = cotizacion;
         this.fecha = fecha;
         this.proveedorCalificado = proveedorCalificado;
         this.proyecto = proyecto;
         this.requisicionCompra = requisicionCompra;
-        this.cantidad = cantidad;
-        this.unidadOrdenCompra = unidadOrdenCompra;
-        this.descripcion = descripcion;
-        this.costoUnitario = costoUnitario;
-        this.importe = importe;
         this.subtotal = subtotal;
         this.iva = iva;
         this.ieps = ieps;
@@ -162,55 +147,6 @@ public class OrdenCompraDO  implements java.io.Serializable {
         this.requisicionCompra = requisicionCompra;
     }
     
-    @Column(name="cantidad", nullable=false, precision=10, scale=0)
-
-    public Long getCantidad() {
-        return this.cantidad;
-    }
-    
-    public void setCantidad(Long cantidad) {
-        this.cantidad = cantidad;
-    }
-    
-    @ManyToOne
-   	@JoinColumn(name="fk_unidad")
-    public UnidadOrdenCompraDO getUnidadOrdenCompra() {
-        return this.unidadOrdenCompra;
-    }
-    
-    public void setUnidadOrdenCompra(UnidadOrdenCompraDO unidadOrdenCompra) {
-        this.unidadOrdenCompra = unidadOrdenCompra;
-    }
-    
-    @Column(name="descripcion", nullable=false)
-
-    public String getDescripcion() {
-        return this.descripcion;
-    }
-    
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-    
-    @Column(name="costo_unitario", nullable=false, precision=10, scale=0)
-
-    public Long getCostoUnitario() {
-        return this.costoUnitario;
-    }
-    
-    public void setCostoUnitario(Long costoUnitario) {
-        this.costoUnitario = costoUnitario;
-    }
-    
-    @Column(name="importe", nullable=false, precision=10, scale=0)
-
-    public Long getImporte() {
-        return this.importe;
-    }
-    
-    public void setImporte(Long importe) {
-        this.importe = importe;
-    }
     
     @Column(name="subtotal", nullable=false, precision=10, scale=0)
 

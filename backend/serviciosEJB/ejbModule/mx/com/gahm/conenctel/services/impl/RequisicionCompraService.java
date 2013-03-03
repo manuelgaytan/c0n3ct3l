@@ -43,7 +43,7 @@ public class RequisicionCompraService  implements IRequisicionCompraService{
 
 	@Override
 	public RequisicionCompraDO save(RequisicionCompraDO item) {
-		List<SolicitanteRequisicionDO> solicitantesRequisicion = item.getSolicitanteRequisicion();
+		List<SolicitanteRequisicionDO> solicitantesRequisicion = item.getSolicitantesRequisicion();
 		List<PartidaRequisicionCompraDO> partidasRequisicionCompra = item.getPartidasRequisicionCompra();
 		List<ComentarioRequisicionDO> comentariosRequisicion = item.getComentariosRequisicion();
 		item.setSolicitantesRequisicion(null);

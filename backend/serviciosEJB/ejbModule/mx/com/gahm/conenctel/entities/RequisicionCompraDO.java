@@ -65,7 +65,7 @@ public class RequisicionCompraDO implements java.io.Serializable {
 			PrioridadDO prioridad, AreaSolicitanteDO areaSolicitante,
 			String centralSitio,
 			EstatusRequisicionCompraDO estatusRequisicionCompra,
-			List<SolicitanteRequisicionDO> solicitanteRequisicion,
+			List<SolicitanteRequisicionDO> solicitantesRequisicion,
 			List<PartidaRequisicionCompraDO> partidasRequisicionCompra
 			) {
 		this.fechaSolicitud = fechaSolicitud;
@@ -74,7 +74,7 @@ public class RequisicionCompraDO implements java.io.Serializable {
 		this.areaSolicitante = areaSolicitante;
 		this.centralSitio = centralSitio;
 		this.estatusRequisicionCompra = estatusRequisicionCompra;
-		this.solicitantesRequisicion = solicitanteRequisicion;
+		this.solicitantesRequisicion = solicitantesRequisicion;
 		this.partidasRequisicionCompra = partidasRequisicionCompra;
 	}
 
@@ -157,7 +157,7 @@ public class RequisicionCompraDO implements java.io.Serializable {
 		this.partidasRequisicionCompra = partidasRequisicionCompra;
 	}
 
-	public List<SolicitanteRequisicionDO> getSolicitanteRequisicion() {
+	public List<SolicitanteRequisicionDO> getSolicitantesRequisicion() {
 		return solicitantesRequisicion;
 	}
 

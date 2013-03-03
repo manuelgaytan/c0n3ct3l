@@ -32,6 +32,7 @@
 			import mx.controls.Alert;
 			import mx.events.CloseEvent;
 			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
 			import mx.rpc.events.FaultEvent;
 			import mx.rpc.events.ResultEvent;
 			import mx.utils.object_proxy;
@@ -81,7 +82,7 @@
 				if( Util.isFill( this.cmbQualifiedSupplier ) && this._item.proveedorCalificado != null ){
 					this.cmbQualifiedSupplier.selectedIndex = Util.selectedIndexFromCombo( this.cmbQualifiedSupplier.dataProvider as ArrayCollection, 
 						this._item.proveedorCalificado.id);
-					
+					this.cmbQualifiedSupplier.dispatchEvent( new Event(Event.CHANGE) );
 				}
 				this.txtQuantity.text = Util.numberToString( this._item.cantidad );
 				if( Util.isFill( this.cmbUnit ) && this._item.unidadOrdenCompra != null ){
@@ -94,14 +95,17 @@
 				this.txtSubtotal.text = Util.numberToString( this._item.subtotal );
 				this.txtIVA.text = Util.numberToString( this._item.iva );
 				this.txtIEPS.text = Util.numberToString( this._item.ieps );
-				this.txtISRRetention.text = Util.numberToString( this._item.retencionISR );
-				this.txtIVARetention.text = Util.numberToString( this._item.retencionIVA );
+				this.txtISRRetention.text = Util.numberToString( this._item.retencionIsr );
+				this.txtIVARetention.text = Util.numberToString( this._item.retencionIva );
 				this.txtOtherTaxes.text = Util.numberToString( this._item.otrosImpuestos );
 				this.txtTotal.text = Util.numberToString( this._item.total );
 				this.dtfWarehouseDeliveryDate.selectedDate = this._item.fechaEntregaAlmacen;
 			}
 			
 			private function setQualifiedSupplier( supplier:ProveedorCalificado ):void{
+				if( supplier == null ){
+					return;
+				}
 				this.txtBusinessName.text = supplier.proveedorSeleccionado.razonSocial;
 				this.txtRFC.text = supplier.proveedorSeleccionado.rfc;
 				this.txtTaxAddress.text = supplier.proveedorSeleccionado.direccionFiscal;
@@ -109,9 +113,9 @@
 				this.txtContact.text = supplier.proveedorSeleccionado.contacto;
 				this.txtMail.text = supplier.proveedorSeleccionado.correo;
 				this.txtWebPage.text = supplier.proveedorSeleccionado.paginaWeb;
-				this.txtPaymentMethod.text = supplier.formaPago.etiqueta;
-				this.txtPaymentType.text = supplier.tipoPago.etiqueta;
-				this.txtCurrency.text = Util.numberToString( supplier.moneda );
+				this.txtPaymentMethod.text = supplier.formaPago.forma;
+				this.txtPaymentType.text = supplier.tipoPago.tipo;
+				this.txtCurrency.text = supplier.moneda;
 				this.txtCreditLimit.text = Util.numberToString( supplier.limiteCredito );
 				this.txtCreditDays.text = Util.numberToString( supplier.diasCredito );
 				this.txtDiscount.text = Util.numberToString( supplier.descuentos );
@@ -142,8 +146,8 @@
 				item.subtotal = Util.stringToNumber( this.txtSubtotal.text );
 				item.iva = Util.stringToNumber( this.txtIVA.text );
 				item.ieps = Util.stringToNumber( this.txtIEPS.text );
-				item.retencionISR = Util.stringToNumber( this.txtISRRetention.text );
-				item.retencionIVA = Util.stringToNumber( this.txtIVARetention.text );
+				item.retencionIsr = Util.stringToNumber( this.txtISRRetention.text );
+				item.retencionIva = Util.stringToNumber( this.txtIVARetention.text );
 				item.otrosImpuestos = Util.stringToNumber( this.txtOtherTaxes.text );
 				item.total = Util.stringToNumber( this.txtTotal.text );
 				item.fechaEntregaAlmacen = this.dtfDate.selectedDate;
@@ -153,7 +157,7 @@
 			private function fillCombos():void
 			{
 				this.responseGetUnidadOrdenCompra.token = this.catalogoService.getUnidadB();
-				this.responseGetProveedorCalificado.token = this.proveedorCalificadoService.getProveedoresCalificadosCombo();
+				this.responseGetProveedoresCalificados.token = this.proveedorCalificadoService.getProveedoresCalificadosCombo();
 			}
 			
 			protected function consumibleService_faultHandler(event:FaultEvent):void
@@ -195,6 +199,9 @@
 			
 			private function modeValidation():void
 			{
+				if( this.mode == Constants.REGISTER_MODE ){
+					form.removeChild( this.frmID );
+				}
 			}
 			
 			private function initializeValidators():void
@@ -276,7 +283,7 @@
 				}
 			}
 			
-			protected function responseGetColaborador_resultHandler(event:ResultEvent):void
+			protected function responseGetProveedoresCalificados_resultHandler(event:ResultEvent):void
 			{
 				var data:ArrayCollection = event.result as ArrayCollection;
 				if( data == null ){
@@ -286,12 +293,33 @@
 				if( this._item != null && this._item.proveedorCalificado != null ){
 					this.cmbQualifiedSupplier.selectedIndex = Util.selectedIndexFromCombo( this.cmbQualifiedSupplier.dataProvider as ArrayCollection, 
 						this._item.proveedorCalificado.id);
+					this.cmbQualifiedSupplier.dispatchEvent( new Event(Event.CHANGE) );
 				}
 			}
 			
 			protected function catalogoService_faultHandler(event:FaultEvent):void
 			{
 				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function cmbQualifiedSupplier_changeHandler(event:ListEvent):void
+			{
+				var idSupplier:* = Util.selectedId( this.cmbQualifiedSupplier );
+				if( idSupplier == undefined ){
+					this.cleanFormQualifiedSupplier();
+					return;
+				}
+				this.responseGetProveedorCalificado.token = this.proveedorCalificadoService.getProveedorCalificado(idSupplier);
+			}
+			
+			protected function responseGetProveedorCalificado_resultHandler(event:ResultEvent):void
+			{
+				if( event == null ||
+					event.result == null ||
+					!(event.result is ProveedorCalificado) ){
+					return;
+				}
+				this.setQualifiedSupplier( event.result as ProveedorCalificado );
 			}
 			
 		]]>
@@ -301,27 +329,28 @@
 		[Event(name="purchaseOrderUpdated", type="flash.events.Event")]
 	</mx:Metadata>
 	<mx:Form id="form">
-		<mx:FormItem label="ID:">
+		<mx:FormItem label="ID:" id="frmID">
 			<components:TextInput id="txtID"/>
 		</mx:FormItem>
 		<mx:FormItem label="ID Proyecto:" direction="horizontal">
 			<components:TextInput id="txtProjectID"/>
-			<mx:Button label="Ver Proyecto" id="btnProjectID"/>
+			<!--<mx:Button label="Ver Proyecto" id="btnProjectID"/>-->
 		</mx:FormItem>
 		<mx:FormItem label="ID Requisición:" direction="horizontal">
 			<components:TextInput id="txtRequisicionID"/>
-			<mx:Button label="Ver Requisición" id="btnRequisicionID"/>
+			<!--<mx:Button label="Ver Requisición" id="btnRequisicionID"/>-->
 		</mx:FormItem>
 		<mx:FormItem label="ID Cotización:" direction="horizontal">
 			<components:TextInput id="txtQuotationID"/>
-			<mx:Button label="Ver Cotización" id="btnQuotationID"/>
+			<!--<mx:Button label="Ver Cotización" id="btnQuotationID"/>-->
 		</mx:FormItem>
 		<mx:FormItem label="Fecha:">
 			<components:DateField id="dtfDate" enabled="false" creationComplete="dtfDate.selectedDate=new Date()"/>
 		</mx:FormItem>
 		<mx:FormItem label="Proveedor Calificado:">
 			<!--<components:ComboList id="cmbQualifiedSupplier"/>-->
-			<mx:ComboBox id="cmbQualifiedSupplier" labelField="etiqueta"/>
+			<mx:ComboBox id="cmbQualifiedSupplier" labelField="etiqueta"
+						 change="cmbQualifiedSupplier_changeHandler(event)"/>
 		</mx:FormItem>
 		<!-- Campos de Seleccion Automatica por el Proveedor Calificado -->
 		<mx:FormItem label="Razón Social:">
@@ -416,5 +445,6 @@
 	<mx:CallResponder id="responseGetUnidadOrdenCompra" result="responseGetUnidadOrdenCompra_resultHandler(event)"/>
 	<mx:RemoteObject id="proveedorCalificadoService" destination="proveedorCalificadoService" fault="catalogoService_faultHandler(event)"
 					 showBusyCursor="true"/>
-	<mx:CallResponder id="responseGetProveedorCalificado" result="responseGetColaborador_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetProveedoresCalificados" result="responseGetProveedoresCalificados_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetProveedorCalificado" result="responseGetProveedorCalificado_resultHandler(event)"/>
 </mx:VBox>

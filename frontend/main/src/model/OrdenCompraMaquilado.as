@@ -14,8 +14,8 @@ package model
 		public var subtotal:Number;
 		public var iva:Number;
 		public var ieps:*;
-		public var retencionISR:*;
-		public var retencionIVA:*;
+		public var retencionIsr:*;
+		public var retencionIva:*;
 		public var otrosImpuestos:*;
 		public var total:Number;
 		public var fechaEntregaAlmacen:Date;

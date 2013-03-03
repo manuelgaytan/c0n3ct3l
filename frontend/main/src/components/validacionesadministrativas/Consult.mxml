@@ -107,24 +107,24 @@
 							   width="80"
 							   textAlign="right"/>
 			<mx:DataGridColumn id="dtgOperationalValidationStatus" headerText="{'Estado\nValidación\nAdministrativa'}"
-							   width="110"
+							   width="150"
 							   dataField="estadoValidacionAdministrativa.etiqueta"
 							   />
 			<mx:DataGridColumn id="dtgTypeValidationAdministrative" headerText="{'Tipo\nValidación\nAdministrativa'}"
 							   dataField="tipoValidacionAdministrativa.etiqueta"
-							   width="200"/>
+							   width="150"/>
 			<mx:DataGridColumn id="dtgTotalPorcentageRecovery" headerText="{'Porcentaje\nTotal\nCobro'}"
 							   dataField="porcentajeTotalCobro"
 							   width="95"
 							   textAlign="right"/>
 			<mx:DataGridColumn id="dtgFinalValidationStatus" headerText="{'Estado\nFinal\nValidación'}"
 							   dataField="etadoValidacionFinal.etiqueta"
-							   width="100"
+							   width="150"
 							   textAlign="right"
 							   />
 			<mx:DataGridColumn id="dtgAttributable" headerText="{'Imputable'}"
 							   dataField="imputable.etiqueta"
-							   width="100"
+							   width="150"
 							   />
 		</mx:columns>
 	</mx:DataGrid>

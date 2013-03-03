@@ -7,15 +7,11 @@ package model
 	{
 		public var id:*;
 		public var fecha:Date;
-		public var cantidad:Number;
-		public var descripcion:String;
-		public var costoUnitario:Number;
-		public var importe:Number;
 		public var subtotal:Number;
 		public var iva:Number;
 		public var ieps:*;
-		public var retencionISR:*;
-		public var retencionIVA:*;
+		public var retencionIsr:*;
+		public var retencionIva:*;
 		public var otrosImpuestos:*;
 		public var total:Number;
 		public var fechaEntregaAlmacen:Date;
@@ -26,7 +22,6 @@ package model
 		public var proveedorCalificado:ProveedorCalificado;
 		public var proyecto:Proyecto;
 		public var requisicionCompra:RequisicionCompra;
-		public var unidadOrdenCompra:UnidadOrdenCompra;
 		
 		public function OrdenCompraAlmacen()
 		{

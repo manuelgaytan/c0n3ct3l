@@ -234,10 +234,10 @@
 		</properties>
 	</destination>
 	
-	<destination id="solicitudServicioMaquilado">
+	<destination id="solicitudServicioMaquiladoService">
 		<properties>
 			<factory>ejb3</factory>
-			<source>ejb/SolicitudServicioMaquilado</source>
+			<source>ejb/SolicitudServicioMaquiladoService</source>
 			<scope>session</scope>
 		</properties>
 	</destination>

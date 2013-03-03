@@ -84,14 +84,6 @@
 						this._item.proveedorCalificado.id);
 					this.cmbQualifiedSupplier.dispatchEvent( new Event(Event.CHANGE) );
 				}
-				this.txtQuantity.text = Util.numberToString( this._item.cantidad );
-				if( Util.isFill( this.cmbUnit ) && this._item.unidadOrdenCompra != null ){
-					this.cmbUnit.selectedIndex = Util.selectedIndexFromCombo( this.cmbUnit.dataProvider as ArrayCollection, 
-						this._item.unidadOrdenCompra.id);
-				}
-				this.txtDescription.text = this._item.descripcion;
-				this.txtUnitCost.text = Util.numberToString( this._item.costoUnitario );
-				this.txtAmount.text = Util.numberToString( this._item.importe );
 				this.txtSubtotal.text = Util.numberToString( this._item.subtotal );
 				this.txtIVA.text = Util.numberToString( this._item.iva );
 				this.txtIEPS.text = Util.numberToString( this._item.ieps );
@@ -137,12 +129,6 @@
 				item.fecha = this.dtfDate.selectedDate;
 				item.proveedorCalificado = new ProveedorCalificado(); 
 				item.proveedorCalificado.id = (Util.validateCombo( this.cmbQualifiedSupplier ) as ProveedorCalificadoCombo).id;
-				item.cantidad = Util.stringToNumber( this.txtQuantity.text );
-				item.unidadOrdenCompra = new UnidadOrdenCompra();
-				item.unidadOrdenCompra.id = (Util.validateCombo( this.cmbUnit ) as UnidadB).id;
-				item.descripcion = Util.validateEmpty( this.txtDescription.text );
-				item.costoUnitario = Util.stringToNumber( this.txtUnitCost.text );
-				item.importe = Util.stringToNumber( this.txtAmount.text );
 				item.subtotal = Util.stringToNumber( this.txtSubtotal.text );
 				item.iva = Util.stringToNumber( this.txtIVA.text );
 				item.ieps = Util.stringToNumber( this.txtIEPS.text );
@@ -156,7 +142,6 @@
 			
 			private function fillCombos():void
 			{
-				this.responseGetUnidadOrdenCompra.token = this.catalogoService.getUnidadB();
 				this.responseGetProveedoresCalificados.token = this.proveedorCalificadoService.getProveedoresCalificadosCombo();
 			}
 			
@@ -231,11 +216,6 @@
 				this.txtQuotationID.reset();
 				this.dtfDate.reset();
 				this.cmbQualifiedSupplier.selectedIndex = 0; 
-				this.txtQuantity.reset();
-				this.cmbUnit.selectedIndex = 0; 
-				this.txtDescription.reset();
-				this.txtUnitCost.reset();
-				this.txtAmount.reset();
 				this.txtSubtotal.reset();
 				this.txtIVA.reset();
 				this.txtIEPS.reset();
@@ -268,19 +248,6 @@
 				var eventPurchaseOrderUpdated:Event = new Event("purchaseOrderUpdated");
 				this.dispatchEvent( eventPurchaseOrderUpdated );
 				this.cleanForm();
-			}
-			
-			protected function responseGetUnidadOrdenCompra_resultHandler(event:ResultEvent):void
-			{
-				var data:ArrayCollection = event.result as ArrayCollection;
-				if( data == null ){
-				return;
-				}
-				this.cmbUnit.dataProvider = Util.addEmptyCatalgo( data );
-				if( this._item != null && this._item.unidadOrdenCompra != null ){
-				this.cmbUnit.selectedIndex = Util.selectedIndexFromCombo( this.cmbUnit.dataProvider as ArrayCollection, 
-				this._item.unidadOrdenCompra.id);
-				}
 			}
 			
 			protected function responseGetProveedoresCalificados_resultHandler(event:ResultEvent):void
@@ -393,21 +360,6 @@
 			<components:TextInput id="txtDiscount" editable="false" textAlign="right" width="80"/>
 		</mx:FormItem>
 		<!-- Fin Campos de Seleccion Automatica por el Proveedor Calificado -->
-		<mx:FormItem label="Cantidad:" direction="horizontal">
-			<components:TextInput id="txtQuantity" textAlign="right" width="150"/>
-			<mx:ComboBox id="cmbUnit"
-						 labelField="etiqueta"
-						 />
-		</mx:FormItem>
-		<mx:FormItem label="Descripción:">
-			<components:TextInput id="txtDescription" width="400"/>
-		</mx:FormItem>
-		<mx:FormItem label="Costo Unitario:">
-			<components:TextInput id="txtUnitCost" textAlign="right" width="200"/>
-		</mx:FormItem>
-		<mx:FormItem label="Importe:">
-			<components:TextInput id="txtAmount" textAlign="right" width="200"/>
-		</mx:FormItem>
 		<mx:FormItem label="Subtotal:">
 			<components:TextInput id="txtSubtotal" textAlign="right" width="200"/>
 		</mx:FormItem>
@@ -442,7 +394,6 @@
 	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
 	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="catalogoService_faultHandler(event)"
 					 showBusyCursor="true"/>
-	<mx:CallResponder id="responseGetUnidadOrdenCompra" result="responseGetUnidadOrdenCompra_resultHandler(event)"/>
 	<mx:RemoteObject id="proveedorCalificadoService" destination="proveedorCalificadoService" fault="catalogoService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetProveedoresCalificados" result="responseGetProveedoresCalificados_resultHandler(event)"/>

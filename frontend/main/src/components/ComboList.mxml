@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
-	paddingTop="0" paddingBottom="5">
+	paddingTop="0" paddingBottom="5" creationComplete="creationCompleteHandler(event)">
 	<mx:Script>
 		<![CDATA[
 			import model.Util;
@@ -8,6 +8,7 @@
 			import mx.collections.ArrayCollection;
 			import mx.controls.Alert;
 			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
 
 			[Bindable]
 			private var _items:ArrayCollection;
@@ -116,6 +117,12 @@
 			protected function completeHandler(event:Event):void 
 			{
 			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this._items = new ArrayCollection();
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:HBox>

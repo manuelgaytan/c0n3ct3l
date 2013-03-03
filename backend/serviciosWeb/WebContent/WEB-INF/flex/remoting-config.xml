@@ -242,4 +242,19 @@
 		</properties>
 	</destination>
 	
+	<destination id="concentradoOrdenCompraClienteService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/ConcentradoOrdenCompraClienteService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+	
+	<destination id="validacionAdministrativaService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/ValidacionAdministrativaService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
 </service>

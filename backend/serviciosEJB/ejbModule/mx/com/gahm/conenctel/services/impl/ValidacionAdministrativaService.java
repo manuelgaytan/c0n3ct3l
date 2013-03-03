@@ -5,6 +5,7 @@ package mx.com.gahm.conenctel.services.impl;
 
 import java.util.List;
 
+import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
@@ -12,7 +13,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
+import mx.com.gahm.conenctel.entities.ComentarioComprasDO;
 import mx.com.gahm.conenctel.entities.ComentarioPantallaValidacionAdministrativaDO;
+import mx.com.gahm.conenctel.entities.ComentarioRequisicionDO;
+import mx.com.gahm.conenctel.entities.ComentarioValidacionAdministrativaDO;
+import mx.com.gahm.conenctel.entities.RequisicionCompraDO;
 import mx.com.gahm.conenctel.entities.ValidacionAdministrativaDO;
 import mx.com.gahm.conenctel.exceptions.ConectelException;
 import mx.com.gahm.conenctel.services.IValidacionAdministrativaService;
@@ -22,6 +27,7 @@ import mx.com.gahm.conenctel.util.DataTypeUtil;
  * @author MHDolores
  *
  */
+@Stateless(mappedName = "ejb/ValidacionAdministrativaService")
 public class ValidacionAdministrativaService implements IValidacionAdministrativaService{
 
 	@Inject
@@ -61,23 +67,17 @@ public class ValidacionAdministrativaService implements IValidacionAdministrativ
 		if (item != null) 
 		entityManager.persist(item);
 	
-		List<ComentarioPantallaValidacionAdministrativaDO> comentarios=item.getComentariosPantallaValidacionAdministrativa();
-		
-		for (ComentarioPantallaValidacionAdministrativaDO comentario : comentarios) {
-			comentario.setValidacionAdministrativa(item);
-			entityManager.persist(comentario);
-		}
+		this.saveComentarios(item, item.getComentariosPantallaValidacionAdministrativa());
 		
 		return item;
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public ValidacionAdministrativaDO update(ValidacionAdministrativaDO item) {
+		this.updateComentarios(item, item.getComentariosPantallaValidacionAdministrativa());
 		entityManager.merge(item);
 		return item;
 	}
-
-	
 
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public ValidacionAdministrativaDO getItem(Long id) throws ConectelException {
@@ -88,5 +88,26 @@ public class ValidacionAdministrativaService implements IValidacionAdministrativ
 		return validacionProyecto;
 	}
 
-
+	private void saveComentarios(ValidacionAdministrativaDO validacionAdministrativaDO,List<ComentarioPantallaValidacionAdministrativaDO> datos){
+		if( datos == null ){
+			return;
+		}
+		for (ComentarioPantallaValidacionAdministrativaDO dato : datos) {
+			ComentarioValidacionAdministrativaDO comentarioValidacionAdministrativaDO = dato.getComentarioValidacionAdministrativa();
+			entityManager.persist(comentarioValidacionAdministrativaDO);
+			dato.setComentarioValidacionAdministrativa(comentarioValidacionAdministrativaDO);
+			dato.setValidacionAdministrativa(validacionAdministrativaDO);
+			entityManager.persist(dato);
+		}
+		
+	}
+	
+	private void updateComentarios(ValidacionAdministrativaDO validacionAdministrativaDO,List<ComentarioPantallaValidacionAdministrativaDO> datos){
+		if( datos == null ){
+			return;
+		}
+		for (ComentarioPantallaValidacionAdministrativaDO dato : datos) {
+			dato.setValidacionAdministrativa(validacionAdministrativaDO);
+		}
+	}
 }

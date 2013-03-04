@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)" xmlns:ordenescompraserviciosmaquilado="components.ordenescompraserviciosmaquilado.*" xmlns:solicitudesserviciomaquilado="components.solicitudesserviciomaquilado.*"
+		 >
+	<mx:Script>
+		<![CDATA[
+			import model.Catalogo;
+			import model.Colaborador;
+			import model.Constants;
+			import model.Cotizacion;
+			import model.EstatusC;
+			import model.GrupoFamiliaD;
+			import model.OrdenCompraMaquilado;
+			import model.PartidaRequisicionCompra;
+			import model.Perfil;
+			import model.ProveedorCalificado;
+			import model.ProveedorCalificadoCombo;
+			import model.ProveedorMaquilador;
+			import model.Proyecto;
+			import model.RequisicionCompra;
+			import model.SolicitudServicioMaquilado;
+			import model.TipoAlmacen;
+			import model.TipoMantenimiento;
+			import model.UbicacionC;
+			import model.UnidadB;
+			import model.UnidadOrdenCompra;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.Constantes;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.com.gahm.componentes.validadores.ValidadorNumerico;
+			import mx.controls.Alert;
+			import mx.controls.List;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.utils.object_proxy;
+			
+			private var mode:String = null;
+			private var _item:OrdenCompraMaquilado;
+			private var validators:InicializaValidadoresEtiquetas;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				this.label = Constants.REGISTRAR;
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set purchaseOrderMaquilado(value:OrdenCompraMaquilado):void{
+				if( value == null ){
+					return;
+				}
+				this._item = value;
+				this.setPurchaseOrder(); 
+			}
+			
+			private function setPurchaseOrder():void
+			{
+				if( this._item == null ){
+					return;
+				}
+				this.txtID.text = Util.numberToString( this._item.id );
+				this.txtRequisicionID.text = Util.numberToString( this._item.solicitudServicioMaquilado.id );
+				this.txtRequisicionID.dispatchEvent( new FocusEvent(FocusEvent.FOCUS_OUT) );
+				this.dtfDate.selectedDate = this._item.fecha;
+				if( Util.isFill( this.cmbMaquiladoSupplier ) && this._item.proveedorMaquilador != null ){
+					this.cmbMaquiladoSupplier.selectedIndex = Util.selectedIndexFromCombo( this.cmbMaquiladoSupplier.dataProvider as ArrayCollection, 
+						this._item.proveedorMaquilador.id);
+					this.cmbMaquiladoSupplier.dispatchEvent( new ListEvent(ListEvent.CHANGE) );
+				}
+				this.txtValidationKey.text = this._item.claveValidacion;
+			}
+			
+			private function setMaquiladorSupplier( supplier:ProveedorMaquilador ):void{
+				if( supplier == null ){
+					return;
+				}
+				this.txtBusinessName.text = supplier.razonSocial;
+				this.txtRFC.text = supplier.rfc;
+				this.txtTaxAddress.text = supplier.direccionFiscal;
+				this.txtPhones.text = supplier.telefonos;
+				this.txtMail.text = supplier.correo;
+				this.txtContractType.text = supplier.tipoContrato.tipo;
+				this.txtNSS.text = supplier.nss;
+			}
+			
+			private function getPurchaseOrder():OrdenCompraMaquilado{
+				var item:OrdenCompraMaquilado = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					item = new OrdenCompraMaquilado();
+				}else{
+					item = this._item;
+				}
+				item.solicitudServicioMaquilado = new SolicitudServicioMaquilado();
+				item.solicitudServicioMaquilado.id = Util.stringToNumber( this.txtRequisicionID.text );
+				item.fecha = this.dtfDate.selectedDate;
+				item.proveedorMaquilador = new ProveedorMaquilador(); 
+				item.proveedorMaquilador.id = (Util.validateCombo( this.cmbMaquiladoSupplier ) as ProveedorMaquilador).id;
+				item.claveValidacion = Util.validateEmpty( this.txtValidationKey.text );
+				return item;
+			}
+			
+			private function fillCombos():void
+			{
+				this.responseGetProveedoresMaquiladores.token = this.proveedorMaquiladorService.getProveedoresMaquiladores();
+			}
+			
+			protected function ordenCompraService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function btnAccept_clickHandler(event:MouseEvent):void
+			{
+				if( !this.validations() ){
+					Util.showMessageVerifyFields();
+					return;
+				}
+				if( this.mode == Constants.REGISTER_MODE ){
+					var purchaseOrderMaquilado:OrdenCompraMaquilado = this.getPurchaseOrder();
+					Util.showProperties( purchaseOrderMaquilado );
+					this.responseSave.token = this.ordenCompraMaquiladoService.save( purchaseOrderMaquilado );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
+				}
+			}
+			
+			private function updateItem(event:CloseEvent):void{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var purchaseOrderMaquilado:OrdenCompraMaquilado = this.getPurchaseOrder();
+				Util.showProperties( purchaseOrderMaquilado );
+				this.responseUpdate.token = this.ordenCompraMaquiladoService.update( purchaseOrderMaquilado );
+			}
+			
+			private function validations():Boolean
+			{
+				var value:Boolean = true;
+				value &&= this.validators.validarFormulario();
+				value &&= Util.listBaseSelected(this.cmbMaquiladoSupplier);
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+					form.removeChild( this.frmID );
+				}
+			}
+			
+			private function initializeValidators():void
+			{
+				this.validators = new InicializaValidadoresEtiquetas();
+				validators.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
+				validators.setRestrictor(txtValidationKey, "generic");
+			}
+			
+			protected function responseSave_resultHandler(event:ResultEvent):void
+			{
+				var eventPurchaseOrderNew:Event = new Event("purchaseOrderMaquiladoNew");
+				this.dispatchEvent( eventPurchaseOrderNew );
+				this.cleanForm();
+			}
+			
+			private function cleanForm():void
+			{
+				this.txtID.reset();
+				this.txtRequisicionID.reset();
+				this.dtfDate.reset();
+				this.cmbMaquiladoSupplier.selectedIndex = 0; 
+				this.cleanFormQualifiedSupplier();
+				this.itemsManagement.reset();
+				this.txtValidationKey.reset();
+			}
+			
+			private function cleanFormQualifiedSupplier():void{
+				this.txtBusinessName.reset();
+				this.txtRFC.reset();
+				this.txtTaxAddress.reset();
+				this.txtPhones.reset();
+				this.txtMail.reset();
+				this.txtNSS.reset();
+			}
+			
+			protected function responseUpdate_resultHandler(event:ResultEvent):void
+			{
+				var eventPurchaseOrderUpdated:Event = new Event("purchaseOrderMaquiladoUpdated");
+				this.dispatchEvent( eventPurchaseOrderUpdated );
+				this.cleanForm();
+			}
+			
+			protected function responseGetProveedoresMaquiladores_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbMaquiladoSupplier.dataProvider = Util.addEmptyCatalgo(data,"nombreComercial");
+				if( this._item != null && this._item.proveedorMaquilador != null ){
+					this.cmbMaquiladoSupplier.selectedIndex = Util.selectedIndexFromCombo( this.cmbMaquiladoSupplier.dataProvider as ArrayCollection, 
+						this._item.proveedorMaquilador.id);
+					this.cmbMaquiladoSupplier.dispatchEvent( new Event(Event.CHANGE) );
+				}
+			}
+			
+			protected function catalogoService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function cmbQualifiedSupplier_changeHandler(event:ListEvent):void
+			{
+				var idSupplier:* = Util.selectedId( this.cmbMaquiladoSupplier );
+				if( idSupplier == undefined ){
+					this.cleanFormQualifiedSupplier();
+					return;
+				}
+				//this.responseGetProveedoresMaquiladores.token = this.proveedorMaquiladorService.getItem(idSupplier);
+				this.setMaquiladorSupplier( this.cmbMaquiladoSupplier.selectedItem as ProveedorMaquilador );
+			}
+			
+			protected function responseGetProveedorCalificado_resultHandler(event:ResultEvent):void
+			{
+				if( event == null ||
+					event.result == null ||
+					!(event.result is ProveedorMaquilador) ){
+					return;
+				}
+				this.setMaquiladorSupplier( event.result as ProveedorMaquilador );
+			}
+			
+			protected function txtRequisicionID_enterHandler():void
+			{
+				var idRequisicion:* = Util.stringToNumber(this.txtRequisicionID.text);
+				if( idRequisicion == undefined ){
+					return;
+				}
+				this.responseGetItem.token = this.solicitudServicioMaquiladoService.getItem(idRequisicion);
+			}
+			
+			protected function txtRequisicionID_focusOutHandler():void
+			{
+				this.txtRequisicionID_enterHandler();
+			}
+			
+			protected function responseGetItem_resultHandler(event:ResultEvent):void
+			{
+				if( event != null &&
+					event.result != null ){
+					itemsManagement.maquiladoraServiceRequest = event.result as SolicitudServicioMaquilado;
+				}
+			}
+			
+			protected function responseGetItem_faultHandler(event:FaultEvent):void
+			{
+				itemsManagement.reset();
+			}
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="purchaseOrderMaquiladoNew", type="flash.events.Event")]
+		[Event(name="purchaseOrderMaquiladoUpdated", type="flash.events.Event")]
+	</mx:Metadata>
+	<mx:Form id="form">
+		<mx:FormItem label="ID:" id="frmID">
+			<components:TextInput id="txtID" textAlign="right" editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="ID Requisición:" direction="horizontal">
+			<components:TextInput id="txtRequisicionID" textAlign="right"
+								  enter="txtRequisicionID_enterHandler()"
+								  focusOut="txtRequisicionID_focusOutHandler()"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha:">
+			<components:DateField id="dtfDate" enabled="false" creationComplete="dtfDate.selectedDate=new Date()"/>
+		</mx:FormItem>
+		<mx:FormItem label="Proveedor Maquilador:">
+			<mx:ComboBox id="cmbMaquiladoSupplier"
+						 change="cmbQualifiedSupplier_changeHandler(event)"
+						 labelField="nombreComercial"/>
+		</mx:FormItem>
+		<!-- Campos de Seleccion Automatica por el Proveedor Calificado -->
+		<mx:FormItem label="Razón Social:">
+			<components:TextInput id="txtBusinessName" editable="false" width="400"/>
+		</mx:FormItem>
+		<mx:FormItem label="R.F.C:">
+			<components:TextInput id="txtRFC" editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Dirección Fiscal:">
+			<components:TextInput id="txtTaxAddress" editable="false" width="400"/>
+		</mx:FormItem>
+		<mx:FormItem label="Teléfonos:">
+			<components:TextInput id="txtPhones" editable="false" width="300"/>
+		</mx:FormItem>
+		<mx:FormItem label="Correo Electrónico:">
+			<components:TextInput id="txtMail" editable="false" width="300"/>
+		</mx:FormItem>
+		<mx:FormItem label="Tipo Contrato:">
+			<components:TextInput id="txtContractType" editable="false" width="200"/>
+		</mx:FormItem>
+		<mx:FormItem label="N.S.S.:">
+			<components:TextInput id="txtNSS" editable="false" width="200"/>
+		</mx:FormItem>
+		<!-- Fin Campos de Seleccion Automatica por el Proveedor Calificado -->
+		<ordenescompraserviciosmaquilado:ItemsManagement id="itemsManagement"/>
+		<mx:FormItem label="Clave de Validación:">
+			<components:TextInput id="txtValidationKey" width="200"/>
+		</mx:FormItem>
+		<mx:FormItem>
+			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:RemoteObject id="ordenCompraMaquiladoService" destination="ordenCompraMaquiladoService" fault="ordenCompraService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
+	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
+	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="catalogoService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:RemoteObject id="solicitudServicioMaquiladoService" destination="solicitudServicioMaquiladoService" fault="ordenCompraService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetItem" result="responseGetItem_resultHandler(event)" fault="responseGetItem_faultHandler(event)"/>
+	<mx:RemoteObject id="proveedorMaquiladorService" destination="proveedorMaquiladorService" fault="ordenCompraService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetProveedoresMaquiladores" result="responseGetProveedoresMaquiladores_resultHandler(event)"/>
+</mx:VBox>

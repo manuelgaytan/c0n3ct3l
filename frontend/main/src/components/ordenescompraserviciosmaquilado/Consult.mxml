@@ -9,7 +9,7 @@
 			
 			import flash.net.navigateToURL;
 			
-			import model.OrdenCompraAlmacen;
+			import model.OrdenCompraMaquilado;
 			import model.Util;
 			
 			import mx.collections.ArrayCollection;
@@ -22,7 +22,7 @@
 			[Bindable]
 			private var items:ArrayCollection = null;
 			
-			private var ordenCompraAlmacen:OrdenCompraAlmacen;
+			private var ordenCompraAlmacen:OrdenCompraMaquilado;
 			
 			protected function responseGetAll_resultHandler(event:ResultEvent):void
 			{
@@ -41,27 +41,27 @@
 			
 			protected function datagrid_doubleClickHandler(event:MouseEvent):void
 			{
-				var item:OrdenCompraAlmacen = this.datagrid.selectedItem as OrdenCompraAlmacen;
+				var item:OrdenCompraMaquilado = this.datagrid.selectedItem as OrdenCompraMaquilado;
 				if( item == null ){
 					return;
 				}
-				this.responseGetItem.token = this.ordenCompraService.getItem( item.id );
+				this.responseGetItem.token = this.ordenCompraMaquiladoService.getItem( item.id );
 			}
 			
 			protected function responseGetItem_resultHandler(event:ResultEvent):void
 			{
-				var item:OrdenCompraAlmacen = event.result as OrdenCompraAlmacen;
+				var item:OrdenCompraMaquilado = event.result as OrdenCompraMaquilado;
 				if( item == null ){
 					return;
 				}
-				var genericEvent:GenericEvent = new GenericEvent("purchaseOrderDetail");
+				var genericEvent:GenericEvent = new GenericEvent("purchaseOrderMaquiladoDetail");
 				genericEvent.information = item;
 				this.dispatchEvent( genericEvent );
 			}
 			
 			public function executeQuery():void
 			{
-				this.responseGetAll.token = this.ordenCompraService.getAll();
+				this.responseGetAll.token = this.ordenCompraMaquiladoService.getAll();
 			}
 			
 			protected function btnDelete_clickHandler(event:MouseEvent):void
@@ -80,7 +80,7 @@
 					return;
 				}
 				var items:ArrayCollection = Util.selectedIDs( this.datagrid.selectedItems ); 
-				this.responseDeleteItems.token = this.ordenCompraService.deleteItems( items );
+				this.responseDeleteItems.token = this.ordenCompraMaquiladoService.deleteItems( items );
 			}
 			
 			protected function responseDeleteItems_resultHandler(event:ResultEvent):void
@@ -102,13 +102,13 @@
 					Util.showErrorMessage("Debe seleccionar un elemento de la tabla.");
 					return;
 				}
-				navigateToURL(new URLRequest("../formats/ODCM.pdf"));//+this.datagrid.selectedItem.id));
+				navigateToURL(new URLRequest("../formats/ODCSSM.pdf"));//+this.datagrid.selectedItem.id));
 			}
 			
 		]]>
 	</mx:Script>
 	<mx:Metadata>
-		[Event(name="purchaseOrderDetail", type="events.GenericEvent")]
+		[Event(name="purchaseOrderMaquiladoDetail", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:DataGrid id="datagrid" width="100%" height="100%" dataProvider="{items}"
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
@@ -120,17 +120,17 @@
 							   textAlign="right"/>
 			<mx:DataGridColumn id="dtgProjectID" headerText="{'ID \nProyecto'}"
 							   width="80"
-							   dataField="proyecto.id"
+							   dataField="solicitudServicioMaquilado.proyecto.id"
 							   labelFunction="labelFunctionGenerico"
 							   textAlign="right"/>
-			<mx:DataGridColumn id="dtgRequisicionID" headerText="{'ID \nRequisición'}"
-							   width="90"
-							   dataField="requisicionCompra.id"
-							   labelFunction="labelFunctionGenerico"
-							   textAlign="right"/>
-			<mx:DataGridColumn id="dtgQuotationID" headerText="{'ID \nCotización'}"
+			<mx:DataGridColumn id="dtgProjectParentID" headerText="{'ID \nProyecto\nPadre'}"
 							   width="80"
-							   dataField="cotizacion.id"
+							   dataField="solicitudServicioMaquilado.proyectoPadre.id"
+							   labelFunction="labelFunctionGenerico"
+							   textAlign="right"/>
+			<mx:DataGridColumn id="dtgRequisicionID" headerText="{'ID \nSolicitud\nServicio\nMaquilado'}"
+							   width="90"
+							   dataField="solicitudServicioMaquilado.id"
 							   labelFunction="labelFunctionGenerico"
 							   textAlign="right"/>
 			<mx:DataGridColumn id="dtgDate" headerText="Fecha"
@@ -140,7 +140,11 @@
 							   textAlign="center"/>
 			<mx:DataGridColumn id="dtgSupplier" headerText="Proveedor"
 							   width="80"
-							   dataField="proveedorCalificado.proveedorSeleccionado.nombreComercial"
+							   dataField="proveedorMaquilador.nombreComercial"
+							   labelFunction="labelFunctionGenerico"/>
+			<mx:DataGridColumn id="dtgValidationKey" headerText="{'Clave\nValidación'}"
+							   width="80"
+							   dataField="claveValidacion"
 							   labelFunction="labelFunctionGenerico"/>
 		</mx:columns>
 	</mx:DataGrid>
@@ -148,7 +152,7 @@
 		<mx:Button id="btnViewFormat" label="Visualizar Formato" click="btnViewFormat_clickHandler(event)"/>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>
 	</mx:HBox>
-	<mx:RemoteObject id="ordenCompraService" destination="ordenCompraService" fault="ordenCompraAlmacenService_faultHandler(event)"
+	<mx:RemoteObject id="ordenCompraMaquiladoService" destination="ordenCompraMaquiladoService" fault="ordenCompraAlmacenService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetAll" result="responseGetAll_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetItem" result="responseGetItem_resultHandler(event)"/>

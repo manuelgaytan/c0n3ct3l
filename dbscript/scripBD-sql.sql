@@ -866,13 +866,6 @@
 	/* Fin Cotizacion Compras */
 
 	/* Orden de Compra */
-	CREATE TABLE UnidadOrdenCompra
-	(
-	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
-	unidad VARCHAR(255) NOT NULL UNIQUE,
-	PRIMARY KEY (id)
-	);
-
 	CREATE TABLE OrdenCompra
 	(
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
@@ -881,11 +874,6 @@
 	fk_proveedor_calificado INT(11) UNSIGNED NOT NULL,
 	fk_proyecto INT(11) UNSIGNED NOT NULL,
 	fk_requisicion_compra INT(11) UNSIGNED NOT NULL,
-	cantidad DECIMAL NOT NULL,
-	fk_unidad INT(11) UNSIGNED NOT NULL,
-	descripcion VARCHAR(255) NOT NULL,
-	costo_unitario DECIMAL NOT NULL,
-	importe DECIMAL NOT NULL,
 	subtotal DECIMAL NOT NULL,
 	iva DECIMAL NOT NULL,
 	ieps DECIMAL,
@@ -931,6 +919,7 @@
 	fk_solicitud_servicio_maquilado INT(11) UNSIGNED NOT NULL,
 	fecha DATE NOT NULL,
 	fk_proveedor_maquilador INT(11) UNSIGNED NOT NULL,
+	clave_validacion VARCHAR(255),
 	PRIMARY KEY (id)
 	);
 
@@ -1467,8 +1456,6 @@
 
 	ALTER TABLE OrdenCompra ADD FOREIGN KEY fk_requisicion_compra_idxfk_1 (fk_requisicion_compra) REFERENCES RequisicionCompra (id);
 
-	ALTER TABLE OrdenCompra ADD FOREIGN KEY fk_unidad_idxfk (fk_unidad) REFERENCES UnidadOrdenCompra (id);
-
 	ALTER TABLE ProyectoPadreHijo ADD FOREIGN KEY fk_proyecto_padre_idxfk (fk_proyecto_padre) REFERENCES ProyectoPadre (id);
 
 	ALTER TABLE ProyectoPadreHijo ADD FOREIGN KEY fk_proyecto_idxfk_1 (fk_proyecto) REFERENCES Proyecto (id);
@@ -1624,7 +1611,7 @@
 	INSERT INTO Pantalla
 	VALUES (22, 'OrdenesCompraClientes');
 	INSERT INTO Pantalla
-	VALUES (23, 'ValidacionesCostos');
+	VALUES (23, '');
 	INSERT INTO Pantalla
 	VALUES (24, 'ValidacionesAdministrativas');
 	INSERT INTO Pantalla
@@ -2157,27 +2144,6 @@
 	/* Fin Requisicion Compras */
 
 	/* Orden de Compra */
-	INSERT INTO UnidadOrdenCompra
-	VALUES (1, 'Bolsa');
-	INSERT INTO UnidadOrdenCompra
-	VALUES (2, 'Caja');
-	INSERT INTO UnidadOrdenCompra
-	VALUES (3, 'Juego');
-	INSERT INTO UnidadOrdenCompra
-	VALUES (4, 'Kilo');
-	INSERT INTO UnidadOrdenCompra
-	VALUES (5, 'Kit');
-	INSERT INTO UnidadOrdenCompra
-	VALUES (6, 'Litro');
-	INSERT INTO UnidadOrdenCompra
-	VALUES (7, 'Metro');
-	INSERT INTO UnidadOrdenCompra
-	VALUES (8, 'Paquete');
-	INSERT INTO UnidadOrdenCompra
-	VALUES (9, 'Pieza');
-	INSERT INTO UnidadOrdenCompra
-	VALUES (10, 'Otros');
-	/* Fin Orden de Compra */
 
 	INSERT INTO EstadoSolicitudServicioMaquilado
 	VALUES (1, 'Pendiente');

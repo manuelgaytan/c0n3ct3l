@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:DataGrid xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="250"
+			 dataProvider="{new ArrayCollection()}"
+			 editable="false"
+			 variableRowHeight="true">
+	<mx:Script>
+		<![CDATA[
+			import model.Constants;
+			import model.PartidaOrdenCompraSolicitudServicioMaquilado;
+			import model.PartidaRequisicionCompra;
+			import model.Producto;
+			import model.Proyecto;
+			import model.ProyectoPadreHijo;
+			import model.SolicitudServicioMaquilado;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.Constantes;
+			private var _purchaseOrderMode:Boolean = false;
+			
+			public function addItem(entry:PartidaOrdenCompraSolicitudServicioMaquilado):void{
+				if( entry == null ){
+					return;
+				}
+				(this.dataProvider as ArrayCollection).addItem( entry );
+			}
+			
+			public function reset():void
+			{
+				Util.removeItems( this.dataProvider );
+			}
+			
+			private function labelFunctionImporte(item:Object, column:DataGridColumn):String{
+				var returnValue:String = "";
+				if( item != null &&
+					item.cantidad != null &&
+					item.costo != null ){
+					var cantidad:Number = Util.stringToNumber(item.cantidad);
+					if( !isNaN( cantidad ) ){
+						returnValue = (cantidad*item.costo).toString();
+					}
+				}
+				return returnValue;
+			}
+			
+			public function set maquiladoraServiceRequest(value:SolicitudServicioMaquilado):void{
+				if( value == null ){
+					return;
+				}
+				var i:Number = 1;
+				if( value.proyectoPadre == null ){
+					this.divideProject(i, value.proyecto);
+				}else{
+					for each (var proyectoPadreHijo:ProyectoPadreHijo in (value.proyectoPadre.proyectoPadreHijos) )
+					{
+						this.divideProject(i, proyectoPadreHijo.proyecto);
+						i+=2;
+					}
+				}
+			}
+			
+			private function divideProject(i:Number, proyecto:Proyecto):void
+			{
+				if( proyecto == null ){
+					return;
+				}
+				var entry:PartidaOrdenCompraSolicitudServicioMaquilado = null;
+				entry = new PartidaOrdenCompraSolicitudServicioMaquilado();
+				entry.partida = i;
+				entry.cantidad = Constants.OC_QUANTITY;
+				entry.unidad = Constants.OC_UNIT;
+				entry.descripcion = Constants.OC_ADVANCE + " " + proyecto.producto.modelo + 
+									"\n" + proyecto.producto.actividadRealizar + ", " + proyecto.producto.equipo + 
+									"\n" + proyecto.producto.tipoServicio + " " + Constants.OC_SITE + " " + proyecto.centralSitio;
+				if( proyecto.producto.tipoServicio == Producto.TIPO_SERVICIO_LOCAL ){
+					entry.costo = proyecto.producto.costoLocalProveedor;
+				}
+				if( proyecto.producto.tipoServicio == Producto.TIPO_SERVICIO_FORANEO ){
+					entry.costo = proyecto.producto.costoForaneoProveedor;
+				}
+				entry.importe = entry.cantidad + entry.costo;
+				this.addItem( entry );
+				i++;
+				entry = new PartidaOrdenCompraSolicitudServicioMaquilado();
+				entry.partida = i;
+				entry.cantidad = Constants.OC_QUANTITY;
+				entry.unidad = Constants.OC_UNIT;
+				entry.descripcion = Constants.OC_SETTLEMENT + " " + proyecto.producto.modelo + 
+					"\n" + proyecto.producto.actividadRealizar + ", " + proyecto.producto.equipo + 
+					"\n" + proyecto.producto.tipoServicio + " " + Constants.OC_SITE + " " + proyecto.centralSitio;
+				if( proyecto.producto.tipoServicio == Producto.TIPO_SERVICIO_LOCAL ){
+					entry.costo = proyecto.producto.costoLocalProveedor;
+				}
+				if( proyecto.producto.tipoServicio == Producto.TIPO_SERVICIO_FORANEO ){
+					entry.costo = proyecto.producto.costoForaneoProveedor;
+				}
+				entry.importe = entry.cantidad + entry.costo;
+				this.addItem( entry );
+			}
+		]]>
+	</mx:Script>
+	<mx:columns>
+		<mx:DataGridColumn id="dtgID" headerText="Partida"
+						   dataField="partida"
+						   width="60"
+						   textAlign="center"/>
+		<mx:DataGridColumn id="dtgQuantity" headerText="Cantidad"
+						   dataField="cantidad"
+						   width="60"
+						   textAlign="right"/>
+		<mx:DataGridColumn id="dtgUnit" headerText="Unidad"
+						   dataField="unidad"
+						   width="80"
+						   textAlign="right"/>
+		<mx:DataGridColumn id="dtgDescription" headerText="Descripción"
+						   dataField="descripcion" wordWrap="true"
+						   width="160"/>
+		<mx:DataGridColumn id="dtgCost" headerText="{'Precio\nUnitario'}"
+						   dataField="costo"
+						   width="80"
+						   textAlign="right"/>
+		<mx:DataGridColumn id="dtgImport" headerText="Importe"
+						   dataField="importe"
+						   width="80"
+						   labelFunction="labelFunctionImporte"
+						   textAlign="right"
+						   editable="false"/>
+	</mx:columns>
+</mx:DataGrid>	

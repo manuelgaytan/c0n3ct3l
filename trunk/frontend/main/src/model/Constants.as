@@ -22,5 +22,11 @@ package model
 		public static const CSV_FILES_FILTER:String = "*.csv";
 		public static const CSV_EXTENSION:String = ".csv";
 		public static const EXPORT_PRODUCTS_TYPE:String = "EXPORT-PRODUCTS";
+		
+		public static const OC_QUANTITY:Number = 0.5;
+		public static const OC_UNIT:String = "PROYECTO";
+		public static const OC_SITE:String = "SITIO";
+		public static const OC_ADVANCE:String = "ANTICIPO";
+		public static const OC_SETTLEMENT:String = "FINIQUITO";
 	}
 }

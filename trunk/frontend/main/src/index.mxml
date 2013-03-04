@@ -86,6 +86,7 @@
 			import model.OrdenCompraMaquilado;
 			import model.Pantalla;
 			import model.PartidaConcentradoOrdenCompraCliente;
+			import model.PartidaOrdenCompraSolicitudServicioMaquilado;
 			import model.PartidaRequisicionCompra;
 			import model.PartidaSolicitudAlmacen;
 			import model.Perfil;
@@ -281,6 +282,7 @@
 			private var estadoValidacionCobro:EstadoValidacionCobro;
 			private var estadoFinalValidacion:EstadoFinalValidacion;
 			private var comentarioPantallaValidacionAdministrativa:ComentarioPantallaValidacionAdministrativa;
+			private var partidaOrdenCompraSolicitudServicioMaquilado:PartidaOrdenCompraSolicitudServicioMaquilado;
 			
 			protected function login_readyHandler(event:ModuleEvent):void
 			{

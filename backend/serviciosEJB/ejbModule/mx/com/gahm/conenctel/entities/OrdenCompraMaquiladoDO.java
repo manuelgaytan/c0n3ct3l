@@ -32,7 +32,7 @@ public class OrdenCompraMaquiladoDO implements java.io.Serializable {
 	private SolicitudServicioMaquiladoDO solicitudServicioMaquilado;
 	private Date fecha;
 	private ProveedorMaquiladorDO proveedorMaquilador;
-
+	private String claveValidacion;
 	
 	public OrdenCompraMaquiladoDO() {
 	}
@@ -84,6 +84,15 @@ public class OrdenCompraMaquiladoDO implements java.io.Serializable {
 
 	public void setProveedorMaquilador(ProveedorMaquiladorDO proveedorMaquilador) {
 		this.proveedorMaquilador = proveedorMaquilador;
+	}
+
+	@Column(name="clave_validacion")
+	public String getClaveValidacion() {
+		return claveValidacion;
+	}
+
+	public void setClaveValidacion(String claveValidacion) {
+		this.claveValidacion = claveValidacion;
 	}
 
 }

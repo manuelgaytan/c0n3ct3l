@@ -257,4 +257,12 @@
 			<scope>session</scope>
 		</properties>
 	</destination>
+	
+	<destination id="ordenCompraMaquiladoService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/OrdenCompraMaquiladoService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
 </service>

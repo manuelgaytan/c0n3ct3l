@@ -74,7 +74,11 @@ public class SolicitudServicioMaquiladoService implements
 	public SolicitudServicioMaquiladoDO getItem(Integer id) {
 		SolicitudServicioMaquiladoDO solicitudServicioMaquiladoDO=null;
 		try {
-			solicitudServicioMaquiladoDO = entityManager.find(SolicitudServicioMaquiladoDO.class, id);
+			//solicitudServicioMaquiladoDO = entityManager.find(SolicitudServicioMaquiladoDO.class, id);
+			Query query = null;
+			query = entityManager.createNamedQuery("SolicitudServicioMaquiladoDO.findById");
+			query.setParameter("id", id);
+			solicitudServicioMaquiladoDO = (SolicitudServicioMaquiladoDO) query.getSingleResult();
 		} catch (Exception e) {
 			solicitudServicioMaquiladoDO =null;
 		}

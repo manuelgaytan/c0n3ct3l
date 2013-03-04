@@ -52,10 +52,12 @@
 			import model.EquipoTransporteSolicitudAlmacen;
 			import model.Estado;
 			import model.EstadoFinalValidacion;
+			import model.EstadoOrdenCompra;
 			import model.EstadoSolicitudAlmacen;
 			import model.EstadoSolicitudServicioMaquilado;
 			import model.EstadoValidacionAdministrativa;
 			import model.EstadoValidacionCobro;
+			import model.EstadoValidacionCosto;
 			import model.EstadoValidacionOperativa;
 			import model.EstatusA;
 			import model.EstatusB;
@@ -83,6 +85,7 @@
 			import model.NombreSolicitante;
 			import model.Observacion;
 			import model.OrdenCompraAlmacen;
+			import model.OrdenCompraCliente;
 			import model.OrdenCompraMaquilado;
 			import model.Pantalla;
 			import model.PartidaConcentradoOrdenCompraCliente;
@@ -283,6 +286,9 @@
 			private var estadoFinalValidacion:EstadoFinalValidacion;
 			private var comentarioPantallaValidacionAdministrativa:ComentarioPantallaValidacionAdministrativa;
 			private var partidaOrdenCompraSolicitudServicioMaquilado:PartidaOrdenCompraSolicitudServicioMaquilado;
+			private var ordenCompraCliente:OrdenCompraCliente;
+			private var estadoValidacionCosto:EstadoValidacionCosto;
+			private var estadoOrdenCompra:EstadoOrdenCompra;
 			
 			protected function login_readyHandler(event:ModuleEvent):void
 			{

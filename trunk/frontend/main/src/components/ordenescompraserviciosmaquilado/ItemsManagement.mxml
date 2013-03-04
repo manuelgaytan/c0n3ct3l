@@ -47,6 +47,7 @@
 				if( value == null ){
 					return;
 				}
+				this.reset();
 				var i:Number = 1;
 				if( value.proyectoPadre == null ){
 					this.divideProject(i, value.proyecto);

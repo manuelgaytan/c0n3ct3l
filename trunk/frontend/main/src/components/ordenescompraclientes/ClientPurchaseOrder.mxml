@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*"
+		 >
+	<mx:Script>
+		<![CDATA[
+			import model.Catalogo;
+			import model.Constants;
+			import model.Estado;
+			import model.EstadoValidacionOperativa;
+			import model.Producto;
+			import model.OrdenCompraCliente;
+			import model.TipoEntregable;
+			import model.Util;
+			import model.OrdenCompraCliente;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorEntero;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			private var mode:String = null;
+			private var _item:OrdenCompraCliente;
+			private var validators:InicializaValidadoresEtiquetas;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				this.label = Constants.REGISTRAR;
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set clientPurchaseOrder(value:OrdenCompraCliente):void{
+				if( value == null ){
+					return;
+				}
+				this._item = value;
+				this.setItem(); 
+			}
+			
+			private function setItem():void
+			{
+				if( this._item == null ){
+					return;
+				}
+				/*
+				this.txtID.text = Util.getIDConectelFormat( Util.extractObject( this._item, "id" ) );
+				this.txtPurchaseOrderNumber.text  = Util.extractToText( this._item, "producto.cliente.nombreComercial" );
+				this.txtProjectType.text = Util.extractToText( this._item, "producto.tipoOrdenCompraCliente" );
+				this.txtCommercialCost.text = Util.extractToText( this._item, "producto.teconologia" );
+				this.txtEquipment.text = Util.extractToText( this._item, "producto.equipo" );
+				this.txtSite.text = Util.extractToText( this._item, "centralSitio");
+				this.txtParentProject.text = Util.extractToText( this._item, "proyectoPadreHijo.proyectoPadre.descripcion");
+				if( this._item.ordenenCompraCliente != null ){
+					if( Util.isFill( this.cmbCostValidation ) && this._item.ordenenCompraCliente != null 
+						&& this._item.ordenenCompraCliente.estadoValidacionOperativa != null ){
+						this.cmbCostValidation.selectedIndex = Util.selectedIndexFromCombo( this.cmbCostValidation.dataProvider as ArrayCollection, 
+							this._item.ordenenCompraCliente.estadoValidacionOperativa.id);
+						this.dtfPurchaseOrderDate.selectedDate = this._item.ordenenCompraCliente.fecha;
+					}
+				}
+				*/
+			}
+			
+			private function getClientPurchaseOrder():OrdenCompraCliente{
+				var clientPurchaseOrder:OrdenCompraCliente = null;
+				/*
+				clientPurchaseOrder = new OrdenCompraCliente();
+				if( this._item.ordenenCompraCliente != null ){
+					clientPurchaseOrder.id = this._item.ordenenCompraCliente.id;
+				}
+				clientPurchaseOrder.proyecto = this._item;
+				clientPurchaseOrder.estadoValidacionOperativa = Util.validateCombo( this.cmbCostValidation ) as EstadoValidacionOperativa;
+				clientPurchaseOrder.fecha = this.dtfPurchaseOrderDate.selectedDate;
+				*/
+				return clientPurchaseOrder;
+			}
+			
+			private function fillCombos():void
+			{
+				this.responseGetEstadoValidacionOperativa.token = this.catalogoService.getEstadoValidacionOperativa();
+			}
+			
+			
+			protected function datosGeneralesOrdenCompraClienteService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function btnAccept_clickHandler(event:MouseEvent):void
+			{
+				if( !this.validations() ){
+					Util.showMessageVerifyFields();
+					return;
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
+				}
+			}
+			
+			private function updateItem(event:CloseEvent):void{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var item:OrdenCompraCliente = this.getClientPurchaseOrder();
+				Util.showProperties( item );
+				this.responseUpdate.token = this.ordenenCompraClienteService.update( item );
+			}
+			
+			private function validations():Boolean
+			{
+				var value:Boolean = true;
+				value &&= this.validators.validarFormulario();
+				/* value &&= this.dlvEngineeringDeliverable.existElements(); */
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+				}
+			}
+			
+			private function initializeValidators():void
+			{
+				this.validators = new InicializaValidadoresEtiquetas();
+			}
+			
+			protected function responseSave_resultHandler(event:ResultEvent):void
+			{
+				var eventGeneralDataProjectNew:Event = new Event("clientPurchaseOrderNew");
+				this.dispatchEvent( eventGeneralDataProjectNew );
+				this.cleanForm();
+			}
+			
+			private function cleanForm():void
+			{
+				this.txtID.reset();
+				this.txtPurchaseOrderNumber.reset();
+				this.txtProjectType.reset();
+				this.txtCommercialCost.reset();
+				//this.txtCost.reset();
+				this.cmbCostValidation.selectedIndex = 0; 
+				this.dtfPurchaseOrderDate.reset();
+			}
+			
+			protected function responseUpdate_resultHandler(event:ResultEvent):void
+			{
+				var eventGeneralDataProjectUpdated:Event = new Event("clientPurchaseOrderUpdated");
+				this.dispatchEvent( eventGeneralDataProjectUpdated );
+				this.cleanForm();
+			}
+			
+			protected function responseGetEstadoValidacionOperativa_resultHandler(event:ResultEvent):void
+			{
+				/*
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbCostValidation.dataProvider = data;
+				if( Util.isFill( this.cmbCostValidation ) && this._item 
+					&& this._item.ordenenCompraCliente != null 
+					&& this._item.ordenenCompraCliente.estadoValidacionOperativa != null ){
+					this.cmbCostValidation.selectedIndex = Util.selectedIndexFromCombo( this.cmbCostValidation.dataProvider as ArrayCollection, 
+					this._item.ordenenCompraCliente.estadoValidacionOperativa.id);
+				}
+				*/
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="clientPurchaseOrderNew", type="flash.events.Event")]
+		[Event(name="clientPurchaseOrderUpdated", type="flash.events.Event")]
+		[Event(name="clientPurchaseOrderProjectDone", type="flash.events.Event")]
+	</mx:Metadata>
+	<mx:Form id="form">
+		<mx:FormItem label="ID:" direction="horizontal">
+			<components:TextInput id="txtID" width="80" textAlign="right"
+								  editable="false"/>
+		</mx:FormItem>
+		<mx:FormHeading label="Datos de Orden de Compra del Cliente"/>
+		<proyectos:Consult id="projects"/>
+		<mx:FormItem label="Orden de Compra:">
+			<mx:CheckBox id="chbPurchaseOrder"/>
+		</mx:FormItem>
+		<mx:FormItem label="Número de Orden de Compra:">
+			<components:TextInput id="txtPurchaseOrderNumber" width="90"
+								  textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha de Orden de Compra:">
+			<components:DateField id="dtfPurchaseOrderDate"/>
+		</mx:FormItem>
+		<mx:FormHeading label="Validación del Costo"/>
+		<mx:FormItem label="Costo de Orden Compra:">
+			<components:TextInput id="txtProjectType" width="100"
+								  textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Costo Comercial:">
+			<components:TextInput id="txtCommercialCost" width="100"
+								  editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Validación del Costo:">
+			<mx:ComboBox id="cmbCostValidation" width="200"
+						 labelField="etiqueta"/>
+		</mx:FormItem>
+		<components:Comments id="commentsCostValidation"/>
+		<mx:FormHeading label="Modificación de Estado de Orden de Compra"/>
+		<mx:FormItem label="Estado de Orden de Compra">
+			<mx:ComboBox id="cmbPurchaseOrderStatus" width="200"
+						 labelField="etiqueta"/>
+		</mx:FormItem>
+		<components:Comments id="commentsPurchaseOrderStatus"/>
+		<mx:FormItem direction="horizontal">
+			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:RemoteObject id="ordenenCompraClienteService" destination="ordenenCompraClienteService" fault="datosGeneralesOrdenCompraClienteService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
+	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="datosGeneralesOrdenCompraClienteService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetEstadoValidacionOperativa" result="responseGetEstadoValidacionOperativa_resultHandler(event)"/>
+</mx:VBox>

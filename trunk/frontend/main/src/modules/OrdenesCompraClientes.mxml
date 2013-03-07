@@ -34,11 +34,11 @@
 				this.navigator.selectedChild = this.consult;
 				this.consult.executeQuery();
 			}
-			
 		]]>
 	</mx:Script>
 	<mx:TabNavigator id="navigator" width="100%" height="100%" creationPolicy="all">
 		<ordenescompraclientes:Consult id="consult" itemDetail="consult_clientPurchaseOrderDetailHandler(event)"/>
 		<ordenescompraclientes:ClientPurchaseOrder id="detail" update="true" clientPurchaseOrderUpdated="detail_clientPurchaseOrderUpdatedHandler(event)"/>
+		<ordenescompraclientes:ClientPurchaseOrder id="register" registrer="true" clientPurchaseOrderNew="register_clientPurchaseOrderNewHandler(event)"/>
 	</mx:TabNavigator>
 </mx:Module>

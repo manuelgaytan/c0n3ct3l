@@ -4,15 +4,20 @@
 		 >
 	<mx:Script>
 		<![CDATA[
+			import events.GenericEvent;
+			
 			import model.Catalogo;
 			import model.Constants;
 			import model.Estado;
+			import model.EstadoOrdenCompra;
+			import model.EstadoValidacionCosto;
 			import model.EstadoValidacionOperativa;
-			import model.Producto;
+			import model.FiltroProyecto;
 			import model.OrdenCompraCliente;
+			import model.Producto;
+			import model.Proyecto;
 			import model.TipoEntregable;
 			import model.Util;
-			import model.OrdenCompraCliente;
 			
 			import mx.collections.ArrayCollection;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
@@ -62,42 +67,47 @@
 				if( this._item == null ){
 					return;
 				}
-				/*
-				this.txtID.text = Util.getIDConectelFormat( Util.extractObject( this._item, "id" ) );
-				this.txtPurchaseOrderNumber.text  = Util.extractToText( this._item, "producto.cliente.nombreComercial" );
-				this.txtProjectType.text = Util.extractToText( this._item, "producto.tipoOrdenCompraCliente" );
-				this.txtCommercialCost.text = Util.extractToText( this._item, "producto.teconologia" );
-				this.txtEquipment.text = Util.extractToText( this._item, "producto.equipo" );
-				this.txtSite.text = Util.extractToText( this._item, "centralSitio");
-				this.txtParentProject.text = Util.extractToText( this._item, "proyectoPadreHijo.proyectoPadre.descripcion");
-				if( this._item.ordenenCompraCliente != null ){
-					if( Util.isFill( this.cmbCostValidation ) && this._item.ordenenCompraCliente != null 
-						&& this._item.ordenenCompraCliente.estadoValidacionOperativa != null ){
-						this.cmbCostValidation.selectedIndex = Util.selectedIndexFromCombo( this.cmbCostValidation.dataProvider as ArrayCollection, 
-							this._item.ordenenCompraCliente.estadoValidacionOperativa.id);
-						this.dtfPurchaseOrderDate.selectedDate = this._item.ordenenCompraCliente.fecha;
-					}
+				this.txtID.text = this._item.id.toString();
+				this.projectsConsult.datagrid = Util.asArrayCollection( this._item.proyecto );
+				this.chbPurchaseOrder.selected = this._item.ordenCompra;
+				this.txtPurchaseOrderNumber.text = this._item.numeroOrdenCompra;
+				this.dtfPurchaseOrderDate.selectedDate = this._item.fecha;
+				this.txtPurchaseOrderCost.text = this._item.costoOrdenCompra.toString();
+				this.setCommercialCost(this._item.proyecto);
+				if( Util.isFill( this.cmbCostValidationStatus ) && this._item.estadoValidacionCosto != null ){
+					this.cmbCostValidationStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbCostValidationStatus.dataProvider as ArrayCollection, 
+						this._item.estadoValidacionCosto.id);
 				}
-				*/
+				this.commentsCostValidation.setCommentsIn( this._item.comentariosEstadoValidacionCosto, "");
+				if( Util.isFill( this.cmbPurchaseOrderStatus ) && this._item.estadoOrdenCompra != null ){
+					this.cmbPurchaseOrderStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbPurchaseOrderStatus.dataProvider as ArrayCollection, 
+						this._item.estadoOrdenCompra.id);
+				}
+				this.commentsCostValidation.setCommentsIn( this._item.comentariosEstadoValidacionCosto, "");
 			}
 			
 			private function getClientPurchaseOrder():OrdenCompraCliente{
 				var clientPurchaseOrder:OrdenCompraCliente = null;
-				/*
-				clientPurchaseOrder = new OrdenCompraCliente();
-				if( this._item.ordenenCompraCliente != null ){
-					clientPurchaseOrder.id = this._item.ordenenCompraCliente.id;
+				if( this.mode == Constants.REGISTER_MODE ){
+					clientPurchaseOrder = new OrdenCompraCliente();
+				}else{
+					clientPurchaseOrder = this._item;
 				}
-				clientPurchaseOrder.proyecto = this._item;
-				clientPurchaseOrder.estadoValidacionOperativa = Util.validateCombo( this.cmbCostValidation ) as EstadoValidacionOperativa;
+				clientPurchaseOrder.proyecto = this.projectsConsult.datagrid.selectedItem as Proyecto;
+				clientPurchaseOrder.ordenCompra = this.chbPurchaseOrder.selected;
+				clientPurchaseOrder.numeroOrdenCompra = Util.validateEmpty( this.txtPurchaseOrderNumber.text );
 				clientPurchaseOrder.fecha = this.dtfPurchaseOrderDate.selectedDate;
-				*/
+				clientPurchaseOrder.costoOrdenCompra = Util.stringToNumber( this.txtPurchaseOrderCost.text );
+				clientPurchaseOrder.estadoValidacionCosto = Util.validateCombo( this.cmbCostValidationStatus ) as EstadoValidacionCosto;
+				clientPurchaseOrder.comentariosEstadoValidacionCosto = this.commentsCostValidation.getCommentsAsInWith("","","");
+				clientPurchaseOrder.estadoOrdenCompra = Util.validateCombo( this.cmbPurchaseOrderStatus ) as EstadoOrdenCompra;
+				clientPurchaseOrder.comentariosEstadoOrdenCompra = this.commentsPurchaseOrderStatus.getCommentsAsInWith("","","");
 				return clientPurchaseOrder;
 			}
 			
 			private function fillCombos():void
 			{
-				this.responseGetEstadoValidacionOperativa.token = this.catalogoService.getEstadoValidacionOperativa();
+				this.responseGetEstadoOrdenCompra.token = this.catalogoService.getEstadoValidacionOperativa();
 			}
 			
 			
@@ -130,13 +140,15 @@
 			{
 				var value:Boolean = true;
 				value &&= this.validators.validarFormulario();
-				/* value &&= this.dlvEngineeringDeliverable.existElements(); */
+				value &&= this.projectsConsult.datagrid.selectedItem != null;
 				return value;
 			}
 			
 			private function modeValidation():void
 			{
 				if( this.mode == Constants.REGISTER_MODE ){
+					form.removeChild( this.frmID );
+					this.executeProjectQuery();
 				}
 				if( this.mode == Constants.UPDATE_MODE ){
 				}
@@ -157,12 +169,16 @@
 			private function cleanForm():void
 			{
 				this.txtID.reset();
+				Util.removeItems(this.projectsConsult.datagrid.dataProvider);
+				this,chbPurchaseOrder.selected = false;
 				this.txtPurchaseOrderNumber.reset();
-				this.txtProjectType.reset();
-				this.txtCommercialCost.reset();
-				//this.txtCost.reset();
-				this.cmbCostValidation.selectedIndex = 0; 
 				this.dtfPurchaseOrderDate.reset();
+				this.txtPurchaseOrderCost.reset();
+				this.txtCommercialCost.reset();
+				this.cmbCostValidationStatus.selectedIndex = 0;
+				this.commentsCostValidation.reset();
+				this.cmbPurchaseOrderStatus.selectedIndex = 0;
+				this.commentsPurchaseOrderStatus.reset();
 			}
 			
 			protected function responseUpdate_resultHandler(event:ResultEvent):void
@@ -172,21 +188,73 @@
 				this.cleanForm();
 			}
 			
-			protected function responseGetEstadoValidacionOperativa_resultHandler(event:ResultEvent):void
+			protected function responseGetEstadoOrdenCompra_resultHandler(event:ResultEvent):void
 			{
-				/*
 				var data:ArrayCollection = event.result as ArrayCollection;
 				if( data == null ){
 					return;
 				}
-				this.cmbCostValidation.dataProvider = data;
-				if( Util.isFill( this.cmbCostValidation ) && this._item 
-					&& this._item.ordenenCompraCliente != null 
-					&& this._item.ordenenCompraCliente.estadoValidacionOperativa != null ){
-					this.cmbCostValidation.selectedIndex = Util.selectedIndexFromCombo( this.cmbCostValidation.dataProvider as ArrayCollection, 
-					this._item.ordenenCompraCliente.estadoValidacionOperativa.id);
+				this.cmbPurchaseOrderStatus.dataProvider = data;
+				if( Util.isFill( this.cmbPurchaseOrderStatus ) && this._item 
+					&& this._item.estadoOrdenCompra != null ){
+					this.cmbPurchaseOrderStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbPurchaseOrderStatus.dataProvider as ArrayCollection, 
+						this._item.estadoOrdenCompra.id);
 				}
-				*/
+			}
+			
+			protected function responseGetEstadoValidacionCosto_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbCostValidationStatus.dataProvider = data;
+				if( Util.isFill( this.cmbCostValidationStatus ) && this._item 
+					&& this._item.estadoValidacionCosto != null ){
+					this.cmbCostValidationStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbCostValidationStatus.dataProvider as ArrayCollection, 
+						this._item.estadoValidacionCosto.id);
+				}
+			}
+			
+			private function executeProjectQuery():void
+			{
+				var filter:FiltroProyecto = new FiltroProyecto();
+				filter.idConectel = null;
+				filter.idCategoria = undefined;
+				filter.idCliente = undefined;
+				filter.tipoProyecto = undefined;
+				filter.tecnologia = undefined;
+				filter.equipo = undefined;
+				filter.actividadRealizar = undefined;
+				filter.modelo = undefined;
+				filter.descripcionServicio = undefined;
+				filter.tipoServicio = undefined;
+				this.responseGetAllByFiltro.token = this.proyectoService.getAllByFiltro(filter);
+			}
+			
+			protected function responseGetAll_resultHandler(event:ResultEvent):void
+			{
+				projectsConsult.setDataGridData( event.result as ArrayCollection );
+			}
+			
+			protected function projectsConsult_projectSelectedHandler(event:GenericEvent):void
+			{
+				var project:Proyecto = event.information as Proyecto;
+			}
+			
+			private function setCommercialCost(project:Proyecto):void{
+				if( project.producto.tipoServicio == Producto.TIPO_SERVICIO_LOCAL ){
+					this.txtCommercialCost.text = Util.currencyFormatter.format(project.producto.costoLocalCliente);
+				}
+				if( project.producto.tipoServicio == Producto.TIPO_SERVICIO_FORANEO ){
+					this.txtCommercialCost.text = Util.currencyFormatter.format(project.producto.costoForaneoCliente);
+				}
+			}
+			
+			protected function responseGetValidacionCosto_resultHandler(event:ResultEvent):void
+			{
+				// TODO Auto-generated method stub
+				
 			}
 			
 		]]>
@@ -197,12 +265,12 @@
 		[Event(name="clientPurchaseOrderProjectDone", type="flash.events.Event")]
 	</mx:Metadata>
 	<mx:Form id="form">
-		<mx:FormItem label="ID:" direction="horizontal">
+		<mx:FormItem id="frmID" label="ID:" direction="horizontal">
 			<components:TextInput id="txtID" width="80" textAlign="right"
 								  editable="false"/>
 		</mx:FormItem>
 		<mx:FormHeading label="Datos de Orden de Compra del Cliente"/>
-		<proyectos:Consult id="projects"/>
+		<proyectos:Consult id="projectsConsult" projectSelected="projectsConsult_projectSelectedHandler(event)"/>
 		<mx:FormItem label="Orden de Compra:">
 			<mx:CheckBox id="chbPurchaseOrder"/>
 		</mx:FormItem>
@@ -215,15 +283,16 @@
 		</mx:FormItem>
 		<mx:FormHeading label="Validación del Costo"/>
 		<mx:FormItem label="Costo de Orden Compra:">
-			<components:TextInput id="txtProjectType" width="100"
+			<components:TextInput id="txtPurchaseOrderCost" width="100"
 								  textAlign="right"/>
 		</mx:FormItem>
 		<mx:FormItem label="Costo Comercial:">
 			<components:TextInput id="txtCommercialCost" width="100"
-								  editable="false"/>
+								  editable="false"
+								  textAlign="right"/>
 		</mx:FormItem>
 		<mx:FormItem label="Validación del Costo:">
-			<mx:ComboBox id="cmbCostValidation" width="200"
+			<mx:ComboBox id="cmbCostValidationStatus" width="200"
 						 labelField="etiqueta"/>
 		</mx:FormItem>
 		<components:Comments id="commentsCostValidation"/>
@@ -242,5 +311,9 @@
 	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
 	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="datosGeneralesOrdenCompraClienteService_faultHandler(event)"
 					 showBusyCursor="true"/>
-	<mx:CallResponder id="responseGetEstadoValidacionOperativa" result="responseGetEstadoValidacionOperativa_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetEstadoOrdenCompra" result="responseGetEstadoOrdenCompra_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetValidacionCosto" result="responseGetValidacionCosto_resultHandler(event)"/>
+	<mx:RemoteObject id="proyectoService" destination="proyectoService" fault="datosGeneralesOrdenCompraClienteService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetAllByFiltro" result="responseGetAll_resultHandler(event)"/>
 </mx:VBox>

@@ -91,46 +91,39 @@
 		[Event(name="itemDetail", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:VBox width="{parent.parent.width-5}" height="100%">
-	<mx:DataGrid id="datagrid" width="2000" height="100%" dataProvider="{items}"
-				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
-				 allowMultipleSelection="true"
-				 >
-		<mx:columns>
-			<mx:DataGridColumn id="dtgProjectID" headerText="{'ID\nProyecto'}"
-							   dataField="id"
-							   labelFunction="labelFunctionIDProyecto"
-							   width="130"/>
-			<mx:DataGridColumn id="dtgProjectState" headerText="{'Validación\nProyecto'}"
-							   dataField="estado.etiqueta"/>
-			<mx:DataGridColumn id="dtgCategoria" headerText="Categoria"
-							   dataField="categoria.etiqueta"
-							   />
-			<mx:DataGridColumn id="dtgClient" headerText="Cliente"
-							   dataField="producto.cliente.nombreComercial"
-							   />
-			<mx:DataGridColumn id="dtgProjectType" headerText="{'Tipo de\nProyecto'}"
-							   dataField="producto.tipoProyecto"
-							   />
-			<mx:DataGridColumn id="dtgTechnology" headerText="Tecnología"
-							   dataField="producto.teconologia"
-							   />
-			<mx:DataGridColumn id="dtgEquipment" headerText="Equipo"
-							   dataField="producto.equipo"
-							   />
-			<mx:DataGridColumn id="dtgActivity" headerText="{'Actividad\na Realizar'}" width="180"
-							   dataField="producto.actividadRealizar"
-							   />
-			<mx:DataGridColumn id="dtgModel" headerText="Modelo"
-							   dataField="producto.modelo"
-							   />
-			<mx:DataGridColumn id="dtgServiceDescription" headerText="{'Descripción\ndel Servicio'}"
-							   dataField="producto.descripcionServicio"
-							   width="80"/>
-			<mx:DataGridColumn id="dtgServiceType" headerText="{'Tipo de\nServicio'}"
-							   dataField="producto.tipoServicio"
-							   />	
-		</mx:columns>
-	</mx:DataGrid>
+		<mx:DataGrid id="datagrid" width="2000" height="100%" dataProvider="{items}"
+					 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
+					 allowMultipleSelection="true"
+					 >
+			<mx:columns>
+				<mx:DataGridColumn id="dtgProjectID" headerText="{'ID\nProyecto'}"
+								   dataField="proyecto.id"
+								   labelFunction="labelFunctionIDProyecto"
+								   width="130"
+								   textAlign="right"/>
+				<mx:DataGridColumn id="dtgPurchaseOrder" headerText="{'Orden de\nCompra'}"
+								   dataField="ordenCompra"
+								   itemRenderer="mx.controls.CheckBox"
+								   textAlign="center"/>
+				<mx:DataGridColumn id="dtgDate" headerText="Fecha"
+								   dataField="fecha"
+								   labelFunction="{Util.labelFunctionDate}"
+								   textAlign="center"
+								   />
+				<mx:DataGridColumn id="dtgPurchaseOrderCost" headerText="{'Costo\nOrden de\nCompra'}"
+								   dataField="costoOrdenCompra"
+								   textAlign="right"
+								   />
+				<mx:DataGridColumn id="dtgCostValidation" headerText="{'Validación\ndel Costo'}"
+								   dataField="estadoValidacionCosto.estiqueta"
+								   textAlign="center"
+								   />
+				<mx:DataGridColumn id="dtgPurchaseOrderState" headerText="{'Estado\nOrden de\nCompra'}"
+								   dataField="estadoOrdenCompra"
+								   textAlign="center"
+								   />
+			</mx:columns>
+		</mx:DataGrid>
 	</mx:VBox>
 	<mx:HBox>
 		<!--<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>-->

@@ -1,16 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:DataGrid xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="250"
 			 dataProvider="{new ArrayCollection()}"
-			 editable="{this._purchaseOrderMode}">
+			 editable="false"
+			 variableRowHeight="true">
 	<mx:Script>
 		<![CDATA[
-			import model.PartidaRequisicionCompra;
+			import model.Constants;
+			import model.PartidaOrdenCompraSolicitudServicioMaquilado;
+			import model.Producto;
+			import model.Proyecto;
+			import model.ProyectoPadreHijo;
+			import model.SolicitudServicioMaquilado;
 			import model.Util;
 			
 			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.Constantes;
 			private var _purchaseOrderMode:Boolean = false;
 			
-			public function addItem(entry:PartidaRequisicionCompra):void{
+			public function addItem(entry:PartidaOrdenCompraSolicitudServicioMaquilado):void{
 				if( entry == null ){
 					return;
 				}
@@ -20,10 +27,6 @@
 			public function reset():void
 			{
 				Util.removeItems( this.dataProvider );
-			}
-			
-			public function set purchaseOrderMode(value:Boolean):void{
-				this._purchaseOrderMode = value;
 			}
 			
 			private function labelFunctionImporte(item:Object, column:DataGridColumn):String{
@@ -38,92 +41,89 @@
 				}
 				return returnValue;
 			}
+			
+			public function set maquiladoraServiceRequest(value:SolicitudServicioMaquilado):void{
+				if( value == null ){
+					return;
+				}
+				this.reset();
+				var i:Number = 1;
+				if( value.proyectoPadre == null ){
+					this.divideProject(i, value.proyecto);
+				}else{
+					for each (var proyectoPadreHijo:ProyectoPadreHijo in (value.proyectoPadre.proyectoPadreHijos) )
+					{
+						this.divideProject(i, proyectoPadreHijo.proyecto);
+						i+=2;
+					}
+				}
+			}
+			
+			private function divideProject(i:Number, proyecto:Proyecto):void
+			{
+				if( proyecto == null ){
+					return;
+				}
+				var entry:PartidaOrdenCompraSolicitudServicioMaquilado = null;
+				entry = new PartidaOrdenCompraSolicitudServicioMaquilado();
+				entry.partida = i;
+				entry.cantidad = Constants.OC_QUANTITY;
+				entry.unidad = Constants.OC_UNIT;
+				entry.descripcion = Constants.OC_ADVANCE + " " + proyecto.producto.modelo + 
+					"\n" + proyecto.producto.actividadRealizar + ", " + proyecto.producto.equipo + 
+					"\n" + proyecto.producto.tipoServicio + " " + Constants.OC_SITE + " " + proyecto.centralSitio;
+				if( proyecto.producto.tipoServicio == Producto.TIPO_SERVICIO_LOCAL ){
+					entry.costo = proyecto.producto.costoLocalProveedor;
+				}
+				if( proyecto.producto.tipoServicio == Producto.TIPO_SERVICIO_FORANEO ){
+					entry.costo = proyecto.producto.costoForaneoProveedor;
+				}
+				entry.importe = entry.cantidad + entry.costo;
+				this.addItem( entry );
+				i++;
+				entry = new PartidaOrdenCompraSolicitudServicioMaquilado();
+				entry.partida = i;
+				entry.cantidad = Constants.OC_QUANTITY;
+				entry.unidad = Constants.OC_UNIT;
+				entry.descripcion = Constants.OC_SETTLEMENT + " " + proyecto.producto.modelo + 
+					"\n" + proyecto.producto.actividadRealizar + ", " + proyecto.producto.equipo + 
+					"\n" + proyecto.producto.tipoServicio + " " + Constants.OC_SITE + " " + proyecto.centralSitio;
+				if( proyecto.producto.tipoServicio == Producto.TIPO_SERVICIO_LOCAL ){
+					entry.costo = proyecto.producto.costoLocalProveedor;
+				}
+				if( proyecto.producto.tipoServicio == Producto.TIPO_SERVICIO_FORANEO ){
+					entry.costo = proyecto.producto.costoForaneoProveedor;
+				}
+				entry.importe = entry.cantidad + entry.costo;
+				this.addItem( entry );
+			}
 		]]>
 	</mx:Script>
 	<mx:columns>
-		<mx:DataGridColumn id="dtgItemCode" headerText="Código"
-						   dataField="codigo"
-						   width="80"/>
-		<mx:DataGridColumn id="dtgItemFamily" headerText="{'Grupo o\nFamilia'}"
-						   width="100"
-						   dataField="grupoFamilia"/>
-		<mx:DataGridColumn id="dtgItemDescription" headerText="Descripción"
-						   dataField="descripcion"
-						   width="160"/>
-		<mx:DataGridColumn id="dtgItemQuantity" headerText="Cantidad"
+		<mx:DataGridColumn id="dtgID" headerText="Partida"
+						   dataField="partida"
+						   width="60"
+						   textAlign="center"/>
+		<mx:DataGridColumn id="dtgQuantity" headerText="Cantidad"
 						   dataField="cantidad"
 						   width="60"
 						   textAlign="right"/>
-		<mx:DataGridColumn id="dtgItemUnit" headerText="Unidad"
+		<mx:DataGridColumn id="dtgUnit" headerText="Unidad"
 						   dataField="unidad"
-						   width="60"
-						   textAlign="right"/>
-		<mx:DataGridColumn id="dtgItemValidation" headerText="Validación"
-						   dataField="validacion"
-						   width="80"/>
-		<mx:DataGridColumn id="dtgItemEstatus" headerText="Estatus"
-						   dataField="fkEstatus"
 						   width="80"
-						   editable="{!this._purchaseOrderMode}"
-						   >
-			<mx:itemRenderer>
-				<mx:Component>
-					<mx:ComboBox dataProvider="{this.items}"
-								 enabled="{Model.getInstance().user.allowedPerfil(1)}"
-								 labelField="estatus"
-								 creationComplete="creationCompleteHandler(event)"
-								 preinitialize="preinitializeHandler(event)">
-						<mx:Script>
-							<![CDATA[
-								import model.EstatusRequisicionCompra;
-								import model.Model;
-								import model.Util;
-								
-								import mx.collections.ArrayCollection;
-								import mx.events.FlexEvent;
-								
-								[Bindable]
-								private var items:ArrayCollection;
-								
-								protected function preinitializeHandler(event:FlexEvent):void
-								{
-									this.items = EstatusRequisicionCompra.getAll();
-								}
-								
-								protected function creationCompleteHandler(event:FlexEvent):void
-								{
-									this.updateData();
-								}
-								
-								override public function set data(value:Object):void
-								{
-									if( value == null ){
-										return;
-									}
-									super.data = value;
-									this.updateData();
-								}
-								
-								private function updateData():void{
-									this.selectedIndex=Util.selectedIndexFromCombo(this.items, data.fkEstatus);
-								}
-							]]>
-						</mx:Script>
-					</mx:ComboBox>
-				</mx:Component>
-			</mx:itemRenderer>
-		</mx:DataGridColumn>
-		<mx:DataGridColumn id="dtgPrice"
+						   textAlign="right"/>
+		<mx:DataGridColumn id="dtgDescription" headerText="Descripción"
+						   dataField="descripcion" wordWrap="true"
+						   width="160"/>
+		<mx:DataGridColumn id="dtgCost" headerText="{'Precio\nUnitario'}"
 						   dataField="costo"
-						   headerText="Costo"
-						   textAlign="right"
-						   visible="{this._purchaseOrderMode}"/>
-		<mx:DataGridColumn id="dtgImport"
+						   width="80"
+						   textAlign="right"/>
+		<mx:DataGridColumn id="dtgImport" headerText="Importe"
 						   dataField="importe"
-						   headerText="Importe"
+						   width="80"
 						   labelFunction="labelFunctionImporte"
 						   textAlign="right"
-						   editable="false"
-						   visible="{this._purchaseOrderMode}"/>
+						   editable="false"/>
 	</mx:columns>
 </mx:DataGrid>	

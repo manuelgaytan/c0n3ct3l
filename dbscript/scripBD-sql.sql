@@ -1243,6 +1243,19 @@
 	PRIMARY KEY (id)
 	);
 
+	CREATE TABLE NotaCreditoProveedor
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	folio VARCHAR(255) NOT NULL,
+	fecha DATE NOT NULL,
+	subtotal DECIMAL NOT NULL,
+	iva DECIMAL,
+	total DECIMAL NOT NULL,
+	fk_proveedor_calificado INT(11) UNSIGNED,
+	fk_proveedor_maquilador INT(11) UNSIGNED,
+	PRIMARY KEY (id)
+	);
+
 	ALTER TABLE Cliente ADD FOREIGN KEY id_contacto_idxfk (id_contacto) REFERENCES Contacto (id);
 
 	ALTER TABLE Proyecto ADD FOREIGN KEY id_categoria_proyecto_idxfk (id_categoria_proyecto) REFERENCES CategoriaProyecto (id);
@@ -1612,6 +1625,10 @@
 	ALTER TABLE ComentarioFacturaProveedor ADD FOREIGN KEY fk_factura_proveedor_idxfk (fk_factura_proveedor) REFERENCES FacturaProveedor (id);
 
 	ALTER TABLE ComentarioFacturaProveedor ADD FOREIGN KEY fk_comentario_cuentas_pagar_facturacion_idxfk (fk_comentario_cuentas_pagar_facturacion) REFERENCES ComentarioCuentasPagarFacturacion (id);
+
+	ALTER TABLE NotaCreditoProveedor ADD FOREIGN KEY fk_proveedor_calificado_idxfk_1 (fk_proveedor_calificado) REFERENCES ProveedorCalificado (id);
+
+	ALTER TABLE NotaCreditoProveedor ADD FOREIGN KEY fk_proveedor_maquilador_idxfk_1 (fk_proveedor_maquilador) REFERENCES ProveedorMaquilador (id);
 
 	/* Perfiles */
 	INSERT INTO Perfil

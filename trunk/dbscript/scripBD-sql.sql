@@ -1195,6 +1195,54 @@
 	PRIMARY KEY (id)
 	);
 
+	CREATE TABLE ComentarioCuentasPagarFacturacion
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fecha DATE NOT NULL,
+	fk_usuario INT(11) UNSIGNED NOT NULL,
+	comentario VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE EstadoTesoreria
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	estado VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE EstadoInvestigacionCalidad
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	estado VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE FacturaProveedor
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fecha_factura DATE NOT NULL,
+	fk_estado_investigacion_calidad INT(11) UNSIGNED NOT NULL,
+	fk_estado_tesoreria INT(11) UNSIGNED NOT NULL,
+	semana DECIMAL,
+	fk_proveedor_calificado INT(11) UNSIGNED,
+	fk_orden_compra INT(11) UNSIGNED,
+	fk_proveedor_maquilador INT(11) UNSIGNED,
+	fk_orden_compra_maquilado INT(11) UNSIGNED,
+	numero_factura VARCHAR(255) NOT NULL,
+	fecha_revision DATE,
+	fecha_pago DATE,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE ComentarioFacturaProveedor
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_factura_proveedor INT(11) UNSIGNED NOT NULL,
+	fk_comentario_cuentas_pagar_facturacion INT(11) UNSIGNED NOT NULL,
+	PRIMARY KEY (id)
+	);
+
 	ALTER TABLE Cliente ADD FOREIGN KEY id_contacto_idxfk (id_contacto) REFERENCES Contacto (id);
 
 	ALTER TABLE Proyecto ADD FOREIGN KEY id_categoria_proyecto_idxfk (id_categoria_proyecto) REFERENCES CategoriaProyecto (id);
@@ -1546,6 +1594,24 @@
 	ALTER TABLE ValidacionAdministrativa ADD FOREIGN KEY fk_estado_final_validacion_idxfk (fk_estado_final_validacion) REFERENCES EstadoFinalValidacion (id);
 
 	ALTER TABLE ValidacionAdministrativa ADD FOREIGN KEY fk_imputable_idxfk (fk_imputable) REFERENCES Imputable (id);
+
+	ALTER TABLE ComentarioCuentasPagarFacturacion ADD FOREIGN KEY fk_usuario_idxfk (fk_usuario) REFERENCES Usuario (id);
+
+	ALTER TABLE FacturaProveedor ADD FOREIGN KEY fk_estado_investigacion_calidad_idxfk (fk_estado_investigacion_calidad) REFERENCES EstadoInvestigacionCalidad (id);
+
+	ALTER TABLE FacturaProveedor ADD FOREIGN KEY fk_estado_tesoreria_idxfk (fk_estado_tesoreria) REFERENCES EstadoTesoreria (id);
+
+	ALTER TABLE FacturaProveedor ADD FOREIGN KEY fk_proveedor_calificado_idxfk (fk_proveedor_calificado) REFERENCES ProveedorCalificado (id);
+
+	ALTER TABLE FacturaProveedor ADD FOREIGN KEY fk_orden_compra_idxfk (fk_orden_compra) REFERENCES OrdenCompra (id);
+
+	ALTER TABLE FacturaProveedor ADD FOREIGN KEY fk_proveedor_maquilador_idxfk (fk_proveedor_maquilador) REFERENCES ProveedorMaquilador (id);
+
+	ALTER TABLE FacturaProveedor ADD FOREIGN KEY fk_orden_compra_maquilado_idxfk (fk_orden_compra_maquilado) REFERENCES OrdenCompraMaquilado (id);
+
+	ALTER TABLE ComentarioFacturaProveedor ADD FOREIGN KEY fk_factura_proveedor_idxfk (fk_factura_proveedor) REFERENCES FacturaProveedor (id);
+
+	ALTER TABLE ComentarioFacturaProveedor ADD FOREIGN KEY fk_comentario_cuentas_pagar_facturacion_idxfk (fk_comentario_cuentas_pagar_facturacion) REFERENCES ComentarioCuentasPagarFacturacion (id);
 
 	/* Perfiles */
 	INSERT INTO Perfil

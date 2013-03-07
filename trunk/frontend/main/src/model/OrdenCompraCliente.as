@@ -1,7 +1,7 @@
 package model
 {
 	import mx.collections.ArrayCollection;
-
+	
 	[RemoteClass(alias="mx.com.gahm.conenctel.entities.OrdenCompraClienteDO")]
 	public class OrdenCompraCliente
 	{
@@ -12,6 +12,8 @@ package model
 		public var fecha:Date;
 		public var costoOrdenCompra:Number;
 		public var estadoValidacionCosto:EstadoValidacionCosto;
+		public var comentariosEstadoValidacionCosto:ArrayCollection;
 		public var estadoOrdenCompra:EstadoOrdenCompra;
+		public var comentariosEstadoOrdenCompra:ArrayCollection;
 	}
 }

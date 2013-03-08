@@ -1258,6 +1258,89 @@
 	PRIMARY KEY (id)
 	);
 
+	CREATE TABLE InformacionFacturacion
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_validacion_administrativa INT(11) UNSIGNED,
+	folio_factura_1 VARCHAR(255),
+	subtotal_1 DECIMAL,
+	iva_1 DECIMAL,
+	total_1 DECIMAL,
+	fecha_emision_1 DATE,
+	fecha_ingreso_1 DATE,
+	dias_credito_1 DECIMAL,
+	fecha_programada_1 DATE,
+	estado_pago_1 VARCHAR(255),
+	folio_factura_2 VARCHAR(255),
+	subtotal_2 DECIMAL,
+	iva_2 DECIMAL,
+	total_2 DECIMAL,
+	fecha_emision_2 DATE,
+	fecha_ingreso_2 DATE,
+	dias_credito_2 DECIMAL,
+	fecha_programada_2 DATE,
+	estado_pago_2 VARCHAR(255),
+	folio_factura_3 VARCHAR(255),
+	subtotal_3 DECIMAL,
+	iva_3 DECIMAL,
+	total_3 DECIMAL,
+	fecha_emision_3 DATE,
+	fecha_ingreso_3 DATE,
+	dias_credito_3 DECIMAL,
+	fecha_programada_3 DATE,
+	estado_pago_3 VARCHAR(255),
+	estado_factura VARCHAR(255) NOT NULL,
+	fecha_estado_factura DATE NOT NULL,
+	imputabilidad VARCHAR(255),
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE ComentarioInformacionFacturacion_3
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_informacion_facturacion INT(11) UNSIGNED NOT NULL,
+	fk_comentario_cuentas_pagar_facturacion INT(11) UNSIGNED NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE ComentarioInformacionFacturacion_2
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_informacion_facturacion INT(11) UNSIGNED NOT NULL,
+	fk_comentario_cuentas_pagar_facturacion INT(11) UNSIGNED NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE ComentarioInformacionFacturacion_1
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_informacion_facturacion INT(11) UNSIGNED NOT NULL,
+	fk_comentario_cuentas_pagar_facturacion INT(11) UNSIGNED NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE NotaCreditoCliente
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	folio VARCHAR(255) NOT NULL,
+	factura VARCHAR(255) NOT NULL,
+	item VARCHAR(255),
+	fecha DATE NOT NULL,
+	subtotal DECIMAL NOT NULL,
+	iva DECIMAL,
+	total DECIMAL NOT NULL,
+	fk_cliente INT(11) UNSIGNED,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE ComentarioNotaCreditoCliente
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_nota_credito_cliente INT(11) UNSIGNED NOT NULL,
+	fk_comentario_cuentas_pagar_facturacion INT(11) UNSIGNED NOT NULL,
+	PRIMARY KEY (id)
+	);
+
 	ALTER TABLE Cliente ADD FOREIGN KEY id_contacto_idxfk (id_contacto) REFERENCES Contacto (id);
 
 	ALTER TABLE Proyecto ADD FOREIGN KEY id_categoria_proyecto_idxfk (id_categoria_proyecto) REFERENCES CategoriaProyecto (id);
@@ -1635,6 +1718,26 @@
 	ALTER TABLE ValidacionAdministrativa ADD FOREIGN KEY fk_proyecto_idxfk_2 (fk_proyecto) REFERENCES Proyecto (id);
 
 	ALTER TABLE ValidacionAdministrativa ADD FOREIGN KEY fk_proyecto_padre_idxfk (fk_proyecto_padre) REFERENCES ProyectoPadre (id);
+
+	ALTER TABLE InformacionFacturacion ADD FOREIGN KEY fk_validacion_administrativa_idxfk (fk_validacion_administrativa) REFERENCES ValidacionAdministrativa (id);
+
+	ALTER TABLE ComentarioInformacionFacturacion_3 ADD FOREIGN KEY fk_informacion_facturacion_idxfk (fk_informacion_facturacion) REFERENCES InformacionFacturacion (id);
+
+	ALTER TABLE ComentarioInformacionFacturacion_3 ADD FOREIGN KEY fk_comentario_cuentas_pagar_facturacion_idxfk_1 (fk_comentario_cuentas_pagar_facturacion) REFERENCES ComentarioCuentasPagarFacturacion (id);
+
+	ALTER TABLE ComentarioInformacionFacturacion_2 ADD FOREIGN KEY fk_informacion_facturacion_idxfk_1 (fk_informacion_facturacion) REFERENCES InformacionFacturacion (id);
+
+	ALTER TABLE ComentarioInformacionFacturacion_2 ADD FOREIGN KEY fk_comentario_cuentas_pagar_facturacion_idxfk_2 (fk_comentario_cuentas_pagar_facturacion) REFERENCES ComentarioCuentasPagarFacturacion (id);
+
+	ALTER TABLE ComentarioInformacionFacturacion_1 ADD FOREIGN KEY fk_informacion_facturacion_idxfk_2 (fk_informacion_facturacion) REFERENCES InformacionFacturacion (id);
+
+	ALTER TABLE ComentarioInformacionFacturacion_1 ADD FOREIGN KEY fk_comentario_cuentas_pagar_facturacion_idxfk_3 (fk_comentario_cuentas_pagar_facturacion) REFERENCES ComentarioCuentasPagarFacturacion (id);
+
+	ALTER TABLE NotaCreditoCliente ADD FOREIGN KEY fk_cliente_idxfk (fk_cliente) REFERENCES Cliente (id);
+
+	ALTER TABLE ComentarioNotaCreditoCliente ADD FOREIGN KEY fk_nota_credito_cliente_idxfk (fk_nota_credito_cliente) REFERENCES NotaCreditoCliente (id);
+
+	ALTER TABLE ComentarioNotaCreditoCliente ADD FOREIGN KEY fk_comentario_cuentas_pagar_facturacion_idxfk_4 (fk_comentario_cuentas_pagar_facturacion) REFERENCES ComentarioCuentasPagarFacturacion (id);
 
 	/* Perfiles */
 	INSERT INTO Perfil

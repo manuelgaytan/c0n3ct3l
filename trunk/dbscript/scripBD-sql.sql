@@ -1156,6 +1156,8 @@
 	porcentaje_total_cobro DECIMAL,
 	fk_estado_final_validacion INT(11) UNSIGNED NOT NULL,
 	fk_imputable INT(11) UNSIGNED NOT NULL,
+	fk_proyecto INT(11) UNSIGNED,
+	fk_proyecto_padre INT(11) UNSIGNED,
 	PRIMARY KEY (id)
 	);
 
@@ -1629,6 +1631,10 @@
 	ALTER TABLE NotaCreditoProveedor ADD FOREIGN KEY fk_proveedor_calificado_idxfk_1 (fk_proveedor_calificado) REFERENCES ProveedorCalificado (id);
 
 	ALTER TABLE NotaCreditoProveedor ADD FOREIGN KEY fk_proveedor_maquilador_idxfk_1 (fk_proveedor_maquilador) REFERENCES ProveedorMaquilador (id);
+
+	ALTER TABLE ValidacionAdministrativa ADD FOREIGN KEY fk_proyecto_idxfk_2 (fk_proyecto) REFERENCES Proyecto (id);
+
+	ALTER TABLE ValidacionAdministrativa ADD FOREIGN KEY fk_proyecto_padre_idxfk (fk_proyecto_padre) REFERENCES ProyectoPadre (id);
 
 	/* Perfiles */
 	INSERT INTO Perfil

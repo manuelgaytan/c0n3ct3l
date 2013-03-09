@@ -30,9 +30,11 @@
 			import model.ComentarioCompras;
 			import model.ComentarioConcentradoOrdenCompraCliente;
 			import model.ComentarioGenerico;
+			import model.ComentarioOrdenCompraCliente;
 			import model.ComentarioPantallaValidacionAdministrativa;
 			import model.ComentarioRequisicion;
 			import model.ComentarioValidacionAdministrativa;
+			import model.ComentarioValidacionCostoOrdenCompraCliente;
 			import model.Compania;
 			import model.ConfiguracionPruebaEntrega;
 			import model.Constants;
@@ -289,6 +291,8 @@
 			private var ordenCompraCliente:OrdenCompraCliente;
 			private var estadoValidacionCosto:EstadoValidacionCosto;
 			private var estadoOrdenCompra:EstadoOrdenCompra;
+			private var comentarioValidacionCostoOrdenCompraCliente:ComentarioValidacionCostoOrdenCompraCliente;
+			private var comentarioOrdenCompraCliente:ComentarioOrdenCompraCliente;
 			
 			protected function login_readyHandler(event:ModuleEvent):void
 			{

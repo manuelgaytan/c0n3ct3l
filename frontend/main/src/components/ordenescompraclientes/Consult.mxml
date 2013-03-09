@@ -48,7 +48,7 @@
 					return;
 				}
 				var item:Proyecto = this.datagrid.selectedItem as Proyecto;
-				this.responseGetProyecto.token = this.proyectoService.getProyecto( item.id );
+				this.responseGetProyecto.token = this.ordenCompraClienteService.getProyecto( item.id );
 			}
 			
 			protected function responseGetItem_resultHandler(event:ResultEvent):void
@@ -64,18 +64,7 @@
 			
 			public function executeQuery():void
 			{
-				var filter:FiltroProyecto = new FiltroProyecto();
-				filter.idConectel = null;
-				filter.idCategoria = undefined;
-				filter.idCliente = undefined;
-				filter.tipoProyecto = undefined;
-				filter.tecnologia = undefined;
-				filter.equipo = undefined;
-				filter.actividadRealizar = undefined;
-				filter.modelo = undefined;
-				filter.descripcionServicio = undefined;
-				filter.tipoServicio = undefined;
-				this.responseGetAllByFiltro.token = this.proyectoService.getAllByFiltro(filter);
+				this.responseGetAll.token = this.ordenCompraClienteService.getAll();
 			}
 			
 			private function labelFunctionDate(object:Object, column:DataGridColumn):String{
@@ -128,8 +117,8 @@
 	<mx:HBox>
 		<!--<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>-->
 	</mx:HBox>
-	<mx:RemoteObject id="proyectoService" destination="proyectoService" fault="datosGeneralesProyectoService_faultHandler(event)"
+	<mx:RemoteObject id="ordenCompraClienteService" destination="ordenCompraClienteService" fault="datosGeneralesProyectoService_faultHandler(event)"
 					 showBusyCursor="true"/>
-	<mx:CallResponder id="responseGetAllByFiltro" result="responseGetAll_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetAll" result="responseGetAll_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetProyecto" result="responseGetItem_resultHandler(event)"/>
 </mx:VBox>

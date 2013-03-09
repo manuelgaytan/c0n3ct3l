@@ -6,7 +6,7 @@
 	<mx:Script>
 		<![CDATA[
 			import model.Constants;
-			import model.PartidaOrdenCompraSolicitudServicioMaquilado;
+			import model.PartidaRequisicionCompra;
 			import model.Producto;
 			import model.Proyecto;
 			import model.ProyectoPadreHijo;
@@ -17,7 +17,11 @@
 			import mx.com.gahm.componentes.validadores.Constantes;
 			private var _purchaseOrderMode:Boolean = false;
 			
-			public function addItem(entry:PartidaOrdenCompraSolicitudServicioMaquilado):void{
+			public function set purchaseOrderMode(value:Boolean):void{
+				this._purchaseOrderMode = value;
+			}
+			
+			public function addItem(entry:PartidaRequisicionCompra):void{
 				if( entry == null ){
 					return;
 				}
@@ -64,10 +68,10 @@
 				if( proyecto == null ){
 					return;
 				}
-				var entry:PartidaOrdenCompraSolicitudServicioMaquilado = null;
-				entry = new PartidaOrdenCompraSolicitudServicioMaquilado();
-				entry.partida = i;
-				entry.cantidad = Constants.OC_QUANTITY;
+				var entry:PartidaRequisicionCompra = null;
+				entry = new PartidaRequisicionCompra();
+				entry.partida = i.toString();
+				entry.cantidad = Constants.OC_QUANTITY.toString();
 				entry.unidad = Constants.OC_UNIT;
 				entry.descripcion = Constants.OC_ADVANCE + " " + proyecto.producto.modelo + 
 					"\n" + proyecto.producto.actividadRealizar + ", " + proyecto.producto.equipo + 
@@ -81,9 +85,9 @@
 				entry.importe = entry.cantidad + entry.costo;
 				this.addItem( entry );
 				i++;
-				entry = new PartidaOrdenCompraSolicitudServicioMaquilado();
-				entry.partida = i;
-				entry.cantidad = Constants.OC_QUANTITY;
+				entry = new PartidaRequisicionCompra();
+				entry.partida = i.toString();
+				entry.cantidad = Constants.OC_QUANTITY.toString();
 				entry.unidad = Constants.OC_UNIT;
 				entry.descripcion = Constants.OC_SETTLEMENT + " " + proyecto.producto.modelo + 
 					"\n" + proyecto.producto.actividadRealizar + ", " + proyecto.producto.equipo + 

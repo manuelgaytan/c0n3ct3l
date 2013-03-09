@@ -18,6 +18,8 @@ package model
 		public var importe:*;
 		//public var estatusRequisicionCompra:EstatusRequisicionCompra;
 		
+		public var partida:String;
+		
 		public function PartidaRequisicionCompra()
 		{
 		}

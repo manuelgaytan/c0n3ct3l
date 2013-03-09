@@ -23,6 +23,7 @@
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
 			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
 			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
 			import mx.com.gahm.componentes.validadores.ValidadorEntero;
 			import mx.controls.Alert;
 			import mx.events.CloseEvent;
@@ -71,19 +72,19 @@
 				this.projectsConsult.datagrid = Util.asArrayCollection( this._item.proyecto );
 				this.chbPurchaseOrder.selected = this._item.ordenCompra;
 				this.txtPurchaseOrderNumber.text = this._item.numeroOrdenCompra;
-				this.dtfPurchaseOrderDate.selectedDate = this._item.fecha;
+				this.dtfPurchaseOrderDate.selectedDate = this._item.fechaOrdenCompra;
 				this.txtPurchaseOrderCost.text = this._item.costoOrdenCompra.toString();
 				this.setCommercialCost(this._item.proyecto);
-				if( Util.isFill( this.cmbCostValidationStatus ) && this._item.estadoValidacionCosto != null ){
+				if( Util.isFill( this.cmbCostValidationStatus ) && this._item.validacionCosto != null ){
 					this.cmbCostValidationStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbCostValidationStatus.dataProvider as ArrayCollection, 
-						this._item.estadoValidacionCosto.id);
+						this._item.validacionCosto.id);
 				}
-				this.commentsCostValidation.setCommentsIn( this._item.comentariosEstadoValidacionCosto, "");
+				this.commentsCostValidation.setCommentsIn( this._item.comentarioValidacionCostoOrdenCompraCliente, "comentarioValidacionAdministrativa");
 				if( Util.isFill( this.cmbPurchaseOrderStatus ) && this._item.estadoOrdenCompra != null ){
 					this.cmbPurchaseOrderStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbPurchaseOrderStatus.dataProvider as ArrayCollection, 
 						this._item.estadoOrdenCompra.id);
 				}
-				this.commentsCostValidation.setCommentsIn( this._item.comentariosEstadoValidacionCosto, "");
+				this.commentsPurchaseOrderStatus.setCommentsIn( this._item.comentarioOrdenCompraCliente, "comentarioValidacionAdministrativa");
 			}
 			
 			private function getClientPurchaseOrder():OrdenCompraCliente{
@@ -96,18 +97,19 @@
 				clientPurchaseOrder.proyecto = this.projectsConsult.datagrid.selectedItem as Proyecto;
 				clientPurchaseOrder.ordenCompra = this.chbPurchaseOrder.selected;
 				clientPurchaseOrder.numeroOrdenCompra = Util.validateEmpty( this.txtPurchaseOrderNumber.text );
-				clientPurchaseOrder.fecha = this.dtfPurchaseOrderDate.selectedDate;
+				clientPurchaseOrder.fechaOrdenCompra = this.dtfPurchaseOrderDate.selectedDate;
 				clientPurchaseOrder.costoOrdenCompra = Util.stringToNumber( this.txtPurchaseOrderCost.text );
-				clientPurchaseOrder.estadoValidacionCosto = Util.validateCombo( this.cmbCostValidationStatus ) as EstadoValidacionCosto;
-				clientPurchaseOrder.comentariosEstadoValidacionCosto = this.commentsCostValidation.getCommentsAsInWith("","","");
+				clientPurchaseOrder.validacionCosto = Util.validateCombo( this.cmbCostValidationStatus ) as EstadoValidacionCosto;
+				clientPurchaseOrder.comentarioValidacionCostoOrdenCompraCliente = this.commentsCostValidation.getCommentsAsInWith("model.ComentarioValidacionAdministrativa","model.ComentarioValidacionCostoOrdenCompraCliente","comentarioValidacionAdministrativa");
 				clientPurchaseOrder.estadoOrdenCompra = Util.validateCombo( this.cmbPurchaseOrderStatus ) as EstadoOrdenCompra;
-				clientPurchaseOrder.comentariosEstadoOrdenCompra = this.commentsPurchaseOrderStatus.getCommentsAsInWith("","","");
+				clientPurchaseOrder.comentarioOrdenCompraCliente = this.commentsPurchaseOrderStatus.getCommentsAsInWith("model.ComentarioValidacionAdministrativa","model.ComentarioOrdenCompraCliente","comentarioValidacionAdministrativa");
 				return clientPurchaseOrder;
 			}
 			
 			private function fillCombos():void
 			{
-				this.responseGetEstadoOrdenCompra.token = this.catalogoService.getEstadoValidacionOperativa();
+				this.responseGetValidacionCosto.token = this.catalogoService.getValidacionCosto();
+				this.responseGetEstadoOrdenCompra.token = this.catalogoService.getEstadoOrdenCompra();
 			}
 			
 			
@@ -122,6 +124,11 @@
 					Util.showMessageVerifyFields();
 					return;
 				}
+				if( this.mode == Constants.REGISTER_MODE ){
+					var clientPurchaseOrder:OrdenCompraCliente = this.getClientPurchaseOrder();
+					Util.showProperties( clientPurchaseOrder );
+					this.responseSave.token = this.ordenCompraClienteService.save( clientPurchaseOrder );
+				}
 				if( this.mode == Constants.UPDATE_MODE ){
 					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
 				}
@@ -133,7 +140,7 @@
 				}
 				var item:OrdenCompraCliente = this.getClientPurchaseOrder();
 				Util.showProperties( item );
-				this.responseUpdate.token = this.ordenenCompraClienteService.update( item );
+				this.responseUpdate.token = this.ordenCompraClienteService.update( item );
 			}
 			
 			private function validations():Boolean
@@ -157,6 +164,8 @@
 			private function initializeValidators():void
 			{
 				this.validators = new InicializaValidadoresEtiquetas();
+				this.validators.crearValidadorRestrictor("genericDecimal", ValidadorDecimal.nombre, 9, 2);
+				this.validators.setRestrictor( this.txtPurchaseOrderCost, "genericDecimal" );
 			}
 			
 			protected function responseSave_resultHandler(event:ResultEvent):void
@@ -210,9 +219,9 @@
 				}
 				this.cmbCostValidationStatus.dataProvider = data;
 				if( Util.isFill( this.cmbCostValidationStatus ) && this._item 
-					&& this._item.estadoValidacionCosto != null ){
+					&& this._item.validacionCosto != null ){
 					this.cmbCostValidationStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbCostValidationStatus.dataProvider as ArrayCollection, 
-						this._item.estadoValidacionCosto.id);
+						this._item.validacionCosto.id);
 				}
 			}
 			
@@ -240,6 +249,17 @@
 			protected function projectsConsult_projectSelectedHandler(event:GenericEvent):void
 			{
 				var project:Proyecto = event.information as Proyecto;
+				if( project == null ){
+					return;
+				}
+				var commercialCost:String;
+				if( project.producto.tipoServicio == Producto.TIPO_SERVICIO_LOCAL ){
+					commercialCost = Util.currencyFormatter.format(project.producto.costoLocalCliente.toString());
+				}
+				if( project.producto.tipoServicio == Producto.TIPO_SERVICIO_FORANEO ){
+					commercialCost = project.producto.costoForaneoCliente.toString();
+				}
+				this.txtCommercialCost.text = commercialCost;
 			}
 			
 			private function setCommercialCost(project:Proyecto):void{
@@ -253,8 +273,16 @@
 			
 			protected function responseGetValidacionCosto_resultHandler(event:ResultEvent):void
 			{
-				// TODO Auto-generated method stub
-				
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbCostValidationStatus.dataProvider = data;
+				if( Util.isFill( this.cmbCostValidationStatus ) && this._item 
+					&& this._item.validacionCosto != null ){
+					this.cmbCostValidationStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbCostValidationStatus.dataProvider as ArrayCollection, 
+						this._item.validacionCosto.id);
+				}
 			}
 			
 		]]>
@@ -306,8 +334,9 @@
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
 		</mx:FormItem>
 	</mx:Form>
-	<mx:RemoteObject id="ordenenCompraClienteService" destination="ordenenCompraClienteService" fault="datosGeneralesOrdenCompraClienteService_faultHandler(event)"
+	<mx:RemoteObject id="ordenCompraClienteService" destination="ordenCompraClienteService" fault="datosGeneralesOrdenCompraClienteService_faultHandler(event)"
 					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
 	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
 	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="datosGeneralesOrdenCompraClienteService_faultHandler(event)"
 					 showBusyCursor="true"/>

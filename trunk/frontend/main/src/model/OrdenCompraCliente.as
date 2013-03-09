@@ -9,11 +9,11 @@ package model
 		public var proyecto:Proyecto;
 		public var ordenCompra:Boolean;
 		public var numeroOrdenCompra:String;
-		public var fecha:Date;
+		public var fechaOrdenCompra:Date;
 		public var costoOrdenCompra:Number;
-		public var estadoValidacionCosto:EstadoValidacionCosto;
-		public var comentariosEstadoValidacionCosto:ArrayCollection;
+		public var validacionCosto:EstadoValidacionCosto;
+		public var comentarioValidacionCostoOrdenCompraCliente:ArrayCollection;
 		public var estadoOrdenCompra:EstadoOrdenCompra;
-		public var comentariosEstadoOrdenCompra:ArrayCollection;
+		public var comentarioOrdenCompraCliente:ArrayCollection;
 	}
 }

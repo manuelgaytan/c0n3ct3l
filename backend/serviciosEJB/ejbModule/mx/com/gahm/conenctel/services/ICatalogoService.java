@@ -47,7 +47,9 @@ import mx.com.gahm.conenctel.entities.UnidadADO;
 import mx.com.gahm.conenctel.entities.UnidadBDO;
 import mx.com.gahm.conenctel.entities.UnidadCDO;
 import mx.com.gahm.conenctel.entities.UnidadOrdenCompraDO;
+import mx.com.gahm.conenctel.entities.ValidacionCostoDO;
 import mx.com.gahm.conenctel.exceptions.ConectelException;
+import mx.com.gahm.conenctel.entities.EstadoOrdenCompraDO;
 
 @Remote
 public interface ICatalogoService extends Serializable {
@@ -137,4 +139,8 @@ public interface ICatalogoService extends Serializable {
 	List<EstadoValidacionCobroDO> getEstadoValidacionCobro() throws ConectelException;
 	List<TipoValidacionAdministrativaDO> getTipoValidacionAdministrativa() throws ConectelException;
 	List<EstadoValidacionAdministrativaDO> getEstadoValidacionAdministrativa() throws ConectelException;
+	
+	List<ValidacionCostoDO> getValidacionCosto() throws ConectelException;
+	
+	List<EstadoOrdenCompraDO> getEstadoOrdenCompra() throws ConectelException;
 }

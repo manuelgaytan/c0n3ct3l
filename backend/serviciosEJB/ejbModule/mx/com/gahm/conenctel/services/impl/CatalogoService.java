@@ -16,6 +16,7 @@ import mx.com.gahm.conenctel.entities.ColaboradorDO;
 import mx.com.gahm.conenctel.entities.CompaniaDO;
 import mx.com.gahm.conenctel.entities.DescripcionAlmacenDO;
 import mx.com.gahm.conenctel.entities.EstadoFinalValidacionDO;
+import mx.com.gahm.conenctel.entities.EstadoOrdenCompraDO;
 import mx.com.gahm.conenctel.entities.EstadoSolicitudAlmacenDO;
 import mx.com.gahm.conenctel.entities.EstadoSolicitudServicioMaquiladoDO;
 import mx.com.gahm.conenctel.entities.EstadoValidacionAdministrativaDO;
@@ -52,6 +53,7 @@ import mx.com.gahm.conenctel.entities.UnidadADO;
 import mx.com.gahm.conenctel.entities.UnidadBDO;
 import mx.com.gahm.conenctel.entities.UnidadCDO;
 import mx.com.gahm.conenctel.entities.UnidadOrdenCompraDO;
+import mx.com.gahm.conenctel.entities.ValidacionCostoDO;
 import mx.com.gahm.conenctel.exceptions.ConectelException;
 import mx.com.gahm.conenctel.services.ICatalogoService;
 
@@ -669,5 +671,33 @@ public class CatalogoService implements ICatalogoService {
 			throw new ConectelException("No existen Colaborador registrados.");
 		}
 		return colaboradorList;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<ValidacionCostoDO> getValidacionCosto() throws ConectelException {
+		TypedQuery<ValidacionCostoDO> query = entityManager.createNamedQuery(
+				"ValidacionCostoDO.findAll", ValidacionCostoDO.class);
+		
+		List<ValidacionCostoDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<EstadoOrdenCompraDO> getEstadoOrdenCompra() throws ConectelException {
+		TypedQuery<EstadoOrdenCompraDO> query = entityManager.createNamedQuery(
+				"EstadoOrdenCompraDO.findAll", EstadoOrdenCompraDO.class);
+		
+		List<EstadoOrdenCompraDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
 	}
 }

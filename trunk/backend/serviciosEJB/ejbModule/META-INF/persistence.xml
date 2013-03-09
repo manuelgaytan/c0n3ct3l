@@ -101,6 +101,11 @@
 		<class>mx.com.gahm.conenctel.entities.ComentarioPantallaValidacionAdministrativaDO</class>
 		<class>mx.com.gahm.conenctel.entities.PartidaConcentradoOrdenCompraClienteDO</class>
 		<class>mx.com.gahm.conenctel.entities.ComentarioConcentradoOrdenCompraClienteDO</class>
+		<class>mx.com.gahm.conenctel.entities.OrdenCompraClienteDO</class>
+		<class>mx.com.gahm.conenctel.entities.EstadoOrdenCompraDO</class>
+		<class>mx.com.gahm.conenctel.entities.ValidacionCostoDO</class>
+		<class>mx.com.gahm.conenctel.entities.ComentarioOrdenCompraClienteDO</class>
+		<class>mx.com.gahm.conenctel.entities.ComentarioValidacionCostoOrdenCompraClienteDO</class>
 		<properties>
 			<property name="eclipselink.logging.level" value="FINE"/> 
 			<property name="eclipselink.logging.parameters" value="true"/>

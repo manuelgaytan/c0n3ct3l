@@ -265,4 +265,12 @@
 			<scope>session</scope>
 		</properties>
 	</destination>
+	
+	<destination id="ordenCompraClienteService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/OrdenCompraClienteService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
 </service>

@@ -2380,6 +2380,39 @@
 	INSERT INTO EstadoFinalValidacion
 	VALUES (2, 'Parcial');
 
+	INSERT INTO EstadoOrdenCompra
+	VALUES (1, 'Aceptada');
+	INSERT INTO EstadoOrdenCompra
+	VALUES (2, 'Rechazada');
+	INSERT INTO EstadoOrdenCompra
+	VALUES (3, 'En Revisión');
+	INSERT INTO EstadoOrdenCompra
+	VALUES (4, 'Pendiente');
+
+	INSERT INTO EstadoValidacionCosto
+	VALUES (1, 'Correcto');
+	INSERT INTO EstadoValidacionCosto
+	VALUES (2, 'Incorrecto');
+	INSERT INTO EstadoValidacionCosto
+	VALUES (3, 'Sustitución');
+	INSERT INTO EstadoValidacionCosto
+	VALUES (4, 'Parcial');
+
+	INSERT INTO EstadoInvestigacionCalidad
+	VALUES (1, 'Con Desviaciones');
+	INSERT INTO EstadoInvestigacionCalidad
+	VALUES (2, 'Sin Desviaciones');
+	INSERT INTO EstadoInvestigacionCalidad
+	VALUES (3, 'En Revisión');
+	INSERT INTO EstadoInvestigacionCalidad
+	VALUES (4, 'Pendiente');
+
+	INSERT INTO EstadoTesoreria
+	VALUES (1, 'Pagado');
+	INSERT INTO EstadoTesoreria
+	VALUES (2, 'Falta Pago');
+	INSERT INTO EstadoTesoreria
+	VALUES (3, 'Bloqueados');
 /*
 	INSERT INTO Proveedor
 	VALUES (1, 1, 'ACME', 'ALMEIRA CASTAÑEDA MELIA', 'ALCM900622DF7', 'REFORMA 34, COL. JUÁREZ, DELG. CUAUHTEMOC', 'REFORMA 34, COL. JUÁREZ, DELG. CUAUHTEMOC', '57115887','MELIA ALMEIRA','melia347@yahoo.com','','');

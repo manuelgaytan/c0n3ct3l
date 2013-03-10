@@ -79,7 +79,7 @@ public class InformacionFacturacionDO implements Serializable{
 	@Column(name = "subtotal_2", nullable = false)
 	private Double subtotal2;
 	
-	@Column(name = "iva_1", nullable = false)
+	@Column(name = "iva_2", nullable = false)
 	private Double iva2;
 	
 	@Column(name = "total_2", nullable = false)

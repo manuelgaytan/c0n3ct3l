@@ -113,6 +113,7 @@
 		<class>mx.com.gahm.conenctel.entities.ComentarioInformacionFacturacion3DO</class>
 		<class>mx.com.gahm.conenctel.entities.ComentarioInformacionFacturacion2DO</class>
 		<class>mx.com.gahm.conenctel.entities.ComentarioInformacionFacturacion1DO</class>
+		<class>mx.com.gahm.conenctel.entities.NotaCreditoProveedorDO</class>
 		<properties>
 			<property name="eclipselink.logging.level" value="FINE"/> 
 			<property name="eclipselink.logging.parameters" value="true"/>

@@ -38,6 +38,10 @@ public class ComentarioFacturaProveedorDO implements Serializable{
 	@JoinColumn(name = "fk_comentario_cuentas_pagar_facturacion", nullable = false)
 	private ComentarioCuentasPagarFacturacionDO comentarioCuentasPagarFacturacion;
 
+	
+	
+	
+	
 	public ComentarioFacturaProveedorDO() {
 		super();
 		// TODO Auto-generated constructor stub

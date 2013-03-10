@@ -2,6 +2,7 @@ package mx.com.gahm.conenctel.services.impl;
 
 import java.util.List;
 
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -10,6 +11,7 @@ import mx.com.gahm.conenctel.entities.ComentarioNotaCreditoClienteDO;
 import mx.com.gahm.conenctel.entities.NotaCreditoClienteDO;
 import mx.com.gahm.conenctel.services.INotaCreditoClienteService;
 
+@Stateless(mappedName = "ejb/NotaCreditoClienteService")
 public class NotaCreditoClienteService implements INotaCreditoClienteService{
 
 

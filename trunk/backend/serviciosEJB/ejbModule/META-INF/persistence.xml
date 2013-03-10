@@ -106,6 +106,13 @@
 		<class>mx.com.gahm.conenctel.entities.ValidacionCostoDO</class>
 		<class>mx.com.gahm.conenctel.entities.ComentarioOrdenCompraClienteDO</class>
 		<class>mx.com.gahm.conenctel.entities.ComentarioValidacionCostoOrdenCompraClienteDO</class>
+		<class>mx.com.gahm.conenctel.entities.NotaCreditoClienteDO</class>
+		<class>mx.com.gahm.conenctel.entities.ComentarioNotaCreditoClienteDO</class>
+		<class>mx.com.gahm.conenctel.entities.ComentarioCuentasPagarFacturacionDO</class>
+		<class>mx.com.gahm.conenctel.entities.InformacionFacturacionDO</class>
+		<class>mx.com.gahm.conenctel.entities.ComentarioInformacionFacturacion3DO</class>
+		<class>mx.com.gahm.conenctel.entities.ComentarioInformacionFacturacion2DO</class>
+		<class>mx.com.gahm.conenctel.entities.ComentarioInformacionFacturacion1DO</class>
 		<properties>
 			<property name="eclipselink.logging.level" value="FINE"/> 
 			<property name="eclipselink.logging.parameters" value="true"/>

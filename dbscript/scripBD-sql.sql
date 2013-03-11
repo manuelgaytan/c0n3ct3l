@@ -1756,6 +1756,12 @@
 	VALUES (7, 'Compras');
 	INSERT INTO Perfil
 	VALUES (8, 'Público');
+	INSERT INTO Perfil
+	VALUES (9, 'Cuentas por Pagar');
+	INSERT INTO Perfil
+	VALUES (10, 'Facturación');
+	INSERT INTO Perfil
+	VALUES (11, 'Contabilidad');
 
 	/* Pantallas */
 	INSERT INTO Pantalla
@@ -1803,13 +1809,27 @@
 	INSERT INTO Pantalla
 	VALUES (22, 'OrdenesCompraClientes');
 	INSERT INTO Pantalla
-	VALUES (23, '');
+	VALUES (23, 'FacturacionProveedores');
 	INSERT INTO Pantalla
 	VALUES (24, 'ValidacionesAdministrativas');
 	INSERT INTO Pantalla
 	VALUES (25, 'ConcentradoOrdenesCompra');
 	INSERT INTO Pantalla
-	VALUES (26, 'SolicitudAlmacenModule');	
+	VALUES (26, 'SolicitudAlmacenModule');
+	INSERT INTO Pantalla
+	VALUES (27, 'NotasCreditoProveedores');
+	INSERT INTO Pantalla
+	VALUES (28, 'InformacionFacturas');
+	INSERT INTO Pantalla
+	VALUES (29, 'NotasCreditoClientes');
+	INSERT INTO Pantalla
+	VALUES (30, 'ComprobacionesViaticos');
+	INSERT INTO Pantalla
+	VALUES (31, 'FondosFijosCajaChica');
+	INSERT INTO Pantalla
+	VALUES (32, 'PagosContablesServicios');
+	INSERT INTO Pantalla
+	VALUES (33, 'SolicitudesViaticos');
 
 	/* Perfil-Pantalla */
 	INSERT INTO PerfilPantalla
@@ -1926,6 +1946,38 @@
 	VALUES (56, 7, 26);
 	INSERT INTO PerfilPantalla
 	VALUES (57, 8, 26);
+	INSERT INTO PerfilPantalla
+	VALUES (58, 9, 23);
+	INSERT INTO PerfilPantalla
+	VALUES (59, 9, 27);
+	INSERT INTO PerfilPantalla
+	VALUES (60, 10, 28);
+	INSERT INTO PerfilPantalla
+	VALUES (61, 10, 29);
+	INSERT INTO PerfilPantalla
+	VALUES (62, 11, 30);
+	INSERT INTO PerfilPantalla
+	VALUES (63, 11, 31);
+	INSERT INTO PerfilPantalla
+	VALUES (64, 11, 32);
+	INSERT INTO PerfilPantalla
+	VALUES (65, 11, 33);
+	INSERT INTO PerfilPantalla
+	VALUES (66, 1, 28);
+	INSERT INTO PerfilPantalla
+	VALUES (67, 1, 29);
+	INSERT INTO PerfilPantalla
+	VALUES (68, 1, 30);
+	INSERT INTO PerfilPantalla
+	VALUES (69, 1, 31);
+	INSERT INTO PerfilPantalla
+	VALUES (70, 1, 32);
+	INSERT INTO PerfilPantalla
+	VALUES (71, 1, 33);
+	INSERT INTO PerfilPantalla
+	VALUES (72, 1, 27);
+	INSERT INTO PerfilPantalla
+	VALUES (73, 1, 23);
 
 	/* Usuarios */
 	INSERT INTO Usuario
@@ -1942,6 +1994,14 @@
 	VALUES (6, 'COORDINADOR', 'NOTIENE', 'COORDINADOR OPERATIVO', 6, 1);
 	INSERT INTO Usuario
 	VALUES (7, 'COMPRAS', 'NOTIENE', 'COMPRAS', 7, 1);
+	INSERT INTO Usuario
+	VALUES (8, 'PUBLICO', 'NOTIENE', 'PÚBLICO', 8, 1);
+	INSERT INTO Usuario
+	VALUES (9, 'CUENTASPORPAGAR', 'NOTIENE', 'CUENTAS POR PAGAR', 9, 1);
+	INSERT INTO Usuario
+	VALUES (10, 'FACTURACION', 'NOTIENE', 'FACTURACIÓN', 10, 1);
+	INSERT INTO Usuario
+	VALUES (11, 'CONTABILIDAD', 'NOTIENE', 'CONTABILIDAD', 11, 1);
 	
 	/* Categoria Proyecto */
 	INSERT INTO CategoriaProyecto

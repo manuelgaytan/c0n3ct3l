@@ -59,6 +59,7 @@
 				if( value == null ){
 					return;
 				}
+				this.cleanForm();
 				this._item = value;
 				this.setMobileTelephony(); 
 			}

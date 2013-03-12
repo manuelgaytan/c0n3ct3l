@@ -10,6 +10,7 @@
 			public function reset():void{
 				textInput.text = "";
 				errorString = "";
+				selectedDate = null;
 			}
 			
 			protected function creationCompleteHandler(event:FlexEvent):void

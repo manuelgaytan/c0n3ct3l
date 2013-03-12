@@ -105,6 +105,10 @@
 				navigateToURL(new URLRequest("../formats/ODCSSM.pdf"));//+this.datagrid.selectedItem.id));
 			}
 			
+			public function setDataGridData(datas:ArrayCollection):void
+			{
+				items = datas;
+			}
 		]]>
 	</mx:Script>
 	<mx:Metadata>

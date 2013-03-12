@@ -105,6 +105,10 @@
 				navigateToURL(new URLRequest("../formats/ODCM.pdf"));//+this.datagrid.selectedItem.id));
 			}
 			
+			public function setDataGridData(datas:ArrayCollection):void
+			{
+				items = datas;
+			}
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -142,6 +146,18 @@
 							   width="80"
 							   dataField="proveedorCalificado.proveedorSeleccionado.nombreComercial"
 							   labelFunction="labelFunctionGenerico"/>
+			<mx:DataGridColumn id="dtgSubtotal" headerText="Subtotal"
+							   width="80"
+							   dataField="subtotal"
+							   labelFunction="{Util.labelFunctionCurrency}"/>
+			<mx:DataGridColumn id="dtgIVA" headerText="I.V.A."
+							   width="80"
+							   dataField="iva"
+							   labelFunction="{Util.labelFunctionCurrency}"/>
+			<mx:DataGridColumn id="dtgTotal" headerText="Total"
+							   width="80"
+							   dataField="total"
+							   labelFunction="{Util.labelFunctionCurrency}"/>
 		</mx:columns>
 	</mx:DataGrid>
 	<mx:HBox>

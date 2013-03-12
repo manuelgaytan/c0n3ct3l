@@ -110,5 +110,27 @@
 		<mx:LinkButton label="Concentrado Ordenes de Compra" id="ConcentradoOrdenesCompra" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/servicios.png')"/>
 	</mx:VBox>
+	<mx:VBox label="Cuentas por Pagar" width="100%" height="100%">
+		<mx:LinkButton label="Facturación Proveedor" id="FacturacionProveedores" click="clickMenuHandler(event)"
+					   icon="@Embed(source='assets/images/clientes.png')"/>
+		<mx:LinkButton label="Nota de Crédito" id="NotasCreditoProveedores" click="clickMenuHandler(event)"
+					   icon="@Embed(source='assets/images/servicios.png')"/>
+	</mx:VBox>
+	<mx:VBox label="Facturación" width="100%" height="100%">
+		<mx:LinkButton label="Información Facturación" id="InformacionFacturas" click="clickMenuHandler(event)"
+					   icon="@Embed(source='assets/images/clientes.png')"/>
+		<mx:LinkButton label="Nota de Crédito" id="NotasCreditoClientes" click="clickMenuHandler(event)"
+					   icon="@Embed(source='assets/images/servicios.png')"/>
+	</mx:VBox>
+	<mx:VBox label="Contabilidad" width="100%" height="100%">
+		<mx:LinkButton label="Comprobación de Viáticos" id="ComprobacionesViaticos" click="clickMenuHandler(event)"
+					   icon="@Embed(source='assets/images/clientes.png')"/>
+		<mx:LinkButton label="Fondo Fijo de Caja Chica" id="FondosFijosCajaChica" click="clickMenuHandler(event)"
+					   icon="@Embed(source='assets/images/servicios.png')"/>
+		<mx:LinkButton label="Pagos Contables y Servicios" id="PagosContablesServicios" click="clickMenuHandler(event)"
+					   icon="@Embed(source='assets/images/clientes.png')"/>
+		<mx:LinkButton label="Solicitud de Viáticos" id="SolicitudesViaticos" click="clickMenuHandler(event)"
+					   icon="@Embed(source='assets/images/servicios.png')"/>
+	</mx:VBox>
 	<mx:VBox id="empty"/>
 </mx:Accordion>

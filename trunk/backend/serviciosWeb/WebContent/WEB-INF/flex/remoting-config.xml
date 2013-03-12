@@ -273,4 +273,28 @@
 			<scope>session</scope>
 		</properties>
 	</destination>
+	
+	<destination id="facturaProveedorService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/FacturaProveedorService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+	
+	<destination id="notaCreditoProveedorService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/NotaCreditoProveedorService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+	
+	<destination id="notaCreditoClienteService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/NotaCreditoClienteService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
 </service>

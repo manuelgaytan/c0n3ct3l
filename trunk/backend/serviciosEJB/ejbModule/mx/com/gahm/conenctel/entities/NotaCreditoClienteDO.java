@@ -21,7 +21,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name = "NotaCreditoClienteDO")
+@Table(name = "NotaCreditoCliente")
 @NamedQueries({
 	@NamedQuery(name = "NotaCreditoClienteDO.findAll", query = "select rc from NotaCreditoClienteDO rc")
 	})

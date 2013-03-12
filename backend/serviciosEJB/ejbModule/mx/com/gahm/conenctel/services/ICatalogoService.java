@@ -11,8 +11,10 @@ import mx.com.gahm.conenctel.entities.ColaboradorDO;
 import mx.com.gahm.conenctel.entities.CompaniaDO;
 import mx.com.gahm.conenctel.entities.DescripcionAlmacenDO;
 import mx.com.gahm.conenctel.entities.EstadoFinalValidacionDO;
+import mx.com.gahm.conenctel.entities.EstadoInvestigacionCalidadDO;
 import mx.com.gahm.conenctel.entities.EstadoSolicitudAlmacenDO;
 import mx.com.gahm.conenctel.entities.EstadoSolicitudServicioMaquiladoDO;
+import mx.com.gahm.conenctel.entities.EstadoTesoreriaDO;
 import mx.com.gahm.conenctel.entities.EstadoValidacionAdministrativaDO;
 import mx.com.gahm.conenctel.entities.EstadoValidacionCobroDO;
 import mx.com.gahm.conenctel.entities.EstadoValidacionOperativaDO;
@@ -143,4 +145,8 @@ public interface ICatalogoService extends Serializable {
 	List<ValidacionCostoDO> getValidacionCosto() throws ConectelException;
 	
 	List<EstadoOrdenCompraDO> getEstadoOrdenCompra() throws ConectelException;
+	
+	List<EstadoInvestigacionCalidadDO> getEstadoInvestigacionCalidad() throws ConectelException;
+	
+	List<EstadoTesoreriaDO> getEstadoTesoreria() throws ConectelException;
 }

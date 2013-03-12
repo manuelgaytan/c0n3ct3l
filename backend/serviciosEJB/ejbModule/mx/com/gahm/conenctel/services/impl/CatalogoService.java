@@ -16,9 +16,11 @@ import mx.com.gahm.conenctel.entities.ColaboradorDO;
 import mx.com.gahm.conenctel.entities.CompaniaDO;
 import mx.com.gahm.conenctel.entities.DescripcionAlmacenDO;
 import mx.com.gahm.conenctel.entities.EstadoFinalValidacionDO;
+import mx.com.gahm.conenctel.entities.EstadoInvestigacionCalidadDO;
 import mx.com.gahm.conenctel.entities.EstadoOrdenCompraDO;
 import mx.com.gahm.conenctel.entities.EstadoSolicitudAlmacenDO;
 import mx.com.gahm.conenctel.entities.EstadoSolicitudServicioMaquiladoDO;
+import mx.com.gahm.conenctel.entities.EstadoTesoreriaDO;
 import mx.com.gahm.conenctel.entities.EstadoValidacionAdministrativaDO;
 import mx.com.gahm.conenctel.entities.EstadoValidacionCobroDO;
 import mx.com.gahm.conenctel.entities.EstadoValidacionOperativaDO;
@@ -693,6 +695,34 @@ public class CatalogoService implements ICatalogoService {
 				"EstadoOrdenCompraDO.findAll", EstadoOrdenCompraDO.class);
 		
 		List<EstadoOrdenCompraDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<EstadoInvestigacionCalidadDO> getEstadoInvestigacionCalidad() throws ConectelException {
+		TypedQuery<EstadoInvestigacionCalidadDO> query = entityManager.createNamedQuery(
+				"EstadoInvestigacionCalidadDO.findAll", EstadoInvestigacionCalidadDO.class);
+		
+		List<EstadoInvestigacionCalidadDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<EstadoTesoreriaDO> getEstadoTesoreria() throws ConectelException {
+		TypedQuery<EstadoTesoreriaDO> query = entityManager.createNamedQuery(
+				"EstadoTesoreriaDO.findAll", EstadoTesoreriaDO.class);
+		
+		List<EstadoTesoreriaDO> list;
 		try {
 			list = query.getResultList();
 		} catch (NoResultException e) {

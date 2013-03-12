@@ -4,8 +4,9 @@
 		 >
 	<mx:Script>
 		<![CDATA[
+			import model.Cliente;
 			import model.Constants;
-			import model.NotaCreditoProveedor;
+			import model.NotaCreditoCliente;
 			import model.ProveedorCalificado;
 			import model.ProveedorMaquilador;
 			import model.Util;
@@ -24,7 +25,7 @@
 			import mx.utils.object_proxy;
 			
 			private var mode:String = null;
-			private var _item:NotaCreditoProveedor;
+			private var _item:NotaCreditoCliente;
 			private var validators:InicializaValidadoresEtiquetas;
 			
 			public function set registrer(value:Boolean):void{
@@ -47,7 +48,7 @@
 				this.fillCombos();
 			}
 			
-			public function set creditNote(value:NotaCreditoProveedor):void{
+			public function set creditNote(value:NotaCreditoCliente):void{
 				if( value == null ){
 					return;
 				}
@@ -63,44 +64,44 @@
 				}
 				this.txtID.text = String(this._item.id);
 				this.txtFolio.text = this._item.folio;
+				this.txtInvoice.text = this._item.factura;
+				this.txtItem.text = this._item.item;
 				this.dtfDate.selectedDate = this._item.fecha;
 				this.txtSubtotal.text = this._item.subtotal.toString();
 				this.txtIVA.text = this._item.iva.toString();
 				this.txtTotal.text = this._item.total.toString();
-				if( Util.isFill( this.cmbQualifiedSupplier ) && this._item.proveedorCalificado != null ){
-					this.cmbQualifiedSupplier.selectedIndex = Util.selectedIndexFromCombo( this.cmbQualifiedSupplier.dataProvider as ArrayCollection, 
-						this._item.proveedorCalificado.id);
+				if( Util.isFill( this.cmbClient ) && this._item.cliente != null ){
+					this.cmbClient.selectedIndex = Util.selectedIndexFromCombo( this.cmbClient.dataProvider as ArrayCollection, 
+						this._item.cliente.id);
 				}
-				if( Util.isFill( this.cmbMaquiladoSupplier ) && this._item.proveedorMaquilador != null ){
-					this.cmbMaquiladoSupplier.selectedIndex = Util.selectedIndexFromCombo( this.cmbMaquiladoSupplier.dataProvider as ArrayCollection, 
-						this._item.proveedorMaquilador.id);
-				}
+				this.comments.setCommentsIn( this._item.comentariosNotaCreditoCliente, "comentarioCuentasPagarFacturacion");
 			}
 			
-			private function getCreditNote():NotaCreditoProveedor{
-				var item:NotaCreditoProveedor = null;
+			private function getCreditNote():NotaCreditoCliente{
+				var item:NotaCreditoCliente = null;
 				if( this.mode == Constants.REGISTER_MODE ){
-					item = new NotaCreditoProveedor();
+					item = new NotaCreditoCliente();
 				}else{
 					item = this._item;
 				}
 				item.folio = Util.validateEmpty( this.txtFolio.text );
+				item.factura = Util.validateEmpty( this.txtInvoice.text );
+				item.item = Util.validateEmpty( this.txtItem.text );
 				item.fecha = this.dtfDate.selectedDate;
 				item.subtotal = Util.stringToNumber( this.txtSubtotal.text );
 				item.iva = Util.stringToNumber( this.txtIVA.text );
 				item.total = Util.stringToNumber( this.txtTotal.text );
-				item.proveedorCalificado = Util.validateCombo( this.cmbQualifiedSupplier ) as ProveedorCalificado;
-				item.proveedorMaquilador = Util.validateCombo( this.cmbMaquiladoSupplier ) as ProveedorMaquilador;
+				item.cliente = Util.validateCombo( this.cmbClient ) as Cliente;
+				item.comentariosNotaCreditoCliente = this.comments.getCommentsAsInWith("model.ComentarioCuentasPagarFacturacion","model.ComentarioNotaCreditoCliente","comentarioCuentasPagarFacturacion");
 				return item;
 			}
 			
 			private function fillCombos():void
 			{
-				this.responseGetAllProveedorCalificado.token = this.proveedorCalificadoService.getProveedoresCalificados();
-				this.responseGetAllProveedorMaquilador.token = this.proveedorMaquiladorService.getProveedoresMaquiladores();
+				this.responseGetAll.token = this.clienteService.getAll();
 			}
 			
-			protected function notaCreditoProveedorService_faultHandler(event:FaultEvent):void
+			protected function notaCreditoClienteService_faultHandler(event:FaultEvent):void
 			{
 				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
 			}
@@ -111,20 +112,10 @@
 					Util.showMessageVerifyFields();
 					return;
 				}
-				if( !Util.listBaseSelected( this.cmbQualifiedSupplier, "id", true ) && 
-					!Util.listBaseSelected( this.cmbMaquiladoSupplier, "id", true ) ){
-					Alert.show("Debe estar seleccionado un proveedor ya sea Calificado ó Maquilador.","Error");
-					return;
-				}
-				if( Util.listBaseSelected( this.cmbQualifiedSupplier, "id", true ) && 
-					Util.listBaseSelected( this.cmbMaquiladoSupplier, "id", true ) ){
-					Alert.show("Debe estar seleccionado un proveedor ya sea Calificado ó Maquilador, no ambos a la vez.","Error");
-					return;
-				}
 				if( this.mode == Constants.REGISTER_MODE ){
-					var creditNote:NotaCreditoProveedor = this.getCreditNote();
+					var creditNote:NotaCreditoCliente = this.getCreditNote();
 					Util.showProperties( creditNote );
-					this.responseSave.token = this.notaCreditoProveedorService.save( creditNote );
+					this.responseSave.token = this.notaCreditoClienteService.save( creditNote );
 				}
 				if( this.mode == Constants.UPDATE_MODE ){
 					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
@@ -135,9 +126,9 @@
 				if( event.detail == Alert.NO ){
 					return;
 				}
-				var creditNote:NotaCreditoProveedor = this.getCreditNote();
+				var creditNote:NotaCreditoCliente = this.getCreditNote();
 				Util.showProperties( creditNote );
-				this.responseUpdate.token = this.notaCreditoProveedorService.update( creditNote );
+				this.responseUpdate.token = this.notaCreditoClienteService.update( creditNote );
 			}
 			
 			private function validations():Boolean
@@ -145,6 +136,7 @@
 				var value:Boolean = true;
 				value &&= this.validators.validarFormulario();
 				value &&= this.dtfDate.selectedDate != null;
+				value &&= Util.listBaseSelected( this.cmbClient );
 				return value;
 			}
 			
@@ -160,6 +152,8 @@
 				this.validators = new InicializaValidadoresEtiquetas();
 				validators.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
 				validators.setValidador(txtFolio, "generic");
+				validators.setValidador(txtInvoice, "generic");
+				validators.setRestrictor(txtItem, "generic");
 				validators.crearValidadorRestrictor("decimalGeneric",ValidadorDecimal.nombre, 7,2);
 				validators.setValidador(txtSubtotal, "decimalGeneric");
 				validators.setRestrictor(txtIVA, "decimalGeneric");
@@ -177,12 +171,14 @@
 			{
 				this.txtID.reset();
 				this.txtFolio.reset();
+				this.txtInvoice.reset();
+				this.txtItem.reset();
 				this.dtfDate.reset();
 				this.txtSubtotal.reset();
 				this.txtIVA.reset();
 				this.txtTotal.reset();
-				this.cmbQualifiedSupplier.selectedIndex = 0;
-				this.cmbMaquiladoSupplier.selectedIndex = 0;
+				this.cmbClient.selectedIndex = 0;
+				this.comments.reset();
 			}
 			
 			protected function responseUpdate_resultHandler(event:ResultEvent):void
@@ -197,32 +193,17 @@
 				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
 			}
 			
-			protected function responseGetAllProveedorCalificado_resultHandler(event:ResultEvent):void
+			protected function responseGetAll_resultHandler(event:ResultEvent):void
 			{
 				var data:ArrayCollection = event.result as ArrayCollection;
 				if( data == null ){
 					return;
 				}
-				this.cmbQualifiedSupplier.dataProvider = Util.addEmptyCatalgo(data);
-				if( Util.isFill( this.cmbQualifiedSupplier ) && this._item 
-					&& this._item.proveedorCalificado != null ){
-					this.cmbQualifiedSupplier.selectedIndex = Util.selectedIndexFromCombo( this.cmbQualifiedSupplier.dataProvider as ArrayCollection, 
-						this._item.proveedorCalificado.id );
-				}
-			}
-			
-			
-			protected function responseGetAllProveedorMaquilador_resultHandler(event:ResultEvent):void
-			{
-				var data:ArrayCollection = event.result as ArrayCollection;
-				if( data == null ){
-					return;
-				}
-				this.cmbMaquiladoSupplier.dataProvider = Util.addEmptyCatalgo(data,"nombreComercial");	
-				if( Util.isFill( this.cmbMaquiladoSupplier ) && this._item 
-					&& this._item.proveedorCalificado != null ){
-					this.cmbMaquiladoSupplier.selectedIndex = Util.selectedIndexFromCombo( this.cmbMaquiladoSupplier.dataProvider as ArrayCollection, 
-						this._item.proveedorMaquilador.id );
+				this.cmbClient.dataProvider = data;
+				if( Util.isFill( this.cmbClient ) && this._item 
+					&& this._item.cliente != null ){
+					this.cmbClient.selectedIndex = Util.selectedIndexFromCombo( this.cmbClient.dataProvider as ArrayCollection, 
+						this._item.cliente.id );
 				}
 			}
 			
@@ -242,15 +223,17 @@
 		<mx:FormItem label="Folio:">
 			<components:TextInput id="txtFolio" textAlign="right"/>
 		</mx:FormItem>
+		<mx:FormItem label="Factura:">
+			<components:TextInput id="txtInvoice" textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Ítem:">
+			<components:TextInput id="txtItem" textAlign="right"/>
+		</mx:FormItem>
 		<mx:FormItem label="Fecha:">
 			<components:DateField id="dtfDate"/>
 		</mx:FormItem>
-		<mx:FormItem label="Proveedor Calificado:">
-			<mx:ComboBox id="cmbQualifiedSupplier"
-						 labelFunction="qualifiedSupplier"/>
-		</mx:FormItem>
-		<mx:FormItem label="Proveedor Maquilador:">
-			<mx:ComboBox id="cmbMaquiladoSupplier"
+		<mx:FormItem label="Cliente:">
+			<mx:ComboBox id="cmbClient"
 						 labelField="nombreComercial"/>
 		</mx:FormItem>
 		<mx:FormItem label="Subtotal:">
@@ -267,18 +250,16 @@
 			<components:TextInput id="txtTotal"
 								  textAlign="right"/>
 		</mx:FormItem>
+		<components:Comments id="comments"/>
 		<mx:FormItem>
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
 		</mx:FormItem>
 	</mx:Form>
-	<mx:RemoteObject id="notaCreditoProveedorService" destination="notaCreditoProveedorService" fault="notaCreditoProveedorService_faultHandler(event)"
+	<mx:RemoteObject id="notaCreditoClienteService" destination="notaCreditoClienteService" fault="notaCreditoClienteService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
 	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
-	<mx:RemoteObject id="proveedorCalificadoService" destination="proveedorCalificadoService" fault="notaCreditoProveedorService_faultHandler(event)"
+	<mx:RemoteObject id="clienteService" destination="clienteService" fault="notaCreditoClienteService_faultHandler(event)"
 					 showBusyCursor="true"/>
-	<mx:CallResponder id="responseGetAllProveedorCalificado" result="responseGetAllProveedorCalificado_resultHandler(event)"/>
-	<mx:RemoteObject id="proveedorMaquiladorService" destination="proveedorMaquiladorService" fault="notaCreditoProveedorService_faultHandler(event)"
-					 showBusyCursor="true"/>
-	<mx:CallResponder id="responseGetAllProveedorMaquilador" result="responseGetAllProveedorMaquilador_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetAll" result="responseGetAll_resultHandler(event)"/>
 </mx:VBox>

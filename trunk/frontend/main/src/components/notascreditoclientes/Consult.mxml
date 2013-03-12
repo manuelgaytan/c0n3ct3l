@@ -7,7 +7,7 @@
 		<![CDATA[
 			import events.GenericEvent;
 			
-			import model.NotaCreditoProveedor;
+			import model.NotaCreditoCliente;
 			import model.Util;
 			
 			import mx.collections.ArrayCollection;
@@ -20,14 +20,14 @@
 			[Bindable]
 			private var items:ArrayCollection = null;
 			
-			private var notaCreditoProveedor:NotaCreditoProveedor;
+			private var notaCreditoCliente:NotaCreditoCliente;
 			
 			protected function responseGetAll_resultHandler(event:ResultEvent):void
 			{
 				items = event.result as ArrayCollection;
 			}
 			
-			protected function notaCreditoProveedorService_faultHandler(event:FaultEvent):void
+			protected function notaCreditoClienteService_faultHandler(event:FaultEvent):void
 			{
 				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
 			}
@@ -39,16 +39,16 @@
 			
 			protected function datagrid_doubleClickHandler(event:MouseEvent):void
 			{
-				var item:NotaCreditoProveedor = this.datagrid.selectedItem as NotaCreditoProveedor;
+				var item:NotaCreditoCliente = this.datagrid.selectedItem as NotaCreditoCliente;
 				if( item == null ){
 					return;
 				}
-				this.responseGetItem.token = this.notaCreditoProveedorService.getItem( item.id );
+				this.responseGetItem.token = this.notaCreditoClienteService.getItem( item.id );
 			}
 			
 			protected function responseGetItem_resultHandler(event:ResultEvent):void
 			{
-				var item:NotaCreditoProveedor = event.result as NotaCreditoProveedor;
+				var item:NotaCreditoCliente = event.result as NotaCreditoCliente;
 				if( item == null ){
 					return;
 				}
@@ -59,7 +59,7 @@
 			
 			public function executeQuery():void
 			{
-				this.responseGetAll.token = this.notaCreditoProveedorService.getAll();
+				this.responseGetAll.token = this.notaCreditoClienteService.getAll();
 			}
 			
 			protected function btnDelete_clickHandler(event:MouseEvent):void
@@ -78,7 +78,7 @@
 					return;
 				}
 				var items:ArrayCollection = Util.selectedIDs( this.datagrid.selectedItems ); 
-				this.responseDeleteItems.token = this.notaCreditoProveedorService.deleteItems( items );
+				this.responseDeleteItems.token = this.notaCreditoClienteService.deleteItems( items );
 			}
 			
 			protected function responseDeleteItems_resultHandler(event:ResultEvent):void
@@ -111,6 +111,11 @@
 							   dataField="folio"
 							   textAlign="right"
 							   />
+			<mx:DataGridColumn id="dtgInvoice" headerText="Factura"
+							   width="80"
+							   dataField="factura"
+							   textAlign="right"
+							   />
 			<mx:DataGridColumn id="dtgDate" headerText="Fecha"
 							   dataField="fecha"
 							   width="60"
@@ -120,18 +125,15 @@
 							   dataField="total"
 							   width="80"
 							   textAlign="right"/>
-			<mx:DataGridColumn id="dtgQualifiedSupplier" headerText="{'Proveedor Calificado'}"
-							   dataField="proveedorCalificado.proveedorSeleccionado.nombreComercial"
-							   width="100"/>
-			<mx:DataGridColumn id="dtgMaquiladoSupplier" headerText="{'Proveedor Calificado'}"
-							   dataField="proveedorMaquilador.nombreComercial"
+			<mx:DataGridColumn id="dtgClient" headerText="Cliente"
+							   dataField="cliente.nombreComercial"
 							   width="100"/>
 		</mx:columns>
 	</mx:DataGrid>
 	<mx:HBox>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>
 	</mx:HBox>
-	<mx:RemoteObject id="notaCreditoProveedorService" destination="notaCreditoProveedorService" fault="notaCreditoProveedorService_faultHandler(event)"
+	<mx:RemoteObject id="notaCreditoClienteService" destination="notaCreditoClienteService" fault="notaCreditoClienteService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetAll" result="responseGetAll_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetItem" result="responseGetItem_resultHandler(event)"/>

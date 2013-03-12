@@ -35,6 +35,7 @@
 			import model.ComentarioInformacionFacturacion1;
 			import model.ComentarioInformacionFacturacion2;
 			import model.ComentarioInformacionFacturacion3;
+			import model.ComentarioNotaCreditoCliente;
 			import model.ComentarioOrdenCompraCliente;
 			import model.ComentarioPantallaValidacionAdministrativa;
 			import model.ComentarioRequisicion;
@@ -315,6 +316,7 @@
 			private var notaCreditoCliente:NotaCreditoCliente;
 			private var notaCreditoProveedor:NotaCreditoProveedor;
 			private var comentarioFacturaProveedor:ComentarioFacturaProveedor;
+			private var comentarioNotaCreditoCliente:ComentarioNotaCreditoCliente;
 			
 			protected function login_readyHandler(event:ModuleEvent):void
 			{

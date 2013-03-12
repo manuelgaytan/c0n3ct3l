@@ -60,6 +60,7 @@
 				if( value == null ){
 					return;
 				}
+				this.cleanForm();
 				this._client = value;
 				this.setClient(); 
 			}

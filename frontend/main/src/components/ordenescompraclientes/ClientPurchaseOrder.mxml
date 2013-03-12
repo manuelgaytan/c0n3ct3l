@@ -59,6 +59,7 @@
 				if( value == null ){
 					return;
 				}
+				this.cleanForm();
 				this._item = value;
 				this.setItem(); 
 			}
@@ -263,6 +264,9 @@
 			}
 			
 			private function setCommercialCost(project:Proyecto):void{
+				if( project == null ){
+					return;
+				}
 				if( project.producto.tipoServicio == Producto.TIPO_SERVICIO_LOCAL ){
 					this.txtCommercialCost.text = Util.currencyFormatter.format(project.producto.costoLocalCliente);
 				}
@@ -325,7 +329,7 @@
 		</mx:FormItem>
 		<components:Comments id="commentsCostValidation"/>
 		<mx:FormHeading label="Modificación de Estado de Orden de Compra"/>
-		<mx:FormItem label="Estado de Orden de Compra">
+		<mx:FormItem label="Estado de Orden de Compra:">
 			<mx:ComboBox id="cmbPurchaseOrderStatus" width="200"
 						 labelField="etiqueta"/>
 		</mx:FormItem>

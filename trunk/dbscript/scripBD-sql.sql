@@ -1367,6 +1367,32 @@
 	PRIMARY KEY (id)
 	);
 
+	CREATE TABLE ComprobacionViaticos
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_solicitud_viaticos INT(11) UNSIGNED NOT NULL,
+	total_autorizado DECIMAL NOT NULL,
+	fecha_subida_documentos DATE,
+	documento_formato VARCHAR(255),
+	fk_estado_comprobacion_viaticos INT(11) UNSIGNED NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE DocumentoComprobacionViaticos
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_comprobacion_viaticos INT(11) UNSIGNED NOT NULL,
+	documento VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE EstadoComprobacionViaticos
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	estado VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
 	ALTER TABLE Cliente ADD FOREIGN KEY id_contacto_idxfk (id_contacto) REFERENCES Contacto (id);
 
 	ALTER TABLE Proyecto ADD FOREIGN KEY id_categoria_proyecto_idxfk (id_categoria_proyecto) REFERENCES CategoriaProyecto (id);
@@ -1771,6 +1797,12 @@
 
 	ALTER TABLE SolicitudViaticos ADD FOREIGN KEY fk_medio_transporte_idxfk (fk_medio_transporte) REFERENCES MedioTransporte (id);
 	
+	ALTER TABLE ComprobacionViaticos ADD FOREIGN KEY fk_solicitud_viaticos_idxfk (fk_solicitud_viaticos) REFERENCES SolicitudViaticos (id);
+
+	ALTER TABLE ComprobacionViaticos ADD FOREIGN KEY fk_estado_comprobacion_viaticos_idxfk (fk_estado_comprobacion_viaticos) REFERENCES EstadoComprobacionViaticos (id);
+
+	ALTER TABLE DocumentoComprobacionViaticos ADD FOREIGN KEY fk_comprobacion_viaticos_idxfk (fk_comprobacion_viaticos) REFERENCES ComprobacionViaticos (id);
+
 	/* Perfiles */
 	INSERT INTO Perfil
 	VALUES (1, 'Director General');
@@ -2514,6 +2546,12 @@
 	VALUES (3, 'Vehículo');
 	INSERT INTO MedioTransporte
 	VALUES (4, 'Otro');
+
+	INSERT INTO EstadoComprobacionViaticos
+	VALUES (1, 'Aprobado');
+	INSERT INTO EstadoComprobacionViaticos
+	VALUES (2, 'Rechazado');
+
 /*
 	INSERT INTO Proveedor
 	VALUES (1, 1, 'ACME', 'ALMEIRA CASTAÑEDA MELIA', 'ALCM900622DF7', 'REFORMA 34, COL. JUÁREZ, DELG. CUAUHTEMOC', 'REFORMA 34, COL. JUÁREZ, DELG. CUAUHTEMOC', '57115887','MELIA ALMEIRA','melia347@yahoo.com','','');

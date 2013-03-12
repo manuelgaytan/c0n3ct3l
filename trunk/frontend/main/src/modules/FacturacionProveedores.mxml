@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
+		   width="850" height="525"
+		   xmlns:facturacionproveedores="components.facturacionproveedores.*"
+		   creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import events.GenericEvent;
+			
+			import model.FacturaProveedor;
+			import model.Usuario;
+			
+			import mx.events.FlexEvent;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				
+			}
+			
+			protected function consult_vendorInvoiceDetailHandler(event:GenericEvent):void
+			{
+				this.detail.vendorInvoice = event.information as FacturaProveedor;
+				this.navigator.selectedChild = this.detail;
+			}
+			
+			protected function register_vendorInvoiceNewHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+			
+			protected function detail_vendorInvoiceUpdatedHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+		]]>
+	</mx:Script>
+	<mx:TabNavigator id="navigator" width="100%" height="100%" creationPolicy="all">
+		<facturacionproveedores:Consult id="consult" itemDetail="consult_vendorInvoiceDetailHandler(event)"/>
+		<facturacionproveedores:VendorInvoice id="detail" update="true" vendorInvoiceUpdated="detail_vendorInvoiceUpdatedHandler(event)"/>
+		<facturacionproveedores:VendorInvoice id="register" registrer="true" vendorInvoiceNew="register_vendorInvoiceNewHandler(event)"/>
+	</mx:TabNavigator>
+</mx:Module>

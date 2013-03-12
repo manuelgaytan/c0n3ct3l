@@ -29,7 +29,12 @@
 			import model.Comentario;
 			import model.ComentarioCompras;
 			import model.ComentarioConcentradoOrdenCompraCliente;
+			import model.ComentarioCuentasPagarFacturacion;
+			import model.ComentarioFacturaProveedor;
 			import model.ComentarioGenerico;
+			import model.ComentarioInformacionFacturacion1;
+			import model.ComentarioInformacionFacturacion2;
+			import model.ComentarioInformacionFacturacion3;
 			import model.ComentarioOrdenCompraCliente;
 			import model.ComentarioPantallaValidacionAdministrativa;
 			import model.ComentarioRequisicion;
@@ -54,9 +59,11 @@
 			import model.EquipoTransporteSolicitudAlmacen;
 			import model.Estado;
 			import model.EstadoFinalValidacion;
+			import model.EstadoInvestigacionCalidad;
 			import model.EstadoOrdenCompra;
 			import model.EstadoSolicitudAlmacen;
 			import model.EstadoSolicitudServicioMaquilado;
+			import model.EstadoTesoreria;
 			import model.EstadoValidacionAdministrativa;
 			import model.EstadoValidacionCobro;
 			import model.EstadoValidacionCosto;
@@ -67,6 +74,7 @@
 			import model.EstatusProyectoEntregable;
 			import model.EstatusRequisicionCompra;
 			import model.FacturaPorPagar;
+			import model.FacturaProveedor;
 			import model.FiltroProducto;
 			import model.FiltroProyecto;
 			import model.GrupoFamiliaA;
@@ -80,11 +88,14 @@
 			import model.Herramienta;
 			import model.HerramientaSolicitudAlmacen;
 			import model.Imputable;
+			import model.InformacionFacturacion;
 			import model.Material;
 			import model.MaterialSolicitudAlmacen;
 			import model.MenuOption;
 			import model.Model;
 			import model.NombreSolicitante;
+			import model.NotaCreditoCliente;
+			import model.NotaCreditoProveedor;
 			import model.Observacion;
 			import model.OrdenCompraAlmacen;
 			import model.OrdenCompraCliente;
@@ -293,6 +304,17 @@
 			private var estadoOrdenCompra:EstadoOrdenCompra;
 			private var comentarioValidacionCostoOrdenCompraCliente:ComentarioValidacionCostoOrdenCompraCliente;
 			private var comentarioOrdenCompraCliente:ComentarioOrdenCompraCliente;
+			private var facturaProveedor:FacturaProveedor;
+			private var estadoInvestigacionCalidad:EstadoInvestigacionCalidad;
+			private var estadoTesoreria:EstadoTesoreria;
+			private var comentarioCuentasPagarFacturacion:ComentarioCuentasPagarFacturacion;
+			private var comentarioInformacionFacturacion1:ComentarioInformacionFacturacion1;
+			private var comentarioInformacionFacturacion2:ComentarioInformacionFacturacion2;
+			private var comentarioInformacionFacturacion3:ComentarioInformacionFacturacion3;
+			private var informacionFacturacion:InformacionFacturacion;
+			private var notaCreditoCliente:NotaCreditoCliente;
+			private var notaCreditoProveedor:NotaCreditoProveedor;
+			private var comentarioFacturaProveedor:ComentarioFacturaProveedor;
 			
 			protected function login_readyHandler(event:ModuleEvent):void
 			{

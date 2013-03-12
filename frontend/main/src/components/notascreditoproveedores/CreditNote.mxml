@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)"
+		 >
+	<mx:Script>
+		<![CDATA[
+			import model.Constants;
+			import model.NotaCreditoProveedor;
+			import model.ProveedorCalificado;
+			import model.ProveedorMaquilador;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.com.gahm.componentes.validadores.ValidadorNumerico;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.utils.object_proxy;
+			
+			private var mode:String = null;
+			private var _item:NotaCreditoProveedor;
+			private var validators:InicializaValidadoresEtiquetas;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				this.label = Constants.REGISTRAR;
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set creditNote(value:NotaCreditoProveedor):void{
+				if( value == null ){
+					return;
+				}
+				this.cleanForm();
+				this._item = value;
+				this.setCreditNote(); 
+			}
+			
+			private function setCreditNote():void
+			{
+				if( this._item == null ){
+					return;
+				}
+				this.txtID.text = String(this._item.id);
+				this.txtFolio.text = this._item.folio;
+				this.dtfDate.selectedDate = this._item.fecha;
+				this.txtSubtotal.text = this._item.subtotal.toString();
+				this.txtIVA.text = this._item.iva.toString();
+				this.txtTotal.text = this._item.total.toString();
+				if( Util.isFill( this.cmbQualifiedSupplier ) && this._item.proveedorCalificado != null ){
+					this.cmbQualifiedSupplier.selectedIndex = Util.selectedIndexFromCombo( this.cmbQualifiedSupplier.dataProvider as ArrayCollection, 
+						this._item.proveedorCalificado.id);
+				}
+				if( Util.isFill( this.cmbMaquiladoSupplier ) && this._item.proveedorMaquilador != null ){
+					this.cmbMaquiladoSupplier.selectedIndex = Util.selectedIndexFromCombo( this.cmbMaquiladoSupplier.dataProvider as ArrayCollection, 
+						this._item.proveedorMaquilador.id);
+				}
+			}
+			
+			private function getCreditNote():NotaCreditoProveedor{
+				var item:NotaCreditoProveedor = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					item = new NotaCreditoProveedor();
+				}else{
+					item = this._item;
+				}
+				item.folio = Util.validateEmpty( this.txtFolio.text );
+				item.fecha = this.dtfDate.selectedDate;
+				item.subtotal = Util.stringToNumber( this.txtSubtotal.text );
+				item.iva = Util.stringToNumber( this.txtIVA.text );
+				item.total = Util.stringToNumber( this.txtTotal.text );
+				item.proveedorCalificado = Util.validateCombo( this.cmbQualifiedSupplier ) as ProveedorCalificado;
+				item.proveedorMaquilador = Util.validateCombo( this.cmbMaquiladoSupplier ) as ProveedorMaquilador;
+				return item;
+			}
+			
+			private function fillCombos():void
+			{
+				this.responseGetAllProveedorCalificado.token = this.proveedorCalificadoService.getProveedoresCalificados();
+				this.responseGetAllProveedorMaquilador.token = this.proveedorMaquiladorService.getProveedoresMaquiladores();
+			}
+			
+			protected function notaCreditoProveedorService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function btnAccept_clickHandler(event:MouseEvent):void
+			{
+				if( !this.validations() ){
+					Util.showMessageVerifyFields();
+					return;
+				}
+				if( !Util.listBaseSelected( this.cmbQualifiedSupplier, "id", true ) && 
+					!Util.listBaseSelected( this.cmbMaquiladoSupplier, "id", true ) ){
+					Alert.show("Debe estar seleccionado un proveedor ya sea Calificado ó Maquilador.","Error");
+					return;
+				}
+				if( Util.listBaseSelected( this.cmbQualifiedSupplier, "id", true ) && 
+					Util.listBaseSelected( this.cmbMaquiladoSupplier, "id", true ) ){
+					Alert.show("Debe estar seleccionado un proveedor ya sea Calificado ó Maquilador, no ambos a la vez.","Error");
+					return;
+				}
+				if( this.mode == Constants.REGISTER_MODE ){
+					var creditNote:NotaCreditoProveedor = this.getCreditNote();
+					Util.showProperties( creditNote );
+					this.responseSave.token = this.notaCreditoProveedorService.save( creditNote );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
+				}
+			}
+			
+			private function updateItem(event:CloseEvent):void{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var creditNote:NotaCreditoProveedor = this.getCreditNote();
+				Util.showProperties( creditNote );
+				this.responseUpdate.token = this.notaCreditoProveedorService.update( creditNote );
+			}
+			
+			private function validations():Boolean
+			{
+				var value:Boolean = true;
+				value &&= this.validators.validarFormulario();
+				value &&= this.dtfDate.selectedDate != null;
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+					form.removeChild( this.frmID );
+				}
+			}
+			
+			private function initializeValidators():void
+			{
+				this.validators = new InicializaValidadoresEtiquetas();
+				validators.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
+				validators.setValidador(txtFolio, "generic");
+				validators.crearValidadorRestrictor("decimalGeneric",ValidadorDecimal.nombre, 7,2);
+				validators.setValidador(txtSubtotal, "decimalGeneric");
+				validators.setRestrictor(txtIVA, "decimalGeneric");
+				validators.setValidador(txtTotal, "decimalGeneric");
+			}
+			
+			protected function responseSave_resultHandler(event:ResultEvent):void
+			{
+				var eventCreditNoteNew:Event = new Event("creditNoteNew");
+				this.dispatchEvent( eventCreditNoteNew );
+				this.cleanForm();
+			}
+			
+			private function cleanForm():void
+			{
+				this.txtID.reset();
+				this.txtFolio.reset();
+				this.dtfDate.reset();
+				this.txtSubtotal.reset();
+				this.txtIVA.reset();
+				this.txtTotal.reset();
+				this.cmbQualifiedSupplier.selectedIndex = 0;
+				this.cmbMaquiladoSupplier.selectedIndex = 0;
+			}
+			
+			protected function responseUpdate_resultHandler(event:ResultEvent):void
+			{
+				var eventCreditNoteUpdated:Event = new Event("creditNoteUpdated");
+				this.dispatchEvent( eventCreditNoteUpdated );
+				this.cleanForm();
+			}
+			
+			protected function catalogoService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function responseGetAllProveedorCalificado_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbQualifiedSupplier.dataProvider = Util.addEmptyCatalgo(data);
+				if( Util.isFill( this.cmbQualifiedSupplier ) && this._item 
+					&& this._item.proveedorCalificado != null ){
+					this.cmbQualifiedSupplier.selectedIndex = Util.selectedIndexFromCombo( this.cmbQualifiedSupplier.dataProvider as ArrayCollection, 
+						this._item.proveedorCalificado.id );
+				}
+			}
+			
+			
+			protected function responseGetAllProveedorMaquilador_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbMaquiladoSupplier.dataProvider = Util.addEmptyCatalgo(data,"nombreComercial");	
+				if( Util.isFill( this.cmbMaquiladoSupplier ) && this._item 
+					&& this._item.proveedorCalificado != null ){
+					this.cmbMaquiladoSupplier.selectedIndex = Util.selectedIndexFromCombo( this.cmbMaquiladoSupplier.dataProvider as ArrayCollection, 
+						this._item.proveedorMaquilador.id );
+				}
+			}
+			
+			private function qualifiedSupplier( item:Object ):String{
+				return Util.extractToText( item, "proveedorSeleccionado.nombreComercial" );
+			}
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="creditNoteNew", type="flash.events.Event")]
+		[Event(name="creditNoteUpdated", type="flash.events.Event")]
+	</mx:Metadata>
+	<mx:Form id="form">
+		<mx:FormItem label="ID:" id="frmID">
+			<components:TextInput id="txtID" textAlign="right" editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Folio:">
+			<components:TextInput id="txtFolio" textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha:">
+			<components:DateField id="dtfDate"/>
+		</mx:FormItem>
+		<mx:FormItem label="Proveedor Calificado:">
+			<mx:ComboBox id="cmbQualifiedSupplier"
+						 labelFunction="qualifiedSupplier"/>
+		</mx:FormItem>
+		<mx:FormItem label="Proveedor Maquilador:">
+			<mx:ComboBox id="cmbMaquiladoSupplier"
+						 labelField="nombreComercial"/>
+		</mx:FormItem>
+		<mx:FormItem label="Subtotal:">
+			<components:TextInput id="txtSubtotal"
+								  textAlign="right"
+								  focusOut="Util.calculateIVA(txtSubtotal, txtIVA, txtTotal)"
+								  enter="Util.calculateIVA(txtSubtotal, txtIVA, txtTotal)"/>
+		</mx:FormItem>
+		<mx:FormItem label="I.V.A.:">
+			<components:TextInput id="txtIVA"
+								  textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Total:">
+			<components:TextInput id="txtTotal"
+								  textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem>
+			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:RemoteObject id="notaCreditoProveedorService" destination="notaCreditoProveedorService" fault="notaCreditoProveedorService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
+	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
+	<mx:RemoteObject id="proveedorCalificadoService" destination="proveedorCalificadoService" fault="notaCreditoProveedorService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetAllProveedorCalificado" result="responseGetAllProveedorCalificado_resultHandler(event)"/>
+	<mx:RemoteObject id="proveedorMaquiladorService" destination="proveedorMaquiladorService" fault="notaCreditoProveedorService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetAllProveedorMaquilador" result="responseGetAllProveedorMaquilador_resultHandler(event)"/>
+</mx:VBox>

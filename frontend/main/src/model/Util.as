@@ -1,5 +1,7 @@
 package model
 {
+	import components.TextInput;
+	
 	import flash.display.DisplayObject;
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
@@ -355,7 +357,7 @@ package model
 		
 		public static function showProperties(object:Object):void
 		{
-			//showErrorMessage( ObjectUtil.toString( object ) );
+			showErrorMessage( ObjectUtil.toString( object ) );
 		}
 		
 		public static function isFill(cmbProfile:ComboBox):Boolean
@@ -525,6 +527,21 @@ package model
 			var arrayCollection:ArrayCollection = new ArrayCollection();
 			arrayCollection.addItem( object );
 			return arrayCollection;
+		}
+		
+		public static function calculateIVA(subtotal:TextInput, iva:TextInput, total:TextInput ):void{
+			if( subtotal == null || iva == null || total === null ){
+				return;
+			}
+			var subtotalNumber:Number = Number( subtotal.text );
+			if( isNaN( subtotalNumber ) ){
+				return;
+			}
+			var ivaNumber:Number = subtotalNumber * Constants.IVA;
+			var totalNumber:Number = subtotalNumber + ivaNumber;
+			subtotal.text = formatNumber( subtotalNumber );
+			iva.text = formatNumber( ivaNumber );
+			total.text = formatNumber( totalNumber );
 		}
 	}
 }

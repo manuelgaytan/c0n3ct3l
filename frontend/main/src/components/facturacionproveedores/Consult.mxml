@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+		 label="Consulta"
+		 creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import events.GenericEvent;
+			
+			import model.ConfiguracionPruebaEntrega;
+			import model.FiltroProyecto;
+			import model.Proyecto;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			[Bindable]
+			private var items:ArrayCollection = null;
+			
+			private var configuracionPruebaEntrega:ConfiguracionPruebaEntrega;
+			
+			protected function responseGetAll_resultHandler(event:ResultEvent):void
+			{
+				items = event.result as ArrayCollection;
+			}
+			
+			protected function datosGeneralesProyectoService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.executeQuery();
+			}
+			
+			private function labelFunctionProfile(object:Object, column:DataGridColumn):String{
+				return object["perfil"]["etiqueta"];
+			}
+			
+			protected function datagrid_doubleClickHandler(event:MouseEvent):void
+			{
+				if( event.currentTarget.selectedItem == null ){
+					return;
+				}
+				var item:Proyecto = this.datagrid.selectedItem as Proyecto;
+				this.responseGetProyecto.token = this.facturaProveedorService.getProyecto( item.id );
+			}
+			
+			protected function responseGetItem_resultHandler(event:ResultEvent):void
+			{
+				var item:Proyecto = event.result as Proyecto;
+				if( item == null ){
+					return;
+				}
+				var genericEvent:GenericEvent = new GenericEvent("itemDetail");
+				genericEvent.information = item;
+				this.dispatchEvent( genericEvent );
+			}
+			
+			public function executeQuery():void
+			{
+				this.responseGetAll.token = this.facturaProveedorService.getAll();
+			}
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="itemDetail", type="events.GenericEvent")]
+	</mx:Metadata>
+	<mx:VBox width="{parent.parent.width-5}" height="100%">
+		<mx:DataGrid id="datagrid" width="2000" height="100%" dataProvider="{items}"
+					 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
+					 allowMultipleSelection="true"
+					 >
+			<mx:columns>
+				<mx:DataGridColumn id="dtgID" headerText="{'ID'}"
+								   dataField="id"
+								   width="130"
+								   textAlign="right"/>
+				<mx:DataGridColumn id="dtgVendorInvoiceDate" headerText="{'Fecha\nFactura'}"
+								   dataField="fechaFactura"
+								   labelFunction="{Util.labelFunctionDate}"
+								   textAlign="center"/>
+				<mx:DataGridColumn id="dtgQualityResearchStatus" headerText="{'Estado\nInvestigación\nCalidad'}"
+								   dataField="estadoInvestigacionCalidad.etiqueta"
+								   textAlign="center"
+								   />
+				<mx:DataGridColumn id="dtgTreasuryStatus" headerText="{'Estado\nTesorería'}"
+								   dataField="estadoTesoreria.etiqueta"
+								   textAlign="center"
+								   />
+				<mx:DataGridColumn id="dtgVendorInvoiceNumber" headerText="{'Número\nFactura'}"
+								   dataField="numeroFactura"
+								   textAlign="center"
+								   />
+				<mx:DataGridColumn id="dtgReviewDate" headerText="{'Fecha\nRevision'}"
+								   dataField="fechaRevision"
+								   textAlign="center"
+								   />
+				<mx:DataGridColumn id="dtgPaymentDate" headerText="{'Fecha\nPago'}"
+								   dataField="fechaPago"
+								   textAlign="center"
+								   />
+			</mx:columns>
+		</mx:DataGrid>
+	</mx:VBox>
+	<mx:HBox>
+		<!--<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>-->
+	</mx:HBox>
+	<mx:RemoteObject id="facturaProveedorService" destination="facturaProveedorService" fault="datosGeneralesProyectoService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetAll" result="responseGetAll_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetProyecto" result="responseGetItem_resultHandler(event)"/>
+</mx:VBox>

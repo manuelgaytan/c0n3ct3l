@@ -14,6 +14,7 @@ package model
 		public var iva:Number;
 		public var total:Number;
 		public var cliente:Cliente;
+		public var comentariosNotaCreditoCliente:ArrayCollection;
 		
 		public function NotaCreditoCliente(){
 			

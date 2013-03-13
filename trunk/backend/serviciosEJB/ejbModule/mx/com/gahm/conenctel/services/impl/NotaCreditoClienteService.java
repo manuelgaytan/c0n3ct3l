@@ -13,100 +13,107 @@ import mx.com.gahm.conenctel.entities.NotaCreditoClienteDO;
 import mx.com.gahm.conenctel.services.INotaCreditoClienteService;
 
 @Stateless(mappedName = "ejb/NotaCreditoClienteService")
-public class NotaCreditoClienteService implements INotaCreditoClienteService{
-
+public class NotaCreditoClienteService implements INotaCreditoClienteService {
 
 	@Inject
 	private EntityManager entityManager;
-	
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<NotaCreditoClienteDO> getAll() {
-		List<NotaCreditoClienteDO> datos= null;
-		Query query =null;
+		List<NotaCreditoClienteDO> datos = null;
+		Query query = null;
 		query = entityManager.createNamedQuery("NotaCreditoClienteDO.findAll");
 		datos = query.getResultList();
-		
+
 		return datos;
 	}
 
 	@Override
 	public void deleteItems(List<Integer> idsItems) {
-		NotaCreditoClienteDO notaCreditoClienteDO=null;
+		NotaCreditoClienteDO notaCreditoClienteDO = null;
 		for (Integer id : idsItems) {
-			 notaCreditoClienteDO = entityManager.find(NotaCreditoClienteDO.class, id);
-			
-			
-			if(notaCreditoClienteDO!=null){
+			notaCreditoClienteDO = entityManager.find(
+					NotaCreditoClienteDO.class, id);
+
+			if (notaCreditoClienteDO != null) {
 				entityManager.remove(notaCreditoClienteDO);
 			}
 		}
-		
+
 	}
 
 	@Override
 	public NotaCreditoClienteDO save(NotaCreditoClienteDO item) {
-	    try {
-	    	
-	    	List<ComentarioNotaCreditoClienteDO> comentarios = item.getComentariosNotaCreditoCliente();
-	    	item.setComentariosNotaCreditoCliente(null);
-	    	
-	    	entityManager.persist(item);
-	    	saveComentarios(item,comentarios);
-	    	
-	    	
+		try {
+
+			List<ComentarioNotaCreditoClienteDO> comentarios = item
+					.getComentariosNotaCreditoCliente();
+			item.setComentariosNotaCreditoCliente(null);
+
+			entityManager.persist(item);
+			saveComentarios(item, comentarios);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-	return item;
+
+		return item;
 	}
 
-	public void saveComentarios(NotaCreditoClienteDO item,List<ComentarioNotaCreditoClienteDO> comentarios){
-		
-		
-		
+	public void saveComentarios(NotaCreditoClienteDO item,
+			List<ComentarioNotaCreditoClienteDO> comentarios) {
+
 		for (ComentarioNotaCreditoClienteDO dato : comentarios) {
-			
-			ComentarioCuentasPagarFacturacionDO comentarioCuentasPagarFacturacion = dato.getComentarioCuentasPagarFacturacion(); 
-			entityManager.persist( comentarioCuentasPagarFacturacion );
+
+			ComentarioCuentasPagarFacturacionDO comentarioCuentasPagarFacturacion = dato
+					.getComentarioCuentasPagarFacturacion();
+			entityManager.persist(comentarioCuentasPagarFacturacion);
 			dato.setComentarioCuentasPagarFacturacion(comentarioCuentasPagarFacturacion);
 			dato.setNotaCreditoCliente(item);
 			entityManager.persist(dato);
 		}
-		
+
 		item.setComentariosNotaCreditoCliente(comentarios);
-		
+
 	}
-	
-	
-	
-	
-	
-	
-	
+
 	@Override
 	public NotaCreditoClienteDO update(NotaCreditoClienteDO item) {
-		if( !(item.getComentariosNotaCreditoCliente() == null) ){
-			for (ComentarioNotaCreditoClienteDO comment : item.getComentariosNotaCreditoCliente() ) {
+		if (!(item.getComentariosNotaCreditoCliente() == null)) {
+			deleteComentariosNotaCredito(item.getId());
+			for (ComentarioNotaCreditoClienteDO comment : item
+					.getComentariosNotaCreditoCliente()) {
 				comment.setNotaCreditoCliente(item);
 			}
 		}
 		entityManager.merge(item);
-		
+
 		return item;
+	}
+
+	private void deleteComentariosNotaCredito(Integer id) {
+
+		NotaCreditoClienteDO dato = getItem(id);
+		List<ComentarioNotaCreditoClienteDO> comentarios = dato.getComentariosNotaCreditoCliente();
+		
+		for (ComentarioNotaCreditoClienteDO comentarioNotaCreditoClienteDO : comentarios) {
+			entityManager.remove(comentarioNotaCreditoClienteDO);
+		}
+		
+		
 	}
 
 	@Override
 	public NotaCreditoClienteDO getItem(Integer id) {
-		NotaCreditoClienteDO notaCreditoClienteDO=null;
+		NotaCreditoClienteDO notaCreditoClienteDO = null;
 		try {
-			notaCreditoClienteDO = entityManager.find(NotaCreditoClienteDO.class, id);
+			notaCreditoClienteDO = entityManager.find(
+					NotaCreditoClienteDO.class, id);
 		} catch (Exception e) {
-			notaCreditoClienteDO =null;
+			notaCreditoClienteDO = null;
 		}
-		
+
 		return notaCreditoClienteDO;
 	}
 }

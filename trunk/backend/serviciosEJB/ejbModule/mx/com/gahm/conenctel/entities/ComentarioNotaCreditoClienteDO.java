@@ -15,7 +15,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "ComentarioNotaCreditoClienteDO")
+@Table(name = "ComentarioNotaCreditoCliente")
 @NamedQueries({
 	@NamedQuery(name = "ComentarioNotaCreditoClienteDO.findAll", query = "select rc from ComentarioNotaCreditoClienteDO rc")
 	})

@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import mx.com.gahm.conenctel.entities.ComentarioCuentasPagarFacturacionDO;
 import mx.com.gahm.conenctel.entities.ComentarioNotaCreditoClienteDO;
 import mx.com.gahm.conenctel.entities.NotaCreditoClienteDO;
 import mx.com.gahm.conenctel.services.INotaCreditoClienteService;
@@ -67,6 +68,10 @@ public class NotaCreditoClienteService implements INotaCreditoClienteService{
 		
 		
 		for (ComentarioNotaCreditoClienteDO dato : comentarios) {
+			
+			ComentarioCuentasPagarFacturacionDO comentarioCuentasPagarFacturacion = dato.getComentarioCuentasPagarFacturacion(); 
+			entityManager.persist( comentarioCuentasPagarFacturacion );
+			dato.setComentarioCuentasPagarFacturacion(comentarioCuentasPagarFacturacion);
 			dato.setNotaCreditoCliente(item);
 			entityManager.persist(dato);
 		}
@@ -83,6 +88,11 @@ public class NotaCreditoClienteService implements INotaCreditoClienteService{
 	
 	@Override
 	public NotaCreditoClienteDO update(NotaCreditoClienteDO item) {
+		if( !(item.getComentariosNotaCreditoCliente() == null) ){
+			for (ComentarioNotaCreditoClienteDO comment : item.getComentariosNotaCreditoCliente() ) {
+				comment.setNotaCreditoCliente(item);
+			}
+		}
 		entityManager.merge(item);
 		
 		return item;

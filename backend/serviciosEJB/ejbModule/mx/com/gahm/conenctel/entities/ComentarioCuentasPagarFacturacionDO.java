@@ -18,7 +18,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name = "ComentarioCuentasPagarFacturacionDO")
+@Table(name = "ComentarioCuentasPagarFacturacion")
 @NamedQueries({
 	@NamedQuery(name = "ComentarioCuentasPagarFacturacionDO.findAll", query = "select rc from ComentarioCuentasPagarFacturacionDO rc")
 	})
@@ -36,7 +36,7 @@ public class ComentarioCuentasPagarFacturacionDO implements Serializable{
 	
 	@Temporal(TemporalType.DATE)
 	@Column(name = "fecha", nullable = false, length = 10)
-	private Date fecha;
+	private Date fechaCaptura;
 
 	@ManyToOne
 	@JoinColumn(name = "fk_usuario", nullable = false)
@@ -54,7 +54,7 @@ public class ComentarioCuentasPagarFacturacionDO implements Serializable{
 			UsuarioDO usuario, String comentario) {
 		super();
 		this.id = id;
-		this.fecha = fecha;
+		this.fechaCaptura = fecha;
 		this.usuario = usuario;
 		this.comentario = comentario;
 	}
@@ -76,15 +76,15 @@ public class ComentarioCuentasPagarFacturacionDO implements Serializable{
 	/**
 	 * @return the fecha
 	 */
-	public Date getFecha() {
-		return fecha;
+	public Date getFechaCaptura() {
+		return fechaCaptura;
 	}
 
 	/**
 	 * @param fecha the fecha to set
 	 */
-	public void setFecha(Date fecha) {
-		this.fecha = fecha;
+	public void setFechaCaptura(Date fecha) {
+		this.fechaCaptura = fecha;
 	}
 
 	/**

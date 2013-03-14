@@ -1393,6 +1393,42 @@
 	PRIMARY KEY (id)
 	);
 
+	CREATE TABLE ComentarioContabilidad
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fecha DATE NOT NULL,
+	fk_usuario INT(11) UNSIGNED NOT NULL,
+	comentario VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE DescripcionFondoFijoCajaChica
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	descripcion VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE MoviemientoFondoFijoCajaChica
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fecha DATE,
+	fk_descripcion_fondo_fijo_caja_chica INT(11) UNSIGNED,
+	entrega VARCHAR(255) NOT NULL,
+	fk_colaborador INT(11) UNSIGNED NOT NULL,
+	ingreso DECIMAL,
+	egreso DECIMAL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE ComentarioMoviemientoFondoFijoCajaChica
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_moviemiento_fondo_fijo_caja_chica INT(11) UNSIGNED NOT NULL,
+	fk_comentario_contabilidad INT(11) UNSIGNED NOT NULL,
+	PRIMARY KEY (id)
+	);
+
 	ALTER TABLE Cliente ADD FOREIGN KEY id_contacto_idxfk (id_contacto) REFERENCES Contacto (id);
 
 	ALTER TABLE Proyecto ADD FOREIGN KEY id_categoria_proyecto_idxfk (id_categoria_proyecto) REFERENCES CategoriaProyecto (id);
@@ -1802,6 +1838,16 @@
 	ALTER TABLE ComprobacionViaticos ADD FOREIGN KEY fk_estado_comprobacion_viaticos_idxfk (fk_estado_comprobacion_viaticos) REFERENCES EstadoComprobacionViaticos (id);
 
 	ALTER TABLE DocumentoComprobacionViaticos ADD FOREIGN KEY fk_comprobacion_viaticos_idxfk (fk_comprobacion_viaticos) REFERENCES ComprobacionViaticos (id);
+
+	ALTER TABLE ComentarioContabilidad ADD FOREIGN KEY fk_usuario_idxfk (fk_usuario) REFERENCES Usuario (id);
+
+	ALTER TABLE MoviemientoFondoFijoCajaChica ADD FOREIGN KEY fk_descripcion_fondo_fijo_caja_chica_idxfk (fk_descripcion_fondo_fijo_caja_chica) REFERENCES DescripcionFondoFijoCajaChica (id);
+
+	ALTER TABLE MoviemientoFondoFijoCajaChica ADD FOREIGN KEY fk_colaborador_idxfk_1 (fk_colaborador) REFERENCES Colaborador (id);
+
+	ALTER TABLE ComentarioMoviemientoFondoFijoCajaChica ADD FOREIGN KEY fk_moviemiento_fondo_fijo_caja_chica_idxfk (fk_moviemiento_fondo_fijo_caja_chica) REFERENCES MoviemientoFondoFijoCajaChica (id);
+
+	ALTER TABLE ComentarioMoviemientoFondoFijoCajaChica ADD FOREIGN KEY fk_comentario_contabilidad_idxfk (fk_comentario_contabilidad) REFERENCES ComentarioContabilidad (id);
 
 	/* Perfiles */
 	INSERT INTO Perfil
@@ -2551,6 +2597,31 @@
 	VALUES (1, 'Aprobado');
 	INSERT INTO EstadoComprobacionViaticos
 	VALUES (2, 'Rechazado');
+
+	INSERT INTO DescripcionFondoFijoCajaChica
+	VALUES (1, 'Remanente Viáticos');
+	INSERT INTO DescripcionFondoFijoCajaChica
+	VALUES (2, 'Reposición de Fondo Fijo');
+	INSERT INTO DescripcionFondoFijoCajaChica
+	VALUES (3, 'Otros');
+	INSERT INTO DescripcionFondoFijoCajaChica
+	VALUES (4, 'Pasajes Locales');
+	INSERT INTO DescripcionFondoFijoCajaChica
+	VALUES (5, 'Estacionamiento');
+	INSERT INTO DescripcionFondoFijoCajaChica
+	VALUES (6, 'Agua Embotellada');
+	INSERT INTO DescripcionFondoFijoCajaChica
+	VALUES (7, 'Servicio de Recolección de Basura');
+	INSERT INTO DescripcionFondoFijoCajaChica
+	VALUES (8, 'Complemento Viático');
+	INSERT INTO DescripcionFondoFijoCajaChica
+	VALUES (9, 'Papelería');
+	INSERT INTO DescripcionFondoFijoCajaChica
+	VALUES (10, 'Combustibles');
+	INSERT INTO DescripcionFondoFijoCajaChica
+	VALUES (11, 'Materiales');
+	INSERT INTO DescripcionFondoFijoCajaChica
+	VALUES (12, 'Otros');
 
 /*
 	INSERT INTO Proveedor

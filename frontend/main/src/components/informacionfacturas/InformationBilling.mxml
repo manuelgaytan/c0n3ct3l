@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)" xmlns:concentradoordenescompracliente="components.concentradoordenescompracliente.*" xmlns:validacionesadministrativas="components.validacionesadministrativas.*"
+		 >
+	<mx:Script>
+		<![CDATA[
+			import components.equiposmedicion.Consult;
+			import components.equipostransporte.Consult;
+			import components.hardware.Consult;
+			import components.herramientas.Consult;
+			import components.materiales.Consult;
+			import components.software.Consult;
+			import components.solicitudalmacen.Consult;
+			import components.telefoniamovil.Consult;
+			
+			import model.AreaSolicitante;
+			import model.Catalogo;
+			import model.Cliente;
+			import model.Colaborador;
+			import model.Constants;
+			import model.EstadoFinalValidacion;
+			import model.EstadoValidacionCobro;
+			import model.EstadoValidacionOperativa;
+			import model.Imputable;
+			import model.InformacionFacturacion;
+			import model.Perfil;
+			import model.Prioridad;
+			import model.TipoAlmacen;
+			import model.TipoMantenimiento;
+			import model.Util;
+			import model.ValidacionAdministrativa;
+			
+			import modules.Almacen;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.com.gahm.componentes.validadores.ValidadorEntero;
+			import mx.com.gahm.componentes.validadores.ValidadorNumerico;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.utils.object_proxy;
+			
+			private var mode:String = null;
+			private var _item:InformacionFacturacion;
+			private var validators:InicializaValidadoresEtiquetas;
+			private var validatorsEntry:InicializaValidadoresEtiquetas;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				this.label = Constants.REGISTRAR;
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set informationBilling(value:InformacionFacturacion):void{
+				if( value == null ){
+					return;
+				}
+				this.cleanForm();
+				this._item = value;
+				this.setConcentratedCustomerPurchaseOrders(); 
+			}
+			
+			private function setConcentratedCustomerPurchaseOrders():void
+			{
+				if( this._item == null ){
+					return;
+				}
+				this.txtID.text = this._item.id;
+				this.validacionesAdministrativas.datagrid.dataProvider = Util.asArrayCollection( this._item.validacionAdministrativa );
+				this.txtFolio1.text = this._item.folioFactura1;
+				this.txtSubtotal1.text = this._item.subtotal1.toString();
+				this.txtIVA1.text = this._item.iva1.toString();
+				this.txtTotal1.text = this._item.total1.toString();
+				this.dtfIssued1.selectedDate = this._item.fechaEmision1;
+				this.dtfAdmissionDate1.selectedDate = this._item.fechaIngreso1;
+				this.txtCreditDays1.text = this._item.diasCredito1.toString();
+				this.dtfScheduled1.selectedDate = this._item.fechaProgramada1;
+				this.txtPaymentState1.text = this._item.estadoPago1;
+				this.comments1.setCommentsIn( this._item.comentariosInformacionFacturacion1, "comentarioCuentasPagarFacturacion");
+				this.txtFolio2.text = this._item.folioFactura2;
+				this.txtSubtotal2.text = this._item.subtotal2.toString();
+				this.txtIVA2.text = this._item.iva2.toString();
+				this.txtTotal2.text = this._item.total2.toString();
+				this.dtfIssued2.selectedDate = this._item.fechaEmision2;
+				this.dtfAdmissionDate2.selectedDate = this._item.fechaIngreso2;
+				this.txtCreditDays2.text = this._item.diasCredito2.toString();
+				this.dtfScheduled2.selectedDate = this._item.fechaProgramada2;
+				this.txtPaymentState2.text = this._item.estadoPago2;
+				this.comments2.setCommentsIn( this._item.comentariosInformacionFacturacion2, "comentarioCuentasPagarFacturacion");
+				this.txtFolio3.text = this._item.folioFactura3;
+				this.txtSubtotal3.text = this._item.subtotal3.toString();
+				this.txtIVA3.text = this._item.iva3.toString();
+				this.txtTotal3.text = this._item.total3.toString();
+				this.dtfIssued3.selectedDate = this._item.fechaEmision3;
+				this.dtfAdmissionDate3.selectedDate = this._item.fechaIngreso3;
+				this.txtCreditDays3.text = this._item.diasCredito3.toString();
+				this.dtfScheduled3.selectedDate = this._item.fechaProgramada3;
+				this.txtPaymentState3.text = this._item.estadoPago3;
+				this.comments3.setCommentsIn( this._item.comentariosInformacionFacturacion3, "comentarioCuentasPagarFacturacion");
+				this.txtInvoiceState.text = this._item.estadoFactura;
+				this.dtfInvoiceStateDate.selectedDate = this._item.fechaEstadoFactura;
+				this.txtAccountability.text = this._item.imputabilidad;
+			}
+			
+			private function getConcentratedCustomerPurchaseOrders():InformacionFacturacion{
+				var item:InformacionFacturacion = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					item = new InformacionFacturacion();
+				}else{
+					item = this._item;
+				}
+				item.validacionAdministrativa = this.validacionesAdministrativas.datagrid.selectedItem as ValidacionAdministrativa;
+				item.folioFactura1 = Util.validateEmpty( this.txtFolio1.text );
+				item.subtotal1 = Util.stringToNumber(this.txtSubtotal1.text);
+				item.iva1 = Util.stringToNumber(this.txtIVA1.text);
+				item.total1 = Util.stringToNumber(this.txtTotal1.text);
+				item.fechaEmision1 = this.dtfIssued1.selectedDate;
+				item.fechaIngreso1 = this.dtfAdmissionDate1.selectedDate;
+				item.diasCredito1 = Util.stringToNumber(this.txtCreditDays1.text);
+				item.fechaProgramada1 = this.dtfScheduled1.selectedDate;
+				item.estadoPago1 = Util.validateEmpty( this.txtPaymentState1.text );
+				item.comentariosInformacionFacturacion1 = this.comments1.getCommentsAsInWith("model.ComentarioInformacionFacturacion1","model.ComentarioCuentasPagarFacturacion","comentarioCuentasPagarFacturacion");
+				item.folioFactura2 = Util.validateEmpty( this.txtFolio2.text );
+				item.subtotal2 = Util.stringToNumber(this.txtSubtotal2.text);
+				item.iva2 = Util.stringToNumber(this.txtIVA2.text);
+				item.total2 = Util.stringToNumber(this.txtTotal2.text);
+				item.fechaEmision2 = this.dtfIssued2.selectedDate;
+				item.fechaIngreso2 = this.dtfAdmissionDate2.selectedDate;
+				item.diasCredito2 = Util.stringToNumber(this.txtCreditDays2.text);
+				item.fechaProgramada2 = this.dtfScheduled2.selectedDate;
+				item.estadoPago2 = Util.validateEmpty( this.txtPaymentState2.text );
+				item.comentariosInformacionFacturacion2 = this.comments2.getCommentsAsInWith("model.ComentarioInformacionFacturacion2","model.ComentarioCuentasPagarFacturacion","comentarioCuentasPagarFacturacion");
+				item.folioFactura3 = Util.validateEmpty( this.txtFolio3.text );
+				item.subtotal3 = Util.stringToNumber(this.txtSubtotal3.text);
+				item.iva3 = Util.stringToNumber(this.txtIVA3.text);
+				item.total3 = Util.stringToNumber(this.txtTotal3.text);
+				item.fechaEmision3 = this.dtfIssued3.selectedDate;
+				item.fechaIngreso3 = this.dtfAdmissionDate3.selectedDate;
+				item.diasCredito3 = Util.stringToNumber(this.txtCreditDays3.text);
+				item.fechaProgramada3 = this.dtfScheduled3.selectedDate;
+				item.estadoPago3 = Util.validateEmpty( this.txtPaymentState3.text );
+				item.comentariosInformacionFacturacion3 = this.comments3.getCommentsAsInWith("model.ComentarioInformacionFacturacion3","model.ComentarioCuentasPagarFacturacion","comentarioCuentasPagarFacturacion");
+				item.estadoFactura = Util.validateEmpty( this.txtInvoiceState.text );
+				item.fechaEstadoFactura = this.dtfInvoiceStateDate.selectedDate;
+				item.imputabilidad = Util.stringToNumber(this.txtAccountability.text);
+				return item;
+			}
+			
+			private function fillCombos():void
+			{
+			}
+			
+			protected function requisicionService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function btnAccept_clickHandler(event:MouseEvent):void
+			{
+				if( !this.validations() ){
+					Util.showMessageVerifyFields();
+					return;
+				}
+				if( this.mode == Constants.REGISTER_MODE ){
+					var informationBilling:InformacionFacturacion = this.getConcentratedCustomerPurchaseOrders();
+					Util.showProperties( informationBilling );
+					this.responseSave.token = this.informacionFacturacionService.save( informationBilling );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
+				}
+			}
+			
+			private function updateItem(event:CloseEvent):void{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var informationBilling:InformacionFacturacion = this.getConcentratedCustomerPurchaseOrders();
+				Util.showProperties( informationBilling );
+				this.responseUpdate.token = this.informacionFacturacionService.update( informationBilling );
+			}
+			
+			private function validations():Boolean
+			{
+				var value:Boolean = true;
+				value &&= this.validators.validarFormulario();
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+					form.removeChild( this.frmID );
+				}
+			}
+			
+			private function initializeValidators():void
+			{
+				this.validators = new InicializaValidadoresEtiquetas();
+				validators.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
+				validators.setRestrictor(txtFolio1, "generic");
+				validators.setRestrictor(txtFolio2, "generic");
+				validators.setRestrictor(txtFolio3, "generic");
+				validators.setRestrictor(txtPaymentState1, "generic");
+				validators.setRestrictor(txtPaymentState2, "generic");
+				validators.setRestrictor(txtPaymentState3, "generic");
+				validators.setRestrictor(txtFolio1, "generic");
+				validators.setRestrictor(txtFolio2, "generic");
+				validators.setRestrictor(txtFolio3, "generic");
+				validators.crearValidadorRestrictor("genericDecimal",ValidadorDecimal.nombre, 9, 2);
+				validators.setRestrictor(txtSubtotal1, "genericDecimal");
+				validators.setRestrictor(txtSubtotal2, "genericDecimal");
+				validators.setRestrictor(txtSubtotal3, "genericDecimal");
+				validators.setRestrictor(txtIVA1, "genericDecimal");
+				validators.setRestrictor(txtIVA2, "genericDecimal");
+				validators.setRestrictor(txtIVA3, "genericDecimal");
+				validators.setRestrictor(txtTotal1, "genericDecimal");
+				validators.setRestrictor(txtTotal2, "genericDecimal");
+				validators.setRestrictor(txtTotal3, "genericDecimal");
+				validators.setRestrictor(txtCreditDays1, "genericDecimal");
+				validators.setRestrictor(txtCreditDays2, "genericDecimal");
+				validators.setRestrictor(txtCreditDays3, "genericDecimal");
+			}
+			
+			protected function responseSave_resultHandler(event:ResultEvent):void
+			{
+				var eventinformationBillingNew:Event = new Event("informationBillingNew");
+				this.dispatchEvent( eventinformationBillingNew );
+				this.cleanForm();
+			}
+			
+			private function cleanForm():void
+			{
+				this.txtID.reset();
+				this.validacionesAdministrativas.datagrid.selectedItem = null;
+				this.txtFolio1.reset();
+				this.txtSubtotal1.reset();
+				this.txtIVA1.reset();
+				this.txtTotal1.reset();
+				this.dtfIssued1.reset();
+				this.dtfAdmissionDate1.reset();
+				this.txtCreditDays1.reset();
+				this.dtfScheduled1.reset();
+				this.txtPaymentState1.reset();
+				this.comments1.reset();
+				this.txtFolio2.reset();
+				this.txtSubtotal2.reset();
+				this.txtIVA2.reset();
+				this.txtTotal2.reset();
+				this.dtfIssued2.reset();
+				this.dtfAdmissionDate2.reset();
+				this.txtCreditDays2.reset();
+				this.dtfScheduled2.reset();
+				this.txtPaymentState2.reset();
+				this.comments2.reset();
+				this.txtFolio3.reset();
+				this.txtSubtotal3.reset();
+				this.txtIVA3.reset();
+				this.txtTotal3.reset();
+				this.dtfIssued3.reset();
+				this.dtfAdmissionDate3.reset();
+				this.txtCreditDays3.reset();
+				this.dtfScheduled3.reset();
+				this.txtPaymentState3.reset();
+				this.comments3.reset();
+				this.txtInvoiceState.reset();
+				this.dtfInvoiceStateDate.reset();
+				this.txtAccountability.reset();
+			}
+			
+			protected function responseUpdate_resultHandler(event:ResultEvent):void
+			{
+				var eventinformationBillingUpdated:Event = new Event("informationBillingUpdated");
+				this.dispatchEvent( eventinformationBillingUpdated );
+				this.cleanForm();
+			}
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="informationBillingNew", type="flash.events.Event")]
+		[Event(name="informationBillingUpdated", type="flash.events.Event")]
+	</mx:Metadata>
+	<mx:Form id="form">
+		<mx:FormItem id="frmID" label="ID:">
+			<components:TextInput id="txtID" editable="false"
+								  textAlign="right"/>
+		</mx:FormItem>
+		<validacionesadministrativas:Consult id="validacionesAdministrativas"/>
+		<mx:FormHeading label="Información Factura 1"/>
+		<mx:FormItem label="Folio Factura 1:">
+			<components:TextInput id="txtFolio1"
+								  textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Subtotal 1:">
+			<components:TextInput id="txtSubtotal1"
+								  textAlign="right"
+								  focusOut="Util.calculateIVA(txtSubtotal1, txtIVA1, txtTotal1)"
+								  enter="Util.calculateIVA(txtSubtotal1, txtIVA1, txtTotal1)"/>
+		</mx:FormItem>
+		<mx:FormItem label="I.V.A. 1:">
+			<components:TextInput id="txtIVA1"
+								  textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Total 1:">
+			<components:TextInput id="txtTotal1"
+								  textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha Emisión 1:">
+			<components:DateField id="dtfIssued1"
+								  />
+		</mx:FormItem>
+		<mx:FormItem label="Fecha Ingreso 1:">
+			<components:DateField id="dtfAdmissionDate1"/>
+		</mx:FormItem>
+		<mx:FormItem label="Días Crédito 1:">
+			<components:TextInput id="txtCreditDays1"
+								  textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha Programada 1:">
+			<components:DateField id="dtfScheduled1"
+						 />
+		</mx:FormItem>
+		<mx:FormItem label="Estado Pago 1:">
+			<components:TextInput id="txtPaymentState1"/>
+		</mx:FormItem>
+		<components:Comments id="comments1" />
+		<mx:FormHeading label="Información Factura 2"/>
+		<mx:FormItem label="Folio Factura 2:">
+			<components:TextInput id="txtFolio2"
+								  textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Subtotal 2:">
+			<components:TextInput id="txtSubtotal2"
+								  textAlign="right"
+								  focusOut="Util.calculateIVA(txtSubtotal2, txtIVA2, txtTotal2)"
+								  enter="Util.calculateIVA(txtSubtotal2, txtIVA2, txtTotal2)"/>
+		</mx:FormItem>
+		<mx:FormItem label="I.V.A. 2:">
+			<components:TextInput id="txtIVA2"
+								  textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Total 2:">
+			<components:TextInput id="txtTotal2"
+								  textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha Emisión 2:">
+			<components:DateField id="dtfIssued2"
+								  />
+		</mx:FormItem>
+		<mx:FormItem label="Fecha Ingreso 2:">
+			<components:DateField id="dtfAdmissionDate2"/>
+		</mx:FormItem>
+		<mx:FormItem label="Días Crédito 2:">
+			<components:TextInput id="txtCreditDays2"
+								  textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha Programada 2:">
+			<components:DateField id="dtfScheduled2"
+								  />
+		</mx:FormItem>
+		<mx:FormItem label="Estado Pago 2:">
+			<components:TextInput id="txtPaymentState2"/>
+		</mx:FormItem>
+		<components:Comments id="comments2" />
+		<mx:FormHeading label="Información Factura 3"/>
+		<mx:FormItem label="Folio Factura 3:">
+			<components:TextInput id="txtFolio3"
+								  textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Subtotal 3:">
+			<components:TextInput id="txtSubtotal3"
+								  textAlign="right"
+								  focusOut="Util.calculateIVA(txtSubtotal3, txtIVA3, txtTotal3)"
+								  enter="Util.calculateIVA(txtSubtotal3, txtIVA3, txtTotal3)"/>
+		</mx:FormItem>
+		<mx:FormItem label="I.V.A. 3:">
+			<components:TextInput id="txtIVA3"
+								  textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Total 3:">
+			<components:TextInput id="txtTotal3"
+								  textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha Emisión 3:">
+			<components:DateField id="dtfIssued3"
+								  />
+		</mx:FormItem>
+		<mx:FormItem label="Fecha Ingreso 3:">
+			<components:DateField id="dtfAdmissionDate3"/>
+		</mx:FormItem>
+		<mx:FormItem label="Días Crédito 3:">
+			<components:TextInput id="txtCreditDays3"
+								  textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha Programada 3:">
+			<components:DateField id="dtfScheduled3"
+								  />
+		</mx:FormItem>
+		<mx:FormItem label="Estado Pago 3:">
+			<components:TextInput id="txtPaymentState3"/>
+		</mx:FormItem>
+		<components:Comments id="comments3" />
+		<mx:FormItem label="Estado Factura:">
+			<components:TextInput id="txtInvoiceState"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha Estado Factura:">
+			<components:DateField id="dtfInvoiceStateDate"/>
+		</mx:FormItem>
+		<mx:FormItem label="Imputabilidad:">
+			<components:TextInput id="txtAccountability"/>
+		</mx:FormItem>
+		<mx:FormItem>
+			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:RemoteObject id="informacionFacturacionService" destination="informacionFacturacionService" fault="requisicionService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
+	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
+</mx:VBox>

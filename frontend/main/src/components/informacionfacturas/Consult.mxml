@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+		 label="Consulta"
+		 horizontalAlign="right"
+		 creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import events.GenericEvent;
+			
+			import model.InformacionFacturacion;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			[Bindable]
+			private var items:ArrayCollection = null;
+			
+			private var informacionFacturacion:InformacionFacturacion;
+			
+			protected function responseGetAll_resultHandler(event:ResultEvent):void
+			{
+				items = event.result as ArrayCollection;
+			}
+			
+			protected function requisicionService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.executeQuery();
+			}
+			
+			protected function datagrid_doubleClickHandler(event:MouseEvent):void
+			{
+				var item:InformacionFacturacion = this.datagrid.selectedItem as InformacionFacturacion;
+				if( item == null ){
+					return;
+				}
+				this.responseGetItem.token = this.informacionFacturacionService.getItem( item.id );
+			}
+			
+			protected function responseGetItem_resultHandler(event:ResultEvent):void
+			{
+				var item:InformacionFacturacion = event.result as InformacionFacturacion;
+				if( item == null ){
+					return;
+				}
+				var genericEvent:GenericEvent = new GenericEvent("informationBillingDetail");
+				genericEvent.information = item;
+				this.dispatchEvent( genericEvent );
+			}
+			
+			public function executeQuery():void
+			{
+				this.responseGetAll.token = this.informacionFacturacionService.getAll();
+			}
+			
+			protected function btnDelete_clickHandler(event:MouseEvent):void
+			{
+				if( this.datagrid.selectedItems == null ||
+					this.datagrid.selectedItems.length == 0 ){
+					Util.showErrorMessage("Debe seleccionar elementos de la tabla.");
+					return;
+				}
+				Alert.show("Confirme si desea eliminar los elementos.","Advertencia",Alert.YES+Alert.NO,this, deleteItems);
+			}
+			
+			private function deleteItems(event:CloseEvent):void
+			{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var items:ArrayCollection = Util.selectedIDs( this.datagrid.selectedItems ); 
+				this.responseDeleteItems.token = this.informacionFacturacionService.deleteItems( items );
+			}
+			
+			protected function responseDeleteItems_resultHandler(event:ResultEvent):void
+			{
+				this.executeQuery();
+			}
+			
+			private function labelFunctionIDProyecto(item:Object, column:DataGridColumn):String{
+				return Util.getIDConectelFormat( Util.extractObject(item, column.dataField) );
+			}
+			
+			private function labelFunctionTotalPorcentageInvoice(item:Object, column:DataGridColumn):String{
+				var info:InformacionFacturacion = item as InformacionFacturacion;
+				if( info == null ){
+					return "";
+				}
+				var total:Number = 0;
+				total += isNaN(info.total1) ? 0 : info.total1;
+				total += isNaN(info.total2) ? 0 : info.total2;
+				total += isNaN(info.total3) ? 0 : info.total3;
+				return Util.formatNumber(total);
+			}
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="informationBillingDetail", type="events.GenericEvent")]
+	</mx:Metadata>
+	<mx:DataGrid id="datagrid" width="100%" height="100%" dataProvider="{items}"
+				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
+				 allowMultipleSelection="true">
+		<mx:columns>
+			<mx:DataGridColumn id="dtgID" headerText="ID"
+							   dataField="id"
+							   width="80"
+							   textAlign="right"/>
+			<mx:DataGridColumn id="dtgAdministrativeValidationID" headerText="{'ID\nValidación\nAdministrativa'}"
+							   width="80"
+							   dataField="validacionAdministrativa.id"
+							   textAlign="right"
+							   />
+			<mx:DataGridColumn id="dtgTotalPorcentageInvoice" headerText="{'Pago\nTotal de\nFacturación'}"
+							   labelFunction="labelFunctionTotalPorcentageInvoice"
+							   width="95"
+							   textAlign="right"/>
+			<mx:DataGridColumn id="dtgInvoiceState" headerText="{'Estado\nFactura'}"
+							   dataField="estadoFactura"
+							   width="100"
+							   textAlign="center"
+							   />
+			<mx:DataGridColumn id="dtgInvoiceStateDate" headerText="{'Fecha\nEstado\nFactura'}"
+							   dataField="fechaEstadoFactura"
+							   labelFunction="{Util.labelFunctionDate}"
+							   textAlign="center"
+							   width="100"/>
+			<mx:DataGridColumn id="dtgAttributable" headerText="{'Imputable'}"
+							   dataField="imputabilidad"
+							   width="120"
+							   />
+		</mx:columns>
+	</mx:DataGrid>
+	<mx:HBox>
+		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>
+	</mx:HBox>
+	<mx:RemoteObject id="informacionFacturacionService" destination="informacionFacturacionService" fault="requisicionService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetAll" result="responseGetAll_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetItem" result="responseGetItem_resultHandler(event)"/>
+	<mx:CallResponder id="responseDeleteItems" result="responseDeleteItems_resultHandler(event)"/>
+</mx:VBox>

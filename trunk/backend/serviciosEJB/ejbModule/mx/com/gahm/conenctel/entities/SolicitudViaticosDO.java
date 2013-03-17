@@ -50,7 +50,7 @@ public class SolicitudViaticosDO implements Serializable{
 	private ColaboradorDO colaborador;
 
 	@ManyToOne
-	@JoinColumn(name = "fk_colaborador", nullable = false)
+	@JoinColumn(name = "fk_medio_transporte", nullable = false)
 	private MedioTransporteDO medioTransporte;
 	
 	@Column(name = "numero_vehiculo", nullable = false)

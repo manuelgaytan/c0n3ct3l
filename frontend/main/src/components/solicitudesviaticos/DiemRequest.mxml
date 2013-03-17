@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*"
+		 >
+	<mx:Script>
+		<![CDATA[
+			import events.GenericEvent;
+			
+			import model.Catalogo;
+			import model.Colaborador;
+			import model.Constants;
+			import model.Estado;
+			import model.EstadoOrdenCompra;
+			import model.EstadoValidacionCosto;
+			import model.EstadoValidacionOperativa;
+			import model.FiltroProyecto;
+			import model.MedioTransporte;
+			import model.Producto;
+			import model.Proyecto;
+			import model.SolicitudViaticos;
+			import model.TipoColaborador;
+			import model.TipoEntregable;
+			import model.Util;
+			
+			import mx.charts.chartClasses.DualStyleObject;
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.com.gahm.componentes.validadores.ValidadorEntero;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			private var mode:String = null;
+			private var _item:SolicitudViaticos;
+			private var validators:InicializaValidadoresEtiquetas;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				this.label = Constants.REGISTRAR;
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set diemRequest(value:SolicitudViaticos):void{
+				if( value == null ){
+					return;
+				}
+				this.cleanForm();
+				this._item = value;
+				this.setItem(); 
+			}
+			
+			private function setItem():void
+			{
+				if( this._item == null ){
+					return;
+				}
+				this.txtID.text = this._item.id.toString();
+				this.dtfDate.selectedDate = this._item.fecha;
+				this.projectsConsult.datagrid = Util.asArrayCollection( this._item.proyecto );
+				if( Util.isFill( this.cmbResponsibleViaticum ) && this._item.colaborador != null ){
+					this.cmbResponsibleViaticum.selectedIndex = Util.selectedIndexFromCombo( this.cmbResponsibleViaticum.dataProvider as ArrayCollection, 
+						this._item.colaborador.id);
+					this.cmbResponsibleViaticum.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
+				}
+				if( Util.isFill( this.cmbConveyance ) && this._item.medioTransporte != null ){
+					this.cmbConveyance.selectedIndex = Util.selectedIndexFromCombo( this.cmbConveyance.dataProvider as ArrayCollection, 
+						this._item.medioTransporte.id);
+				}
+				this.txtNumberOfVehicle.text = this._item.numeroVehiculo;
+				this.txtInitialMileage.text = this._item.kilometrajeInicial;
+				this.txtGAS.text = this._item.combustible.toString();
+				this.txtTollBooths.text = this._item.casetas.toString();
+				this.txtPassages.text = this._item.pasajes.toString();
+				this.txtLodging.text = this._item.hospedaje.toString();
+				this.txtFood.text = this._item.alimentos.toString();
+				this.txtMaterialsAndOrTool.text = this._item.materialesHerramienta.toString();
+				this.txtOthers.text = this._item.otros.toString();
+				this.txtTotalRequested.text = this._item.totalSolicitado.toString();
+			}
+			
+			private function getDiemRequest():SolicitudViaticos{
+				var diemRequest:SolicitudViaticos = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					diemRequest = new SolicitudViaticos();
+				}else{
+					diemRequest = this._item;
+				}
+				diemRequest.fecha = this.dtfDate.selectedDate;
+				diemRequest.proyecto = this.projectsConsult.datagrid.selectedItem as Proyecto;
+				diemRequest.colaborador = Util.validateCombo( this.cmbResponsibleViaticum ) as Colaborador;
+				diemRequest.medioTransporte = Util.validateCombo( this.cmbConveyance ) as MedioTransporte;
+				diemRequest.numeroVehiculo = Util.validateEmpty( this.txtNumberOfVehicle.text );
+				diemRequest.kilometrajeInicial = Util.validateEmpty( this.txtInitialMileage.text );
+				diemRequest.combustible = Util.stringToNumber( this.txtGAS.text );
+				diemRequest.casetas = Util.stringToNumber( this.txtTollBooths.text );
+				diemRequest.pasajes = Util.stringToNumber( this.txtPassages.text );
+				diemRequest.hospedaje = Util.stringToNumber( this.txtLodging.text );
+				diemRequest.alimentos = Util.stringToNumber( this.txtFood.text );
+				diemRequest.materialesHerramienta = Util.stringToNumber( this.txtMaterialsAndOrTool.text );
+				diemRequest.otros = Util.stringToNumber( this.txtOthers.text );
+				diemRequest.totalSolicitado = Util.stringToNumber( this.txtTotalRequested.text );
+				return diemRequest;
+			}
+			
+			private function fillCombos():void
+			{
+				this.responseGetColaborador.token = this.catalogoService.getColaboradorByTipoColaborador(TipoColaborador.ID_NOMINA);
+				this.responseGetMedioTransporte.token = this.catalogoService.getMedioTransporte();
+			}
+			
+			
+			protected function datosGeneralesSolicitudViaticosService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function btnAccept_clickHandler(event:MouseEvent):void
+			{
+				if( !this.validations() ){
+					Util.showMessageVerifyFields();
+					return;
+				}
+				if( this.mode == Constants.REGISTER_MODE ){
+					var diemRequest:SolicitudViaticos = this.getDiemRequest();
+					Util.showProperties( diemRequest );
+					this.responseSave.token = this.solicitudViaticosService.save( diemRequest );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
+				}
+			}
+			
+			private function updateItem(event:CloseEvent):void{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var item:SolicitudViaticos = this.getDiemRequest();
+				Util.showProperties( item );
+				this.responseUpdate.token = this.solicitudViaticosService.update( item );
+			}
+			
+			private function validations():Boolean
+			{
+				var value:Boolean = true;
+				value &&= this.validators.validarFormulario();
+				value &&= this.projectsConsult.datagrid.selectedItem != null;
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+					form.removeChild( this.frmID );
+					this.executeProjectQuery();
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+				}
+			}
+			
+			private function initializeValidators():void
+			{
+				this.validators = new InicializaValidadoresEtiquetas();
+				this.validators.crearValidadorRestrictor("genericDecimal", ValidadorDecimal.nombre, 9, 2);
+				this.validators.setRestrictor( this.txtGAS, "genericDecimal" );
+				this.validators.setRestrictor( this.txtTollBooths, "genericDecimal" );
+				this.validators.setRestrictor( this.txtPassages, "genericDecimal" );
+				this.validators.setRestrictor( this.txtLodging, "genericDecimal" );
+				this.validators.setRestrictor( this.txtFood, "genericDecimal" );
+				this.validators.setRestrictor( this.txtMaterialsAndOrTool, "genericDecimal" );
+				this.validators.setRestrictor( this.txtOthers, "genericDecimal" );
+				this.validators.setValidador( this.txtTotalRequested, "genericDecimal" );
+			}
+			
+			protected function responseSave_resultHandler(event:ResultEvent):void
+			{
+				var eventGeneralDataProjectNew:Event = new Event("diemRequestNew");
+				this.dispatchEvent( eventGeneralDataProjectNew );
+				this.cleanForm();
+			}
+			
+			private function cleanForm():void
+			{
+				this.txtID.reset();
+				this.dtfDate.reset();
+				Util.removeItems(this.projectsConsult.datagrid.dataProvider);
+				this.cmbResponsibleViaticum.selectedIndex = 0;
+				this.cmbConveyance.selectedIndex = 0;
+				this.txtNumberOfVehicle.reset();
+				this.txtInitialMileage.reset();
+				this.txtGAS.reset();
+				this.txtTollBooths.reset();
+				this.txtPassages.reset();
+				this.txtLodging.reset();
+				this.txtFood.reset();
+				this.txtMaterialsAndOrTool.reset();
+				this.txtOthers.reset();
+				this.txtTotalRequested.reset();
+			}
+			
+			protected function responseUpdate_resultHandler(event:ResultEvent):void
+			{
+				var eventGeneralDataProjectUpdated:Event = new Event("diemRequestUpdated");
+				this.dispatchEvent( eventGeneralDataProjectUpdated );
+				this.cleanForm();
+			}
+			
+			protected function responseGetMedioTransporte_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbConveyance.dataProvider = data;
+				if( Util.isFill( this.cmbConveyance ) && this._item 
+					&& this._item.medioTransporte != null ){
+					this.cmbConveyance.selectedIndex = Util.selectedIndexFromCombo( this.cmbConveyance.dataProvider as ArrayCollection, 
+						this._item.medioTransporte.id);
+				}
+			}
+			
+			protected function responseGetColaborador_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbResponsibleViaticum.dataProvider = data;
+				if( Util.isFill( this.cmbResponsibleViaticum ) && this._item 
+					&& this._item.colaborador != null ){
+					this.cmbResponsibleViaticum.selectedIndex = Util.selectedIndexFromCombo( this.cmbResponsibleViaticum.dataProvider as ArrayCollection, 
+						this._item.colaborador.id);
+					this.cmbResponsibleViaticum.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
+				}
+			}
+			
+			private function executeProjectQuery():void
+			{
+				var filter:FiltroProyecto = new FiltroProyecto();
+				filter.idConectel = null;
+				filter.idCategoria = undefined;
+				filter.idCliente = undefined;
+				filter.tipoProyecto = undefined;
+				filter.tecnologia = undefined;
+				filter.equipo = undefined;
+				filter.actividadRealizar = undefined;
+				filter.modelo = undefined;
+				filter.descripcionServicio = undefined;
+				filter.tipoServicio = undefined;
+				this.responseGetAllByFiltro.token = this.proyectoService.getAllByFiltro(filter);
+			}
+			
+			protected function responseGetAll_resultHandler(event:ResultEvent):void
+			{
+				projectsConsult.setDataGridData( event.result as ArrayCollection );
+			}
+			
+			protected function projectsConsult_projectSelectedHandler(event:GenericEvent):void
+			{
+				var project:Proyecto = event.information as Proyecto;
+				if( project == null ){
+					return;
+				}
+			}
+			
+			protected function cmbResponsibleViaticum_changeHandler(event:ListEvent):void
+			{
+				// TODO Llenar los campos: Numero de Tarjeta, Telefono y Correo Electronico
+				var colaborator:Colaborador = Util.validateCombo( this.cmbResponsibleViaticum ) as Colaborador;
+				this.txtCardNumber.text = colaborator.numeroTarjeta;
+				this.txtMail.text = colaborator.correoElectronico;
+				this.txtPhone.text = colaborator.telefono;
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="diemRequestNew", type="flash.events.Event")]
+		[Event(name="diemRequestUpdated", type="flash.events.Event")]
+		[Event(name="diemRequestProjectDone", type="flash.events.Event")]
+	</mx:Metadata>
+	<mx:Form id="form">
+		<mx:FormItem id="frmID" label="ID:" direction="horizontal">
+			<components:TextInput id="txtID" width="80" textAlign="right"
+								  editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha:">
+			<components:DateField id="dtfDate"
+								  creationComplete="this.dtfDate.selectedDate = new Date()"/>
+		</mx:FormItem>
+		<mx:FormItem label="Proyectos:" direction="horizontal"/>
+		<proyectos:Consult id="projectsConsult" projectSelected="projectsConsult_projectSelectedHandler(event)"/>
+		<mx:FormItem label="Responsable Viático:">
+			<mx:ComboBox id="cmbResponsibleViaticum" width="300"
+						 labelField="nombreCompleto"
+						 change="cmbResponsibleViaticum_changeHandler(event)"/>
+		</mx:FormItem>
+		<mx:FormItem label="Número de Tarjeta:">
+			<components:TextInput id="txtCardNumber" editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Correo Electrónico:">
+			<components:TextInput id="txtMail" editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Teléfono:">
+			<components:TextInput id="txtPhone" editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Medio de Transporte:">
+			<mx:ComboBox id="cmbConveyance" width="200"
+						 labelField="etiqueta"/>
+		</mx:FormItem>
+		<mx:FormItem label="Número de Vehículo:">
+			<components:TextInput id="txtNumberOfVehicle"/>
+		</mx:FormItem>
+		<mx:FormItem label="Kilometraje Inicial:">
+			<components:TextInput id="txtInitialMileage" textAlign="right" width="120"/>
+		</mx:FormItem>
+		<mx:FormItem label="Combustible:">
+			<components:TextInput id="txtGAS" textAlign="right" width="160"/>
+		</mx:FormItem>
+		<mx:FormItem label="Casetas:">
+			<components:TextInput id="txtTollBooths" textAlign="right" width="160"/>
+		</mx:FormItem>
+		<mx:FormItem label="Pasajes:">
+			<components:TextInput id="txtPassages" textAlign="right" width="160"/>
+		</mx:FormItem>
+		<mx:FormItem label="Hospedaje:">
+			<components:TextInput id="txtLodging" textAlign="right" width="160"/>
+		</mx:FormItem>
+		<mx:FormItem label="Alimentos:">
+			<components:TextInput id="txtFood" textAlign="right" width="160"/>
+		</mx:FormItem>
+		<mx:FormItem label="Materiales y/o Herramienta:">
+			<components:TextInput id="txtMaterialsAndOrTool" textAlign="right" width="160"/>
+		</mx:FormItem>
+		<mx:FormItem label="Otros:">
+			<components:TextInput id="txtOthers" textAlign="right" width="160"/>
+		</mx:FormItem>
+		<mx:FormItem label="Total Solicitado:">
+			<components:TextInput id="txtTotalRequested" textAlign="right" width="170"/>
+		</mx:FormItem>
+		<mx:FormItem direction="horizontal">
+			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:RemoteObject id="solicitudViaticosService" destination="solicitudViaticosService" fault="datosGeneralesSolicitudViaticosService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
+	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
+	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="datosGeneralesSolicitudViaticosService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetMedioTransporte" result="responseGetMedioTransporte_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetColaborador" result="responseGetColaborador_resultHandler(event)"/>
+	<mx:RemoteObject id="proyectoService" destination="proyectoService" fault="datosGeneralesSolicitudViaticosService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetAllByFiltro" result="responseGetAll_resultHandler(event)"/>
+</mx:VBox>

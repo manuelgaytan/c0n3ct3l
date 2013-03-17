@@ -1439,7 +1439,7 @@
 	fk_proveedor_maquilador INT(11) UNSIGNED,
 	ingreso DECIMAL,
 	egreso DECIMAL,
-	folio_documento INTEGER,
+	folio_documento VARCHAR(255),
 	importe DECIMAL NOT NULL,
 	descuentos DECIMAL,
 	iva DECIMAL,

@@ -29,12 +29,15 @@
 			import model.Comentario;
 			import model.ComentarioCompras;
 			import model.ComentarioConcentradoOrdenCompraCliente;
+			import model.ComentarioContabilidad;
 			import model.ComentarioCuentasPagarFacturacion;
 			import model.ComentarioFacturaProveedor;
 			import model.ComentarioGenerico;
 			import model.ComentarioInformacionFacturacion1;
 			import model.ComentarioInformacionFacturacion2;
 			import model.ComentarioInformacionFacturacion3;
+			import model.ComentarioMovimientoFondoFijoCajaChica;
+			import model.ComentarioMovimientoPagoContableServicio;
 			import model.ComentarioNotaCreditoCliente;
 			import model.ComentarioOrdenCompraCliente;
 			import model.ComentarioPantallaValidacionAdministrativa;
@@ -42,6 +45,7 @@
 			import model.ComentarioValidacionAdministrativa;
 			import model.ComentarioValidacionCostoOrdenCompraCliente;
 			import model.Compania;
+			import model.ComprobacionViaticos;
 			import model.ConfiguracionPruebaEntrega;
 			import model.Constants;
 			import model.Consumible;
@@ -52,13 +56,17 @@
 			import model.DatosGeneralesProyecto;
 			import model.DesarrolloProyecto;
 			import model.DescripcionAlmacen;
+			import model.DescripcionFondoFijoCajaChica;
+			import model.DescripcionPagoContableServicio;
 			import model.DocumentoAlmacen;
+			import model.DocumentoComprobacionViaticos;
 			import model.Entregable;
 			import model.EquipoMedicion;
 			import model.EquipoMedicionSolicitudAlmacen;
 			import model.EquipoTransporte;
 			import model.EquipoTransporteSolicitudAlmacen;
 			import model.Estado;
+			import model.EstadoComprobacionViaticos;
 			import model.EstadoFinalValidacion;
 			import model.EstadoInvestigacionCalidad;
 			import model.EstadoOrdenCompra;
@@ -92,8 +100,11 @@
 			import model.InformacionFacturacion;
 			import model.Material;
 			import model.MaterialSolicitudAlmacen;
+			import model.MedioTransporte;
 			import model.MenuOption;
 			import model.Model;
+			import model.MovimientoFondoFijoCajaChica;
+			import model.MovimientoPagoContableServicio;
 			import model.NombreSolicitante;
 			import model.NotaCreditoCliente;
 			import model.NotaCreditoProveedor;
@@ -125,6 +136,7 @@
 			import model.SolicitanteRequisicion;
 			import model.SolicitudAlmacen;
 			import model.SolicitudServicioMaquilado;
+			import model.SolicitudViaticos;
 			import model.TelefoniaMovil;
 			import model.TelefoniaMovilSolicitudAlmacen;
 			import model.TipoAlmacen;
@@ -132,6 +144,7 @@
 			import model.TipoDocumentoAlmacen;
 			import model.TipoEntregable;
 			import model.TipoMantenimiento;
+			import model.TipoOperacion;
 			import model.TipoValidacionAdministrativa;
 			import model.UbicacionA;
 			import model.UbicacionB;
@@ -317,6 +330,19 @@
 			private var notaCreditoProveedor:NotaCreditoProveedor;
 			private var comentarioFacturaProveedor:ComentarioFacturaProveedor;
 			private var comentarioNotaCreditoCliente:ComentarioNotaCreditoCliente;
+			private var medioTransporte:MedioTransporte;
+			private var movimientoFondoFijoCajaChica:MovimientoFondoFijoCajaChica;
+			private var descripcionFondoFijoCajaChica:DescripcionFondoFijoCajaChica;
+			private var solicitudViaticos:SolicitudViaticos;
+			private var documentoComprobacionViaticos:DocumentoComprobacionViaticos;
+			private var estadoComprobacionViaticos:EstadoComprobacionViaticos;
+			private var comprobacionViaticos:ComprobacionViaticos;
+			private var comentarioContabilidad:ComentarioContabilidad;
+			private var comentarioMovimientoFondoFijoCajaChica:ComentarioMovimientoFondoFijoCajaChica;
+			private var comentarioMovimientoPagoContableServicio:ComentarioMovimientoPagoContableServicio;
+			private var movimientoPagoContableServicio:MovimientoPagoContableServicio;
+			private var descripcionPagoContableServicio:DescripcionPagoContableServicio;
+			private var tipoOperacion:TipoOperacion;
 			
 			protected function login_readyHandler(event:ModuleEvent):void
 			{

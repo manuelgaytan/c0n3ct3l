@@ -4,6 +4,7 @@
 package mx.com.gahm.conenctel.entities;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,6 +16,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  * @author MHDolores
@@ -79,6 +82,10 @@ public class SolicitudViaticosDO implements Serializable{
 
 	@Column(name = "total_solicitado", nullable = false)
 	private Double totalSolicitado;
+	
+	@Temporal(TemporalType.DATE)
+	@Column(name = "fecha", nullable = false, length = 10)
+	private Date fecha;
 
 	public SolicitudViaticosDO() {
 		super();
@@ -90,7 +97,7 @@ public class SolicitudViaticosDO implements Serializable{
 			String numeroVehiculo, String kilometrajeInicial,
 			Double combustible, Double casetas, Double pasajes,
 			Double hospedaje, Double alimentos, Double materialesHerramienta,
-			Double otros, Double totalSolicitado) {
+			Double otros, Double totalSolicitado, Date fecha) {
 		super();
 		this.id = id;
 		this.proyecto = proyecto;
@@ -106,6 +113,7 @@ public class SolicitudViaticosDO implements Serializable{
 		this.materialesHerramienta = materialesHerramienta;
 		this.otros = otros;
 		this.totalSolicitado = totalSolicitado;
+		this.fecha = fecha;
 	}
 
 	/**
@@ -303,10 +311,20 @@ public class SolicitudViaticosDO implements Serializable{
 	public void setTotalSolicitado(Double totalSolicitado) {
 		this.totalSolicitado = totalSolicitado;
 	}
-	
-	
-	
-	
 
+	/**
+	 * @return the fecha
+	 */
+	public Date getFecha() {
+		return fecha;
+	}
+
+	/**
+	 * @param fecha the fecha to set
+	 */
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
+	}
+	
 	
 }

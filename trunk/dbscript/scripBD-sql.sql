@@ -1344,6 +1344,7 @@
 	CREATE TABLE SolicitudViaticos
 	(
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fecha DATE NOT NULL,
 	fk_proyecto INT(11) UNSIGNED NOT NULL,
 	fk_colaborador INT(11) UNSIGNED NOT NULL,
 	fk_medio_transporte INT(11) UNSIGNED NOT NULL,

@@ -118,6 +118,12 @@
 		<class>mx.com.gahm.conenctel.entities.EstadoTesoreriaDO</class>
 		<class>mx.com.gahm.conenctel.entities.FacturaProveedorDO</class>
 		<class>mx.com.gahm.conenctel.entities.ComentarioFacturaProveedorDO</class>
+		<class>mx.com.gahm.conenctel.entities.SolicitudViaticosDO</class>
+		<class>mx.com.gahm.conenctel.entities.MedioTransporteDO</class>
+		<class>mx.com.gahm.conenctel.entities.ComprobacionViaticosDO</class>
+		<class>mx.com.gahm.conenctel.entities.EstadoComprobacionViaticosDO</class>
+		<class>mx.com.gahm.conenctel.entities.MoviemientoFondoFijoCajaChicaDO</class>
+		<class>mx.com.gahm.conenctel.entities.DescripcionFondoFijoCajaChicaDO</class>
 		<properties>
 			<property name="eclipselink.logging.level" value="FINE"/> 
 			<property name="eclipselink.logging.parameters" value="true"/>

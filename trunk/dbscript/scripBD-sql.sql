@@ -1429,6 +1429,51 @@
 	PRIMARY KEY (id)
 	);
 
+	CREATE TABLE MovimientoPagoContableServicio
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fecha DATE NOT NULL,
+	fk_descripcion_pago_contable_servicio INT(11) UNSIGNED NOT NULL,
+	fk_proveedor_calificado INT(11) UNSIGNED,
+	fk_proveedor_maquilador INT(11) UNSIGNED,
+	ingreso DECIMAL,
+	egreso DECIMAL,
+	folio_documento INTEGER,
+	importe DECIMAL NOT NULL,
+	descuentos DECIMAL,
+	iva DECIMAL,
+	redondeo DECIMAL,
+	isr_retencion DECIMAL,
+	iva_retencion DECIMAL,
+	otros_impuestos DECIMAL,
+	total_pagar DECIMAL,
+	fecha_limite_pago DATE,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE ComentarioMovimientoPagoContableServicio
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_movimiento_pago_contable_servicio INT(11) UNSIGNED NOT NULL,
+	fk_comentario_contabilidad INT(11) UNSIGNED NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE DescripcionPagoContableServicio
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	descripcion VARCHAR(255) NOT NULL,
+	fk_tipo_operacion INT(11) UNSIGNED NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE TipoOperacion
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	tipo_operacion VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
 	ALTER TABLE Cliente ADD FOREIGN KEY id_contacto_idxfk (id_contacto) REFERENCES Contacto (id);
 
 	ALTER TABLE Proyecto ADD FOREIGN KEY id_categoria_proyecto_idxfk (id_categoria_proyecto) REFERENCES CategoriaProyecto (id);
@@ -1848,6 +1893,16 @@
 	ALTER TABLE ComentarioMoviemientoFondoFijoCajaChica ADD FOREIGN KEY fk_moviemiento_fondo_fijo_caja_chica_idxfk (fk_moviemiento_fondo_fijo_caja_chica) REFERENCES MoviemientoFondoFijoCajaChica (id);
 
 	ALTER TABLE ComentarioMoviemientoFondoFijoCajaChica ADD FOREIGN KEY fk_comentario_contabilidad_idxfk (fk_comentario_contabilidad) REFERENCES ComentarioContabilidad (id);
+
+	ALTER TABLE MovimientoPagoContableServicio ADD FOREIGN KEY fk_descripcion_pago_contable_servicio_idxfk (fk_descripcion_pago_contable_servicio) REFERENCES DescripcionPagoContableServicio (id);
+
+	ALTER TABLE MovimientoPagoContableServicio ADD FOREIGN KEY fk_proveedor_calificado_idxfk (fk_proveedor_calificado) REFERENCES ProveedorCalificado (id);
+
+	ALTER TABLE MovimientoPagoContableServicio ADD FOREIGN KEY fk_proveedor_maquilador_idxfk (fk_proveedor_maquilador) REFERENCES ProveedorMaquilador (id);
+
+	ALTER TABLE ComentarioMovimientoPagoContableServicio ADD FOREIGN KEY fk_movimiento_pago_contable_servicio_idxfk (fk_movimiento_pago_contable_servicio) REFERENCES MovimientoPagoContableServicio (id);
+
+	ALTER TABLE ComentarioMovimientoPagoContableServicio ADD FOREIGN KEY fk_comentario_contabilidad_idxfk (fk_comentario_contabilidad) REFERENCES ComentarioContabilidad (id);
 
 	/* Perfiles */
 	INSERT INTO Perfil
@@ -2622,6 +2677,48 @@
 	VALUES (11, 'Materiales');
 	INSERT INTO DescripcionFondoFijoCajaChica
 	VALUES (12, 'Otros');
+
+	INSERT INTO TipoOperacion
+	VALUES (1, 'Ingresos');
+	INSERT INTO TipoOperacion
+	VALUES (2, 'Egresos');
+
+	INSERT INTO DescripcionPagoContableServicio
+	VALUES (1, 'Nómina Conectel', 1);
+	INSERT INTO DescripcionPagoContableServicio
+	VALUES (2, 'Gratificaciones', 1);
+	INSERT INTO DescripcionPagoContableServicio
+	VALUES (3, 'Finiquitos', 1);
+	INSERT INTO DescripcionPagoContableServicio
+	VALUES (4, 'IMSS, SAR e INFONAVIT', 1);
+	INSERT INTO DescripcionPagoContableServicio
+	VALUES (5, 'Financiamiento Adq. Automóvil', 1);
+	INSERT INTO DescripcionPagoContableServicio
+	VALUES (6, 'Financiamiento Adq. Otros', 1);
+	INSERT INTO DescripcionPagoContableServicio
+	VALUES (7, 'Servicio de Internet', 1);
+	INSERT INTO DescripcionPagoContableServicio
+	VALUES (8, 'Servicio Telefónico', 1);
+	INSERT INTO DescripcionPagoContableServicio
+	VALUES (9, 'Impuestos Federales', 1);
+	INSERT INTO DescripcionPagoContableServicio
+	VALUES (10, 'Impuestos Locales', 1);
+	INSERT INTO DescripcionPagoContableServicio
+	VALUES (11, 'Suministro de Agua', 1);
+	INSERT INTO DescripcionPagoContableServicio
+	VALUES (12, 'Multas', 1);
+	INSERT INTO DescripcionPagoContableServicio
+	VALUES (13, 'Servicio de TV de Paga', 1);
+	INSERT INTO DescripcionPagoContableServicio
+	VALUES (14, 'Otros', 1);
+	INSERT INTO DescripcionPagoContableServicio
+	VALUES (15, 'Devolución de Cliente', 2);
+	INSERT INTO DescripcionPagoContableServicio
+	VALUES (16, 'Devolución de Impuestos', 2);
+	INSERT INTO DescripcionPagoContableServicio
+	VALUES (17, 'Venta Activo Fijo', 2);
+	INSERT INTO DescripcionPagoContableServicio
+	VALUES (18, 'Otros', 2);
 
 /*
 	INSERT INTO Proveedor

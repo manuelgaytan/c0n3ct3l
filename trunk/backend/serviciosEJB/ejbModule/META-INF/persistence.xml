@@ -124,6 +124,10 @@
 		<class>mx.com.gahm.conenctel.entities.EstadoComprobacionViaticosDO</class>
 		<class>mx.com.gahm.conenctel.entities.MoviemientoFondoFijoCajaChicaDO</class>
 		<class>mx.com.gahm.conenctel.entities.DescripcionFondoFijoCajaChicaDO</class>
+		<class>mx.com.gahm.conenctel.entities.MovimientoPagoContableServicioDO</class>
+		<class>mx.com.gahm.conenctel.entities.DescripcionPagoContableServicioDO</class>
+		<class>mx.com.gahm.conenctel.entities.TipoOperacionDO</class>
+		
 		<properties>
 			<property name="eclipselink.logging.level" value="FINE"/> 
 			<property name="eclipselink.logging.parameters" value="true"/>

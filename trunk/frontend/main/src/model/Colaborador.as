@@ -7,6 +7,10 @@ package model
 		public var nombreCompleto:String;
 		public var tipoColaborador:TipoColaborador;
 		
+		public var numeroTarjeta:String;
+		public var correoElectronico:String;
+		public var telefono:String;
+		
 		public function Colaborador()
 		{
 			id = undefined;

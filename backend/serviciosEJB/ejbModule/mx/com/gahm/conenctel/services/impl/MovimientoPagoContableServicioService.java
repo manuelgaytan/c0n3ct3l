@@ -10,7 +10,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import mx.com.gahm.conenctel.entities.ComentarioCuentasPagarFacturacionDO;
+import mx.com.gahm.conenctel.entities.ComentarioMovimientoPagoContableServicioDO;
 import mx.com.gahm.conenctel.entities.MovimientoPagoContableServicioDO;
 import mx.com.gahm.conenctel.services.IMovimientoPagoContableServicioService;
 
@@ -53,8 +53,10 @@ public class MovimientoPagoContableServicioService implements IMovimientoPagoCon
 	public MovimientoPagoContableServicioDO save(MovimientoPagoContableServicioDO item) {
 		try {
 
-						entityManager.persist(item);
-			
+			List<ComentarioMovimientoPagoContableServicioDO> comentarios =item.getComentarios();
+			item.setComentarios(null);
+			entityManager.persist(item);
+			saveComentarios(item,comentarios);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -62,13 +64,42 @@ public class MovimientoPagoContableServicioService implements IMovimientoPagoCon
 		return item;
 	}
 
+	
+	private void saveComentarios(MovimientoPagoContableServicioDO item,List<ComentarioMovimientoPagoContableServicioDO> comentarios){
+		
+		for (ComentarioMovimientoPagoContableServicioDO comentario : comentarios) {
+			
+			entityManager.persist(comentario.getComentarioContabilidad());
+			comentario.setMovimientoPagoContableServicio(item);
+			entityManager.persist(comentario);
+			
+		}
+		item.setComentarios(comentarios);
+	}
+	
 	@Override
 	public MovimientoPagoContableServicioDO update(MovimientoPagoContableServicioDO item) {
+		
+		deleteComentarios(item.getId());
 		entityManager.merge(item);
-
+		saveComentarios(item, item.getComentarios());
+		
 		return item;
 	}
 
+	
+	private void deleteComentarios(Integer id){
+		MovimientoPagoContableServicioDO item = getItem(id);
+		List<ComentarioMovimientoPagoContableServicioDO> comentarios = item.getComentarios();
+		
+		for (ComentarioMovimientoPagoContableServicioDO comentario : comentarios) {
+			entityManager.remove(comentario);
+			entityManager.remove(comentario.getComentarioContabilidad());
+		}
+		
+		
+		
+	}
 	
 	@Override
 	public MovimientoPagoContableServicioDO getItem(Integer id) {

@@ -4,6 +4,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -37,7 +38,7 @@ public class ComentarioNotaCreditoClienteDO implements Serializable{
 	private NotaCreditoClienteDO notaCreditoCliente;
 	
 	@ManyToOne
-	@JoinColumn(name = "fk_comentario_cuentas_pagar_facturacion", nullable = false)
+	@JoinColumn(name = "fk_comentario_cuentas_pagar_facturacion" )
 	private ComentarioCuentasPagarFacturacionDO comentarioCuentasPagarFacturacion;
 
 	public ComentarioNotaCreditoClienteDO() {

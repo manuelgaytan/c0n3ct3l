@@ -2,9 +2,11 @@ package mx.com.gahm.conenctel.entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -54,6 +57,10 @@ public class MoviemientoFondoFijoCajaChicaDO implements Serializable{
 	@Column(name = "egreso", nullable = false)
 	private Double egreso;
 
+	@OneToMany(mappedBy="moviemientoFondoFijoCajaChica", fetch = FetchType.EAGER)
+	private List<ComentarioMoviemientoFondoFijoCajaChicaDO> comentarios;
+	
+	
 	public MoviemientoFondoFijoCajaChicaDO() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -171,5 +178,21 @@ public class MoviemientoFondoFijoCajaChicaDO implements Serializable{
 	public void setEgreso(Double egreso) {
 		this.egreso = egreso;
 	}
+
+	/**
+	 * @return the comentarios
+	 */
+	public List<ComentarioMoviemientoFondoFijoCajaChicaDO> getComentarios() {
+		return comentarios;
+	}
+
+	/**
+	 * @param comentarios the comentarios to set
+	 */
+	public void setComentarios(
+			List<ComentarioMoviemientoFondoFijoCajaChicaDO> comentarios) {
+		this.comentarios = comentarios;
+	}
+
 	
 }

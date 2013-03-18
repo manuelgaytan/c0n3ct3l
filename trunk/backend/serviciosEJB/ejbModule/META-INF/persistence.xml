@@ -127,7 +127,9 @@
 		<class>mx.com.gahm.conenctel.entities.MovimientoPagoContableServicioDO</class>
 		<class>mx.com.gahm.conenctel.entities.DescripcionPagoContableServicioDO</class>
 		<class>mx.com.gahm.conenctel.entities.TipoOperacionDO</class>
-		
+		<class>mx.com.gahm.conenctel.entities.ComentarioMovimientoPagoContableServicioDO</class>
+		<class>mx.com.gahm.conenctel.entities.ComentarioContabilidadDO</class>
+		<class>mx.com.gahm.conenctel.entities.ComentarioMoviemientoFondoFijoCajaChicaDO</class>
 		<properties>
 			<property name="eclipselink.logging.level" value="FINE"/> 
 			<property name="eclipselink.logging.parameters" value="true"/>

@@ -6,12 +6,12 @@ package model
 	public class DescripcionFondoFijoCajaChica
 	{
 		public var id:*;
-		public var etiqueta:String;
+		public var descripcion:String;
 		
 		public function DescripcionFondoFijoCajaChica()
 		{
 			id = undefined;
-			etiqueta = "";
+			descripcion = "";
 		}
 		
 		public static function getComboList():ArrayCollection{
@@ -22,7 +22,7 @@ package model
 			var item:DescripcionFondoFijoCajaChica = null;
 			item = new DescripcionFondoFijoCajaChica();
 			item.id = id;
-			item.etiqueta = etiqueta;
+			item.descripcion = etiqueta;
 			return item;
 		}
 	}

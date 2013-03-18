@@ -9,7 +9,6 @@
 			import model.ConfiguracionPruebaEntrega;
 			import model.FiltroProyecto;
 			import model.Proyecto;
-			import model.SolicitudViaticos;
 			import model.Util;
 			
 			import mx.collections.ArrayCollection;
@@ -23,19 +22,13 @@
 			private var items:ArrayCollection = null;
 			
 			private var configuracionPruebaEntrega:ConfiguracionPruebaEntrega;
-			[Bindable]
-			private var _readMode:Boolean = false;
-			
-			public function set readMode(value:Boolean):void{
-				this._readMode = value;
-			}
 			
 			protected function responseGetAll_resultHandler(event:ResultEvent):void
 			{
 				items = event.result as ArrayCollection;
 			}
 			
-			protected function datosGeneralesProyectoService_faultHandler(event:FaultEvent):void
+			protected function comprobacionViaticosService_faultHandler(event:FaultEvent):void
 			{
 				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
 			}
@@ -54,13 +47,13 @@
 				if( event.currentTarget.selectedItem == null ){
 					return;
 				}
-				var item:SolicitudViaticos = this.datagrid.selectedItem as SolicitudViaticos;
-				this.responseGetProyecto.token = this.solicitudViaticosService.getItem( item.id );
+				var item:Proyecto = this.datagrid.selectedItem as Proyecto;
+				this.responseGetItem.token = this.comprobacionViaticosService.getProyecto( item.id );
 			}
 			
 			protected function responseGetItem_resultHandler(event:ResultEvent):void
 			{
-				var item:SolicitudViaticos = event.result as SolicitudViaticos;
+				var item:Proyecto = event.result as Proyecto;
 				if( item == null ){
 					return;
 				}
@@ -71,7 +64,7 @@
 			
 			public function executeQuery():void
 			{
-				this.responseGetAll.token = this.solicitudViaticosService.getAll();
+				this.responseGetAll.token = this.comprobacionViaticosService.getAll();
 			}
 			
 			private function labelFunctionDate(object:Object, column:DataGridColumn):String{
@@ -98,7 +91,7 @@
 					return;
 				}
 				var items:ArrayCollection = Util.selectedIDs( this.datagrid.selectedItems ); 
-				this.responseDeleteItems.token = this.solicitudViaticosService.deleteItems( items );
+				this.responseDeleteItems.token = this.comprobacionViaticosService.deleteItems( items );
 			}
 			
 			protected function responseDeleteItems_resultHandler(event:ResultEvent):void
@@ -110,57 +103,56 @@
 	<mx:Metadata>
 		[Event(name="itemDetail", type="events.GenericEvent")]
 	</mx:Metadata>
-	<mx:VBox id="vBox" width="100%" height="100%">
-		<mx:DataGrid id="datagrid" width="842" height="100%" dataProvider="{items}"
+	<mx:VBox width="{parent.parent.width-5}" height="100%">
+		<mx:DataGrid id="datagrid" width="1000" height="100%" dataProvider="{items}"
 					 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 					 allowMultipleSelection="true"
 					 >
 			<mx:columns>
 				<mx:DataGridColumn id="dtgID" headerText="ID"
 								   dataField="id"
-								   width="60"
+								   width="80"
 								   textAlign="right"/>
-				<mx:DataGridColumn id="dtgDate" headerText="Fecha"
-								   dataField="fecha"
+				<mx:DataGridColumn id="dtgDate" headerText="{'Fecha de\nSubida\nDocumentos'}"
+								   dataField="fechaSubidaDocumentos"
 								   labelFunction="{Util.labelFunctionDate}"
 								   textAlign="center"
 								   width="80"
 								   />
 				<mx:DataGridColumn id="dtgProjectID" headerText="{'ID\nProyecto'}"
-								   dataField="proyecto.id"
+								   dataField="solicitudViaticos.proyecto.id"
 								   labelFunction="labelFunctionIDProyecto"
-								   width="130"
+								   width="120"
 								   textAlign="right"/>
 				<mx:DataGridColumn id="dtgClient" headerText="{'Cliente'}"
 								   dataField="proyecto.producto.cliente.nombreComercial"
 								   textAlign="center"
-								   width="170"/>
+								   width="150"/>
 				<mx:DataGridColumn id="dtgResponsibleViaticum" headerText="{'Responsable\nViático'}"
-								   dataField="colaborador.nombreCompleto"
+								   dataField="solicitudViaticos.colaborador.nombreCompleto"
 								   textAlign="right"
-								   width="170"
+								   width="150"
 								   />
-				<mx:DataGridColumn id="dtgConveyance" headerText="{'Medio\nTransporte'}"
-								   dataField="medioTransporte.etiqueta"
+				<mx:DataGridColumn id="dtgConveyance" headerText="{'Estado\nComprobación\nViáticos'}"
+								   dataField="estadoComprobacionViaticos.estiqueta"
 								   textAlign="center"
-								   width="170"
+								   width="100"
 								   />
-				<mx:DataGridColumn id="dtgTotalRequested" headerText="{'Total\nSolicitado'}"
-								   dataField="totalSolicitado"
+				<mx:DataGridColumn id="dtgTotalRequested" headerText="{'Total\nAutorizado'}"
+								   dataField="totalAutorizado"
 								   textAlign="right"
-								   width="80"
+								   width="120"
 								   />
 			</mx:columns>
 		</mx:DataGrid>
 	</mx:VBox>
 	<mx:HBox width="100%">
 		<mx:Spacer width="100%"/>
-		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"
-				   visible="{!this._readMode}"/>
+		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>
 	</mx:HBox>
-	<mx:RemoteObject id="solicitudViaticosService" destination="solicitudViaticosService" fault="datosGeneralesProyectoService_faultHandler(event)"
+	<mx:RemoteObject id="comprobacionViaticosService" destination="comprobacionViaticosService" fault="comprobacionViaticosService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetAll" result="responseGetAll_resultHandler(event)"/>
-	<mx:CallResponder id="responseGetProyecto" result="responseGetItem_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetItem" result="responseGetItem_resultHandler(event)"/>
 	<mx:CallResponder id="responseDeleteItems" result="responseDeleteItems_resultHandler(event)"/>
 </mx:VBox>

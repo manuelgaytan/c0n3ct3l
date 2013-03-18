@@ -125,7 +125,7 @@
 	<mx:VBox label="Contabilidad" width="100%" height="100%">
 		<mx:LinkButton label="Solicitud de Viáticos" id="SolicitudesViaticos" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/servicios.png')"/>
-		<mx:LinkButton label="Comprobación de Viáticos" id="ComprobacionesViaticos" click="clickMenuHandler(event)"
+		<mx:LinkButton label="{'Comprobación de Viáticos'}" id="ComprobacionesViaticos" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/clientes.png')"/>
 		<mx:LinkButton label="Fondo Fijo de Caja Chica" id="FondosFijosCajaChica" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/servicios.png')"/>

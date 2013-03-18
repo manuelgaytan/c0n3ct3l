@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+		 label="Consulta"
+		 horizontalAlign="right"
+		 creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import events.GenericEvent;
+			
+			import model.MovimientoFondoFijoCajaChica;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			[Bindable]
+			private var items:ArrayCollection = null;
+			
+			private var movimientoFondoFijoCajaChica:MovimientoFondoFijoCajaChica;
+			
+			protected function responseGetAll_resultHandler(event:ResultEvent):void
+			{
+				items = event.result as ArrayCollection;
+			}
+			
+			protected function moviemientoFondoFijoCajaChicaService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.executeQuery();
+			}
+			
+			protected function datagrid_doubleClickHandler(event:MouseEvent):void
+			{
+				var item:MovimientoFondoFijoCajaChica = this.datagrid.selectedItem as MovimientoFondoFijoCajaChica;
+				if( item == null ){
+					return;
+				}
+				this.responseGetItem.token = this.moviemientoFondoFijoCajaChicaService.getItem( item.id );
+			}
+			
+			protected function responseGetItem_resultHandler(event:ResultEvent):void
+			{
+				var item:MovimientoFondoFijoCajaChica = event.result as MovimientoFondoFijoCajaChica;
+				if( item == null ){
+					return;
+				}
+				var genericEvent:GenericEvent = new GenericEvent("pettyCashFundFixedDetail");
+				genericEvent.information = item;
+				this.dispatchEvent( genericEvent );
+			}
+			
+			public function executeQuery():void
+			{
+				this.responseGetAll.token = this.moviemientoFondoFijoCajaChicaService.getAll();
+			}
+			
+			protected function btnDelete_clickHandler(event:MouseEvent):void
+			{
+				if( this.datagrid.selectedItems == null ||
+					this.datagrid.selectedItems.length == 0 ){
+					Util.showErrorMessage("Debe seleccionar elementos de la tabla.");
+					return;
+				}
+				Alert.show("Confirme si desea eliminar los elementos.","Advertencia",Alert.YES+Alert.NO,this, deleteItems);
+			}
+			
+			private function deleteItems(event:CloseEvent):void
+			{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var items:ArrayCollection = Util.selectedIDs( this.datagrid.selectedItems ); 
+				this.responseDeleteItems.token = this.moviemientoFondoFijoCajaChicaService.deleteItems( items );
+			}
+			
+			protected function responseDeleteItems_resultHandler(event:ResultEvent):void
+			{
+				this.executeQuery();
+			}
+			
+			private function labelFunctionGenerico(item:Object, column:DataGridColumn):String{
+				return Util.extractToText( item, column.dataField );
+			}
+			
+			private function labelFunctionDate(object:Object, column:DataGridColumn):String{
+				return Util.formatDateToString( object[column.dataField] );
+			}
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="pettyCashFundFixedDetail", type="events.GenericEvent")]
+	</mx:Metadata>
+	<mx:DataGrid id="datagrid" width="100%" height="100%" dataProvider="{items}"
+				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
+				 allowMultipleSelection="true">
+		<mx:columns>
+			<mx:DataGridColumn id="dtgID" headerText="ID"
+							   dataField="id"
+							   width="60"
+							   textAlign="right"/>
+			<mx:DataGridColumn id="dtgDate" headerText="Fecha"
+							   dataField="fecha"
+							   width="80"
+							   textAlign="center"
+							   labelFunction="labelFunctionDate"/>
+			<mx:DataGridColumn id="dtgDescription" headerText="Descripción"
+							   width="90"
+							   dataField="descripcion.descripcion"
+							   />
+			<mx:DataGridColumn id="dtgIncomes" headerText="Ingreso"
+							   dataField="ingreso"
+							   textAlign="right"
+							   labelFunction="{Util.labelFunctionCurrency}"
+							   width="100"/>
+			<mx:DataGridColumn id="dtgOutcomes" headerText="Egreso"
+							   dataField="egreso"
+							   textAlign="right"
+							   labelFunction="{Util.labelFunctionCurrency}"
+							   width="100"/>
+			<mx:DataGridColumn id="dtgReceiver" headerText="Recibe"
+							   width="140"
+							   dataField="colaborador.nombreCompleto"
+							   />
+			<mx:DataGridColumn id="dtgDeliver" headerText="Entrega"
+							   width="140"
+							   dataField="entrega"
+							   />
+		</mx:columns>
+	</mx:DataGrid>
+	<mx:HBox>
+		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>
+	</mx:HBox>
+	<mx:RemoteObject id="moviemientoFondoFijoCajaChicaService" destination="moviemientoFondoFijoCajaChicaService" fault="moviemientoFondoFijoCajaChicaService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetAll" result="responseGetAll_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetItem" result="responseGetItem_resultHandler(event)"/>
+	<mx:CallResponder id="responseDeleteItems" result="responseDeleteItems_resultHandler(event)"/>
+</mx:VBox>

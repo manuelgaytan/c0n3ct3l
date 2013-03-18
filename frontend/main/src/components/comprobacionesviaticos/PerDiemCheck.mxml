@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*" 
+		 xmlns:solicitudesviaticos="components.solicitudesviaticos.*"
+		 >
+	<mx:Script>
+		<![CDATA[
+			import events.GenericEvent;
+			
+			import model.Catalogo;
+			import model.Colaborador;
+			import model.ComprobacionViaticos;
+			import model.Constants;
+			import model.Estado;
+			import model.EstadoComprobacionViaticos;
+			import model.EstadoOrdenCompra;
+			import model.EstadoValidacionCosto;
+			import model.EstadoValidacionOperativa;
+			import model.FiltroProyecto;
+			import model.MedioTransporte;
+			import model.Producto;
+			import model.Proyecto;
+			import model.SolicitudAlmacen;
+			import model.SolicitudViaticos;
+			import model.TipoColaborador;
+			import model.TipoEntregable;
+			import model.Util;
+			
+			import modules.SolicitudesViaticos;
+			
+			import mx.charts.chartClasses.DualStyleObject;
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.com.gahm.componentes.validadores.ValidadorEntero;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			private var mode:String = null;
+			private var _item:ComprobacionViaticos;
+			private var validators:InicializaValidadoresEtiquetas;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				this.label = Constants.REGISTRAR;
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set perDiemCheck(value:ComprobacionViaticos):void{
+				if( value == null ){
+					return;
+				}
+				this.cleanForm();
+				this._item = value;
+				this.setItem(); 
+			}
+			
+			private function setItem():void
+			{
+				if( this._item == null ){
+					return;
+				}
+				this.txtID.text = this._item.id.toString();
+				this.diemRequest.datagrid.dataProvider = Util.asArrayCollection( this._item.solicitudViaticos );
+				this.txtTotalAuthorized.text = this._item.totalAutorizado.toString();
+				this.fltDlvUpFormat.delivers = Util.asArrayCollection( this._item.documentoFormato );
+				this.fltDlvUpDocuments.delivers = this._item.documentosComprobacionViaticos;
+				this.dtfDateUploadedDocuments.selectedDate = this._item.fechaSubidaDocumentos;
+				if( Util.isFill( this.cmbStatus ) && this._item.estadoComprobacionViaticos != null ){
+					this.cmbStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbStatus.dataProvider as ArrayCollection, 
+						this._item.estadoComprobacionViaticos.id);
+				}
+			}
+			
+			private function setDiemRequest(diemRequest:SolicitudViaticos):void{
+				this.txtDate.text = Util.formatDateTimeToString( diemRequest.fecha );
+				this.projectsConsult.datagrid.dataProvider = Util.asArrayCollection( diemRequest.proyecto );
+				this.txtResponsibleViaticum.text = diemRequest.colaborador.nombreCompleto;
+				this.setResponsibleData( diemRequest.colaborador );
+				this.txtConveyance.text = diemRequest.medioTransporte.etiqueta;
+				this.txtNumberOfVehicle.text = diemRequest.numeroVehiculo;
+				//this.txtInitialMileage.text = diemRequest.kilometrajeInicial;
+				this.txtGAS.text = diemRequest.combustible.toString();
+				this.txtTollBooths.text = diemRequest.casetas.toString();
+				this.txtPassages.text = diemRequest.pasajes.toString();
+				this.txtLodging.text = diemRequest.hospedaje.toString();
+				this.txtFood.text = diemRequest.alimentos.toString();
+				this.txtMaterialsAndOrTool.text = diemRequest.materialesHerramienta.toString();
+				this.txtOthers.text = diemRequest.otros.toString();
+				this.txtTotalRequested.text = diemRequest.totalSolicitado.toString();
+			}
+			
+			private function getPerDiemCheck():ComprobacionViaticos{
+				var perDiemCheck:ComprobacionViaticos = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					perDiemCheck = new ComprobacionViaticos();
+				}else{
+					perDiemCheck = this._item;
+				}
+				perDiemCheck.solicitudViaticos = this.diemRequest.datagrid.selectedItem as SolicitudViaticos;
+				perDiemCheck.totalAutorizado = Util.stringToNumber( this.txtTotalAuthorized.text );
+				perDiemCheck.documentoFormato = this.fltDlvUpFormat.firstDeliver.toString();
+				perDiemCheck.documentosComprobacionViaticos = this.fltDlvUpDocuments.delivers;
+				perDiemCheck.fechaSubidaDocumentos = this.dtfDateUploadedDocuments.selectedDate;
+				perDiemCheck.estadoComprobacionViaticos = Util.validateCombo( this.cmbStatus ) as EstadoComprobacionViaticos;
+				return perDiemCheck;
+			}
+			
+			private function fillCombos():void
+			{
+				this.responseGetEstadoComprobacionViaticos.token = this.catalogoService.getEstadoComprobacionViaticos();
+			}
+			
+			
+			protected function comprobacionViaticosService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function btnAccept_clickHandler(event:MouseEvent):void
+			{
+				if( !this.validations() ){
+					Util.showMessageVerifyFields();
+					return;
+				}
+				if( this.mode == Constants.REGISTER_MODE ){
+					var perDiemCheck:ComprobacionViaticos = this.getPerDiemCheck();
+					Util.showProperties( perDiemCheck );
+					this.responseSave.token = this.comprobacionViaticosService.save( perDiemCheck );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
+				}
+			}
+			
+			private function updateItem(event:CloseEvent):void{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var item:ComprobacionViaticos = this.getPerDiemCheck();
+				Util.showProperties( item );
+				this.responseUpdate.token = this.comprobacionViaticosService.update( item );
+			}
+			
+			private function validations():Boolean
+			{
+				var value:Boolean = true;
+				value &&= this.validators.validarFormulario();
+				value &&= this.diemRequest.datagrid.selectedItem != null;
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+					form.removeChild( this.frmID );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+				}
+			}
+			
+			private function initializeValidators():void
+			{
+				this.validators = new InicializaValidadoresEtiquetas();
+				this.validators.crearValidadorRestrictor("genericAlfanumeric", ValidadorAlfanumerico.nombre, 0, 255, true);
+				this.validators.setRestrictor( this.txtCardNumber, "genericAlfanumeric");
+				this.validators.setRestrictor( this.txtMail, "genericAlfanumeric");
+				this.validators.setRestrictor( this.txtPhone, "genericAlfanumeric");
+				//this.validators.setRestrictor( this.txtInitialMileage, "genericAlfanumeric");
+				this.validators.crearValidadorRestrictor("genericDecimal", ValidadorDecimal.nombre, 9, 2);
+				this.validators.setRestrictor( this.txtGAS, "genericDecimal" );
+				this.validators.setRestrictor( this.txtTollBooths, "genericDecimal" );
+				this.validators.setRestrictor( this.txtPassages, "genericDecimal" );
+				this.validators.setRestrictor( this.txtLodging, "genericDecimal" );
+				this.validators.setRestrictor( this.txtFood, "genericDecimal" );
+				this.validators.setRestrictor( this.txtMaterialsAndOrTool, "genericDecimal" );
+				this.validators.setRestrictor( this.txtOthers, "genericDecimal" );
+				this.validators.setRestrictor( this.txtTotalRequested, "genericDecimal" );
+				this.validators.setRestrictor( this.txtTotalAuthorized, "genericDecimal" );
+			}
+			
+			protected function responseSave_resultHandler(event:ResultEvent):void
+			{
+				var eventGeneralDataProjectNew:Event = new Event("perDiemCheckNew");
+				this.dispatchEvent( eventGeneralDataProjectNew );
+				this.cleanForm();
+			}
+			
+			private function cleanForm():void
+			{
+				this.txtID.reset();
+				Util.removeItems(this.diemRequest.datagrid.dataProvider);
+				this.txtDate.reset();
+				Util.removeItems(this.projectsConsult.datagrid.dataProvider);
+				this.txtResponsibleViaticum.reset();
+				this.txtCardNumber.reset();
+				this.txtMail.reset();
+				this.txtPhone.reset();
+				this.txtConveyance.reset();
+				this.txtNumberOfVehicle.reset();
+				//this.txtInitialMileage.reset();
+				this.txtGAS.reset();
+				this.txtTollBooths.reset();
+				this.txtPassages.reset();
+				this.txtLodging.reset();
+				this.txtFood.reset();
+				this.txtMaterialsAndOrTool.reset();
+				this.txtOthers.reset();
+				this.txtTotalRequested.reset();
+				this.txtTotalAuthorized.reset();
+				this.fltDlvUpFormat.reset();
+				this.fltDlvUpDocuments.reset();
+				this.dtfDateUploadedDocuments.reset();
+				this.cmbStatus.selectedIndex = 0;
+			}
+			
+			protected function responseUpdate_resultHandler(event:ResultEvent):void
+			{
+				var eventGeneralDataProjectUpdated:Event = new Event("perDiemCheckUpdated");
+				this.dispatchEvent( eventGeneralDataProjectUpdated );
+				this.cleanForm();
+			}
+			
+			protected function responseGetEstadoComprobacionViaticos_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbStatus.dataProvider = data;
+				if( Util.isFill( this.cmbStatus ) && this._item 
+					&& this._item.estadoComprobacionViaticos != null ){
+					this.cmbStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbStatus.dataProvider as ArrayCollection, 
+						this._item.estadoComprobacionViaticos.id);
+				}
+			}
+			
+			protected function setResponsibleData(colaborator:Colaborador):void
+			{
+				if( colaborator == null ){
+					return;
+				}
+				this.txtCardNumber.text = colaborator.numeroTarjeta;
+				this.txtMail.text = colaborator.correoElectronico;
+				this.txtPhone.text = colaborator.telefono;
+			}
+			
+			protected function descargarFormato_clickHandler(event:MouseEvent):void
+			{
+				Util.showErrorMessage("En construcción... (falta el formato)");
+			}
+			
+			protected function diemRequest_itemDetailHandler(event:GenericEvent):void
+			{
+				if( event == null ){
+					return;
+				}
+				var diemRequest:SolicitudViaticos = event.information as SolicitudViaticos;
+				if( diemRequest == null ){
+					return;
+				}
+				this.setDiemRequest( diemRequest );
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="perDiemCheckNew", type="flash.events.Event")]
+		[Event(name="perDiemCheckUpdated", type="flash.events.Event")]
+		[Event(name="perDiemCheckProjectDone", type="flash.events.Event")]
+	</mx:Metadata>
+	<mx:Form id="form">
+		<mx:FormItem id="frmID" label="ID:" direction="horizontal">
+			<components:TextInput id="txtID" width="80" textAlign="right"
+								  editable="false"/>
+		</mx:FormItem>
+		<mx:FormHeading label="Solicitud de Viáticos"/>
+		<solicitudesviaticos:Consult id="diemRequest" readMode="true"
+									 itemDetail="diemRequest_itemDetailHandler(event)"/>
+		<mx:FormItem label="Fecha:">
+			<components:TextInput id="txtDate" editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Proyectos:" direction="horizontal"/>
+		<proyectos:Consult id="projectsConsult"
+						   height="68"/>
+		<mx:FormItem label="Responsable Viático:">
+			<components:TextInput id="txtResponsibleViaticum" width="300" editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Número de Tarjeta:">
+			<components:TextInput id="txtCardNumber" editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Correo Electrónico:">
+			<components:TextInput id="txtMail" editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Teléfono:">
+			<components:TextInput id="txtPhone" editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Medio de Transporte:">
+			<components:TextInput id="txtConveyance" width="200" editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Número de Vehículo:">
+			<components:TextInput id="txtNumberOfVehicle" editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Combustible:">
+			<components:TextInput id="txtGAS" textAlign="right" width="160" editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Casetas:">
+			<components:TextInput id="txtTollBooths" textAlign="right" width="160" editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Pasajes:">
+			<components:TextInput id="txtPassages" textAlign="right" width="160" editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Hospedaje:">
+			<components:TextInput id="txtLodging" textAlign="right" width="160" editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Alimentos:">
+			<components:TextInput id="txtFood" textAlign="right" width="160" editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Materiales y/o Herramienta:">
+			<components:TextInput id="txtMaterialsAndOrTool" textAlign="right" width="160" editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Otros:">
+			<components:TextInput id="txtOthers" textAlign="right" width="160" editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Total Solicitado:">
+			<components:TextInput id="txtTotalRequested" textAlign="right" width="170" editable="false"/>
+		</mx:FormItem>
+		<mx:FormHeading label="Datos Comprobación Viáticos"/>
+		<mx:FormItem label="Total Autorizado:">
+			<components:TextInput id="txtTotalAuthorized" textAlign="right" width="170"/>
+		</mx:FormItem>
+		<mx:FormItem label="Subir Formato:" direction="horizontal">
+			<components:FlatDeliver id="fltDlvUpFormat"/>
+			<mx:LinkButton id="descargarFormato" label="Descargar Formato" click="descargarFormato_clickHandler(event)"/>
+		</mx:FormItem>
+		<mx:FormItem label="Subir Archivos de Comprobacion:">
+			<components:FlatDeliver id="fltDlvUpDocuments"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha de Subida de Documentos:">
+			<components:DateField id="dtfDateUploadedDocuments"/>
+		</mx:FormItem>
+		<mx:FormItem label="Estado:">
+			<mx:ComboBox id="cmbStatus" width="200"
+						 labelField="etiqueta"/>
+		</mx:FormItem>
+		<mx:FormItem direction="horizontal">
+			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:RemoteObject id="comprobacionViaticosService" destination="comprobacionViaticosService" fault="comprobacionViaticosService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
+	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
+	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="comprobacionViaticosService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetEstadoComprobacionViaticos" result="responseGetEstadoComprobacionViaticos_resultHandler(event)"/>
+</mx:VBox>

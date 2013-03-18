@@ -5,6 +5,9 @@ package model
 	[RemoteClass(alias="mx.com.gahm.conenctel.entities.TipoOperacionDO")]
 	public class TipoOperacion
 	{
+		public static const ID_INGRESOS:Number = 1;
+		public static const ID_EGRESOS:Number = 2;
+		
 		public var id:*;
 		public var etiqueta:String;
 		

@@ -7,7 +7,7 @@ package model
 	{
 		public var id:*;
 		public var fecha:Date;
-		public var descripcionFondoFijoCajaChica:DescripcionPagoContableServicio;
+		public var descripcionFondoFijoCajaChica:DescripcionFondoFijoCajaChica;
 		public var entrega:String;
 		public var colaborador:Colaborador;
 		public var ingreso:*;

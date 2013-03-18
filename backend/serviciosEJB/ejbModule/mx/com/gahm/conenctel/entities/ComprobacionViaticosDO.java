@@ -29,7 +29,8 @@ public class ComprobacionViaticosDO implements Serializable {
 	private static final long serialVersionUID = 7291500181126516006L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id", unique = true, nullable = false)
 	private long id;
 	
 	@ManyToOne

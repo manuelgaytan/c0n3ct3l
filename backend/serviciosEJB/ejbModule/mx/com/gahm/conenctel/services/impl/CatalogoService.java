@@ -16,6 +16,7 @@ import mx.com.gahm.conenctel.entities.ColaboradorDO;
 import mx.com.gahm.conenctel.entities.CompaniaDO;
 import mx.com.gahm.conenctel.entities.DescripcionAlmacenDO;
 import mx.com.gahm.conenctel.entities.DescripcionFondoFijoCajaChicaDO;
+import mx.com.gahm.conenctel.entities.DescripcionPagoContableServicioDO;
 import mx.com.gahm.conenctel.entities.EstadoComprobacionViaticosDO;
 import mx.com.gahm.conenctel.entities.EstadoFinalValidacionDO;
 import mx.com.gahm.conenctel.entities.EstadoInvestigacionCalidadDO;
@@ -783,6 +784,20 @@ public class CatalogoService implements ICatalogoService {
 				"EstadoComprobacionViaticosDO.findAll", EstadoComprobacionViaticosDO.class);
 		
 		List<EstadoComprobacionViaticosDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<DescripcionPagoContableServicioDO> getDescripcionPagoContableServicio(Long idTipoOperacion) throws ConectelException {
+		TypedQuery<DescripcionPagoContableServicioDO> query = entityManager.createNamedQuery(
+				"DescripcionPagoContableServicioDO.getByTipoOperacion", DescripcionPagoContableServicioDO.class);
+		query.setParameter("idTipoOperacion", idTipoOperacion);
+		List<DescripcionPagoContableServicioDO> list;
 		try {
 			list = query.getResultList();
 		} catch (NoResultException e) {

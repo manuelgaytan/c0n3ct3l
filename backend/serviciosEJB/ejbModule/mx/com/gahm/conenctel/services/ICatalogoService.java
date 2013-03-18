@@ -10,6 +10,8 @@ import mx.com.gahm.conenctel.entities.AreaSolicitanteDO;
 import mx.com.gahm.conenctel.entities.ColaboradorDO;
 import mx.com.gahm.conenctel.entities.CompaniaDO;
 import mx.com.gahm.conenctel.entities.DescripcionAlmacenDO;
+import mx.com.gahm.conenctel.entities.DescripcionFondoFijoCajaChicaDO;
+import mx.com.gahm.conenctel.entities.EstadoComprobacionViaticosDO;
 import mx.com.gahm.conenctel.entities.EstadoFinalValidacionDO;
 import mx.com.gahm.conenctel.entities.EstadoInvestigacionCalidadDO;
 import mx.com.gahm.conenctel.entities.EstadoSolicitudAlmacenDO;
@@ -30,6 +32,7 @@ import mx.com.gahm.conenctel.entities.GrupoFamiliaDDO;
 import mx.com.gahm.conenctel.entities.GrupoFamiliaEDO;
 import mx.com.gahm.conenctel.entities.GrupoFamiliaFDO;
 import mx.com.gahm.conenctel.entities.ImputableDO;
+import mx.com.gahm.conenctel.entities.MedioTransporteDO;
 import mx.com.gahm.conenctel.entities.PrioridadDO;
 import mx.com.gahm.conenctel.entities.ProveedorDO;
 import mx.com.gahm.conenctel.entities.SeguimientoDO;
@@ -39,6 +42,7 @@ import mx.com.gahm.conenctel.entities.TipoColaboradorDO;
 import mx.com.gahm.conenctel.entities.TipoContratoDO;
 import mx.com.gahm.conenctel.entities.TipoEmpleadoDO;
 import mx.com.gahm.conenctel.entities.TipoMantenimientoDO;
+import mx.com.gahm.conenctel.entities.TipoOperacionDO;
 import mx.com.gahm.conenctel.entities.TipoPagoDO;
 import mx.com.gahm.conenctel.entities.TipoPersonaDO;
 import mx.com.gahm.conenctel.entities.TipoValidacionAdministrativaDO;
@@ -149,4 +153,12 @@ public interface ICatalogoService extends Serializable {
 	List<EstadoInvestigacionCalidadDO> getEstadoInvestigacionCalidad() throws ConectelException;
 	
 	List<EstadoTesoreriaDO> getEstadoTesoreria() throws ConectelException;
+	
+	List<TipoOperacionDO> getTipoOperacion() throws ConectelException;
+		
+	List<DescripcionFondoFijoCajaChicaDO> getDescripcionFondoFijoCajaChica() throws ConectelException;
+	
+	List<MedioTransporteDO> getMedioTransporte() throws ConectelException;
+	
+	List<EstadoComprobacionViaticosDO> getEstadoComprobacionViaticos() throws ConectelException;
 }

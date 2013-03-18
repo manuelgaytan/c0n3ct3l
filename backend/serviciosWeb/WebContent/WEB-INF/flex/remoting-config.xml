@@ -297,4 +297,36 @@
 			<scope>session</scope>
 		</properties>
 	</destination>
+	
+	<destination id="solicitudViaticosService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/SolicitudViaticosService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+
+	<destination id="comprobacionViaticosService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/ComprobacionViaticosService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+	
+	<destination id="moviemientoFondoFijoCajaChicaService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/MoviemientoFondoFijoCajaChicaService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+	
+	<destination id="movimientoPagoContableServicioService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/MovimientoPagoContableServicioService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
 </service>

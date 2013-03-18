@@ -2,6 +2,7 @@ package mx.com.gahm.conenctel.services.impl;
 
 import java.util.List;
 
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -12,6 +13,7 @@ import mx.com.gahm.conenctel.entities.ComentarioInformacionFacturacion3DO;
 import mx.com.gahm.conenctel.entities.InformacionFacturacionDO;
 import mx.com.gahm.conenctel.services.IInformacionFacturacionService;
 
+@Stateless(mappedName = "ejb/InformacionFacturacionService")
 public class InformacionFacturacionService implements IInformacionFacturacionService{
 	@Inject
 	private EntityManager entityManager;

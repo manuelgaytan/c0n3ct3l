@@ -10,6 +10,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import mx.com.gahm.conenctel.entities.ComentarioMoviemientoFondoFijoCajaChicaDO;
 import mx.com.gahm.conenctel.entities.MoviemientoFondoFijoCajaChicaDO;
 import mx.com.gahm.conenctel.services.IMoviemientoFondoFijoCajaChicaService;
 
@@ -51,24 +52,49 @@ public class MoviemientoFondoFijoCajaChicaService implements IMoviemientoFondoFi
 	@Override
 	public MoviemientoFondoFijoCajaChicaDO save(MoviemientoFondoFijoCajaChicaDO item) {
 		try {
-
+			List<ComentarioMoviemientoFondoFijoCajaChicaDO> comentarios=item.getComentarios();
+			item.setComentarios(null);
 			entityManager.persist(item);
-
+			saveComentarios(item,comentarios);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		return item;
 	}
+	
+	private void saveComentarios(MoviemientoFondoFijoCajaChicaDO item,List<ComentarioMoviemientoFondoFijoCajaChicaDO> comentarios){
+		
+		for (ComentarioMoviemientoFondoFijoCajaChicaDO comentario : comentarios) {
+			entityManager.persist(comentario.getComentarioContabilidad());
+			entityManager.persist(comentario);
+		}
+		
+		item.setComentarios(comentarios);
+	}
 
 
 	@Override
 	public MoviemientoFondoFijoCajaChicaDO update(MoviemientoFondoFijoCajaChicaDO item) {
+		deleteComentarios(item.getId());
+		saveComentarios(item, item.getComentarios());
 		entityManager.merge(item);
 
 		return item;
 	}
 
+	
+	private void deleteComentarios(Integer id){
+		
+		MoviemientoFondoFijoCajaChicaDO item=	getItem(id);
+		List<ComentarioMoviemientoFondoFijoCajaChicaDO> comentarios=item.getComentarios();
+		
+		for (ComentarioMoviemientoFondoFijoCajaChicaDO comentario : comentarios) {
+			entityManager.remove(comentario);
+			entityManager.remove(comentario.getComentarioContabilidad());
+			
+		}
+	}
 
 	@Override
 	public MoviemientoFondoFijoCajaChicaDO getItem(Integer id) {

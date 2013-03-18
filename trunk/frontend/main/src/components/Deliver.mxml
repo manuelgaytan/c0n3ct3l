@@ -96,6 +96,14 @@
 				this._delivers = value;
 			}
 			
+			public function get firstDeliver():Object{
+				if( this._delivers == null ||
+					this._delivers.length == 0 ){
+					return null;
+				}
+				return this._delivers.getItemAt(0);
+			}
+			
 			public function get delivers():ArrayCollection{
 				return this._delivers;
 			}

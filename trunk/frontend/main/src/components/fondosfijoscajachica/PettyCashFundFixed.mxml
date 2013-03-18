@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)"
+		 >
+	<mx:Script>
+		<![CDATA[
+			import model.Colaborador;
+			import model.Constants;
+			import model.DescripcionFondoFijoCajaChica;
+			import model.MovimientoFondoFijoCajaChica;
+			import model.TipoColaborador;
+			import model.TipoOperacion;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.com.gahm.componentes.validadores.ValidadorNumerico;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.utils.object_proxy;
+			
+			private var mode:String = null;
+			private var _item:MovimientoFondoFijoCajaChica;
+			private var validators:InicializaValidadoresEtiquetas;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				this.label = Constants.REGISTRAR;
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set pettyCashFundFixed(value:MovimientoFondoFijoCajaChica):void{
+				if( value == null ){
+					return;
+				}
+				this.cleanForm();
+				this._item = value;
+				this.setPettyCashFundFixed(); 
+			}
+			
+			private function setPettyCashFundFixed():void
+			{
+				if( this._item == null ){
+					return;
+				}
+				this.txtID.text = String(this._item.id);
+				this.dtfDate.selectedDate = this._item.fecha;
+				if( Util.isFill( this.cmbOperationType ) && this._item != null ){
+					if( this._item.ingreso == undefined ){//egreso
+						this.cmbOperationType.selectedIndex = Util.selectedIndexFromCombo( this.cmbOperationType.dataProvider as ArrayCollection, 
+							TipoOperacion.ID_EGRESOS);
+						this.txtImport.text = this._item.egreso;
+					}else{
+						this.cmbOperationType.selectedIndex = Util.selectedIndexFromCombo( this.cmbOperationType.dataProvider as ArrayCollection, 
+							TipoOperacion.ID_INGRESOS);
+						this.txtImport.text = this._item.ingreso;
+					}
+				}
+				if( Util.isFill( this.cmbDescription ) && this._item.descripcionFondoFijoCajaChica != null ){
+					this.cmbDescription.selectedIndex = Util.selectedIndexFromCombo( this.cmbDescription.dataProvider as ArrayCollection, 
+						this._item.descripcionFondoFijoCajaChica.id);
+				}
+				this.txtDeliver.text = this._item.entrega;
+				if( Util.isFill( this.cmbReceiver ) && this._item.colaborador != null ){
+					this.cmbReceiver.selectedIndex = Util.selectedIndexFromCombo( this.cmbReceiver.dataProvider as ArrayCollection, 
+						this._item.colaborador.id);
+				}
+				this.comments.setCommentsIn( this._item.comentariosMoviemientoFondoFijoCajaChica, "comentarioContabilidad");
+			}
+			
+			private function getPettyCashFundFixed():MovimientoFondoFijoCajaChica{
+				var item:MovimientoFondoFijoCajaChica = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					item = new MovimientoFondoFijoCajaChica();
+				}else{
+					item = this._item;
+				}
+				item.fecha = this.dtfDate.selectedDate;
+				var operacion:Number = Util.selectedId( this.cmbOperationType );
+				if( operacion == TipoOperacion.ID_INGRESOS ){
+					item.ingreso = Util.stringToNumber( this.txtImport.text );
+					item.egreso = undefined;
+				}else{
+					item.egreso = Util.stringToNumber( this.txtImport.text );
+					item.ingreso = undefined;
+				}
+				item.descripcionFondoFijoCajaChica = Util.validateCombo( this.cmbDescription ) as DescripcionFondoFijoCajaChica;
+				item.entrega = Util.validateEmpty( this.txtDeliver.text );
+				item.colaborador = Util.validateCombo( this.cmbReceiver ) as Colaborador;
+				item.comentariosMoviemientoFondoFijoCajaChica = this.comments.getCommentsAsInWith("model.ComentarioContabilidad","model.ComentarioMovimientoFondoFijoCajaChica","comentarioContabilidad");
+				return item;
+			}
+			
+			private function fillCombos():void
+			{
+				this.responseGetTipoOperacion.token = this.catalogoService.getTipoOperacion();
+				this.responseGetDescripcionFondoFijoCajaChica.token = this.catalogoService.getDescripcionFondoFijoCajaChica();
+				this.responseGetColaborador.token = this.catalogoService.getColaboradorByTipoColaborador(TipoColaborador.ID_NOMINA);
+				
+			}
+			
+			protected function moviemientoFondoFijoCajaChicaService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function btnAccept_clickHandler(event:MouseEvent):void
+			{
+				if( !this.validations() ){
+					Util.showMessageVerifyFields();
+					return;
+				}
+				if( this.mode == Constants.REGISTER_MODE ){
+					var pettyCashFundFixed:MovimientoFondoFijoCajaChica = this.getPettyCashFundFixed();
+					Util.showProperties( pettyCashFundFixed );
+					this.responseSave.token = this.moviemientoFondoFijoCajaChicaService.save( pettyCashFundFixed );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
+				}
+			}
+			
+			private function updateItem(event:CloseEvent):void{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var pettyCashFundFixed:MovimientoFondoFijoCajaChica = this.getPettyCashFundFixed();
+				Util.showProperties( pettyCashFundFixed );
+				this.responseUpdate.token = this.moviemientoFondoFijoCajaChicaService.update( pettyCashFundFixed );
+			}
+			
+			private function validations():Boolean
+			{
+				var value:Boolean = true;
+				value &&= this.validators.validarFormulario();
+				value &&= !(this.cmbReceiver.selectedItem == null)
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+					form.removeChild( this.frmID );
+					//form.removeChild( this.frmOpeningBalance );
+					//form.removeChild( this.frmClosingBalance );
+				}
+			}
+			
+			private function initializeValidators():void
+			{
+				this.validators = new InicializaValidadoresEtiquetas();
+				validators.crearValidadorRestrictor("generic",ValidadorAlfabetico.nombre, 0, 255, true);
+				validators.setValidador(txtDeliver, "generic");
+				this.validators.crearValidadorRestrictor("genericDecimal", ValidadorDecimal.nombre, 9, 2);
+				this.validators.setValidador( this.txtImport, "genericDecimal" );
+			}
+			
+			protected function responseSave_resultHandler(event:ResultEvent):void
+			{
+				var eventPettyCashFundFixedNew:Event = new Event("pettyCashFundFixedNew");
+				this.dispatchEvent( eventPettyCashFundFixedNew );
+				this.cleanForm();
+			}
+			
+			private function cleanForm():void
+			{
+				this.txtOpeningBalance.reset();
+				this.txtID.reset();
+				this.dtfDate.reset();
+				this.cmbOperationType.selectedIndex = 0;
+				this.cmbDescription.selectedIndex = 0;
+				this.txtDeliver.reset();
+				this.cmbReceiver.selectedIndex = 0;
+				this.txtImport.reset();
+				this.txtClosingBalance.reset();
+				this.comments.reset();
+			}
+			
+			protected function responseUpdate_resultHandler(event:ResultEvent):void
+			{
+				var eventPettyCashFundFixedUpdated:Event = new Event("pettyCashFundFixedUpdated");
+				this.dispatchEvent( eventPettyCashFundFixedUpdated );
+				this.cleanForm();
+			}
+			
+			protected function catalogoService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function responseGetTipoOperacion_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbOperationType.dataProvider = data;
+				if( Util.isFill( this.cmbOperationType ) && this._item 
+					&& this._item != null ){
+					if( this._item.ingreso == undefined ){//egreso
+						this.cmbOperationType.selectedIndex = Util.selectedIndexFromCombo( this.cmbOperationType.dataProvider as ArrayCollection, 
+							TipoOperacion.ID_EGRESOS);
+						this.txtImport.text = this._item.egreso;
+					}else{
+						this.cmbOperationType.selectedIndex = Util.selectedIndexFromCombo( this.cmbOperationType.dataProvider as ArrayCollection, 
+							TipoOperacion.ID_INGRESOS);
+						this.txtImport.text = this._item.ingreso;
+					}
+				}
+			}
+			
+			protected function responseGetDescripcionFondoFijoCajaChica_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbDescription.dataProvider = data;
+				if( Util.isFill( this.cmbDescription ) && this._item 
+					&& this._item.descripcionFondoFijoCajaChica != null ){
+					this.cmbDescription.selectedIndex = Util.selectedIndexFromCombo( this.cmbDescription.dataProvider as ArrayCollection, 
+						this._item.descripcionFondoFijoCajaChica.id);
+				}
+			}
+			
+			protected function responseGetAll_resultHandler(event:ResultEvent):void
+			{
+				this.calculateOpeningBalance(event);
+				this.calculateClosingBalance();
+			}
+			
+			private function calculateOpeningBalance(event:ResultEvent){
+				var items:ArrayCollection = event.result as ArrayCollection;
+				var openingBalance:Number = 0;
+				for each (var item:MovimientoFondoFijoCajaChica in items) 
+				{
+					openingBalance += !(item.ingreso == undefined) ? item.ingreso : 0;
+					openingBalance -= !(item.egreso == undefined) ? item.egreso : 0;
+				}
+				this.txtOpeningBalance.text = openingBalance.toString();
+			}
+			
+			protected function txtImport_Handler(event:Event):void
+			{
+				this.btnUpdateOpeningBalance.dispatchEvent( new MouseEvent( MouseEvent.CLICK ) );
+			}
+			
+			private function calculateClosingBalance():void{
+				var operacion:Number = Util.selectedId( this.cmbOperationType );
+				var closingBalance:Number = 0;
+				if( operacion == TipoOperacion.ID_INGRESOS ){
+					 closingBalance = Util.stringToNumber( this.txtOpeningBalance.text ) + Util.stringToNumber( this.txtImport.text );
+				}else{
+					closingBalance = Util.stringToNumber( this.txtOpeningBalance.text ) - Util.stringToNumber( this.txtImport.text );
+				}
+				this.txtClosingBalance.text = closingBalance.toString(); 
+			}
+			
+			protected function responseGetColaborador_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbReceiver.dataProvider = data;
+				if( Util.isFill( this.cmbReceiver ) && this._item 
+					&& this._item.colaborador != null ){
+					this.cmbReceiver.selectedIndex = Util.selectedIndexFromCombo( this.cmbReceiver.dataProvider as ArrayCollection, 
+						this._item.colaborador.id);
+				}
+			}
+			
+			protected function btnUpdateOpeningBalance_clickHandler(event:MouseEvent):void
+			{
+				this.responseGetAll.token = this.moviemientoFondoFijoCajaChicaService.getAll();
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="pettyCashFundFixedNew", type="flash.events.Event")]
+		[Event(name="pettyCashFundFixedUpdated", type="flash.events.Event")]
+	</mx:Metadata>
+	<mx:Form id="form">
+		<mx:FormItem label="Numeración:" id="frmID">
+			<components:TextInput id="txtID" textAlign="right" editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem id="frmOpeningBalance" label="Saldo Inicial:" direction="horizontal">
+			<components:TextInput id="txtOpeningBalance" width="200" editable="false" textAlign="right"/>
+			<mx:Button label="Actualizar" id="btnUpdateOpeningBalance" click="btnUpdateOpeningBalance_clickHandler(event)"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha:">
+			<components:DateField id="dtfDate" creationComplete="this.dtfDate.selectedDate = new Date()"/>
+		</mx:FormItem>
+		<mx:FormItem label="Tipo Operación:">
+			<mx:ComboBox id="cmbOperationType"
+						 labelField="etiqueta"
+								  width="150"/>
+		</mx:FormItem>
+		<mx:FormItem label="Descripción:">
+			<mx:ComboBox id="cmbDescription"
+						 labelField="descripcion"
+						 width="150"/>
+		</mx:FormItem>
+		<mx:FormItem label="Entrega:">
+			<components:TextInput id="txtDeliver"
+						 width="250"/>
+		</mx:FormItem>
+		<mx:FormItem label="Recibe:">
+			<mx:ComboBox id="cmbReceiver"
+						 labelField="nombreCompleto"
+						 width="250"/>
+		</mx:FormItem>
+		<mx:FormItem label="Importe:">
+			<components:TextInput id="txtImport" width="200" textAlign="right"
+								  enter="txtImport_Handler(event)"
+								  focusOut="txtImport_Handler(event)"/>
+		</mx:FormItem>
+		<mx:FormItem id="frmClosingBalance" label="Saldo Final:">
+			<components:TextInput id="txtClosingBalance" width="200" editable="false" textAlign="right"/>
+		</mx:FormItem>
+		<components:Comments id="comments"/>
+		<mx:FormItem>
+			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:RemoteObject id="moviemientoFondoFijoCajaChicaService" destination="moviemientoFondoFijoCajaChicaService" fault="moviemientoFondoFijoCajaChicaService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetAll" result="responseGetAll_resultHandler(event)"/>
+	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
+	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
+	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="moviemientoFondoFijoCajaChicaService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetTipoOperacion" result="responseGetTipoOperacion_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetDescripcionFondoFijoCajaChica" result="responseGetDescripcionFondoFijoCajaChica_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetColaborador" result="responseGetColaborador_resultHandler(event)"/>
+</mx:VBox>

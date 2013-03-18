@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
+		   width="700" height="500"
+		   xmlns:moviemientofondosfijocajachica="components.fondosfijoscajachica.*"
+		   creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import events.GenericEvent;
+			
+			import model.MovimientoFondoFijoCajaChica;
+			
+			import mx.events.FlexEvent;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				
+			}
+			
+			protected function consult_pettyCashFundFixedDetailHandler(event:GenericEvent):void
+			{
+				this.detail.pettyCashFundFixed = event.information as MovimientoFondoFijoCajaChica;
+				this.navigator.selectedChild = this.detail;
+			}
+			
+			protected function register_pettyCashFundFixedNewHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+			
+			protected function detail_pettyCashFundFixedUpdatedHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+			
+			protected function filtro_filterCommandHandler(event:GenericEvent):void
+			{
+				//var filter:FiltroProyecto = event.information as FiltroProyecto;
+				this.navigator.selectedChild = consult;
+				//this.consult.executeQuery( filter );
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:TabNavigator id="navigator" width="100%" height="100%" creationPolicy="all">
+		<moviemientofondosfijocajachica:Consult id="consult" pettyCashFundFixedDetail="consult_pettyCashFundFixedDetailHandler(event)"/>
+		<moviemientofondosfijocajachica:PettyCashFundFixed id="detail" update="true" pettyCashFundFixedUpdated="detail_pettyCashFundFixedUpdatedHandler(event)"/>
+		<moviemientofondosfijocajachica:PettyCashFundFixed id="register" registrer="true" pettyCashFundFixedNew="register_pettyCashFundFixedNewHandler(event)"/>
+	</mx:TabNavigator>
+</mx:Module>

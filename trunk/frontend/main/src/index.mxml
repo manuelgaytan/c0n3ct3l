@@ -160,12 +160,14 @@
 			
 			import mx.containers.Form;
 			import mx.containers.FormItem;
+			import mx.containers.TabNavigator;
 			import mx.containers.VBox;
 			import mx.controls.Alert;
 			import mx.controls.Button;
 			import mx.controls.CheckBox;
 			import mx.controls.ComboBox;
 			import mx.controls.Label;
+			import mx.controls.LinkButton;
 			import mx.controls.List;
 			import mx.controls.Spacer;
 			import mx.controls.TextArea;
@@ -343,6 +345,8 @@
 			private var movimientoPagoContableServicio:MovimientoPagoContableServicio;
 			private var descripcionPagoContableServicio:DescripcionPagoContableServicio;
 			private var tipoOperacion:TipoOperacion;
+			private var linkButton:LinkButton;
+			private var tabNavigator:TabNavigator;
 			
 			protected function login_readyHandler(event:ModuleEvent):void
 			{

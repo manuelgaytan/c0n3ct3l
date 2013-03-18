@@ -11,6 +11,6 @@ package model
 		public var fechaSubidaDocumentos:Date;
 		public var documentoFormato:String;
 		public var estadoComprobacionViaticos:EstadoComprobacionViaticos;
-		public var documentoComprobacionViaticos:ArrayCollection;
+		public var documentosComprobacionViaticos:ArrayCollection;
 	}
 }

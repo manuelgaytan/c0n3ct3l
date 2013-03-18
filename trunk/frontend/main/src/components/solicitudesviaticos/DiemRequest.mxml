@@ -76,7 +76,7 @@
 				}
 				this.txtID.text = this._item.id.toString();
 				this.dtfDate.selectedDate = this._item.fecha;
-				this.projectsConsult.datagrid = Util.asArrayCollection( this._item.proyecto );
+				this.projectsConsult.datagrid.dataProvider = Util.asArrayCollection( this._item.proyecto );
 				if( Util.isFill( this.cmbResponsibleViaticum ) && this._item.colaborador != null ){
 					this.cmbResponsibleViaticum.selectedIndex = Util.selectedIndexFromCombo( this.cmbResponsibleViaticum.dataProvider as ArrayCollection, 
 						this._item.colaborador.id);
@@ -129,7 +129,7 @@
 			}
 			
 			
-			protected function datosGeneralesSolicitudViaticosService_faultHandler(event:FaultEvent):void
+			protected function solicitudViaticosService_faultHandler(event:FaultEvent):void
 			{
 				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
 			}
@@ -180,6 +180,11 @@
 			private function initializeValidators():void
 			{
 				this.validators = new InicializaValidadoresEtiquetas();
+				this.validators.crearValidadorRestrictor("genericAlfanumeric", ValidadorAlfanumerico.nombre, 0, 255, true);
+				this.validators.setRestrictor( this.txtCardNumber, "genericAlfanumeric");
+				this.validators.setRestrictor( this.txtMail, "genericAlfanumeric");
+				this.validators.setRestrictor( this.txtPhone, "genericAlfanumeric");
+				this.validators.setRestrictor( this.txtInitialMileage, "genericAlfanumeric");
 				this.validators.crearValidadorRestrictor("genericDecimal", ValidadorDecimal.nombre, 9, 2);
 				this.validators.setRestrictor( this.txtGAS, "genericDecimal" );
 				this.validators.setRestrictor( this.txtTollBooths, "genericDecimal" );
@@ -361,15 +366,15 @@
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
 		</mx:FormItem>
 	</mx:Form>
-	<mx:RemoteObject id="solicitudViaticosService" destination="solicitudViaticosService" fault="datosGeneralesSolicitudViaticosService_faultHandler(event)"
+	<mx:RemoteObject id="solicitudViaticosService" destination="solicitudViaticosService" fault="solicitudViaticosService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
 	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
-	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="datosGeneralesSolicitudViaticosService_faultHandler(event)"
+	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="solicitudViaticosService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetMedioTransporte" result="responseGetMedioTransporte_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetColaborador" result="responseGetColaborador_resultHandler(event)"/>
-	<mx:RemoteObject id="proyectoService" destination="proyectoService" fault="datosGeneralesSolicitudViaticosService_faultHandler(event)"
+	<mx:RemoteObject id="proyectoService" destination="proyectoService" fault="solicitudViaticosService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetAllByFiltro" result="responseGetAll_resultHandler(event)"/>
 </mx:VBox>

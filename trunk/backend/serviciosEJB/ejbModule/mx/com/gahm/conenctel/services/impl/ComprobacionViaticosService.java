@@ -65,14 +65,14 @@ public class ComprobacionViaticosService implements IComprobacionViaticosService
 
 	@Override
 	public ComprobacionViaticosDO getItem(Integer id) {
-		ComprobacionViaticosDO ComprobacionViaticosDO = null;
+		ComprobacionViaticosDO comprobacionViaticosDO = null;
 		try {
-			ComprobacionViaticosDO = entityManager.find(
+			comprobacionViaticosDO = entityManager.find(
 					ComprobacionViaticosDO.class, id);
 		} catch (Exception e) {
-			ComprobacionViaticosDO = null;
+			comprobacionViaticosDO = null;
 		}
 
-		return ComprobacionViaticosDO;
+		return comprobacionViaticosDO;
 	}
 }

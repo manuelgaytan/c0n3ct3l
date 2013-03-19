@@ -58,7 +58,7 @@ public class MoviemientoFondoFijoCajaChicaDO implements Serializable{
 	private Double egreso;
 
 	@OneToMany(mappedBy="moviemientoFondoFijoCajaChica", fetch = FetchType.EAGER)
-	private List<ComentarioMoviemientoFondoFijoCajaChicaDO> comentarios;
+	private List<ComentarioMoviemientoFondoFijoCajaChicaDO> comentariosMoviemientoFondoFijoCajaChica;
 	
 	
 	public MoviemientoFondoFijoCajaChicaDO() {
@@ -180,19 +180,21 @@ public class MoviemientoFondoFijoCajaChicaDO implements Serializable{
 	}
 
 	/**
-	 * @return the comentarios
+	 * @return the comentariosMoviemientoFondoFijoCajaChica
 	 */
-	public List<ComentarioMoviemientoFondoFijoCajaChicaDO> getComentarios() {
-		return comentarios;
+	public List<ComentarioMoviemientoFondoFijoCajaChicaDO> getComentariosMoviemientoFondoFijoCajaChica() {
+		return comentariosMoviemientoFondoFijoCajaChica;
 	}
 
 	/**
-	 * @param comentarios the comentarios to set
+	 * @param comentariosMoviemientoFondoFijoCajaChica the comentariosMoviemientoFondoFijoCajaChica to set
 	 */
-	public void setComentarios(
-			List<ComentarioMoviemientoFondoFijoCajaChicaDO> comentarios) {
-		this.comentarios = comentarios;
+	public void setComentariosMoviemientoFondoFijoCajaChica(
+			List<ComentarioMoviemientoFondoFijoCajaChicaDO> comentariosMoviemientoFondoFijoCajaChica) {
+		this.comentariosMoviemientoFondoFijoCajaChica = comentariosMoviemientoFondoFijoCajaChica;
 	}
+
+
 
 	
 }

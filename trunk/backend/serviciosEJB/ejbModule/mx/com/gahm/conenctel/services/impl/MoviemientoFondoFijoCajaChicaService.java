@@ -52,8 +52,8 @@ public class MoviemientoFondoFijoCajaChicaService implements IMoviemientoFondoFi
 	@Override
 	public MoviemientoFondoFijoCajaChicaDO save(MoviemientoFondoFijoCajaChicaDO item) {
 		try {
-			List<ComentarioMoviemientoFondoFijoCajaChicaDO> comentarios=item.getComentarios();
-			item.setComentarios(null);
+			List<ComentarioMoviemientoFondoFijoCajaChicaDO> comentarios=item.getComentariosMoviemientoFondoFijoCajaChica();
+			item.setComentariosMoviemientoFondoFijoCajaChica(null);
 			entityManager.persist(item);
 			saveComentarios(item,comentarios);
 		} catch (Exception e) {
@@ -66,18 +66,19 @@ public class MoviemientoFondoFijoCajaChicaService implements IMoviemientoFondoFi
 	private void saveComentarios(MoviemientoFondoFijoCajaChicaDO item,List<ComentarioMoviemientoFondoFijoCajaChicaDO> comentarios){
 		
 		for (ComentarioMoviemientoFondoFijoCajaChicaDO comentario : comentarios) {
+			comentario.setMoviemientoFondoFijoCajaChica(item);
 			entityManager.persist(comentario.getComentarioContabilidad());
 			entityManager.persist(comentario);
 		}
 		
-		item.setComentarios(comentarios);
+		item.setComentariosMoviemientoFondoFijoCajaChica(comentarios);
 	}
 
 
 	@Override
 	public MoviemientoFondoFijoCajaChicaDO update(MoviemientoFondoFijoCajaChicaDO item) {
 		deleteComentarios(item.getId());
-		saveComentarios(item, item.getComentarios());
+		saveComentarios(item, item.getComentariosMoviemientoFondoFijoCajaChica());
 		entityManager.merge(item);
 
 		return item;
@@ -87,7 +88,7 @@ public class MoviemientoFondoFijoCajaChicaService implements IMoviemientoFondoFi
 	private void deleteComentarios(Integer id){
 		
 		MoviemientoFondoFijoCajaChicaDO item=	getItem(id);
-		List<ComentarioMoviemientoFondoFijoCajaChicaDO> comentarios=item.getComentarios();
+		List<ComentarioMoviemientoFondoFijoCajaChicaDO> comentarios=item.getComentariosMoviemientoFondoFijoCajaChica();
 		
 		for (ComentarioMoviemientoFondoFijoCajaChicaDO comentario : comentarios) {
 			entityManager.remove(comentario);

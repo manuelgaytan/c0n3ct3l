@@ -38,7 +38,7 @@ public class ComentarioMoviemientoFondoFijoCajaChicaDO implements Serializable{
 	private long id;
 	
 	@ManyToOne
-	@JoinColumn(name = "fk_solicitud_viaticos", nullable = false)
+	@JoinColumn(name = "fk_moviemiento_fondo_fijo_caja_chica", nullable = false)
 	private MoviemientoFondoFijoCajaChicaDO moviemientoFondoFijoCajaChica;
 	
 	@ManyToOne

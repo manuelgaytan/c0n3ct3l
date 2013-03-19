@@ -36,7 +36,7 @@ public class ComentarioContabilidadDO implements Serializable{
 	
 	@Temporal(TemporalType.DATE)
 	@Column(name = "fecha", nullable = false, length = 10)
-	private Date fecha;
+	private Date fechaCaptura;
 	
 	@ManyToOne
 	@JoinColumn(name = "fk_usuario", nullable = false)
@@ -54,7 +54,7 @@ public class ComentarioContabilidadDO implements Serializable{
 			String comentario) {
 		super();
 		this.id = id;
-		this.fecha = fecha;
+		this.fechaCaptura = fecha;
 		this.usuario = usuario;
 		this.comentario = comentario;
 	}
@@ -76,15 +76,15 @@ public class ComentarioContabilidadDO implements Serializable{
 	/**
 	 * @return the fecha
 	 */
-	public Date getFecha() {
-		return fecha;
+	public Date getFechaCaptura() {
+		return fechaCaptura;
 	}
 
 	/**
 	 * @param fecha the fecha to set
 	 */
-	public void setFecha(Date fecha) {
-		this.fecha = fecha;
+	public void setFechaCaptura(Date fecha) {
+		this.fechaCaptura = fecha;
 	}
 
 	/**

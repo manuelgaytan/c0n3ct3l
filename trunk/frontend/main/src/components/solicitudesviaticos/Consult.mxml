@@ -133,7 +133,6 @@
 								   textAlign="right"/>
 				<mx:DataGridColumn id="dtgClient" headerText="{'Cliente'}"
 								   dataField="proyecto.producto.cliente.nombreComercial"
-								   textAlign="center"
 								   width="170"/>
 				<mx:DataGridColumn id="dtgResponsibleViaticum" headerText="{'Responsable\nViático'}"
 								   dataField="colaborador.nombreCompleto"

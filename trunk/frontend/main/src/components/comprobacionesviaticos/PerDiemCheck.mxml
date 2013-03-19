@@ -82,6 +82,7 @@
 				}
 				this.txtID.text = this._item.id.toString();
 				this.diemRequest.datagrid.dataProvider = Util.asArrayCollection( this._item.solicitudViaticos );
+				this.setDiemRequest( this._item.solicitudViaticos );
 				this.txtTotalAuthorized.text = this._item.totalAutorizado.toString();
 				this.fltDlvUpFormat.delivers = Util.asArrayCollection( this._item.documentoFormato );
 				this.fltDlvUpDocuments.delivers = this._item.documentosComprobacionViaticos;
@@ -209,7 +210,7 @@
 			private function cleanForm():void
 			{
 				this.txtID.reset();
-				Util.removeItems(this.diemRequest.datagrid.dataProvider);
+				//Util.removeItems(this.diemRequest.datagrid.dataProvider);
 				this.txtDate.reset();
 				Util.removeItems(this.projectsConsult.datagrid.dataProvider);
 				this.txtResponsibleViaticum.reset();

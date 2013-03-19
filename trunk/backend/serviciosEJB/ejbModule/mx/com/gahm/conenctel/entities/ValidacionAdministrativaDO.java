@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -101,6 +102,13 @@ public class ValidacionAdministrativaDO implements Serializable{
 	@OneToMany(mappedBy="validacionAdministrativa", fetch = FetchType.EAGER)
     private List<ComentarioPantallaValidacionAdministrativaDO> comentariosPantallaValidacionAdministrativa;
    	
+	@OneToOne  
+	@JoinColumn(name = "fk_proyecto_padre") 
+	private ProyectoPadreDO proyectoPadre;
+	@OneToOne  
+	@JoinColumn(name = "fk_proyecto") 
+	private ProyectoDO proyecto;
+	
 	public ValidacionAdministrativaDO() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -294,6 +302,34 @@ public class ValidacionAdministrativaDO implements Serializable{
 	public void setComentariosPantallaValidacionAdministrativa(
 			List<ComentarioPantallaValidacionAdministrativaDO> comentariosPantallaValidacionAdministrativa) {
 		this.comentariosPantallaValidacionAdministrativa = comentariosPantallaValidacionAdministrativa;
+	}
+
+	/**
+	 * @return the proyectoPadre
+	 */
+	public ProyectoPadreDO getProyectoPadre() {
+		return proyectoPadre;
+	}
+
+	/**
+	 * @param proyectoPadre the proyectoPadre to set
+	 */
+	public void setProyectoPadre(ProyectoPadreDO proyectoPadre) {
+		this.proyectoPadre = proyectoPadre;
+	}
+
+	/**
+	 * @return the proyecto
+	 */
+	public ProyectoDO getProyecto() {
+		return proyecto;
+	}
+
+	/**
+	 * @param proyecto the proyecto to set
+	 */
+	public void setProyecto(ProyectoDO proyecto) {
+		this.proyecto = proyecto;
 	}
 
 	

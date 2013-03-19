@@ -6,10 +6,14 @@
 		<![CDATA[
 			import events.GenericEvent;
 			
+			import model.ComprobacionViaticos;
 			import model.ConfiguracionPruebaEntrega;
 			import model.FiltroProyecto;
 			import model.Proyecto;
 			import model.Util;
+			
+			import modules.ComprobacionesViaticos;
+			import modules.SolicitudesViaticos;
 			
 			import mx.collections.ArrayCollection;
 			import mx.controls.Alert;
@@ -47,13 +51,16 @@
 				if( event.currentTarget.selectedItem == null ){
 					return;
 				}
-				var item:Proyecto = this.datagrid.selectedItem as Proyecto;
-				this.responseGetItem.token = this.comprobacionViaticosService.getProyecto( item.id );
+				var item:ComprobacionViaticos = this.datagrid.selectedItem as ComprobacionViaticos;
+				var genericEvent:GenericEvent = new GenericEvent("itemDetail");
+				genericEvent.information = item;
+				this.dispatchEvent( genericEvent );
+				//this.responseGetItem.token = this.comprobacionViaticosService.getItem( item.id );
 			}
 			
 			protected function responseGetItem_resultHandler(event:ResultEvent):void
 			{
-				var item:Proyecto = event.result as Proyecto;
+				var item:ComprobacionViaticos = event.result as ComprobacionViaticos;
 				if( item == null ){
 					return;
 				}
@@ -125,8 +132,7 @@
 								   width="120"
 								   textAlign="right"/>
 				<mx:DataGridColumn id="dtgClient" headerText="{'Cliente'}"
-								   dataField="proyecto.producto.cliente.nombreComercial"
-								   textAlign="center"
+								   dataField="solicitudViaticos.proyecto.producto.cliente.nombreComercial"
 								   width="150"/>
 				<mx:DataGridColumn id="dtgResponsibleViaticum" headerText="{'Responsable\nViático'}"
 								   dataField="solicitudViaticos.colaborador.nombreCompleto"
@@ -134,7 +140,7 @@
 								   width="150"
 								   />
 				<mx:DataGridColumn id="dtgConveyance" headerText="{'Estado\nComprobación\nViáticos'}"
-								   dataField="estadoComprobacionViaticos.estiqueta"
+								   dataField="estadoComprobacionViaticos.etiqueta"
 								   textAlign="center"
 								   width="100"
 								   />

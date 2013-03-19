@@ -7,7 +7,7 @@
 		<![CDATA[
 			import events.GenericEvent;
 			
-			import model.MovimientoFondoFijoCajaChica;
+			import model.MovimientoPagoContableServicio;
 			import model.Util;
 			
 			import mx.collections.ArrayCollection;
@@ -20,14 +20,14 @@
 			[Bindable]
 			private var items:ArrayCollection = null;
 			
-			private var movimientoFondoFijoCajaChica:MovimientoFondoFijoCajaChica;
+			private var movimientoPagoContableServicio:MovimientoPagoContableServicio;
 			
 			protected function responseGetAll_resultHandler(event:ResultEvent):void
 			{
 				items = event.result as ArrayCollection;
 			}
 			
-			protected function moviemientoFondoFijoCajaChicaService_faultHandler(event:FaultEvent):void
+			protected function movimientoPagoContableServicioService_faultHandler(event:FaultEvent):void
 			{
 				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
 			}
@@ -39,27 +39,27 @@
 			
 			protected function datagrid_doubleClickHandler(event:MouseEvent):void
 			{
-				var item:MovimientoFondoFijoCajaChica = this.datagrid.selectedItem as MovimientoFondoFijoCajaChica;
+				var item:MovimientoPagoContableServicio = this.datagrid.selectedItem as MovimientoPagoContableServicio;
 				if( item == null ){
 					return;
 				}
-				this.responseGetItem.token = this.moviemientoFondoFijoCajaChicaService.getItem( item.id );
+				this.responseGetItem.token = this.movimientoPagoContableServicioService.getItem( item.id );
 			}
 			
 			protected function responseGetItem_resultHandler(event:ResultEvent):void
 			{
-				var item:MovimientoFondoFijoCajaChica = event.result as MovimientoFondoFijoCajaChica;
+				var item:MovimientoPagoContableServicio = event.result as MovimientoPagoContableServicio;
 				if( item == null ){
 					return;
 				}
-				var genericEvent:GenericEvent = new GenericEvent("pettyCashFundFixedDetail");
+				var genericEvent:GenericEvent = new GenericEvent("accountingPaymentsServicesDetail");
 				genericEvent.information = item;
 				this.dispatchEvent( genericEvent );
 			}
 			
 			public function executeQuery():void
 			{
-				this.responseGetAll.token = this.moviemientoFondoFijoCajaChicaService.getAll();
+				this.responseGetAll.token = this.movimientoPagoContableServicioService.getAll();
 			}
 			
 			protected function btnDelete_clickHandler(event:MouseEvent):void
@@ -78,7 +78,7 @@
 					return;
 				}
 				var items:ArrayCollection = Util.selectedIDs( this.datagrid.selectedItems ); 
-				this.responseDeleteItems.token = this.moviemientoFondoFijoCajaChicaService.deleteItems( items );
+				this.responseDeleteItems.token = this.movimientoPagoContableServicioService.deleteItems( items );
 			}
 			
 			protected function responseDeleteItems_resultHandler(event:ResultEvent):void
@@ -96,7 +96,7 @@
 		]]>
 	</mx:Script>
 	<mx:Metadata>
-		[Event(name="pettyCashFundFixedDetail", type="events.GenericEvent")]
+		[Event(name="accountingPaymentsServicesDetail", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:DataGrid id="datagrid" width="100%" height="100%" dataProvider="{items}"
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
@@ -106,11 +106,14 @@
 							   dataField="id"
 							   width="60"
 							   textAlign="right"/>
-			<mx:DataGridColumn id="dtgDate" headerText="Fecha"
-							   dataField="fecha"
-							   width="80"
-							   textAlign="center"
-							   labelFunction="labelFunctionDate"/>
+			<mx:DataGridColumn id="dtgQualifiedSupplier" headerText="{'Proveedor\nCalificado'}"
+							   width="120"
+							   dataField="proveedorCalificado.proveedorSeleccionado.nombreComercial"
+							   />
+			<mx:DataGridColumn id="dtgMaquiladoSupplier" headerText="{'Proveedor\nMaquilador'}"
+							   width="120"
+							   dataField="proveedorMaquilador.nombreComercial"
+							   />
 			<mx:DataGridColumn id="dtgDescription" headerText="Descripción"
 							   width="90"
 							   dataField="descripcion.descripcion"
@@ -125,20 +128,17 @@
 							   textAlign="right"
 							   labelFunction="{Util.labelFunctionCurrency}"
 							   width="100"/>
-			<mx:DataGridColumn id="dtgReceiver" headerText="Recibe"
-							   width="140"
-							   dataField="colaborador.nombreCompleto"
-							   />
-			<mx:DataGridColumn id="dtgDeliver" headerText="Entrega"
-							   width="140"
-							   dataField="entrega"
-							   />
+			<mx:DataGridColumn id="dtgDate" headerText="{'Fecha\nLímite\nde Pago'}"
+							   dataField="fechaLimitePago"
+							   width="80"
+							   textAlign="center"
+							   labelFunction="labelFunctionDate"/>
 		</mx:columns>
 	</mx:DataGrid>
 	<mx:HBox>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>
 	</mx:HBox>
-	<mx:RemoteObject id="moviemientoFondoFijoCajaChicaService" destination="moviemientoFondoFijoCajaChicaService" fault="moviemientoFondoFijoCajaChicaService_faultHandler(event)"
+	<mx:RemoteObject id="movimientoPagoContableServicioService" destination="movimientoPagoContableServicioService" fault="movimientoPagoContableServicioService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetAll" result="responseGetAll_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetItem" result="responseGetItem_resultHandler(event)"/>

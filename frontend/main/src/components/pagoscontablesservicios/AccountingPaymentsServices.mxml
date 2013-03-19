@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)"
+		 >
+	<mx:Script>
+		<![CDATA[
+			import model.Catalogo;
+			import model.Colaborador;
+			import model.Constants;
+			import model.DescripcionFondoFijoCajaChica;
+			import model.DescripcionPagoContableServicio;
+			import model.MovimientoPagoContableServicio;
+			import model.ProveedorCalificado;
+			import model.ProveedorMaquilador;
+			import model.TipoColaborador;
+			import model.TipoOperacion;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.com.gahm.componentes.validadores.ValidadorNumerico;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.utils.object_proxy;
+			
+			private var mode:String = null;
+			private var _item:MovimientoPagoContableServicio;
+			private var validators:InicializaValidadoresEtiquetas;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				this.label = Constants.REGISTRAR;
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set accountingPaymentsServices(value:MovimientoPagoContableServicio):void{
+				if( value == null ){
+					return;
+				}
+				this.cleanForm();
+				this._item = value;
+				this.setAccountingPaymentsServices(); 
+			}
+			
+			private function setAccountingPaymentsServices():void
+			{
+				if( this._item == null ){
+					return;
+				}
+				this.txtID.text = String(this._item.id);
+				this.dtfDate.selectedDate = this._item.fecha;
+				if( Util.isFill( this.cmbOperationType ) && this._item != null ){
+					if( this._item.ingreso == undefined ){//egreso
+						this.cmbOperationType.selectedIndex = Util.selectedIndexFromCombo( this.cmbOperationType.dataProvider as ArrayCollection, 
+							TipoOperacion.ID_EGRESOS);
+						this.txtTotalToPay.text = this._item.egreso;
+					}else{
+						this.cmbOperationType.selectedIndex = Util.selectedIndexFromCombo( this.cmbOperationType.dataProvider as ArrayCollection, 
+							TipoOperacion.ID_INGRESOS);
+						this.txtTotalToPay.text = this._item.ingreso;
+					}
+				}
+				this.cmbOperationType.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
+				if( Util.isFill( this.cmbSupplierType ) && this._item != null ){
+					if( this._item.proveedorCalificado == null ){//egreso
+						this.cmbSupplierType.selectedIndex = Util.selectedIndexFromCombo( this.cmbSupplierType.dataProvider as ArrayCollection, 
+							2);
+					}else{
+						this.cmbSupplierType.selectedIndex = Util.selectedIndexFromCombo( this.cmbSupplierType.dataProvider as ArrayCollection, 
+							1);
+					}
+				}
+				this.cmbSupplierType.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
+				this.txtDocumentFolio.text = this._item.folioDocumento;
+				this.txtImport.text = this._item.importe;
+				this.txtDiscounts.text = this._item.descuentos;
+				this.txtIVA.text = this._item.iva;
+				this.txtRounding.text = this._item.redondeo;
+				this.txtISRRetention.text = this._item.isrRetencion;
+				this.txtIVARetention.text = this._item.ivaRetencion;
+				this.txtOtherTaxes.text = this._item.otrosImpuestos;
+				this.txtTotalToPay.text = this._item.totalPagar;
+				this.dtfLimitPaymentDate.selectedDate = this._item.fechaLimitePago;
+				this.comments.setCommentsIn( this._item.comentarios, "comentarioContabilidad");
+			}
+			
+			private function getAccountingPaymentsServices():MovimientoPagoContableServicio{
+				var item:MovimientoPagoContableServicio = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					item = new MovimientoPagoContableServicio();
+				}else{
+					item = this._item;
+				}
+				item.fecha = this.dtfDate.selectedDate;
+				var operacion:Number = Util.selectedId( this.cmbOperationType );
+				if( operacion == TipoOperacion.ID_INGRESOS ){
+					item.ingreso = Util.stringToNumber( this.txtTotalToPay.text );
+					item.egreso = undefined;
+				}else{
+					item.egreso = Util.stringToNumber( this.txtTotalToPay.text );
+					item.ingreso = undefined;
+				}
+				item.descripcionPagoContableServicio = Util.validateCombo( this.cmbDescription ) as DescripcionPagoContableServicio;
+				if( Util.selectedId(this.cmbSupplierType) == 1 ){ //Calificados
+					item.proveedorCalificado = Util.validateCombo( this.cmbSupplier ) as ProveedorCalificado;
+					item.proveedorMaquilador = null;
+				}else{	//Maquiladores
+					item.proveedorMaquilador = Util.validateCombo( this.cmbSupplier ) as ProveedorMaquilador;
+					item.proveedorCalificado = null;
+				}
+				item.folioDocumento = Util.validateEmpty( this.txtDocumentFolio.text );
+				item.importe = Util.stringToNumber( this.txtImport.text );
+				item.descuentos = Util.stringToNumber( this.txtDiscounts.text );
+				item.iva = Util.stringToNumber( this.txtIVA.text );
+				item.redondeo = Util.stringToNumber( this.txtRounding.text );
+				item.isrRetencion = Util.stringToNumber( this.txtISRRetention.text );
+				item.ivaRetencion = Util.stringToNumber( this.txtIVARetention.text );
+				item.otrosImpuestos = Util.stringToNumber( this.txtOtherTaxes.text );
+				item.totalPagar = Util.stringToNumber( this.txtTotalToPay.text );
+				item.fechaLimitePago = this.dtfLimitPaymentDate.selectedDate;
+				item.comentarios = this.comments.getCommentsAsInWith("model.ComentarioContabilidad","model.ComentarioMovimientoPagoContableServicio","comentarioContabilidad");
+				return item;
+			}
+			
+			private function fillCombos():void
+			{
+				this.responseGetTipoOperacion.token = this.catalogoService.getTipoOperacion();
+			}
+			
+			protected function movimientoPagoContableServicioService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function btnAccept_clickHandler(event:MouseEvent):void
+			{
+				if( !this.validations() ){
+					Util.showMessageVerifyFields();
+					return;
+				}
+				if( this.mode == Constants.REGISTER_MODE ){
+					var accountingPaymentsServices:MovimientoPagoContableServicio = this.getAccountingPaymentsServices();
+					Util.showProperties( accountingPaymentsServices );
+					this.responseSave.token = this.movimientoPagoContableServicioService.save( accountingPaymentsServices );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
+				}
+			}
+			
+			private function updateItem(event:CloseEvent):void{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var accountingPaymentsServices:MovimientoPagoContableServicio = this.getAccountingPaymentsServices();
+				Util.showProperties( accountingPaymentsServices );
+				this.responseUpdate.token = this.movimientoPagoContableServicioService.update( accountingPaymentsServices );
+			}
+			
+			private function validations():Boolean
+			{
+				var value:Boolean = true;
+				value &&= this.validators.validarFormulario();
+				value &&= !(this.cmbOperationType.selectedItem == null);
+				value &&= !(this.cmbDescription.selectedItem == null);
+				value &&= !(this.cmbSupplierType.selectedItem == null);
+				value &&= !(this.cmbSupplier.selectedItem == null);
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+					form.removeChild( this.frmID );
+				}
+			}
+			
+			private function initializeValidators():void
+			{
+				this.validators = new InicializaValidadoresEtiquetas();
+				validators.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
+				validators.setRestrictor(txtDocumentFolio, "generic");
+				this.validators.crearValidadorRestrictor("genericDecimal", ValidadorDecimal.nombre, 9, 2);
+				this.validators.setValidador( this.txtImport, "genericDecimal" );
+				this.validators.setRestrictor( this.txtDiscounts, "genericDecimal" );
+				this.validators.setRestrictor( this.txtIVA, "genericDecimal" );
+				this.validators.setRestrictor( this.txtRounding, "genericDecimal" );
+				this.validators.setRestrictor( this.txtISRRetention, "genericDecimal" );
+				this.validators.setRestrictor( this.txtIVARetention, "genericDecimal" );
+				this.validators.setRestrictor( this.txtOtherTaxes, "genericDecimal" );
+				this.validators.setValidador( this.txtTotalToPay, "genericDecimal" );
+				
+			}
+			
+			protected function responseSave_resultHandler(event:ResultEvent):void
+			{
+				var eventAccountingPaymentsServicesNew:Event = new Event("accountingPaymentsServicesNew");
+				this.dispatchEvent( eventAccountingPaymentsServicesNew );
+				this.cleanForm();
+			}
+			
+			private function cleanForm():void
+			{
+				this.dtfDate.reset();
+				this.cmbOperationType.selectedIndex = 0;
+				this.cmbDescription.selectedIndex = 0;
+				this.cmbSupplierType.selectedIndex = 0;
+				this.cmbSupplierType.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
+				this.txtDocumentFolio.reset();
+				this.txtImport.reset();
+				this.txtDiscounts.reset();
+				this.txtIVA.reset();
+				this.txtRounding.reset();
+				this.txtISRRetention.reset();
+				this.txtIVARetention.reset();
+				this.txtOtherTaxes.reset();
+				this.txtTotalToPay.reset();
+				this.dtfLimitPaymentDate.reset();
+				this.comments.reset();
+			}
+			
+			protected function responseUpdate_resultHandler(event:ResultEvent):void
+			{
+				var eventAccountingPaymentsServicesUpdated:Event = new Event("accountingPaymentsServicesUpdated");
+				this.dispatchEvent( eventAccountingPaymentsServicesUpdated );
+				this.cleanForm();
+			}
+			
+			protected function catalogoService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function responseGetTipoOperacion_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbOperationType.dataProvider = Util.addEmptyCatalgo(data);
+				if( Util.isFill( this.cmbOperationType ) && this._item 
+					&& this._item != null ){
+					if( this._item.ingreso == undefined ){//egreso
+						this.cmbOperationType.selectedIndex = Util.selectedIndexFromCombo( this.cmbOperationType.dataProvider as ArrayCollection, 
+							TipoOperacion.ID_EGRESOS);
+						this.txtImport.text = this._item.egreso;
+					}else{
+						this.cmbOperationType.selectedIndex = Util.selectedIndexFromCombo( this.cmbOperationType.dataProvider as ArrayCollection, 
+							TipoOperacion.ID_INGRESOS);
+						this.txtImport.text = this._item.ingreso;
+					}
+				}
+			}
+			
+			protected function responseGetDescripcionPagoContableServicio_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbDescription.dataProvider = data;
+				if( Util.isFill( this.cmbDescription ) && this._item 
+					&& this._item.descripcionPagoContableServicio != null ){
+					this.cmbDescription.selectedIndex = Util.selectedIndexFromCombo( this.cmbDescription.dataProvider as ArrayCollection, 
+						this._item.descripcionPagoContableServicio.id);
+				}
+			}
+			
+			private function calculateTotalToPay(event:Event){
+				
+			}
+			
+			protected function cmbOperationType_changeHandler(event:ListEvent):void
+			{
+				Util.removeItems( this.cmbDescription.dataProvider );
+				var idOperationType:Number = this.cmbOperationType.selectedItem.id;
+				if( isNaN( idOperationType ) ){
+					return;
+				}
+				this.responseGetDescripcionPagoContableServicio.token = this.catalogoService.getDescripcionPagoContableServicio( idOperationType );
+			}
+			
+			protected function cmbSupplier_changeHandler(event:ListEvent):void
+			{
+				if( !Util.listBaseSelected( this.cmbSupplier ) ){
+					return;
+				}
+				if( Util.selectedId( this.cmbSupplier ) == 1 ){
+					var proveedorCalificado:ProveedorCalificado = Util.validateCombo( this.cmbSupplier ) as ProveedorCalificado;
+				}else{
+					var proveedorMaquilador:ProveedorMaquilador = Util.validateCombo( this.cmbSupplier ) as ProveedorMaquilador;
+				}
+			}
+			
+			private function getSupplierTypes():ArrayCollection{
+				var datas:ArrayCollection = new ArrayCollection();
+				var catalogo:Catalogo = null;
+				catalogo = new Catalogo();
+				catalogo.id = 1;
+				catalogo.etiqueta = "Calificados";
+				datas.addItem( catalogo );
+				catalogo = new Catalogo();
+				catalogo.id = 2;
+				catalogo.etiqueta = "Maquiladores";
+				datas.addItem( catalogo );
+				return Util.addEmptyCatalgo( datas );
+			}
+			
+			private function qualifiedSupplier( item:Object ):String{
+				return Util.extractToText( item, "proveedorSeleccionado.nombreComercial" );
+			}
+			
+			protected function cmbSupplierType_changeHandler(event:ListEvent):void
+			{
+				this.cleanSuppplierForm();
+				if( !Util.listBaseSelected( this.cmbSupplierType, "id", true ) ){
+					return;
+				}
+				if( Util.selectedId(this.cmbSupplierType) == 1 ){ //Calificados
+					this.cmbSupplier.labelField = null;
+					this.cmbSupplier.labelFunction = qualifiedSupplier;
+					this.responseGetAllProveedorCalificado.token = this.proveedorCalificadoService.getProveedoresCalificados();
+				}else{	//Maquiladores
+					this.cmbSupplier.labelField = "nombreComercial";
+					this.cmbSupplier.labelFunction = null;
+					this.responseGetAllProveedorMaquilador.token = this.proveedorMaquiladorService.getProveedoresMaquiladores();
+				}
+			}
+			
+			private function cleanSuppplierForm():void
+			{
+				this.cmbSupplier.selectedIndex = 0;
+			}
+			
+			protected function responseGetProveedores_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				if( Util.selectedId(this.cmbSupplierType) == 1 ){ //Calificados
+					this.cmbSupplier.dataProvider = Util.addEmptyCatalgo(data);
+				}else{	//Maquiladores
+					this.cmbSupplier.dataProvider = Util.addEmptyCatalgo(data,"nombreComercial");
+				}
+				if( Util.isFill( this.cmbSupplier ) && this._item 
+					&& (this._item.proveedorCalificado != null || this._item.proveedorMaquilador) ){
+					this.cmbSupplier.selectedIndex = Util.selectedIndexFromCombo( this.cmbSupplier.dataProvider as ArrayCollection, 
+						(this._item.proveedorCalificado == null ? this._item.proveedorMaquilador.id : this._item.proveedorCalificado.id));
+				}
+			}
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="accountingPaymentsServicesNew", type="flash.events.Event")]
+		[Event(name="accountingPaymentsServicesUpdated", type="flash.events.Event")]
+	</mx:Metadata>
+	<mx:Form id="form">
+		<mx:FormItem label="Folio:" id="frmID">
+			<components:TextInput id="txtID" textAlign="right" editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha:">
+			<components:DateField id="dtfDate" creationComplete="this.dtfDate.selectedDate = new Date()" enabled="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Tipo Operación:">
+			<mx:ComboBox id="cmbOperationType"
+						 labelField="etiqueta"
+						 width="150"
+						 change="cmbOperationType_changeHandler(event)"/>
+		</mx:FormItem>
+		<mx:FormItem label="Descripción:">
+			<mx:ComboBox id="cmbDescription"
+						 labelField="descripcion"
+						 width="150"/>
+		</mx:FormItem>
+		<mx:FormItem label="Tipo de Proveedor:">
+			<mx:ComboBox id="cmbSupplierType" dataProvider="{this.getSupplierTypes()}"
+						 change="cmbSupplierType_changeHandler(event)"
+						 labelField="etiqueta"
+						 />
+		</mx:FormItem>
+		<mx:FormItem label="Proveedor:">
+			<mx:ComboBox id="cmbSupplier"
+						 change="cmbSupplier_changeHandler(event)"
+						 />
+		</mx:FormItem>
+		<mx:FormItem label="Folio del Documento:">
+			<components:TextInput id="txtDocumentFolio"
+								  textAlign="right"
+						 		  width="80"/>
+		</mx:FormItem>
+		<mx:FormItem label="Importe:">
+			<components:TextInput id="txtImport" width="150" textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Descuentos:">
+			<components:TextInput id="txtDiscounts" width="150" textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="I.V.A.:">
+			<components:TextInput id="txtIVA" width="150" textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Redondeo:">
+			<components:TextInput id="txtRounding" width="150" textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="I.S.R. Retención:">
+			<components:TextInput id="txtISRRetention" width="150" textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="I.V.A. Retención:">
+			<components:TextInput id="txtIVARetention" width="150" textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Otros Impuestos:">
+			<components:TextInput id="txtOtherTaxes" width="150" textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Total a Pagar:">
+			<components:TextInput id="txtTotalToPay" width="150" textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha Límite de Pago:">
+			<components:DateField id="dtfLimitPaymentDate"/>
+		</mx:FormItem>
+		<components:Comments id="comments"/>
+		<mx:FormItem>
+			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:RemoteObject id="movimientoPagoContableServicioService" destination="movimientoPagoContableServicioService" fault="movimientoPagoContableServicioService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
+	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
+	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="movimientoPagoContableServicioService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetTipoOperacion" result="responseGetTipoOperacion_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetDescripcionPagoContableServicio" result="responseGetDescripcionPagoContableServicio_resultHandler(event)"/>
+	<mx:RemoteObject id="proveedorCalificadoService" destination="proveedorCalificadoService" fault="movimientoPagoContableServicioService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetAllProveedorCalificado" result="responseGetProveedores_resultHandler(event)"/>
+	<mx:RemoteObject id="proveedorMaquiladorService" destination="proveedorMaquiladorService" fault="movimientoPagoContableServicioService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetAllProveedorMaquilador" result="responseGetProveedores_resultHandler(event)"/>
+</mx:VBox>

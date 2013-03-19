@@ -6,13 +6,13 @@ package model
 	public class DescripcionPagoContableServicio
 	{
 		public var id:*;
-		public var etiqueta:String;
+		public var descripcion:String;
 		public var tipoOperacion:TipoOperacion;
 		
 		public function DescripcionPagoContableServicio()
 		{
 			id = undefined;
-			etiqueta = "";
+			descripcion = "";
 			tipoOperacion = null;
 		}
 		
@@ -24,7 +24,7 @@ package model
 			var item:DescripcionPagoContableServicio = null;
 			item = new DescripcionPagoContableServicio();
 			item.id = id;
-			item.etiqueta = etiqueta;
+			item.descripcion = etiqueta;
 			item.tipoOperacion = tipoOperacion;
 			return item;
 		}

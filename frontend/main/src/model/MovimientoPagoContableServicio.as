@@ -17,11 +17,11 @@ package model
 		public var descuentos:*;
 		public var iva:*;
 		public var redondeo:*;
-		public var isr_retencion:*;
-		public var iva_retencion:*;
-		public var otros_impuestos:*;
-		public var total_pagar:*;
-		public var fecha_limite_pago:Date;
-		public var comentariosMovimientoPagoContableServicio:ArrayCollection;
+		public var isrRetencion:*;
+		public var ivaRetencion:*;
+		public var otrosImpuestos:*;
+		public var totalPagar:*;
+		public var fechaLimitePago:Date;
+		public var comentarios:ArrayCollection;
 	}
 }

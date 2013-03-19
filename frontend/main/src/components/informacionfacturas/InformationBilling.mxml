@@ -140,7 +140,7 @@
 				item.diasCredito1 = Util.stringToNumber(this.txtCreditDays1.text);
 				item.fechaProgramada1 = this.dtfScheduled1.selectedDate;
 				item.estadoPago1 = Util.validateEmpty( this.txtPaymentState1.text );
-				item.comentariosInformacionFacturacion1 = this.comments1.getCommentsAsInWith("model.ComentarioInformacionFacturacion1","model.ComentarioCuentasPagarFacturacion","comentarioCuentasPagarFacturacion");
+				item.comentariosInformacionFacturacion1 = this.comments1.getCommentsAsInWith("model.ComentarioCuentasPagarFacturacion","model.ComentarioInformacionFacturacion1","comentarioCuentasPagarFacturacion");
 				item.folioFactura2 = Util.validateEmpty( this.txtFolio2.text );
 				item.subtotal2 = Util.stringToNumber(this.txtSubtotal2.text);
 				item.iva2 = Util.stringToNumber(this.txtIVA2.text);
@@ -150,7 +150,7 @@
 				item.diasCredito2 = Util.stringToNumber(this.txtCreditDays2.text);
 				item.fechaProgramada2 = this.dtfScheduled2.selectedDate;
 				item.estadoPago2 = Util.validateEmpty( this.txtPaymentState2.text );
-				item.comentariosInformacionFacturacion2 = this.comments2.getCommentsAsInWith("model.ComentarioInformacionFacturacion2","model.ComentarioCuentasPagarFacturacion","comentarioCuentasPagarFacturacion");
+				item.comentariosInformacionFacturacion2 = this.comments2.getCommentsAsInWith("model.ComentarioCuentasPagarFacturacion","model.ComentarioInformacionFacturacion1","comentarioCuentasPagarFacturacion");
 				item.folioFactura3 = Util.validateEmpty( this.txtFolio3.text );
 				item.subtotal3 = Util.stringToNumber(this.txtSubtotal3.text);
 				item.iva3 = Util.stringToNumber(this.txtIVA3.text);
@@ -160,7 +160,7 @@
 				item.diasCredito3 = Util.stringToNumber(this.txtCreditDays3.text);
 				item.fechaProgramada3 = this.dtfScheduled3.selectedDate;
 				item.estadoPago3 = Util.validateEmpty( this.txtPaymentState3.text );
-				item.comentariosInformacionFacturacion3 = this.comments3.getCommentsAsInWith("model.ComentarioInformacionFacturacion3","model.ComentarioCuentasPagarFacturacion","comentarioCuentasPagarFacturacion");
+				item.comentariosInformacionFacturacion3 = this.comments3.getCommentsAsInWith("model.ComentarioCuentasPagarFacturacion","model.ComentarioInformacionFacturacion1","comentarioCuentasPagarFacturacion");
 				item.estadoFactura = Util.validateEmpty( this.txtInvoiceState.text );
 				item.fechaEstadoFactura = this.dtfInvoiceStateDate.selectedDate;
 				item.imputabilidad = Util.stringToNumber(this.txtAccountability.text);

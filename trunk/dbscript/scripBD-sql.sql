@@ -1517,6 +1517,30 @@
 	PRIMARY KEY (id)
 	);
 
+	CREATE TABLE PagoProveedor
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_factura_proveedor INT(11) UNSIGNED NOT NULL,
+	folio_factura VARCHAR(255),
+	fk_nota_credito_proveedor INT(11) UNSIGNED,
+	subtotal DECIMAL NOT NULL,
+	iva DECIMAL NOT NULL,
+	total DECIMAL NOT NULL,
+	fk_banco_conectel INT(11) UNSIGNED NOT NULL,
+	fecha_abono DATE NOT NULL,
+	monto DECIMAL NOT NULL,
+	referencia_abono INT(11) UNSIGNED,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE ComentarioPagoProveedor
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_pago_proveedor INT(11) UNSIGNED NOT NULL,
+	fk_comentario_tesoreria INT(11) UNSIGNED NOT NULL,
+	PRIMARY KEY (id)
+	);
+
 	ALTER TABLE Cliente ADD FOREIGN KEY id_contacto_idxfk (id_contacto) REFERENCES Contacto (id);
 
 	ALTER TABLE Proyecto ADD FOREIGN KEY id_categoria_proyecto_idxfk (id_categoria_proyecto) REFERENCES CategoriaProyecto (id);
@@ -1958,6 +1982,16 @@
 	ALTER TABLE ComentarioCobranza ADD FOREIGN KEY fk_cobranza_idxfk (fk_cobranza) REFERENCES Cobranza (id);
 
 	ALTER TABLE ComentarioCobranza ADD FOREIGN KEY fk_comentario_tesoreria_idxfk (fk_comentario_tesoreria) REFERENCES ComentarioTesoreria (id);
+
+	ALTER TABLE PagoProveedor ADD FOREIGN KEY fk_factura_proveedor_idxfk (fk_factura_proveedor) REFERENCES FacturaProveedor (id);
+
+	ALTER TABLE PagoProveedor ADD FOREIGN KEY fk_nota_credito_proveedor_idxfk (fk_nota_credito_proveedor) REFERENCES NotaCreditoProveedor (id);
+
+	ALTER TABLE PagoProveedor ADD FOREIGN KEY fk_banco_conectel_idxfk (fk_banco_conectel) REFERENCES BancoConectel (id);
+
+	ALTER TABLE ComentarioPagoProveedor ADD FOREIGN KEY fk_pago_proveedor_idxfk (fk_pago_proveedor) REFERENCES PagoProveedor (id);
+
+	ALTER TABLE ComentarioPagoProveedor ADD FOREIGN KEY fk_comentario_tesoreria_idxfk (fk_comentario_tesoreria) REFERENCES ComentarioTesoreria (id);
 
 	/* Perfiles */
 	INSERT INTO Perfil

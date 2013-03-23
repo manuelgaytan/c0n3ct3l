@@ -1475,6 +1475,48 @@
 	PRIMARY KEY (id)
 	);
 
+	CREATE TABLE ComentarioTesoreria
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fecha DATE NOT NULL,
+	fk_usuario INT(11) UNSIGNED NOT NULL,
+	comentario VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE BancoConectel
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	clabe_interbancaria VARCHAR(255) NOT NULL,
+	banco VARCHAR(255) NOT NULL,
+	cuenta_bancaria VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE Cobranza
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_informacion_facturacion INT(11) UNSIGNED NOT NULL,
+	folio_factura VARCHAR(255),
+	fk_nota_credito_cliente INT(11) UNSIGNED,
+	subtotal DECIMAL NOT NULL,
+	iva DECIMAL NOT NULL,
+	total DECIMAL NOT NULL,
+	fk_banco_conectel INTEGER UNSIGNED NOT NULL,
+	fecha_abono DATE NOT NULL,
+	monto DECIMAL NOT NULL,
+	referencia_abono INT(11) UNSIGNED,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE ComentarioCobranza
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_cobranza INT(11) UNSIGNED NOT NULL,
+	fk_comentario_tesoreria INT(11) UNSIGNED NOT NULL,
+	PRIMARY KEY (id)
+	);
+
 	ALTER TABLE Cliente ADD FOREIGN KEY id_contacto_idxfk (id_contacto) REFERENCES Contacto (id);
 
 	ALTER TABLE Proyecto ADD FOREIGN KEY id_categoria_proyecto_idxfk (id_categoria_proyecto) REFERENCES CategoriaProyecto (id);
@@ -1904,6 +1946,18 @@
 	ALTER TABLE ComentarioMovimientoPagoContableServicio ADD FOREIGN KEY fk_movimiento_pago_contable_servicio_idxfk (fk_movimiento_pago_contable_servicio) REFERENCES MovimientoPagoContableServicio (id);
 
 	ALTER TABLE ComentarioMovimientoPagoContableServicio ADD FOREIGN KEY fk_comentario_contabilidad_idxfk (fk_comentario_contabilidad) REFERENCES ComentarioContabilidad (id);
+
+	ALTER TABLE ComentarioTesoreria ADD FOREIGN KEY fk_usuario_idxfk (fk_usuario) REFERENCES Usuario (id);
+
+	ALTER TABLE Cobranza ADD FOREIGN KEY fk_informacion_facturacion_idxfk (fk_informacion_facturacion) REFERENCES InformacionFacturacion (id);
+
+	ALTER TABLE Cobranza ADD FOREIGN KEY fk_nota_credito_cliente_idxfk (fk_nota_credito_cliente) REFERENCES NotaCreditoCliente (id);
+
+	ALTER TABLE Cobranza ADD FOREIGN KEY fk_banco_conectel_idxfk (fk_banco_conectel) REFERENCES BancoConectel (id);
+
+	ALTER TABLE ComentarioCobranza ADD FOREIGN KEY fk_cobranza_idxfk (fk_cobranza) REFERENCES Cobranza (id);
+
+	ALTER TABLE ComentarioCobranza ADD FOREIGN KEY fk_comentario_tesoreria_idxfk (fk_comentario_tesoreria) REFERENCES ComentarioTesoreria (id);
 
 	/* Perfiles */
 	INSERT INTO Perfil
@@ -2721,6 +2775,14 @@
 	INSERT INTO DescripcionPagoContableServicio
 	VALUES (18, 'Otros', 2);
 
+	INSERT INTO BancoConectel
+	VALUES (1, '012345678901234567', 'BBVA Bancomer', '1515870134');
+	INSERT INTO BancoConectel
+	VALUES (2, '098765432109876543', 'Santander', '6789012345');
+	INSERT INTO BancoConectel
+	VALUES (3, '123450987612345098', 'Banamex', '0984312345');
+	INSERT INTO BancoConectel
+	VALUES (4, '123456789012345678', 'Banorte', '1234567890');
 /*
 	INSERT INTO Proveedor
 	VALUES (1, 1, 'ACME', 'ALMEIRA CASTAÑEDA MELIA', 'ALCM900622DF7', 'REFORMA 34, COL. JUÁREZ, DELG. CUAUHTEMOC', 'REFORMA 34, COL. JUÁREZ, DELG. CUAUHTEMOC', '57115887','MELIA ALMEIRA','melia347@yahoo.com','','');

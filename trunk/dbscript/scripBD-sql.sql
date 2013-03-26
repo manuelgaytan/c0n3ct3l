@@ -2051,8 +2051,6 @@
 
 	ALTER TABLE ComentarioCobranza ADD FOREIGN KEY fk_comentario_tesoreria_idxfk (fk_comentario_tesoreria) REFERENCES ComentarioTesoreria (id);
 
-	ALTER TABLE PagoProveedor ADD FOREIGN KEY fk_factura_proveedor_idxfk (fk_factura_proveedor) REFERENCES FacturaProveedor (id);
-
 	ALTER TABLE PagoProveedor ADD FOREIGN KEY fk_nota_credito_proveedor_idxfk (fk_nota_credito_proveedor) REFERENCES NotaCreditoProveedor (id);
 
 	ALTER TABLE PagoProveedor ADD FOREIGN KEY fk_banco_conectel_idxfk (fk_banco_conectel) REFERENCES BancoConectel (id);
@@ -2108,6 +2106,10 @@
 	VALUES (10, 'Facturación');
 	INSERT INTO Perfil
 	VALUES (11, 'Contabilidad');
+	INSERT INTO Perfil
+	VALUES (12, 'Tesorería');
+	INSERT INTO Perfil
+	VALUES (13, 'Recursos Humanos');
 
 	/* Pantallas */
 	INSERT INTO Pantalla
@@ -2176,6 +2178,28 @@
 	VALUES (32, 'PagosContablesServicios');
 	INSERT INTO Pantalla
 	VALUES (33, 'SolicitudesViaticos');
+	INSERT INTO Pantalla
+	VALUES (34, 'Cobranza');
+	INSERT INTO Pantalla
+	VALUES (35, 'PagoProveedores');
+	INSERT INTO Pantalla
+	VALUES (36, 'PagoViaticos');
+	INSERT INTO Pantalla
+	VALUES (37, 'PagoPagosContablesServicios');
+	INSERT INTO Pantalla
+	VALUES (38, 'OtrasOperacionesFinancieras');
+	INSERT INTO Pantalla
+	VALUES (39, 'ReclutamientoSolicitudEmpleo');
+	INSERT INTO Pantalla
+	VALUES (40, 'Seleccion');
+	INSERT INTO Pantalla
+	VALUES (41, 'Contratacion');
+	INSERT INTO Pantalla
+	VALUES (42, 'AdministracionColaborador');
+	INSERT INTO Pantalla
+	VALUES (43, 'Prenomina');
+	INSERT INTO Pantalla
+	VALUES (44, 'EntrenamientoDesarrollo');
 
 	/* Perfil-Pantalla */
 	INSERT INTO PerfilPantalla
@@ -2324,6 +2348,51 @@
 	VALUES (72, 1, 27);
 	INSERT INTO PerfilPantalla
 	VALUES (73, 1, 23);
+	INSERT INTO PerfilPantalla
+	VALUES (74, 12, 34);
+	INSERT INTO PerfilPantalla
+	VALUES (75, 12, 35);
+	INSERT INTO PerfilPantalla
+	VALUES (76, 12, 36);
+	INSERT INTO PerfilPantalla
+	VALUES (77, 12, 37);
+	INSERT INTO PerfilPantalla
+	VALUES (78, 12, 38);
+	INSERT INTO PerfilPantalla
+	VALUES (79, 1, 34);
+	INSERT INTO PerfilPantalla
+	VALUES (80, 1, 35);
+	INSERT INTO PerfilPantalla
+	VALUES (81, 1, 36);
+	INSERT INTO PerfilPantalla
+	VALUES (82, 1, 37);
+	INSERT INTO PerfilPantalla
+	VALUES (83, 1, 38);
+	INSERT INTO PerfilPantalla
+	VALUES (84, 13, 39);
+	INSERT INTO PerfilPantalla
+	VALUES (85, 13, 40);
+	INSERT INTO PerfilPantalla
+	VALUES (86, 13, 41);
+	INSERT INTO PerfilPantalla
+	VALUES (87, 13, 42);
+	INSERT INTO PerfilPantalla
+	VALUES (88, 13, 43);
+	INSERT INTO PerfilPantalla
+	VALUES (89, 13, 44);
+	INSERT INTO PerfilPantalla
+	VALUES (90, 1, 39);
+	INSERT INTO PerfilPantalla
+	VALUES (91, 1, 40);
+	INSERT INTO PerfilPantalla
+	VALUES (92, 1, 41);
+	INSERT INTO PerfilPantalla
+	VALUES (93, 1, 42);
+	INSERT INTO PerfilPantalla
+	VALUES (94, 1, 43);
+	INSERT INTO PerfilPantalla
+	VALUES (95, 1, 44); 
+
 
 	/* Usuarios */
 	INSERT INTO Usuario
@@ -2348,6 +2417,10 @@
 	VALUES (10, 'FACTURACION', 'NOTIENE', 'FACTURACIÓN', 10, 1);
 	INSERT INTO Usuario
 	VALUES (11, 'CONTABILIDAD', 'NOTIENE', 'CONTABILIDAD', 11, 1);
+	INSERT INTO Usuario
+	VALUES (12, 'TESORERIA', 'NOTIENE', 'TESORERIA', 12, 1);
+	INSERT INTO Usuario
+	VALUES (13, 'RECURSOSHUMANOS', 'NOTIENE', 'RECURSOS HUMANOS', 13, 1);
 	
 	/* Categoria Proyecto */
 	INSERT INTO CategoriaProyecto

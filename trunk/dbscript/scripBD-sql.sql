@@ -1541,6 +1541,74 @@
 	PRIMARY KEY (id)
 	);
 
+	CREATE TABLE PagoViaticos
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_comprobacion_viaticos INT(11) UNSIGNED NOT NULL,
+	fk_banco_conectel INT(11) UNSIGNED NOT NULL,
+	fecha_abono DATE NOT NULL,
+	monto DECIMAL NOT NULL,
+	referencia_abono INT(11) UNSIGNED,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE ComentarioPagoViaticos
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_pago_viaticos INT(11) UNSIGNED NOT NULL,
+	fk_comentario_tesoreria INT(11) UNSIGNED NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE ConceptoOtraOperacionFinanciera
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	concepto VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE PagoMovimientoPagoContableServicio
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_movimiento_pago_contable_servicio INT(11) UNSIGNED NOT NULL,
+	fk_banco_conectel INT(11) UNSIGNED NOT NULL,
+	fecha_abono DATE NOT NULL,
+	monto DECIMAL NOT NULL,
+	referencia_abono INT(11) UNSIGNED,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE PagoOtraOperacionFinanciera
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_concepto_otra_operacion_financiera INT(11) UNSIGNED NOT NULL,
+	razon_social VARCHAR(255) NOT NULL,
+	subtotal DECIMAL NOT NULL,
+	iva DECIMAL NOT NULL,
+	total DECIMAL NOT NULL,
+	fk_banco_conectel INT(11) UNSIGNED NOT NULL,
+	fecha_abono DATE NOT NULL,
+	monto DECIMAL NOT NULL,
+	referencia_abono INT(11) UNSIGNED,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE ComentarioPagoOtraOperacionFinanciera
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_pago_otra_operacion_financiera INT(11) UNSIGNED NOT NULL,
+	fk_comentario_tesoreria INT(11) UNSIGNED NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE ComentarioPagoMovimientoPagoContableServicio
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_pago_movimiento_pago_contable_servicio INT(11) UNSIGNED NOT NULL,
+	fk_comentario_tesoreria INT(11) UNSIGNED NOT NULL,
+	PRIMARY KEY (id)
+	);
+
 	ALTER TABLE Cliente ADD FOREIGN KEY id_contacto_idxfk (id_contacto) REFERENCES Contacto (id);
 
 	ALTER TABLE Proyecto ADD FOREIGN KEY id_categoria_proyecto_idxfk (id_categoria_proyecto) REFERENCES CategoriaProyecto (id);
@@ -1992,6 +2060,30 @@
 	ALTER TABLE ComentarioPagoProveedor ADD FOREIGN KEY fk_pago_proveedor_idxfk (fk_pago_proveedor) REFERENCES PagoProveedor (id);
 
 	ALTER TABLE ComentarioPagoProveedor ADD FOREIGN KEY fk_comentario_tesoreria_idxfk (fk_comentario_tesoreria) REFERENCES ComentarioTesoreria (id);
+
+	ALTER TABLE PagoViaticos ADD FOREIGN KEY fk_comprobacion_viaticos_idxfk (fk_comprobacion_viaticos) REFERENCES ComprobacionViaticos (id);
+
+	ALTER TABLE PagoViaticos ADD FOREIGN KEY fk_banco_conectel_idxfk_2 (fk_banco_conectel) REFERENCES BancoConectel (id);
+
+	ALTER TABLE ComentarioPagoViaticos ADD FOREIGN KEY fk_pago_viaticos_idxfk (fk_pago_viaticos) REFERENCES PagoViaticos (id);
+
+	ALTER TABLE ComentarioPagoViaticos ADD FOREIGN KEY fk_comentario_tesoreria_idxfk_2 (fk_comentario_tesoreria) REFERENCES ComentarioTesoreria (id);
+
+	ALTER TABLE PagoMovimientoPagoContableServicio ADD FOREIGN KEY fk_movimiento_pago_contable_servicio_idxfk (fk_movimiento_pago_contable_servicio) REFERENCES MovimientoPagoContableServicio (id);
+
+	ALTER TABLE PagoMovimientoPagoContableServicio ADD FOREIGN KEY fk_banco_conectel_idxfk (fk_banco_conectel) REFERENCES BancoConectel (id);
+
+	ALTER TABLE PagoOtraOperacionFinanciera ADD FOREIGN KEY fk_concepto_otra_operacion_financiera_idxfk (fk_concepto_otra_operacion_financiera) REFERENCES ConceptoOtraOperacionFinanciera (id);
+
+	ALTER TABLE PagoOtraOperacionFinanciera ADD FOREIGN KEY fk_banco_conectel_idxfk_2 (fk_banco_conectel) REFERENCES BancoConectel (id);
+
+	ALTER TABLE ComentarioPagoOtraOperacionFinanciera ADD FOREIGN KEY fk_pago_otra_operacion_financiera_idxfk (fk_pago_otra_operacion_financiera) REFERENCES PagoOtraOperacionFinanciera (id);
+
+	ALTER TABLE ComentarioPagoOtraOperacionFinanciera ADD FOREIGN KEY fk_comentario_tesoreria_idxfk_2 (fk_comentario_tesoreria) REFERENCES ComentarioTesoreria (id);
+
+	ALTER TABLE ComentarioPagoMovimientoPagoContableServicio ADD FOREIGN KEY fk_pago_movimiento_pago_contable_servicio_idxfk (fk_pago_movimiento_pago_contable_servicio) REFERENCES PagoMovimientoPagoContableServicio (id);
+
+	ALTER TABLE ComentarioPagoMovimientoPagoContableServicio ADD FOREIGN KEY fk_comentario_tesoreria_idxfk_3 (fk_comentario_tesoreria) REFERENCES ComentarioTesoreria (id);
 
 	/* Perfiles */
 	INSERT INTO Perfil
@@ -2817,6 +2909,18 @@
 	VALUES (3, '123450987612345098', 'Banamex', '0984312345');
 	INSERT INTO BancoConectel
 	VALUES (4, '123456789012345678', 'Banorte', '1234567890');
+
+	INSERT INTO ConceptoOtraOperacionFinanciera
+	VALUES (1, 'Préstamo Obtenido');
+	INSERT INTO ConceptoOtraOperacionFinanciera
+	VALUES (2, 'Préstamo Otorgado');
+	INSERT INTO ConceptoOtraOperacionFinanciera
+	VALUES (3, 'Pago de Prestamos Obtenidos');
+	INSERT INTO ConceptoOtraOperacionFinanciera
+	VALUES (4, 'Otros Ingresos');
+	INSERT INTO ConceptoOtraOperacionFinanciera
+	VALUES (5, 'Otros Gastos');
+	
 /*
 	INSERT INTO Proveedor
 	VALUES (1, 1, 'ACME', 'ALMEIRA CASTAÑEDA MELIA', 'ALCM900622DF7', 'REFORMA 34, COL. JUÁREZ, DELG. CUAUHTEMOC', 'REFORMA 34, COL. JUÁREZ, DELG. CUAUHTEMOC', '57115887','MELIA ALMEIRA','melia347@yahoo.com','','');

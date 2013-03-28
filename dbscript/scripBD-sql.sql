@@ -1609,6 +1609,442 @@
 	PRIMARY KEY (id)
 	);
 
+	/* Recursos Humanos */
+
+	CREATE TABLE EstadoColaborador
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	estado VARCHAR(100) NOT NULL UNIQUE,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE MotivoTerminoContrato
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	motivo VARCHAR(100) NOT NULL UNIQUE,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE Suspension
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	suspension VARCHAR(100) NOT NULL UNIQUE,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE TipoContratacion
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	tipo VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE FaseContratacion
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fase VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE TipoCandidato
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	tipo VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE FaseSeleccion
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fase VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE FuenteReclutamiento
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fuente VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE EstadoAcademico
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	estado VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE UltimoGradoEstudios
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	estudios VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE Dependientes
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	dependientes VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE ViveCon
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	relacion VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE Nacionalidad
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	nacionalidad VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE EstadoSalud
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	estado VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE TipoLicencia
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	tipo VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE ActividadTiempoLibre
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	actividad VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE Sexo
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	sexo VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE Prestaciones
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_contratacion INT(11) UNSIGNED NOT NULL,
+	seguro_social BOOLEAN,
+	vacaciones BOOLEAN,
+	aguinaldo BOOLEAN,
+	utilidades BOOLEAN,
+	fonacot BOOLEAN,
+	infonavit BOOLEAN,
+	prima_vacacional BOOLEAN,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE DireccionSolicitante
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	calle_numero VARCHAR(255) NOT NULL,
+	colonia VARCHAR(255) NOT NULL,
+	codigo_postal VARCHAR(5),
+	delegacion_municipio VARCHAR(255) NOT NULL,
+	entidad_federativa VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE CartaAntecedentesPenales
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	tiene_carta VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE ReclutamientoSolicitudEmpleo
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE Contratacion
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_reclutamiento_solicitud_empleo INT(11) UNSIGNED NOT NULL,
+	fk_colaborador INTEGER UNSIGNED NOT NULL,
+	sueldo_inicial DECIMAL NOT NULL,
+	fecha_expedicion_certificado_medico DATE NOT NULL,
+	fecha_vencimiento_certificado_medico DATE NOT NULL,
+	fk_tipo_contratacion INT(11) UNSIGNED NOT NULL,
+	fk_tipo_contrato INT(11) UNSIGNED NOT NULL,
+	vencimiento_contrato_eventual VARCHAR(255) NOT NULL,
+	fecha_inicio_contrato DATE NOT NULL,
+	fk_suspension INT(11) UNSIGNED,
+	motivo_suspension VARCHAR(255),
+	fecha_termino_contrato DATE,
+	fk_motivo_termino_contrato INTEGER UNSIGNED,
+	finiquito BOOLEAN,
+	indemnizacion BOOLEAN,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE DocumentosContratacion
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_contratacion INT(11) UNSIGNED NOT NULL,
+	ife BOOLEAN,
+	acta_nacimiento BOOLEAN,
+	comprobante_domicilio BOOLEAN,
+	curp BOOLEAN,
+	rfc BOOLEAN,
+	nss BOOLEAN,
+	comprobante_estudios_certificacion BOOLEAN,
+	carta_militar BOOLEAN,
+	licencia BOOLEAN,
+	carta_antecedentes_no_penales BOOLEAN,
+	certificado_medico BOOLEAN,
+	cartas_recomendacion BOOLEAN,
+	curriculum BOOLEAN,
+	fm2_fm3 BOOLEAN,
+	fotografia BOOLEAN,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE DatosEscolaresHabilidades
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_reclutamiento_solicitud_empleo INT(11) UNSIGNED NOT NULL,
+	fk_ultimo_grado_estudios INT(11) UNSIGNED NOT NULL,
+	escuela_procedencia VARCHAR(255),
+	fk_estado_academico INT(11) UNSIGNED NOT NULL,
+	idiomas VARCHAR(255),
+	porcentaje_idiomas VARCHAR(255),
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE Paqueteria
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_datos_escolares_habilidades INT(11) UNSIGNED NOT NULL,
+	word BOOLEAN,
+	power_point BOOLEAN,
+	excel BOOLEAN,
+	publisher BOOLEAN,
+	access BOOLEAN,
+	outlook BOOLEAN,
+	acrobat BOOLEAN,
+	coi BOOLEAN,
+	noi BOOLEAN,
+	sae BOOLEAN,
+	otros BOOLEAN,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE EquipoOficinaDomina
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_datos_escolares_habilidades INT(11) UNSIGNED NOT NULL,
+	pc BOOLEAN,
+	calculadora BOOLEAN,
+	impresora BOOLEAN,
+	fax BOOLEAN,
+	telefono BOOLEAN,
+	scanner BOOLEAN,
+	tablet BOOLEAN,
+	laptop BOOLEAN,
+	otros BOOLEAN,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE DatosUltimoEmpleoSolicitante
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_reclutamiento_solicitud_empleo INT(11) UNSIGNED NOT NULL,
+	nombre_empresa VARCHAR(255),
+	domicilio VARCHAR(255),
+	telefonos VARCHAR(255),
+	puesto_inicial VARCHAR(255),
+	puesto_final VARCHAR(255),
+	sueldo_inicial DECIMAL,
+	sueldo_final DECIMAL,
+	motivo_separacion VARCHAR(255),
+	nombre_jefe_inmediato VARCHAR(255),
+	actividades_desempenadas VARCHAR(255),
+	nombre_empresa_anterior VARCHAR(255),
+	domicilio_anterior VARCHAR(255),
+	telefonos_anterior VARCHAR(255),
+	puesto_inicial_anterior VARCHAR(255),
+	puesto_final_anterior VARCHAR(255),
+	sueldo_inicial_anterior DECIMAL,
+	sueldo_final_anterior DECIMAL,
+	motivo_separacion_anterior VARCHAR(255),
+	nombre_jefe_inmediato_anterior VARCHAR(255),
+	actividades_desempenadas_anterior VARCHAR(255),
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE Identificacion
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	identificacion VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE EstadoCivil
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	estado VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE DocumentacionExtranjeros
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	documento VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE DatosFamiliaresSolicitante
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_reclutamiento_solicitud_empleo INT(11) UNSIGNED NOT NULL,
+	fk_vive_con INT(11) UNSIGNED NOT NULL,
+	fk_dependientes INT(11) UNSIGNED NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE DatosSobreConectelSolicitante
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_reclutamiento_solicitud_empleo INT(11) UNSIGNED NOT NULL,
+	fk_fuente_reclutamiento INT(11) UNSIGNED NOT NULL,
+	conocidos_conectel BOOLEAN NOT NULL,
+	puede_viajar BOOLEAN NOT NULL,
+	fecha_presentarse DATE NOT NULL,
+	fk_fase_seleccion INT(11) UNSIGNED NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE DatosPrincipalesSolicitante
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_reclutamiento_solicitud_empleo INT(11) UNSIGNED NOT NULL,
+	fecha_solicitud DATE NOT NULL,
+	puesto_solicitado VARCHAR(255) NOT NULL,
+	sueldo_solicitado DECIMAL NOT NULL,
+	objetivo_laboral VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE Licencia
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	vigencia DATE NOT NULL,
+	numero_licencia VARCHAR(50) NOT NULL,
+	fk_tipo_licencia INT(11) UNSIGNED NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE DatosGeneralesSolicitante
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_reclutamiento_solicitud_empleo INT(11) UNSIGNED NOT NULL,
+	apellido_paterno VARCHAR(255) NOT NULL,
+	apellido_materno VARCHAR(255) NOT NULL,
+	nombres VARCHAR(255) NOT NULL,
+	fecha_nacimiento DATE NOT NULL,
+	lugar_nacimiento VARCHAR(255),
+	edad INT(2),
+	fk_nacionalidad INT(11) UNSIGNED NOT NULL,
+	fk_identificacion INT(11) UNSIGNED NOT NULL,
+	fk_documentacion_extranjeros INT(11) UNSIGNED,
+	fk_estado_civil INT(11) UNSIGNED NOT NULL,
+	fk_sexo INT(11) UNSIGNED NOT NULL,
+	fk_direccion_solicitante INT(11) UNSIGNED,
+	telefono VARCHAR(50) NOT NULL,
+	celular VARCHAR(50) NOT NULL,
+	correo_electronico VARCHAR(255),
+	rfc VARCHAR(15),
+	nss VARCHAR(255),
+	curp VARCHAR(20),
+	fk_licencia INT(11) UNSIGNED,
+	fk_carta_antecedentes_penales INT(11) UNSIGNED NOT NULL,
+	fk_estado_salud INT(11) UNSIGNED NOT NULL,
+	enfermedad_cronica VARCHAR(255),
+	fk_tiempo_libre INT(11) UNSIGNED NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE SeleccionReclutamiento
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_reclutamiento_solicitud_empleo INT(11) UNSIGNED NOT NULL,
+	fk_tipo_candidato INT(11) UNSIGNED NOT NULL,
+	examen_tecnico INT(2) NOT NULL,
+	fk_fase_contratacion INT(11) UNSIGNED NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE PerfilEscala
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_seleccion_reclutamiento INT(11) UNSIGNED NOT NULL,
+	inteligencia INT(1) NOT NULL,
+	sociable INT(1) NOT NULL,
+	metodos_procedimientos INT(1) NOT NULL,
+	aspecto_fisico INT(1) NOT NULL,
+	desenvolvimiento INT(1) NOT NULL,
+	concentracion INT(1) NOT NULL,
+	entusiasmo INT(1) NOT NULL,
+	amabilidad INT(1) NOT NULL,
+	agresivo INT(1) NOT NULL,
+	audaz INT(1) NOT NULL,
+	lenguaje INT(1) NOT NULL,
+	respecto_autoridad INT(1) NOT NULL,
+	orden INT(1) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE ExamenPsicometrico
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_seleccion_reclutamiento INT(11) UNSIGNED NOT NULL,
+	raven_army_beta BOOLEAN,
+	figura_humana BOOLEAN,
+	arbol BOOLEAN,
+	casa BOOLEAN,
+	grafologia BOOLEAN,
+	cleaver BOOLEAN,
+	frases_incompletas BOOLEAN,
+	therman BOOLEAN,
+	dominos BOOLEAN,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE InformacionConfidencialColaborador
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_contratacion INT(11) UNSIGNED NOT NULL,
+	foto VARCHAR(255),
+	sueldo DECIMAL NOT NULL,
+	tiene_imss BOOLEAN NOT NULL,
+	nss VARCHAR(255),
+	alta_imss DATE,
+	baja_imss DATE,
+	modificacion_imss DATE,
+	fk_estado_colaborador INT(11) UNSIGNED NOT NULL,
+	en_caso_accidente_avisar VARCHAR(255) NOT NULL,
+	telefono_emergencia VARCHAR(50) NOT NULL,
+	bajo_tratamiento BOOLEAN NOT NULL,
+	medicamento VARCHAR(255),
+	alergias VARCHAR(255),
+	tipo_sangre VARCHAR(255),
+	numero_tarjeta_nomina VARCHAR(50),
+	correo_electronico VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
 	ALTER TABLE Cliente ADD FOREIGN KEY id_contacto_idxfk (id_contacto) REFERENCES Contacto (id);
 
 	ALTER TABLE Proyecto ADD FOREIGN KEY id_categoria_proyecto_idxfk (id_categoria_proyecto) REFERENCES CategoriaProyecto (id);
@@ -2082,6 +2518,87 @@
 	ALTER TABLE ComentarioPagoMovimientoPagoContableServicio ADD FOREIGN KEY fk_pago_movimiento_pago_contable_servicio_idxfk (fk_pago_movimiento_pago_contable_servicio) REFERENCES PagoMovimientoPagoContableServicio (id);
 
 	ALTER TABLE ComentarioPagoMovimientoPagoContableServicio ADD FOREIGN KEY fk_comentario_tesoreria_idxfk_3 (fk_comentario_tesoreria) REFERENCES ComentarioTesoreria (id);
+
+	/* Recursos Humanos */
+	ALTER TABLE Prestaciones ADD FOREIGN KEY fk_contratacion_idxfk (fk_contratacion) REFERENCES Contratacion (id);
+
+	ALTER TABLE Contratacion ADD FOREIGN KEY fk_reclutamiento_solicitud_empleo_idxfk (fk_reclutamiento_solicitud_empleo) REFERENCES ReclutamientoSolicitudEmpleo (id);
+
+	ALTER TABLE Contratacion ADD FOREIGN KEY fk_colaborador_idxfk (fk_colaborador) REFERENCES Colaborador (id);
+
+	ALTER TABLE Contratacion ADD FOREIGN KEY fk_tipo_contratacion_idxfk (fk_tipo_contratacion) REFERENCES TipoContratacion (id);
+
+	ALTER TABLE Contratacion ADD FOREIGN KEY fk_tipo_contrato_idxfk (fk_tipo_contrato) REFERENCES TipoContrato (id);
+
+	ALTER TABLE Contratacion ADD FOREIGN KEY fk_suspension_idxfk (fk_suspension) REFERENCES Suspension (id);
+
+	ALTER TABLE Contratacion ADD FOREIGN KEY fk_motivo_termino_contrato_idxfk (fk_motivo_termino_contrato) REFERENCES MotivoTerminoContrato (id);
+
+	ALTER TABLE DocumentosContratacion ADD FOREIGN KEY fk_contratacion_idxfk_1 (fk_contratacion) REFERENCES Contratacion (id);
+
+	ALTER TABLE DatosEscolaresHabilidades ADD FOREIGN KEY fk_reclutamiento_solicitud_empleo_idxfk_1 (fk_reclutamiento_solicitud_empleo) REFERENCES ReclutamientoSolicitudEmpleo (id);
+
+	ALTER TABLE DatosEscolaresHabilidades ADD FOREIGN KEY fk_ultimo_grado_estudios_idxfk (fk_ultimo_grado_estudios) REFERENCES UltimoGradoEstudios (id);
+
+	ALTER TABLE DatosEscolaresHabilidades ADD FOREIGN KEY fk_estado_academico_idxfk (fk_estado_academico) REFERENCES EstadoAcademico (id);
+
+	ALTER TABLE Paqueteria ADD FOREIGN KEY fk_datos_escolares_habilidades_idxfk (fk_datos_escolares_habilidades) REFERENCES DatosEscolaresHabilidades (id);
+
+	ALTER TABLE EquipoOficinaDomina ADD FOREIGN KEY fk_datos_escolares_habilidades_idxfk_1 (fk_datos_escolares_habilidades) REFERENCES DatosEscolaresHabilidades (id);
+
+	ALTER TABLE DatosUltimoEmpleoSolicitante ADD FOREIGN KEY fk_reclutamiento_solicitud_empleo_idxfk_2 (fk_reclutamiento_solicitud_empleo) REFERENCES ReclutamientoSolicitudEmpleo (id);
+
+	ALTER TABLE DatosFamiliaresSolicitante ADD FOREIGN KEY fk_reclutamiento_solicitud_empleo_idxfk_3 (fk_reclutamiento_solicitud_empleo) REFERENCES ReclutamientoSolicitudEmpleo (id);
+
+	ALTER TABLE DatosFamiliaresSolicitante ADD FOREIGN KEY fk_vive_con_idxfk (fk_vive_con) REFERENCES ViveCon (id);
+
+	ALTER TABLE DatosFamiliaresSolicitante ADD FOREIGN KEY fk_dependientes_idxfk (fk_dependientes) REFERENCES Dependientes (id);
+
+	ALTER TABLE DatosSobreConectelSolicitante ADD FOREIGN KEY fk_reclutamiento_solicitud_empleo_idxfk_4 (fk_reclutamiento_solicitud_empleo) REFERENCES ReclutamientoSolicitudEmpleo (id);
+
+	ALTER TABLE DatosSobreConectelSolicitante ADD FOREIGN KEY fk_fuente_reclutamiento_idxfk (fk_fuente_reclutamiento) REFERENCES FuenteReclutamiento (id);
+
+	ALTER TABLE DatosSobreConectelSolicitante ADD FOREIGN KEY fk_fase_seleccion_idxfk (fk_fase_seleccion) REFERENCES FaseSeleccion (id);
+
+	ALTER TABLE DatosPrincipalesSolicitante ADD FOREIGN KEY fk_reclutamiento_solicitud_empleo_idxfk_5 (fk_reclutamiento_solicitud_empleo) REFERENCES ReclutamientoSolicitudEmpleo (id);
+
+	ALTER TABLE Licencia ADD FOREIGN KEY fk_tipo_licencia_idxfk (fk_tipo_licencia) REFERENCES TipoLicencia (id);
+
+	ALTER TABLE DatosGeneralesSolicitante ADD FOREIGN KEY fk_reclutamiento_solicitud_empleo_idxfk_6 (fk_reclutamiento_solicitud_empleo) REFERENCES ReclutamientoSolicitudEmpleo (id);
+
+	ALTER TABLE DatosGeneralesSolicitante ADD FOREIGN KEY fk_nacionalidad_idxfk (fk_nacionalidad) REFERENCES Nacionalidad (id);
+
+	ALTER TABLE DatosGeneralesSolicitante ADD FOREIGN KEY fk_identificacion_idxfk (fk_identificacion) REFERENCES Identificacion (id);
+
+	ALTER TABLE DatosGeneralesSolicitante ADD FOREIGN KEY fk_documentacion_extranjeros_idxfk (fk_documentacion_extranjeros) REFERENCES DocumentacionExtranjeros (id);
+
+	ALTER TABLE DatosGeneralesSolicitante ADD FOREIGN KEY fk_estado_civil_idxfk (fk_estado_civil) REFERENCES EstadoCivil (id);
+
+	ALTER TABLE DatosGeneralesSolicitante ADD FOREIGN KEY fk_sexo_idxfk (fk_sexo) REFERENCES Sexo (id);
+
+	ALTER TABLE DatosGeneralesSolicitante ADD FOREIGN KEY fk_direccion_solicitante_idxfk (fk_direccion_solicitante) REFERENCES DireccionSolicitante (id);
+
+	ALTER TABLE DatosGeneralesSolicitante ADD FOREIGN KEY fk_licencia_idxfk (fk_licencia) REFERENCES Licencia (id);
+
+	ALTER TABLE DatosGeneralesSolicitante ADD FOREIGN KEY fk_carta_antecedentes_penales_idxfk (fk_carta_antecedentes_penales) REFERENCES CartaAntecedentesPenales (id);
+
+	ALTER TABLE DatosGeneralesSolicitante ADD FOREIGN KEY fk_estado_salud_idxfk (fk_estado_salud) REFERENCES EstadoSalud (id);
+
+	ALTER TABLE DatosGeneralesSolicitante ADD FOREIGN KEY fk_tiempo_libre_idxfk (fk_tiempo_libre) REFERENCES ActividadTiempoLibre (id);
+
+	ALTER TABLE SeleccionReclutamiento ADD FOREIGN KEY fk_reclutamiento_solicitud_empleo_idxfk_7 (fk_reclutamiento_solicitud_empleo) REFERENCES ReclutamientoSolicitudEmpleo (id);
+
+	ALTER TABLE SeleccionReclutamiento ADD FOREIGN KEY fk_tipo_candidato_idxfk (fk_tipo_candidato) REFERENCES TipoCandidato (id);
+
+	ALTER TABLE SeleccionReclutamiento ADD FOREIGN KEY fk_fase_contratacion_idxfk (fk_fase_contratacion) REFERENCES FaseContratacion (id);
+
+	ALTER TABLE PerfilEscala ADD FOREIGN KEY fk_seleccion_reclutamiento_idxfk (fk_seleccion_reclutamiento) REFERENCES SeleccionReclutamiento (id);
+
+	ALTER TABLE ExamenPsicometrico ADD FOREIGN KEY fk_seleccion_reclutamiento_idxfk_1 (fk_seleccion_reclutamiento) REFERENCES SeleccionReclutamiento (id);
+
+	ALTER TABLE InformacionConfidencialColaborador ADD FOREIGN KEY fk_contratacion_idxfk_2 (fk_contratacion) REFERENCES Contratacion (id);
+
+	ALTER TABLE InformacionConfidencialColaborador ADD FOREIGN KEY fk_estado_colaborador_idxfk (fk_estado_colaborador) REFERENCES EstadoColaborador (id);
 
 	/* Perfiles */
 	INSERT INTO Perfil
@@ -2994,27 +3511,188 @@
 	INSERT INTO ConceptoOtraOperacionFinanciera
 	VALUES (5, 'Otros Gastos');
 	
-/*
-	INSERT INTO Proveedor
-	VALUES (1, 1, 'ACME', 'ALMEIRA CASTAÑEDA MELIA', 'ALCM900622DF7', 'REFORMA 34, COL. JUÁREZ, DELG. CUAUHTEMOC', 'REFORMA 34, COL. JUÁREZ, DELG. CUAUHTEMOC', '57115887','MELIA ALMEIRA','melia347@yahoo.com','','');
-	INSERT INTO Proveedor
-	VALUES (2, 2, 'ALMEX', 'ALMEX SA DE CV', 'ALM830214347', 'PLAZA DE LA REPÚBLICA 43, COL. INDUSTRIAL, DELG. AZCAPOTZALCO', 'PLAZA DE LA REPÚBLICA 43, COL. INDUSTRIAL, DELG. AZCAPOTZALCO', '55674356','JUAN RULFO','jrulfo@amex.com.mx','www.amex.com.mx','');
+	/* Recursos Humanos */
+	INSERT INTO Nacionalidad
+	VALUES (1, 'Mexicano');
+	INSERT INTO Nacionalidad
+	VALUES (2, 'Extranjero');
 
-	INSERT INTO ProveedorSeleccionado 
-	VALUES (1, 1);
-	INSERT INTO ProveedorSeleccionado
-	VALUES (2, 2);
+	INSERT INTO Identificacion
+	VALUES (1, 'IFE');
+	INSERT INTO Identificacion
+	VALUES (2, 'Cartilla Militar');
+	INSERT INTO Identificacion
+	VALUES (3, 'Pasaporte');
+	INSERT INTO Identificacion
+	VALUES (4, 'Licencia');
 
-	INSERT INTO ProveedorCalificado
-	VALUES (1, 1, 1, 1, 'PESO MEXICANO', 347000, 12, 0, null);
-	*/
-/*
-	INSERT INTO RequisicionCompra
-	VALUES (1, '2013-01-11', 'Material',1,1,'Sitio 347',1);
+	INSERT INTO DocumentacionExtranjeros
+	VALUES (1, 'Pasaporte');
+	INSERT INTO DocumentacionExtranjeros
+	VALUES (2, 'Permisos');
+	INSERT INTO DocumentacionExtranjeros
+	VALUES (3, 'Acta o Partida');
+	INSERT INTO DocumentacionExtranjeros
+	VALUES (4, 'FM2');
+	INSERT INTO DocumentacionExtranjeros
+	VALUES (5, 'FM3');
 
-	INSERT INTO OrdenCompra
-	VALUES (1, 1, '2013-01-11', 1, 1, 1, 123, 1, 'COMPRA DE MATERIAL PARA EL PROYECTO', 1, 1, 1, 1, 1, 1, 1, 1, 1, '2013-01-30');
-*/
+	INSERT INTO EstadoCivil
+	VALUES (1, 'Casado');
+	INSERT INTO EstadoCivil
+	VALUES (2, 'Soltero');
+	INSERT INTO EstadoCivil
+	VALUES (3, 'Viudo');
+	INSERT INTO EstadoCivil
+	VALUES (4, 'Divorciado');
+	INSERT INTO EstadoCivil
+	VALUES (5, 'Unión Libre');
+
+	INSERT INTO Sexo
+	VALUES (1, 'Masculino');
+	INSERT INTO Sexo
+	VALUES (2, 'Femenino');
+
+	INSERT INTO TipoLicencia
+	VALUES (1, 'A');
+	INSERT INTO TipoLicencia
+	VALUES (2, 'B');
+	INSERT INTO TipoLicencia
+	VALUES (3, 'C');
+	INSERT INTO TipoLicencia
+	VALUES (4, 'D');
+	
+	INSERT INTO CartaAntecedentesPenales
+	VALUES (1, 'Si');
+	INSERT INTO CartaAntecedentesPenales
+	VALUES (2, 'No');
+	INSERT INTO CartaAntecedentesPenales
+	VALUES (3, 'N/A');
+
+	INSERT INTO EstadoSalud
+	VALUES (1, 'Bueno');
+	INSERT INTO EstadoSalud
+	VALUES (2, 'Regular');
+	INSERT INTO EstadoSalud
+	VALUES (3, 'Malo');
+
+	INSERT INTO ActividadTiempoLibre
+	VALUES (1, 'Hobbies');
+	INSERT INTO ActividadTiempoLibre
+	VALUES (2, 'Familia');
+	INSERT INTO ActividadTiempoLibre
+	VALUES (3, 'Estudio');
+
+	INSERT INTO ViveCon
+	VALUES (1, 'Familia');
+	INSERT INTO ViveCon
+	VALUES (2, 'Padres');
+	INSERT INTO ViveCon
+	VALUES (3, 'Parientes');
+	INSERT INTO ViveCon
+	VALUES (4, 'Solo');
+
+	INSERT INTO Dependientes
+	VALUES (1, 'Hijos');
+	INSERT INTO Dependientes
+	VALUES (2, 'Cónyugues');
+	INSERT INTO Dependientes
+	VALUES (3, 'Padres');
+	INSERT INTO Dependientes
+	VALUES (4, 'Otros');
+	INSERT INTO Dependientes
+	VALUES (5, 'Nadie');
+
+	INSERT INTO UltimoGradoEstudios
+	VALUES (1, 'Primaria');
+	INSERT INTO UltimoGradoEstudios
+	VALUES (2, 'Secundaria');
+	INSERT INTO UltimoGradoEstudios
+	VALUES (3, 'Bachillerato');
+	INSERT INTO UltimoGradoEstudios
+	VALUES (4, 'Licenciatura');
+	INSERT INTO UltimoGradoEstudios
+	VALUES (5, 'Títulado');
+	INSERT INTO UltimoGradoEstudios
+	VALUES (6, 'Posgrado');
+	INSERT INTO UltimoGradoEstudios
+	VALUES (7, 'Maestría');
+	INSERT INTO UltimoGradoEstudios
+	VALUES (8, 'Técnico');
+	INSERT INTO UltimoGradoEstudios
+	VALUES (9, 'Sin Estudios');
+	INSERT INTO UltimoGradoEstudios
+	VALUES (10, 'Diplomado');
+	INSERT INTO UltimoGradoEstudios
+	VALUES (11, 'Ninguno');
+
+	INSERT INTO EstadoAcademico
+	VALUES (1, 'Títulado');
+	INSERT INTO EstadoAcademico
+	VALUES (2, 'Pasante');
+	INSERT INTO EstadoAcademico
+	VALUES (3, 'Trunco');
+
+	INSERT INTO FaseSeleccion
+	VALUES (1, 'Si');
+	INSERT INTO FaseSeleccion
+	VALUES (2, 'No');
+
+	INSERT INTO FuenteReclutamiento
+	VALUES (1, 'Anuncio');
+	INSERT INTO FuenteReclutamiento
+	VALUES (2, 'Bolsa Trabajo');
+	INSERT INTO FuenteReclutamiento
+	VALUES (3, 'Delegación');
+	INSERT INTO FuenteReclutamiento
+	VALUES (4, 'Feria');
+	INSERT INTO FuenteReclutamiento
+	VALUES (5, 'Trabajador o Empleado');
+	INSERT INTO FuenteReclutamiento
+	VALUES (6, 'Internet');
+
+	INSERT INTO TipoCandidato
+	VALUES (1, 'Personal Universitario');
+	INSERT INTO TipoCandidato
+	VALUES (2, 'Personal con Preparatoria');
+
+	INSERT INTO FaseContratacion
+	VALUES (1, 'Si');
+	INSERT INTO FaseContratacion
+	VALUES (2, 'No');
+
+	INSERT INTO TipoContratacion
+	VALUES (1, 'Nuevo');
+	INSERT INTO TipoContratacion
+	VALUES (2, 'Reingreso');
+
+	INSERT INTO Suspension
+	VALUES (1, 'Temporal');
+	INSERT INTO Suspension
+	VALUES (2, 'Definitiva');
+	INSERT INTO Suspension
+	VALUES (3, 'N/A');
+
+	INSERT INTO MotivoTerminoContrato
+	VALUES (1, 'Recisión');
+	INSERT INTO MotivoTerminoContrato
+	VALUES (2, 'Renuncia Voluntaria');
+	INSERT INTO MotivoTerminoContrato
+	VALUES (3, 'Fallecimiento');
+	INSERT INTO MotivoTerminoContrato
+	VALUES (4, 'Incapacidad');
+	INSERT INTO MotivoTerminoContrato
+	VALUES (5, 'Promoción');
+	INSERT INTO MotivoTerminoContrato
+	VALUES (6, 'Jubilación');
+	INSERT INTO MotivoTerminoContrato
+	VALUES (7, 'Renovación de Contrato');
+
+	INSERT INTO EstadoColaborador
+	VALUES (1, 'Activo');
+	INSERT INTO EstadoColaborador
+	VALUES (2, 'Inactivo');
+	
 	/*
 	INSERT INTO 
 	VALUES (1, '');

@@ -24,5 +24,7 @@ package model
 		public var etadoValidacionFinal:EstadoFinalValidacion;
 		public var imputable:Imputable;
 		public var comentariosPantallaValidacionAdministrativa:ArrayCollection;
+		public var proyectoPadre:ProyectoPadre;
+		public var proyecto:Proyecto;
 	}
 }

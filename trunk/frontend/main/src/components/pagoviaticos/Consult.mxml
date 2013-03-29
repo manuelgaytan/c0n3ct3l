@@ -6,9 +6,9 @@
 		<![CDATA[
 			import events.GenericEvent;
 			
+			import model.PagoViaticos;
 			import model.ConfiguracionPruebaEntrega;
 			import model.FiltroProyecto;
-			import model.PagoProveedor;
 			import model.Proyecto;
 			import model.Util;
 			
@@ -54,13 +54,13 @@
 				if( event.currentTarget.selectedItem == null ){
 					return;
 				}
-				var item:PagoProveedor = this.datagrid.selectedItem as PagoProveedor;
-				this.responseGetProyecto.token = this.pagoProveedorService.getItem( item.id );
+				var item:PagoViaticos = this.datagrid.selectedItem as PagoViaticos;
+				this.responseGetProyecto.token = this.pagoViaticosService.getItem( item.id );
 			}
 			
 			protected function responseGetItem_resultHandler(event:ResultEvent):void
 			{
-				var item:PagoProveedor = event.result as PagoProveedor;
+				var item:PagoViaticos = event.result as PagoViaticos;
 				if( item == null ){
 					return;
 				}
@@ -71,7 +71,7 @@
 			
 			public function executeQuery():void
 			{
-				this.responseGetAll.token = this.pagoProveedorService.getAll();
+				this.responseGetAll.token = this.pagoViaticosService.getAll();
 			}
 			
 			private function labelFunctionDate(object:Object, column:DataGridColumn):String{
@@ -98,25 +98,12 @@
 					return;
 				}
 				var items:ArrayCollection = Util.selectedIDs( this.datagrid.selectedItems ); 
-				this.responseDeleteItems.token = this.pagoProveedorService.deleteItems( items );
+				this.responseDeleteItems.token = this.pagoViaticosService.deleteItems( items );
 			}
 			
 			protected function responseDeleteItems_resultHandler(event:ResultEvent):void
 			{
 				this.executeQuery();
-			}
-			
-			private function labelFunctionProveedor(item:Object, column:DataGridColumn):String{
-				var providerPayment:PagoProveedor = item as PagoProveedor;
-				if( providerPayment == null ||
-					providerPayment.facturaProveedor == null ){
-					return "";
-				}
-				if( providerPayment.facturaProveedor.proveedorCalificado != null ){
-					return providerPayment.facturaProveedor.proveedorCalificado.proveedorSeleccionado.nombreComercial;
-				}else{
-					return providerPayment.facturaProveedor.proveedorMaquilador.nombreComercial;
-				}
 			}
 		]]>
 	</mx:Script>
@@ -133,12 +120,12 @@
 								   dataField="id"
 								   width="60"
 								   textAlign="right"/>
-				<mx:DataGridColumn id="dtgInvoiceFolio" headerText="{'Folio\nFactura'}"
-								   dataField="folioFactura"
+				<mx:DataGridColumn id="dtgPerDiemCheckID" headerText="{'Folio\nComprobante\nViáticos'}"
+								   dataField="comprobacionViaticos.id"
 								   width="130"
 								   textAlign="right"/>
-				<mx:DataGridColumn id="dtgClient" headerText="{'Proveedor'}"
-								   dataField="labelFunctionProveedor"
+				<mx:DataGridColumn id="dtgPerDiemCheckState" headerText="{'Estado\nComprobante\nViáticos'}"
+								   dataField="comprobacionViaticos.estadoComprobacionViaticos.etiqueta"
 								   width="170"/>
 				<mx:DataGridColumn id="dtgBank" headerText="{'Banco'}"
 								   dataField="bancoConectel.banco"
@@ -167,7 +154,7 @@
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"
 				   visible="{!this._readMode}"/>
 	</mx:HBox>
-	<mx:RemoteObject id="pagoProveedorService" destination="pagoProveedorService" fault="datosGeneralesProyectoService_faultHandler(event)"
+	<mx:RemoteObject id="pagoViaticosService" destination="pagoViaticosService" fault="datosGeneralesProyectoService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetAll" result="responseGetAll_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetProyecto" result="responseGetItem_resultHandler(event)"/>

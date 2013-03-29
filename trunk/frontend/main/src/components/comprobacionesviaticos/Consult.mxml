@@ -27,6 +27,13 @@
 			
 			private var configuracionPruebaEntrega:ConfiguracionPruebaEntrega;
 			
+			[Bindable]
+			private var _readOnly:Boolean = false;
+			
+			public function set readOnly(value:Boolean):void{
+				this._readOnly = value;
+			}
+			
 			protected function responseGetAll_resultHandler(event:ResultEvent):void
 			{
 				items = event.result as ArrayCollection;
@@ -105,6 +112,11 @@
 			{
 				this.executeQuery();
 			}
+			
+			public function setDataGridData(datas:ArrayCollection):void
+			{
+				items = datas;
+			}
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -154,7 +166,8 @@
 	</mx:VBox>
 	<mx:HBox width="100%">
 		<mx:Spacer width="100%"/>
-		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>
+		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"
+				   visible="{!this._readOnly}"/>
 	</mx:HBox>
 	<mx:RemoteObject id="comprobacionViaticosService" destination="comprobacionViaticosService" fault="comprobacionViaticosService_faultHandler(event)"
 					 showBusyCursor="true"/>

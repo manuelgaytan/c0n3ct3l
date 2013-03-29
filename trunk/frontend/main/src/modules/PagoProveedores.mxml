@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
+		   width="850" height="525"
+		   xmlns:pagoproveedores="components.pagoproveedores.*"
+		   creationComplete="creationCompleteHandler(event)" xmlns:informacionfacturas="components.informacionfacturas.*" xmlns:notascreditoclientes="components.notascreditoclientes.*" xmlns:facturacionproveedores="components.facturacionproveedores.*" xmlns:notascreditoproveedores="components.notascreditoproveedores.*">
+	<mx:Script>
+		<![CDATA[
+			import events.GenericEvent;
+			
+			import model.FacturaProveedor;
+			import model.InformacionFacturacion;
+			import model.NotaCreditoCliente;
+			import model.NotaCreditoProveedor;
+			import model.PagoProveedor;
+			import model.Usuario;
+			
+			import mx.events.FlexEvent;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				
+			}
+			
+			protected function consult_providerPaymentDetailHandler(event:GenericEvent):void
+			{
+				this.detail.providerPayment = event.information as model.PagoProveedor;
+				this.navigator.selectedChild = this.detail;
+			}
+			
+			protected function register_providerPaymentNewHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+			
+			protected function detail_providerPaymentUpdatedHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+			
+			protected function detail_vendorInvoiceSelectedHandler(event:GenericEvent):void
+			{
+				if( event == null ){
+					return;
+				}
+				var vendorInvoice:FacturaProveedor = event.information as FacturaProveedor;
+				if( vendorInvoice == null ){
+					return;
+				}
+				vendorInvoiceDetail.vendorInvoice = vendorInvoice;
+				this.navigator.selectedChild = this.vendorInvoiceDetail;
+			}
+			
+			protected function detail_creditNoteSelectedHandler(event:GenericEvent):void
+			{
+				if( event == null ){
+					return;
+				}
+				var creditNote:NotaCreditoProveedor = event.information as NotaCreditoProveedor;
+				if( creditNote == null ){
+					return;
+				}
+				creditNoteDetail.creditNote = creditNote;
+				this.navigator.selectedChild = this.creditNoteDetail;
+			}
+		]]>
+	</mx:Script>
+	<mx:TabNavigator id="navigator" width="850" height="100%" creationPolicy="all">
+		<pagoproveedores:Consult id="consult" itemDetail="consult_providerPaymentDetailHandler(event)"/>
+		<pagoproveedores:ProviderPayment id="detail" update="true" providerPaymentUpdated="detail_providerPaymentUpdatedHandler(event)"
+							 vendorInvoiceSelected="detail_vendorInvoiceSelectedHandler(event)"
+							 creditNoteSelected="detail_creditNoteSelectedHandler(event)"/>
+		<pagoproveedores:ProviderPayment id="register" registrer="true" providerPaymentNew="register_providerPaymentNewHandler(event)"
+							 vendorInvoiceSelected="detail_vendorInvoiceSelectedHandler(event)"
+							 creditNoteSelected="detail_creditNoteSelectedHandler(event)"/>
+		<facturacionproveedores:VendorInvoice id="vendorInvoiceDetail" readOnly="true"/>
+		<notascreditoproveedores:CreditNote id="creditNoteDetail" readOnly="true"/>
+	</mx:TabNavigator>
+</mx:Module>

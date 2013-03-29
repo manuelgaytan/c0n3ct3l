@@ -9,6 +9,7 @@
 			
 			import flash.net.navigateToURL;
 			
+			import model.Constants;
 			import model.OrdenCompraMaquilado;
 			import model.Util;
 			
@@ -23,6 +24,14 @@
 			private var items:ArrayCollection = null;
 			
 			private var ordenCompraAlmacen:OrdenCompraMaquilado;
+			
+			[Bindable]
+			private var _readOnly:Boolean = false;
+			
+			public function set readOnly(value:Boolean):void{
+				this._readOnly = value;
+				this.label = Constants.DETALLE;
+			}
 			
 			protected function responseGetAll_resultHandler(event:ResultEvent):void
 			{
@@ -154,7 +163,8 @@
 	</mx:DataGrid>
 	<mx:HBox>
 		<mx:Button id="btnViewFormat" label="Visualizar Formato" click="btnViewFormat_clickHandler(event)"/>
-		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>
+		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"
+				   visible="{!this._readOnly}"/>
 	</mx:HBox>
 	<mx:RemoteObject id="ordenCompraMaquiladoService" destination="ordenCompraMaquiladoService" fault="ordenCompraAlmacenService_faultHandler(event)"
 					 showBusyCursor="true"/>

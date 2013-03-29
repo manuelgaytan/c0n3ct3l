@@ -183,7 +183,6 @@
 			{
 				if( this.mode == Constants.REGISTER_MODE ){
 					form.removeChild( this.frmID );
-					this.executeProjectQuery();
 				}
 				if( this.mode == Constants.UPDATE_MODE ){
 				}
@@ -246,22 +245,6 @@
 					this.cmbConectelBank.selectedIndex = Util.selectedIndexFromCombo( this.cmbConectelBank.dataProvider as ArrayCollection, 
 						this._item.bancoConectel.id);
 				}
-			}
-			
-			private function executeProjectQuery():void
-			{
-				var filter:FiltroProyecto = new FiltroProyecto();
-				filter.idConectel = null;
-				filter.idCategoria = undefined;
-				filter.idCliente = undefined;
-				filter.tipoProyecto = undefined;
-				filter.tecnologia = undefined;
-				filter.equipo = undefined;
-				filter.actividadRealizar = undefined;
-				filter.modelo = undefined;
-				filter.descripcionServicio = undefined;
-				filter.tipoServicio = undefined;
-				this.responseGetAll.token = this.clienteService.getAllByFiltro(filter);
 			}
 			
 			protected function responseGetAll_resultHandler(event:ResultEvent):void
@@ -343,7 +326,7 @@
 			
 			protected function btnViewInformationBilling_clickHandler(event:MouseEvent):void
 			{
-				var informationBilling:InformacionFacturacion = this.creditNoteConsult.datagrid.selectedItem as InformacionFacturacion;
+				var informationBilling:InformacionFacturacion = this.informationBillingConsult.datagrid.selectedItem as InformacionFacturacion;
 				if( informationBilling == null ){
 					Util.showErrorMessage("Primero debe seleccionar un elemento.");
 					return;

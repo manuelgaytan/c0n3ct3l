@@ -6,7 +6,7 @@
 		<![CDATA[
 			import events.GenericEvent;
 			
-			import model.ConfiguracionPruebaEntrega;
+			import model.FacturaProveedor;
 			import model.FiltroProyecto;
 			import model.Proyecto;
 			import model.Util;
@@ -21,7 +21,14 @@
 			[Bindable]
 			private var items:ArrayCollection = null;
 			
-			private var configuracionPruebaEntrega:ConfiguracionPruebaEntrega;
+			private var facturaProveedor:FacturaProveedor;
+			
+			[Bindable]
+			private var _readOnly:Boolean = false;
+			
+			public function set readOnly(value:Boolean):void{
+				this._readOnly = value;
+			}
 			
 			protected function responseGetAll_resultHandler(event:ResultEvent):void
 			{
@@ -35,7 +42,9 @@
 			
 			protected function creationCompleteHandler(event:FlexEvent):void
 			{
-				this.executeQuery();
+				if( !this._readOnly ){
+					this.executeQuery();
+				}
 			}
 			
 			private function labelFunctionProfile(object:Object, column:DataGridColumn):String{
@@ -47,13 +56,13 @@
 				if( event.currentTarget.selectedItem == null ){
 					return;
 				}
-				var item:Proyecto = this.datagrid.selectedItem as Proyecto;
-				this.responseGetProyecto.token = this.facturaProveedorService.getProyecto( item.id );
+				var item:FacturaProveedor = this.datagrid.selectedItem as FacturaProveedor;
+				this.responseGetProyecto.token = this.facturaProveedorService.getItem( item.id );
 			}
 			
 			protected function responseGetItem_resultHandler(event:ResultEvent):void
 			{
-				var item:Proyecto = event.result as Proyecto;
+				var item:FacturaProveedor = event.result as FacturaProveedor;
 				if( item == null ){
 					return;
 				}
@@ -66,13 +75,19 @@
 			{
 				this.responseGetAll.token = this.facturaProveedorService.getAll();
 			}
+			
+			public function setDataGridData(datas:ArrayCollection):void
+			{
+				this.items = datas;
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:Metadata>
 		[Event(name="itemDetail", type="events.GenericEvent")]
 	</mx:Metadata>
-	<mx:VBox width="{parent.parent.width-5}" height="100%">
-		<mx:DataGrid id="datagrid" width="2000" height="100%" dataProvider="{items}"
+	<mx:VBox width="845" height="100%">
+		<mx:DataGrid id="datagrid" width="845" height="100%" dataProvider="{items}"
 					 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 					 allowMultipleSelection="true"
 					 >
@@ -99,10 +114,12 @@
 								   />
 				<mx:DataGridColumn id="dtgReviewDate" headerText="{'Fecha\nRevision'}"
 								   dataField="fechaRevision"
+								   labelFunction="{Util.labelFunctionDate}"
 								   textAlign="center"
 								   />
 				<mx:DataGridColumn id="dtgPaymentDate" headerText="{'Fecha\nPago'}"
 								   dataField="fechaPago"
+								   labelFunction="{Util.labelFunctionDate}"
 								   textAlign="center"
 								   />
 			</mx:columns>

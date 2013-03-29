@@ -47,6 +47,7 @@
 					return;
 				}
 				informationBillingDetail.informationBilling = informationBilling;
+				this.navigator.selectedChild = this.informationBillingDetail;
 			}
 			
 			protected function detail_creditNoteSelectedHandler(event:GenericEvent):void
@@ -59,6 +60,7 @@
 					return;
 				}
 				creditNoteDetail.creditNote = creditNote;
+				this.navigator.selectedChild = this.creditNoteDetail;
 			}
 		]]>
 	</mx:Script>

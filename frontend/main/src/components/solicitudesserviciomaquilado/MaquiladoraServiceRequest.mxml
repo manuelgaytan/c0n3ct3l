@@ -149,8 +149,8 @@
 			{
 				this.txtID.reset();
 				this.dtfDate.reset();
-				this.parentProjectsConsult.setDataGridData( new ArrayCollection() );
-				this.projectsConsult.setDataGridData( new ArrayCollection() );
+				this.parentProjectsConsult.datagrid.selectedItem = null;
+				this.projectsConsult.datagrid.selectedItem = null;
 				this.comments.reset();
 			}
 			
@@ -200,8 +200,12 @@
 		<mx:FormItem label="Fecha:">
 			<components:DateField id="dtfDate"/>
 		</mx:FormItem>
-		<proyectospadres:Consult id="parentProjectsConsult" width="500" consultOnly="true"/>
-		<proyectos:Consult id="projectsConsult"/>
+		<mx:FormItem label="Proyectos Padre:">
+			<proyectospadres:Consult id="parentProjectsConsult" width="500" consultOnly="true"/>
+		</mx:FormItem>
+		<mx:FormItem label="Proyectos:">
+			<proyectos:Consult id="projectsConsult"/>
+		</mx:FormItem>
 		<components:Comments id="comments" includeInLayout="false" visible="false"/>
 		<mx:FormItem>
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>

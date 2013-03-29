@@ -22,6 +22,13 @@
 			
 			private var informacionFacturacion:InformacionFacturacion;
 			
+			[Bindable]
+			private var _readOnly:Boolean = false;
+			
+			public function set readOnly(value:Boolean):void{
+				this._readOnly = value;
+			}
+			
 			protected function responseGetAll_resultHandler(event:ResultEvent):void
 			{
 				items = event.result as ArrayCollection;
@@ -101,6 +108,12 @@
 				total += isNaN(info.total3) ? 0 : info.total3;
 				return Util.formatNumber(total);
 			}
+			
+			public function setDataGridData(datas:ArrayCollection):void
+			{
+				items = datas;
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -140,7 +153,8 @@
 		</mx:columns>
 	</mx:DataGrid>
 	<mx:HBox>
-		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>
+		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"
+				   visible="{!this._readOnly}"/>
 	</mx:HBox>
 	<mx:RemoteObject id="informacionFacturacionService" destination="informacionFacturacionService" fault="requisicionService_faultHandler(event)"
 					 showBusyCursor="true"/>

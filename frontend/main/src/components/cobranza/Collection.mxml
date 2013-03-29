@@ -1,0 +1,460 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*" xmlns:notascreditoclientes="components.notascreditoclientes.*" xmlns:informacionfacturas="components.informacionfacturas.*"
+		 >
+	<mx:Script>
+		<![CDATA[
+			import components.clientes.Client;
+			
+			import events.GenericEvent;
+			
+			import model.BancoConectel;
+			import model.Catalogo;
+			import model.Cliente;
+			import model.Cobranza;
+			import model.Colaborador;
+			import model.Constants;
+			import model.Estado;
+			import model.EstadoOrdenCompra;
+			import model.EstadoValidacionCosto;
+			import model.EstadoValidacionOperativa;
+			import model.FiltroProyecto;
+			import model.InformacionFacturacion;
+			import model.MedioTransporte;
+			import model.NotaCreditoCliente;
+			import model.Producto;
+			import model.Proyecto;
+			import model.TipoColaborador;
+			import model.TipoEntregable;
+			import model.Util;
+			
+			import mx.charts.chartClasses.DualStyleObject;
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.com.gahm.componentes.validadores.ValidadorEntero;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			private var mode:String = null;
+			private var _item:Cobranza;
+			private var validators:InicializaValidadoresEtiquetas;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				this.label = Constants.REGISTRAR;
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set collection(value:Cobranza):void{
+				if( value == null ){
+					return;
+				}
+				this.cleanForm();
+				this._item = value;
+				this.setItem(); 
+			}
+			
+			private function setItem():void
+			{
+				if( this._item == null ){
+					return;
+				}
+				this.txtID.text = this._item.id.toString();
+				if( Util.isFill( this.cmbClient ) && this._item.informacionFacturacion != null &&
+					this._item.informacionFacturacion.validacionAdministrativa != null &&
+					( this._item.informacionFacturacion.validacionAdministrativa.proyecto != null ||
+					this._item.informacionFacturacion.validacionAdministrativa.proyectoPadre != null) ){
+					var idClient:Number = -1;
+					if( this._item.informacionFacturacion.validacionAdministrativa.proyecto != null ){
+						idClient = this._item.informacionFacturacion.validacionAdministrativa.proyecto.producto.cliente.id;	
+					}else{
+						idClient = this._item.informacionFacturacion.validacionAdministrativa.proyectoPadre.proyectoPadreHijos.getItemAt( 0 ).proyecto.producto.cliente.id;
+					}
+					this.cmbClient.selectedIndex = Util.selectedIndexFromCombo( this.cmbClient.dataProvider as ArrayCollection, 
+						idClient);
+				}
+				this.informationBillingConsult.datagrid.dataProvider = Util.asArrayCollection( this._item.informacionFacturacion );
+				this.txtInvoiceFolio.text = this._item.folioFactura;
+				this.creditNoteConsult.datagrid.dataProvider = Util.asArrayCollection( this._item.notaCreditoCliente );
+				this.txtSubtotal.text = this._item.subtotal.toString();
+				this.txtIVA.text = this._item.iva.toString();
+				this.txtTotal.text = this._item.total.toString();
+				if( Util.isFill( this.cmbConectelBank ) && this._item.bancoConectel != null ){
+					this.cmbConectelBank.selectedIndex = Util.selectedIndexFromCombo( this.cmbConectelBank.dataProvider as ArrayCollection, 
+						this._item.bancoConectel.id);
+				}
+				this.dtfPaymentDate.selectedDate = this._item.fechaAbono;
+				this.txtAmount.text = this._item.monto.toString();
+				this.txtPaymentReference.text = this._item.referenciaAbono.toString();
+				this.comments.setCommentsIn( this._item.comentariosCobranza, "comentarioTesoreria");
+			}
+			
+			private function getCollection():Cobranza{
+				var collection:Cobranza = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					collection = new Cobranza();
+				}else{
+					collection = this._item;
+				}
+				collection.informacionFacturacion = this.informationBillingConsult.datagrid.selectedItem as InformacionFacturacion;
+				collection.folioFactura = Util.validateEmpty( this.txtInvoiceFolio.text );
+				collection.notaCreditoCliente = this.creditNoteConsult.datagrid.selectedItem as NotaCreditoCliente;
+				collection.subtotal = Util.stringToNumber( this.txtSubtotal.text );
+				collection.iva = Util.stringToNumber( this.txtIVA.text );
+				collection.total = Util.stringToNumber( this.txtTotal.text );
+				collection.bancoConectel = Util.validateCombo( this.cmbConectelBank ) as BancoConectel;
+				collection.fechaAbono = this.dtfPaymentDate.selectedDate;
+				collection.monto = Util.stringToNumber( this.txtAmount.text );
+				collection.referenciaAbono = Util.stringToNumber( this.txtPaymentReference.text );
+				collection.comentariosCobranza = this.comments.getCommentsAsInWith("model.ComentarioTesoreria","model.ComentarioCobranza","comentarioTesoreria");
+				return collection;
+			}
+			
+			private function fillCombos():void
+			{
+				this.responseGetAll.token = this.clienteService.getAll();
+				this.responseGetBancoConectel.token = this.bancoConectelService.getAll();
+			}
+			
+			
+			protected function cobranzaService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function btnAccept_clickHandler(event:MouseEvent):void
+			{
+				if( !this.validations() ){
+					Util.showMessageVerifyFields();
+					return;
+				}
+				if( this.mode == Constants.REGISTER_MODE ){
+					var collection:Cobranza = this.getCollection();
+					Util.showProperties( collection );
+					this.responseSave.token = this.cobranzaService.save( collection );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
+				}
+			}
+			
+			private function updateItem(event:CloseEvent):void{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var item:Cobranza = this.getCollection();
+				Util.showProperties( item );
+				this.responseUpdate.token = this.cobranzaService.update( item );
+			}
+			
+			private function validations():Boolean
+			{
+				var value:Boolean = true;
+				value &&= Util.listBaseSelected( this.cmbClient );
+				value &&= this.validators.validarFormulario();
+				value &&= this.informationBillingConsult.datagrid.selectedItem != null;
+				value &&= this.creditNoteConsult.datagrid.selectedItem != null;
+				value &&= Util.listBaseSelected( this.cmbConectelBank );
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+					form.removeChild( this.frmID );
+					this.executeProjectQuery();
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+				}
+			}
+			
+			private function initializeValidators():void
+			{
+				this.validators = new InicializaValidadoresEtiquetas();
+				this.validators.crearValidadorRestrictor("genericAlfanumeric", ValidadorAlfanumerico.nombre, 0, 255, true);
+				this.validators.setRestrictor( this.txtInvoiceFolio, "genericAlfanumeric");
+				this.validators.crearValidadorRestrictor("genericDecimal", ValidadorDecimal.nombre, 9, 2);
+				this.validators.setRestrictor( this.txtSubtotal, "genericDecimal" );
+				this.validators.setRestrictor( this.txtIVA, "genericDecimal" );
+				this.validators.setRestrictor( this.txtTotal, "genericDecimal" );
+				this.validators.setValidador( this.txtAmount, "genericDecimal" );
+				this.validators.crearValidadorRestrictor("genericInteger", ValidadorEntero.nombre, 14);
+				this.validators.setRestrictor( this.txtPaymentReference, "genericInteger" );
+			}
+			
+			protected function responseSave_resultHandler(event:ResultEvent):void
+			{
+				var eventGeneralDataProjectNew:Event = new Event("collectionNew");
+				this.dispatchEvent( eventGeneralDataProjectNew );
+				this.cleanForm();
+			}
+			
+			private function cleanForm():void
+			{
+				this.txtID.reset();
+				this.cmbClient.selectedIndex = 0;
+				Util.removeItems(this.informationBillingConsult.datagrid.dataProvider);
+				this.txtInvoiceFolio.reset();
+				Util.removeItems(this.creditNoteConsult.datagrid.dataProvider);
+				this.txtSubtotal.reset();
+				this.txtIVA.reset();
+				this.txtTotal.reset();
+				this.cmbConectelBank.selectedIndex = 0;
+				this.dtfPaymentDate.reset();
+				this.txtAmount.reset();
+				this.txtPaymentReference.reset();
+				this.comments.reset();
+			}
+			
+			protected function responseUpdate_resultHandler(event:ResultEvent):void
+			{
+				var eventGeneralDataProjectUpdated:Event = new Event("collectionUpdated");
+				this.dispatchEvent( eventGeneralDataProjectUpdated );
+				this.cleanForm();
+			}
+			
+			protected function responseGetBancoConectel_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbConectelBank.dataProvider = data;
+				if( Util.isFill( this.cmbConectelBank ) && this._item 
+					&& this._item.bancoConectel != null ){
+					this.cmbConectelBank.selectedIndex = Util.selectedIndexFromCombo( this.cmbConectelBank.dataProvider as ArrayCollection, 
+						this._item.bancoConectel.id);
+				}
+			}
+			
+			private function executeProjectQuery():void
+			{
+				var filter:FiltroProyecto = new FiltroProyecto();
+				filter.idConectel = null;
+				filter.idCategoria = undefined;
+				filter.idCliente = undefined;
+				filter.tipoProyecto = undefined;
+				filter.tecnologia = undefined;
+				filter.equipo = undefined;
+				filter.actividadRealizar = undefined;
+				filter.modelo = undefined;
+				filter.descripcionServicio = undefined;
+				filter.tipoServicio = undefined;
+				this.responseGetAll.token = this.clienteService.getAllByFiltro(filter);
+			}
+			
+			protected function responseGetAll_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbClient.dataProvider = Util.addEmptyCatalgo( data, "nombreComercial" );
+				if( Util.isFill( this.cmbClient ) && this._item != null && 
+					this._item.informacionFacturacion != null &&
+					this._item.informacionFacturacion.validacionAdministrativa != null &&
+					( this._item.informacionFacturacion.validacionAdministrativa.proyecto != null ||
+						this._item.informacionFacturacion.validacionAdministrativa.proyectoPadre != null) ){
+					var idClient:Number = -1;
+					if( this._item.informacionFacturacion.validacionAdministrativa.proyecto != null ){
+						idClient = this._item.informacionFacturacion.validacionAdministrativa.proyecto.producto.cliente.id;	
+					}else{
+						idClient = this._item.informacionFacturacion.validacionAdministrativa.proyectoPadre.proyectoPadreHijos.getItemAt( 0 ).proyecto.producto.cliente.id;
+					}
+					this.cmbClient.selectedIndex = Util.selectedIndexFromCombo( this.cmbClient.dataProvider as ArrayCollection, 
+						idClient);
+				}
+			}
+			
+			protected function informationBillingConsult_informationBillingDetailHandler(event:GenericEvent):void
+			{
+			}
+			
+			protected function cmbClient_changeHandler(event:ListEvent):void
+			{
+				var client:Cliente = Util.validateCombo( this.cmbClient ) as Cliente;
+				if( !(client == null) ){
+					this.informacionFacturacionService.getAllByFiltro( client.id );
+					this.notaCreditoClienteService.getAllByFiltro( client.id );
+				}
+			}
+			
+			protected function creditNoteConsult_creditNoteDetailHandler(event:GenericEvent):void
+			{
+				var creditNote:NotaCreditoCliente = this.creditNoteConsult.datagrid.selectedItem as NotaCreditoCliente;
+				if( creditNote == null ){
+					Util.showErrorMessage("Primero debe seleccionar un elemento.");
+					return;
+				}
+				var subtotal:* = Util.stringToNumber( this.txtSubtotal.text );
+				var iva:* = Util.stringToNumber( this.txtIVA.text );
+				var total:* = Util.stringToNumber( this.txtTotal.text );
+				subtotal = subtotal == undefined ? 0 : subtotal;
+				iva = iva == undefined ? 0 : iva;
+				total = total == undefined ? 0 : total;
+				subtotal -= creditNote.subtotal;
+				iva -= creditNote.iva;
+				total -= creditNote.total;
+				this.setMontos( subtotal, iva, total );
+			}
+			
+			protected function responseCreditNoteGetAllByFiltro_resultHandler(event:ResultEvent):void
+			{
+				creditNoteConsult.setDataGridData( event.result as ArrayCollection );
+			}
+			
+			protected function responseGetAllByFiltro_resultHandler(event:ResultEvent):void
+			{
+				informationBillingConsult.setDataGridData( event.result as ArrayCollection );
+			}
+			
+			protected function btnViewCreditNote_clickHandler(event:MouseEvent):void
+			{
+				var creditNote:NotaCreditoCliente = this.creditNoteConsult.datagrid.selectedItem as NotaCreditoCliente;
+				if( creditNote == null ){
+					Util.showErrorMessage("Primero debe seleccionar un elemento.");
+					return;
+				}
+				var genericEvent:GenericEvent = new GenericEvent("creditNoteSelected");
+				genericEvent.information = creditNote;
+				this.dispatchEvent( genericEvent );
+			}
+			
+			protected function btnViewInformationBilling_clickHandler(event:MouseEvent):void
+			{
+				var informationBilling:InformacionFacturacion = this.creditNoteConsult.datagrid.selectedItem as InformacionFacturacion;
+				if( informationBilling == null ){
+					Util.showErrorMessage("Primero debe seleccionar un elemento.");
+					return;
+				}
+				var genericEvent:GenericEvent = new GenericEvent("informationBillingSelected");
+				genericEvent.information = informationBilling;
+				this.dispatchEvent( genericEvent );
+			}
+			
+			private function setMontos(subtotal:Number, iva:Number, total:Number):void{
+				this.txtSubtotal.text = subtotal.toString();
+				this.txtIVA.text = iva.toString();
+				this.txtTotal.text = total.toString();
+				this.txtAmount.text = total.toString(); 
+			}
+			
+			protected function cmbInformationBilling_changeHandler(event:ListEvent):void
+			{
+				var informationBilling:InformacionFacturacion = this.creditNoteConsult.datagrid.selectedItem as InformacionFacturacion;
+				if( informationBilling == null ){
+					Util.showErrorMessage("Primero debe seleccionar un elemento.");
+					return;
+				}
+				var idInformationBilling:Number = this.cmbInformationBilling.selectedIndex;
+				if( idInformationBilling == 0 ){
+					this.setMontos( 0, 0, 0);
+					return;
+				}
+				this.setMontos( informationBilling["subtotal"+informationBilling],
+								informationBilling["iva"+informationBilling],
+								informationBilling["total"+informationBilling] );
+			}
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="collectionNew", type="flash.events.Event")]
+		[Event(name="collectionUpdated", type="flash.events.Event")]
+		[Event(name="collectionProjectDone", type="flash.events.Event")]
+		[Event(name="creditNoteSelected", type="events.GenericEvent")]
+		[Event(name="informationBillingSelected", type="events.GenericEvent")]
+	</mx:Metadata>
+	<mx:Form id="form">
+		<mx:FormItem id="frmID" label="ID:" direction="horizontal">
+			<components:TextInput id="txtID" width="80" textAlign="right"
+								  editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Cliente:">
+			<mx:ComboBox id="cmbClient" width="300"
+						 labelField="nombreComercial"
+						 change="cmbClient_changeHandler(event)"/>
+		</mx:FormItem>
+		<mx:FormItem label="Información Facturación:">
+			<informacionfacturas:Consult id="informationBillingConsult" informationBillingDetail="informationBillingConsult_informationBillingDetailHandler(event)"
+										 readOnly="true"/>
+			<mx:HBox>
+				<mx:ComboBox id="cmbInformationBilling"
+							 dataProvider="{['','Información Factura 1','Información Factura 2','Información Factura 3']}"
+							 change="cmbInformationBilling_changeHandler(event)"/>
+				<mx:Button id="btnViewInformationBilling" label="Ver Información Facturación" click="btnViewInformationBilling_clickHandler(event)"/>
+			</mx:HBox>
+		</mx:FormItem>
+		<mx:FormItem label="Folio Factura:">
+			<components:TextInput id="txtInvoiceFolio" textAlign="right" width="100"/>
+		</mx:FormItem>
+		<mx:FormItem label="Nota Crédito Cliente:">
+			<notascreditoclientes:Consult id="creditNoteConsult" creditNoteDetail="creditNoteConsult_creditNoteDetailHandler(event)"
+										  readOnly="true"/>
+			<mx:Button id="btnViewCreditNote" label="Ver Nota Crédito Cliente" click="btnViewCreditNote_clickHandler(event)"/>
+		</mx:FormItem>
+		<mx:FormItem label="Subtotal:">
+			<components:TextInput id="txtSubtotal" textAlign="right" width="100"/>
+		</mx:FormItem>
+		<mx:FormItem label="I.V.A.:">
+			<components:TextInput id="txtIVA" textAlign="right" width="100"/>
+		</mx:FormItem>
+		<mx:FormItem label="Total:">
+			<components:TextInput id="txtTotal" textAlign="right" width="100"/>
+		</mx:FormItem>
+		<mx:FormItem label="Banco Conectel:">
+			<mx:ComboBox id="cmbConectelBank" width="200"
+						 labelField="banco"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha Abono:">
+			<components:DateField id="dtfPaymentDate"
+								  creationComplete="this.dtfPaymentDate.selectedDate = new Date()"/>
+		</mx:FormItem>
+		<mx:FormItem label="Monto:">
+			<components:TextInput id="txtAmount" textAlign="right" width="100"/>
+		</mx:FormItem>
+		<mx:FormItem label="Referencia Abono:">
+			<components:TextInput id="txtPaymentReference" textAlign="right" width="160"/>
+		</mx:FormItem>
+		<components:Comments id="comments"/>
+		<mx:FormItem direction="horizontal">
+			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:RemoteObject id="cobranzaService" destination="cobranzaService" fault="cobranzaService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
+	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
+	<mx:RemoteObject id="bancoConectelService" destination="bancoConectelService" fault="cobranzaService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetBancoConectel" result="responseGetBancoConectel_resultHandler(event)"/>
+	<mx:RemoteObject id="clienteService" destination="clienteService" fault="cobranzaService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetAll" result="responseGetAll_resultHandler(event)"/>
+	<mx:RemoteObject id="informacionFacturacionService" destination="informacionFacturacionService" fault="cobranzaService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetAllByFiltro" result="responseGetAllByFiltro_resultHandler(event)"/>
+	<mx:RemoteObject id="notaCreditoClienteService" destination="notaCreditoClienteService" fault="cobranzaService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseCreditNoteGetAllByFiltro" result="responseCreditNoteGetAllByFiltro_resultHandler(event)"/>
+</mx:VBox>

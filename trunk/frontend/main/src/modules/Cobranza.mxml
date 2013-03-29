@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
+		   width="850" height="525"
+		   xmlns:cobranza="components.cobranza.*"
+		   creationComplete="creationCompleteHandler(event)" xmlns:informacionfacturas="components.informacionfacturas.*" xmlns:notascreditoclientes="components.notascreditoclientes.*">
+	<mx:Script>
+		<![CDATA[
+			import events.GenericEvent;
+			
+			import model.Cobranza;
+			import model.InformacionFacturacion;
+			import model.NotaCreditoCliente;
+			import model.Usuario;
+			
+			import mx.events.FlexEvent;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				
+			}
+			
+			protected function consult_collectionDetailHandler(event:GenericEvent):void
+			{
+				this.detail.collection = event.information as model.Cobranza;
+				this.navigator.selectedChild = this.detail;
+			}
+			
+			protected function register_collectionNewHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+			
+			protected function detail_collectionUpdatedHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+			
+			protected function detail_informationBillingSelectedHandler(event:GenericEvent):void
+			{
+				if( event == null ){
+					return;
+				}
+				var informationBilling:InformacionFacturacion = event.information as InformacionFacturacion;
+				if( informationBilling == null ){
+					return;
+				}
+				informationBillingDetail.informationBilling = informationBilling;
+			}
+			
+			protected function detail_creditNoteSelectedHandler(event:GenericEvent):void
+			{
+				if( event == null ){
+					return;
+				}
+				var creditNote:NotaCreditoCliente = event.information as NotaCreditoCliente;
+				if( creditNote == null ){
+					return;
+				}
+				creditNoteDetail.creditNote = creditNote;
+			}
+		]]>
+	</mx:Script>
+	<mx:TabNavigator id="navigator" width="850" height="100%" creationPolicy="all">
+		<cobranza:Consult id="consult" itemDetail="consult_collectionDetailHandler(event)"/>
+		<cobranza:Collection id="detail" update="true" collectionUpdated="detail_collectionUpdatedHandler(event)"
+							 informationBillingSelected="detail_informationBillingSelectedHandler(event)"
+							 creditNoteSelected="detail_creditNoteSelectedHandler(event)"/>
+		<cobranza:Collection id="register" registrer="true" collectionNew="register_collectionNewHandler(event)"
+							 informationBillingSelected="detail_informationBillingSelectedHandler(event)"
+							 creditNoteSelected="detail_creditNoteSelectedHandler(event)"/>
+		<informacionfacturas:InformationBilling id="informationBillingDetail" readOnly="true"/>
+		<notascreditoclientes:CreditNote id="creditNoteDetail" readOnly="true"/>
+	</mx:TabNavigator>
+</mx:Module>

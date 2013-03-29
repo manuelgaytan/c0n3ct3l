@@ -52,6 +52,14 @@
 			private var validators:InicializaValidadoresEtiquetas;
 			private var validatorsEntry:InicializaValidadoresEtiquetas;
 			
+			[Bindable]
+			private var _readOnly:Boolean = false;
+			
+			public function set readOnly(value:Boolean):void{
+				this._readOnly = value;
+				this.label = Constants.DETALLE;
+			}
+			
 			public function set registrer(value:Boolean):void{
 				mode = Constants.REGISTER_MODE;
 				this.label = Constants.REGISTRAR;
@@ -306,6 +314,7 @@
 			<components:TextInput id="txtID" editable="false"
 								  textAlign="right"/>
 		</mx:FormItem>
+		<mx:FormItem label="Validación Administrativa:"/>
 		<validacionesadministrativas:Consult id="validacionesAdministrativas"/>
 		<mx:FormHeading label="Información Factura 1"/>
 		<mx:FormItem label="Folio Factura 1:">
@@ -431,7 +440,7 @@
 			<components:TextInput id="txtAccountability"/>
 		</mx:FormItem>
 		<mx:FormItem>
-			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
+			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)" visible="{!this._readOnly}"/>
 		</mx:FormItem>
 	</mx:Form>
 	<mx:RemoteObject id="informacionFacturacionService" destination="informacionFacturacionService" fault="requisicionService_faultHandler(event)"

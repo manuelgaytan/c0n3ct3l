@@ -22,11 +22,14 @@
 			
 			import model.Aplica;
 			import model.AreaSolicitante;
+			import model.BancoConectel;
 			import model.Catalogo;
 			import model.Categoria;
 			import model.Cliente;
+			import model.Cobranza;
 			import model.Colaborador;
 			import model.Comentario;
+			import model.ComentarioCobranza;
 			import model.ComentarioCompras;
 			import model.ComentarioConcentradoOrdenCompraCliente;
 			import model.ComentarioContabilidad;
@@ -40,12 +43,18 @@
 			import model.ComentarioMovimientoPagoContableServicio;
 			import model.ComentarioNotaCreditoCliente;
 			import model.ComentarioOrdenCompraCliente;
+			import model.ComentarioPagoMovimientoPagoContableServicio;
+			import model.ComentarioPagoOtraOperacionFinanciera;
+			import model.ComentarioPagoProveedor;
+			import model.ComentarioPagoViaticos;
 			import model.ComentarioPantallaValidacionAdministrativa;
 			import model.ComentarioRequisicion;
+			import model.ComentarioTesoreria;
 			import model.ComentarioValidacionAdministrativa;
 			import model.ComentarioValidacionCostoOrdenCompraCliente;
 			import model.Compania;
 			import model.ComprobacionViaticos;
+			import model.ConceptoOtraOperacionFinanciera;
 			import model.ConfiguracionPruebaEntrega;
 			import model.Constants;
 			import model.Consumible;
@@ -112,6 +121,10 @@
 			import model.OrdenCompraAlmacen;
 			import model.OrdenCompraCliente;
 			import model.OrdenCompraMaquilado;
+			import model.PagoMovimientoPagoContableServicio;
+			import model.PagoOtraOperacionFinanciera;
+			import model.PagoProveedor;
+			import model.PagoViaticos;
 			import model.Pantalla;
 			import model.PartidaConcentradoOrdenCompraCliente;
 			import model.PartidaOrdenCompraSolicitudServicioMaquilado;
@@ -347,6 +360,19 @@
 			private var tipoOperacion:TipoOperacion;
 			private var linkButton:LinkButton;
 			private var tabNavigator:TabNavigator;
+			private var bancoConectel:BancoConectel;
+			private var cobranza:Cobranza;
+			private var comentarioCobranza:ComentarioCobranza;
+			private var comentarioPagoMovimientoPagoContableServicio:ComentarioPagoMovimientoPagoContableServicio;
+			private var comentarioPagoOtraOperacionFinanciera:ComentarioPagoOtraOperacionFinanciera;
+			private var comentarioPagoProveedor:ComentarioPagoProveedor;
+			private var comentarioPagoViaticos:ComentarioPagoViaticos;
+			private var comentarioTesoreria:ComentarioTesoreria;
+			private var conceptoOtraOperacionFinanciera:ConceptoOtraOperacionFinanciera;
+			private var pagoMovimientoPagoContableServicio:PagoMovimientoPagoContableServicio;
+			private var pagoOtraOperacionFinanciera:PagoOtraOperacionFinanciera;
+			private var pagoProveedor:PagoProveedor;
+			private var pagoViaticos:PagoViaticos;
 			
 			protected function login_readyHandler(event:ModuleEvent):void
 			{

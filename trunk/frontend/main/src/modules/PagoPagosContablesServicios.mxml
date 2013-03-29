@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
+		   width="850" height="525"
+		   xmlns:pagopagoscontablesservicios="components.pagopagoscontablesservicios.*"
+		   creationComplete="creationCompleteHandler(event)" xmlns:informacionfacturas="components.informacionfacturas.*" xmlns:notascreditoclientes="components.notascreditoclientes.*" xmlns:facturacionproveedores="components.facturacionproveedores.*" xmlns:notascreditoproveedores="components.notascreditoproveedores.*" xmlns:comprobacionesviaticos="components.comprobacionesviaticos.*" xmlns:pagoscontablesservicios="components.pagoscontablesservicios.*">
+	<mx:Script>
+		<![CDATA[
+			import events.GenericEvent;
+			
+			import model.MovimientoPagoContableServicio;
+			import model.InformacionFacturacion;
+			import model.NotaCreditoCliente;
+			import model.NotaCreditoProveedor;
+			import model.PagoMovimientoPagoContableServicio;
+			import model.Usuario;
+			
+			import mx.events.FlexEvent;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				
+			}
+			
+			protected function consult_providerPaymentDetailHandler(event:GenericEvent):void
+			{
+				this.detail.providerPayment = event.information as model.PagoMovimientoPagoContableServicio;
+				this.navigator.selectedChild = this.detail;
+			}
+			
+			protected function register_providerPaymentNewHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+			
+			protected function detail_providerPaymentUpdatedHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+			
+			protected function detail_accountingPaymentsServicesSelectedHandler(event:GenericEvent):void
+			{
+				if( event == null ){
+					return;
+				}
+				var accountingPaymentsServices:MovimientoPagoContableServicio = event.information as MovimientoPagoContableServicio;
+				if( accountingPaymentsServices == null ){
+					return;
+				}
+				accountingPaymentsServicesDetail.accountingPaymentsServices = accountingPaymentsServices;
+				this.navigator.selectedChild = this.accountingPaymentsServicesDetail;
+			}
+		]]>
+	</mx:Script>
+	<mx:TabNavigator id="navigator" width="850" height="100%" creationPolicy="all">
+		<pagopagoscontablesservicios:Consult id="consult" itemDetail="consult_providerPaymentDetailHandler(event)"/>
+		<pagopagoscontablesservicios:PaymentAccountingPaymentsServices id="detail" update="true" providerPaymentUpdated="detail_providerPaymentUpdatedHandler(event)"
+							 accountingPaymentsServicesSelected="detail_accountingPaymentsServicesSelectedHandler(event)"
+							 />
+		<pagopagoscontablesservicios:PaymentAccountingPaymentsServices id="register" registrer="true" providerPaymentNew="register_providerPaymentNewHandler(event)"
+							 accountingPaymentsServicesSelected="detail_accountingPaymentsServicesSelectedHandler(event)"
+							 />
+		<pagoscontablesservicios:AccountingPaymentsServices id="accountingPaymentsServicesDetail" readOnly="true"/>
+	</mx:TabNavigator>
+</mx:Module>

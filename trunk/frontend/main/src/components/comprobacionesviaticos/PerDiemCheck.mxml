@@ -45,6 +45,14 @@
 			private var mode:String = null;
 			private var _item:ComprobacionViaticos;
 			private var validators:InicializaValidadoresEtiquetas;
+
+			[Bindable]
+			private var _readOnly:Boolean = false;
+			
+			public function set readOnly(value:Boolean):void{
+				this._readOnly = value;
+				this.label = Constants.DETALLE;
+			}
 			
 			public function set registrer(value:Boolean):void{
 				mode = Constants.REGISTER_MODE;
@@ -365,7 +373,8 @@
 						 labelField="etiqueta"/>
 		</mx:FormItem>
 		<mx:FormItem direction="horizontal">
-			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
+			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"
+					   visible="{!this._readOnly}"/>
 		</mx:FormItem>
 	</mx:Form>
 	<mx:RemoteObject id="comprobacionViaticosService" destination="comprobacionViaticosService" fault="comprobacionViaticosService_faultHandler(event)"

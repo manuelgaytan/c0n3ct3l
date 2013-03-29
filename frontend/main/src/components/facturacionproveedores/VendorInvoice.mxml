@@ -45,6 +45,14 @@
 			private var _item:FacturaProveedor;
 			private var validators:InicializaValidadoresEtiquetas;
 			
+			[Bindable]
+			private var _readOnly:Boolean = false;
+			
+			public function set readOnly(value:Boolean):void{
+				this._readOnly = value;
+				this.label = Constants.DETALLE;
+			}
+			
 			public function set registrer(value:Boolean):void{
 				mode = Constants.REGISTER_MODE;
 				this.label = Constants.REGISTRAR;
@@ -91,11 +99,11 @@
 				}
 				this.txtWeek.text = this._item.semana.toString();
 				if( !(this._item.proveedorCalificado == null) ){
-					this.cmbSupplier.selectedIndex = Util.selectedIndexFromCombo( this.cmbSupplier.dataProvider as ArrayCollection, 1);
+					this.cmbSupplierType.selectedIndex = Util.selectedIndexFromCombo( this.cmbSupplierType.dataProvider as ArrayCollection, 1);
 				}else{
-					this.cmbSupplier.selectedIndex = Util.selectedIndexFromCombo( this.cmbSupplier.dataProvider as ArrayCollection, 2);
+					this.cmbSupplierType.selectedIndex = Util.selectedIndexFromCombo( this.cmbSupplierType.dataProvider as ArrayCollection, 2);
 				}
-				this.cmbSupplier.dispatchEvent( new ListEvent(ListEvent.CHANGE) );
+				this.cmbSupplierType.dispatchEvent( new ListEvent(ListEvent.CHANGE) );
 				this.txtVendorInvoiceNumber.text = this._item.numeroFactura;
 				this.dtfReviewDate.selectedDate = this._item.fechaRevision;
 				this.dtfPaymentDate.selectedDate = this._item.fechaPago;
@@ -393,12 +401,22 @@
 			
 			private function loadPurchaseOrderAlmacen():void
 			{
-				this.odcAlmacen.executeQuery();
+				if( this._item == null ){
+					this.odcAlmacen.executeQuery();
+				}else{
+					this.odcAlmacen.datagrid.dataProvider = Util.asArrayCollection( this._item.ordenCompra );
+					this.setPurchaseOrder( this._item.ordenCompra );
+				}
 			}
 			
 			private function loadPurchaseOrderMaquilado():void
 			{
-				this.odcMaquilado.executeQuery();
+				if( this._item == null ){
+					this.odcMaquilado.executeQuery();
+				}else{
+					this.odcMaquilado.datagrid.dataProvider = Util.asArrayCollection( this._item.ordenCompraMaquilado );
+					this.setPurchaseOrder( this._item.ordenCompraMaquilado );
+				}	
 			}
 
 			protected function responseGetByFiltroOrdenCompra_resultHandler(event:ResultEvent):void
@@ -425,7 +443,7 @@
 					return;
 				}
 				var supplier:Proveedor = null; 
-				if( Util.selectedId( this.cmbSupplier ) == 1 ){
+				if( Util.selectedId( this.cmbSupplierType ) == 1 ){
 					var proveedorCalificado:ProveedorCalificado = Util.validateCombo( this.cmbSupplier ) as ProveedorCalificado;
 					supplier = proveedorCalificado.proveedorSeleccionado;
 				}else{
@@ -476,8 +494,12 @@
 		<mx:FormItem label="Correo:">
 			<components:TextInput id="txtMail" editable="false"/>
 		</mx:FormItem>
-		<ordenescompraalmacen:Consult id="odcAlmacen" purchaseOrderDetail="purchaseOrderSelectedHandler(event)"/>
-		<ordenescompraserviciosmaquilado:Consult id="odcMaquilado" purchaseOrderMaquiladoDetail="purchaseOrderMaquiladoSelectedHandler(event)"/>
+		<mx:FormItem label="Orden Compra Almacén:"/>
+		<ordenescompraalmacen:Consult id="odcAlmacen" purchaseOrderDetail="purchaseOrderSelectedHandler(event)"
+									  readOnly="true"/>
+		<mx:FormItem label="Orden Compra Maquilado:"/>
+		<ordenescompraserviciosmaquilado:Consult id="odcMaquilado" purchaseOrderMaquiladoDetail="purchaseOrderMaquiladoSelectedHandler(event)"
+												 readOnly="true"/>
 		<mx:FormItem id="frmClient" label="Cliente:">
 			<components:TextInput id="txtClient" editable="false"/>
 		</mx:FormItem>
@@ -528,7 +550,8 @@
 		</mx:FormItem>
 		<components:Comments id="comments"/>
 		<mx:FormItem direction="horizontal">
-			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
+			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"
+					   visible="{!this._readOnly}"/>
 		</mx:FormItem>
 	</mx:Form>
 	<mx:RemoteObject id="facturaProveedorService" destination="facturaProveedorService" fault="datosGeneralesFacturaProveedorService_faultHandler(event)"

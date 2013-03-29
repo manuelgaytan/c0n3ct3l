@@ -6,14 +6,11 @@
 		<![CDATA[
 			import events.GenericEvent;
 			
-			import model.ComprobacionViaticos;
+			import model.PagoMovimientoPagoContableServicio;
 			import model.ConfiguracionPruebaEntrega;
 			import model.FiltroProyecto;
 			import model.Proyecto;
 			import model.Util;
-			
-			import modules.ComprobacionesViaticos;
-			import modules.SolicitudesViaticos;
 			
 			import mx.collections.ArrayCollection;
 			import mx.controls.Alert;
@@ -26,12 +23,11 @@
 			private var items:ArrayCollection = null;
 			
 			private var configuracionPruebaEntrega:ConfiguracionPruebaEntrega;
-			
 			[Bindable]
-			private var _readOnly:Boolean = false;
+			private var _readMode:Boolean = false;
 			
-			public function set readOnly(value:Boolean):void{
-				this._readOnly = value;
+			public function set readMode(value:Boolean):void{
+				this._readMode = value;
 			}
 			
 			protected function responseGetAll_resultHandler(event:ResultEvent):void
@@ -39,7 +35,7 @@
 				items = event.result as ArrayCollection;
 			}
 			
-			protected function comprobacionViaticosService_faultHandler(event:FaultEvent):void
+			protected function datosGeneralesProyectoService_faultHandler(event:FaultEvent):void
 			{
 				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
 			}
@@ -58,16 +54,13 @@
 				if( event.currentTarget.selectedItem == null ){
 					return;
 				}
-				var item:ComprobacionViaticos = this.datagrid.selectedItem as ComprobacionViaticos;
-				var genericEvent:GenericEvent = new GenericEvent("itemDetail");
-				genericEvent.information = item;
-				this.dispatchEvent( genericEvent );
-				//this.responseGetItem.token = this.comprobacionViaticosService.getItem( item.id );
+				var item:PagoMovimientoPagoContableServicio = this.datagrid.selectedItem as PagoMovimientoPagoContableServicio;
+				this.responseGetProyecto.token = this.pagoMovimientoPagoContableServicioService.getItem( item.id );
 			}
 			
 			protected function responseGetItem_resultHandler(event:ResultEvent):void
 			{
-				var item:ComprobacionViaticos = event.result as ComprobacionViaticos;
+				var item:PagoMovimientoPagoContableServicio = event.result as PagoMovimientoPagoContableServicio;
 				if( item == null ){
 					return;
 				}
@@ -78,7 +71,7 @@
 			
 			public function executeQuery():void
 			{
-				this.responseGetAll.token = this.comprobacionViaticosService.getAll();
+				this.responseGetAll.token = this.pagoMovimientoPagoContableServicioService.getAll();
 			}
 			
 			private function labelFunctionDate(object:Object, column:DataGridColumn):String{
@@ -105,59 +98,51 @@
 					return;
 				}
 				var items:ArrayCollection = Util.selectedIDs( this.datagrid.selectedItems ); 
-				this.responseDeleteItems.token = this.comprobacionViaticosService.deleteItems( items );
+				this.responseDeleteItems.token = this.pagoMovimientoPagoContableServicioService.deleteItems( items );
 			}
 			
 			protected function responseDeleteItems_resultHandler(event:ResultEvent):void
 			{
 				this.executeQuery();
 			}
-			
-			public function setDataGridData(datas:ArrayCollection):void
-			{
-				items = datas;
-			}
 		]]>
 	</mx:Script>
 	<mx:Metadata>
 		[Event(name="itemDetail", type="events.GenericEvent")]
 	</mx:Metadata>
-	<mx:VBox width="{845}" height="100%">
-		<mx:DataGrid id="datagrid" width="845" height="100%" dataProvider="{items}"
+	<mx:VBox id="vBox" width="100%" height="100%">
+		<mx:DataGrid id="datagrid" width="842" height="100%" dataProvider="{items}"
 					 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 					 allowMultipleSelection="true"
 					 >
 			<mx:columns>
 				<mx:DataGridColumn id="dtgID" headerText="ID"
 								   dataField="id"
-								   width="80"
+								   width="60"
 								   textAlign="right"/>
-				<mx:DataGridColumn id="dtgDate" headerText="{'Fecha de\nSubida\nDocumentos'}"
-								   dataField="fechaSubidaDocumentos"
+				<mx:DataGridColumn id="dtgAccountingPaymentsServicesID" headerText="{'Folio\nPago\nContable\ny Servicios'}"
+								   dataField="movimientoPagoContableServicio.id"
+								   width="130"
+								   textAlign="right"/>
+				<mx:DataGridColumn id="dtgAccountingPaymentsServicesState" headerText="{'Descripción\nPago'}"
+								   dataField="movimientoPagoContableServicio.descripcionPagoContableServicio.descripcion"
+								   width="170"/>
+				<mx:DataGridColumn id="dtgBank" headerText="{'Banco'}"
+								   dataField="bancoConectel.banco"
+								   width="100"/>
+				<mx:DataGridColumn id="dtgDate" headerText="{'Fecha\nAbono'}"
+								   dataField="fechaAbono"
 								   labelFunction="{Util.labelFunctionDate}"
 								   textAlign="center"
 								   width="80"
 								   />
-				<mx:DataGridColumn id="dtgProjectID" headerText="{'ID\nProyecto'}"
-								   dataField="solicitudViaticos.proyecto.id"
-								   labelFunction="labelFunctionIDProyecto"
-								   width="120"
-								   textAlign="right"/>
-				<mx:DataGridColumn id="dtgClient" headerText="{'Cliente'}"
-								   dataField="solicitudViaticos.proyecto.producto.cliente.nombreComercial"
-								   width="150"/>
-				<mx:DataGridColumn id="dtgResponsibleViaticum" headerText="{'Responsable\nViático'}"
-								   dataField="solicitudViaticos.colaborador.nombreCompleto"
+				<mx:DataGridColumn id="dtgAmount" headerText="{'Monto'}"
+								   dataField="monto"
 								   textAlign="right"
-								   width="150"
-								   />
-				<mx:DataGridColumn id="dtgConveyance" headerText="{'Estado\nComprobación\nViáticos'}"
-								   dataField="estadoComprobacionViaticos.etiqueta"
-								   textAlign="center"
 								   width="100"
 								   />
-				<mx:DataGridColumn id="dtgTotalRequested" headerText="{'Total\nAutorizado'}"
-								   dataField="totalAutorizado"
+				<mx:DataGridColumn id="dtgPaymentReference" headerText="{'Referencia\nAbono'}"
+								   dataField="referenciaAbono"
 								   textAlign="right"
 								   width="120"
 								   />
@@ -167,11 +152,11 @@
 	<mx:HBox width="100%">
 		<mx:Spacer width="100%"/>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"
-				   visible="{!this._readOnly}"/>
+				   visible="{!this._readMode}"/>
 	</mx:HBox>
-	<mx:RemoteObject id="comprobacionViaticosService" destination="comprobacionViaticosService" fault="comprobacionViaticosService_faultHandler(event)"
+	<mx:RemoteObject id="pagoMovimientoPagoContableServicioService" destination="pagoMovimientoPagoContableServicioService" fault="datosGeneralesProyectoService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetAll" result="responseGetAll_resultHandler(event)"/>
-	<mx:CallResponder id="responseGetItem" result="responseGetItem_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetProyecto" result="responseGetItem_resultHandler(event)"/>
 	<mx:CallResponder id="responseDeleteItems" result="responseDeleteItems_resultHandler(event)"/>
 </mx:VBox>

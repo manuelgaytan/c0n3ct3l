@@ -11,7 +11,7 @@
 			import model.InformacionFacturacion;
 			import model.NotaCreditoCliente;
 			import model.NotaCreditoProveedor;
-			import model.PagoProveedor;
+			import model.PagoViaticos;
 			import model.Usuario;
 			
 			import mx.events.FlexEvent;
@@ -23,7 +23,7 @@
 			
 			protected function consult_providerPaymentDetailHandler(event:GenericEvent):void
 			{
-				this.detail.providerPayment = event.information as model.PagoProveedor;
+				this.detail.providerPayment = event.information as model.PagoViaticos;
 				this.navigator.selectedChild = this.detail;
 			}
 			
@@ -57,10 +57,10 @@
 		<pagoviaticos:Consult id="consult" itemDetail="consult_providerPaymentDetailHandler(event)"/>
 		<pagoviaticos:PerDiemPayment id="detail" update="true" providerPaymentUpdated="detail_providerPaymentUpdatedHandler(event)"
 							 perDiemCheckSelected="detail_perDiemCheckSelectedHandler(event)"
-							 creditNoteSelected="detail_creditNoteSelectedHandler(event)"/>
+							 />
 		<pagoviaticos:PerDiemPayment id="register" registrer="true" providerPaymentNew="register_providerPaymentNewHandler(event)"
 							 perDiemCheckSelected="detail_perDiemCheckSelectedHandler(event)"
-							 creditNoteSelected="detail_creditNoteSelectedHandler(event)"/>
+							 />
 		<comprobacionesviaticos:PerDiemCheck id="perDiemCheckDetail" readOnly="true"/>
 	</mx:TabNavigator>
 </mx:Module>

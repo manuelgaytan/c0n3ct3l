@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
-		 creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*" xmlns:notascreditoclientes="components.notascreditoclientes.*" xmlns:informacionfacturas="components.informacionfacturas.*" xmlns:notascreditoproveedores="components.notascreditoproveedores.*" xmlns:facturacionproveedores="components.facturacionproveedores.*" xmlns:comprobacionesviaticos="components.comprobacionesviaticos.*"
+		 creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*" xmlns:notascreditoclientes="components.notascreditoclientes.*" xmlns:informacionfacturas="components.informacionfacturas.*" xmlns:notascreditoproveedores="components.notascreditoproveedores.*" xmlns:facturacionproveedores="components.facturacionproveedores.*" xmlns:comprobacionesviaticos="components.comprobacionesviaticos.*" xmlns:pagoscontablesservicios="components.pagoscontablesservicios.*"
 		 >
 	<mx:Script>
 		<![CDATA[
@@ -17,12 +17,12 @@
 			import model.EstadoOrdenCompra;
 			import model.EstadoValidacionCosto;
 			import model.EstadoValidacionOperativa;
-			import model.ComprobacionViaticos;
+			import model.MovimientoPagoContableServicio;
 			import model.FiltroProyecto;
 			import model.MedioTransporte;
 			import model.NotaCreditoCliente;
 			import model.NotaCreditoProveedor;
-			import model.PagoViaticos;
+			import model.PagoMovimientoPagoContableServicio;
 			import model.Producto;
 			import model.Proveedor;
 			import model.ProveedorCalificado;
@@ -48,7 +48,7 @@
 			import mx.rpc.events.ResultEvent;
 			
 			private var mode:String = null;
-			private var _item:PagoViaticos;
+			private var _item:PagoMovimientoPagoContableServicio;
 			private var validators:InicializaValidadoresEtiquetas;
 			
 			public function set registrer(value:Boolean):void{
@@ -71,7 +71,7 @@
 				this.fillCombos();
 			}
 			
-			public function set providerPayment(value:PagoViaticos):void{
+			public function set providerPayment(value:PagoMovimientoPagoContableServicio):void{
 				if( value == null ){
 					return;
 				}
@@ -86,7 +86,7 @@
 					return;
 				}
 				this.txtID.text = this._item.id.toString();
-				this.perDiemCheckConsult.datagrid.dataProvider = Util.asArrayCollection( this._item.comprobacionViaticos );
+				this.accountingPaymentsServicesConsult.datagrid.dataProvider = Util.asArrayCollection( this._item.movimientoPagoContableServicio );
 				if( Util.isFill( this.cmbConectelBank ) && this._item.bancoConectel != null ){
 					this.cmbConectelBank.selectedIndex = Util.selectedIndexFromCombo( this.cmbConectelBank.dataProvider as ArrayCollection, 
 						this._item.bancoConectel.id);
@@ -94,22 +94,22 @@
 				this.dtfPaymentDate.selectedDate = this._item.fechaAbono;
 				this.txtAmount.text = this._item.monto.toString();
 				this.txtPaymentReference.text = this._item.referenciaAbono.toString();
-				this.comments.setCommentsIn( this._item.comentariosPagoViaticos, "comentarioTesoreria");
+				this.comments.setCommentsIn( this._item.comentariosPagoMovimientoPagoContableServicio, "comentarioTesoreria");
 			}
 			
-			private function getProviderPayment():PagoViaticos{
-				var providerPayment:PagoViaticos = null;
+			private function getProviderPayment():PagoMovimientoPagoContableServicio{
+				var providerPayment:PagoMovimientoPagoContableServicio = null;
 				if( this.mode == Constants.REGISTER_MODE ){
-					providerPayment = new PagoViaticos();
+					providerPayment = new PagoMovimientoPagoContableServicio();
 				}else{
 					providerPayment = this._item;
 				}
-				providerPayment.comprobacionViaticos = this.perDiemCheckConsult.datagrid.selectedItem as ComprobacionViaticos;
+				providerPayment.movimientoPagoContableServicio = this.accountingPaymentsServicesConsult.datagrid.selectedItem as MovimientoPagoContableServicio;
 				providerPayment.bancoConectel = Util.validateCombo( this.cmbConectelBank ) as BancoConectel;
 				providerPayment.fechaAbono = this.dtfPaymentDate.selectedDate;
 				providerPayment.monto = Util.stringToNumber( this.txtAmount.text );
 				providerPayment.referenciaAbono = Util.stringToNumber( this.txtPaymentReference.text );
-				providerPayment.comentariosPagoViaticos = this.comments.getCommentsAsInWith("model.ComentarioTesoreria","model.ComentarioPagoViaticos","comentarioTesoreria");
+				providerPayment.comentariosPagoMovimientoPagoContableServicio = this.comments.getCommentsAsInWith("model.ComentarioTesoreria","model.ComentarioPagoMovimientoPagoContableServicio","comentarioTesoreria");
 				return providerPayment;
 			}
 			
@@ -119,7 +119,7 @@
 			}
 			
 			
-			protected function pagoViaticosService_faultHandler(event:FaultEvent):void
+			protected function pagoMovimientoPagoContableServicioService_faultHandler(event:FaultEvent):void
 			{
 				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
 			}
@@ -131,9 +131,9 @@
 					return;
 				}
 				if( this.mode == Constants.REGISTER_MODE ){
-					var providerPayment:PagoViaticos = this.getProviderPayment();
+					var providerPayment:PagoMovimientoPagoContableServicio = this.getProviderPayment();
 					Util.showProperties( providerPayment );
-					this.responseSave.token = this.pagoViaticosService.save( providerPayment );
+					this.responseSave.token = this.pagoMovimientoPagoContableServicioService.save( providerPayment );
 				}
 				if( this.mode == Constants.UPDATE_MODE ){
 					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
@@ -144,16 +144,16 @@
 				if( event.detail == Alert.NO ){
 					return;
 				}
-				var item:PagoViaticos = this.getProviderPayment();
+				var item:PagoMovimientoPagoContableServicio = this.getProviderPayment();
 				Util.showProperties( item );
-				this.responseUpdate.token = this.pagoViaticosService.update( item );
+				this.responseUpdate.token = this.pagoMovimientoPagoContableServicioService.update( item );
 			}
 			
 			private function validations():Boolean
 			{
 				var value:Boolean = true;
 				value &&= this.validators.validarFormulario();
-				value &&= this.perDiemCheckConsult.datagrid.selectedItem != null;
+				value &&= this.accountingPaymentsServicesConsult.datagrid.selectedItem != null;
 				value &&= Util.listBaseSelected( this.cmbConectelBank );
 				return value;
 			}
@@ -186,7 +186,7 @@
 			private function cleanForm():void
 			{
 				this.txtID.reset();
-				this.perDiemCheckConsult.datagrid.selectedItem = null;
+				this.accountingPaymentsServicesConsult.datagrid.selectedItem = null;
 				this.cmbConectelBank.selectedIndex = 0;
 				this.dtfPaymentDate.reset();
 				this.txtAmount.reset();
@@ -215,30 +215,30 @@
 				}
 			}
 			
-			protected function perDiemCheckConsult_perDiemCheckDetailHandler(event:GenericEvent):void
+			protected function accountingPaymentsServicesConsult_accountingPaymentsServicesDetailHandler(event:GenericEvent):void
 			{
-				var perDiemCheck:ComprobacionViaticos = this.perDiemCheckConsult.datagrid.selectedItem as ComprobacionViaticos;
-				if( perDiemCheck == null ){
+				var accountingPaymentsServices:MovimientoPagoContableServicio = this.accountingPaymentsServicesConsult.datagrid.selectedItem as MovimientoPagoContableServicio;
+				if( accountingPaymentsServices == null ){
 					Util.showErrorMessage("Primero debe seleccionar un elemento.");
 					return;
 				}
-				this.txtAmount.text = perDiemCheck.totalAutorizado.toString();
+				this.txtAmount.text = accountingPaymentsServices.totalPagar.toString();
 			}
 			
 			protected function responseGetAll_resultHandler(event:ResultEvent):void
 			{
-				perDiemCheckConsult.setDataGridData( event.result as ArrayCollection );
+				accountingPaymentsServicesConsult.setDataGridData( event.result as ArrayCollection );
 			}
 			
-			protected function btnViewPerDiemCheck_clickHandler(event:MouseEvent):void
+			protected function btnViewAccountingPaymentsServices_clickHandler(event:MouseEvent):void
 			{
-				var perDiemCheck:ComprobacionViaticos = this.perDiemCheckConsult.datagrid.selectedItem as ComprobacionViaticos;
-				if( perDiemCheck == null ){
+				var accountingPaymentsServices:MovimientoPagoContableServicio = this.accountingPaymentsServicesConsult.datagrid.selectedItem as MovimientoPagoContableServicio;
+				if( accountingPaymentsServices == null ){
 					Util.showErrorMessage("Primero debe seleccionar un elemento.");
 					return;
 				}
-				var genericEvent:GenericEvent = new GenericEvent("perDiemCheckSelected");
-				genericEvent.information = perDiemCheck;
+				var genericEvent:GenericEvent = new GenericEvent("accountingPaymentsServicesSelected");
+				genericEvent.information = accountingPaymentsServices;
 				this.dispatchEvent( genericEvent );
 			}
 		]]>
@@ -248,17 +248,17 @@
 		[Event(name="providerPaymentUpdated", type="flash.events.Event")]
 		[Event(name="providerPaymentProjectDone", type="flash.events.Event")]
 		[Event(name="creditNoteSelected", type="events.GenericEvent")]
-		[Event(name="perDiemCheckSelected", type="events.GenericEvent")]
+		[Event(name="accountingPaymentsServicesSelected", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:Form id="form">
 		<mx:FormItem id="frmID" label="ID:" direction="horizontal">
 			<components:TextInput id="txtID" width="80" textAlign="right"
 								  editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Comprobación de Viáticos:">
-			<comprobacionesviaticos:Consult id="perDiemCheckConsult" itemDetail="perDiemCheckConsult_perDiemCheckDetailHandler(event)"
+		<mx:FormItem label="Pagos Contables y Servicios:">
+			<pagoscontablesservicios:Consult id="accountingPaymentsServicesConsult" accountingPaymentsServicesDetail="accountingPaymentsServicesConsult_accountingPaymentsServicesDetailHandler(event)"
 										 readOnly="true"/>
-			<mx:Button id="btnViewPerDiemCheck" label="Ver Comprobante Viáticos" click="btnViewPerDiemCheck_clickHandler(event)"/>
+			<mx:Button id="btnViewAccountingPaymentsServices" label="Ver Comprobante Viáticos" click="btnViewAccountingPaymentsServices_clickHandler(event)"/>
 		</mx:FormItem>
 		<mx:FormItem label="Banco Conectel:">
 			<mx:ComboBox id="cmbConectelBank" width="200"
@@ -279,14 +279,14 @@
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
 		</mx:FormItem>
 	</mx:Form>
-	<mx:RemoteObject id="pagoViaticosService" destination="pagoViaticosService" fault="pagoViaticosService_faultHandler(event)"
+	<mx:RemoteObject id="pagoMovimientoPagoContableServicioService" destination="pagoMovimientoPagoContableServicioService" fault="pagoMovimientoPagoContableServicioService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
 	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
-	<mx:RemoteObject id="bancoConectelService" destination="bancoConectelService" fault="pagoViaticosService_faultHandler(event)"
+	<mx:RemoteObject id="bancoConectelService" destination="bancoConectelService" fault="pagoMovimientoPagoContableServicioService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetBancoConectel" result="responseGetBancoConectel_resultHandler(event)"/>
-	<mx:RemoteObject id="comprobanteViaticosService" destination="comprobanteViaticosService" fault="pagoViaticosService_faultHandler(event)"
+	<mx:RemoteObject id="comprobanteViaticosService" destination="comprobanteViaticosService" fault="pagoMovimientoPagoContableServicioService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetAll" result="responseGetAll_resultHandler(event)"/>
 </mx:VBox>

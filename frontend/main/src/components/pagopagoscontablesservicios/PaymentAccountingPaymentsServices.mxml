@@ -258,7 +258,7 @@
 		<mx:FormItem label="Pagos Contables y Servicios:">
 			<pagoscontablesservicios:Consult id="accountingPaymentsServicesConsult" accountingPaymentsServicesDetail="accountingPaymentsServicesConsult_accountingPaymentsServicesDetailHandler(event)"
 										 readOnly="true"/>
-			<mx:Button id="btnViewAccountingPaymentsServices" label="Ver Comprobante Viáticos" click="btnViewAccountingPaymentsServices_clickHandler(event)"/>
+			<mx:Button id="btnViewAccountingPaymentsServices" label="Ver Pago Contable y Servicios" click="btnViewAccountingPaymentsServices_clickHandler(event)"/>
 		</mx:FormItem>
 		<mx:FormItem label="Banco Conectel:">
 			<mx:ComboBox id="cmbConectelBank" width="200"

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
+		   width="850" height="525"
+		   xmlns:otrasoperacionesfinancieras="components.otrasoperacionesfinancieras.*"
+		   creationComplete="creationCompleteHandler(event)" xmlns:informacionfacturas="components.informacionfacturas.*" xmlns:notascreditoclientes="components.notascreditoclientes.*" xmlns:facturacionproveedores="components.facturacionproveedores.*" xmlns:notascreditoproveedores="components.notascreditoproveedores.*" xmlns:comprobacionesviaticos="components.comprobacionesviaticos.*">
+	<mx:Script>
+		<![CDATA[
+			import events.GenericEvent;
+			
+			import model.PagoOtraOperacionFinanciera;
+			import model.Usuario;
+			
+			import mx.events.FlexEvent;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				
+			}
+			
+			protected function consult_otherFinancialOperationDetailHandler(event:GenericEvent):void
+			{
+				this.detail.otherFinancialOperation = event.information as model.PagoOtraOperacionFinanciera;
+				this.navigator.selectedChild = this.detail;
+			}
+			
+			protected function register_otherFinancialOperationNewHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+			
+			protected function detail_otherFinancialOperationUpdatedHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+		]]>
+	</mx:Script>
+	<mx:TabNavigator id="navigator" width="850" height="100%" creationPolicy="all">
+		<otrasoperacionesfinancieras:Consult id="consult" itemDetail="consult_otherFinancialOperationDetailHandler(event)"/>
+		<otrasoperacionesfinancieras:OtherFinancialOperation id="detail" update="true" otherFinancialOperationUpdated="detail_otherFinancialOperationUpdatedHandler(event)"
+							 />
+		<otrasoperacionesfinancieras:OtherFinancialOperation id="register" registrer="true" otherFinancialOperationNew="register_otherFinancialOperationNewHandler(event)"
+							 />
+	</mx:TabNavigator>
+</mx:Module>

@@ -120,11 +120,11 @@
 								   dataField="id"
 								   width="60"
 								   textAlign="right"/>
-				<mx:DataGridColumn id="dtgAccountingPaymentsServicesID" headerText="{'Folio\nPago\nContable\ny Servicios'}"
+				<mx:DataGridColumn id="dtgAccountingPaymentsServicesID" headerText="{'Folio Pago\nContable y Servicios'}"
 								   dataField="movimientoPagoContableServicio.id"
 								   width="130"
 								   textAlign="right"/>
-				<mx:DataGridColumn id="dtgAccountingPaymentsServicesState" headerText="{'Descripción\nPago'}"
+				<mx:DataGridColumn id="dtgAccountingPaymentsServicesState" headerText="{'Descripción Pago'}"
 								   dataField="movimientoPagoContableServicio.descripcionPagoContableServicio.descripcion"
 								   width="170"/>
 				<mx:DataGridColumn id="dtgBank" headerText="{'Banco'}"

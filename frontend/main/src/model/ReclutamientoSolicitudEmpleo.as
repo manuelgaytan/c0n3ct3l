@@ -11,6 +11,8 @@ package model
 		public var paqueteria:Paqueteria;
 		public var datosUltimoEmpleoSolicitante:DatosUltimoEmpleoSolicitante;
 		public var datosSobreConectelSolicitante:DatosSobreConectelSolicitante;
+		public var seleccionReclutamiento:SeleccionReclutamiento;
+		public var informacionConfidencialColaborador:InformacionConfidencialColaborador;
 		
 		public function ReclutamientoSolicitudEmpleo()
 		{

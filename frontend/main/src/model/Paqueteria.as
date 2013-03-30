@@ -5,7 +5,7 @@ package model
 	{
 		public var id:*;
 		public var word:Boolean;
-		public var power_point:Boolean;
+		public var powerPoint:Boolean;
 		public var excel:Boolean;
 		public var publisher:Boolean;
 		public var access:Boolean;

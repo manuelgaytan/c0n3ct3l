@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*" xmlns:notascreditoclientes="components.notascreditoclientes.*" xmlns:informacionfacturas="components.informacionfacturas.*" xmlns:notascreditoproveedores="components.notascreditoproveedores.*" xmlns:facturacionproveedores="components.facturacionproveedores.*" xmlns:comprobacionesviaticos="components.comprobacionesviaticos.*"
+		 >
+	<mx:Script>
+		<![CDATA[
+			import components.clientes.Client;
+			
+			import events.GenericEvent;
+			
+			import model.BancoConectel;
+			import model.Catalogo;
+			import model.Cliente;
+			import model.Colaborador;
+			import model.ComprobacionViaticos;
+			import model.ConceptoOtraOperacionFinanciera;
+			import model.Constants;
+			import model.Estado;
+			import model.EstadoOrdenCompra;
+			import model.EstadoValidacionCosto;
+			import model.EstadoValidacionOperativa;
+			import model.FiltroProyecto;
+			import model.MedioTransporte;
+			import model.NotaCreditoCliente;
+			import model.NotaCreditoProveedor;
+			import model.PagoOtraOperacionFinanciera;
+			import model.Producto;
+			import model.Proveedor;
+			import model.ProveedorCalificado;
+			import model.ProveedorMaquilador;
+			import model.Proyecto;
+			import model.TipoColaborador;
+			import model.TipoEntregable;
+			import model.Util;
+			
+			import mx.charts.chartClasses.DualStyleObject;
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.Constantes;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.com.gahm.componentes.validadores.ValidadorEntero;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			private var mode:String = null;
+			private var _item:PagoOtraOperacionFinanciera;
+			private var validators:InicializaValidadoresEtiquetas;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				this.label = Constants.REGISTRAR;
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set otherFinancialOperation(value:PagoOtraOperacionFinanciera):void{
+				if( value == null ){
+					return;
+				}
+				this.cleanForm();
+				this._item = value;
+				this.setItem(); 
+			}
+			
+			private function setItem():void
+			{
+				if( this._item == null ){
+					return;
+				}
+				this.txtID.text = this._item.id.toString();
+				if( Util.isFill( this.cmbAnotherFinancialOperationConcept ) && this._item.conceptoOtraOperacionFinanciera != null ){
+					this.cmbAnotherFinancialOperationConcept.selectedIndex = Util.selectedIndexFromCombo( this.cmbAnotherFinancialOperationConcept.dataProvider as ArrayCollection, 
+						this._item.conceptoOtraOperacionFinanciera.id);
+				}
+				this.txtCorporateName.text = this._item.razonSocial;
+				this.txtSubtotal.text = this._item.subtotal.toString();
+				this.txtIVA.text = this._item.iva.toString();
+				this.txtTotal.text = this._item.total.toString();
+				if( Util.isFill( this.cmbConectelBank ) && this._item.bancoConectel != null ){
+					this.cmbConectelBank.selectedIndex = Util.selectedIndexFromCombo( this.cmbConectelBank.dataProvider as ArrayCollection, 
+						this._item.bancoConectel.id);
+				}
+				this.dtfPaymentDate.selectedDate = this._item.fechaAbono;
+				this.txtAmount.text = this._item.monto.toString();
+				this.txtPaymentReference.text = this._item.referenciaAbono.toString();
+				this.comments.setCommentsIn( this._item.comentariosPagoOtraOperacionFinanciera, "comentarioTesoreria");
+			}
+			
+			private function getOtherFinancialOperation():PagoOtraOperacionFinanciera{
+				var otherFinancialOperation:PagoOtraOperacionFinanciera = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					otherFinancialOperation = new PagoOtraOperacionFinanciera();
+				}else{
+					otherFinancialOperation = this._item;
+				}
+				otherFinancialOperation.conceptoOtraOperacionFinanciera = Util.validateCombo( this.cmbAnotherFinancialOperationConcept ) as ConceptoOtraOperacionFinanciera;
+				otherFinancialOperation.razonSocial = Util.validateEmpty( this.txtCorporateName.text );
+				otherFinancialOperation.subtotal = Util.stringToNumber( this.txtSubtotal.text );
+				otherFinancialOperation.iva = Util.stringToNumber( this.txtIVA.text );
+				otherFinancialOperation.total = Util.stringToNumber( this.txtTotal.text );
+				otherFinancialOperation.bancoConectel = Util.validateCombo( this.cmbConectelBank ) as BancoConectel;
+				otherFinancialOperation.fechaAbono = this.dtfPaymentDate.selectedDate;
+				otherFinancialOperation.monto = Util.stringToNumber( this.txtAmount.text );
+				otherFinancialOperation.referenciaAbono = Util.stringToNumber( this.txtPaymentReference.text );
+				otherFinancialOperation.comentariosPagoOtraOperacionFinanciera = this.comments.getCommentsAsInWith("model.ComentarioTesoreria","model.ComentarioPagoOtraOperacionFinanciera","comentarioTesoreria");
+				return otherFinancialOperation;
+			}
+			
+			private function fillCombos():void
+			{
+				this.responseGetConceptoOtraOperacionFinanciera.token = this.catalogoService.getConceptoOtraOperacionFinanciera();
+				this.responseGetBancoConectel.token = this.bancoConectelService.getAll();
+			}
+			
+			protected function pagoOtraOperacionFinancieraService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function btnAccept_clickHandler(event:MouseEvent):void
+			{
+				if( !this.validations() ){
+					Util.showMessageVerifyFields();
+					return;
+				}
+				if( this.mode == Constants.REGISTER_MODE ){
+					var otherFinancialOperation:PagoOtraOperacionFinanciera = this.getOtherFinancialOperation();
+					Util.showProperties( otherFinancialOperation );
+					this.responseSave.token = this.pagoOtraOperacionFinancieraService.save( otherFinancialOperation );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
+				}
+			}
+			
+			private function updateItem(event:CloseEvent):void{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var item:PagoOtraOperacionFinanciera = this.getOtherFinancialOperation();
+				Util.showProperties( item );
+				this.responseUpdate.token = this.pagoOtraOperacionFinancieraService.update( item );
+			}
+			
+			private function validations():Boolean
+			{
+				var value:Boolean = true;
+				value &&= this.validators.validarFormulario();
+				value &&= Util.listBaseSelected( this.cmbAnotherFinancialOperationConcept );
+				value &&= Util.listBaseSelected( this.cmbConectelBank );
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+					form.removeChild( this.frmID );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+				}
+			}
+			
+			private function initializeValidators():void
+			{
+				this.validators = new InicializaValidadoresEtiquetas();
+				this.validators.crearValidadorRestrictor("genericAlfanumeric", ValidadorAlfanumerico.nombre, 0, 255, true);
+				this.validators.setRestrictor( this.txtCorporateName, "genericAlfanumeric");
+				this.validators.crearValidadorRestrictor("genericDecimal", ValidadorDecimal.nombre, 9, 2);
+				this.validators.setRestrictor( this.txtSubtotal, "genericDecimal" );
+				this.validators.setRestrictor( this.txtIVA, "genericDecimal" );
+				this.validators.setRestrictor( this.txtTotal, "genericDecimal" );
+				this.validators.setValidador( this.txtAmount, "genericDecimal" );
+				this.validators.crearValidadorRestrictor("genericInteger", ValidadorEntero.nombre, 14);
+				this.validators.setRestrictor( this.txtPaymentReference, "genericInteger" );
+			}
+			
+			protected function responseSave_resultHandler(event:ResultEvent):void
+			{
+				var eventGeneralDataProjectNew:Event = new Event("otherFinancialOperationNew");
+				this.dispatchEvent( eventGeneralDataProjectNew );
+				this.cleanForm();
+			}
+			
+			private function cleanForm():void
+			{
+				this.txtID.reset();
+				this.cmbAnotherFinancialOperationConcept.selectedIndex = 0;
+				this.txtCorporateName.reset();
+				this.txtSubtotal.reset();
+				this.txtIVA.reset();
+				this.txtTotal.reset();
+				this.cmbConectelBank.selectedIndex = 0;
+				this.dtfPaymentDate.reset();
+				this.txtAmount.reset();
+				this.txtPaymentReference.reset();
+				this.comments.reset();
+			}
+			
+			protected function responseUpdate_resultHandler(event:ResultEvent):void
+			{
+				var eventGeneralDataProjectUpdated:Event = new Event("otherFinancialOperationUpdated");
+				this.dispatchEvent( eventGeneralDataProjectUpdated );
+				this.cleanForm();
+			}
+			
+			protected function responseGetBancoConectel_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbConectelBank.dataProvider = data;
+				if( Util.isFill( this.cmbConectelBank ) && this._item 
+					&& this._item.bancoConectel != null ){
+					this.cmbConectelBank.selectedIndex = Util.selectedIndexFromCombo( this.cmbConectelBank.dataProvider as ArrayCollection, 
+						this._item.bancoConectel.id);
+				}
+			}
+			
+			protected function responseGetConceptoOtraOperacionFinanciera_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbAnotherFinancialOperationConcept.dataProvider = data;
+				if( Util.isFill( this.cmbAnotherFinancialOperationConcept ) && this._item 
+					&& this._item.conceptoOtraOperacionFinanciera != null ){
+					this.cmbAnotherFinancialOperationConcept.selectedIndex = Util.selectedIndexFromCombo( this.cmbAnotherFinancialOperationConcept.dataProvider as ArrayCollection, 
+						this._item.conceptoOtraOperacionFinanciera.id);
+				}
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="otherFinancialOperationNew", type="flash.events.Event")]
+		[Event(name="otherFinancialOperationUpdated", type="flash.events.Event")]
+		[Event(name="otherFinancialOperationProjectDone", type="flash.events.Event")]
+		[Event(name="creditNoteSelected", type="events.GenericEvent")]
+		[Event(name="perDiemCheckSelected", type="events.GenericEvent")]
+	</mx:Metadata>
+	<mx:Form id="form">
+		<mx:FormItem id="frmID" label="ID:" direction="horizontal">
+			<components:TextInput id="txtID" width="80" textAlign="right"
+								  editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Concepto Otra Opeación Financiera:">
+			<mx:ComboBox id="cmbAnotherFinancialOperationConcept" width="200"
+						 labelField="banco"/>
+		</mx:FormItem>
+		<mx:FormItem label="Razón Social:">
+			<components:TextInput id="txtCorporateName" width="270"/>
+		</mx:FormItem>
+		<mx:FormItem label="Subtotal:">
+			<components:TextInput id="txtSubtotal" textAlign="right" width="100"/>
+		</mx:FormItem>
+		<mx:FormItem label="I.V.A.:">
+			<components:TextInput id="txtIVA" textAlign="right" width="100"/>
+		</mx:FormItem>
+		<mx:FormItem label="Total:">
+			<components:TextInput id="txtTotal" textAlign="right" width="100"/>
+		</mx:FormItem>
+		<mx:FormItem label="Banco Conectel:">
+			<mx:ComboBox id="cmbConectelBank" width="200"
+						 labelField="banco"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha Abono:">
+			<components:DateField id="dtfPaymentDate"
+								  creationComplete="this.dtfPaymentDate.selectedDate = new Date()"/>
+		</mx:FormItem>
+		<mx:FormItem label="Monto:">
+			<components:TextInput id="txtAmount" textAlign="right" width="100"/>
+		</mx:FormItem>
+		<mx:FormItem label="Referencia Abono:">
+			<components:TextInput id="txtPaymentReference" textAlign="right" width="160"/>
+		</mx:FormItem>
+		<components:Comments id="comments"/>
+		<mx:FormItem direction="horizontal">
+			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:RemoteObject id="pagoOtraOperacionFinancieraService" destination="pagoOtraOperacionFinancieraService" fault="pagoOtraOperacionFinancieraService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
+	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
+	<mx:RemoteObject id="bancoConectelService" destination="bancoConectelService" fault="pagoOtraOperacionFinancieraService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetBancoConectel" result="responseGetBancoConectel_resultHandler(event)"/>
+	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="pagoOtraOperacionFinancieraService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetConceptoOtraOperacionFinanciera" result="responseGetConceptoOtraOperacionFinanciera_resultHandler(event)"/>
+</mx:VBox>

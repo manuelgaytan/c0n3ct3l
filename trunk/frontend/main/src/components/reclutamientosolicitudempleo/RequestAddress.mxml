@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Form xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import model.Constants;
+			import model.DireccionSolicitante;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.com.gahm.componentes.validadores.ValidadorEntero;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			private var mode:String = null;
+			private var _item:DireccionSolicitante;
+			private var validators:InicializaValidadoresEtiquetas;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				this.label = Constants.REGISTRAR;
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set requestAddress(value:DireccionSolicitante):void{
+				if( value == null ){
+					return;
+				}
+				this.cleanForm();
+				this._item = value;
+				this.setItem(); 
+			}
+			
+			private function setItem():void
+			{
+				if( this._item == null ){
+					return;
+				}
+				this.txtID.text = this._item.id.toString();
+				this.txtStreetNumber.text = this._item.calleNumero;
+				this.txtNeighborhood.text = this._item.colonia;
+				this.txtZipCode.text = this._item.codigoPostal;
+				this.txtMunicipally.text = this._item.delegacionMunicipio;
+				this.txtState.text = this._item.entidadFederativa;
+			}
+			
+			public function getRequestAddress():DireccionSolicitante{
+				var requestAddress:DireccionSolicitante = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					requestAddress = new DireccionSolicitante();
+				}else{
+					requestAddress = this._item;
+				}
+				requestAddress.calleNumero = Util.validateEmpty( this.txtStreetNumber.text );
+				requestAddress.colonia = Util.validateEmpty( this.txtNeighborhood.text );
+				requestAddress.codigoPostal = Util.stringToNumber( this.txtZipCode.text );
+				requestAddress.delegacionMunicipio = Util.validateEmpty( this.txtMunicipally.text );
+				requestAddress.entidadFederativa = Util.validateEmpty( this.txtState.text );
+				return requestAddress;
+			}
+			
+			private function fillCombos():void
+			{
+			}
+			
+			protected function pagoOtraOperacionFinancieraService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			public function validations():Boolean
+			{
+				var value:Boolean = true;
+				value &&= this.validators.validarFormulario();
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+					this.removeChild( this.frmID );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+				}
+			}
+			
+			private function initializeValidators():void
+			{
+				this.validators = new InicializaValidadoresEtiquetas();
+				this.validators.crearValidadorRestrictor("genericAlfanumeric", ValidadorAlfanumerico.nombre, 0, 255, true);
+				this.validators.setRestrictor( this.txtStreetNumber, "genericAlfanumeric");
+				this.validators.setRestrictor( this.txtNeighborhood, "genericAlfanumeric");
+				this.validators.setRestrictor( this.txtMunicipally, "genericAlfanumeric");
+				this.validators.setRestrictor( this.txtState, "genericAlfanumeric");
+				this.validators.crearValidadorRestrictor("genericDecimal", ValidadorEntero.nombre, 5);
+				this.validators.setRestrictor( this.txtZipCode, "genericDecimal" );
+			}
+			
+			protected function responseSave_resultHandler(event:ResultEvent):void
+			{
+				var eventGeneralDataProjectNew:Event = new Event("requestAddressNew");
+				this.dispatchEvent( eventGeneralDataProjectNew );
+				this.cleanForm();
+			}
+			
+			public function cleanForm():void
+			{
+				this.txtID.reset();
+				this.txtStreetNumber.reset();
+				this.txtNeighborhood.reset();
+				this.txtZipCode.reset();
+				this.txtMunicipally.reset();
+				this.txtState.reset();
+			}
+		]]>
+	</mx:Script>
+	<mx:FormHeading label="Domicilio"/>
+	<mx:FormItem id="frmID" label="ID:" direction="horizontal">
+		<components:TextInput id="txtID" width="80" textAlign="right" editable="false"/>
+	</mx:FormItem>
+	<mx:FormItem label="Calle y Número:">
+		<components:TextInput id="txtStreetNumber" width="150"/>
+	</mx:FormItem>
+	<mx:FormItem label="Colonia:">
+		<components:TextInput id="txtNeighborhood" width="120"/>
+	</mx:FormItem>
+	<mx:FormItem label="Código Postal:">
+		<components:TextInput id="txtZipCode" textAlign="right" width="30"/>
+	</mx:FormItem>
+	<mx:FormItem label="Delegación o Municipio:">
+		<components:TextInput id="txtMunicipally" width="120"/>
+	</mx:FormItem>
+	<mx:FormItem label="Entidad Federativa:">
+		<components:TextInput id="txtState" width="100"/>
+	</mx:FormItem>
+</mx:Form>

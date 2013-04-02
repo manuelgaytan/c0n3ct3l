@@ -4,7 +4,7 @@ package model
 	public class FuenteReclutamiento
 	{
 		public var id:*;
-		public var fase:String;
+		public var fuente:String;
 		
 		public function FuenteReclutamiento()
 		{

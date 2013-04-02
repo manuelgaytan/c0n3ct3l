@@ -1,0 +1,468 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Form xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*" xmlns:reclutamientosolicitudempleo="components.reclutamientosolicitudempleo.*"
+		 width="100%" height="100%" label="Datos Generales"
+		 initialize="initializeHandler(event)"
+		 creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import model.ActividadTiempoLibre;
+			import model.CartaAntecedentesPenales;
+			import model.Constants;
+			import model.DatosGeneralesSolicitante;
+			import model.DocumentacionExtranjeros;
+			import model.EstadoCivil;
+			import model.EstadoSalud;
+			import model.Identificacion;
+			import model.Nacionalidad;
+			import model.Sexo;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.com.gahm.componentes.validadores.ValidadorEntero;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			private var mode:String = null;
+			private var _item:DatosGeneralesSolicitante;
+			private var validators:InicializaValidadoresEtiquetas;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				//this.label = Constants.REGISTRAR;
+				if( !(this.requestAddress == null) ){
+					this.requestAddress.registrer = true;
+				}
+				if( !(this.driverLicense == null) ){
+					this.driverLicense.registrer = true;
+				}
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set generalInformation(value:DatosGeneralesSolicitante):void{
+				if( value == null ){
+					return;
+				}
+				this.cleanForm();
+				this._item = value;
+				this.setItem(); 
+			}
+			
+			private function setItem():void
+			{
+				if( this._item == null ){
+					return;
+				}
+				this.txtID.text = this._item.id.toString();
+				this.txtLastName.text = this._item.apellidoPaterno;
+				this.txtMothersLastName.text = this._item.apellidoMaterno;
+				this.txtName.text = this._item.nombres;
+				this.dtfBirthdayDate.selectedDate = this._item.fechaNacimiento;
+				this.txtBirthdayPlace.text = this._item.lugarNacimiento;
+				this.txtAge.text = this._item.edad.toString();
+				if( Util.isFill( this.cmbNationality ) && this._item 
+					&& this._item.nacionalidad != null ){
+					this.cmbNationality.selectedIndex = Util.selectedIndexFromCombo( this.cmbNationality.dataProvider as ArrayCollection, 
+						this._item.nacionalidad.id);
+				}
+				if( Util.isFill( this.cmbID ) && this._item 
+					&& this._item.identificacion != null ){
+					this.cmbID.selectedIndex = Util.selectedIndexFromCombo( this.cmbID.dataProvider as ArrayCollection, 
+						this._item.identificacion.id);
+				}
+				if( Util.isFill( this.cmbForeignDocumentation ) && this._item 
+					&& this._item.documentacionExtranjeros != null ){
+					this.cmbForeignDocumentation.selectedIndex = Util.selectedIndexFromCombo( this.cmbForeignDocumentation.dataProvider as ArrayCollection, 
+						this._item.documentacionExtranjeros.id);
+				}
+				if( Util.isFill( this.cmbMaritalStatus ) && this._item 
+					&& this._item.estadoCivil != null ){
+					this.cmbMaritalStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbMaritalStatus.dataProvider as ArrayCollection, 
+						this._item.estadoCivil.id);
+				}
+				if( Util.isFill( this.cmbSex ) && this._item 
+					&& this._item.sexo != null ){
+					this.cmbSex.selectedIndex = Util.selectedIndexFromCombo( this.cmbSex.dataProvider as ArrayCollection, 
+						this._item.sexo.id);
+				}
+				this.requestAddress.requestAddress = this._item.direccionSolicitante; 
+				this.txtPhone.text = this._item.telefono;
+				this.txtMobile.text = this._item.celular;
+				this.txtEmail.text = this._item.correoElectronico;
+				this.txtRFC.text = this._item.rfc;
+				this.txtNSS.text = this._item.nss;
+				this.txtCURP.text = this._item.curp;
+				this.driverLicense.driverLicense = this._item.licencia;
+				if( Util.isFill( this.cmbLetterCriminal ) && this._item 
+					&& this._item.cartaAntecedentesPenales != null ){
+					this.cmbLetterCriminal.selectedIndex = Util.selectedIndexFromCombo( this.cmbLetterCriminal.dataProvider as ArrayCollection, 
+						this._item.cartaAntecedentesPenales.id);
+				}
+				if( Util.isFill( this.cmbHealthState ) && this._item 
+					&& this._item.estadoSalud != null ){
+					this.cmbHealthState.selectedIndex = Util.selectedIndexFromCombo( this.cmbHealthState.dataProvider as ArrayCollection, 
+						this._item.estadoSalud.id);
+				}
+				this.txtChronicDisease.text = this._item.enfermedadCronica;
+				if( Util.isFill( this.cmbHobby ) && this._item 
+					&& this._item.actividadTiempoLibre != null ){
+					this.cmbHobby.selectedIndex = Util.selectedIndexFromCombo( this.cmbHobby.dataProvider as ArrayCollection, 
+						this._item.actividadTiempoLibre.id);
+				}
+			}
+			
+			public function getGeneralInformation():DatosGeneralesSolicitante{
+				var generalInformation:DatosGeneralesSolicitante = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					generalInformation = new DatosGeneralesSolicitante();
+				}else{
+					generalInformation = this._item;
+				}
+				generalInformation.apellidoPaterno = Util.validateEmpty( this.txtLastName.text );
+				generalInformation.apellidoMaterno = Util.validateEmpty( this.txtMothersLastName.text );
+				generalInformation.nombres = Util.validateEmpty( this.txtName.text );
+				generalInformation.fechaNacimiento = this.dtfBirthdayDate.selectedDate;
+				generalInformation.lugarNacimiento = Util.validateEmpty( this.txtBirthdayPlace.text );
+				generalInformation.edad = Util.stringToNumber( this.txtAge.text );
+				generalInformation.nacionalidad = Util.validateCombo( this.cmbNationality ) as Nacionalidad;
+				generalInformation.identificacion = Util.validateCombo( this.cmbID ) as Identificacion;
+				generalInformation.documentacionExtranjeros = Util.validateCombo( this.cmbForeignDocumentation ) as DocumentacionExtranjeros;
+				generalInformation.estadoCivil = Util.validateCombo( this.cmbMaritalStatus ) as EstadoCivil;
+				generalInformation.sexo = Util.validateCombo( this.cmbSex ) as Sexo;
+				generalInformation.direccionSolicitante = this.requestAddress.getRequestAddress();
+				generalInformation.telefono = Util.validateEmpty( this.txtPhone.text );
+				generalInformation.celular = Util.validateEmpty( this.txtMobile.text );
+				generalInformation.correoElectronico = Util.validateEmpty( this.txtEmail.text );
+				generalInformation.rfc = Util.validateEmpty( this.txtRFC.text );
+				generalInformation.nss = Util.validateEmpty( this.txtNSS.text );
+				generalInformation.curp = Util.validateEmpty( this.txtCURP.text );
+				generalInformation.licencia = this.driverLicense.getDriverLicense();
+				generalInformation.cartaAntecedentesPenales = Util.validateCombo( this.cmbLetterCriminal ) as CartaAntecedentesPenales;
+				generalInformation.estadoSalud = Util.validateCombo( this.cmbHealthState ) as EstadoSalud;
+				generalInformation.enfermedadCronica = Util.validateEmpty( this.txtChronicDisease.text );
+				generalInformation.actividadTiempoLibre = Util.validateCombo( this.cmbHobby ) as ActividadTiempoLibre;
+				return generalInformation;
+			}
+			
+			private function fillCombos():void
+			{
+				this.responseGetNacionalidad.token = this.catalogoService.getNacionalidad();
+				this.responseGetIdentificacion.token = this.catalogoService.getIdentificacion();
+				this.responseGetDocumentacionExtranjeros.token = this.catalogoService.getDocumentacionExtranjeros();
+				this.responseGetEstadoCivil.token = this.catalogoService.getEstadoCivil();
+				this.responseGetSexo.token = this.catalogoService.getSexo();
+				this.responseGetCartaAntecedentesPenales.token = this.catalogoService.getCartaAntecedentesPenales();
+				this.responseGetEstadoSalud.token = this.catalogoService.getEstadoSalud();
+				this.responseGetActividadTiempoLibre.token = this.catalogoService.getActividadTiempoLibre();
+			}
+			
+			public function validations():Boolean
+			{
+				var value:Boolean = true;
+				value &&= this.validators.validarFormulario();
+				value &&= this.dtfBirthdayDate.selectedDate != null;
+				value &&= this.requestAddress.validations();
+				value &&= this.driverLicense.validations();
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+					this.removeChild( this.frmID );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+				}
+			}
+			
+			private function initializeValidators():void
+			{
+				this.validators = new InicializaValidadoresEtiquetas();
+				this.validators.crearValidadorRestrictor("genericAlfanumeric", ValidadorAlfanumerico.nombre, 0, 255, true);
+				this.validators.setValidador( this.txtLastName, "genericAlfanumeric");
+				this.validators.setValidador( this.txtMothersLastName, "genericAlfanumeric");
+				this.validators.setValidador( this.txtName, "genericAlfanumeric");
+				this.validators.setRestrictor( this.txtBirthdayPlace, "genericAlfanumeric");
+				this.validators.setValidador( this.txtPhone, "genericAlfanumeric");
+				this.validators.setRestrictor( this.txtEmail, "genericAlfanumeric");
+				this.validators.setRestrictor( this.txtRFC, "genericAlfanumeric");
+				this.validators.setRestrictor( this.txtNSS, "genericAlfanumeric");
+				this.validators.setRestrictor( this.txtCURP, "genericAlfanumeric");
+				this.validators.setRestrictor( this.txtChronicDisease, "genericAlfanumeric");
+				this.validators.crearValidadorRestrictor("genericInteger", ValidadorEntero.nombre, 2);
+				this.validators.setRestrictor( this.txtAge, "genericInteger" );
+				this.validators.crearValidadorRestrictor("genericInteger10", ValidadorEntero.nombre, 10);
+				this.validators.setRestrictor( this.txtMobile, "genericInteger10" );
+				
+			}
+			
+			protected function responseSave_resultHandler(event:ResultEvent):void
+			{
+				var eventGeneralDataProjectNew:Event = new Event("generalInformationNew");
+				this.dispatchEvent( eventGeneralDataProjectNew );
+				this.cleanForm();
+			}
+			
+			public function cleanForm():void
+			{
+				this.txtID.reset();
+				this.txtLastName.reset();
+				this.txtMothersLastName.reset();
+				this.txtName.reset();
+				this.dtfBirthdayDate.reset();
+				this.txtBirthdayPlace.reset();
+				this.cmbNationality.selectedIndex = 0;
+				this.cmbID.selectedIndex = 0;
+				this.cmbForeignDocumentation.selectedIndex = 0;
+				this.cmbMaritalStatus.selectedIndex = 0;
+				this.cmbSex.selectedIndex = 0;
+				this.requestAddress.cleanForm();
+				this.txtPhone.reset();
+				this.txtMobile.reset();
+				this.txtEmail.reset();
+				this.txtRFC.reset();
+				this.txtNSS.reset();
+				this.txtCURP.reset();
+				this.driverLicense.cleanForm();
+				this.cmbLetterCriminal.selectedIndex = 0;
+				this.cmbHealthState.selectedIndex = 0;
+				this.txtChronicDisease.reset();
+				this.cmbHobby.selectedIndex = 0;
+			}
+			
+			protected function responseUpdate_resultHandler(event:ResultEvent):void
+			{
+				var eventGeneralDataProjectUpdated:Event = new Event("generalInformationUpdated");
+				this.dispatchEvent( eventGeneralDataProjectUpdated );
+				this.cleanForm();
+			}
+			
+			protected function responseGetNacionalidad_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbNationality.dataProvider = data;
+				if( Util.isFill( this.cmbNationality ) && this._item 
+					&& this._item.nacionalidad != null ){
+					this.cmbNationality.selectedIndex = Util.selectedIndexFromCombo( this.cmbNationality.dataProvider as ArrayCollection, 
+					this._item.nacionalidad.id);
+				}
+			}
+			
+			protected function responseGetIdentificacion_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbID.dataProvider = data;
+				if( Util.isFill( this.cmbID ) && this._item 
+					&& this._item.identificacion != null ){
+					this.cmbID.selectedIndex = Util.selectedIndexFromCombo( this.cmbID.dataProvider as ArrayCollection, 
+						this._item.identificacion.id);
+				}
+			}
+			
+			protected function responseGetDocumentacionExtranjeros_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbForeignDocumentation.dataProvider = data;
+				if( Util.isFill( this.cmbForeignDocumentation ) && this._item 
+					&& this._item.documentacionExtranjeros != null ){
+					this.cmbForeignDocumentation.selectedIndex = Util.selectedIndexFromCombo( this.cmbForeignDocumentation.dataProvider as ArrayCollection, 
+						this._item.documentacionExtranjeros.id);
+				}
+			}
+			
+			protected function responseGetEstadoCivil_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbMaritalStatus.dataProvider = data;
+				if( Util.isFill( this.cmbMaritalStatus ) && this._item 
+					&& this._item.estadoCivil != null ){
+					this.cmbMaritalStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbMaritalStatus.dataProvider as ArrayCollection, 
+						this._item.estadoCivil.id);
+				}
+			}
+			
+			protected function responseGetSexo_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbSex.dataProvider = data;
+				if( Util.isFill( this.cmbSex ) && this._item 
+					&& this._item.sexo != null ){
+					this.cmbSex.selectedIndex = Util.selectedIndexFromCombo( this.cmbSex.dataProvider as ArrayCollection, 
+						this._item.sexo.id);
+				}
+			}
+			
+			protected function responseGetCartaAntecedentesPenales_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbLetterCriminal.dataProvider = data;
+				if( Util.isFill( this.cmbLetterCriminal ) && this._item 
+					&& this._item.cartaAntecedentesPenales != null ){
+					this.cmbLetterCriminal.selectedIndex = Util.selectedIndexFromCombo( this.cmbLetterCriminal.dataProvider as ArrayCollection, 
+						this._item.cartaAntecedentesPenales.id);
+				}
+			}
+			
+			protected function responseGetEstadoSalud_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbHealthState.dataProvider = data;
+				if( Util.isFill( this.cmbHealthState ) && this._item 
+					&& this._item.estadoSalud != null ){
+					this.cmbHealthState.selectedIndex = Util.selectedIndexFromCombo( this.cmbHealthState.dataProvider as ArrayCollection, 
+						this._item.estadoSalud.id);
+				}
+			}
+			
+			protected function responseGetActividadTiempoLibre_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbHobby.dataProvider = data;
+				if( Util.isFill( this.cmbHobby ) && this._item 
+					&& this._item.actividadTiempoLibre != null ){
+					this.cmbHobby.selectedIndex = Util.selectedIndexFromCombo( this.cmbHobby.dataProvider as ArrayCollection, 
+						this._item.actividadTiempoLibre.id);
+				}
+			}
+			
+			protected function initializeHandler(event:FlexEvent):void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+					this.requestAddress.registrer = true;
+					this.driverLicense.registrer = true;
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+				}
+			}
+		]]>
+	</mx:Script>
+	<mx:FormItem id="frmID" label="ID:" direction="horizontal">
+		<components:TextInput id="txtID" width="80" textAlign="right" editable="false"/>
+	</mx:FormItem>
+	<mx:FormItem label="Apellido Paterno:">
+		<components:TextInput id="txtLastName" width="270"/>
+	</mx:FormItem>
+	<mx:FormItem label="Apellido Materno:">
+		<components:TextInput id="txtMothersLastName" width="270"/>
+	</mx:FormItem>
+	<mx:FormItem label="Nombres:">
+		<components:TextInput id="txtName" width="120"/>
+	</mx:FormItem>
+	<mx:FormItem label="Fecha de Nacimiento:">
+		<components:DateField id="dtfBirthdayDate"/>
+	</mx:FormItem>
+	<mx:FormItem label="Lugar de Nacimiento:">
+		<components:TextInput id="txtBirthdayPlace" textAlign="right" width="100"/>
+	</mx:FormItem>
+	<mx:FormItem label="Edad:">
+		<components:TextInput id="txtAge" textAlign="right" width="100"/>
+	</mx:FormItem>
+	<mx:FormItem label="Nacionalidad:">
+		<mx:ComboBox id="cmbNationality" width="200"
+					 labelField="nacionalidad"/>
+	</mx:FormItem>
+	<mx:FormItem label="Identificación:">
+		<mx:ComboBox id="cmbID" width="200"
+					 labelField="identificacion"/>
+	</mx:FormItem>
+	<mx:FormItem label="Documentación Extranjeros:">
+		<mx:ComboBox id="cmbForeignDocumentation" width="200"
+					 labelField="documento"/>
+	</mx:FormItem>
+	<mx:FormItem label="Estado Civil:">
+		<mx:ComboBox id="cmbMaritalStatus" width="200"
+					 labelField="estado"/>
+	</mx:FormItem>
+	<mx:FormItem label="Sexo:">
+		<mx:ComboBox id="cmbSex" width="200"
+					 labelField="sexo"/>
+	</mx:FormItem>
+	<reclutamientosolicitudempleo:RequestAddress id="requestAddress"/>
+	<mx:FormItem label="Teléfono:">
+		<components:TextInput id="txtPhone" width="100"/>
+	</mx:FormItem>
+	<mx:FormItem label="Celular:">
+		<components:TextInput id="txtMobile" width="100"/>
+	</mx:FormItem>
+	<mx:FormItem label="Correo Electrónico:">
+		<components:TextInput id="txtEmail" width="150"/>
+	</mx:FormItem>
+	<mx:FormItem label="R.F.C.:">
+		<components:TextInput id="txtRFC" width="65"/>
+	</mx:FormItem>
+	<mx:FormItem label="N.S.S.:">
+		<components:TextInput id="txtNSS" width="85"/>
+	</mx:FormItem>
+	<mx:FormItem label="C.U.R.P.:">
+		<components:TextInput id="txtCURP" width="85"/>
+	</mx:FormItem>
+	<reclutamientosolicitudempleo:DriverLicense id="driverLicense"/>
+	<mx:FormItem label="Carta Antecedentes Penales:">
+		<mx:ComboBox id="cmbLetterCriminal" width="200"
+					 labelField="tieneCarta"/>
+	</mx:FormItem>
+	<mx:FormItem label="Estado de Salud:">
+		<mx:ComboBox id="cmbHealthState" width="200"
+					 labelField="estado"/>
+	</mx:FormItem>
+	<mx:FormItem label="Enfermedad Crónica:">
+		<components:TextInput id="txtChronicDisease" width="105"/>
+	</mx:FormItem>
+	<mx:FormItem label="Actividad Tiempo Libre:">
+		<mx:ComboBox id="cmbHobby" width="200"
+					 labelField="actividad"/>
+	</mx:FormItem>
+	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="Util.faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetNacionalidad" result="responseGetNacionalidad_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetIdentificacion" result="responseGetIdentificacion_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetDocumentacionExtranjeros" result="responseGetDocumentacionExtranjeros_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetEstadoCivil" result="responseGetEstadoCivil_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetSexo" result="responseGetSexo_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetCartaAntecedentesPenales" result="responseGetCartaAntecedentesPenales_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetEstadoSalud" result="responseGetEstadoSalud_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetActividadTiempoLibre" result="responseGetActividadTiempoLibre_resultHandler(event)"/>
+</mx:Form>

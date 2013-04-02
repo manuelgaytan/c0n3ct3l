@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*" xmlns:notascreditoclientes="components.notascreditoclientes.*" xmlns:informacionfacturas="components.informacionfacturas.*" xmlns:notascreditoproveedores="components.notascreditoproveedores.*" xmlns:facturacionproveedores="components.facturacionproveedores.*" xmlns:comprobacionesviaticos="components.comprobacionesviaticos.*" xmlns:otrasoperacionesfinancieras="components.otrasoperacionesfinancieras.*" xmlns:reclutamientosolicitudempleo="components.reclutamientosolicitudempleo.*"
+		 initialize="initializeHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import components.clientes.Client;
+			
+			import events.GenericEvent;
+			
+			import model.BancoConectel;
+			import model.Catalogo;
+			import model.Cliente;
+			import model.Colaborador;
+			import model.ComprobacionViaticos;
+			import model.ConceptoOtraOperacionFinanciera;
+			import model.Constants;
+			import model.Estado;
+			import model.EstadoOrdenCompra;
+			import model.EstadoValidacionCosto;
+			import model.EstadoValidacionOperativa;
+			import model.FiltroProyecto;
+			import model.MedioTransporte;
+			import model.NotaCreditoCliente;
+			import model.NotaCreditoProveedor;
+			import model.ReclutamientoSolicitudEmpleo;
+			import model.Producto;
+			import model.Proveedor;
+			import model.ProveedorCalificado;
+			import model.ProveedorMaquilador;
+			import model.Proyecto;
+			import model.TipoColaborador;
+			import model.TipoEntregable;
+			import model.Util;
+			
+			import mx.charts.chartClasses.DualStyleObject;
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.Constantes;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.com.gahm.componentes.validadores.ValidadorEntero;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			[Bindable]
+			private var mode:String = null;
+			private var _item:ReclutamientoSolicitudEmpleo;
+			private var validators:InicializaValidadoresEtiquetas;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				this.label = Constants.REGISTRAR;
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set recruitmentJobApplication(value:ReclutamientoSolicitudEmpleo):void{
+				if( value == null ){
+					return;
+				}
+				this.cleanForm();
+				this._item = value;
+				this.setItem(); 
+			}
+			
+			private function setItem():void
+			{
+				if( this._item == null ){
+					return;
+				}
+				mainData.mainData = this._item.datosPrincipalesSolicitante;
+				generalInformation.generalInformation = this._item.datosGeneralesSolicitante;
+				familyFacts.familyFacts = this._item.datosFamiliaresSolicitante;
+				schoolFactsSkills.schoolFactsSkills = this._item.datosEscolaresHabilidades;
+				lastJobApplicantData.lastJobApplicantData = this._item.datosUltimoEmpleoSolicitante;
+				factsAboutConectelApplicant.factsAboutConectelApplicant = this._item.datosSobreConectelSolicitante;
+			}
+			
+			private function getRecruitmentJobApplication():ReclutamientoSolicitudEmpleo{
+				var recruitmentJobApplication:ReclutamientoSolicitudEmpleo = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					recruitmentJobApplication = new ReclutamientoSolicitudEmpleo();
+				}else{
+					recruitmentJobApplication = this._item;
+				}
+				recruitmentJobApplication.datosPrincipalesSolicitante = mainData.getMainData();
+				recruitmentJobApplication.datosGeneralesSolicitante = generalInformation.getGeneralInformation();
+				recruitmentJobApplication.datosFamiliaresSolicitante = familyFacts.getFamilyFacts();
+				recruitmentJobApplication.datosEscolaresHabilidades = schoolFactsSkills.getSchoolFactsSkills();
+				recruitmentJobApplication.datosUltimoEmpleoSolicitante = lastJobApplicantData.getLastJobApplicantData();
+				recruitmentJobApplication.datosSobreConectelSolicitante = factsAboutConectelApplicant.getFactsAboutConectelApplicant();
+				return recruitmentJobApplication;
+			}
+			
+			private function fillCombos():void
+			{
+			}
+			
+			protected function pagoOtraOperacionFinancieraService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function btnAccept_clickHandler(event:MouseEvent):void
+			{
+				if( !this.validations() ){
+					Util.showMessageVerifyFields();
+					return;
+				}
+				if( this.mode == Constants.REGISTER_MODE ){
+					var recruitmentJobApplication:ReclutamientoSolicitudEmpleo = this.getRecruitmentJobApplication();
+					Util.showProperties( recruitmentJobApplication );
+					this.responseSave.token = this.pagoOtraOperacionFinancieraService.save( recruitmentJobApplication );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
+				}
+			}
+			
+			private function updateItem(event:CloseEvent):void{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var item:ReclutamientoSolicitudEmpleo = this.getRecruitmentJobApplication();
+				Util.showProperties( item );
+				this.responseUpdate.token = this.pagoOtraOperacionFinancieraService.update( item );
+			}
+			
+			private function validations():Boolean
+			{
+				var value:Boolean = true;
+				value &&= mainData.validations();
+				value &&= generalInformation.validations();
+				value &&= familyFacts.validations();
+				value &&= schoolFactsSkills.validations();
+				value &&= lastJobApplicantData.validations();
+				value &&= factsAboutConectelApplicant.validations();
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+				}
+			}
+			
+			private function initializeValidators():void
+			{
+			}
+			
+			protected function responseSave_resultHandler(event:ResultEvent):void
+			{
+				var eventGeneralDataProjectNew:Event = new Event("recruitmentJobApplicationNew");
+				this.dispatchEvent( eventGeneralDataProjectNew );
+				this.cleanForm();
+			}
+			
+			private function cleanForm():void
+			{
+				this.mainData.cleanForm();
+				this.generalInformation.cleanForm();
+				this.familyFacts.cleanForm();
+				this.schoolFactsSkills.cleanForm();
+				this.lastJobApplicantData.cleanForm();
+				this.factsAboutConectelApplicant.cleanForm();
+			}
+			
+			protected function responseUpdate_resultHandler(event:ResultEvent):void
+			{
+				var eventGeneralDataProjectUpdated:Event = new Event("recruitmentJobApplicationUpdated");
+				this.dispatchEvent( eventGeneralDataProjectUpdated );
+				this.cleanForm();
+			}
+			
+			protected function initializeHandler(event:FlexEvent):void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+					this.mainData.registrer = true;
+					this.generalInformation.registrer = true;
+					this.familyFacts.registrer = true;
+					this.schoolFactsSkills.registrer = true;
+					this.lastJobApplicantData.registrer = true;
+					this.factsAboutConectelApplicant.registrer = true;
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+				}
+			}
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="recruitmentJobApplicationNew", type="flash.events.Event")]
+		[Event(name="recruitmentJobApplicationUpdated", type="flash.events.Event")]
+		[Event(name="recruitmentJobApplicationProjectDone", type="flash.events.Event")]
+		[Event(name="creditNoteSelected", type="events.GenericEvent")]
+		[Event(name="perDiemCheckSelected", type="events.GenericEvent")]
+	</mx:Metadata>
+	<mx:Accordion width="100%" height="100%">
+		<reclutamientosolicitudempleo:MainData id="mainData"/>
+		<reclutamientosolicitudempleo:GeneralInformation id="generalInformation"/>
+		<reclutamientosolicitudempleo:FamilyFacts id="familyFacts"/>
+		<reclutamientosolicitudempleo:SchoolFactsSkills id="schoolFactsSkills"/>
+		<reclutamientosolicitudempleo:LastJobApplicantData id="lastJobApplicantData"/>
+		<reclutamientosolicitudempleo:FactsAboutConectelApplicant id="factsAboutConectelApplicant"/>
+	</mx:Accordion>
+	<mx:RemoteObject id="pagoOtraOperacionFinancieraService" destination="pagoOtraOperacionFinancieraService" fault="pagoOtraOperacionFinancieraService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
+	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
+</mx:VBox>

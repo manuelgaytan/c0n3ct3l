@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Form xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*" xmlns:reclutamientosolicitudempleo="components.reclutamientosolicitudempleo.*"
+		 width="100%" height="100%" label="Datos Escolares y Habilidades"
+		 initialize="initializeHandler(event)"
+		 creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import model.Constants;
+			import model.DatosEscolaresHabilidades;
+			import model.EstadoAcademico;
+			import model.UltimoGradoEstudios;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.com.gahm.componentes.validadores.ValidadorEntero;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			private var mode:String = null;
+			private var _item:DatosEscolaresHabilidades;
+			private var validators:InicializaValidadoresEtiquetas;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				//this.label = Constants.REGISTRAR;
+				if( !(this.officeEquipmentDominates == null) ){
+					this.officeEquipmentDominates.registrer = true;
+				}
+				if( !(this.software == null) ){
+					this.software.registrer = true;
+				}
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set schoolFactsSkills(value:DatosEscolaresHabilidades):void{
+				if( value == null ){
+					return;
+				}
+				this.cleanForm();
+				this._item = value;
+				this.setItem(); 
+			}
+			
+			private function setItem():void
+			{
+				if( this._item == null ){
+					return;
+				}
+				this.txtID.text = this._item.id.toString();
+				if( Util.isFill( this.cmbMostRecentStudies ) && this._item 
+					&& this._item.ultimoGradoEstudios != null ){
+					this.cmbMostRecentStudies.selectedIndex = Util.selectedIndexFromCombo( this.cmbMostRecentStudies.dataProvider as ArrayCollection, 
+						this._item.ultimoGradoEstudios.id);
+				}
+				this.txtSchoolNameOrigin.text = this._item.escuelaProcedencia;
+				if( Util.isFill( this.cmbAcademicState ) && this._item 
+					&& this._item.estadoAcademico != null ){
+					this.cmbAcademicState.selectedIndex = Util.selectedIndexFromCombo( this.cmbAcademicState.dataProvider as ArrayCollection, 
+						this._item.estadoAcademico.id);
+				}
+				this.txtLanguajes.text = this._item.idiomas.toString();
+				this.txtLanguajesPercent.text = this._item.porcentajeIdiomas.toString();
+				this.officeEquipmentDominates.officeEquipmentDominates = this._item.equipoOficinaDomina; 
+				this.software.software =  this._item.paqueteria;
+			}
+			
+			public function getSchoolFactsSkills():DatosEscolaresHabilidades{
+				var schoolFactsSkills:DatosEscolaresHabilidades = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					schoolFactsSkills = new DatosEscolaresHabilidades();
+				}else{
+					schoolFactsSkills = this._item;
+				}
+				schoolFactsSkills.ultimoGradoEstudios = Util.validateCombo( this.cmbMostRecentStudies ) as UltimoGradoEstudios;
+				schoolFactsSkills.escuelaProcedencia = Util.validateEmpty( this.txtSchoolNameOrigin.text );
+				schoolFactsSkills.estadoAcademico = Util.validateCombo( this.cmbAcademicState ) as EstadoAcademico;
+				schoolFactsSkills.idiomas = Util.stringToNumber( this.txtLanguajes.text );
+				schoolFactsSkills.porcentajeIdiomas = Util.stringToNumber( this.txtLanguajesPercent.text );
+				schoolFactsSkills.equipoOficinaDomina = this.officeEquipmentDominates.getOfficeEquipmentDominates();
+				schoolFactsSkills.paqueteria = this.software.getSoftware();
+				return schoolFactsSkills;
+			}
+			
+			private function fillCombos():void
+			{
+				this.responseGetUltimoGradoEstudios.token = this.catalogoService.getUltimoGradoEstudios();
+				this.responseGetEstadoAcademico.token = this.catalogoService.getEstadoAcademico();
+			}
+			
+			public function validations():Boolean
+			{
+				var value:Boolean = true;
+				value &&= this.validators.validarFormulario();
+				value &&= this.officeEquipmentDominates.validations();
+				value &&= this.software.validations();
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+					this.removeChild( this.frmID );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+				}
+			}
+			
+			private function initializeValidators():void
+			{
+				this.validators = new InicializaValidadoresEtiquetas();
+				this.validators.crearValidadorRestrictor("genericAlfanumeric", ValidadorAlfanumerico.nombre, 0, 255, true);
+				this.validators.setRestrictor( this.txtSchoolNameOrigin, "genericAlfanumeric");
+				this.validators.setRestrictor( this.txtLanguajes, "genericAlfanumeric");
+				this.validators.setRestrictor( this.txtLanguajesPercent, "genericAlfanumeric");
+			}
+
+			public function cleanForm():void
+			{
+				this.txtID.reset();
+				this.cmbMostRecentStudies.selectedIndex = 0;
+				this.txtSchoolNameOrigin.reset();
+				this.cmbAcademicState.selectedIndex = 0;
+				this.txtLanguajes.reset();
+				this.txtLanguajesPercent.reset();
+				this.officeEquipmentDominates.cleanForm(); 
+				this.software.cleanForm();
+			}
+			
+			protected function responseGetUltimoGradoEstudios_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbMostRecentStudies.dataProvider = data;
+				if( Util.isFill( this.cmbMostRecentStudies ) && this._item 
+					&& this._item.ultimoGradoEstudios != null ){
+					this.cmbMostRecentStudies.selectedIndex = Util.selectedIndexFromCombo( this.cmbMostRecentStudies.dataProvider as ArrayCollection, 
+						this._item.ultimoGradoEstudios.id);
+				}
+			}
+			
+			protected function responseGet_resultHandlerEstadoAcademico(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbAcademicState.dataProvider = data;
+				if( Util.isFill( this.cmbAcademicState ) && this._item 
+					&& this._item.estadoAcademico != null ){
+					this.cmbAcademicState.selectedIndex = Util.selectedIndexFromCombo( this.cmbAcademicState.dataProvider as ArrayCollection, 
+						this._item.estadoAcademico.id);
+				}
+			}
+			
+			protected function initializeHandler(event:FlexEvent):void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+					this.officeEquipmentDominates.registrer = true;
+					this.software.registrer = true;
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+				}
+			}
+		]]>
+	</mx:Script>
+	<mx:FormItem id="frmID" label="ID:" direction="horizontal">
+		<components:TextInput id="txtID" width="80" textAlign="right" editable="false"/>
+	</mx:FormItem>
+	<mx:FormItem label="Último Grado de Estudios:">
+		<mx:ComboBox id="cmbMostRecentStudies" width="200"
+					 labelField="estudios"/>
+	</mx:FormItem>
+	<mx:FormItem label="Escuela Procedencia:">
+		<components:TextInput id="txtSchoolNameOrigin" width="200"/>
+	</mx:FormItem>
+	<mx:FormItem label="Estado Academico:">
+		<mx:ComboBox id="cmbAcademicState" width="200"
+					 labelField="estado"/>
+	</mx:FormItem>
+	<mx:FormItem label="Idiomas:">
+		<components:TextInput id="txtLanguajes" width="200"/>
+	</mx:FormItem>
+	<mx:FormItem label="Porcentaje Idiomas:">
+		<components:TextInput id="txtLanguajesPercent" textAlign="right" width="100"/>
+	</mx:FormItem>
+	<reclutamientosolicitudempleo:OfficeEquipmentDominates id="officeEquipmentDominates"/>
+	<reclutamientosolicitudempleo:Software id="software"/>
+	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="Util.faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetUltimoGradoEstudios" result="responseGetUltimoGradoEstudios_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetEstadoAcademico" result="responseGet_resultHandlerEstadoAcademico(event)"/>
+</mx:Form>

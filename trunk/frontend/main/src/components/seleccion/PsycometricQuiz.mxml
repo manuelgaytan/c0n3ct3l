@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Form xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import model.Constants;
+			import model.ExamenPsicometrico;
+			import model.Dependientes;
+			import model.Util;
+			import model.ViveCon;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.com.gahm.componentes.validadores.ValidadorEntero;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			private var mode:String = null;
+			private var _item:ExamenPsicometrico;
+			private var validators:InicializaValidadoresEtiquetas;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				this.label = Constants.REGISTRAR;
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set psycometricQuiz(value:ExamenPsicometrico):void{
+				if( value == null ){
+					return;
+				}
+				this.cleanForm();
+				this._item = value;
+				this.setItem(); 
+			}
+			
+			private function setItem():void
+			{
+				if( this._item == null ){
+					return;
+				}
+				this.txtID.text = this._item.id.toString();
+				this.chkRavenArmyBeta.selected = this._item.ravenArmyBeta;
+				this.chkFiguraHumana.selected = this._item.figuraHumana;
+				this.chkArbol.selected = this._item.arbol;
+				this.chkCasa.selected = this._item.casa;
+				this.chkGrafologia.selected = this._item.grafologia;
+				this.chkCleaver.selected = this._item.cleaver;
+				this.chkFrasesIncompletas.selected = this._item.frasesIncompletas;
+				this.chkTherman.selected = this._item.therman;
+				this.chkDominos.selected = this._item.dominos;
+			}
+			
+			public function getPsycometricQuiz():ExamenPsicometrico{
+				var psycometricQuiz:ExamenPsicometrico = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					psycometricQuiz = new ExamenPsicometrico();
+				}else{
+					psycometricQuiz = this._item;
+				}
+				psycometricQuiz.ravenArmyBeta = this.chkRavenArmyBeta.selected;
+				psycometricQuiz.figuraHumana = this.chkFiguraHumana.selected;
+				psycometricQuiz.arbol = this.chkArbol.selected;
+				psycometricQuiz.casa = this.chkCasa.selected;
+				psycometricQuiz.grafologia = this.chkGrafologia.selected;
+				psycometricQuiz.cleaver = this.chkCleaver.selected;
+				psycometricQuiz.frasesIncompletas = this.chkFrasesIncompletas.selected;
+				psycometricQuiz.therman = this.chkTherman.selected;
+				psycometricQuiz.dominos = this.chkDominos.selected;
+				return psycometricQuiz;
+			}
+			
+			private function fillCombos():void
+			{
+			}
+			
+			public function validations():Boolean
+			{
+				var value:Boolean = true;
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+					this.removeChild( this.frmID );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+				}
+			}
+			
+			private function initializeValidators():void
+			{
+			}
+			
+			public function cleanForm():void
+			{
+				this.txtID.reset();
+				this.chkRavenArmyBeta.selected = false;
+				this.chkFiguraHumana.selected = false;
+				this.chkArbol.selected = false;
+				this.chkCasa.selected = false;
+				this.chkGrafologia.selected = false;
+				this.chkCleaver.selected = false;
+				this.chkFrasesIncompletas.selected = false;
+				this.chkTherman.selected = false;
+				this.chkDominos.selected = false;
+			}
+		]]>
+	</mx:Script>
+	<mx:FormHeading label="Exámen Psicométrico"/>
+	<mx:FormItem id="frmID" label="ID:" direction="horizontal">
+		<components:TextInput id="txtID" width="80" textAlign="right" editable="false"/>
+	</mx:FormItem>
+	<mx:FormItem label="Raven ó Army Beta:">
+		<mx:CheckBox id="chkRavenArmyBeta"/>
+	</mx:FormItem>
+	<mx:FormItem label="Power Point:">
+		<mx:CheckBox id="chkFiguraHumana"/>
+	</mx:FormItem>
+	<mx:FormItem label="Árbol:">
+		<mx:CheckBox id="chkArbol"/>
+	</mx:FormItem>
+	<mx:FormItem label="Casa:">
+		<mx:CheckBox id="chkCasa"/>
+	</mx:FormItem>
+	<mx:FormItem label="Grafologia:">
+		<mx:CheckBox id="chkGrafologia"/>
+	</mx:FormItem>
+	<mx:FormItem label="Cleaver:">
+		<mx:CheckBox id="chkCleaver"/>
+	</mx:FormItem>
+	<mx:FormItem label="FrasesIncompletas:">
+		<mx:CheckBox id="chkFrasesIncompletas"/>
+	</mx:FormItem>
+	<mx:FormItem label="Therman:">
+		<mx:CheckBox id="chkTherman"/>
+	</mx:FormItem>
+	<mx:FormItem label="Dominos:">
+		<mx:CheckBox id="chkDominos"/>
+	</mx:FormItem>
+</mx:Form>

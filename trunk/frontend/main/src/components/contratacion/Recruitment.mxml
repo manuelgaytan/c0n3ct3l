@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*" xmlns:notascreditoclientes="components.notascreditoclientes.*" xmlns:informacionfacturas="components.informacionfacturas.*" xmlns:notascreditoproveedores="components.notascreditoproveedores.*" xmlns:facturacionproveedores="components.facturacionproveedores.*" xmlns:comprobacionesviaticos="components.comprobacionesviaticos.*" xmlns:seleccion="components.seleccion.*"
+		 initialize="initializeHandler(event)" xmlns:reclutamientosolicitudempleo="components.reclutamientosolicitudempleo.*" xmlns:contratacion="components.contratacion.*"
+		 >
+	<mx:Script>
+		<![CDATA[
+			import components.clientes.Client;
+			
+			import events.GenericEvent;
+			
+			import model.BancoConectel;
+			import model.Catalogo;
+			import model.Cliente;
+			import model.Colaborador;
+			import model.ComprobacionViaticos;
+			import model.ConceptoOtraOperacionFinanciera;
+			import model.Constants;
+			import model.Contratacion;
+			import model.Estado;
+			import model.EstadoOrdenCompra;
+			import model.EstadoValidacionCosto;
+			import model.EstadoValidacionOperativa;
+			import model.FaseContratacion;
+			import model.FiltroProyecto;
+			import model.MedioTransporte;
+			import model.MotivoTerminoContrato;
+			import model.NotaCreditoCliente;
+			import model.NotaCreditoProveedor;
+			import model.Producto;
+			import model.Proveedor;
+			import model.ProveedorCalificado;
+			import model.ProveedorMaquilador;
+			import model.Proyecto;
+			import model.ReclutamientoSolicitudEmpleo;
+			import model.Suspension;
+			import model.TipoCandidato;
+			import model.TipoColaborador;
+			import model.TipoContratacion;
+			import model.TipoContrato;
+			import model.TipoEntregable;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.Constantes;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.com.gahm.componentes.validadores.ValidadorEntero;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			[Bindable]
+			private var mode:String = null;
+			private var _item:Contratacion;
+			private var validators:InicializaValidadoresEtiquetas;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				this.label = Constants.REGISTRAR;
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set recruitment(value:Contratacion):void{
+				if( value == null ){
+					return;
+				}
+				this.cleanForm();
+				this._item = value;
+				this.setItem(); 
+			}
+			
+			private function setItem():void
+			{
+				if( this._item == null ){
+					return;
+				}
+				this.txtID.text = this._item.id.toString();
+				this.recruitmentJobApplication.datagrid.dataProvider = Util.asArrayCollection( this._item.reclutamientoSolicitudEmpleo );
+				this.txtInitialSalary.text = this._item.sueldoInicial.toString();
+				this.recruitmentDocuments.recruitmentDocuments = this._item.documentosContratacion;
+				this.dtfDateIssueMedicalCertificate.selectedDate = this._item.fechaExpedicionCertificadoMedico;
+				this.dtfExpirationDateMedicalCertificate.selectedDate = this._item.fechaVencimientoCertificadoMedico;
+				if( Util.isFill( this.cmbRecruimentType ) && this._item 
+					&& this._item.tipoContratacion != null ){
+					this.cmbRecruimentType.selectedIndex = Util.selectedIndexFromCombo( this.cmbRecruimentType.dataProvider as ArrayCollection, 
+						this._item.tipoContratacion.id);
+				}
+				if( Util.isFill( this.cmbContractType ) && this._item 
+					&& this._item.tipoContrato != null ){
+					this.cmbContractType.selectedIndex = Util.selectedIndexFromCombo( this.cmbContractType.dataProvider as ArrayCollection, 
+						this._item.tipoContrato.id);
+				}
+				this.txtEventuallyContractExpiration.text = this._item.vencimientoContratoEventual;
+				this.dtfContractStartDate.selectedDate = this._item.fechaInicioContrato;
+				this.benefits.benefits = this._item.prestaciones;
+				if( Util.isFill( this.cmbSuspension ) && this._item 
+					&& this._item.suspension != null ){
+					this.cmbSuspension.selectedIndex = Util.selectedIndexFromCombo( this.cmbSuspension.dataProvider as ArrayCollection, 
+						this._item.suspension.id);
+				}
+				this.txtReasonSuspension.text = this._item.motivoSuspension;
+				this.dtfContractEndDate.selectedDate = this._item.fechaTerminoContrato;
+				if( Util.isFill( this.cmbReasonTerminationContract ) && this._item 
+					&& this._item.motivoTerminoContrato != null ){
+					this.cmbReasonTerminationContract.selectedIndex = Util.selectedIndexFromCombo( this.cmbReasonTerminationContract.dataProvider as ArrayCollection, 
+						this._item.motivoTerminoContrato.id);
+				}
+				this.chkSettlement.selected = this._item.finiquito;
+				this.chkCompensation.selected = this._item.indemnizacion;
+			}
+			
+			private function getRecruitment():Contratacion{
+				var recruitment:Contratacion = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					recruitment = new Contratacion();
+				}else{
+					recruitment = this._item;
+				}
+				recruitment.reclutamientoSolicitudEmpleo = this.recruitmentJobApplication.datagrid.selectedItem as ReclutamientoSolicitudEmpleo;
+				recruitment.sueldoInicial = Util.stringToNumber( this.txtInitialSalary.text );
+				recruitment.documentosContratacion = this.recruitmentDocuments.getRecruitmentDocuments();
+				recruitment.fechaExpedicionCertificadoMedico = this.dtfDateIssueMedicalCertificate.selectedDate;
+				recruitment.fechaVencimientoCertificadoMedico = this.dtfExpirationDateMedicalCertificate.selectedDate;
+				recruitment.tipoContratacion = Util.validateCombo( this.cmbRecruimentType ) as TipoContratacion;
+				recruitment.tipoContrato = Util.validateCombo( this.cmbContractType ) as TipoContrato;
+				recruitment.vencimientoContratoEventual = Util.validateEmpty( this.txtEventuallyContractExpiration.text );
+				recruitment.fechaInicioContrato = this.dtfContractStartDate.selectedDate;
+				recruitment.prestaciones = this.benefits.getBenefits();
+				recruitment.suspension = Util.validateCombo( this.cmbSuspension ) as Suspension;
+				recruitment.motivoSuspension = Util.validateEmpty( this.txtReasonSuspension.text );
+				recruitment.fechaTerminoContrato = this.dtfContractEndDate.selectedDate;
+				recruitment.motivoTerminoContrato = Util.validateCombo( this.cmbReasonTerminationContract ) as MotivoTerminoContrato;
+				recruitment.finiquito = this.chkSettlement.selected;
+				recruitment.indemnizacion= this.chkCompensation.selected;
+				return recruitment;
+			}
+			
+			private function fillCombos():void
+			{
+				this.responseGetTipoContratacion.token = this.catalogoService.getTipoContratacion();
+				this.responseGetTipoContrato.token = this.catalogoService.getTipoContrato();
+				this.responseGetSuspension.token = this.catalogoService.getSuspension();
+				this.responseGetMotivoTerminoContrato.token = this.catalogoService.getMotivoTerminoContrato();
+			}
+			
+			protected function contratacionService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function btnAccept_clickHandler(event:MouseEvent):void
+			{
+				if( !this.validations() ){
+					Util.showMessageVerifyFields();
+					return;
+				}
+				if( this.mode == Constants.REGISTER_MODE ){
+					var recruitment:Contratacion = this.getRecruitment();
+					Util.showProperties( recruitment );
+					this.responseSave.token = this.contratacionService.save( recruitment );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
+				}
+			}
+			
+			private function updateItem(event:CloseEvent):void{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var item:Contratacion = this.getRecruitment();
+				Util.showProperties( item );
+				this.responseUpdate.token = this.contratacionService.update( item );
+			}
+			
+			private function validations():Boolean
+			{
+				var value:Boolean = true;
+				value &&= recruitmentJobApplication.datagrid.selectedItem != null;
+				value &&= recruitmentDocuments.validations();
+				value &&= benefits.validations();
+				value &&= dtfDateIssueMedicalCertificate.selectedDate != null;
+				value &&= dtfExpirationDateMedicalCertificate.selectedDate != null;
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+					form.removeChild( this.frmID );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+				}
+			}
+			
+			private function initializeValidators():void
+			{
+				this.validators = new InicializaValidadoresEtiquetas();
+				validators.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
+				validators.setRestrictor( this.txtReasonSuspension, "generic");
+				validators.setRestrictor( this.txtEventuallyContractExpiration, "generic");
+				this.validators.crearValidadorRestrictor("genericDecimal", ValidadorDecimal.nombre, 9, 2);
+				this.validators.setValidador( this.txtInitialSalary, "genericDecimal" );
+			}
+			
+			protected function responseSave_resultHandler(event:ResultEvent):void
+			{
+				var eventGeneralDataProjectNew:Event = new Event("recruitmentNew");
+				this.dispatchEvent( eventGeneralDataProjectNew );
+				this.cleanForm();
+			}
+			
+			private function cleanForm():void
+			{
+				this.txtID.reset();
+				this.recruitmentJobApplication.datagrid.selectedItem = false;
+				this.txtInitialSalary.reset();
+				this.recruitmentDocuments.cleanForm();
+				this.dtfDateIssueMedicalCertificate.reset();
+				this.dtfExpirationDateMedicalCertificate.reset();
+				this.cmbRecruimentType.selectedIndex = 0;
+				this.cmbContractType.selectedIndex = 0;
+				this.txtEventuallyContractExpiration.reset();
+				this.dtfContractStartDate.reset();
+				this.benefits.cleanForm();
+				this.cmbSuspension.selectedIndex = 0;
+				this.txtReasonSuspension.reset();
+				this.dtfContractEndDate.reset();
+				this.cmbReasonTerminationContract.selectedIndex = 0;
+				this.chkSettlement.selected = false;
+				this.chkCompensation.selected = false;
+			}
+			
+			protected function responseUpdate_resultHandler(event:ResultEvent):void
+			{
+				var eventGeneralDataProjectUpdated:Event = new Event("recruitmentUpdated");
+				this.dispatchEvent( eventGeneralDataProjectUpdated );
+				this.cleanForm();
+			}
+			
+			protected function responseGetTipoContratacion_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbRecruimentType.dataProvider = data;
+				
+			}
+			
+			protected function responseGetTipoContrato_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbContractType.dataProvider = data;
+				if( Util.isFill( this.cmbContractType ) && this._item 
+					&& this._item.tipoContrato != null ){
+					this.cmbContractType.selectedIndex = Util.selectedIndexFromCombo( this.cmbContractType.dataProvider as ArrayCollection, 
+						this._item.tipoContrato.id);
+				}
+			}
+			
+			protected function responseGetSuspension_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbSuspension.dataProvider = data;
+				if( Util.isFill( this.cmbSuspension ) && this._item 
+					&& this._item.suspension != null ){
+					this.cmbSuspension.selectedIndex = Util.selectedIndexFromCombo( this.cmbSuspension.dataProvider as ArrayCollection, 
+						this._item.suspension.id);
+				}
+			}
+			
+			protected function responseGetMotivoTerminoContrato_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbReasonTerminationContract.dataProvider = data;
+				if( Util.isFill( this.cmbReasonTerminationContract ) && this._item 
+					&& this._item.motivoTerminoContrato != null ){
+					this.cmbReasonTerminationContract.selectedIndex = Util.selectedIndexFromCombo( this.cmbReasonTerminationContract.dataProvider as ArrayCollection, 
+						this._item.motivoTerminoContrato.id);
+				}
+			}
+			
+			protected function initializeHandler(event:FlexEvent):void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+					this.recruitmentDocuments.registrer = true;
+					this.benefits.registrer = true;
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+				}
+			}
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="recruitmentNew", type="flash.events.Event")]
+		[Event(name="recruitmentUpdated", type="flash.events.Event")]
+		[Event(name="recruitmentProjectDone", type="flash.events.Event")]
+		[Event(name="creditNoteSelected", type="events.GenericEvent")]
+		[Event(name="perDiemCheckSelected", type="events.GenericEvent")]
+	</mx:Metadata>
+	<mx:Form id="form">
+		<mx:FormHeading label="Especificaciones y Tipo de Contratación"/>
+		<mx:FormItem id="frmID" label="ID:" direction="horizontal">
+			<components:TextInput id="txtID" width="80" textAlign="right"
+								  editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Solicitud Empleo:"/>
+		<reclutamientosolicitudempleo:Consult id="recruitmentJobApplication" readMode="true"/>
+		<mx:FormItem label="Sueldo Inicial:">
+			<components:TextInput id="txtInitialSalary" textAlign="right"/>
+		</mx:FormItem>
+		<contratacion:RecruitmentDocuments id="recruitmentDocuments"/>
+		<mx:FormItem label="Fecha de Expedición Certificado Médico:">
+			<components:DateField id="dtfDateIssueMedicalCertificate"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha de Vencimiento Certificado Médico:">
+			<components:DateField id="dtfExpirationDateMedicalCertificate"/>
+		</mx:FormItem>
+		<mx:FormItem label="Tipo de Contratación:">
+			<mx:ComboBox id="cmbRecruimentType" width="200"
+						 labelField="tipo"/>
+		</mx:FormItem>
+		<mx:FormItem label="Tipo de Contrato:">
+			<mx:ComboBox id="cmbContractType" width="200"
+						 labelField="tipo"/>
+		</mx:FormItem>
+		<mx:FormItem label="Vencimiento del Contrato Eventual:">
+			<components:TextInput id="txtEventuallyContractExpiration"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha de Inicio de Contrato:">
+			<components:DateField id="dtfContractStartDate"/>
+		</mx:FormItem>
+		<contratacion:Benefits id="benefits"/>
+		<mx:FormHeading label="Proceso de Término de Contrato"/>
+		<mx:FormItem label="Suspensión:">
+			<mx:ComboBox id="cmbSuspension" width="200"
+						 labelField="suspension"/>
+		</mx:FormItem>
+		<mx:FormItem label="Motivo de la Suspensión:">
+			<components:TextInput id="txtReasonSuspension" width="300"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha de Término de Contrato:">
+			<components:DateField id="dtfContractEndDate"/>
+		</mx:FormItem>
+		<mx:FormItem label="Motivo de Término de Contrato:">
+			<mx:ComboBox id="cmbReasonTerminationContract" width="200"
+						 labelField="motivo"/>
+		</mx:FormItem>
+		<mx:FormItem label="Finiquito:">
+			<mx:CheckBox id="chkSettlement"/>
+		</mx:FormItem>
+		<mx:FormItem label="Indemnización:">
+			<mx:CheckBox id="chkCompensation"/>
+		</mx:FormItem>
+		<mx:FormItem direction="horizontal">
+			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:RemoteObject id="contratacionService" destination="contratacionService" fault="contratacionService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
+	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
+	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="contratacionService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetTipoContratacion" result="responseGetTipoContratacion_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetTipoContrato" result="responseGetTipoContrato_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetSuspension" result="responseGetSuspension_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetMotivoTerminoContrato" result="responseGetMotivoTerminoContrato_resultHandler(event)"/>
+</mx:VBox>

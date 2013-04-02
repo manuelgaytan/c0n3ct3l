@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Form xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 width="100%" height="100%" label="Datos Sobre Conectel del Solicitante"
+		 creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import model.Constants;
+			import model.DatosSobreConectelSolicitante;
+			import model.FaseSeleccion;
+			import model.FuenteReclutamiento;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.com.gahm.componentes.validadores.ValidadorEntero;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			private var mode:String = null;
+			private var _item:DatosSobreConectelSolicitante;
+			private var validators:InicializaValidadoresEtiquetas;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				//this.label = Constants.REGISTRAR;
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set factsAboutConectelApplicant(value:DatosSobreConectelSolicitante):void{
+				if( value == null ){
+					return;
+				}
+				this.cleanForm();
+				this._item = value;
+				this.setItem(); 
+			}
+			
+			private function setItem():void
+			{
+				if( this._item == null ){
+					return;
+				}
+				this.txtID.text = this._item.id.toString();
+				if( Util.isFill( this.cmbRecruitmentSource ) && this._item 
+					&& this._item.fuenteReclutamiento != null ){
+					this.cmbRecruitmentSource.selectedIndex = Util.selectedIndexFromCombo( this.cmbRecruitmentSource.dataProvider as ArrayCollection, 
+						this._item.fuenteReclutamiento.id);
+				}
+				this.chkConectelKnown.selected = this._item.conocidosConectel;
+				this.chkTripAvailable.selected = this._item.puedeViajar;
+				this.dtfDateWork.selectedDate = this._item.fechaPresentarse;
+				if( Util.isFill( this.cmbSelectionPhase ) && this._item 
+					&& this._item.faseSeleccion != null ){
+					this.cmbSelectionPhase.selectedIndex = Util.selectedIndexFromCombo( this.cmbSelectionPhase.dataProvider as ArrayCollection, 
+						this._item.faseSeleccion.id);
+				}
+			}
+			
+			public function getFactsAboutConectelApplicant():DatosSobreConectelSolicitante{
+				var factsAboutConectelApplicant:DatosSobreConectelSolicitante = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					factsAboutConectelApplicant = new DatosSobreConectelSolicitante();
+				}else{
+					factsAboutConectelApplicant = this._item;
+				}
+				factsAboutConectelApplicant.fuenteReclutamiento = Util.validateCombo( this.cmbSelectionPhase ) as FuenteReclutamiento;
+				factsAboutConectelApplicant.conocidosConectel = this.chkConectelKnown.selected;
+				factsAboutConectelApplicant.puedeViajar = this.chkTripAvailable.selected;
+				factsAboutConectelApplicant.fechaPresentarse = this.dtfDateWork.selectedDate;
+				factsAboutConectelApplicant.faseSeleccion = Util.validateCombo( this.cmbSelectionPhase ) as FaseSeleccion;
+				return factsAboutConectelApplicant;
+			}
+			
+			private function fillCombos():void
+			{
+				this.responseGetFuenteReclutamiento.token = this.catalogoService.getFuenteReclutamiento();
+				this.responseGetFaseSeleccion.token = this.catalogoService.getFaseSeleccion();
+			}
+			
+			public function validations():Boolean
+			{
+				var value:Boolean = true;
+				value &&= this.validators.validarFormulario();
+				value &&= this.dtfDateWork.selectedDate != null;
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+					this.removeChild( this.frmID );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+				}
+			}
+			
+			private function initializeValidators():void
+			{
+			}
+			
+			public function cleanForm():void
+			{
+				this.txtID.reset();
+				this.cmbRecruitmentSource.selectedIndex = 0;
+				this.chkConectelKnown.selected = false;
+				this.chkTripAvailable.selected = false;
+				this.dtfDateWork.reset();
+				this.cmbSelectionPhase.selectedIndex = 0;
+			}
+			
+			protected function responseGetFuenteReclutamiento_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbRecruitmentSource.dataProvider = data;
+				if( Util.isFill( this.cmbRecruitmentSource ) && this._item 
+					&& this._item.fuenteReclutamiento != null ){
+					this.cmbRecruitmentSource.selectedIndex = Util.selectedIndexFromCombo( this.cmbRecruitmentSource.dataProvider as ArrayCollection, 
+						this._item.fuenteReclutamiento.id);
+				}
+			}
+			
+			protected function responseGetFaseSeleccion_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbSelectionPhase.dataProvider = data;
+				if( Util.isFill( this.cmbSelectionPhase ) && this._item 
+					&& this._item.faseSeleccion != null ){
+					this.cmbSelectionPhase.selectedIndex = Util.selectedIndexFromCombo( this.cmbSelectionPhase.dataProvider as ArrayCollection, 
+						this._item.faseSeleccion.id);
+				}
+			}
+		]]>
+	</mx:Script>
+	<mx:FormItem id="frmID" label="ID:" direction="horizontal">
+		<components:TextInput id="txtID" width="80" textAlign="right" editable="false"/>
+	</mx:FormItem>
+	<mx:FormItem label="Fuente Reclutamiento:">
+		<mx:ComboBox id="cmbRecruitmentSource" width="200"
+					 labelField="fuente"/>
+	</mx:FormItem>
+	<mx:FormItem label="Conocidos Conectel:">
+		<mx:CheckBox id="chkConectelKnown"/>
+	</mx:FormItem>
+	<mx:FormItem label="Puede Viajar:">
+		<mx:CheckBox id="chkTripAvailable"/>
+	</mx:FormItem>
+	<mx:FormItem label="Fecha Abono:">
+		<components:DateField id="dtfDateWork"
+							  creationComplete="this.dtfDateWork.selectedDate = new Date()"/>
+	</mx:FormItem>
+	<mx:FormItem label="Fase Selección:">
+		<mx:ComboBox id="cmbSelectionPhase" width="200"
+					 labelField="fase"/>
+	</mx:FormItem>
+	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="Util.faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetFuenteReclutamiento" result="responseGetFuenteReclutamiento_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetFaseSeleccion" result="responseGetFaseSeleccion_resultHandler(event)"/>
+</mx:Form>

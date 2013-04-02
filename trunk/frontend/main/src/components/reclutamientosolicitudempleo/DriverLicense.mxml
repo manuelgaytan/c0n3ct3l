@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Form xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import model.Constants;
+			import model.Licencia;
+			import model.TipoLicencia;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.com.gahm.componentes.validadores.ValidadorEntero;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			private var mode:String = null;
+			private var _item:Licencia;
+			private var validators:InicializaValidadoresEtiquetas;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				this.label = Constants.REGISTRAR;
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set driverLicense(value:Licencia):void{
+				if( value == null ){
+					return;
+				}
+				this.cleanForm();
+				this._item = value;
+				this.setItem(); 
+			}
+			
+			private function setItem():void
+			{
+				if( this._item == null ){
+					return;
+				}
+				this.txtID.text = this._item.id.toString();
+				this.dtfExpire.selectedDate = this._item.vigencia;
+				this.txtLicenseNumber.text = this._item.numeroLicencia;
+				if( Util.isFill( this.cmbLicenseType ) && this._item.tipoLicencia != null ){
+					this.cmbLicenseType.selectedIndex = Util.selectedIndexFromCombo( this.cmbLicenseType.dataProvider as ArrayCollection, 
+						this._item.tipoLicencia.id);
+				}
+			}
+			
+			public function getDriverLicense():Licencia{
+				var driverLicense:Licencia = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					driverLicense = new Licencia();
+				}else{
+					driverLicense = this._item;
+				}
+				driverLicense.vigencia = this.dtfExpire.selectedDate;
+				driverLicense.numeroLicencia = Util.validateEmpty( this.txtLicenseNumber.text );
+				driverLicense.tipoLicencia = Util.validateCombo( this.cmbLicenseType ) as TipoLicencia;
+				return driverLicense;
+			}
+			
+			private function fillCombos():void
+			{
+				this.responseGetTipoLicencia.token = this.catalogoService.getTipoLicencia();
+			}
+			
+			protected function pagoOtraOperacionFinancieraService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			public function validations():Boolean
+			{
+				var value:Boolean = true;
+				value &&= this.validators.validarFormulario();
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+					this.removeChild( this.frmID );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+				}
+			}
+			
+			private function initializeValidators():void
+			{
+				this.validators = new InicializaValidadoresEtiquetas();
+				this.validators.crearValidadorRestrictor("genericAlfanumeric", ValidadorAlfanumerico.nombre, 0, 255, true);
+				this.validators.setRestrictor( this.txtLicenseNumber, "genericAlfanumeric");
+			}
+			
+			public function cleanForm():void
+			{
+				this.txtID.reset();
+				this.dtfExpire.reset();
+				this.txtLicenseNumber.reset();
+				this.cmbLicenseType.selectedIndex = 0;
+			}
+			
+			protected function responseGetTipoLicencia_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbLicenseType.dataProvider = data;
+				if( Util.isFill( this.cmbLicenseType ) && this._item.tipoLicencia != null ){
+					this.cmbLicenseType.selectedIndex = Util.selectedIndexFromCombo( this.cmbLicenseType.dataProvider as ArrayCollection, 
+						this._item.tipoLicencia.id);
+				}
+			}
+		]]>
+	</mx:Script>
+	<mx:FormHeading label="Datos Licencia Vehícular"/>
+	<mx:FormItem id="frmID" label="ID:" direction="horizontal">
+		<components:TextInput id="txtID" width="80" textAlign="right" editable="false"/>
+	</mx:FormItem>
+	<mx:FormItem label="Vigencia:">
+		<components:DateField id="dtfExpire"/>
+	</mx:FormItem>
+	<mx:FormItem label="Número de Licencia:">
+		<components:TextInput id="txtLicenseNumber" width="120"/>
+	</mx:FormItem>
+	<mx:FormItem label="Tipo de Licencia:">
+		<mx:ComboBox id="cmbLicenseType" labelField="tipo"/>
+	</mx:FormItem>
+	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="Util.faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetTipoLicencia" result="responseGetTipoLicencia_resultHandler(event)"/>
+</mx:Form>

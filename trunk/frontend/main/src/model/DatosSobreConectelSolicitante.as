@@ -7,7 +7,7 @@ package model
 		public var fuenteReclutamiento:FuenteReclutamiento;
 		public var conocidosConectel:Boolean;
 		public var puedeViajar:Boolean;
-		public var fecha_presentarse:Date;
+		public var fechaPresentarse:Date;
 		public var faseSeleccion:FaseSeleccion;
 		
 		public function DatosSobreConectelSolicitante()

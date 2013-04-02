@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Form xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import model.Constants;
+			import model.DocumentosContratacion;
+			import model.Dependientes;
+			import model.Util;
+			import model.ViveCon;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.com.gahm.componentes.validadores.ValidadorEntero;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			private var mode:String = null;
+			private var _item:DocumentosContratacion;
+			private var validators:InicializaValidadoresEtiquetas;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				this.label = Constants.REGISTRAR;
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set recruitmentDocuments(value:DocumentosContratacion):void{
+				if( value == null ){
+					return;
+				}
+				this.cleanForm();
+				this._item = value;
+				this.setItem(); 
+			}
+			
+			private function setItem():void
+			{
+				if( this._item == null ){
+					return;
+				}
+				this.txtID.text = this._item.id.toString();
+				this.chkIFE.selected = this._item.ife;
+				this.chkBirthCertificate.selected = this._item.actaNacimiento;
+				this.chkProofHome.selected = this._item.actaNacimiento;
+				this.chkCURP.selected = this._item.actaNacimiento;
+				this.chkRFC.selected = this._item.rfc;
+				this.chkNSS.selected = this._item.nss;
+				this.chkProofCertificateStudies.selected = this._item.comprobanteEstudiosCertificacion;
+				this.chkMilitaryLetter.selected = this._item.cartaMilitar;
+				this.chkDriverLicense.selected = this._item.licencia;
+				this.chkLetterCriminal.selected = this._item.cartaAntecedentesNoPenales;
+				this.chkMedicalCertificate.selected = this._item.certificadoMedico;
+				this.chkLettersRecommendation.selected = this._item.cartasRecomendacion;
+				this.chkCV.selected = this._item.curriculum;
+				this.chkFM2FM3.selected = this._item.fm2Fm3;
+				this.chkPicture.selected = this._item.fotografia;
+			}
+			
+			public function getRecruitmentDocuments():DocumentosContratacion{
+				var recruitmentDocuments:DocumentosContratacion = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					recruitmentDocuments = new DocumentosContratacion();
+				}else{
+					recruitmentDocuments = this._item;
+				}
+				recruitmentDocuments.ife = this.chkIFE.selected = false;
+				recruitmentDocuments.actaNacimiento = this.chkBirthCertificate.selected = false;
+				recruitmentDocuments.comprobanteDomicilio = this.chkProofHome.selected = false;
+				recruitmentDocuments.curp = this.chkCURP.selected = false;
+				recruitmentDocuments.rfc = this.chkRFC.selected = false;
+				recruitmentDocuments.nss = this.chkNSS.selected = false;
+				recruitmentDocuments.comprobanteEstudiosCertificacion = this.chkProofCertificateStudies.selected = false;
+				recruitmentDocuments.cartaMilitar = this.chkMilitaryLetter.selected = false;
+				recruitmentDocuments.licencia = this.chkDriverLicense.selected = false;
+				recruitmentDocuments.cartaAntecedentesNoPenales = this.chkLetterCriminal.selected = false;
+				recruitmentDocuments.certificadoMedico = this.chkMedicalCertificate.selected = false;
+				recruitmentDocuments.cartasRecomendacion = this.chkLettersRecommendation.selected = false;
+				recruitmentDocuments.curriculum = this.chkCV.selected = false;
+				recruitmentDocuments.fm2Fm3 = this.chkFM2FM3.selected = false;
+				recruitmentDocuments.fotografia = this.chkPicture.selected = false;
+				return recruitmentDocuments;
+			}
+			
+			private function fillCombos():void
+			{
+			}
+			
+			public function validations():Boolean
+			{
+				var value:Boolean = true;
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+					this.removeChild( this.frmID );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+				}
+			}
+			
+			private function initializeValidators():void
+			{
+			}
+			
+			public function cleanForm():void
+			{
+				this.txtID.reset();
+				this.chkIFE.selected = false;
+				this.chkBirthCertificate.selected = false;
+				this.chkProofHome.selected = false;
+				this.chkCURP.selected = false;
+				this.chkRFC.selected = false;
+				this.chkNSS.selected = false;
+				this.chkProofCertificateStudies.selected = false;
+				this.chkMilitaryLetter.selected = false;
+				this.chkDriverLicense.selected = false;
+				this.chkLetterCriminal.selected = false;
+				this.chkMedicalCertificate.selected = false;
+				this.chkLettersRecommendation.selected = false;
+				this.chkCV.selected = false;
+				this.chkFM2FM3.selected = false;
+				this.chkPicture.selected = false;
+			}
+		]]>
+	</mx:Script>
+	<mx:FormHeading label="Documentos de Contratación"/>
+	<mx:FormItem id="frmID" label="ID:" direction="horizontal">
+		<components:TextInput id="txtID" width="80" textAlign="right" editable="false"/>
+	</mx:FormItem>
+	<mx:FormItem label="I.F.E.:">
+		<mx:CheckBox id="chkIFE"/>
+	</mx:FormItem>
+	<mx:FormItem label="Acta de Nacimiento:">
+		<mx:CheckBox id="chkBirthCertificate"/>
+	</mx:FormItem>
+	<mx:FormItem label="Comprobante de Domicilio:">
+		<mx:CheckBox id="chkProofHome"/>
+	</mx:FormItem>
+	<mx:FormItem label="C.U.R.P.:">
+		<mx:CheckBox id="chkCURP"/>
+	</mx:FormItem>
+	<mx:FormItem label="R.F.C.:">
+		<mx:CheckBox id="chkRFC"/>
+	</mx:FormItem>
+	<mx:FormItem label="N.S.S.:">
+		<mx:CheckBox id="chkNSS"/>
+	</mx:FormItem>
+	<mx:FormItem label="Comprobante de Estudios y Certificaciones:">
+		<mx:CheckBox id="chkProofCertificateStudies"/>
+	</mx:FormItem>
+	<mx:FormItem label="Cartilla Militar:">
+		<mx:CheckBox id="chkMilitaryLetter"/>
+	</mx:FormItem>
+	<mx:FormItem label="Licencia:">
+		<mx:CheckBox id="chkDriverLicense"/>
+	</mx:FormItem>
+	<mx:FormItem label="Carta de Antecedentes No Penales:">
+		<mx:CheckBox id="chkLetterCriminal"/>
+	</mx:FormItem>
+	<mx:FormItem label="Certificado Médico:">
+		<mx:CheckBox id="chkMedicalCertificate"/>
+	</mx:FormItem>
+	<mx:FormItem label="Cartas de Recomendación Laboral o Personal:">
+		<mx:CheckBox id="chkLettersRecommendation"/>
+	</mx:FormItem>
+	<mx:FormItem label="Curriculum:">
+		<mx:CheckBox id="chkCV"/>
+	</mx:FormItem>
+	<mx:FormItem label="FM2 FM3:">
+		<mx:CheckBox id="chkFM2FM3"/>
+	</mx:FormItem>
+	<mx:FormItem label="Fotografía:">
+		<mx:CheckBox id="chkPicture"/>
+	</mx:FormItem>
+</mx:Form>

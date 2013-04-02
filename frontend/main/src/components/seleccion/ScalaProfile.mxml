@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Form xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import model.Constants;
+			import model.PerfilEscala;
+			import model.Dependientes;
+			import model.Util;
+			import model.ViveCon;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.com.gahm.componentes.validadores.ValidadorEntero;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			private var mode:String = null;
+			private var _item:PerfilEscala;
+			private var validators:InicializaValidadoresEtiquetas;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				this.label = Constants.REGISTRAR;
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set scalaProfile(value:PerfilEscala):void{
+				if( value == null ){
+					return;
+				}
+				this.cleanForm();
+				this._item = value;
+				this.setItem(); 
+			}
+			
+			private function setItem():void
+			{
+				if( this._item == null ){
+					return;
+				}
+				this.txtID.text = this._item.id.toString();
+				this.nstIntelligence.value = this._item.inteligencia;
+				this.nstSociable.value = this._item.sociable;
+				this.nstMethodsProcedures.value = this._item.metodosProcedimientos;
+				this.nstPhysicalAspect.value = this._item.metodosProcedimientos;
+				this.nstDevelopment.value = this._item.desenvolvimiento;
+				this.nstConcentrate.value = this._item.concentracion;
+				this.nstEthusiasm.value = this._item.entusiasmo;
+				this.nstKindness.value = this._item.amabilidad;
+				this.nstAggressive.value = this._item.agresivo;
+				this.nstFearless.value = this._item.audaz;
+				this.nstLanguaje.value = this._item.lenguaje;
+				this.nstAuthority.value = this._item.respectoAutoridad;
+				this.nstSort.value = this._item.orden;
+			}
+			
+			public function getScalaProfile():PerfilEscala{
+				var scalaProfile:PerfilEscala = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					scalaProfile = new PerfilEscala();
+				}else{
+					scalaProfile = this._item;
+				}
+				scalaProfile.inteligencia = this.nstIntelligence.value;
+				scalaProfile.sociable = this.nstSociable.value;
+				scalaProfile.metodosProcedimientos = this.nstMethodsProcedures.value;
+				scalaProfile.aspectoFisico = this.nstPhysicalAspect.value;
+				scalaProfile.desenvolvimiento = this.nstDevelopment.value;
+				scalaProfile.concentracion = this.nstConcentrate.value;
+				scalaProfile.entusiasmo = this.nstEthusiasm.value;
+				scalaProfile.amabilidad = this.nstKindness.value;
+				scalaProfile.agresivo = this.nstAggressive.value;
+				scalaProfile.audaz = this.nstFearless.value;
+				scalaProfile.lenguaje = this.nstLanguaje.value;
+				scalaProfile.respectoAutoridad = this.nstAuthority.value;
+				scalaProfile.orden = this.nstSort.value;
+				return scalaProfile;
+			}
+			
+			private function fillCombos():void
+			{
+			}
+			
+			public function validations():Boolean
+			{
+				var value:Boolean = true;
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+					this.removeChild( this.frmID );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+				}
+			}
+			
+			private function initializeValidators():void
+			{
+			}
+			
+			public function cleanForm():void
+			{
+				this.txtID.reset();
+				this.nstIntelligence.value = 1;
+				this.nstSociable.value = 1;
+				this.nstMethodsProcedures.value = 1;
+				this.nstPhysicalAspect.value = 1;
+				this.nstDevelopment.value = 1;
+				this.nstConcentrate.value = 1;
+				this.nstEthusiasm.value = 1;
+				this.nstKindness.value = 1;
+				this.nstAggressive.value = 1;
+				this.nstFearless.value = 1;
+				this.nstLanguaje.value = 1;
+				this.nstAuthority.value = 1;
+				this.nstSort.value = 1;
+			}
+		]]>
+	</mx:Script>
+	<mx:FormHeading label="Perfil y Escala"/>
+	<mx:FormItem id="frmID" label="ID:" direction="horizontal">
+		<components:TextInput id="txtID" width="80" textAlign="right" editable="false"/>
+	</mx:FormItem>
+	<mx:FormItem label="Inteligencia:">
+		<mx:NumericStepper id="nstIntelligence" minimum="1" maximum="3"/>
+	</mx:FormItem>
+	<mx:FormItem label="Sociable:">
+		<mx:NumericStepper id="nstSociable" minimum="1" maximum="3"/>
+	</mx:FormItem>
+	<mx:FormItem label="Métodos y Procedimientos:">
+		<mx:NumericStepper id="nstMethodsProcedures" minimum="1" maximum="3"/>
+	</mx:FormItem>
+	<mx:FormItem label="Aspectos Físico:">
+		<mx:NumericStepper id="nstPhysicalAspect" minimum="1" maximum="3"/>
+	</mx:FormItem>
+	<mx:FormItem label="Desenvolvimiento:">
+		<mx:NumericStepper id="nstDevelopment" minimum="1" maximum="3"/>
+	</mx:FormItem>
+	<mx:FormItem label="Concentración:">
+		<mx:NumericStepper id="nstConcentrate" minimum="1" maximum="3"/>
+	</mx:FormItem>
+	<mx:FormItem label="Entusiasmo:">
+		<mx:NumericStepper id="nstEthusiasm" minimum="1" maximum="3"/>
+	</mx:FormItem>
+	<mx:FormItem label="Amabilidad:">
+		<mx:NumericStepper id="nstKindness" minimum="1" maximum="3"/>
+	</mx:FormItem>
+	<mx:FormItem label="Agresivo:">
+		<mx:NumericStepper id="nstAggressive" minimum="1" maximum="3"/>
+	</mx:FormItem>
+	<mx:FormItem label="Audaz:">
+		<mx:NumericStepper id="nstFearless" minimum="1" maximum="3"/>
+	</mx:FormItem>
+	<mx:FormItem label="Lenguaje:">
+		<mx:NumericStepper id="nstLanguaje" minimum="1" maximum="3"/>
+	</mx:FormItem>
+	<mx:FormItem label="Respeto a la Autoridad:">
+		<mx:NumericStepper id="nstAuthority" minimum="1" maximum="3"/>
+	</mx:FormItem>
+	<mx:FormItem label="Orden:">
+		<mx:NumericStepper id="nstSort" minimum="1" maximum="3"/>
+	</mx:FormItem>
+</mx:Form>

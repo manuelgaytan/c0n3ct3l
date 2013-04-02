@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
+		   width="850" height="525"
+		   xmlns:reclutamientosolicitudempleo="components.reclutamientosolicitudempleo.*"
+		   creationComplete="creationCompleteHandler(event)" xmlns:informacionfacturas="components.informacionfacturas.*" xmlns:notascreditoclientes="components.notascreditoclientes.*" xmlns:facturacionproveedores="components.facturacionproveedores.*" xmlns:notascreditoproveedores="components.notascreditoproveedores.*" xmlns:comprobacionesviaticos="components.comprobacionesviaticos.*">
+	<mx:Script>
+		<![CDATA[
+			import events.GenericEvent;
+			
+			import model.ReclutamientoSolicitudEmpleo;
+			
+			import mx.events.FlexEvent;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				
+			}
+			
+			protected function consult_recruitmentJobApplicationDetailHandler(event:GenericEvent):void
+			{
+				this.detail.recruitmentJobApplication = event.information as model.ReclutamientoSolicitudEmpleo;
+				this.navigator.selectedChild = this.detail;
+			}
+			
+			protected function register_recruitmentJobApplicationNewHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+			
+			protected function detail_recruitmentJobApplicationUpdatedHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+		]]>
+	</mx:Script>
+	<mx:TabNavigator id="navigator" width="850" height="100%" creationPolicy="all">
+		<reclutamientosolicitudempleo:Consult id="consult" itemDetail="consult_recruitmentJobApplicationDetailHandler(event)"/>
+		<reclutamientosolicitudempleo:RecruitmentJobApplication id="detail" update="true" recruitmentJobApplicationUpdated="detail_recruitmentJobApplicationUpdatedHandler(event)"
+							 />
+		<reclutamientosolicitudempleo:RecruitmentJobApplication id="register" registrer="true" recruitmentJobApplicationNew="register_recruitmentJobApplicationNewHandler(event)"
+							 />
+	</mx:TabNavigator>
+</mx:Module>

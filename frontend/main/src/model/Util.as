@@ -22,6 +22,7 @@ package model
 	import mx.managers.FocusManager;
 	import mx.managers.IBrowserManager;
 	import mx.resources.ResourceManager;
+	import mx.rpc.events.FaultEvent;
 	import mx.utils.ObjectUtil;
 	import mx.utils.StringUtil;
 	
@@ -542,6 +543,11 @@ package model
 			subtotal.text = formatNumber( subtotalNumber );
 			iva.text = formatNumber( ivaNumber );
 			total.text = formatNumber( totalNumber );
+		}
+		
+		public static function faultHandler(event:FaultEvent):void
+		{
+			Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
 		}
 	}
 }

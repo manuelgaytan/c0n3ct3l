@@ -4,6 +4,7 @@ package model
 	public class SeleccionReclutamiento
 	{
 		public var id:*;
+		public var reclutamientoSolicitudEmpleo:ReclutamientoSolicitudEmpleo;
 		public var tipoCandidato:TipoCandidato;
 		public var examenPsicometrico:ExamenPsicometrico;
 		public var perfilEscala:PerfilEscala;

@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Form xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import model.Constants;
+			import model.Prestaciones;
+			import model.Dependientes;
+			import model.Util;
+			import model.ViveCon;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.com.gahm.componentes.validadores.ValidadorEntero;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			private var mode:String = null;
+			private var _item:Prestaciones;
+			private var validators:InicializaValidadoresEtiquetas;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				this.label = Constants.REGISTRAR;
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set benefits(value:Prestaciones):void{
+				if( value == null ){
+					return;
+				}
+				this.cleanForm();
+				this._item = value;
+				this.setItem(); 
+			}
+			
+			private function setItem():void
+			{
+				if( this._item == null ){
+					return;
+				}
+				this.txtID.text = this._item.id.toString();
+				this.chkSocialSecurity.selected = this._item.seguroSocial;
+				this.chkVacation.selected = this._item.vacaciones;
+				this.chkChristmasBox.selected = this._item.aguinaldo;
+				this.chkUtilities.selected = this._item.utilidades;
+				this.chkFonacot.selected = this._item.fonacot;
+				this.chkInfonavit.selected = this._item.infonavit;
+				this.chkVacationPay.selected = this._item.primaVacacional;
+			}
+			
+			public function getBenefits():Prestaciones{
+				var benefits:Prestaciones = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					benefits = new Prestaciones();
+				}else{
+					benefits = this._item;
+				}
+				benefits.seguroSocial = this.chkSocialSecurity.selected = false;
+				benefits.vacaciones = this.chkVacation.selected = false;
+				benefits.aguinaldo = this.chkChristmasBox.selected = false;
+				benefits.utilidades = this.chkUtilities.selected = false;
+				benefits.fonacot = this.chkFonacot.selected = false;
+				benefits.infonavit = this.chkInfonavit.selected = false;
+				benefits.primaVacacional = this.chkVacationPay.selected = false;
+				return benefits;
+			}
+			
+			private function fillCombos():void
+			{
+			}
+			
+			public function validations():Boolean
+			{
+				var value:Boolean = true;
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+					this.removeChild( this.frmID );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+				}
+			}
+			
+			private function initializeValidators():void
+			{
+			}
+			
+			public function cleanForm():void
+			{
+				this.txtID.reset();
+				this.chkSocialSecurity.selected = false;
+				this.chkVacation.selected = false;
+				this.chkChristmasBox.selected = false;
+				this.chkUtilities.selected = false;
+				this.chkFonacot.selected = false;
+				this.chkInfonavit.selected = false;
+				this.chkVacationPay.selected = false;
+			}
+		]]>
+	</mx:Script>
+	<mx:FormHeading label="Prestaciones"/>
+	<mx:FormItem id="frmID" label="ID:" direction="horizontal">
+		<components:TextInput id="txtID" width="80" textAlign="right" editable="false"/>
+	</mx:FormItem>
+	<mx:FormItem label="Seguro Social:">
+		<mx:CheckBox id="chkSocialSecurity"/>
+	</mx:FormItem>
+	<mx:FormItem label="Vacaciones:">
+		<mx:CheckBox id="chkVacation"/>
+	</mx:FormItem>
+	<mx:FormItem label="Aguinaldo:">
+		<mx:CheckBox id="chkChristmasBox"/>
+	</mx:FormItem>
+	<mx:FormItem label="Utilidades:">
+		<mx:CheckBox id="chkUtilities"/>
+	</mx:FormItem>
+	<mx:FormItem label="Fonacot:">
+		<mx:CheckBox id="chkFonacot"/>
+	</mx:FormItem>
+	<mx:FormItem label="Infonavit:">
+		<mx:CheckBox id="chkInfonavit"/>
+	</mx:FormItem>
+	<mx:FormItem label="25% Prima Vacacional:">
+		<mx:CheckBox id="chkVacationPay"/>
+	</mx:FormItem>
+</mx:Form>

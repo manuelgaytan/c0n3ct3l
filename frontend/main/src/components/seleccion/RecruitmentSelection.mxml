@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*" xmlns:notascreditoclientes="components.notascreditoclientes.*" xmlns:informacionfacturas="components.informacionfacturas.*" xmlns:notascreditoproveedores="components.notascreditoproveedores.*" xmlns:facturacionproveedores="components.facturacionproveedores.*" xmlns:comprobacionesviaticos="components.comprobacionesviaticos.*" xmlns:seleccion="components.seleccion.*"
+		 initialize="initializeHandler(event)" xmlns:reclutamientosolicitudempleo="components.reclutamientosolicitudempleo.*"
+		 >
+	<mx:Script>
+		<![CDATA[
+			import components.clientes.Client;
+			
+			import events.GenericEvent;
+			
+			import model.BancoConectel;
+			import model.Catalogo;
+			import model.Cliente;
+			import model.Colaborador;
+			import model.ComprobacionViaticos;
+			import model.ConceptoOtraOperacionFinanciera;
+			import model.Constants;
+			import model.Estado;
+			import model.EstadoOrdenCompra;
+			import model.EstadoValidacionCosto;
+			import model.EstadoValidacionOperativa;
+			import model.FaseContratacion;
+			import model.FiltroProyecto;
+			import model.MedioTransporte;
+			import model.NotaCreditoCliente;
+			import model.NotaCreditoProveedor;
+			import model.Producto;
+			import model.Proveedor;
+			import model.ProveedorCalificado;
+			import model.ProveedorMaquilador;
+			import model.Proyecto;
+			import model.ReclutamientoSolicitudEmpleo;
+			import model.SeleccionReclutamiento;
+			import model.TipoCandidato;
+			import model.TipoColaborador;
+			import model.TipoEntregable;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.Constantes;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.com.gahm.componentes.validadores.ValidadorEntero;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			[Bindable]
+			private var mode:String = null;
+			private var _item:SeleccionReclutamiento;
+			private var validators:InicializaValidadoresEtiquetas;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				this.label = Constants.REGISTRAR;
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set recruitmentSelection(value:SeleccionReclutamiento):void{
+				if( value == null ){
+					return;
+				}
+				this.cleanForm();
+				this._item = value;
+				this.setItem(); 
+			}
+			
+			private function setItem():void
+			{
+				if( this._item == null ){
+					return;
+				}
+				this.txtID.text = this._item.id.toString();
+				this.recruitmentJobApplication.datagrid.dataProvider = Util.asArrayCollection( this._item.reclutamientoSolicitudEmpleo );
+				if( Util.isFill( this.cmbCandidateType ) && this._item 
+					&& this._item.tipoCandidato != null ){
+					this.cmbCandidateType.selectedIndex = Util.selectedIndexFromCombo( this.cmbCandidateType.dataProvider as ArrayCollection, 
+						this._item.tipoCandidato.id);
+				}
+				this.psycometricQuiz.psycometricQuiz = this._item.examenPsicometrico;
+				this.scalaProfile.scalaProfile = this._item.perfilEscala;
+				if( Util.isFill( this.cmbContractPhase ) && this._item 
+					&& this._item.faseContratacion != null ){
+					this.cmbContractPhase.selectedIndex = Util.selectedIndexFromCombo( this.cmbContractPhase.dataProvider as ArrayCollection, 
+						this._item.faseContratacion.id);
+				}
+			}
+			
+			private function getRecruitmentSelection():SeleccionReclutamiento{
+				var recruitmentSelection:SeleccionReclutamiento = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					recruitmentSelection = new SeleccionReclutamiento();
+				}else{
+					recruitmentSelection = this._item;
+				}
+				recruitmentSelection.reclutamientoSolicitudEmpleo = this.recruitmentJobApplication.datagrid.selectedItem as ReclutamientoSolicitudEmpleo;
+				recruitmentSelection.tipoCandidato = Util.validateCombo( this.cmbCandidateType ) as TipoCandidato;
+				recruitmentSelection.examenPsicometrico = psycometricQuiz.getPsycometricQuiz();
+				recruitmentSelection.perfilEscala = scalaProfile.getScalaProfile();
+				recruitmentSelection.faseContratacion = Util.validateCombo( this.cmbContractPhase ) as FaseContratacion;
+				return recruitmentSelection;
+			}
+			
+			private function fillCombos():void
+			{
+				this.responseGetTipoCandidato.token = this.catalogoService.getTipoCandidato();
+				this.responseGetFaseContratacion.token = this.catalogoService.getFaseContratacion();
+			}
+			
+			protected function seleccionReclutamientoService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function btnAccept_clickHandler(event:MouseEvent):void
+			{
+				if( !this.validations() ){
+					Util.showMessageVerifyFields();
+					return;
+				}
+				if( this.mode == Constants.REGISTER_MODE ){
+					var recruitmentSelection:SeleccionReclutamiento = this.getRecruitmentSelection();
+					Util.showProperties( recruitmentSelection );
+					this.responseSave.token = this.seleccionReclutamientoService.save( recruitmentSelection );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
+				}
+			}
+			
+			private function updateItem(event:CloseEvent):void{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var item:SeleccionReclutamiento = this.getRecruitmentSelection();
+				Util.showProperties( item );
+				this.responseUpdate.token = this.seleccionReclutamientoService.update( item );
+			}
+			
+			private function validations():Boolean
+			{
+				var value:Boolean = true;
+				value &&= recruitmentJobApplication.datagrid.selectedItem != null;
+				value &&= psycometricQuiz.validations();
+				value &&= scalaProfile.validations();
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+					form.removeChild( this.frmID );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+				}
+			}
+			
+			private function initializeValidators():void
+			{
+			}
+			
+			protected function responseSave_resultHandler(event:ResultEvent):void
+			{
+				var eventGeneralDataProjectNew:Event = new Event("recruitmentSelectionNew");
+				this.dispatchEvent( eventGeneralDataProjectNew );
+				this.cleanForm();
+			}
+			
+			private function cleanForm():void
+			{
+				this.txtID.reset();
+				this.recruitmentJobApplication.datagrid.selectedItem = false;
+				this.cmbCandidateType.selectedIndex = 0;
+				this.psycometricQuiz.cleanForm();
+				this.scalaProfile.cleanForm();
+				this.nstTechnicalQuiz.value = 0;
+				this.cmbContractPhase.selectedIndex = 0;
+			}
+			
+			protected function responseUpdate_resultHandler(event:ResultEvent):void
+			{
+				var eventGeneralDataProjectUpdated:Event = new Event("recruitmentSelectionUpdated");
+				this.dispatchEvent( eventGeneralDataProjectUpdated );
+				this.cleanForm();
+			}
+			
+			protected function responseGetTipoCandidato_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbCandidateType.dataProvider = data;
+				if( Util.isFill( this.cmbCandidateType ) && this._item 
+					&& this._item.tipoCandidato != null ){
+					this.cmbCandidateType.selectedIndex = Util.selectedIndexFromCombo( this.cmbCandidateType.dataProvider as ArrayCollection, 
+						this._item.tipoCandidato.id);
+				}
+			}
+			
+			protected function responseGetFaseContratacion_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbContractPhase.dataProvider = data;
+				if( Util.isFill( this.cmbContractPhase ) && this._item 
+					&& this._item.faseContratacion != null ){
+					this.cmbContractPhase.selectedIndex = Util.selectedIndexFromCombo( this.cmbContractPhase.dataProvider as ArrayCollection, 
+						this._item.faseContratacion.id);
+				}
+			}
+			
+			protected function initializeHandler(event:FlexEvent):void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+					this.psycometricQuiz.registrer = true;
+					this.scalaProfile.registrer = true;
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+				}
+			}
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="recruitmentSelectionNew", type="flash.events.Event")]
+		[Event(name="recruitmentSelectionUpdated", type="flash.events.Event")]
+		[Event(name="recruitmentSelectionProjectDone", type="flash.events.Event")]
+		[Event(name="creditNoteSelected", type="events.GenericEvent")]
+		[Event(name="perDiemCheckSelected", type="events.GenericEvent")]
+	</mx:Metadata>
+	<mx:Form id="form">
+		<mx:FormItem id="frmID" label="ID:" direction="horizontal">
+			<components:TextInput id="txtID" width="80" textAlign="right"
+								  editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Solicitud Empleo:"/>
+		<reclutamientosolicitudempleo:Consult id="recruitmentJobApplication" readMode="true"/>
+		<mx:FormItem label="Tipo de Candidato:">
+			<mx:ComboBox id="cmbCandidateType" width="200"
+						 labelField="tipo"/>
+		</mx:FormItem>
+		<seleccion:PsycometricQuiz id="psycometricQuiz"/>
+		<seleccion:ScalaProfile id="scalaProfile"/>
+		<mx:FormItem label="Exámen Técnico:">
+			<mx:NumericStepper id="nstTechnicalQuiz" minimum="0" maximum="10"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fase de Contratación:">
+			<mx:ComboBox id="cmbContractPhase" width="200"
+						 labelField="fase"/>
+		</mx:FormItem>
+		<mx:FormItem direction="horizontal">
+			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:RemoteObject id="seleccionReclutamientoService" destination="seleccionReclutamientoService" fault="seleccionReclutamientoService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
+	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
+	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="seleccionReclutamientoService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetTipoCandidato" result="responseGetTipoCandidato_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetFaseContratacion" result="responseGetFaseContratacion_resultHandler(event)"/>
+</mx:VBox>

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:DateField xmlns:mx="http://www.adobe.com/2006/mxml" creationComplete="creationCompleteHandler(event)"
-			  width="100">
+<mx:DateField xmlns:mx="http://www.adobe.com/2006/mxml" 
+			  initialize="initializeHandler(event)"
+			  creationComplete="creationCompleteHandler(event)"
+			  width="100"
+			  yearNavigationEnabled="true">
 	<mx:Script>
 		<![CDATA[
 			import model.Constants;
@@ -13,7 +16,7 @@
 				selectedDate = null;
 			}
 			
-			protected function creationCompleteHandler(event:FlexEvent):void
+			protected function initializeHandler(event:FlexEvent):void
 			{
 				var diasSemana:Array = new Array();
 				var meses:Array = new Array();
@@ -41,6 +44,13 @@
 				this.dayNames = diasSemana;								
 				this.monthNames = meses;
 			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
 		]]>
 	</mx:Script>
 </mx:DateField>

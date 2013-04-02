@@ -4,7 +4,7 @@ package model
 	public class CartaAntecedentesPenales
 	{
 		public var id:*;
-		public var tiene_carta:String;
+		public var tieneCarta:String;
 		
 		public function CartaAntecedentesPenales()
 		{

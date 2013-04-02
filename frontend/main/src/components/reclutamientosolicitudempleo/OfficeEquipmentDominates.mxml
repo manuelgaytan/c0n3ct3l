@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Form xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import model.Constants;
+			import model.EquipoOficinaDomina;
+			import model.Dependientes;
+			import model.Util;
+			import model.ViveCon;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.com.gahm.componentes.validadores.ValidadorEntero;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			private var mode:String = null;
+			private var _item:EquipoOficinaDomina;
+			private var validators:InicializaValidadoresEtiquetas;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				this.label = Constants.REGISTRAR;
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set officeEquipmentDominates(value:EquipoOficinaDomina):void{
+				if( value == null ){
+					return;
+				}
+				this.cleanForm();
+				this._item = value;
+				this.setItem(); 
+			}
+			
+			private function setItem():void
+			{
+				if( this._item == null ){
+					return;
+				}
+				this.txtID.text = this._item.id.toString();
+				this.chkPersonalComputer.selected = this._item.pc;
+				this.chkCalculator.selected = this._item.calculadora;
+				this.chkPrinter.selected = this._item.impresora;
+				this.chkFax.selected = this._item.fax;
+				this.chkPhone.selected = this._item.telefono;
+				this.chkScanner.selected = this._item.scanner;
+				this.chkTablet.selected = this._item.tablet;
+				this.chkLaptop.selected = this._item.laptop;
+				this.chkOthers.selected = this._item.otros;
+			}
+			
+			public function getOfficeEquipmentDominates():EquipoOficinaDomina{
+				var officeEquipmentDominates:EquipoOficinaDomina = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					officeEquipmentDominates = new EquipoOficinaDomina();
+				}else{
+					officeEquipmentDominates = this._item;
+				}
+				officeEquipmentDominates.pc = this.chkPersonalComputer.selected;
+				officeEquipmentDominates.calculadora = this.chkCalculator.selected;
+				officeEquipmentDominates.impresora = this.chkPrinter.selected;
+				officeEquipmentDominates.fax = this.chkFax.selected;
+				officeEquipmentDominates.telefono = this.chkPhone.selected;
+				officeEquipmentDominates.scanner = this.chkScanner.selected;
+				officeEquipmentDominates.tablet = this.chkTablet.selected;
+				officeEquipmentDominates.laptop = this.chkLaptop.selected;
+				officeEquipmentDominates.otros = this.chkOthers.selected;
+				return officeEquipmentDominates;
+			}
+			
+			private function fillCombos():void
+			{
+			}
+			
+			public function validations():Boolean
+			{
+				var value:Boolean = true;
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+					this.removeChild( this.frmID );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+				}
+			}
+			
+			private function initializeValidators():void
+			{
+			}
+			
+			public function cleanForm():void
+			{
+				this.txtID.reset();
+				this.chkPersonalComputer.selected = false;
+				this.chkCalculator.selected = false;
+				this.chkPrinter.selected = false;
+				this.chkFax.selected = false;
+				this.chkPhone.selected = false;
+				this.chkScanner.selected = false;
+				this.chkTablet.selected = false;
+				this.chkLaptop.selected = false;
+				this.chkOthers.selected = false;
+			}
+		]]>
+	</mx:Script>
+	<mx:FormHeading label="Equipo de Oficina que Domina"/>
+	<mx:FormItem id="frmID" label="ID:" direction="horizontal">
+		<components:TextInput id="txtID" width="80" textAlign="right" editable="false"/>
+	</mx:FormItem>
+	<mx:FormItem label="Computadora Personal:">
+		<mx:CheckBox id="chkPersonalComputer"/>
+	</mx:FormItem>
+	<mx:FormItem label="Calculadora:">
+		<mx:CheckBox id="chkCalculator"/>
+	</mx:FormItem>
+	<mx:FormItem label="Impresora:">
+		<mx:CheckBox id="chkPrinter"/>
+	</mx:FormItem>
+	<mx:FormItem label="Fax:">
+		<mx:CheckBox id="chkFax"/>
+	</mx:FormItem>
+	<mx:FormItem label="Teléfono:">
+		<mx:CheckBox id="chkPhone"/>
+	</mx:FormItem>
+	<mx:FormItem label="Escáner:">
+		<mx:CheckBox id="chkScanner"/>
+	</mx:FormItem>
+	<mx:FormItem label="Tableta:">
+		<mx:CheckBox id="chkTablet"/>
+	</mx:FormItem>
+	<mx:FormItem label="Laptop:">
+		<mx:CheckBox id="chkLaptop"/>
+	</mx:FormItem>
+	<mx:FormItem label="Otros:">
+		<mx:CheckBox id="chkOthers"/>
+	</mx:FormItem>
+</mx:Form>

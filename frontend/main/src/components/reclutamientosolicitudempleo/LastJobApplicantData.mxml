@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Form xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 width="100%" height="100%" label="Datos del Último ó Actual Empleo"
+		 creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import model.Constants;
+			import model.DatosUltimoEmpleoSolicitante;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.com.gahm.componentes.validadores.ValidadorEntero;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			private var mode:String = null;
+			private var _item:DatosUltimoEmpleoSolicitante;
+			private var validators:InicializaValidadoresEtiquetas;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				//this.label = Constants.REGISTRAR;
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set lastJobApplicantData(value:DatosUltimoEmpleoSolicitante):void{
+				if( value == null ){
+					return;
+				}
+				this.cleanForm();
+				this._item = value;
+				this.setItem(); 
+			}
+			
+			private function setItem():void
+			{
+				if( this._item == null ){
+					return;
+				}
+				this.txtID.text = this._item.id.toString();
+				this.txtCorporateName.text = this._item.nombreEmpresa;
+				this.txtAddress.text = this._item.domicilio;
+				this.txtPhones.text = this._item.telefonos;
+				this.txtInitialPosition.text = this._item.puestoInicial;
+				this.txtLastPosition.text = this._item.puestoFinal;
+				this.txtInitialSalary.text = this._item.sueldoInicial.toString();
+				this.txtLastSalary.text = this._item.sueldoFinal.toString();
+				this.txtReasonLeftJob.text = this._item.motivoSeparacion;
+				this.txtNameBossDirectly.text = this._item.nombreJefeInmediato;
+				this.txtJobDone.text = this._item.actividadesDesempenadas;
+				this.txtCorporateNameBefore.text = this._item.nombreEmpresaAnterior;
+				this.txtAddressBefore.text = this._item.domicilioAnterior;
+				this.txtPhonesBefore.text = this._item.telefonosAnterior;
+				this.txtInitialPositionBefore.text = this._item.puestoInicialAnterior;
+				this.txtLastPositionBefore.text = this._item.puestoFinalAnterior;
+				this.txtInitialSalaryBefore.text = this._item.sueldoInicialAnterior.toString();
+				this.txtLastSalaryBefore.text = this._item.sueldoFinalAnterior.toString();
+				this.txtReasonLeftJobBefore.text = this._item.motivoSeparacionAnterior;
+				this.txtNameBossDirectlyBefore.text = this._item.nombreJefeInmediatoAnterior;
+				this.txtJobDoneBefore.text = this._item.actividadesDesempenadasAnterior;
+			}
+			
+			public function getLastJobApplicantData():DatosUltimoEmpleoSolicitante{
+				var lastJobApplicantData:DatosUltimoEmpleoSolicitante = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					lastJobApplicantData = new DatosUltimoEmpleoSolicitante();
+				}else{
+					lastJobApplicantData = this._item;
+				}
+				lastJobApplicantData.nombreEmpresa = Util.validateEmpty( this.txtCorporateName.text );
+				lastJobApplicantData.domicilio = Util.validateEmpty( this.txtAddress.text );
+				lastJobApplicantData.telefonos = Util.validateEmpty( this.txtPhones.text );
+				lastJobApplicantData.puestoInicial = Util.validateEmpty( this.txtInitialPosition.text );
+				lastJobApplicantData.puestoFinal = Util.validateEmpty( this.txtLastPosition.text );
+				lastJobApplicantData.sueldoInicial = Util.validateEmpty( this.txtInitialSalary.text );
+				lastJobApplicantData.sueldoFinal = Util.validateEmpty( this.txtLastSalary.text );
+				lastJobApplicantData.motivoSeparacion = Util.validateEmpty( this.txtReasonLeftJob.text );
+				lastJobApplicantData.nombreJefeInmediato = Util.validateEmpty( this.txtNameBossDirectly.text );
+				lastJobApplicantData.actividadesDesempenadas = Util.validateEmpty( this.txtJobDone.text );
+				lastJobApplicantData.nombreEmpresaAnterior = Util.validateEmpty( this.txtCorporateNameBefore.text );
+				lastJobApplicantData.domicilioAnterior = Util.validateEmpty( this.txtAddressBefore.text );
+				lastJobApplicantData.telefonosAnterior = Util.validateEmpty( this.txtPhonesBefore.text );
+				lastJobApplicantData.puestoInicialAnterior = Util.validateEmpty( this.txtInitialPositionBefore.text );
+				lastJobApplicantData.puestoFinalAnterior = Util.validateEmpty( this.txtLastPositionBefore.text );
+				lastJobApplicantData.sueldoInicialAnterior = Util.validateEmpty( this.txtInitialSalaryBefore.text );
+				lastJobApplicantData.sueldoFinalAnterior = Util.validateEmpty( this.txtLastSalaryBefore.text );
+				lastJobApplicantData.motivoSeparacionAnterior = Util.validateEmpty( this.txtReasonLeftJobBefore.text );
+				lastJobApplicantData.nombreJefeInmediatoAnterior = Util.validateEmpty( this.txtNameBossDirectlyBefore.text );
+				lastJobApplicantData.actividadesDesempenadasAnterior = Util.validateEmpty( this.txtJobDoneBefore.text );
+				return lastJobApplicantData;
+			}
+			
+			private function fillCombos():void
+			{
+			}
+			
+			protected function pagoOtraOperacionFinancieraService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			public function validations():Boolean
+			{
+				var value:Boolean = true;
+				value &&= this.validators.validarFormulario();
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+					this.removeChild( this.frmID );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+				}
+			}
+			
+			private function initializeValidators():void
+			{
+				this.validators = new InicializaValidadoresEtiquetas();
+				this.validators.crearValidadorRestrictor("genericAlfanumeric", ValidadorAlfanumerico.nombre, 0, 255, true);
+				this.validators.setRestrictor( this.txtCorporateName, "genericAlfanumeric");
+				this.validators.setRestrictor( this.txtAddress, "genericAlfanumeric");
+				this.validators.setRestrictor( this.txtPhones, "genericAlfanumeric");
+				this.validators.setRestrictor( this.txtInitialPosition, "genericAlfanumeric");
+				this.validators.setRestrictor( this.txtLastPosition, "genericAlfanumeric");
+				this.validators.setRestrictor( this.txtReasonLeftJob, "genericAlfanumeric");
+				this.validators.setRestrictor( this.txtNameBossDirectly, "genericAlfanumeric");
+				this.validators.setRestrictor( this.txtJobDone, "genericAlfanumeric");
+				this.validators.setRestrictor( this.txtCorporateNameBefore, "genericAlfanumeric");
+				this.validators.setRestrictor( this.txtAddressBefore, "genericAlfanumeric");
+				this.validators.setRestrictor( this.txtPhonesBefore, "genericAlfanumeric");
+				this.validators.setRestrictor( this.txtInitialPositionBefore, "genericAlfanumeric");
+				this.validators.setRestrictor( this.txtLastPositionBefore, "genericAlfanumeric");
+				this.validators.setRestrictor( this.txtReasonLeftJobBefore, "genericAlfanumeric");
+				this.validators.setRestrictor( this.txtNameBossDirectlyBefore, "genericAlfanumeric");
+				this.validators.setRestrictor( this.txtJobDoneBefore, "genericAlfanumeric");
+				this.validators.crearValidadorRestrictor("genericDecimal", ValidadorDecimal.nombre, 9, 2);
+				this.validators.setRestrictor( this.txtInitialSalary, "genericDecimal" );
+				this.validators.setRestrictor( this.txtLastSalary, "genericDecimal" );
+				this.validators.setRestrictor( this.txtInitialSalaryBefore, "genericDecimal" );
+				this.validators.setRestrictor( this.txtLastSalaryBefore, "genericDecimal" );
+			}
+			
+			protected function responseSave_resultHandler(event:ResultEvent):void
+			{
+				var eventGeneralDataProjectNew:Event = new Event("lastJobApplicantDataNew");
+				this.dispatchEvent( eventGeneralDataProjectNew );
+				this.cleanForm();
+			}
+			
+			public function cleanForm():void
+			{
+				this.txtID.reset();
+				this.txtCorporateName.reset();
+				this.txtAddress.reset();
+				this.txtPhones.reset();
+				this.txtInitialPosition.reset();
+				this.txtLastPosition.reset();
+				this.txtInitialSalary.reset();
+				this.txtLastSalary.reset();
+				this.txtReasonLeftJob.reset();
+				this.txtNameBossDirectly.reset();
+				this.txtJobDone.reset();
+				this.txtCorporateNameBefore.reset();
+				this.txtAddressBefore.reset();
+				this.txtPhonesBefore.reset();
+				this.txtInitialPositionBefore.reset();
+				this.txtLastPositionBefore.reset();
+				this.txtInitialSalaryBefore.reset();
+				this.txtLastSalaryBefore.reset();
+				this.txtReasonLeftJobBefore.reset();
+				this.txtNameBossDirectlyBefore.reset();
+				this.txtJobDoneBefore.reset();
+			}
+		]]>
+	</mx:Script>
+	<mx:FormItem id="frmID" label="ID:" direction="horizontal">
+		<components:TextInput id="txtID" width="80" textAlign="right" editable="false"/>
+	</mx:FormItem>
+	<mx:FormItem label="Nombre Empresa:">
+		<components:TextInput id="txtCorporateName" width="120"/>
+	</mx:FormItem>
+	<mx:FormItem label="Domicilio:">
+		<components:TextInput id="txtAddress" width="250"/>
+	</mx:FormItem>
+	<mx:FormItem label="Teléfonos:">
+		<components:TextInput id="txtPhones" width="100"/>
+	</mx:FormItem>
+	<mx:FormItem label="Puesto Inicial:">
+		<components:TextInput id="txtInitialPosition" width="100"/>
+	</mx:FormItem>
+	<mx:FormItem label="Puesto Final:">
+		<components:TextInput id="txtLastPosition" width="100"/>
+	</mx:FormItem>
+	<mx:FormItem label="Sueldo Inicial:">
+		<components:TextInput id="txtInitialSalary" textAlign="right" width="80"/>
+	</mx:FormItem>
+	<mx:FormItem label="Sueldo Final:">
+		<components:TextInput id="txtLastSalary" textAlign="right" width="80"/>
+	</mx:FormItem>
+	<mx:FormItem label="Motivo Separación:">
+		<components:TextInput id="txtReasonLeftJob" width="170"/>
+	</mx:FormItem>
+	<mx:FormItem label="Nombre Jefe Inmediato:">
+		<components:TextInput id="txtNameBossDirectly" width="110"/>
+	</mx:FormItem>
+	<mx:FormItem label="Actividades Desempeñadaas:">
+		<components:TextInput id="txtJobDone" width="250"/>
+	</mx:FormItem>
+	<mx:FormItem label="Nombre Empresa Anterior:">
+		<components:TextInput id="txtCorporateNameBefore" width="120"/>
+	</mx:FormItem>
+	<mx:FormItem label="Domicilio Anterior:">
+		<components:TextInput id="txtAddressBefore" width="250"/>
+	</mx:FormItem>
+	<mx:FormItem label="Teléfonos Anterior:">
+		<components:TextInput id="txtPhonesBefore" width="100"/>
+	</mx:FormItem>
+	<mx:FormItem label="Puesto Inicial Anterior:">
+		<components:TextInput id="txtInitialPositionBefore" width="100"/>
+	</mx:FormItem>
+	<mx:FormItem label="Puesto Final Anterior:">
+		<components:TextInput id="txtLastPositionBefore" width="100"/>
+	</mx:FormItem>
+	<mx:FormItem label="Sueldo Inicial Anterior:">
+		<components:TextInput id="txtInitialSalaryBefore" textAlign="right" width="80"/>
+	</mx:FormItem>
+	<mx:FormItem label="Sueldo Final Anterior:">
+		<components:TextInput id="txtLastSalaryBefore" textAlign="right" width="80"/>
+	</mx:FormItem>
+	<mx:FormItem label="Motivo Separación Anterior:">
+		<components:TextInput id="txtReasonLeftJobBefore" width="170"/>
+	</mx:FormItem>
+	<mx:FormItem label="Nombre Jefe Inmediato Anterior:">
+		<components:TextInput id="txtNameBossDirectlyBefore" width="110"/>
+	</mx:FormItem>
+	<mx:FormItem label="Actividades Desempeñadaas Anterior:">
+		<components:TextInput id="txtJobDoneBefore" width="250"/>
+	</mx:FormItem>
+</mx:Form>

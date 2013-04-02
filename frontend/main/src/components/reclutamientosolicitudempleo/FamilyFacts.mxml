@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Form xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 width="100%" height="100%" label="Datos Familiares"
+		 creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import model.Constants;
+			import model.DatosFamiliaresSolicitante;
+			import model.Dependientes;
+			import model.Util;
+			import model.ViveCon;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.com.gahm.componentes.validadores.ValidadorEntero;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			private var mode:String = null;
+			private var _item:DatosFamiliaresSolicitante;
+			private var validators:InicializaValidadoresEtiquetas;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				//this.label = Constants.REGISTRAR;
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set familyFacts(value:DatosFamiliaresSolicitante):void{
+				if( value == null ){
+					return;
+				}
+				this.cleanForm();
+				this._item = value;
+				this.setItem(); 
+			}
+			
+			private function setItem():void
+			{
+				if( this._item == null ){
+					return;
+				}
+				this.txtID.text = this._item.id.toString();
+				if( Util.isFill( this.cmbLiveWith ) && this._item 
+					&& this._item.viveCon != null ){
+					this.cmbLiveWith.selectedIndex = Util.selectedIndexFromCombo( this.cmbLiveWith.dataProvider as ArrayCollection, 
+						this._item.viveCon.id);
+				}
+				if( Util.isFill( this.cmbDependents ) && this._item 
+					&& this._item.dependientes != null ){
+					this.cmbDependents.selectedIndex = Util.selectedIndexFromCombo( this.cmbDependents.dataProvider as ArrayCollection, 
+						this._item.dependientes.id);
+				}
+			}
+			
+			public function getFamilyFacts():DatosFamiliaresSolicitante{
+				var familyFacts:DatosFamiliaresSolicitante = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					familyFacts = new DatosFamiliaresSolicitante();
+				}else{
+					familyFacts = this._item;
+				}
+				familyFacts.viveCon = Util.validateCombo( this.cmbLiveWith ) as ViveCon;
+				familyFacts.dependientes = Util.validateCombo( this.cmbDependents ) as Dependientes;
+				return familyFacts;
+			}
+			
+			private function fillCombos():void
+			{
+				this.responseGetViveCon.token = this.catalogoService.getViveCon();
+				this.responseGetDependientes.token = this.catalogoService.getDependientes();
+			}
+			
+			public function validations():Boolean
+			{
+				var value:Boolean = true;
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+					this.removeChild( this.frmID );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+				}
+			}
+			
+			private function initializeValidators():void
+			{
+			}
+			
+			public function cleanForm():void
+			{
+				this.txtID.reset();
+				this.cmbLiveWith.selectedIndex = 0;
+				this.cmbDependents.selectedIndex = 0;
+			}
+			
+			protected function responseGetViveCon_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbLiveWith.dataProvider = data;
+				if( Util.isFill( this.cmbLiveWith ) && this._item 
+					&& this._item.viveCon != null ){
+					this.cmbLiveWith.selectedIndex = Util.selectedIndexFromCombo( this.cmbLiveWith.dataProvider as ArrayCollection, 
+					this._item.viveCon.id);
+				}
+			}
+			
+			protected function responseGetDependientes_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbDependents.dataProvider = data;
+				if( Util.isFill( this.cmbDependents ) && this._item 
+					&& this._item.dependientes != null ){
+					this.cmbDependents.selectedIndex = Util.selectedIndexFromCombo( this.cmbDependents.dataProvider as ArrayCollection, 
+						this._item.dependientes.id);
+				}
+			}
+		]]>
+	</mx:Script>
+	<mx:FormItem id="frmID" label="ID:" direction="horizontal">
+		<components:TextInput id="txtID" width="80" textAlign="right" editable="false"/>
+	</mx:FormItem>
+	<mx:FormItem label="Vive con:">
+		<mx:ComboBox id="cmbLiveWith" width="200"
+					 labelField="relacion"/>
+	</mx:FormItem>
+	<mx:FormItem label="Dependientes:">
+		<mx:ComboBox id="cmbDependents" width="200"
+					 labelField="dependientes"/>
+	</mx:FormItem>
+	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="Util.faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetViveCon" result="responseGetViveCon_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetDependientes" result="responseGetDependientes_resultHandler(event)"/>
+</mx:Form>

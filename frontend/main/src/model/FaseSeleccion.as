@@ -4,7 +4,7 @@ package model
 	public class FaseSeleccion
 	{
 		public var id:*;
-		public var fuente:String;
+		public var fase:String;
 		
 		public function FaseSeleccion()
 		{

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
+		   width="850" height="525"
+		   xmlns:seleccion="components.seleccion.*"
+		   creationComplete="creationCompleteHandler(event)" xmlns:informacionfacturas="components.informacionfacturas.*" xmlns:notascreditoclientes="components.notascreditoclientes.*" xmlns:facturacionproveedores="components.facturacionproveedores.*" xmlns:notascreditoproveedores="components.notascreditoproveedores.*" xmlns:comprobacionesviaticos="components.comprobacionesviaticos.*">
+	<mx:Script>
+		<![CDATA[
+			import events.GenericEvent;
+			
+			import model.SeleccionReclutamiento;
+			import model.Usuario;
+			
+			import mx.events.FlexEvent;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				
+			}
+			
+			protected function consult_recruitmentSelectionDetailHandler(event:GenericEvent):void
+			{
+				this.detail.recruitmentSelection = event.information as model.SeleccionReclutamiento;
+				this.navigator.selectedChild = this.detail;
+			}
+			
+			protected function register_recruitmentSelectionNewHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+			
+			protected function detail_recruitmentSelectionUpdatedHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+		]]>
+	</mx:Script>
+	<mx:TabNavigator id="navigator" width="850" height="100%" creationPolicy="all">
+		<seleccion:Consult id="consult" itemDetail="consult_recruitmentSelectionDetailHandler(event)"/>
+		<seleccion:RecruitmentSelection id="detail" update="true" recruitmentSelectionUpdated="detail_recruitmentSelectionUpdatedHandler(event)"
+							 />
+		<seleccion:RecruitmentSelection id="register" registrer="true" recruitmentSelectionNew="register_recruitmentSelectionNewHandler(event)"
+							 />
+	</mx:TabNavigator>
+</mx:Module>

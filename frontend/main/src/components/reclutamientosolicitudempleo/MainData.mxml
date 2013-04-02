@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Form xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 width="100%" height="100%" label="Datos Principales"
+		 creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import model.Constants;
+			import model.DatosPrincipalesSolicitante;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.com.gahm.componentes.validadores.ValidadorEntero;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			private var mode:String = null;
+			private var _item:DatosPrincipalesSolicitante;
+			private var validators:InicializaValidadoresEtiquetas;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				//this.label = Constants.REGISTRAR;
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set mainData(value:DatosPrincipalesSolicitante):void{
+				if( value == null ){
+					return;
+				}
+				this.cleanForm();
+				this._item = value;
+				this.setItem(); 
+			}
+			
+			private function setItem():void
+			{
+				if( this._item == null ){
+					return;
+				}
+				this.txtID.text = this._item.id.toString();
+				this.dtfRequestDate.selectedDate = this._item.fechaSolicitud;
+				this.txtPositionRequested.text = this._item.puestoSolicitado;
+				this.txtRequestedSalary.text = this._item.sueldoSolicitado.toString();
+				this.txtEmploymentGoal.text = this._item.objetivoLaboral.toString();
+			}
+			
+			public function getMainData():DatosPrincipalesSolicitante{
+				var mainData:DatosPrincipalesSolicitante = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					mainData = new DatosPrincipalesSolicitante();
+				}else{
+					mainData = this._item;
+				}
+				mainData.fechaSolicitud = this.dtfRequestDate.selectedDate;
+				mainData.puestoSolicitado = Util.validateEmpty( this.txtPositionRequested.text );
+				mainData.sueldoSolicitado = Util.stringToNumber( this.txtRequestedSalary.text );
+				mainData.objetivoLaboral = Util.validateEmpty( this.txtEmploymentGoal.text );
+				return mainData;
+			}
+			
+			private function fillCombos():void
+			{
+			}
+			
+			protected function pagoOtraOperacionFinancieraService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			public function validations():Boolean
+			{
+				var value:Boolean = true;
+				value &&= this.validators.validarFormulario();
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+					this.removeChild( this.frmID );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+				}
+			}
+			
+			private function initializeValidators():void
+			{
+				this.validators = new InicializaValidadoresEtiquetas();
+				this.validators.crearValidadorRestrictor("genericAlfanumeric", ValidadorAlfanumerico.nombre, 0, 255, true);
+				this.validators.setValidador( this.txtPositionRequested, "genericAlfanumeric");
+				this.validators.setValidador( this.txtEmploymentGoal, "genericAlfanumeric");
+				this.validators.crearValidadorRestrictor("genericDecimal", ValidadorDecimal.nombre, 9, 2);
+				this.validators.setValidador( this.txtRequestedSalary, "genericDecimal" );
+			}
+			
+			protected function responseSave_resultHandler(event:ResultEvent):void
+			{
+				var eventGeneralDataProjectNew:Event = new Event("mainDataNew");
+				this.dispatchEvent( eventGeneralDataProjectNew );
+				this.cleanForm();
+			}
+			
+			public function cleanForm():void
+			{
+				this.txtID.reset();
+				this.dtfRequestDate.selectedIndex = 0;
+				this.txtPositionRequested.reset();
+				this.txtRequestedSalary.reset();
+				this.txtEmploymentGoal.reset();
+			}
+		]]>
+	</mx:Script>
+	<mx:FormItem id="frmID" label="ID:" direction="horizontal">
+		<components:TextInput id="txtID" width="80" textAlign="right" editable="false"/>
+	</mx:FormItem>
+	<mx:FormItem label="Fecha Solicitud:">
+		<components:DateField id="dtfRequestDate" creationComplete="this.dtfRequestDate.selectedDate = new Date()"/>
+	</mx:FormItem>
+	<mx:FormItem label="Puesto Solicitado:">
+		<components:TextInput id="txtPositionRequested" width="150"/>
+	</mx:FormItem>
+	<mx:FormItem label="Sueldo Solicitado:">
+		<components:TextInput id="txtRequestedSalary" textAlign="right" width="100"/>
+	</mx:FormItem>
+	<mx:FormItem label="Objetivo Laboral:">
+		<components:TextInput id="txtEmploymentGoal" width="250"/>
+	</mx:FormItem>
+</mx:Form>

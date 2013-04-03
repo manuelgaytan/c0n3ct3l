@@ -2045,6 +2045,137 @@
 	PRIMARY KEY (id)
 	);
 
+		CREATE TABLE Variacion
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	tipo VARCHAR(100) NOT NULL UNIQUE,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE Percepcion
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	incidencia VARCHAR(100) NOT NULL UNIQUE,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE FormaPagoPrenomina
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	tipo VARCHAR(100) NOT NULL UNIQUE,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE TipoSancion
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	tipo VARCHAR(100) NOT NULL UNIQUE,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE ClasificacionPermiso
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	tipo VARCHAR(100) NOT NULL UNIQUE,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE Deduccion
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	incidencia VARCHAR(100) NOT NULL UNIQUE,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE TipoIncapacidad
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	tipo VARCHAR(100) NOT NULL UNIQUE,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE ClaseIncidencia
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	incidencia VARCHAR(100) NOT NULL UNIQUE,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE ClasificacionFalta
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	tipo VARCHAR(100) NOT NULL UNIQUE,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE Curso
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_contratacion INT(11) UNSIGNED NOT NULL,
+	fecha_enc DATE,
+	resultado_enc DECIMAL,
+	enc BOOLEAN,
+	curso_tecnico VARCHAR(255),
+	capacitador_interno_ct VARCHAR(255),
+	capacitador_externo_ct VARCHAR(255),
+	autorizacion_ct BOOLEAN,
+	fecha_ct DATE,
+	resultado_ct DECIMAL,
+	curso_general VARCHAR(255),
+	capacitador_interno_cg VARCHAR(255),
+	capacitador_externo_cg VARCHAR(255),
+	autorizacion_cg BOOLEAN,
+	fecha_cg DATE,
+	resultado_cg DECIMAL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE RegistroPercepcion
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_contratacion INT(11) UNSIGNED NOT NULL,
+	fk_percepcion INT(11) UNSIGNED NOT NULL,
+	monto_aportacion DECIMAL NOT NULL,
+	fk_variaciones INT(11) UNSIGNED,
+	dias_correspondientes INTEGER(5),
+	fecha_inicio DATE,
+	fecha_termino DATE,
+	prima_vacacional BOOLEAN NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE InformacionPrenomina
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_contratacion INT(11) UNSIGNED NOT NULL,
+	fk_clase_incidencia INT(11) UNSIGNED NOT NULL,
+	fk_tipo_incapacidad INT(11) UNSIGNED NOT NULL,
+	monto_imss DECIMAL NOT NULL,
+	monto_conectel DECIMAL NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE RegistroDeduccion
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_contratacion INT(11) UNSIGNED NOT NULL,
+	fk_deduccion INT(11) UNSIGNED NOT NULL,
+	retardos INTEGER(5),
+	fecha_retardo DATE,
+	faltas INTEGER(5),
+	fecha_falta DATE,
+	fk_clasificacion_falta INT(11) UNSIGNED,
+	fecha_permiso DATE,
+	fk_clasificacion_permiso INT(11) UNSIGNED,
+	fk_tipo_sancion INT(11) UNSIGNED NOT NULL,
+	fk_forma_pago_prenomina INT(11) UNSIGNED NOT NULL,
+	monto_total_descuento DECIMAL NOT NULL,
+	descuento_parcial DECIMAL,
+	fecha_inicio DATE,
+	fecha_termino DATE,
+	PRIMARY KEY (id)
+	);
+
 	ALTER TABLE Cliente ADD FOREIGN KEY id_contacto_idxfk (id_contacto) REFERENCES Contacto (id);
 
 	ALTER TABLE Proyecto ADD FOREIGN KEY id_categoria_proyecto_idxfk (id_categoria_proyecto) REFERENCES CategoriaProyecto (id);
@@ -2599,6 +2730,32 @@
 	ALTER TABLE InformacionConfidencialColaborador ADD FOREIGN KEY fk_contratacion_idxfk_2 (fk_contratacion) REFERENCES Contratacion (id);
 
 	ALTER TABLE InformacionConfidencialColaborador ADD FOREIGN KEY fk_estado_colaborador_idxfk (fk_estado_colaborador) REFERENCES EstadoColaborador (id);
+
+	ALTER TABLE Curso ADD FOREIGN KEY fk_contratacion_idxfk (fk_contratacion) REFERENCES Contratacion (id);
+
+	ALTER TABLE RegistroPercepcion ADD FOREIGN KEY fk_contratacion_idxfk_1 (fk_contratacion) REFERENCES Contratacion (id);
+
+	ALTER TABLE RegistroPercepcion ADD FOREIGN KEY fk_percepcion_idxfk (fk_percepcion) REFERENCES Percepcion (id);
+
+	ALTER TABLE RegistroPercepcion ADD FOREIGN KEY fk_variaciones_idxfk (fk_variaciones) REFERENCES Variacion (id);
+
+	ALTER TABLE InformacionPrenomina ADD FOREIGN KEY fk_contratacion_idxfk_3 (fk_contratacion) REFERENCES Contratacion (id);
+
+	ALTER TABLE InformacionPrenomina ADD FOREIGN KEY fk_clase_incidencia_idxfk (fk_clase_incidencia) REFERENCES ClaseIncidencia (id);
+
+	ALTER TABLE InformacionPrenomina ADD FOREIGN KEY fk_tipo_incapacidad_idxfk (fk_tipo_incapacidad) REFERENCES TipoIncapacidad (id);
+
+	ALTER TABLE RegistroDeduccion ADD FOREIGN KEY fk_contratacion_idxfk_5 (fk_contratacion) REFERENCES Contratacion (id);
+
+	ALTER TABLE RegistroDeduccion ADD FOREIGN KEY fk_deduccion_idxfk (fk_deduccion) REFERENCES Deduccion (id);
+
+	ALTER TABLE RegistroDeduccion ADD FOREIGN KEY fk_clasificacion_falta_idxfk (fk_clasificacion_falta) REFERENCES ClasificacionFalta (id);
+
+	ALTER TABLE RegistroDeduccion ADD FOREIGN KEY fk_clasificacion_permiso_idxfk (fk_clasificacion_permiso) REFERENCES ClasificacionPermiso (id);
+
+	ALTER TABLE RegistroDeduccion ADD FOREIGN KEY fk_tipo_sancion_idxfk (fk_tipo_sancion) REFERENCES TipoSancion (id);
+
+	ALTER TABLE RegistroDeduccion ADD FOREIGN KEY fk_forma_pago_prenomina_idxfk (fk_forma_pago_prenomina) REFERENCES FormaPagoPrenomina (id);
 
 	/* Perfiles */
 	INSERT INTO Perfil
@@ -3201,17 +3358,17 @@
 	INSERT INTO ServicioSolicitado
 	VALUES (2, 'Material');
 	INSERT INTO ServicioSolicitado
-	VALUES (3, 'Equipo de medición');
+	VALUES (3, 'Equipo de Medición');
 	INSERT INTO ServicioSolicitado
-	VALUES (4, 'Equipo de cómputo');
+	VALUES (4, 'Equipo de Cómputo');
 	INSERT INTO ServicioSolicitado
 	VALUES (5, 'Hardware');
 	INSERT INTO ServicioSolicitado
 	VALUES (6, 'Software');
 	INSERT INTO ServicioSolicitado
-	VALUES (7, 'Telefonía móvil');
+	VALUES (7, 'Telefonía Móvil');
 	INSERT INTO ServicioSolicitado
-	VALUES (8, 'Equipo de transporte');
+	VALUES (8, 'Equipo de Transporte');
 	INSERT INTO ServicioSolicitado
 	VALUES (9, 'Consumibles');
 	
@@ -3693,6 +3850,99 @@
 	INSERT INTO EstadoColaborador
 	VALUES (2, 'Inactivo');
 	
+	INSERT INTO ClaseIncidencia
+	VALUES (1, 'Accidente');
+	INSERT INTO ClaseIncidencia
+	VALUES (2, 'Maternidad');
+	INSERT INTO ClaseIncidencia
+	VALUES (3, 'Enfermedad Profesional');
+	
+	INSERT INTO TipoIncapacidad
+	VALUES (1, 'Temporal');
+	INSERT INTO TipoIncapacidad
+	VALUES (2, 'Definitiva');
+
+	INSERT INTO Deduccion
+	VALUES (1, 'Herramienta');
+	INSERT INTO Deduccion
+	VALUES (2, 'Equipo Telefónico');
+	INSERT INTO Deduccion
+	VALUES (3, 'Equipo de Cómputo');
+	INSERT INTO Deduccion
+	VALUES (4, 'Credencial');
+	INSERT INTO Deduccion
+	VALUES (5, 'Playeras');
+	INSERT INTO Deduccion
+	VALUES (6, 'Retardos');
+	INSERT INTO Deduccion
+	VALUES (7, 'Faltas');
+	INSERT INTO Deduccion
+	VALUES (8, 'Pensión Alimenticia');
+	INSERT INTO Deduccion
+	VALUES (9, 'Fonacot');
+	INSERT INTO Deduccion
+	VALUES (10, 'Fondo de Ahorro');
+	INSERT INTO Deduccion
+	VALUES (11, 'Infonavit');
+	INSERT INTO Deduccion
+	VALUES (12, 'Préstamo');
+	INSERT INTO Deduccion
+	VALUES (13, 'IMSS');
+	INSERT INTO Deduccion
+	VALUES (14, 'ISR');
+	INSERT INTO Deduccion
+	VALUES (15, 'Permisos');
+	INSERT INTO Deduccion
+	VALUES (16, 'Otros Impuestos');
+	INSERT INTO Deduccion
+	VALUES (17, 'N/A');
+
+	INSERT INTO ClasificacionFalta
+	VALUES (1, 'Con Goce de Sueldo');
+	INSERT INTO ClasificacionFalta
+	VALUES (2, 'Sin Goce de Sueldo');
+
+	INSERT INTO ClasificacionPermiso
+	VALUES (1, 'Con Goce de Sueldo');
+	INSERT INTO ClasificacionPermiso
+	VALUES (2, 'Sin Goce de Sueldo');
+
+	INSERT INTO TipoSancion
+	VALUES (1, 'Descuento 1 Día');
+	INSERT INTO TipoSancion
+	VALUES (2, 'Rescisión');
+	INSERT INTO TipoSancion
+	VALUES (3, 'Suspensión');
+	INSERT INTO TipoSancion
+	VALUES (4, 'Acta Administrativa');
+	INSERT INTO TipoSancion
+	VALUES (5, 'Castigo');	
+
+	INSERT INTO FormaPagoPrenomina
+	VALUES (1, 'Total');
+	INSERT INTO FormaPagoPrenomina
+	VALUES (2, 'Parcial');
+
+	INSERT INTO Percepcion
+	VALUES (1, 'Bono por Productividad');
+	INSERT INTO Percepcion
+	VALUES (2, 'Premio de Puntualidad');
+	INSERT INTO Percepcion
+	VALUES (3, 'Incentivos');
+	INSERT INTO Percepcion
+	VALUES (4, 'Ayuda por Matrimonio');
+	INSERT INTO Percepcion
+	VALUES (5, 'Ayuda por Fallecimiento');
+	INSERT INTO Percepcion
+	VALUES (6, 'Texto');
+	INSERT INTO Percepcion
+	VALUES (7, 'Ayuda por Natalicio');
+
+	INSERT INTO Variacion
+	VALUES (1, 'Tomadas');
+	INSERT INTO Variacion
+	VALUES (2, 'Pagadas');
+
 	/*
 	INSERT INTO 
 	VALUES (1, '');

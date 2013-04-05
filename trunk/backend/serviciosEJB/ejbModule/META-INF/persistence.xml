@@ -131,6 +131,41 @@
 		<class>mx.com.gahm.conenctel.entities.ComentarioContabilidadDO</class>
 		<class>mx.com.gahm.conenctel.entities.ComentarioMoviemientoFondoFijoCajaChicaDO</class>
 		<class>mx.com.gahm.conenctel.entities.BancoConectelDO</class>
+		<class>mx.com.gahm.conenctel.entities.CobranzaDO</class>
+		<class>mx.com.gahm.conenctel.entities.ReclutamientoSolicitudEmpleoDO</class>
+		<class>mx.com.gahm.conenctel.entities.TipoContratacionDO</class>
+		<class>mx.com.gahm.conenctel.entities.SuspensionDO</class>
+		<class>mx.com.gahm.conenctel.entities.MotivoTerminoContratoDO</class>
+		<class>mx.com.gahm.conenctel.entities.EstadoColaboradorDO</class>
+		<class>mx.com.gahm.conenctel.entities.InformacionConfidencialColaboradorDO</class>
+		<class>mx.com.gahm.conenctel.entities.TipoCandidatoDO</class>
+		<class>mx.com.gahm.conenctel.entities.FaseContratacionDO</class>
+		<class>mx.com.gahm.conenctel.entities.ConceptoOtraOperacionFinancieraDO</class>
+		<class>mx.com.gahm.conenctel.entities.ComentarioTesoreriaDO</class>
+		<class>mx.com.gahm.conenctel.entities.ComentarioPagoOtraOperacionFinancieraDO</class>
+		<class>mx.com.gahm.conenctel.entities.DatosPrincipalesSolicitanteDO</class>
+		<class>mx.com.gahm.conenctel.entities.NacionalidadDO</class>
+		<class>mx.com.gahm.conenctel.entities.IdentificacionDO</class>
+		<class>mx.com.gahm.conenctel.entities.DocumentacionExtranjerosDO</class>
+		<class>mx.com.gahm.conenctel.entities.EstadoCivilDO</class>
+		<class>mx.com.gahm.conenctel.entities.SexoDO</class>
+		<class>mx.com.gahm.conenctel.entities.DireccionSolicitanteDO</class>
+		<class>mx.com.gahm.conenctel.entities.LicenciaDO</class>
+		<class>mx.com.gahm.conenctel.entities.TipoLicenciaDO</class>
+		<class>mx.com.gahm.conenctel.entities.CartaAntecedentesPenalesDO</class>
+		<class>mx.com.gahm.conenctel.entities.EstadoSaludDO</class>
+		<class>mx.com.gahm.conenctel.entities.TiempoLibreDO</class>
+		<class>mx.com.gahm.conenctel.entities.DatosGeneralesSolicitanteDO</class>
+		<class>mx.com.gahm.conenctel.entities.ViveConDO</class>
+		<class>mx.com.gahm.conenctel.entities.DependientesDO</class>
+		<class>mx.com.gahm.conenctel.entities.DatosFamiliaresSolicitanteDO</class>
+		<class>mx.com.gahm.conenctel.entities.UltimoGradoEstudiosDO</class>
+		<class>mx.com.gahm.conenctel.entities.EstadoAcademicoDO</class>
+		<class>mx.com.gahm.conenctel.entities.DatosEscolaresHabilidadesDO</class>
+		<class>mx.com.gahm.conenctel.entities.DatosUltimoEmpleoSolicitanteDO</class>
+		<class>mx.com.gahm.conenctel.entities.FuenteReclutamientoDO</class>
+		<class>mx.com.gahm.conenctel.entities.FaseSeleccionDO</class>
+		<class>mx.com.gahm.conenctel.entities.DatosSobreConectelSolicitanteDO</class>
 		<properties>
 			<property name="eclipselink.logging.level" value="FINE"/> 
 			<property name="eclipselink.logging.parameters" value="true"/>

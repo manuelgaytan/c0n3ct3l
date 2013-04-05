@@ -12,8 +12,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 
@@ -38,6 +41,8 @@ public class InformacionConfidencialColaboradorDO implements Serializable{
 	@Column(name = "id", unique = true, nullable = false)
 	private Integer id;
 	
+	@OneToOne
+	@JoinColumn(name = "fk_reclutamiento_solicitud_empleo", nullable = false)
 	private ContratacionDO contratacion;
 	
 	@Column(name = "foto", nullable = false)
@@ -65,6 +70,8 @@ public class InformacionConfidencialColaboradorDO implements Serializable{
 	@Temporal(javax.persistence.TemporalType.DATE)
 	private Date modificacionImss;
 	
+	@ManyToOne
+	@JoinColumn(name = "fk_estado_colaborador", nullable = false)
 	private EstadoColaboradorDO estadoColaborador;
 	
 	

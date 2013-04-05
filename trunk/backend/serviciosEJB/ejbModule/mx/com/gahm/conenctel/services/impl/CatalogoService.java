@@ -10,19 +10,26 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
+import mx.com.gahm.conenctel.entities.ActividadTiempoLibreDO;
 import mx.com.gahm.conenctel.entities.AplicaDO;
 import mx.com.gahm.conenctel.entities.AreaSolicitanteDO;
 import mx.com.gahm.conenctel.entities.BancoConectelDO;
+import mx.com.gahm.conenctel.entities.CartaAntecedentesPenalesDO;
 import mx.com.gahm.conenctel.entities.ColaboradorDO;
 import mx.com.gahm.conenctel.entities.CompaniaDO;
 import mx.com.gahm.conenctel.entities.ConceptoOtraOperacionFinancieraDO;
+import mx.com.gahm.conenctel.entities.DependientesDO;
 import mx.com.gahm.conenctel.entities.DescripcionAlmacenDO;
 import mx.com.gahm.conenctel.entities.DescripcionFondoFijoCajaChicaDO;
 import mx.com.gahm.conenctel.entities.DescripcionPagoContableServicioDO;
+import mx.com.gahm.conenctel.entities.DocumentacionExtranjerosDO;
+import mx.com.gahm.conenctel.entities.EstadoAcademicoDO;
+import mx.com.gahm.conenctel.entities.EstadoCivilDO;
 import mx.com.gahm.conenctel.entities.EstadoComprobacionViaticosDO;
 import mx.com.gahm.conenctel.entities.EstadoFinalValidacionDO;
 import mx.com.gahm.conenctel.entities.EstadoInvestigacionCalidadDO;
 import mx.com.gahm.conenctel.entities.EstadoOrdenCompraDO;
+import mx.com.gahm.conenctel.entities.EstadoSaludDO;
 import mx.com.gahm.conenctel.entities.EstadoSolicitudAlmacenDO;
 import mx.com.gahm.conenctel.entities.EstadoSolicitudServicioMaquiladoDO;
 import mx.com.gahm.conenctel.entities.EstadoTesoreriaDO;
@@ -34,20 +41,25 @@ import mx.com.gahm.conenctel.entities.EstatusBDO;
 import mx.com.gahm.conenctel.entities.EstatusCDO;
 import mx.com.gahm.conenctel.entities.EstatusRequisicionCompraDO;
 import mx.com.gahm.conenctel.entities.FaseContratacionDO;
+import mx.com.gahm.conenctel.entities.FaseSeleccionDO;
 import mx.com.gahm.conenctel.entities.FormaPagoDO;
+import mx.com.gahm.conenctel.entities.FuenteReclutamientoDO;
 import mx.com.gahm.conenctel.entities.GrupoFamiliaADO;
 import mx.com.gahm.conenctel.entities.GrupoFamiliaBDO;
 import mx.com.gahm.conenctel.entities.GrupoFamiliaCDO;
 import mx.com.gahm.conenctel.entities.GrupoFamiliaDDO;
 import mx.com.gahm.conenctel.entities.GrupoFamiliaEDO;
 import mx.com.gahm.conenctel.entities.GrupoFamiliaFDO;
+import mx.com.gahm.conenctel.entities.IdentificacionDO;
 import mx.com.gahm.conenctel.entities.ImputableDO;
 import mx.com.gahm.conenctel.entities.MedioTransporteDO;
 import mx.com.gahm.conenctel.entities.MotivoTerminoContratoDO;
+import mx.com.gahm.conenctel.entities.NacionalidadDO;
 import mx.com.gahm.conenctel.entities.PrioridadDO;
 import mx.com.gahm.conenctel.entities.ProveedorDO;
 import mx.com.gahm.conenctel.entities.SeguimientoDO;
 import mx.com.gahm.conenctel.entities.ServicioSolicitadoDO;
+import mx.com.gahm.conenctel.entities.SexoDO;
 import mx.com.gahm.conenctel.entities.SuspensionDO;
 import mx.com.gahm.conenctel.entities.TipoAlmacenDO;
 import mx.com.gahm.conenctel.entities.TipoCandidatoDO;
@@ -55,6 +67,7 @@ import mx.com.gahm.conenctel.entities.TipoColaboradorDO;
 import mx.com.gahm.conenctel.entities.TipoContratacionDO;
 import mx.com.gahm.conenctel.entities.TipoContratoDO;
 import mx.com.gahm.conenctel.entities.TipoEmpleadoDO;
+import mx.com.gahm.conenctel.entities.TipoLicenciaDO;
 import mx.com.gahm.conenctel.entities.TipoMantenimientoDO;
 import mx.com.gahm.conenctel.entities.TipoOperacionDO;
 import mx.com.gahm.conenctel.entities.TipoPagoDO;
@@ -63,11 +76,13 @@ import mx.com.gahm.conenctel.entities.TipoValidacionAdministrativaDO;
 import mx.com.gahm.conenctel.entities.UbicacionADO;
 import mx.com.gahm.conenctel.entities.UbicacionBDO;
 import mx.com.gahm.conenctel.entities.UbicacionCDO;
+import mx.com.gahm.conenctel.entities.UltimoGradoEstudiosDO;
 import mx.com.gahm.conenctel.entities.UnidadADO;
 import mx.com.gahm.conenctel.entities.UnidadBDO;
 import mx.com.gahm.conenctel.entities.UnidadCDO;
 import mx.com.gahm.conenctel.entities.UnidadOrdenCompraDO;
 import mx.com.gahm.conenctel.entities.ValidacionCostoDO;
+import mx.com.gahm.conenctel.entities.ViveConDO;
 import mx.com.gahm.conenctel.exceptions.ConectelException;
 import mx.com.gahm.conenctel.services.ICatalogoService;
 
@@ -909,4 +924,213 @@ public class CatalogoService implements ICatalogoService {
 		}
 		return list;
 	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<NacionalidadDO> getNacionalidad() throws ConectelException {
+		TypedQuery<NacionalidadDO> query = entityManager.createNamedQuery(
+				"NacionalidadDO.findAll", NacionalidadDO.class);
+		
+		List<NacionalidadDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
+
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<IdentificacionDO> getIdentificacion() throws ConectelException {
+		TypedQuery<IdentificacionDO> query = entityManager.createNamedQuery(
+				"IdentificacionDO.findAll", IdentificacionDO.class);
+		
+		List<IdentificacionDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<DocumentacionExtranjerosDO> getDocumentacionExtranjeros() throws ConectelException {
+		TypedQuery<DocumentacionExtranjerosDO> query = entityManager.createNamedQuery(
+				"DocumentacionExtranjerosDO.findAll", DocumentacionExtranjerosDO.class);
+		
+		List<DocumentacionExtranjerosDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<EstadoCivilDO> getEstadoCivil() throws ConectelException {
+		TypedQuery<EstadoCivilDO> query = entityManager.createNamedQuery(
+				"EstadoCivilDO.findAll", EstadoCivilDO.class);
+		
+		List<EstadoCivilDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<SexoDO> getSexo() throws ConectelException {
+		TypedQuery<SexoDO> query = entityManager.createNamedQuery(
+				"SexoDO.findAll", SexoDO.class);
+		
+		List<SexoDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<TipoLicenciaDO> getTipoLicencia() throws ConectelException {
+		TypedQuery<TipoLicenciaDO> query = entityManager.createNamedQuery(
+				"TipoLicenciaDO.findAll", TipoLicenciaDO.class);
+		
+		List<TipoLicenciaDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<CartaAntecedentesPenalesDO> getCartaAntecedentesPenales() throws ConectelException {
+		TypedQuery<CartaAntecedentesPenalesDO> query = entityManager.createNamedQuery(
+				"CartaAntecedentesPenalesDO.findAll", CartaAntecedentesPenalesDO.class);
+		
+		List<CartaAntecedentesPenalesDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<EstadoSaludDO> getEstadoSalud() throws ConectelException {
+		TypedQuery<EstadoSaludDO> query = entityManager.createNamedQuery(
+				"EstadoSaludDO.findAll", EstadoSaludDO.class);
+		
+		List<EstadoSaludDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<ActividadTiempoLibreDO> getActividadTiempoLibre() throws ConectelException {
+		TypedQuery<ActividadTiempoLibreDO> query = entityManager.createNamedQuery(
+				"ActividadTiempoLibreDO.findAll", ActividadTiempoLibreDO.class);
+		
+		List<ActividadTiempoLibreDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<ViveConDO> getViveCon() throws ConectelException {
+		TypedQuery<ViveConDO> query = entityManager.createNamedQuery(
+				"ViveConDO.findAll", ViveConDO.class);
+		
+		List<ViveConDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<DependientesDO> getDependientes() throws ConectelException {
+		TypedQuery<DependientesDO> query = entityManager.createNamedQuery(
+				"DependientesDO.findAll", DependientesDO.class);
+		
+		List<DependientesDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<UltimoGradoEstudiosDO> getUltimoGradoEstudios() throws ConectelException {
+		TypedQuery<UltimoGradoEstudiosDO> query = entityManager.createNamedQuery(
+				"UltimoGradoEstudiosDO.findAll", UltimoGradoEstudiosDO.class);
+		
+		List<UltimoGradoEstudiosDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<EstadoAcademicoDO> getEstadoAcademico() throws ConectelException {
+		TypedQuery<EstadoAcademicoDO> query = entityManager.createNamedQuery(
+				"EstadoAcademicoDO.findAll", EstadoAcademicoDO.class);
+		
+		List<EstadoAcademicoDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<FaseSeleccionDO> getFaseSeleccion() throws ConectelException {
+		TypedQuery<FaseSeleccionDO> query = entityManager.createNamedQuery(
+				"FaseSeleccionDO.findAll", FaseSeleccionDO.class);
+		
+		List<FaseSeleccionDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<FuenteReclutamientoDO> getFuenteReclutamiento() throws ConectelException {
+		TypedQuery<FuenteReclutamientoDO> query = entityManager.createNamedQuery(
+				"FuenteReclutamientoDO.findAll", FuenteReclutamientoDO.class);
+		
+		List<FuenteReclutamientoDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
+	
 }

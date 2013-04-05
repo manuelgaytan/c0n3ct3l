@@ -2176,6 +2176,28 @@
 	PRIMARY KEY (id)
 	);
 
+	CREATE TABLE Curso
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_contratacion INT(11) UNSIGNED NOT NULL,
+	fecha_enc DATE,
+	resultado_enc DECIMAL,
+	enc BOOLEAN,
+	curso_tecnico VARCHAR(255),
+	capacitador_interno_ct VARCHAR(255),
+	capacitador_externo_ct VARCHAR(255),
+	autorizacion_ct BOOLEAN,
+	fecha_ct DATE,
+	resultado_ct DECIMAL,
+	curso_general VARCHAR(255),
+	capacitador_interno_cg VARCHAR(255),
+	capacitador_externo_cg VARCHAR(255),
+	autorizacion_cg BOOLEAN,
+	fecha_cg DATE,
+	resultado_cg DECIMAL,
+	PRIMARY KEY (id)
+	);
+
 	ALTER TABLE Cliente ADD FOREIGN KEY id_contacto_idxfk (id_contacto) REFERENCES Contacto (id);
 
 	ALTER TABLE Proyecto ADD FOREIGN KEY id_categoria_proyecto_idxfk (id_categoria_proyecto) REFERENCES CategoriaProyecto (id);
@@ -2756,6 +2778,8 @@
 	ALTER TABLE RegistroDeduccion ADD FOREIGN KEY fk_tipo_sancion_idxfk (fk_tipo_sancion) REFERENCES TipoSancion (id);
 
 	ALTER TABLE RegistroDeduccion ADD FOREIGN KEY fk_forma_pago_prenomina_idxfk (fk_forma_pago_prenomina) REFERENCES FormaPagoPrenomina (id);
+
+	ALTER TABLE Curso ADD FOREIGN KEY fk_contratacion_idxfk_1 (fk_contratacion) REFERENCES Contratacion (id);
 
 	/* Perfiles */
 	INSERT INTO Perfil

@@ -141,13 +141,13 @@ public class InformacionFacturacionDO implements Serializable{
 	
 	
 	@OneToMany(mappedBy="informacionFacturacion", fetch = FetchType.EAGER)
-	private List<ComentarioInformacionFacturacion3DO> comentariosInformacionFacturacion3DO;
+	private List<ComentarioInformacionFacturacion3DO> comentariosInformacionFacturacion3;
 
 	@OneToMany(mappedBy="informacionFacturacion", fetch = FetchType.EAGER)
-	private List<ComentarioInformacionFacturacion2DO> comentariosInformacionFacturacion2DO;
+	private List<ComentarioInformacionFacturacion2DO> comentariosInformacionFacturacion2;
 
 	@OneToMany(mappedBy="informacionFacturacion", fetch = FetchType.EAGER)
-	private List<ComentarioInformacionFacturacion1DO> comentariosInformacionFacturacion1DO;
+	private List<ComentarioInformacionFacturacion1DO> comentariosInformacionFacturacion1;
 
 	public InformacionFacturacionDO(Integer id,
 			ValidacionAdministrativaDO validacionAdministrativa,
@@ -599,49 +599,50 @@ public class InformacionFacturacionDO implements Serializable{
 	}
 
 	/**
-	 * @return the comentariosInformacionFacturacion3DO
+	 * @return the comentariosInformacionFacturacion3
 	 */
-	public List<ComentarioInformacionFacturacion3DO> getComentariosInformacionFacturacion3DO() {
-		return comentariosInformacionFacturacion3DO;
+	public List<ComentarioInformacionFacturacion3DO> getComentariosInformacionFacturacion3() {
+		return comentariosInformacionFacturacion3;
 	}
 
 	/**
-	 * @param comentariosInformacionFacturacion3DO the comentariosInformacionFacturacion3DO to set
+	 * @param comentariosInformacionFacturacion3 the comentariosInformacionFacturacion3 to set
 	 */
-	public void setComentariosInformacionFacturacion3DO(
-			List<ComentarioInformacionFacturacion3DO> comentariosInformacionFacturacion3DO) {
-		this.comentariosInformacionFacturacion3DO = comentariosInformacionFacturacion3DO;
+	public void setComentariosInformacionFacturacion3(
+			List<ComentarioInformacionFacturacion3DO> comentariosInformacionFacturacion3) {
+		this.comentariosInformacionFacturacion3 = comentariosInformacionFacturacion3;
 	}
 
 	/**
-	 * @return the comentariosInformacionFacturacion2DO
+	 * @return the comentariosInformacionFacturacion2
 	 */
-	public List<ComentarioInformacionFacturacion2DO> getComentariosInformacionFacturacion2DO() {
-		return comentariosInformacionFacturacion2DO;
+	public List<ComentarioInformacionFacturacion2DO> getComentariosInformacionFacturacion2() {
+		return comentariosInformacionFacturacion2;
 	}
 
 	/**
-	 * @param comentariosInformacionFacturacion2DO the comentariosInformacionFacturacion2DO to set
+	 * @param comentariosInformacionFacturacion2 the comentariosInformacionFacturacion2 to set
 	 */
-	public void setComentariosInformacionFacturacion2DO(
-			List<ComentarioInformacionFacturacion2DO> comentariosInformacionFacturacion2DO) {
-		this.comentariosInformacionFacturacion2DO = comentariosInformacionFacturacion2DO;
+	public void setComentariosInformacionFacturacion2(
+			List<ComentarioInformacionFacturacion2DO> comentariosInformacionFacturacion2) {
+		this.comentariosInformacionFacturacion2 = comentariosInformacionFacturacion2;
 	}
 
 	/**
-	 * @return the comentariosInformacionFacturacion1DO
+	 * @return the comentariosInformacionFacturacion1
 	 */
-	public List<ComentarioInformacionFacturacion1DO> getComentariosInformacionFacturacion1DO() {
-		return comentariosInformacionFacturacion1DO;
+	public List<ComentarioInformacionFacturacion1DO> getComentariosInformacionFacturacion1() {
+		return comentariosInformacionFacturacion1;
 	}
 
 	/**
-	 * @param comentariosInformacionFacturacion1DO the comentariosInformacionFacturacion1DO to set
+	 * @param comentariosInformacionFacturacion1 the comentariosInformacionFacturacion1 to set
 	 */
-	public void setComentariosInformacionFacturacion1DO(
-			List<ComentarioInformacionFacturacion1DO> comentariosInformacionFacturacion1DO) {
-		this.comentariosInformacionFacturacion1DO = comentariosInformacionFacturacion1DO;
+	public void setComentariosInformacionFacturacion1(
+			List<ComentarioInformacionFacturacion1DO> comentariosInformacionFacturacion1) {
+		this.comentariosInformacionFacturacion1 = comentariosInformacionFacturacion1;
 	}
+
 	
 	
 	

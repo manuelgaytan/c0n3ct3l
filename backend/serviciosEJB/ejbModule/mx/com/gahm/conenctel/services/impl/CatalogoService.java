@@ -12,8 +12,10 @@ import javax.persistence.TypedQuery;
 
 import mx.com.gahm.conenctel.entities.AplicaDO;
 import mx.com.gahm.conenctel.entities.AreaSolicitanteDO;
+import mx.com.gahm.conenctel.entities.BancoConectelDO;
 import mx.com.gahm.conenctel.entities.ColaboradorDO;
 import mx.com.gahm.conenctel.entities.CompaniaDO;
+import mx.com.gahm.conenctel.entities.ConceptoOtraOperacionFinancieraDO;
 import mx.com.gahm.conenctel.entities.DescripcionAlmacenDO;
 import mx.com.gahm.conenctel.entities.DescripcionFondoFijoCajaChicaDO;
 import mx.com.gahm.conenctel.entities.DescripcionPagoContableServicioDO;
@@ -31,6 +33,7 @@ import mx.com.gahm.conenctel.entities.EstatusADO;
 import mx.com.gahm.conenctel.entities.EstatusBDO;
 import mx.com.gahm.conenctel.entities.EstatusCDO;
 import mx.com.gahm.conenctel.entities.EstatusRequisicionCompraDO;
+import mx.com.gahm.conenctel.entities.FaseContratacionDO;
 import mx.com.gahm.conenctel.entities.FormaPagoDO;
 import mx.com.gahm.conenctel.entities.GrupoFamiliaADO;
 import mx.com.gahm.conenctel.entities.GrupoFamiliaBDO;
@@ -40,12 +43,16 @@ import mx.com.gahm.conenctel.entities.GrupoFamiliaEDO;
 import mx.com.gahm.conenctel.entities.GrupoFamiliaFDO;
 import mx.com.gahm.conenctel.entities.ImputableDO;
 import mx.com.gahm.conenctel.entities.MedioTransporteDO;
+import mx.com.gahm.conenctel.entities.MotivoTerminoContratoDO;
 import mx.com.gahm.conenctel.entities.PrioridadDO;
 import mx.com.gahm.conenctel.entities.ProveedorDO;
 import mx.com.gahm.conenctel.entities.SeguimientoDO;
 import mx.com.gahm.conenctel.entities.ServicioSolicitadoDO;
+import mx.com.gahm.conenctel.entities.SuspensionDO;
 import mx.com.gahm.conenctel.entities.TipoAlmacenDO;
+import mx.com.gahm.conenctel.entities.TipoCandidatoDO;
 import mx.com.gahm.conenctel.entities.TipoColaboradorDO;
+import mx.com.gahm.conenctel.entities.TipoContratacionDO;
 import mx.com.gahm.conenctel.entities.TipoContratoDO;
 import mx.com.gahm.conenctel.entities.TipoEmpleadoDO;
 import mx.com.gahm.conenctel.entities.TipoMantenimientoDO;
@@ -798,6 +805,103 @@ public class CatalogoService implements ICatalogoService {
 				"DescripcionPagoContableServicioDO.getByTipoOperacion", DescripcionPagoContableServicioDO.class);
 		query.setParameter("idTipoOperacion", idTipoOperacion);
 		List<DescripcionPagoContableServicioDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<TipoContratacionDO> getTipoContratacion() throws ConectelException {
+		TypedQuery<TipoContratacionDO> query = entityManager.createNamedQuery(
+				"TipoContratacionDO.findAll", TipoContratacionDO.class);
+		
+		List<TipoContratacionDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<SuspensionDO> getSuspension() throws ConectelException {
+		TypedQuery<SuspensionDO> query = entityManager.createNamedQuery(
+				"SuspensionDO.findAll", SuspensionDO.class);
+		
+		List<SuspensionDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<MotivoTerminoContratoDO> getMotivoTerminoContrato() throws ConectelException {
+		TypedQuery<MotivoTerminoContratoDO> query = entityManager.createNamedQuery(
+				"MotivoTerminoContratoDO.findAll", MotivoTerminoContratoDO.class);
+		
+		List<MotivoTerminoContratoDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<TipoCandidatoDO> getTipoCandidato() throws ConectelException {
+		TypedQuery<TipoCandidatoDO> query = entityManager.createNamedQuery(
+				"TipoCandidatoDO.findAll", TipoCandidatoDO.class);
+		
+		List<TipoCandidatoDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<FaseContratacionDO> getFaseContratacion() throws ConectelException {
+		TypedQuery<FaseContratacionDO> query = entityManager.createNamedQuery(
+				"FaseContratacionDO.findAll", FaseContratacionDO.class);
+		
+		List<FaseContratacionDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
+	
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<ConceptoOtraOperacionFinancieraDO> getConceptoOtraOperacionFinanciera() throws ConectelException {
+		TypedQuery<ConceptoOtraOperacionFinancieraDO> query = entityManager.createNamedQuery(
+				"ConceptoOtraOperacionFinancieraDO.findAll", ConceptoOtraOperacionFinancieraDO.class);
+		
+		List<ConceptoOtraOperacionFinancieraDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<BancoConectelDO> getBancoConectel() throws ConectelException {
+		TypedQuery<BancoConectelDO> query = entityManager.createNamedQuery(
+				"BancoConectelDO.findAll", BancoConectelDO.class);
+		
+		List<BancoConectelDO> list;
 		try {
 			list = query.getResultList();
 		} catch (NoResultException e) {

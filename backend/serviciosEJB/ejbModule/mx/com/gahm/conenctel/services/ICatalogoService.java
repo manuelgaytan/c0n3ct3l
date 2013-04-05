@@ -7,8 +7,10 @@ import javax.ejb.Remote;
 
 import mx.com.gahm.conenctel.entities.AplicaDO;
 import mx.com.gahm.conenctel.entities.AreaSolicitanteDO;
+import mx.com.gahm.conenctel.entities.BancoConectelDO;
 import mx.com.gahm.conenctel.entities.ColaboradorDO;
 import mx.com.gahm.conenctel.entities.CompaniaDO;
+import mx.com.gahm.conenctel.entities.ConceptoOtraOperacionFinancieraDO;
 import mx.com.gahm.conenctel.entities.DescripcionAlmacenDO;
 import mx.com.gahm.conenctel.entities.DescripcionFondoFijoCajaChicaDO;
 import mx.com.gahm.conenctel.entities.DescripcionPagoContableServicioDO;
@@ -25,6 +27,7 @@ import mx.com.gahm.conenctel.entities.EstatusADO;
 import mx.com.gahm.conenctel.entities.EstatusBDO;
 import mx.com.gahm.conenctel.entities.EstatusCDO;
 import mx.com.gahm.conenctel.entities.EstatusRequisicionCompraDO;
+import mx.com.gahm.conenctel.entities.FaseContratacionDO;
 import mx.com.gahm.conenctel.entities.FormaPagoDO;
 import mx.com.gahm.conenctel.entities.GrupoFamiliaADO;
 import mx.com.gahm.conenctel.entities.GrupoFamiliaBDO;
@@ -34,12 +37,16 @@ import mx.com.gahm.conenctel.entities.GrupoFamiliaEDO;
 import mx.com.gahm.conenctel.entities.GrupoFamiliaFDO;
 import mx.com.gahm.conenctel.entities.ImputableDO;
 import mx.com.gahm.conenctel.entities.MedioTransporteDO;
+import mx.com.gahm.conenctel.entities.MotivoTerminoContratoDO;
 import mx.com.gahm.conenctel.entities.PrioridadDO;
 import mx.com.gahm.conenctel.entities.ProveedorDO;
 import mx.com.gahm.conenctel.entities.SeguimientoDO;
 import mx.com.gahm.conenctel.entities.ServicioSolicitadoDO;
+import mx.com.gahm.conenctel.entities.SuspensionDO;
 import mx.com.gahm.conenctel.entities.TipoAlmacenDO;
+import mx.com.gahm.conenctel.entities.TipoCandidatoDO;
 import mx.com.gahm.conenctel.entities.TipoColaboradorDO;
+import mx.com.gahm.conenctel.entities.TipoContratacionDO;
 import mx.com.gahm.conenctel.entities.TipoContratoDO;
 import mx.com.gahm.conenctel.entities.TipoEmpleadoDO;
 import mx.com.gahm.conenctel.entities.TipoMantenimientoDO;
@@ -164,4 +171,11 @@ public interface ICatalogoService extends Serializable {
 	List<EstadoComprobacionViaticosDO> getEstadoComprobacionViaticos() throws ConectelException;
 	
 	List<DescripcionPagoContableServicioDO> getDescripcionPagoContableServicio(Long idTipoOperacion) throws ConectelException;
+	List<TipoContratacionDO> getTipoContratacion() throws ConectelException;
+	List<SuspensionDO> getSuspension() throws ConectelException;
+	List<MotivoTerminoContratoDO> getMotivoTerminoContrato() throws ConectelException;
+	List<TipoCandidatoDO> getTipoCandidato() throws ConectelException;
+	List<FaseContratacionDO> getFaseContratacion() throws ConectelException;
+	List<ConceptoOtraOperacionFinancieraDO> getConceptoOtraOperacionFinanciera() throws ConectelException;
+	List<BancoConectelDO> getBancoConectel() throws ConectelException;
 }

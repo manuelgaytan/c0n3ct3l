@@ -12,8 +12,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -39,8 +42,12 @@ public class ContratacionDO implements Serializable{
 	@Column(name = "id", unique = true, nullable = false)
 	private Integer id;
 	
+	@OneToOne
+	@JoinColumn(name = "fk_reclutamiento_solicitud_empleo", nullable = false)
 	private ReclutamientoSolicitudEmpleoDO reclutamientoSolicitudEmpleo;
 	
+	@OneToOne
+	@JoinColumn(name = "fk_colaborador", nullable = false)
 	private ColaboradorDO colaborador; 
 	
 	@Column(name = "sueldo_inicial", nullable = false)
@@ -54,9 +61,12 @@ public class ContratacionDO implements Serializable{
 	@Column(name = "fecha_vencimiento_certificado_medico", nullable = false, length = 10)
 	private Date fechaVencimientoCertificadoMedico;
 	
+	@ManyToOne
+	@JoinColumn(name = "fk_tipo_contratacion", nullable = false)
 	private TipoContratacionDO tipoContratacion;
 	
-	
+	@ManyToOne
+	@JoinColumn(name = "fk_tipo_contrato", nullable = false)
 	private TipoContratoDO tipoContrato;
 	
 	@Column(name = "vencimiento_contrato_eventual", nullable = false)
@@ -66,6 +76,8 @@ public class ContratacionDO implements Serializable{
 	@Column(name = "fecha_inicio_contrato", nullable = false, length = 10)
 	private Date fechaInicioContrato;
 	
+	@ManyToOne
+	@JoinColumn(name = "fk_suspension", nullable = false)
 	private SuspensionDO suspension;
 	
 	@Column(name = "motivo_suspension", nullable = false)
@@ -75,6 +87,8 @@ public class ContratacionDO implements Serializable{
 	@Column(name = "fecha_termino_contrato", nullable = false, length = 10)
 	private Date fechaTerminoContrato;
 	
+	@ManyToOne
+	@JoinColumn(name = "fk_motivo_termino_contrato", nullable = false)
 	private MotivoTerminoContratoDO motivoTerminoContrato;
 	
 	@Column(name="finiquito")

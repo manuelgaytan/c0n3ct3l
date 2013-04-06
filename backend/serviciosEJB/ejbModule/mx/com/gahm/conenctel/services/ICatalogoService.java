@@ -55,6 +55,7 @@ import mx.com.gahm.conenctel.entities.ImputableDO;
 import mx.com.gahm.conenctel.entities.MedioTransporteDO;
 import mx.com.gahm.conenctel.entities.MotivoTerminoContratoDO;
 import mx.com.gahm.conenctel.entities.NacionalidadDO;
+import mx.com.gahm.conenctel.entities.PercepcionDO;
 import mx.com.gahm.conenctel.entities.PrioridadDO;
 import mx.com.gahm.conenctel.entities.ProveedorDO;
 import mx.com.gahm.conenctel.entities.SeguimientoDO;
@@ -84,6 +85,7 @@ import mx.com.gahm.conenctel.entities.UnidadBDO;
 import mx.com.gahm.conenctel.entities.UnidadCDO;
 import mx.com.gahm.conenctel.entities.UnidadOrdenCompraDO;
 import mx.com.gahm.conenctel.entities.ValidacionCostoDO;
+import mx.com.gahm.conenctel.entities.VariacionDO;
 import mx.com.gahm.conenctel.entities.ViveConDO;
 import mx.com.gahm.conenctel.exceptions.ConectelException;
 
@@ -222,4 +224,6 @@ public interface ICatalogoService extends Serializable {
 	public List<FormaPagoPrenominaDO> getFormaPagoPrenomina() throws ConectelException ;
 	public List<ClaseIncidenciaDO> getClaseIncidencia() throws ConectelException;
 	public List<TipoIncapacidadDO> getTipoIncapacidad() throws ConectelException;
+	public List<VariacionDO> getVariacion() throws ConectelException;
+	public List<PercepcionDO> getPercepcion() throws ConectelException;
 }

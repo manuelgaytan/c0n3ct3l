@@ -60,6 +60,7 @@ import mx.com.gahm.conenctel.entities.ImputableDO;
 import mx.com.gahm.conenctel.entities.MedioTransporteDO;
 import mx.com.gahm.conenctel.entities.MotivoTerminoContratoDO;
 import mx.com.gahm.conenctel.entities.NacionalidadDO;
+import mx.com.gahm.conenctel.entities.PercepcionDO;
 import mx.com.gahm.conenctel.entities.PrioridadDO;
 import mx.com.gahm.conenctel.entities.ProveedorDO;
 import mx.com.gahm.conenctel.entities.SeguimientoDO;
@@ -89,6 +90,7 @@ import mx.com.gahm.conenctel.entities.UnidadBDO;
 import mx.com.gahm.conenctel.entities.UnidadCDO;
 import mx.com.gahm.conenctel.entities.UnidadOrdenCompraDO;
 import mx.com.gahm.conenctel.entities.ValidacionCostoDO;
+import mx.com.gahm.conenctel.entities.VariacionDO;
 import mx.com.gahm.conenctel.entities.ViveConDO;
 import mx.com.gahm.conenctel.exceptions.ConectelException;
 import mx.com.gahm.conenctel.services.ICatalogoService;
@@ -1230,6 +1232,33 @@ public class CatalogoService implements ICatalogoService {
 				"TipoIncapacidadDO.findAll", TipoIncapacidadDO.class);
 		
 		List<TipoIncapacidadDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<PercepcionDO> getPercepcion() throws ConectelException {
+		TypedQuery<PercepcionDO> query = entityManager.createNamedQuery(
+				"PercepcionDO.findAll", PercepcionDO.class);
+		
+		List<PercepcionDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<VariacionDO> getVariacion() throws ConectelException {
+		TypedQuery<VariacionDO> query = entityManager.createNamedQuery(
+				"VariacionDO.findAll", VariacionDO.class);
+		
+		List<VariacionDO> list;
 		try {
 			list = query.getResultList();
 		} catch (NoResultException e) {

@@ -41,12 +41,12 @@ public class InformacionFacturacionService implements IInformacionFacturacionSer
 	@Override
 	public InformacionFacturacionDO save(InformacionFacturacionDO item) {
 	
-		List<ComentarioInformacionFacturacion3DO> comentarios3 = item.getComentariosInformacionFacturacion3DO();
-		List<ComentarioInformacionFacturacion2DO> comentarios2 = item.getComentariosInformacionFacturacion2DO();
-		List<ComentarioInformacionFacturacion1DO> comentarios1 = item.getComentariosInformacionFacturacion1DO();
-		item.setComentariosInformacionFacturacion1DO(null);
-		item.setComentariosInformacionFacturacion2DO(null);
-		item.setComentariosInformacionFacturacion3DO(null);
+		List<ComentarioInformacionFacturacion3DO> comentarios3 = item.getComentariosInformacionFacturacion3();
+		List<ComentarioInformacionFacturacion2DO> comentarios2 = item.getComentariosInformacionFacturacion2();
+		List<ComentarioInformacionFacturacion1DO> comentarios1 = item.getComentariosInformacionFacturacion1();
+		item.setComentariosInformacionFacturacion1(null);
+		item.setComentariosInformacionFacturacion2(null);
+		item.setComentariosInformacionFacturacion3(null);
 		entityManager.persist(item);
 		saveComentarios3(item,comentarios3);
 		saveComentarios2(item,comentarios2);
@@ -61,7 +61,7 @@ public class InformacionFacturacionService implements IInformacionFacturacionSer
 			entityManager.persist(item);
 		}
 		
-		item.setComentariosInformacionFacturacion3DO(comentarios3);
+		item.setComentariosInformacionFacturacion3(comentarios3);
 	}
 	
 	private void saveComentarios2(InformacionFacturacionDO item,List<ComentarioInformacionFacturacion2DO> comentarios2){
@@ -71,7 +71,7 @@ public class InformacionFacturacionService implements IInformacionFacturacionSer
 			entityManager.persist(item);
 		}
 		
-		item.setComentariosInformacionFacturacion2DO(comentarios2);
+		item.setComentariosInformacionFacturacion2(comentarios2);
 	}
 
 private void saveComentarios1(InformacionFacturacionDO item,List<ComentarioInformacionFacturacion1DO> comentarios1){
@@ -81,7 +81,7 @@ private void saveComentarios1(InformacionFacturacionDO item,List<ComentarioInfor
 			entityManager.persist(item);
 		}
 		
-		item.setComentariosInformacionFacturacion1DO(comentarios1);
+		item.setComentariosInformacionFacturacion1(comentarios1);
 	}
 	
 	@Override

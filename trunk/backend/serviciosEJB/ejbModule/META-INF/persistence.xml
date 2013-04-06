@@ -178,6 +178,8 @@
 		<class>mx.com.gahm.conenctel.entities.VariacionDO</class>
 		<class>mx.com.gahm.conenctel.entities.RegistroPercepcionDO</class>
 		<class>mx.com.gahm.conenctel.entities.CursoDO</class>
+		<class>mx.com.gahm.conenctel.entities.ComprobacionViaticoaDO</class>
+		<class>mx.com.gahm.conenctel.entities.ComentarioPagoViaticosDO</class>
 		<properties>
 			<property name="eclipselink.logging.level" value="FINE"/> 
 			<property name="eclipselink.logging.parameters" value="true"/>

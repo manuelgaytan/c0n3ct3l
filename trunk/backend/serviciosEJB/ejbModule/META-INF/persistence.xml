@@ -167,6 +167,17 @@
 		<class>mx.com.gahm.conenctel.entities.FaseSeleccionDO</class>
 		<class>mx.com.gahm.conenctel.entities.DatosSobreConectelSolicitanteDO</class>
 		<class>mx.com.gahm.conenctel.entities.ActividadTiempoLibreDO</class>
+		<class>mx.com.gahm.conenctel.entities.ClaseIncidenciaDO</class>
+		<class>mx.com.gahm.conenctel.entities.TipoIncapacidadDO</class>
+		<class>mx.com.gahm.conenctel.entities.DeduccionDO</class>
+		<class>mx.com.gahm.conenctel.entities.ClasificacionFaltaDO</class>
+		<class>mx.com.gahm.conenctel.entities.ClasificacionPermisoDO</class>
+		<class>mx.com.gahm.conenctel.entities.TipoSancionDO</class>
+		<class>mx.com.gahm.conenctel.entities.FormaPagoPrenominaDO</class>
+		<class>mx.com.gahm.conenctel.entities.PercepcionDO</class>
+		<class>mx.com.gahm.conenctel.entities.VariacionDO</class>
+		<class>mx.com.gahm.conenctel.entities.RegistroPercepcionDO</class>
+		<class>mx.com.gahm.conenctel.entities.CursoDO</class>
 		<properties>
 			<property name="eclipselink.logging.level" value="FINE"/> 
 			<property name="eclipselink.logging.parameters" value="true"/>

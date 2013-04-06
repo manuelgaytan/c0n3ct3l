@@ -2176,25 +2176,159 @@
 	PRIMARY KEY (id)
 	);
 
-	CREATE TABLE Curso
+	/* Sistema de Gestion */
+	CREATE TABLE EstadoSistemaGestion
 	(
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
-	fk_contratacion INT(11) UNSIGNED NOT NULL,
-	fecha_enc DATE,
-	resultado_enc DECIMAL,
-	enc BOOLEAN,
-	curso_tecnico VARCHAR(255),
-	capacitador_interno_ct VARCHAR(255),
-	capacitador_externo_ct VARCHAR(255),
-	autorizacion_ct BOOLEAN,
-	fecha_ct DATE,
-	resultado_ct DECIMAL,
-	curso_general VARCHAR(255),
-	capacitador_interno_cg VARCHAR(255),
-	capacitador_externo_cg VARCHAR(255),
-	autorizacion_cg BOOLEAN,
-	fecha_cg DATE,
-	resultado_cg DECIMAL,
+	estado VARCHAR(100) NOT NULL UNIQUE,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE FormaAuditoria
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	forma VARCHAR(100) NOT NULL UNIQUE,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE TipoAuditoria
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	tipo VARCHAR(100) NOT NULL UNIQUE,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE TipoCapacitacion
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	tipo VARCHAR(100) NOT NULL UNIQUE,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE TipoFormacion
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	tipo VARCHAR(100) NOT NULL UNIQUE,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE AreaLevantaNoConformidad
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	area VARCHAR(100) NOT NULL UNIQUE,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE FuenteNoConformidad
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fuente VARCHAR(100) NOT NULL UNIQUE,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE TipoAccion
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	accion VARCHAR(100) NOT NULL UNIQUE,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE SistemaGestion
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_proyecto INT(11) UNSIGNED NOT NULL,
+	aplicacion_auditoria BOOLEAN NOT NULL,
+	fk_tipo_auditoria INT(11) UNSIGNED,
+	fk_forma_auditoria INT(11) UNSIGNED,
+	fecha_envio DATE,
+	fecha_recepcion DATE,
+	formato_auditoria VARCHAR(255),
+	nombre_auditor VARCHAR(255),
+	fecha_envio_correcciones DATE,
+	fk_estado_sistema_gestion INT(11) UNSIGNED NOT NULL,
+	correcciones VARCHAR(255),
+	observaciones VARCHAR(255),
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE EstadoAccionPreventivaCorrectiva
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	estado VARCHAR(100) NOT NULL UNIQUE,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE ResultadoImplementacion
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	resultado VARCHAR(100) NOT NULL UNIQUE,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE ConcentradoCapacitacion
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_colaborador INT(11) UNSIGNED NOT NULL,
+	fk_tipo_formacion INT(11) UNSIGNED NOT NULL,
+	fk_tipo_capacitacion INT(11) UNSIGNED NOT NULL,
+	nombre_capacitacion VARCHAR(255) NOT NULL,
+	fecha_inicio_capacitacion DATE NOT NULL,
+	fecha_termino_capacitacion DATE NOT NULL,
+	lugar_capacitacion VARCHAR(255),
+	nombre_instructor VARCHAR(255),
+	calificacion DECIMAL,
+	constancia VARCHAR(255),
+	PRIMARY KEY (id)
+	);
+	
+	CREATE TABLE Sugerencia
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fecha DATE NOT NULL,
+	fk_colaborador INT(11) UNSIGNED,
+	nombre VARCHAR(255),
+	correo_electronico VARCHAR(100),
+	telefono VARCHAR(50),
+	sugerencia VARCHAR(255) NOT NULL,
+	requiere_accion_inmediata BOOLEAN NOT NULL,
+	requiere_accion_correctiva BOOLEAN NOT NULL,
+	accion_inmediata VARCHAR(255),
+	fecha_implementacion DATE NOT NULL,
+	responsable_implementacion VARCHAR(255) NOT NULL,
+	fk_resultado_implementacion INT(11) UNSIGNED NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE NoConformidad
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_area_levanta_no_conformidad INT(11) UNSIGNED NOT NULL,
+	fk_usuario INT(11) UNSIGNED NOT NULL,
+	fecha_suceso DATE NOT NULL,
+	area_nombre_se_levanta VARCHAR(255) NOT NULL,
+	suceso_evento VARCHAR(255) NOT NULL,
+	donde_ocurrio VARCHAR(255) NOT NULL,
+	cuanto_afecto VARCHAR(255) NOT NULL,
+	causas VARCHAR(255) NOT NULL,
+	correccion VARCHAR(255) NOT NULL,
+	observaciones VARCHAR(255) NOT NULL,
+	requiere_accion_correctiva BOOLEAN NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE AccionPreventivaCorrectiva
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_no_conformidad INT(11) UNSIGNED NOT NULL,
+	fecha_apertura DATE NOT NULL,
+	fk_tipo_accion INT(11) UNSIGNED NOT NULL,
+	fk_fuente_no_conformidad INT(11) UNSIGNED NOT NULL,
+	participantes_analisis VARCHAR(255) NOT NULL,
+	determinacion_causas VARCHAR(255) NOT NULL,
+	responsable_seguimiento VARCHAR(150) NOT NULL,
+	acciones_seguimiento VARCHAR(255) NOT NULL,
+	accion_tomada_eficaz BOOLEAN NOT NULL,
+	fk_estado_accion_preventiva_correctiva INT(11) UNSIGNED NOT NULL,
 	PRIMARY KEY (id)
 	);
 
@@ -2780,6 +2914,37 @@
 	ALTER TABLE RegistroDeduccion ADD FOREIGN KEY fk_forma_pago_prenomina_idxfk (fk_forma_pago_prenomina) REFERENCES FormaPagoPrenomina (id);
 
 	ALTER TABLE Curso ADD FOREIGN KEY fk_contratacion_idxfk_1 (fk_contratacion) REFERENCES Contratacion (id);
+
+	/* Sistema de Gestion */
+	ALTER TABLE SistemaGestion ADD FOREIGN KEY fk_proyecto_idxfk (fk_proyecto) REFERENCES Proyecto (id);
+
+	ALTER TABLE SistemaGestion ADD FOREIGN KEY fk_tipo_auditoria_idxfk (fk_tipo_auditoria) REFERENCES TipoAuditoria (id);
+
+	ALTER TABLE SistemaGestion ADD FOREIGN KEY fk_forma_auditoria_idxfk (fk_forma_auditoria) REFERENCES FormaAuditoria (id);
+
+	ALTER TABLE SistemaGestion ADD FOREIGN KEY fk_estado_sistema_gestion_idxfk (fk_estado_sistema_gestion) REFERENCES EstadoSistemaGestion (id);
+
+	ALTER TABLE ConcentradoCapacitacion ADD FOREIGN KEY fk_colaborador_idxfk (fk_colaborador) REFERENCES Colaborador (id);
+
+	ALTER TABLE ConcentradoCapacitacion ADD FOREIGN KEY fk_tipo_formacion_idxfk (fk_tipo_formacion) REFERENCES TipoFormacion (id);
+
+	ALTER TABLE ConcentradoCapacitacion ADD FOREIGN KEY fk_tipo_capacitacion_idxfk (fk_tipo_capacitacion) REFERENCES TipoCapacitacion (id);
+
+	ALTER TABLE Sugerencia ADD FOREIGN KEY fk_colaborador_idxfk_1 (fk_colaborador) REFERENCES Colaborador (id);
+
+	ALTER TABLE Sugerencia ADD FOREIGN KEY fk_resultado_implementacion_idxfk (fk_resultado_implementacion) REFERENCES ResultadoImplementacion (id);
+
+	ALTER TABLE NoConformidad ADD FOREIGN KEY fk_area_levanta_no_conformidad_idxfk (fk_area_levanta_no_conformidad) REFERENCES AreaLevantaNoConformidad (id);
+
+	ALTER TABLE NoConformidad ADD FOREIGN KEY fk_usuario_idxfk (fk_usuario) REFERENCES Usuario (id);
+
+	ALTER TABLE AccionPreventivaCorrectiva ADD FOREIGN KEY fk_no_conformidad_idxfk (fk_no_conformidad) REFERENCES NoConformidad (id);
+
+	ALTER TABLE AccionPreventivaCorrectiva ADD FOREIGN KEY fk_tipo_accion_idxfk (fk_tipo_accion) REFERENCES TipoAccion (id);
+
+	ALTER TABLE AccionPreventivaCorrectiva ADD FOREIGN KEY fk_fuente_no_conformidad_idxfk (fk_fuente_no_conformidad) REFERENCES FuenteNoConformidad (id);
+
+	ALTER TABLE AccionPreventivaCorrectiva ADD FOREIGN KEY fk_estado_accion_preventiva_correctiva_idxfk (fk_estado_accion_preventiva_correctiva) REFERENCES EstadoAccionPreventivaCorrectiva (id);
 
 	/* Perfiles */
 	INSERT INTO Perfil
@@ -3967,6 +4132,105 @@
 	INSERT INTO Variacion
 	VALUES (2, 'Pagadas');
 
+	/* Sistemas de Gestion */
+	INSERT INTO AreaLevantaNoConformidad
+	VALUES (1, 'Gerencia Administrativa');
+	INSERT INTO AreaLevantaNoConformidad
+	VALUES (2, 'Compras');
+	INSERT INTO AreaLevantaNoConformidad
+	VALUES (3, 'Contabilidad');
+	INSERT INTO AreaLevantaNoConformidad
+	VALUES (4, 'Dirección General');
+	INSERT INTO AreaLevantaNoConformidad
+	VALUES (5, 'Facturación');
+	INSERT INTO AreaLevantaNoConformidad
+	VALUES (6, 'Intendencia y Vigilancia');
+	INSERT INTO AreaLevantaNoConformidad
+	VALUES (7, 'Operación Acceso');
+	INSERT INTO AreaLevantaNoConformidad
+	VALUES (8, 'Operación Transmisión');
+	INSERT INTO AreaLevantaNoConformidad
+	VALUES (9, 'Recepción');
+	INSERT INTO AreaLevantaNoConformidad
+	VALUES (10, 'Recursos Humanos');
+	INSERT INTO AreaLevantaNoConformidad
+	VALUES (11, 'Sistemas de Gestión');
+	INSERT INTO AreaLevantaNoConformidad
+	VALUES (12, 'Supervisión de Almacén y Servicios Generales');
+	INSERT INTO AreaLevantaNoConformidad
+	VALUES (13, 'Supervisión de Sistemas y Comunicación');
+	INSERT INTO AreaLevantaNoConformidad
+	VALUES (14, 'Ingeniería');
+	INSERT INTO AreaLevantaNoConformidad
+	VALUES (15, 'Coordinador de Acceso');
+	INSERT INTO AreaLevantaNoConformidad
+	VALUES (16, 'Coordinador de Transmisión');
+	INSERT INTO AreaLevantaNoConformidad
+	VALUES (17, 'Auditores de SG');
+	
+	INSERT INTO ResultadoImplementacion
+	VALUES (1, 'Efectiva');
+	INSERT INTO ResultadoImplementacion
+	VALUES (2, 'No Efectiva');
+
+	INSERT INTO TipoAccion
+	VALUES (1, 'Preventiva');
+	INSERT INTO TipoAccion
+	VALUES (2, 'Correctiva');
+
+	INSERT INTO FuenteNoConformidad
+	VALUES (1, 'Auditoría');
+	INSERT INTO FuenteNoConformidad
+	VALUES (2, 'Indicadores de Gestión');
+	INSERT INTO FuenteNoConformidad
+	VALUES (3, 'Encuestas de Satisfacción');
+	INSERT INTO FuenteNoConformidad
+	VALUES (4, 'Comentarios o Sugerencias');
+	INSERT INTO FuenteNoConformidad
+	VALUES (5, 'Bitácora de Producto No Conforme y/o No Conformidades');
+	INSERT INTO FuenteNoConformidad
+	VALUES (6, 'Correo Electrónico');
+	INSERT INTO FuenteNoConformidad
+	VALUES (7, 'Otra');
+
+	INSERT INTO EstadoAccionPreventivaCorrectiva
+	VALUES (1, 'Cerrada');
+	INSERT INTO EstadoAccionPreventivaCorrectiva
+	VALUES (2, 'Pendiente');
+
+	INSERT INTO EstadoSistemaGestion
+	VALUES (1, 'Con Desviaciones');
+	INSERT INTO EstadoSistemaGestion
+	VALUES (2, 'Sin Desviaciones');
+	INSERT INTO EstadoSistemaGestion
+	VALUES (3, 'En Revisión');
+	INSERT INTO EstadoSistemaGestion
+	VALUES (4, 'Pendiente');
+	INSERT INTO EstadoSistemaGestion
+	VALUES (5, 'Cerrada');
+
+	INSERT INTO FormaAuditoria
+	VALUES (1, 'En Sitio');
+	INSERT INTO FormaAuditoria
+	VALUES (2, 'Sobre Reporte Fotográfico');
+
+	INSERT INTO TipoAuditoria
+	VALUES (1, 'Interna');
+	INSERT INTO TipoAuditoria
+	VALUES (2, 'Externa');
+
+	INSERT INTO TipoCapacitacion
+	VALUES (1, 'Interna');
+	INSERT INTO TipoCapacitacion
+	VALUES (2, 'Externa');
+
+	INSERT INTO TipoFormacion
+	VALUES (1, 'Evaluación');
+	INSERT INTO TipoFormacion
+	VALUES (2, 'Capacitación');
+	INSERT INTO TipoFormacion
+	VALUES (3, 'Capacitación CV');
+	
 	/*
 	INSERT INTO 
 	VALUES (1, '');

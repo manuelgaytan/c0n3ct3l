@@ -54,7 +54,7 @@ public class RegistroPercepcionDO implements Serializable{
 	private Double montoAportacion;
 	
 	@ManyToOne
-	@JoinColumn(name = "fk_percepcion", nullable = false)
+	@JoinColumn(name = "fk_variaciones", nullable = false)
 	private VariacionDO variaciones;
 	
 	@Column(name = "dias_correspondientes", nullable = false)

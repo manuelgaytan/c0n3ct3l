@@ -23,7 +23,12 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name = "InformacionFacturacion")
 @NamedQueries({
-	@NamedQuery(name = "InformacionFacturacionDO.findAll", query = "select rc from InformacionFacturacionDO rc")
+	@NamedQuery(name = "InformacionFacturacionDO.findAll", 
+			query = "select rc from InformacionFacturacionDO rc"),
+			@NamedQuery(name = "InformacionFacturacionDO.findBycliente", 
+			query = "select rc from InformacionFacturacionDO rc " +
+					"where rc.validacionAdministrativa.proyectoPadre.id in (select DISTINCT p.proyectoPadre.id from ProyectoPadreHijoDO p where p.proyecto.producto.cliente.id=:idCliente) or " +
+					" rc.validacionAdministrativa.proyecto.producto.cliente.id=:idCliente" )		
 	})
 public class InformacionFacturacionDO implements Serializable{
 

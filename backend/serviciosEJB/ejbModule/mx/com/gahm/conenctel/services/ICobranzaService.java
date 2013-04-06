@@ -8,6 +8,8 @@ import java.util.List;
 import javax.ejb.Remote;
 
 import mx.com.gahm.conenctel.entities.CobranzaDO;
+import mx.com.gahm.conenctel.entities.InformacionFacturacionDO;
+import mx.com.gahm.conenctel.entities.NotaCreditoClienteDO;
 
 /**
  * @author MHDolores
@@ -21,4 +23,6 @@ public interface ICobranzaService {
 	CobranzaDO save( CobranzaDO item );
 	CobranzaDO update( CobranzaDO item );
 	CobranzaDO getItem( Integer id );	
+	List<NotaCreditoClienteDO> getAllByFiltro(long idCliente );
+	List<InformacionFacturacionDO> getInformacionFacturacionByCliente(long idCliente );
 }

@@ -11,6 +11,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 import mx.com.gahm.conenctel.entities.CobranzaDO;
+import mx.com.gahm.conenctel.entities.ComentarioCobranzaDO;
+import mx.com.gahm.conenctel.entities.InformacionFacturacionDO;
+import mx.com.gahm.conenctel.entities.NotaCreditoClienteDO;
 import mx.com.gahm.conenctel.services.ICobranzaService;
 
 /**
@@ -44,10 +47,28 @@ public class CobranzaService implements ICobranzaService{
 
 	@Override
 	public CobranzaDO save(CobranzaDO item) {
+		List<ComentarioCobranzaDO> comentarios = item.getComentariosCobranza();
 		entityManager.persist(item);
+		if(item.getComentariosCobranza()!=null)
+		saveComentarios(item,comentarios);
 		return item;
 	}
-
+	
+	private void saveComentarios(CobranzaDO item,List<ComentarioCobranzaDO> comentarios){
+		
+		for (ComentarioCobranzaDO dato : comentarios) {
+			
+			entityManager.persist(dato.getComentarioTesoreria());
+			dato.setCobranza(item);
+			entityManager.persist(dato);
+		}
+		
+		item.setComentariosCobranza(comentarios);
+	}
+	
+	
+	
+	
 	@Override
 	public CobranzaDO update(CobranzaDO item) {
 		entityManager.merge(item);
@@ -60,4 +81,24 @@ public class CobranzaService implements ICobranzaService{
 		return cotizacion;
 	}
 
+	@Override
+	public List<NotaCreditoClienteDO> getAllByFiltro(long idCliente ){
+		List<NotaCreditoClienteDO> datos= null;
+		TypedQuery<NotaCreditoClienteDO>  query =null;
+		query = entityManager.createNamedQuery("NotaCreditoClienteDO.NotasCrediByCliente",NotaCreditoClienteDO.class);
+		datos = query.getResultList();
+		
+		return datos;
+	}
+	
+	@Override
+	public List<InformacionFacturacionDO> getInformacionFacturacionByCliente(long idCliente ){
+		
+		List<InformacionFacturacionDO> datos= null;
+		TypedQuery<InformacionFacturacionDO>  query =null;
+		query = entityManager.createNamedQuery("InformacionFacturacionDO.NotasCrediByCliente",InformacionFacturacionDO.class);
+		query.setParameter("idCliente", "idCliente");
+		datos = query.getResultList();
+		return datos;
+	}
 }

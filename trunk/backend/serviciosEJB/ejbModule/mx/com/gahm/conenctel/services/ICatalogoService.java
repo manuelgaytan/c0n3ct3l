@@ -10,6 +10,7 @@ import mx.com.gahm.conenctel.entities.AplicaDO;
 import mx.com.gahm.conenctel.entities.AreaSolicitanteDO;
 import mx.com.gahm.conenctel.entities.BancoConectelDO;
 import mx.com.gahm.conenctel.entities.CartaAntecedentesPenalesDO;
+import mx.com.gahm.conenctel.entities.ClaseIncidenciaDO;
 import mx.com.gahm.conenctel.entities.ClasificacionFaltaDO;
 import mx.com.gahm.conenctel.entities.ClasificacionPermisoDO;
 import mx.com.gahm.conenctel.entities.ColaboradorDO;
@@ -66,6 +67,7 @@ import mx.com.gahm.conenctel.entities.TipoColaboradorDO;
 import mx.com.gahm.conenctel.entities.TipoContratacionDO;
 import mx.com.gahm.conenctel.entities.TipoContratoDO;
 import mx.com.gahm.conenctel.entities.TipoEmpleadoDO;
+import mx.com.gahm.conenctel.entities.TipoIncapacidadDO;
 import mx.com.gahm.conenctel.entities.TipoLicenciaDO;
 import mx.com.gahm.conenctel.entities.TipoMantenimientoDO;
 import mx.com.gahm.conenctel.entities.TipoOperacionDO;
@@ -218,4 +220,6 @@ public interface ICatalogoService extends Serializable {
 	public List<ClasificacionPermisoDO> getClasificacionPermiso() throws ConectelException ;	
 	public List<TipoSancionDO> getTipoSancion() throws ConectelException ;
 	public List<FormaPagoPrenominaDO> getFormaPagoPrenomina() throws ConectelException ;
+	public List<ClaseIncidenciaDO> getClaseIncidencia() throws ConectelException;
+	public List<TipoIncapacidadDO> getTipoIncapacidad() throws ConectelException;
 }

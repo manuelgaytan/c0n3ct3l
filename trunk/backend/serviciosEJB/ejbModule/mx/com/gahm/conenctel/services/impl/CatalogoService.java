@@ -15,6 +15,7 @@ import mx.com.gahm.conenctel.entities.AplicaDO;
 import mx.com.gahm.conenctel.entities.AreaSolicitanteDO;
 import mx.com.gahm.conenctel.entities.BancoConectelDO;
 import mx.com.gahm.conenctel.entities.CartaAntecedentesPenalesDO;
+import mx.com.gahm.conenctel.entities.ClaseIncidenciaDO;
 import mx.com.gahm.conenctel.entities.ClasificacionFaltaDO;
 import mx.com.gahm.conenctel.entities.ClasificacionPermisoDO;
 import mx.com.gahm.conenctel.entities.ColaboradorDO;
@@ -71,6 +72,7 @@ import mx.com.gahm.conenctel.entities.TipoColaboradorDO;
 import mx.com.gahm.conenctel.entities.TipoContratacionDO;
 import mx.com.gahm.conenctel.entities.TipoContratoDO;
 import mx.com.gahm.conenctel.entities.TipoEmpleadoDO;
+import mx.com.gahm.conenctel.entities.TipoIncapacidadDO;
 import mx.com.gahm.conenctel.entities.TipoLicenciaDO;
 import mx.com.gahm.conenctel.entities.TipoMantenimientoDO;
 import mx.com.gahm.conenctel.entities.TipoOperacionDO;
@@ -1200,6 +1202,34 @@ public class CatalogoService implements ICatalogoService {
 				"FormaPagoPrenominaDO.findAll", FormaPagoPrenominaDO.class);
 		
 		List<FormaPagoPrenominaDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<ClaseIncidenciaDO> getClaseIncidencia() throws ConectelException {
+		TypedQuery<ClaseIncidenciaDO> query = entityManager.createNamedQuery(
+				"ClaseIncidenciaDO.findAll", ClaseIncidenciaDO.class);
+		
+		List<ClaseIncidenciaDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<TipoIncapacidadDO> getTipoIncapacidad() throws ConectelException {
+		TypedQuery<TipoIncapacidadDO> query = entityManager.createNamedQuery(
+				"TipoIncapacidadDO.findAll", TipoIncapacidadDO.class);
+		
+		List<TipoIncapacidadDO> list;
 		try {
 			list = query.getResultList();
 		} catch (NoResultException e) {

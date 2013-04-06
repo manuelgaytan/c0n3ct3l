@@ -2083,7 +2083,7 @@
 	CREATE TABLE Deduccion
 	(
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
-	incidencia VARCHAR(100) NOT NULL UNIQUE,
+	deduccion VARCHAR(100) NOT NULL UNIQUE,
 	PRIMARY KEY (id)
 	);
 
@@ -3063,7 +3063,14 @@
 	VALUES (43, 'Prenomina');
 	INSERT INTO Pantalla
 	VALUES (44, 'EntrenamientoDesarrollo');
-
+	INSERT INTO Pantalla
+	VALUES (45, 'Deducciones');
+	INSERT INTO Pantalla
+	VALUES (46, 'Percepciones');
+	/*
+	INSERT INTO Pantalla
+	VALUES (47, '');
+	*/
 	/* Perfil-Pantalla */
 	INSERT INTO PerfilPantalla
 	VALUES (1, 1, 1);
@@ -3254,7 +3261,15 @@
 	INSERT INTO PerfilPantalla
 	VALUES (94, 1, 43);
 	INSERT INTO PerfilPantalla
-	VALUES (95, 1, 44); 
+	VALUES (95, 1, 44);
+	INSERT INTO PerfilPantalla
+	VALUES (96, 13, 45);
+	INSERT INTO PerfilPantalla
+	VALUES (97, 13, 46);
+	INSERT INTO PerfilPantalla
+	VALUES (98, 1, 45);
+	INSERT INTO PerfilPantalla
+	VALUES (99, 1, 46);
 
 
 	/* Usuarios */

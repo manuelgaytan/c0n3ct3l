@@ -23,7 +23,9 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name = "NotaCreditoCliente")
 @NamedQueries({
-	@NamedQuery(name = "NotaCreditoClienteDO.findAll", query = "select rc from NotaCreditoClienteDO rc")
+	@NamedQuery(name = "NotaCreditoClienteDO.findAll", query = "select rc from NotaCreditoClienteDO rc"),
+	@NamedQuery(name = "NotaCreditoClienteDO.NotasCrediByCliente",
+					query = "select rc from NotaCreditoClienteDO rc where rc.cliente.id=:idCliente")
 	})
 public class NotaCreditoClienteDO implements Serializable{
 

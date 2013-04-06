@@ -15,9 +15,12 @@ import mx.com.gahm.conenctel.entities.AplicaDO;
 import mx.com.gahm.conenctel.entities.AreaSolicitanteDO;
 import mx.com.gahm.conenctel.entities.BancoConectelDO;
 import mx.com.gahm.conenctel.entities.CartaAntecedentesPenalesDO;
+import mx.com.gahm.conenctel.entities.ClasificacionFaltaDO;
+import mx.com.gahm.conenctel.entities.ClasificacionPermisoDO;
 import mx.com.gahm.conenctel.entities.ColaboradorDO;
 import mx.com.gahm.conenctel.entities.CompaniaDO;
 import mx.com.gahm.conenctel.entities.ConceptoOtraOperacionFinancieraDO;
+import mx.com.gahm.conenctel.entities.DeduccionDO;
 import mx.com.gahm.conenctel.entities.DependientesDO;
 import mx.com.gahm.conenctel.entities.DescripcionAlmacenDO;
 import mx.com.gahm.conenctel.entities.DescripcionFondoFijoCajaChicaDO;
@@ -43,6 +46,7 @@ import mx.com.gahm.conenctel.entities.EstatusRequisicionCompraDO;
 import mx.com.gahm.conenctel.entities.FaseContratacionDO;
 import mx.com.gahm.conenctel.entities.FaseSeleccionDO;
 import mx.com.gahm.conenctel.entities.FormaPagoDO;
+import mx.com.gahm.conenctel.entities.FormaPagoPrenominaDO;
 import mx.com.gahm.conenctel.entities.FuenteReclutamientoDO;
 import mx.com.gahm.conenctel.entities.GrupoFamiliaADO;
 import mx.com.gahm.conenctel.entities.GrupoFamiliaBDO;
@@ -72,6 +76,7 @@ import mx.com.gahm.conenctel.entities.TipoMantenimientoDO;
 import mx.com.gahm.conenctel.entities.TipoOperacionDO;
 import mx.com.gahm.conenctel.entities.TipoPagoDO;
 import mx.com.gahm.conenctel.entities.TipoPersonaDO;
+import mx.com.gahm.conenctel.entities.TipoSancionDO;
 import mx.com.gahm.conenctel.entities.TipoValidacionAdministrativaDO;
 import mx.com.gahm.conenctel.entities.UbicacionADO;
 import mx.com.gahm.conenctel.entities.UbicacionBDO;
@@ -1133,4 +1138,74 @@ public class CatalogoService implements ICatalogoService {
 		return list;
 	}
 	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<DeduccionDO> getDeduccion() throws ConectelException {
+		TypedQuery<DeduccionDO> query = entityManager.createNamedQuery(
+				"DeduccionDO.findAll", DeduccionDO.class);
+		
+		List<DeduccionDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
+
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<ClasificacionFaltaDO> getClasificacionFalta() throws ConectelException {
+		TypedQuery<ClasificacionFaltaDO> query = entityManager.createNamedQuery(
+				"ClasificacionFaltaDO.findAll", ClasificacionFaltaDO.class);
+		
+		List<ClasificacionFaltaDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<ClasificacionPermisoDO> getClasificacionPermiso() throws ConectelException {
+		TypedQuery<ClasificacionPermisoDO> query = entityManager.createNamedQuery(
+				"ClasificacionPermisoDO.findAll", ClasificacionPermisoDO.class);
+		
+		List<ClasificacionPermisoDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<TipoSancionDO> getTipoSancion() throws ConectelException {
+		TypedQuery<TipoSancionDO> query = entityManager.createNamedQuery(
+				"TipoSancionDO.findAll", TipoSancionDO.class);
+		
+		List<TipoSancionDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<FormaPagoPrenominaDO> getFormaPagoPrenomina() throws ConectelException {
+		TypedQuery<FormaPagoPrenominaDO> query = entityManager.createNamedQuery(
+				"FormaPagoPrenominaDO.findAll", FormaPagoPrenominaDO.class);
+		
+		List<FormaPagoPrenominaDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
+
 }

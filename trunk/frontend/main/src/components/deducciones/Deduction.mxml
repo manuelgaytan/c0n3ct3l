@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*" xmlns:notascreditoclientes="components.notascreditoclientes.*" xmlns:informacionfacturas="components.informacionfacturas.*" xmlns:notascreditoproveedores="components.notascreditoproveedores.*" xmlns:facturacionproveedores="components.facturacionproveedores.*" xmlns:comprobacionesviaticos="components.comprobacionesviaticos.*" xmlns:seleccion="components.seleccion.*"
+		 initialize="initializeHandler(event)" xmlns:reclutamientosolicitudempleo="components.reclutamientosolicitudempleo.*" xmlns:registroDeduccion="components.registroDeduccion.*" xmlns:contratacion="components.contratacion.*"
+		 >
+	<mx:Script>
+		<![CDATA[
+			import components.clientes.Client;
+			
+			import events.GenericEvent;
+			
+			import model.ClasificacionFalta;
+			import model.ClasificacionPermiso;
+			import model.Constants;
+			import model.Contratacion;
+			import model.Deduccion;
+			import model.FormaPagoPrenomina;
+			import model.RegistroDeduccion;
+			import model.TipoSancion;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.Constantes;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.com.gahm.componentes.validadores.ValidadorEmail;
+			import mx.com.gahm.componentes.validadores.ValidadorEntero;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			[Bindable]
+			private var mode:String = null;
+			private var _item:RegistroDeduccion;
+			private var validators:InicializaValidadoresEtiquetas;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				this.label = Constants.REGISTRAR;
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set deduction(value:RegistroDeduccion):void{
+				if( value == null ){
+					return;
+				}
+				this.cleanForm();
+				this._item = value;
+				this.setItem(); 
+			}
+			
+			private function setItem():void
+			{
+				if( this._item == null ){
+					return;
+				}
+				this.txtID.text = this._item.id.toString();
+				this.recruitmentConsult.datagrid.dataProvider = Util.asArrayCollection( this._item.contratacion );
+				if( Util.isFill( this.cmbDeduction ) && this._item 
+					&& this._item.deduccion != null ){
+					this.cmbDeduction.selectedIndex = Util.selectedIndexFromCombo( this.cmbDeduction.dataProvider as ArrayCollection, 
+						this._item.deduccion.id);
+				}
+				this.txtRetards.text = this._item.retardos.toString();
+				this.dtfRetardsDate.selectedDate = this._item.fechaRetardo;
+				this.txtFaults.text = this._item.faltas.toString();
+				if( Util.isFill( this.cmbFaultClass ) && this._item 
+					&& this._item.clasificacionFalta != null ){
+					this.cmbFaultClass.selectedIndex = Util.selectedIndexFromCombo( this.cmbFaultClass.dataProvider as ArrayCollection, 
+						this._item.clasificacionFalta.id);
+				}
+				this.dtfFaultsDate.selectedDate = this._item.fechaFalta;
+				if( Util.isFill( this.cmbAllowsClass ) && this._item 
+					&& this._item.clasificacionPermiso != null ){
+					this.cmbAllowsClass.selectedIndex = Util.selectedIndexFromCombo( this.cmbAllowsClass.dataProvider as ArrayCollection, 
+						this._item.clasificacionPermiso.id);
+				}
+				this.dtfAllowsDate.selectedDate = this._item.fechaPermiso;
+				if( Util.isFill( this.cmbSantionClass ) && this._item 
+					&& this._item.tipoSancion != null ){
+					this.cmbSantionClass.selectedIndex = Util.selectedIndexFromCombo( this.cmbSantionClass.dataProvider as ArrayCollection, 
+						this._item.tipoSancion.id);
+				}
+				this.txtTotalAmountDiscount.text = this._item.montoTotalDescuento.toString();
+				if( Util.isFill( this.cmbPaymentForm ) && this._item 
+					&& this._item.formaPagoPrenomina != null ){
+					this.cmbPaymentForm.selectedIndex = Util.selectedIndexFromCombo( this.cmbPaymentForm.dataProvider as ArrayCollection, 
+						this._item.formaPagoPrenomina.id);
+				}
+				this.txtPartialDiscount.text = this._item.descuentoParcial.toString();
+				this.dtfInitialDate.selectedDate = this._item.fechaInicio;
+				this.dtfFinalDate.selectedDate = this._item.fechaTermino;
+			}
+			
+			private function getDeduction():RegistroDeduccion{
+				var deduction:RegistroDeduccion = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					deduction = new RegistroDeduccion();
+				}else{
+					deduction = this._item;
+				}
+				deduction.contratacion = this.recruitmentConsult.datagrid.selectedItem as Contratacion;
+				deduction.deduccion = Util.validateCombo( this.cmbDeduction ) as Deduccion;
+				deduction.retardos = Util.stringToNumber( this.txtRetards.text );
+				deduction.fechaRetardo = this.dtfRetardsDate.selectedDate;
+				deduction.faltas = Util.stringToNumber( this.txtFaults.text );
+				deduction.clasificacionFalta = Util.validateCombo( this.cmbFaultClass ) as ClasificacionFalta;
+				deduction.fechaFalta = this.dtfFaultsDate.selectedDate;
+				deduction.clasificacionPermiso = Util.validateCombo( this.cmbAllowsClass ) as ClasificacionPermiso;
+				deduction.fechaPermiso = this.dtfAllowsDate.selectedDate;
+				deduction.tipoSancion = Util.validateCombo( this.cmbSantionClass ) as TipoSancion;
+				deduction.montoTotalDescuento = Util.stringToNumber( this.txtTotalAmountDiscount.text );
+				deduction.formaPagoPrenomina = Util.validateCombo( this.cmbPaymentForm ) as FormaPagoPrenomina;
+				deduction.descuentoParcial = Util.stringToNumber( this.txtPartialDiscount.text );
+				deduction.fechaInicio = this.dtfInitialDate.selectedDate;
+				deduction.fechaTermino = this.dtfFinalDate.selectedDate;
+				return deduction;
+			}
+			
+			private function fillCombos():void
+			{
+				this.responseGetDeduccion.token = this.catalogoService.getDeduccion();
+				this.responseGetClasificacionFalta.token = this.catalogoService.getGetClasificacionFalta();
+				this.responseGetClasificacionPermiso.token = this.catalogoService.getGetClasificacionFalta();
+				this.responseGetTipoSancion.token = this.catalogoService.getTipoSancion();
+				this.responseGetFormaPagoPrenomina.token = this.catalogoService.getTipoSancion();
+			}
+			
+			protected function registroDeduccionService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function btnAccept_clickHandler(event:MouseEvent):void
+			{
+				if( !this.validations() ){
+					Util.showMessageVerifyFields();
+					return;
+				}
+				if( this.mode == Constants.REGISTER_MODE ){
+					var deduction:RegistroDeduccion = this.getDeduction();
+					Util.showProperties( deduction );
+					this.responseSave.token = this.registroDeduccionService.save( deduction );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
+				}
+			}
+			
+			private function updateItem(event:CloseEvent):void{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var item:RegistroDeduccion = this.getDeduction();
+				Util.showProperties( item );
+				this.responseUpdate.token = this.registroDeduccionService.update( item );
+			}
+			
+			private function validations():Boolean
+			{
+				var value:Boolean = true;
+				value &&= recruitmentConsult.datagrid.selectedItem != null;
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+					form.removeChild( this.frmID );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+				}
+			}
+			
+			private function initializeValidators():void
+			{
+				this.validators = new InicializaValidadoresEtiquetas();
+				//validators.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
+				this.validators.crearValidadorRestrictor("genericDecimal", ValidadorDecimal.nombre, 9, 2);
+				this.validators.setValidador( this.txtTotalAmountDiscount, "genericDecimal" );
+				this.validators.setValidador( this.txtPartialDiscount, "genericDecimal" );
+				validators.crearValidadorRestrictor("genericInteger",ValidadorEntero.nombre, 5);
+				this.validators.setValidador( this.txtRetards, "genericInteger" );
+				this.validators.setValidador( this.txtFaults, "genericInteger" );
+			}
+			
+			protected function responseSave_resultHandler(event:ResultEvent):void
+			{
+				var eventGeneralDataProjectNew:Event = new Event("deductionNew");
+				this.dispatchEvent( eventGeneralDataProjectNew );
+				this.cleanForm();
+			}
+			
+			private function cleanForm():void
+			{
+				this.txtID.reset();
+				this.recruitmentConsult.datagrid.selectedItem = false;
+				this.cmbDeduction.selectedIndex = 0;
+				this.txtRetards.reset();
+				this.dtfRetardsDate.reset();
+				this.txtFaults.reset();
+				this.cmbFaultClass.selectedIndex = 0;
+				this.dtfFaultsDate.reset();
+				this.cmbAllowsClass.selectedIndex = 0;
+				this.dtfAllowsDate.reset();
+				this.cmbSantionClass.selectedIndex = 0;
+				this.txtTotalAmountDiscount.reset();
+				this.cmbPaymentForm.selectedIndex = 0;
+				this.txtPartialDiscount.reset();
+				this.dtfInitialDate.reset();
+				this.dtfFinalDate.reset();
+			}
+			
+			protected function responseUpdate_resultHandler(event:ResultEvent):void
+			{
+				var eventGeneralDataProjectUpdated:Event = new Event("deductionUpdated");
+				this.dispatchEvent( eventGeneralDataProjectUpdated );
+				this.cleanForm();
+			}
+			
+			protected function responseGetDeduccion_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbDeduction.dataProvider = data;
+				if( Util.isFill( this.cmbDeduction ) && this._item 
+					&& this._item.deduccion != null ){
+					this.cmbDeduction.selectedIndex = Util.selectedIndexFromCombo( this.cmbDeduction.dataProvider as ArrayCollection, 
+						this._item.deduccion.id);
+				}
+			}
+			
+			protected function responseGetClasificacionFalta_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbFaultClass.dataProvider = data;
+				if( Util.isFill( this.cmbFaultClass ) && this._item 
+					&& this._item.clasificacionFalta != null ){
+					this.cmbFaultClass.selectedIndex = Util.selectedIndexFromCombo( this.cmbFaultClass.dataProvider as ArrayCollection, 
+						this._item.clasificacionFalta.id);
+				}
+			}
+			
+			protected function responseGetClasificacionPermiso_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbAllowsClass.dataProvider = data;
+				if( Util.isFill( this.cmbAllowsClass ) && this._item 
+					&& this._item.clasificacionPermiso != null ){
+					this.cmbAllowsClass.selectedIndex = Util.selectedIndexFromCombo( this.cmbAllowsClass.dataProvider as ArrayCollection, 
+						this._item.clasificacionPermiso.id);
+				}
+			}
+			
+			protected function responseGetTipoSancion_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbSantionClass.dataProvider = data;
+				if( Util.isFill( this.cmbSantionClass ) && this._item 
+					&& this._item.tipoSancion != null ){
+					this.cmbSantionClass.selectedIndex = Util.selectedIndexFromCombo( this.cmbSantionClass.dataProvider as ArrayCollection, 
+						this._item.tipoSancion.id);
+				}
+			}
+			
+			protected function responseGetFormaPagoPrenomina_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbPaymentForm.dataProvider = data;
+				if( Util.isFill( this.cmbPaymentForm ) && this._item 
+					&& this._item.formaPagoPrenomina != null ){
+					this.cmbPaymentForm.selectedIndex = Util.selectedIndexFromCombo( this.cmbPaymentForm.dataProvider as ArrayCollection, 
+						this._item.formaPagoPrenomina.id);
+				}
+			}
+			
+			protected function initializeHandler(event:FlexEvent):void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+				}
+			}
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="deductionNew", type="flash.events.Event")]
+		[Event(name="deductionUpdated", type="flash.events.Event")]
+		[Event(name="deductionProjectDone", type="flash.events.Event")]
+	</mx:Metadata>
+	<mx:Form id="form">
+		<mx:FormHeading label="Especificaciones y Tipo de Contratación"/>
+		<mx:FormItem id="frmID" label="ID:" direction="horizontal">
+			<components:TextInput id="txtID" width="80" textAlign="right"
+								  editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Contratación:"/>
+		<contratacion:Consult id="recruitmentConsult" readMode="true"/>
+		<mx:FormItem label="Deducción:">
+			<mx:ComboBox id="cmbDeduction" width="200"
+						 labelField="deduccion"/>
+		</mx:FormItem>
+		<mx:FormItem label="Retardos:">
+			<components:TextInput id="txtRetards" width="100" textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha de Retardos:">
+			<components:DateField id="dtfRetardsDate"/>
+		</mx:FormItem>
+		<mx:FormItem label="Faltas:">
+			<components:TextInput id="txtFaults" width="100" textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Clasificación Faltas:">
+			<mx:ComboBox id="cmbFaultClass" width="200"
+						 labelField="tipo"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha de Faltas:">
+			<components:DateField id="dtfFaultsDate"/>
+		</mx:FormItem>
+		<mx:FormItem label="Clasificación de Permisos:">
+			<mx:ComboBox id="cmbAllowsClass" width="200"
+						 labelField="tipo"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha de Permisos:">
+			<components:DateField id="dtfAllowsDate"/>
+		</mx:FormItem>
+		<mx:FormItem label="Tipo de Sanción:">
+			<mx:ComboBox id="cmbSantionClass" width="200"
+						 labelField="tipo"/>
+		</mx:FormItem>
+		<mx:FormItem label="Monto Total Descuento:">
+			<components:TextInput id="txtTotalAmountDiscount" width="150"
+								  textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Forma de Pago:">
+			<mx:ComboBox id="cmbPaymentForm" width="200"
+						 labelField="tipo"/>
+		</mx:FormItem>
+		<mx:FormItem label="Descuento Parcial:">
+			<components:TextInput id="txtPartialDiscount" width="150"
+								  textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha de Inicio:">
+			<components:DateField id="dtfInitialDate"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha de Termino:">
+			<components:DateField id="dtfFinalDate"/>
+		</mx:FormItem>
+		<mx:FormItem direction="horizontal">
+			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:RemoteObject id="registroDeduccionService" destination="registroDeduccionService" fault="registroDeduccionService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
+	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
+	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="registroDeduccionService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetDeduccion" result="responseGetDeduccion_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetClasificacionFalta" result="responseGetClasificacionFalta_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetClasificacionPermiso" result="responseGetClasificacionPermiso_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetTipoSancion" result="responseGetTipoSancion_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetFormaPagoPrenomina" result="responseGetFormaPagoPrenomina_resultHandler(event)"/>
+</mx:VBox>

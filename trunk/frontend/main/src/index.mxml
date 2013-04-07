@@ -20,13 +20,18 @@
 			
 			import events.GenericEvent;
 			
+			import model.AccionPreventivaCorrectiva;
 			import model.ActividadTiempoLibre;
 			import model.Aplica;
+			import model.AreaLevantaNoConformidad;
 			import model.AreaSolicitante;
 			import model.BancoConectel;
 			import model.CartaAntecedentesPenales;
 			import model.Catalogo;
 			import model.Categoria;
+			import model.ClaseIncidencia;
+			import model.ClasificacionFalta;
+			import model.ClasificacionPermiso;
 			import model.Cliente;
 			import model.Cobranza;
 			import model.Colaborador;
@@ -56,6 +61,7 @@
 			import model.ComentarioValidacionCostoOrdenCompraCliente;
 			import model.Compania;
 			import model.ComprobacionViaticos;
+			import model.ConcentradoCapacitacion;
 			import model.ConceptoOtraOperacionFinanciera;
 			import model.ConfiguracionPruebaEntrega;
 			import model.Constants;
@@ -64,6 +70,7 @@
 			import model.Contacto;
 			import model.Contratacion;
 			import model.Cotizacion;
+			import model.Curso;
 			import model.DatosComerciales;
 			import model.DatosEscolaresHabilidades;
 			import model.DatosFamiliaresSolicitante;
@@ -72,6 +79,7 @@
 			import model.DatosPrincipalesSolicitante;
 			import model.DatosSobreConectelSolicitante;
 			import model.DatosUltimoEmpleoSolicitante;
+			import model.Deduccion;
 			import model.Dependientes;
 			import model.DesarrolloProyecto;
 			import model.DescripcionAlmacen;
@@ -89,6 +97,7 @@
 			import model.EquipoTransporteSolicitudAlmacen;
 			import model.Estado;
 			import model.EstadoAcademico;
+			import model.EstadoAccionPreventivaCorrectiva;
 			import model.EstadoCivil;
 			import model.EstadoColaborador;
 			import model.EstadoComprobacionViaticos;
@@ -96,6 +105,7 @@
 			import model.EstadoInvestigacionCalidad;
 			import model.EstadoOrdenCompra;
 			import model.EstadoSalud;
+			import model.EstadoSistemaGestion;
 			import model.EstadoSolicitudAlmacen;
 			import model.EstadoSolicitudServicioMaquilado;
 			import model.EstadoTesoreria;
@@ -115,6 +125,9 @@
 			import model.FaseSeleccion;
 			import model.FiltroProducto;
 			import model.FiltroProyecto;
+			import model.FormaAuditoria;
+			import model.FormaPagoPrenomina;
+			import model.FuenteNoConformidad;
 			import model.FuenteReclutamiento;
 			import model.GrupoFamiliaA;
 			import model.GrupoFamiliaB;
@@ -130,6 +143,7 @@
 			import model.Imputable;
 			import model.InformacionConfidencialColaborador;
 			import model.InformacionFacturacion;
+			import model.InformacionPrenomina;
 			import model.Licencia;
 			import model.Material;
 			import model.MaterialSolicitudAlmacen;
@@ -140,6 +154,7 @@
 			import model.MovimientoFondoFijoCajaChica;
 			import model.MovimientoPagoContableServicio;
 			import model.Nacionalidad;
+			import model.NoConformidad;
 			import model.NombreSolicitante;
 			import model.NotaCreditoCliente;
 			import model.NotaCreditoProveedor;
@@ -157,6 +172,7 @@
 			import model.PartidaOrdenCompraSolicitudServicioMaquilado;
 			import model.PartidaRequisicionCompra;
 			import model.PartidaSolicitudAlmacen;
+			import model.Percepcion;
 			import model.Perfil;
 			import model.PerfilEscala;
 			import model.PerfilPantalla;
@@ -169,30 +185,41 @@
 			import model.ProyectoPadre;
 			import model.ProyectoPadreHijo;
 			import model.ReclutamientoSolicitudEmpleo;
+			import model.RegistroDeduccion;
+			import model.RegistroPercepcion;
 			import model.Requisicion;
 			import model.RequisicionCompra;
+			import model.ResultadoImplementacion;
 			import model.Seguimiento;
 			import model.SeleccionReclutamiento;
 			import model.ServicioSolicitado;
 			import model.Sexo;
+			import model.SistemaGestion;
 			import model.Software;
 			import model.SoftwareSolicitudAlmacen;
 			import model.SolicitanteRequisicion;
 			import model.SolicitudAlmacen;
 			import model.SolicitudServicioMaquilado;
 			import model.SolicitudViaticos;
+			import model.Sugerencia;
 			import model.Suspension;
 			import model.TelefoniaMovil;
 			import model.TelefoniaMovilSolicitudAlmacen;
+			import model.TipoAccion;
 			import model.TipoAlmacen;
+			import model.TipoAuditoria;
 			import model.TipoCandidato;
+			import model.TipoCapacitacion;
 			import model.TipoColaborador;
 			import model.TipoContratacion;
 			import model.TipoDocumentoAlmacen;
 			import model.TipoEntregable;
+			import model.TipoFormacion;
+			import model.TipoIncapacidad;
 			import model.TipoLicencia;
 			import model.TipoMantenimiento;
 			import model.TipoOperacion;
+			import model.TipoSancion;
 			import model.TipoValidacionAdministrativa;
 			import model.UbicacionA;
 			import model.UbicacionB;
@@ -206,6 +233,7 @@
 			import model.Util;
 			import model.ValidacionAdministrativa;
 			import model.ValidacionProyecto;
+			import model.Variacion;
 			import model.ViveCon;
 			
 			import mx.containers.Form;
@@ -447,7 +475,35 @@
 			private var suspension:Suspension;
 			private var tipoCandidato:TipoCandidato;
 			private var tipoContratacion:TipoContratacion;
-			
+			private var accionPreventivaCorrectiva:AccionPreventivaCorrectiva;
+			private var areaLevantaNoConformidad:AreaLevantaNoConformidad;
+			private var claseIncidencia:ClaseIncidencia;
+			private var clasificacionFalta:ClasificacionFalta;
+			private var clasificacionPermiso:ClasificacionPermiso;
+			private var concentradoCapacitacion:ConcentradoCapacitacion;
+			private var curso:Curso;
+			private var deduccion:Deduccion;
+			private var estadoAccionPreventivaCorrectiva:EstadoAccionPreventivaCorrectiva;
+			private var estadoSistemaGestion:EstadoSistemaGestion;
+			private var formaAuditoria:FormaAuditoria;
+			private var formaPagoPrenomina:FormaPagoPrenomina;
+			private var fuenteNoConformidad:FuenteNoConformidad;
+			private var informacionPrenomina:InformacionPrenomina;
+			private var noConformidad:NoConformidad;
+			private var percepcion:Percepcion;
+			private var registroDeduccion:RegistroDeduccion;
+			private var registroPercepcion:RegistroPercepcion;
+			private var resultadoImplementacion:ResultadoImplementacion;
+			private var sistemaGestion:SistemaGestion;
+			private var sugerencia:Sugerencia;
+			private var tipoAccion:TipoAccion;
+			private var tipoAuditoria:TipoAuditoria;
+			private var tipoCapacitacion:TipoCapacitacion;
+			private var tipoFormacion:TipoFormacion;
+			private var tipoIncapacidad:TipoIncapacidad;
+			private var tipoSancion:TipoSancion;
+			private var variacion:Variacion;
+						
 			protected function login_readyHandler(event:ModuleEvent):void
 			{
 				this.loaderLogin.child.addEventListener("validUser",validUser);

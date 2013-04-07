@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*" xmlns:notascreditoclientes="components.notascreditoclientes.*" xmlns:informacionfacturas="components.informacionfacturas.*" xmlns:notascreditoproveedores="components.notascreditoproveedores.*" xmlns:facturacionproveedores="components.facturacionproveedores.*" xmlns:comprobacionesviaticos="components.comprobacionesviaticos.*" xmlns:seleccion="components.seleccion.*"
+		 initialize="initializeHandler(event)" xmlns:reclutamientosolicitudempleo="components.reclutamientosolicitudempleo.*" xmlns:informacionPrenomina="components.informacionPrenomina.*" xmlns:contratacion="components.contratacion.*"
+		 >
+	<mx:Script>
+		<![CDATA[
+			import components.clientes.Client;
+			
+			import events.GenericEvent;
+			
+			import model.ClaseIncidencia;
+			import model.Constants;
+			import model.Contratacion;
+			import model.InformacionPrenomina;
+			import model.TipoIncapacidad;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.Constantes;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.com.gahm.componentes.validadores.ValidadorEmail;
+			import mx.com.gahm.componentes.validadores.ValidadorEntero;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			[Bindable]
+			private var mode:String = null;
+			private var _item:InformacionPrenomina;
+			private var validators:InicializaValidadoresEtiquetas;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				this.label = Constants.REGISTRAR;
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set prenomina(value:InformacionPrenomina):void{
+				if( value == null ){
+					return;
+				}
+				this.cleanForm();
+				this._item = value;
+				this.setItem(); 
+			}
+			
+			private function setItem():void
+			{
+				if( this._item == null ){
+					return;
+				}
+				this.txtID.text = this._item.id.toString();
+				this.recruitmentConsult.datagrid.dataProvider = Util.asArrayCollection( this._item.contratacion );
+				this.dtfIncidenceDate.selectedDate = this._item.fechaIncidencia;
+				if( Util.isFill( this.cmbIncidenceClass ) && this._item 
+					&& this._item.claseIncidencia != null ){
+					this.cmbIncidenceClass.selectedIndex = Util.selectedIndexFromCombo( this.cmbIncidenceClass.dataProvider as ArrayCollection, 
+						this._item.claseIncidencia.id);
+				}
+				if( Util.isFill( this.cmbIncapacityType ) && this._item 
+					&& this._item.tipoIncapacidad != null ){
+					this.cmbIncapacityType.selectedIndex = Util.selectedIndexFromCombo( this.cmbIncapacityType.dataProvider as ArrayCollection, 
+						this._item.tipoIncapacidad.id);
+				}
+				this.txtIMSSAmount.text = this._item.montoImss.toString();
+				this.txtConectelAmount.text = this._item.montoConectel.toString();
+			}
+			
+			private function getPrenomina():InformacionPrenomina{
+				var prenomina:InformacionPrenomina = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					prenomina = new InformacionPrenomina();
+				}else{
+					prenomina = this._item;
+				}
+				prenomina.contratacion = this.recruitmentConsult.datagrid.selectedItem as Contratacion;
+				prenomina.fechaIncidencia = this.dtfIncidenceDate.selectedDate;
+				prenomina.claseIncidencia = Util.validateCombo( this.cmbIncidenceClass ) as ClaseIncidencia;
+				prenomina.tipoIncapacidad = Util.validateCombo( this.cmbIncapacityType ) as TipoIncapacidad;
+				prenomina.montoImss = Util.stringToNumber( this.txtIMSSAmount.text );
+				prenomina.montoConectel = Util.stringToNumber( this.txtConectelAmount.text );
+				return prenomina;
+			}
+			
+			private function fillCombos():void
+			{
+				this.responseGetClaseIncidencia.token = this.catalogoService.getClaseIncidencia();
+				this.responseGetTipoIncapacidad.token = this.catalogoService.getTipoIncapacidad();
+			}
+			
+			protected function informacionPrenominaService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function btnAccept_clickHandler(event:MouseEvent):void
+			{
+				if( !this.validations() ){
+					Util.showMessageVerifyFields();
+					return;
+				}
+				if( this.mode == Constants.REGISTER_MODE ){
+					var prenomina:InformacionPrenomina = this.getPrenomina();
+					Util.showProperties( prenomina );
+					this.responseSave.token = this.informacionPrenominaService.save( prenomina );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
+				}
+			}
+			
+			private function updateItem(event:CloseEvent):void{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var item:InformacionPrenomina = this.getPrenomina();
+				Util.showProperties( item );
+				this.responseUpdate.token = this.informacionPrenominaService.update( item );
+			}
+			
+			private function validations():Boolean
+			{
+				var value:Boolean = true;
+				value &&= recruitmentConsult.datagrid.selectedItem != null;
+				value &&= dtfIncidenceDate.selectedDate != null;
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+					form.removeChild( this.frmID );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+				}
+			}
+			
+			private function initializeValidators():void
+			{
+				this.validators = new InicializaValidadoresEtiquetas();
+				//validators.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
+				this.validators.crearValidadorRestrictor("genericDecimal", ValidadorDecimal.nombre, 9, 2);
+				validators.setRestrictor( this.txtIMSSAmount, "genericDecimal" );
+				validators.setRestrictor( this.txtConectelAmount, "genericDecimal");
+				//validators.crearValidadorRestrictor("email",ValidadorEmail.nombre);
+			}
+			
+			protected function responseSave_resultHandler(event:ResultEvent):void
+			{
+				var eventGeneralDataProjectNew:Event = new Event("prenominaNew");
+				this.dispatchEvent( eventGeneralDataProjectNew );
+				this.cleanForm();
+			}
+			
+			private function cleanForm():void
+			{
+				this.txtID.reset();
+				this.recruitmentConsult.datagrid.selectedItem = false;
+				this.dtfIncidenceDate.reset();
+				this.cmbIncidenceClass.selectedIndex = 0;
+				this.cmbIncapacityType.selectedIndex = 0;
+				this.txtIMSSAmount.reset();
+				this.txtConectelAmount.reset();
+			}
+			
+			protected function responseUpdate_resultHandler(event:ResultEvent):void
+			{
+				var eventGeneralDataProjectUpdated:Event = new Event("prenominaUpdated");
+				this.dispatchEvent( eventGeneralDataProjectUpdated );
+				this.cleanForm();
+			}
+			
+			protected function responseGetClaseIncidencia_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbIncidenceClass.dataProvider = data;
+				if( Util.isFill( this.cmbIncidenceClass ) && this._item 
+					&& this._item.claseIncidencia != null ){
+					this.cmbIncidenceClass.selectedIndex = Util.selectedIndexFromCombo( this.cmbIncidenceClass.dataProvider as ArrayCollection, 
+						this._item.claseIncidencia.id);
+				}
+			}
+			
+			protected function responseGetTipoIncapacidad_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbIncapacityType.dataProvider = data;
+				if( Util.isFill( this.cmbIncapacityType ) && this._item 
+					&& this._item.tipoIncapacidad != null ){
+					this.cmbIncapacityType.selectedIndex = Util.selectedIndexFromCombo( this.cmbIncidenceClass.dataProvider as ArrayCollection, 
+						this._item.tipoIncapacidad.id);
+				}
+			}
+			
+			protected function initializeHandler(event:FlexEvent):void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+				}
+			}
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="prenominaNew", type="flash.events.Event")]
+		[Event(name="prenominaUpdated", type="flash.events.Event")]
+		[Event(name="prenominaProjectDone", type="flash.events.Event")]
+	</mx:Metadata>
+	<mx:Form id="form">
+		<mx:FormHeading label="Especificaciones y Tipo de Contratación"/>
+		<mx:FormItem id="frmID" label="ID:" direction="horizontal">
+			<components:TextInput id="txtID" width="80" textAlign="right"
+								  editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Contratación:"/>
+		<contratacion:Consult id="recruitmentConsult" readMode="true"/>
+		<mx:FormItem label="Fecha de Incidencia:">
+			<components:DateField id="dtfIncidenceDate"/>
+		</mx:FormItem>
+		<mx:FormItem label="Clase de Incidencia:">
+			<mx:ComboBox id="cmbIncidenceClass" width="200"
+						 labelField="incidencia"/>
+		</mx:FormItem>
+		<mx:FormItem label="Tipo de Incapacidad:">
+			<mx:ComboBox id="cmbIncapacityType" width="200"
+						 labelField="tipo"/>
+		</mx:FormItem>
+		<mx:FormItem label="Monto I.M.S.S.:">
+			<components:TextInput id="txtIMSSAmount" textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Monto Conectel:">
+			<components:TextInput id="txtConectelAmount" textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem direction="horizontal">
+			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:RemoteObject id="informacionPrenominaService" destination="informacionPrenominaService" fault="informacionPrenominaService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
+	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
+	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="informacionPrenominaService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetClaseIncidencia" result="responseGetClaseIncidencia_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetTipoIncapacidad" result="responseGetTipoIncapacidad_resultHandler(event)"/>
+</mx:VBox>

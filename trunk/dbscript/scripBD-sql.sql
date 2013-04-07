@@ -2148,6 +2148,7 @@
 	(
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
 	fk_contratacion INT(11) UNSIGNED NOT NULL,
+	fecha_incidencia DATE NOT NULL,
 	fk_clase_incidencia INT(11) UNSIGNED NOT NULL,
 	fk_tipo_incapacidad INT(11) UNSIGNED NOT NULL,
 	monto_imss DECIMAL NOT NULL,
@@ -2329,6 +2330,45 @@
 	acciones_seguimiento VARCHAR(255) NOT NULL,
 	accion_tomada_eficaz BOOLEAN NOT NULL,
 	fk_estado_accion_preventiva_correctiva INT(11) UNSIGNED NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE ResponsableMinuta
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	responsable VARCHAR(100) NOT NULL UNIQUE,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE Minuta
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fecha_hora DATETIME,
+	lugar VARCHAR(255) NOT NULL,
+	asunto VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE AcuerdoMinuta
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_minuta INT(11) UNSIGNED NOT NULL,
+	fk_responsable_minuta INT(11) UNSIGNED,
+	responsable VARCHAR(255) NOT NULL,
+	acuerdo VARCHAR(255) NOT NULL,
+	fechaCompromiso DATE,
+	responsableElaboracion VARCHAR(255),
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE ParticipanteMinuta
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_minuta INT(11) UNSIGNED NOT NULL,
+	fk_colaborador INT(11) UNSIGNED,
+	participante VARCHAR(255) NOT NULL,
+	empresa VARCHAR(255) NOT NULL,
+	puesto VARCHAR(255),
 	PRIMARY KEY (id)
 	);
 
@@ -2946,6 +2986,14 @@
 
 	ALTER TABLE AccionPreventivaCorrectiva ADD FOREIGN KEY fk_estado_accion_preventiva_correctiva_idxfk (fk_estado_accion_preventiva_correctiva) REFERENCES EstadoAccionPreventivaCorrectiva (id);
 
+	ALTER TABLE AcuerdoMinuta ADD FOREIGN KEY fk_minuta_idxfk (fk_minuta) REFERENCES Minuta (id);
+
+	ALTER TABLE AcuerdoMinuta ADD FOREIGN KEY fk_responsable_minuta_idxfk (fk_responsable_minuta) REFERENCES ResponsableMinuta (id);
+
+	ALTER TABLE ParticipanteMinuta ADD FOREIGN KEY fk_minuta_idxfk_1 (fk_minuta) REFERENCES Minuta (id);
+
+	ALTER TABLE ParticipanteMinuta ADD FOREIGN KEY fk_colaborador_idxfk_2 (fk_colaborador) REFERENCES Colaborador (id);
+
 	/* Perfiles */
 	INSERT INTO Perfil
 	VALUES (1, 'Director General');
@@ -2973,6 +3021,8 @@
 	VALUES (12, 'Tesorería');
 	INSERT INTO Perfil
 	VALUES (13, 'Recursos Humanos');
+	INSERT INTO Perfil
+	VALUES (14, 'Sistemas Gestión');
 
 	/* Pantallas */
 	INSERT INTO Pantalla
@@ -3067,10 +3117,21 @@
 	VALUES (45, 'Deducciones');
 	INSERT INTO Pantalla
 	VALUES (46, 'Percepciones');
-	/*
 	INSERT INTO Pantalla
-	VALUES (47, '');
-	*/
+	VALUES (47, 'ComentariosSugerencias');
+	INSERT INTO Pantalla
+	VALUES (48, 'BitacoraProductoNoConformeNoConformidades');
+	INSERT INTO Pantalla
+	VALUES (49, 'AccionPreventivaCorrectiva');
+	INSERT INTO Pantalla
+	VALUES (50, 'ConcentradoCapacitacion');
+	INSERT INTO Pantalla
+	VALUES (51, 'SistemasGestion');
+	INSERT INTO Pantalla
+	VALUES (52, 'MinutaReunion');
+	INSERT INTO Pantalla
+	VALUES (53, 'GraficaEvaluacionFacturacionProyectosConectel');
+	
 	/* Perfil-Pantalla */
 	INSERT INTO PerfilPantalla
 	VALUES (1, 1, 1);
@@ -3270,7 +3331,34 @@
 	VALUES (98, 1, 45);
 	INSERT INTO PerfilPantalla
 	VALUES (99, 1, 46);
-
+	INSERT INTO PerfilPantalla
+	VALUES (100, 14, 47);
+	INSERT INTO PerfilPantalla
+	VALUES (101, 14, 48);
+	INSERT INTO PerfilPantalla
+	VALUES (102, 14, 49);
+	INSERT INTO PerfilPantalla
+	VALUES (103, 14, 50);
+	INSERT INTO PerfilPantalla
+	VALUES (104, 14, 51);
+	INSERT INTO PerfilPantalla
+	VALUES (105, 14, 52);
+	INSERT INTO PerfilPantalla
+	VALUES (106, 14, 53);
+	INSERT INTO PerfilPantalla
+	VALUES (107, 1, 47);
+	INSERT INTO PerfilPantalla
+	VALUES (108, 1, 48);
+	INSERT INTO PerfilPantalla
+	VALUES (109, 1, 49);
+	INSERT INTO PerfilPantalla
+	VALUES (110, 1, 50);
+	INSERT INTO PerfilPantalla
+	VALUES (111, 1, 51);
+	INSERT INTO PerfilPantalla
+	VALUES (112, 1, 52);
+	INSERT INTO PerfilPantalla
+	VALUES (113, 1, 53);
 
 	/* Usuarios */
 	INSERT INTO Usuario
@@ -4246,6 +4334,10 @@
 	INSERT INTO TipoFormacion
 	VALUES (3, 'Capacitación CV');
 	
+	INSERT INTO ResponsableMinuta
+	VALUES (1, 'Participantes');
+	INSERT INTO ResponsableMinuta
+	VALUES (2, 'Otro');
 	/*
 	INSERT INTO 
 	VALUES (1, '');

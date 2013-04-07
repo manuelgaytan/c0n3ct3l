@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
+		   width="1050" height="525"
+		   xmlns:informacionConfidencialColaborador="components.informacionConfidencialColaborador.*"
+		   creationComplete="creationCompleteHandler(event)" xmlns:informacionfacturas="components.informacionfacturas.*" xmlns:notascreditoclientes="components.notascreditoclientes.*" xmlns:facturacionproveedores="components.facturacionproveedores.*" xmlns:notascreditoproveedores="components.notascreditoproveedores.*" xmlns:comprobacionesviaticos="components.comprobacionesviaticos.*">
+	<mx:Script>
+		<![CDATA[
+			import events.GenericEvent;
+			
+			import model.InformacionConfidencialColaborador;
+			import model.Usuario;
+			
+			import mx.events.FlexEvent;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				
+			}
+			
+			protected function consult_confidentialInformationColaboratorDetailHandler(event:GenericEvent):void
+			{
+				this.detail.confidentialInformationColaborator = event.information as model.InformacionConfidencialColaborador;
+				this.navigator.selectedChild = this.detail;
+			}
+			
+			protected function register_confidentialInformationColaboratorNewHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+			
+			protected function detail_confidentialInformationColaboratorUpdatedHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+		]]>
+	</mx:Script>
+	<mx:TabNavigator id="navigator" width="1050" height="100%" creationPolicy="all">
+		<informacionConfidencialColaborador:Consult id="consult" itemDetail="consult_confidentialInformationColaboratorDetailHandler(event)"/>
+		<informacionConfidencialColaborador:ConfidentialInformationColaborator id="detail" update="true" confidentialInformationColaboratorUpdated="detail_confidentialInformationColaboratorUpdatedHandler(event)"
+							 />
+		<informacionConfidencialColaborador:ConfidentialInformationColaborator id="register" registrer="true" confidentialInformationColaboratorNew="register_confidentialInformationColaboratorNewHandler(event)"
+							 />
+	</mx:TabNavigator>
+</mx:Module>

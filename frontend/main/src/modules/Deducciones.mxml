@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
+		   width="950" height="525"
+		   xmlns:deducciones="components.deducciones.*"
+		   creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import events.GenericEvent;
+			
+			import model.RegistroDeduccion;
+			import model.Usuario;
+			
+			import mx.events.FlexEvent;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				
+			}
+			
+			protected function consult_deductionDetailHandler(event:GenericEvent):void
+			{
+				this.detail.deduction = event.information as model.RegistroDeduccion;
+				this.navigator.selectedChild = this.detail;
+			}
+			
+			protected function register_deductionNewHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+			
+			protected function detail_deductionUpdatedHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+		]]>
+	</mx:Script>
+	<mx:TabNavigator id="navigator" width="950" height="100%" creationPolicy="all">
+		<deducciones:Consult id="consult" itemDetail="consult_deductionDetailHandler(event)"/>
+		<deducciones:Deduction id="detail" update="true" deductionUpdated="detail_deductionUpdatedHandler(event)"
+							 />
+		<deducciones:Deduction id="register" registrer="true" deductionNew="register_deductionNewHandler(event)"
+							 />
+	</mx:TabNavigator>
+</mx:Module>

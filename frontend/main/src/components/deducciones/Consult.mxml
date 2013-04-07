@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+		 label="Consulta"
+		 creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import events.GenericEvent;
+			
+			import model.ConfiguracionPruebaEntrega;
+			import model.RegistroDeduccion;
+			import model.DatosGeneralesSolicitante;
+			import model.FiltroProyecto;
+			import model.Proyecto;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			[Bindable]
+			private var items:ArrayCollection = null;
+			
+			private var configuracionPruebaEntrega:ConfiguracionPruebaEntrega;
+			[Bindable]
+			private var _readMode:Boolean = false;
+			
+			public function set readMode(value:Boolean):void{
+				this._readMode = value;
+			}
+			
+			protected function responseGetAll_resultHandler(event:ResultEvent):void
+			{
+				items = event.result as ArrayCollection;
+			}
+			
+			protected function registroDeduccionService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.executeQuery();
+			}
+			
+			protected function datagrid_doubleClickHandler(event:MouseEvent):void
+			{
+				if( event.currentTarget.selectedItem == null ){
+					return;
+				}
+				var item:RegistroDeduccion = this.datagrid.selectedItem as RegistroDeduccion;
+				this.responseGetProyecto.token = this.registroDeduccionService.getItem( item.id );
+			}
+			
+			protected function responseGetItem_resultHandler(event:ResultEvent):void
+			{
+				var item:RegistroDeduccion = event.result as RegistroDeduccion;
+				if( item == null ){
+					return;
+				}
+				var genericEvent:GenericEvent = new GenericEvent("itemDetail");
+				genericEvent.information = item;
+				this.dispatchEvent( genericEvent );
+			}
+			
+			public function executeQuery():void
+			{
+				this.responseGetAll.token = this.registroDeduccionService.getAll();
+			}
+			
+			private function labelFunctionDate(object:Object, column:DataGridColumn):String{
+				return Util.formatDateToString( object[column.dataField] );
+			}
+			
+			private function labelFunctionIDProyecto(item:Object, column:DataGridColumn):String{
+				return Util.getIDConectelFormat( Util.extractObject(item, column.dataField) );
+			}
+			
+			protected function btnDelete_clickHandler(event:MouseEvent):void
+			{
+				if( this.datagrid.selectedItems == null ||
+					this.datagrid.selectedItems.length == 0 ){
+					Util.showErrorMessage("Debe seleccionar elementos de la tabla.");
+					return;
+				}
+				Alert.show("Confirme si desea eliminar los elementos.","Advertencia",Alert.YES+Alert.NO,this, deleteItems);
+			}
+			
+			private function deleteItems(event:CloseEvent):void
+			{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var items:ArrayCollection = Util.selectedIDs( this.datagrid.selectedItems ); 
+				this.responseDeleteItems.token = this.registroDeduccionService.deleteItems( items );
+			}
+			
+			protected function responseDeleteItems_resultHandler(event:ResultEvent):void
+			{
+				this.executeQuery();
+			}
+			
+			private function labelFunctionNombre( item:Object, column:DataGridColumn ):String{
+				var registroDeduccion:RegistroDeduccion = item as RegistroDeduccion;
+				if( registroDeduccion == null ||
+					registroDeduccion.contratacion.reclutamientoSolicitudEmpleo == null ||
+					registroDeduccion.contratacion.reclutamientoSolicitudEmpleo.datosGeneralesSolicitante == null ){
+					return "";
+				}else{
+					var datosGenerales:DatosGeneralesSolicitante = registroDeduccion.contratacion.reclutamientoSolicitudEmpleo.datosGeneralesSolicitante;
+					return datosGenerales.apellidoPaterno + " " + datosGenerales.nombres;
+				}
+			}
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="itemDetail", type="events.GenericEvent")]
+	</mx:Metadata>
+	<mx:VBox id="vBox" width="100%" height="100%">
+		<mx:DataGrid id="datagrid" width="942" height="100%" dataProvider="{items}"
+					 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
+					 allowMultipleSelection="true"
+					 >
+			<mx:columns>
+				<mx:DataGridColumn id="dtgID" headerText="ID"
+								   dataField="id"
+								   width="60"
+								   textAlign="right"/>
+				<mx:DataGridColumn id="dtgName" headerText="{'Nombre'}"
+								   labelFunction="labelFunctionNombre"
+								   width="250"/>
+				<mx:DataGridColumn id="dtgPosition" headerText="{'Puesto'}"
+								   dataField="contratacion.reclutamientoSolicitudEmpleo.datosPrincipalesSolicitante.puestoSolicitado"
+								   width="120"/>
+				<mx:DataGridColumn id="dtgDeduction" headerText="{'Deducción'}"
+								   dataField="deduccion.deduccion"
+								   width="100"/>
+				<mx:DataGridColumn id="dtgContractStartDate" headerText="{'Retardos'}"
+								   dataField="retardos"
+								   width="60"/>
+				<mx:DataGridColumn id="dtgConfidentialInformationColaboratorType" headerText="{'Faltas'}"
+								   dataField="faltas"
+								   width="60"
+								   />
+				<mx:DataGridColumn id="dtgAlergies" headerText="{'Tipo de\nSanción'}"
+								   dataField="alergias"
+								   width="80"
+								   />
+				<mx:DataGridColumn id="dtgBloodType" headerText="{'Monto\nTotal\nDescuento'}"
+								   dataField="tipoSangre"
+								   width="70"
+								   />
+				<mx:DataGridColumn id="dtgConectelEmail" headerText="{'Forma de\nPago'}"
+								   dataField="correoElectronico"
+								   width="100"
+								   />
+			</mx:columns>
+		</mx:DataGrid>
+	</mx:VBox>
+	<mx:HBox width="100%">
+		<mx:Spacer width="100%"/>
+		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"
+				   visible="{!this._readMode}"/>
+	</mx:HBox>
+	<mx:RemoteObject id="registroDeduccionService" destination="registroDeduccionService" fault="registroDeduccionService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetAll" result="responseGetAll_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetProyecto" result="responseGetItem_resultHandler(event)"/>
+	<mx:CallResponder id="responseDeleteItems" result="responseDeleteItems_resultHandler(event)"/>
+</mx:VBox>

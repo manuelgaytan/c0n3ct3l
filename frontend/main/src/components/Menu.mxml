@@ -155,7 +155,27 @@
 					   icon="@Embed(source='assets/images/clientes.png')"/>
 		<mx:LinkButton label="Prenómina" id="Prenomina" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/clientes.png')"/>
+		<mx:LinkButton label="Deducciones" id="Deducciones" click="clickMenuHandler(event)"
+					   icon="@Embed(source='assets/images/clientes.png')"/>
+		<mx:LinkButton label="Percepciones" id="Percepciones" click="clickMenuHandler(event)"
+					   icon="@Embed(source='assets/images/clientes.png')"/>
 		<mx:LinkButton label="Entrenamiento y Desarrollo" id="EntrenamientoDesarrollo" click="clickMenuHandler(event)"
+					   icon="@Embed(source='assets/images/clientes.png')"/>
+	</mx:VBox>
+	<mx:VBox label="Sistemas de Gestión" width="100%" height="100%">
+		<mx:LinkButton label="Comentarios y/o Sugerencias" id="ComentariosSugerencias" click="clickMenuHandler(event)"
+					   icon="@Embed(source='assets/images/servicios.png')"/>
+		<mx:LinkButton label="Bitácora de Producto No Conforme o No Conformidades" id="BitacoraProductoNoConformeNoConformidades" click="clickMenuHandler(event)"
+					   icon="@Embed(source='assets/images/clientes.png')"/>
+		<mx:LinkButton label="Acción Preventiva-Correctiva" id="AccionPreventivaCorrectiva" click="clickMenuHandler(event)"
+					   icon="@Embed(source='assets/images/servicios.png')"/>
+		<mx:LinkButton label="Concentrado de Capacitación" id="ConcentradoCapacitacion" click="clickMenuHandler(event)"
+					   icon="@Embed(source='assets/images/clientes.png')"/>
+		<mx:LinkButton label="Sistemas de Gestión" id="SistemasGestion" click="clickMenuHandler(event)"
+					   icon="@Embed(source='assets/images/clientes.png')"/>
+		<mx:LinkButton label="Minuta de Reunión" id="MinutaReunion" click="clickMenuHandler(event)"
+					   icon="@Embed(source='assets/images/clientes.png')"/>
+		<mx:LinkButton label="Gráfica de Evaluación de Facturación de Proyectos de Conectel" id="GraficaEvaluacionFacturacionProyectosConectel" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/clientes.png')"/>
 	</mx:VBox>
 	<mx:VBox id="empty"/>

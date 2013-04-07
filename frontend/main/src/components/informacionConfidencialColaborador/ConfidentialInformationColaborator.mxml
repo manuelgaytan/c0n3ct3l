@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*" xmlns:notascreditoclientes="components.notascreditoclientes.*" xmlns:informacionfacturas="components.informacionfacturas.*" xmlns:notascreditoproveedores="components.notascreditoproveedores.*" xmlns:facturacionproveedores="components.facturacionproveedores.*" xmlns:comprobacionesviaticos="components.comprobacionesviaticos.*" xmlns:seleccion="components.seleccion.*"
+		 initialize="initializeHandler(event)" xmlns:reclutamientosolicitudempleo="components.reclutamientosolicitudempleo.*" xmlns:informacionConfidencialColaborador="components.informacionConfidencialColaborador.*" xmlns:contratacion="components.contratacion.*"
+		 >
+	<mx:Script>
+		<![CDATA[
+			import components.clientes.Client;
+			
+			import events.GenericEvent;
+			
+			import model.BancoConectel;
+			import model.Catalogo;
+			import model.Cliente;
+			import model.Colaborador;
+			import model.ComprobacionViaticos;
+			import model.ConceptoOtraOperacionFinanciera;
+			import model.Constants;
+			import model.Contratacion;
+			import model.Estado;
+			import model.EstadoColaborador;
+			import model.EstadoOrdenCompra;
+			import model.EstadoValidacionCosto;
+			import model.EstadoValidacionOperativa;
+			import model.FiltroProyecto;
+			import model.InformacionConfidencialColaborador;
+			import model.MedioTransporte;
+			import model.MotivoTerminoContrato;
+			import model.NotaCreditoCliente;
+			import model.NotaCreditoProveedor;
+			import model.Producto;
+			import model.Proveedor;
+			import model.ProveedorCalificado;
+			import model.ProveedorMaquilador;
+			import model.Proyecto;
+			import model.ReclutamientoSolicitudEmpleo;
+			import model.Suspension;
+			import model.TipoCandidato;
+			import model.TipoColaborador;
+			import model.TipoContrato;
+			import model.TipoEntregable;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.Constantes;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.com.gahm.componentes.validadores.ValidadorEmail;
+			import mx.com.gahm.componentes.validadores.ValidadorEntero;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			[Bindable]
+			private var mode:String = null;
+			private var _item:InformacionConfidencialColaborador;
+			private var validators:InicializaValidadoresEtiquetas;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				this.label = Constants.REGISTRAR;
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set confidentialInformationColaborator(value:InformacionConfidencialColaborador):void{
+				if( value == null ){
+					return;
+				}
+				this.cleanForm();
+				this._item = value;
+				this.setItem(); 
+			}
+			
+			private function setItem():void
+			{
+				if( this._item == null ){
+					return;
+				}
+				this.txtID.text = this._item.id.toString();
+				this.recruitmentConsult.datagrid.dataProvider = Util.asArrayCollection( this._item.contratacion );
+				this.fltDlvPhoto.delivers = Util.asArrayCollection( this._item.foto );
+				this.txtSalary.text = this._item.sueldo.toString();
+				this.chkIMSS.selected = this._item.tieneImss;
+				this.dtfDateIssueIMSS.selectedDate = this._item.altaImss;
+				this.dtfExpirationDateIMSS.selectedDate = this._item.bajaImss;
+				this.dtfUpdateDateIMSS.selectedDate = this._item.modificacionImss;
+				if( Util.isFill( this.cmbColaboratorStatus ) && this._item 
+					&& this._item.estadoColaborador != null ){
+					this.cmbColaboratorStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbColaboratorStatus.dataProvider as ArrayCollection, 
+						this._item.estadoColaborador.id);
+				}
+				this.txtAccidentCaseNotify.text = this._item.enCasoAccidenteAvisar;
+				this.txtEmergencyNumber.text = this._item.telefonoEmergencia;
+				this.chkTreatment.selected = this._item.bajoTratamiento;
+				this.txtMedicament.text = this._item.medicamento;
+				this.txtAlergies.text = this._item.alergias;
+				this.txtBloodType.text = this._item.tipoSangre;
+				this.txtPayrollCardNumber.text = this._item.numeroTarjetaNomina;
+				this.txtConectelEmail.text = this._item.correoElectronico;
+			}
+			
+			private function getConfidentialInformationColaborator():InformacionConfidencialColaborador{
+				var confidentialInformationColaborator:InformacionConfidencialColaborador = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					confidentialInformationColaborator = new InformacionConfidencialColaborador();
+				}else{
+					confidentialInformationColaborator = this._item;
+				}
+				confidentialInformationColaborator.contratacion = this.recruitmentConsult.datagrid.selectedItem as Contratacion;
+				confidentialInformationColaborator.foto = this.fltDlvPhoto.firstDeliver as String;
+				confidentialInformationColaborator.sueldo = Util.stringToNumber( this.txtSalary.text );
+				confidentialInformationColaborator.tieneImss = this.chkIMSS.selected;
+				confidentialInformationColaborator.altaImss = this.dtfDateIssueIMSS.selectedDate;
+				confidentialInformationColaborator.bajaImss = this.dtfExpirationDateIMSS.selectedDate;
+				confidentialInformationColaborator.modificacionImss = this.dtfUpdateDateIMSS.selectedDate;
+				confidentialInformationColaborator.estadoColaborador = Util.validateCombo( this.cmbColaboratorStatus ) as EstadoColaborador;
+				confidentialInformationColaborator.enCasoAccidenteAvisar = Util.validateEmpty( this.txtAccidentCaseNotify.text );
+				confidentialInformationColaborator.telefonoEmergencia = Util.validateEmpty( this.txtEmergencyNumber.text );
+				confidentialInformationColaborator.bajoTratamiento = this.chkTreatment.selected;
+				confidentialInformationColaborator.medicamento = Util.validateEmpty( this.txtMedicament.text );
+				confidentialInformationColaborator.alergias = Util.validateEmpty( this.txtAlergies.text );
+				confidentialInformationColaborator.tipoSangre = Util.validateEmpty( this.txtBloodType.text );
+				confidentialInformationColaborator.numeroTarjetaNomina = Util.validateEmpty( this.txtPayrollCardNumber.text );
+				confidentialInformationColaborator.correoElectronico = Util.validateEmpty( this.txtConectelEmail.text );
+				return confidentialInformationColaborator;
+			}
+			
+			private function fillCombos():void
+			{
+				this.responseGetEstadoColaborador.token = this.catalogoService.getTipoInformacionConfidencialColaborador();
+			}
+			
+			protected function informacionConfidencialColaboradorService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function btnAccept_clickHandler(event:MouseEvent):void
+			{
+				if( !this.validations() ){
+					Util.showMessageVerifyFields();
+					return;
+				}
+				if( this.mode == Constants.REGISTER_MODE ){
+					var confidentialInformationColaborator:InformacionConfidencialColaborador = this.getConfidentialInformationColaborator();
+					Util.showProperties( confidentialInformationColaborator );
+					this.responseSave.token = this.informacionConfidencialColaboradorService.save( confidentialInformationColaborator );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
+				}
+			}
+			
+			private function updateItem(event:CloseEvent):void{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var item:InformacionConfidencialColaborador = this.getConfidentialInformationColaborator();
+				Util.showProperties( item );
+				this.responseUpdate.token = this.informacionConfidencialColaboradorService.update( item );
+			}
+			
+			private function validations():Boolean
+			{
+				var value:Boolean = true;
+				value &&= recruitmentConsult.datagrid.selectedItem != null;
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+					form.removeChild( this.frmID );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+				}
+			}
+			
+			private function initializeValidators():void
+			{
+				this.validators = new InicializaValidadoresEtiquetas();
+				validators.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
+				validators.setRestrictor( this.txtAccidentCaseNotify, "generic");
+				validators.setRestrictor( this.txtEmergencyNumber, "generic");
+				this.validators.crearValidadorRestrictor("genericDecimal", ValidadorDecimal.nombre, 9, 2);
+				this.validators.setValidador( this.txtSalary, "genericDecimal" );
+				validators.crearValidadorRestrictor("email",ValidadorEmail.nombre);
+				this.validators.setValidador( this.txtConectelEmail, "email" );
+			}
+			
+			protected function responseSave_resultHandler(event:ResultEvent):void
+			{
+				var eventGeneralDataProjectNew:Event = new Event("confidentialInformationColaboratorNew");
+				this.dispatchEvent( eventGeneralDataProjectNew );
+				this.cleanForm();
+			}
+			
+			private function cleanForm():void
+			{
+				this.txtID.reset();
+				this.recruitmentConsult.datagrid.selectedItem = false;
+				this.fltDlvPhoto.reset();
+				this.txtSalary.reset();
+				this.chkIMSS.selected = false;
+				this.dtfDateIssueIMSS.reset();
+				this.dtfExpirationDateIMSS.reset();
+				this.dtfUpdateDateIMSS.reset();
+				this.cmbColaboratorStatus.selectedIndex = 0;
+				this.txtAccidentCaseNotify.reset();
+				this.txtEmergencyNumber.reset();
+				this.chkTreatment.selected = false;
+				this.txtMedicament.reset();
+				this.txtAlergies.reset();
+				this.txtBloodType.reset();
+				this.txtPayrollCardNumber.reset();
+				this.txtConectelEmail.reset();
+			}
+			
+			protected function responseUpdate_resultHandler(event:ResultEvent):void
+			{
+				var eventGeneralDataProjectUpdated:Event = new Event("confidentialInformationColaboratorUpdated");
+				this.dispatchEvent( eventGeneralDataProjectUpdated );
+				this.cleanForm();
+			}
+			
+			protected function responseGetEstadoColaborador_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbColaboratorStatus.dataProvider = data;
+				if( Util.isFill( this.cmbColaboratorStatus ) && this._item 
+					&& this._item.estadoColaborador != null ){
+					this.cmbColaboratorStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbColaboratorStatus.dataProvider as ArrayCollection, 
+						this._item.estadoColaborador.id);
+				}
+			}
+			
+			protected function initializeHandler(event:FlexEvent):void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+				}
+			}
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="confidentialInformationColaboratorNew", type="flash.events.Event")]
+		[Event(name="confidentialInformationColaboratorUpdated", type="flash.events.Event")]
+		[Event(name="confidentialInformationColaboratorProjectDone", type="flash.events.Event")]
+	</mx:Metadata>
+	<mx:Form id="form">
+		<mx:FormHeading label="Especificaciones y Tipo de Contratación"/>
+		<mx:FormItem id="frmID" label="ID:" direction="horizontal">
+			<components:TextInput id="txtID" width="80" textAlign="right"
+								  editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Contratación:"/>
+		<contratacion:Consult id="recruitmentConsult" readMode="true"/>
+		<mx:FormItem label="Foto:">
+			<components:FlatDeliver id="fltDlvPhoto"/>
+		</mx:FormItem>
+		<mx:FormItem label="Sueldo:">
+			<components:TextInput id="txtSalary" textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="I.M.S.S.:">
+			<mx:CheckBox id="chkIMSS"/>
+		</mx:FormItem>
+		<mx:FormItem label="Alta I.M.S.S.:">
+			<components:DateField id="dtfDateIssueIMSS"/>
+		</mx:FormItem>
+		<mx:FormItem label="Baja I.M.S.S.:">
+			<components:DateField id="dtfExpirationDateIMSS"/>
+		</mx:FormItem>
+		<mx:FormItem label="Modificación I.M.S.S.:">
+			<components:DateField id="dtfUpdateDateIMSS"/>
+		</mx:FormItem>
+		<mx:FormItem label="Estado del Colaborador:">
+			<mx:ComboBox id="cmbColaboratorStatus" width="200"
+						 labelField="estado"/>
+		</mx:FormItem>
+		<mx:FormItem label="En Caso de Accidente Avisar:">
+			<components:TextInput id="txtAccidentCaseNotify" width="300"/>
+		</mx:FormItem>
+		<mx:FormItem label="Teléfono para Emergencia:">
+			<components:TextInput id="txtEmergencyNumber" width="300"/>
+		</mx:FormItem>
+		<mx:FormItem label="Se Encuentra Bajo Tratamiento:">
+			<mx:CheckBox id="chkTreatment"/>
+		</mx:FormItem>
+		<mx:FormItem label="¿Qué Medicamento?:">
+			<components:TextInput id="txtMedicament" width="300"/>
+		</mx:FormItem>
+		<mx:FormItem label="Alergías:">
+			<components:TextInput id="txtAlergies" width="300"/>
+		</mx:FormItem>
+		<mx:FormItem label="Tipo de Sangre:">
+			<components:TextInput id="txtBloodType"/>
+		</mx:FormItem>
+		<mx:FormItem label="Número Tarjeta de Nómina:">
+			<components:TextInput id="txtPayrollCardNumber" textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Correo Electrónico Conectel:">
+			<components:TextInput id="txtConectelEmail" width="300"/>
+		</mx:FormItem>
+		<mx:FormItem direction="horizontal">
+			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:RemoteObject id="informacionConfidencialColaboradorService" destination="informacionConfidencialColaboradorService" fault="informacionConfidencialColaboradorService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
+	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
+	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="informacionConfidencialColaboradorService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetEstadoColaborador" result="responseGetEstadoColaborador_resultHandler(event)"/>
+</mx:VBox>

@@ -2324,6 +2324,7 @@
 	fecha_apertura DATE NOT NULL,
 	fk_tipo_accion INT(11) UNSIGNED NOT NULL,
 	fk_fuente_no_conformidad INT(11) UNSIGNED NOT NULL,
+	especificar VARCHAR(255) NOT NULL,
 	participantes_analisis VARCHAR(255) NOT NULL,
 	determinacion_causas VARCHAR(255) NOT NULL,
 	responsable_seguimiento VARCHAR(150) NOT NULL,

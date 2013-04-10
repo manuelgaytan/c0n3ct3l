@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
+		   width="950" height="525"
+		   xmlns:comentariossugerencias="components.comentariossugerencias.*"
+		   creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import events.GenericEvent;
+			
+			import model.Sugerencia;
+			import model.Usuario;
+			
+			import mx.events.FlexEvent;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				
+			}
+			
+			protected function consult_adviceDetailHandler(event:GenericEvent):void
+			{
+				this.detail.advice = event.information as model.Sugerencia;
+				this.navigator.selectedChild = this.detail;
+			}
+			
+			protected function register_adviceNewHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+			
+			protected function detail_adviceUpdatedHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+		]]>
+	</mx:Script>
+	<mx:TabNavigator id="navigator" width="950" height="100%" creationPolicy="all">
+		<comentariossugerencias:Consult id="consult" itemDetail="consult_adviceDetailHandler(event)"/>
+		<comentariossugerencias:Advice id="detail" update="true" adviceUpdated="detail_adviceUpdatedHandler(event)"
+							 />
+		<comentariossugerencias:Advice id="register" registrer="true" adviceNew="register_adviceNewHandler(event)"
+							 />
+	</mx:TabNavigator>
+</mx:Module>

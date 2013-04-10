@@ -8,6 +8,7 @@ package model
 		public var fechaApertura:Date;
 		public var tipoAccion:TipoAccion;
 		public var fuenteNoConformidad:FuenteNoConformidad;
+		public var especificar:String;
 		public var participantesAnalisis:String;
 		public var determinacionCausas:String;
 		public var responsableSeguimiento:String;

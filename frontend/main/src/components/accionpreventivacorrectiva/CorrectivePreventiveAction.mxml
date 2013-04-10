@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)"
+		 initialize="initializeHandler(event)" xmlns:bitacoraproductonoconformenoconformidades="components.bitacoraproductonoconformenoconformidades.*"
+		 >
+	<mx:Script>
+		<![CDATA[
+			import components.clientes.Client;
+			
+			import events.GenericEvent;
+			
+			import model.AccionPreventivaCorrectiva;
+			import model.ClasificacionFalta;
+			import model.ClasificacionPermiso;
+			import model.Colaborador;
+			import model.Constants;
+			import model.Contratacion;
+			import model.Deduccion;
+			import model.EstadoAccionPreventivaCorrectiva;
+			import model.FormaPagoPrenomina;
+			import model.FuenteNoConformidad;
+			import model.Model;
+			import model.NoConformidad;
+			import model.ResultadoImplementacion;
+			import model.TipoAccion;
+			import model.TipoSancion;
+			import model.Util;
+			import model.Variacion;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.Constantes;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.com.gahm.componentes.validadores.ValidadorEmail;
+			import mx.com.gahm.componentes.validadores.ValidadorEntero;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			[Bindable]
+			private var mode:String = null;
+			private var _item:AccionPreventivaCorrectiva;
+			private var validators:InicializaValidadoresEtiquetas;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				this.label = Constants.REGISTRAR;
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set correctivePreventiveAction(value:AccionPreventivaCorrectiva):void{
+				if( value == null ){
+					return;
+				}
+				this.cleanForm();
+				this._item = value;
+				this.setItem(); 
+			}
+			
+			private function setItem():void
+			{
+				if( this._item == null ){
+					return;
+				}
+				this.txtID.text = this._item.id.toString();
+				this.consultNonConformities.datagrid.dataProvider = Util.asArrayCollection( this._item.noConformidad );
+				this.dtfOpenDate.selectedDate = this._item.fechaApertura;
+				if( Util.isFill( this.cmbActionType ) && this._item 
+					&& this._item.tipoAccion != null ){
+					this.cmbActionType.selectedIndex = Util.selectedIndexFromCombo( this.cmbActionType.dataProvider as ArrayCollection, 
+						this._item.tipoAccion.id);
+				}
+				if( Util.isFill( this.cmbSourceNonConformity ) && this._item 
+					&& this._item.fuenteNoConformidad != null ){
+					this.cmbSourceNonConformity.selectedIndex = Util.selectedIndexFromCombo( this.cmbSourceNonConformity.dataProvider as ArrayCollection, 
+						this._item.fuenteNoConformidad.id);
+				}
+				this.txtSpecify.text = this._item.especificar;
+				this.txtFromAnalysis.text = this._item.participantesAnalisis;
+				this.txtDeterminationCauses.text = this._item.determinacionCausas;
+				this.txtResponsibleFollowUp.text = this._item.responsableSeguimiento;
+				this.txtFollowUpActions.text = this._item.accionesSeguimiento;
+				this.chkEffectiveAction.selected = this._item.accionTomadaEficaz;
+				if( Util.isFill( this.cmbActionPCStatus ) && this._item 
+					&& this._item.estadoAccionPreventivaCorrectiva != null ){
+					this.cmbActionPCStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbActionPCStatus.dataProvider as ArrayCollection, 
+						this._item.estadoAccionPreventivaCorrectiva.id);
+				}
+			}
+			
+			private function getCorrectivePreventiveAction():AccionPreventivaCorrectiva{
+				var correctivePreventiveAction:AccionPreventivaCorrectiva = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					correctivePreventiveAction = new AccionPreventivaCorrectiva();
+				}else{
+					correctivePreventiveAction = this._item;
+				}
+				correctivePreventiveAction.noConformidad = this.consultNonConformities.datagrid.selectedItem as NoConformidad;
+				correctivePreventiveAction.fechaApertura = this.dtfOpenDate.selectedDate;
+				correctivePreventiveAction.tipoAccion = Util.validateCombo( this.cmbActionType ) as TipoAccion;
+				correctivePreventiveAction.fuenteNoConformidad = Util.validateCombo( this.cmbSourceNonConformity ) as FuenteNoConformidad;
+				correctivePreventiveAction.especificar = Util.validateEmpty( this.txtSpecify.text );
+				correctivePreventiveAction.participantesAnalisis = Util.validateEmpty( this.txtFromAnalysis.text );
+				correctivePreventiveAction.determinacionCausas = Util.validateEmpty( this.txtDeterminationCauses.text );
+				correctivePreventiveAction.responsableSeguimiento = Util.validateEmpty( this.txtResponsibleFollowUp.text );
+				correctivePreventiveAction.accionesSeguimiento = Util.validateEmpty( this.txtFollowUpActions.text );
+				correctivePreventiveAction.accionTomadaEficaz = this.chkEffectiveAction.selected;
+				correctivePreventiveAction.estadoAccionPreventivaCorrectiva = Util.validateCombo( this.cmbActionPCStatus ) as EstadoAccionPreventivaCorrectiva;
+				return correctivePreventiveAction;
+			}
+			
+			private function fillCombos():void
+			{
+				this.responseGetAreaLevantaAccionPreventivaCorrectiva.token = this.catalogoService.getGetAreaLevantaAccionPreventivaCorrectiva();
+			}
+			
+			protected function accionPreventivaCorrectivaService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function btnAccept_clickHandler(event:MouseEvent):void
+			{
+				if( !this.validations() ){
+					Util.showMessageVerifyFields();
+					return;
+				}
+				if( this.mode == Constants.REGISTER_MODE ){
+					var correctivePreventiveAction:AccionPreventivaCorrectiva = this.getCorrectivePreventiveAction();
+					Util.showProperties( correctivePreventiveAction );
+					this.responseSave.token = this.accionPreventivaCorrectivaService.save( correctivePreventiveAction );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
+				}
+			}
+			
+			private function updateItem(event:CloseEvent):void{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var item:AccionPreventivaCorrectiva = this.getCorrectivePreventiveAction();
+				Util.showProperties( item );
+				this.responseUpdate.token = this.accionPreventivaCorrectivaService.update( item );
+			}
+			
+			private function validations():Boolean
+			{
+				var value:Boolean = true;
+				value &&= this.validators.validarFormulario();
+				value &&= this.consultNonConformities.datagrid.selectedItem != null;
+				value &&= this.dtfOpenDate.selectedDate != null;
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+					form.removeChild( this.frmID );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+				}
+			}
+			
+			private function initializeValidators():void
+			{
+				this.validators = new InicializaValidadoresEtiquetas();
+				validators.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
+				this.validators.setValidador( this.txtSpecify, "generic" );
+				this.validators.setValidador( this.txtFromAnalysis, "generic" );
+				this.validators.setValidador( this.txtDeterminationCauses, "generic" );
+				this.validators.setValidador( this.txtFollowUpActions, "generic" );
+				validators.crearValidadorRestrictor("generic150",ValidadorAlfanumerico.nombre, 0, 150, true);
+				this.validators.setValidador( this.txtResponsibleFollowUp, "generic150" );
+			}
+			
+			protected function responseSave_resultHandler(event:ResultEvent):void
+			{
+				var eventGeneralDataProjectNew:Event = new Event("correctivePreventiveActionNew");
+				this.dispatchEvent( eventGeneralDataProjectNew );
+				this.cleanForm();
+			}
+			
+			private function cleanForm():void
+			{
+				this.txtID.reset();
+				this.consultNonConformities.datagrid.selectedItem = false;
+				this.dtfOpenDate.reset();
+				this.cmbActionType.selectedIndex = 0;
+				this.cmbSourceNonConformity.selectedIndex = 0;
+				this.txtSpecify.reset();
+				this.txtFromAnalysis.reset();
+				this.txtDeterminationCauses.reset();
+				this.txtResponsibleFollowUp.reset();
+				this.txtFollowUpActions.reset();
+				this.chkEffectiveAction.selected = false;
+				this.cmbActionPCStatus.selectedIndex = 0;
+			}
+			
+			protected function responseUpdate_resultHandler(event:ResultEvent):void
+			{
+				var eventGeneralDataProjectUpdated:Event = new Event("correctivePreventiveActionUpdated");
+				this.dispatchEvent( eventGeneralDataProjectUpdated );
+				this.cleanForm();
+			}
+			
+			protected function responseGetAreaLevantaAccionPreventivaCorrectiva_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbActionType.dataProvider = data;
+				/*
+				if( Util.isFill( this.cmbActionType ) && this._item 
+					&& this._item.areaLevantaAccionPreventivaCorrectiva != null ){
+					this.cmbActionType.selectedIndex = Util.selectedIndexFromCombo( this.cmbActionType.dataProvider as ArrayCollection, 
+						this._item.areaLevantaAccionPreventivaCorrectiva.id);
+				}
+				*/
+			}
+			
+			protected function initializeHandler(event:FlexEvent):void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+				}
+			}
+			
+			protected function btnViewPerDiemCheck_clickHandler(event:MouseEvent):void
+			{
+				var nonConformity:NoConformidad = this.consultNonConformities.datagrid.selectedItem as NoConformidad;
+				if( nonConformity == null ){
+					Util.showErrorMessage("Primero debe seleccionar un elemento.");
+					return;
+				}
+				var genericEvent:GenericEvent = new GenericEvent("nonConformitySelected");
+				genericEvent.information = nonConformity;
+				this.dispatchEvent( genericEvent );
+			}
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="correctivePreventiveActionNew", type="flash.events.Event")]
+		[Event(name="correctivePreventiveActionUpdated", type="flash.events.Event")]
+		[Event(name="correctivePreventiveActionProjectDone", type="flash.events.Event")]
+		[Event(name="nonConformitySelected", type="events.GenericEvent")]
+	</mx:Metadata>
+	<mx:Form id="form">
+		<mx:FormItem id="frmID" label="ID:" direction="horizontal">
+			<components:TextInput id="txtID" width="80" textAlign="right"
+								  editable="false"/>
+		</mx:FormItem>
+		<bitacoraproductonoconformenoconformidades:Consult id="consultNonConformities"/>
+		<mx:FormItem label="Fecha Apertura:">
+			<components:DateField id="dtfOpenDate"/>
+		</mx:FormItem>
+		<mx:FormItem label="Tipo de Acción:">
+			<mx:ComboBox id="cmbActionType" width="400"
+						 labelField="tipoAccion.accion"
+						 />
+		</mx:FormItem>
+		<mx:FormItem label="Fuente de la No Conformidad:">
+			<mx:ComboBox id="cmbSourceNonConformity" width="400"
+						 labelField="fuenteNoConformidad.fuente"
+						 />
+		</mx:FormItem>
+		<mx:FormItem label="Especificar:">
+			<components:TextInput id="txtSpecify" width="350"/>
+		</mx:FormItem>
+		<mx:FormItem label="Participantes del Análisis:">
+			<components:TextArea id="txtFromAnalysis" width="250"/>
+		</mx:FormItem>
+		<mx:FormItem label="Determinación de las Causas:">
+			<components:TextArea id="txtDeterminationCauses" width="520"/>
+		</mx:FormItem>
+		<mx:FormItem label="Responsable de Acciones de Seguimiento:">
+			<components:TextInput id="txtResponsibleFollowUp" width="520"/>
+		</mx:FormItem>
+		<mx:FormItem label="Acciones de Seguimiento:">
+			<components:TextArea id="txtFollowUpActions" width="520"/>
+		</mx:FormItem>
+		<mx:FormItem label="¿La Acción tomada fue Eficaz?:">
+			<mx:CheckBox id="chkEffectiveAction"/>
+		</mx:FormItem>
+		<mx:FormItem label="Estado de la Acción Preventiva-Correctiva:">
+			<mx:ComboBox id="cmbActionPCStatus" width="400"
+						 labelField="estadoAccionPreventivaCorrectiva.estado"
+						 />
+		</mx:FormItem>
+		<mx:FormItem direction="horizontal">
+			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:RemoteObject id="accionPreventivaCorrectivaService" destination="accionPreventivaCorrectivaService" fault="accionPreventivaCorrectivaService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
+	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
+	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="accionPreventivaCorrectivaService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetAreaLevantaAccionPreventivaCorrectiva" result="responseGetAreaLevantaAccionPreventivaCorrectiva_resultHandler(event)"/>
+</mx:VBox>

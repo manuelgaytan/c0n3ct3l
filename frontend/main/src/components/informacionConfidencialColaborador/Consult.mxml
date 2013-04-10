@@ -52,7 +52,7 @@
 					return;
 				}
 				var item:InformacionConfidencialColaborador = this.datagrid.selectedItem as InformacionConfidencialColaborador;
-				this.responseGetProyecto.token = this.contratacionService.getItem( item.id );
+				this.responseGetProyecto.token = this.informacionConfidencialColaboradorService.getItem( item.id );
 			}
 			
 			protected function responseGetItem_resultHandler(event:ResultEvent):void
@@ -68,7 +68,7 @@
 			
 			public function executeQuery():void
 			{
-				this.responseGetAll.token = this.contratacionService.getAll();
+				this.responseGetAll.token = this.informacionConfidencialColaboradorService.getAll();
 			}
 			
 			private function labelFunctionDate(object:Object, column:DataGridColumn):String{
@@ -95,7 +95,7 @@
 					return;
 				}
 				var items:ArrayCollection = Util.selectedIDs( this.datagrid.selectedItems ); 
-				this.responseDeleteItems.token = this.contratacionService.deleteItems( items );
+				this.responseDeleteItems.token = this.informacionConfidencialColaboradorService.deleteItems( items );
 			}
 			
 			protected function responseDeleteItems_resultHandler(event:ResultEvent):void

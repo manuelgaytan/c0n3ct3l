@@ -160,6 +160,7 @@
 			private function validations():Boolean
 			{
 				var value:Boolean = true;
+				//value &&= this.validators.validarFormulario();
 				value &&= recruitmentJobApplication.datagrid.selectedItem != null;
 				value &&= psycometricQuiz.validations();
 				value &&= scalaProfile.validations();

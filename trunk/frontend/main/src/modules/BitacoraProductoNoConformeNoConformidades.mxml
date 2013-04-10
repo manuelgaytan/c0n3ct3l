@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
+		   width="950" height="545"
+		   xmlns:bitacoraproductonoconformenoconformidades="components.bitacoraproductonoconformenoconformidades.*"
+		   creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import events.GenericEvent;
+			
+			import model.NoConformidad;
+			import model.Usuario;
+			
+			import mx.events.FlexEvent;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				
+			}
+			
+			protected function consult_nonConformityDetailHandler(event:GenericEvent):void
+			{
+				this.detail.nonConformity = event.information as model.NoConformidad;
+				this.navigator.selectedChild = this.detail;
+			}
+			
+			protected function register_nonConformityNewHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+			
+			protected function detail_nonConformityUpdatedHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+		]]>
+	</mx:Script>
+	<mx:TabNavigator id="navigator" width="950" height="100%" creationPolicy="all">
+		<bitacoraproductonoconformenoconformidades:Consult id="consult" itemDetail="consult_nonConformityDetailHandler(event)"/>
+		<bitacoraproductonoconformenoconformidades:NonConformity id="detail" update="true" nonConformityUpdated="detail_nonConformityUpdatedHandler(event)"
+							 />
+		<bitacoraproductonoconformenoconformidades:NonConformity id="register" registrer="true" nonConformityNew="register_nonConformityNewHandler(event)"
+							 />
+	</mx:TabNavigator>
+</mx:Module>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
+		   width="950" height="525"
+		   xmlns:percepciones="components.percepciones.*"
+		   creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import events.GenericEvent;
+			
+			import model.RegistroPercepcion;
+			import model.Usuario;
+			
+			import mx.events.FlexEvent;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				
+			}
+			
+			protected function consult_perceptionDetailHandler(event:GenericEvent):void
+			{
+				this.detail.perception = event.information as model.RegistroPercepcion;
+				this.navigator.selectedChild = this.detail;
+			}
+			
+			protected function register_perceptionNewHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+			
+			protected function detail_perceptionUpdatedHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+		]]>
+	</mx:Script>
+	<mx:TabNavigator id="navigator" width="950" height="100%" creationPolicy="all">
+		<percepciones:Consult id="consult" itemDetail="consult_perceptionDetailHandler(event)"/>
+		<percepciones:Perception id="detail" update="true" perceptionUpdated="detail_perceptionUpdatedHandler(event)"
+							 />
+		<percepciones:Perception id="register" registrer="true" perceptionNew="register_perceptionNewHandler(event)"
+							 />
+	</mx:TabNavigator>
+</mx:Module>

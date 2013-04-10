@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
+		   width="1150" height="525"
+		   xmlns:entrenamientodesarrollo="components.entrenamientodesarrollo.*"
+		   creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import events.GenericEvent;
+			
+			import model.Curso;
+			import model.Usuario;
+			
+			import mx.events.FlexEvent;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				
+			}
+			
+			protected function consult_developmentDetailHandler(event:GenericEvent):void
+			{
+				this.detail.development = event.information as model.Curso;
+				this.navigator.selectedChild = this.detail;
+			}
+			
+			protected function register_developmentNewHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+			
+			protected function detail_developmentUpdatedHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+		]]>
+	</mx:Script>
+	<mx:TabNavigator id="navigator" width="1150" height="100%" creationPolicy="all">
+		<entrenamientodesarrollo:Consult id="consult" itemDetail="consult_developmentDetailHandler(event)"/>
+		<entrenamientodesarrollo:Development id="detail" update="true" developmentUpdated="detail_developmentUpdatedHandler(event)"
+							 />
+		<entrenamientodesarrollo:Development id="register" registrer="true" developmentNew="register_developmentNewHandler(event)"
+							 />
+	</mx:TabNavigator>
+</mx:Module>

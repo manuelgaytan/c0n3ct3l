@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*" xmlns:notascreditoclientes="components.notascreditoclientes.*" xmlns:informacionfacturas="components.informacionfacturas.*" xmlns:notascreditoproveedores="components.notascreditoproveedores.*" xmlns:facturacionproveedores="components.facturacionproveedores.*" xmlns:comprobacionesviaticos="components.comprobacionesviaticos.*" xmlns:seleccion="components.seleccion.*"
+		 initialize="initializeHandler(event)" xmlns:reclutamientosolicitudempleo="components.reclutamientosolicitudempleo.*" xmlns:registroSugerencia="components.registroSugerencia.*" xmlns:contratacion="components.contratacion.*"
+		 >
+	<mx:Script>
+		<![CDATA[
+			import components.clientes.Client;
+			
+			import events.GenericEvent;
+			
+			import model.ClasificacionFalta;
+			import model.ClasificacionPermiso;
+			import model.Colaborador;
+			import model.Constants;
+			import model.Contratacion;
+			import model.Deduccion;
+			import model.FormaPagoPrenomina;
+			import model.ResultadoImplementacion;
+			import model.Sugerencia;
+			import model.TipoSancion;
+			import model.Util;
+			import model.Variacion;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.Constantes;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.com.gahm.componentes.validadores.ValidadorEmail;
+			import mx.com.gahm.componentes.validadores.ValidadorEntero;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			[Bindable]
+			private var mode:String = null;
+			private var _item:Sugerencia;
+			private var validators:InicializaValidadoresEtiquetas;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				this.label = Constants.REGISTRAR;
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set advice(value:Sugerencia):void{
+				if( value == null ){
+					return;
+				}
+				this.cleanForm();
+				this._item = value;
+				this.setItem(); 
+			}
+			
+			private function setItem():void
+			{
+				if( this._item == null ){
+					return;
+				}
+				this.txtID.text = this._item.id.toString();
+				this.dtfDate.selectedDate = this._item.fecha;
+				if( Util.isFill( this.cmbConectelPayroll ) && this._item 
+					&& this._item.colaborador != null ){
+					this.cmbConectelPayroll.selectedIndex = Util.selectedIndexFromCombo( this.cmbConectelPayroll.dataProvider as ArrayCollection, 
+						this._item.colaborador.id);
+				}
+				this.txtName.text = this._item.nombre;
+				this.txtEmail.text = this._item.correoElectronico;
+				this.txtPhone.text = this._item.telefono;
+				this.txtAdvice.text = this._item.sugerencia;
+				this.chkInmediatlyAction.selected = this._item.requiereAccionInmediata;
+				this.txtInmediatlyAction.text = this._item.accionInmediata;
+				this.dtfImplementationDate.selectedDate = this._item.fechaImplementacion;
+				this.txtImplementationResponsible.text = this._item.responsableImplementacion;
+				if( Util.isFill( this.cmbImplementationResult ) && this._item 
+					&& this._item.resultadoImplementacion != null ){
+					this.cmbImplementationResult.selectedIndex = Util.selectedIndexFromCombo( this.cmbImplementationResult.dataProvider as ArrayCollection, 
+						this._item.resultadoImplementacion.id);
+				}
+				this.chkCorrectiveAction.selected = this._item.requiereAccionCorrectiva;
+			}
+			
+			private function getAdvice():Sugerencia{
+				var advice:Sugerencia = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					advice = new Sugerencia();
+				}else{
+					advice = this._item;
+				}
+				advice.fecha = this.dtfDate.selectedDate;
+				advice.colaborador = Util.validateCombo( this.cmbConectelPayroll ) as Colaborador;
+				advice.nombre = Util.validateEmpty( this.txtName.text );
+				advice.correoElectronico = Util.validateEmpty( this.txtEmail.text );
+				advice.telefono = Util.validateEmpty( this.txtPhone.text );
+				advice.sugerencia = Util.validateEmpty( this.txtAdvice.text );
+				advice.requiereAccionInmediata = this.chkInmediatlyAction.selected;
+				advice.accionInmediata = Util.validateEmpty( this.txtInmediatlyAction.text );
+				advice.fechaImplementacion = this.dtfImplementationDate.selectedDate;
+				advice.responsableImplementacion = Util.validateEmpty( this.txtImplementationResponsible.text );
+				advice.resultadoImplementacion = Util.validateCombo( this.cmbImplementationResult ) as ResultadoImplementacion;
+				advice.requiereAccionCorrectiva = this.chkCorrectiveAction.selected;;
+				return advice;
+			}
+			
+			private function fillCombos():void
+			{
+				this.responseGetColaborador.token = this.catalogoService.getColaboradorByTipoColaborador(2);
+				this.responseGetResultadoImplementacion.token = this.catalogoService.getGetResultadoImplementacion();
+			}
+			
+			protected function registroSugerenciaService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function btnAccept_clickHandler(event:MouseEvent):void
+			{
+				if( !this.validations() ){
+					Util.showMessageVerifyFields();
+					return;
+				}
+				if( this.mode == Constants.REGISTER_MODE ){
+					var advice:Sugerencia = this.getAdvice();
+					Util.showProperties( advice );
+					this.responseSave.token = this.registroSugerenciaService.save( advice );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
+				}
+			}
+			
+			private function updateItem(event:CloseEvent):void{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var item:Sugerencia = this.getAdvice();
+				Util.showProperties( item );
+				this.responseUpdate.token = this.registroSugerenciaService.update( item );
+			}
+			
+			private function validations():Boolean
+			{
+				var value:Boolean = true;
+				value &&= this.validators.validarFormulario();
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+					form.removeChild( this.frmID );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+				}
+			}
+			
+			private function initializeValidators():void
+			{
+				this.validators = new InicializaValidadoresEtiquetas();
+				//validators.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
+				this.validators.crearValidadorRestrictor("genericDecimal", ValidadorDecimal.nombre, 9, 2);
+				this.validators.setValidador( this.txtName, "genericDecimal" );
+				validators.crearValidadorRestrictor("genericInteger",ValidadorEntero.nombre, 5);
+				this.validators.setRestrictor( this.txtEmail, "genericInteger" );
+			}
+			
+			protected function responseSave_resultHandler(event:ResultEvent):void
+			{
+				var eventGeneralDataProjectNew:Event = new Event("adviceNew");
+				this.dispatchEvent( eventGeneralDataProjectNew );
+				this.cleanForm();
+			}
+			
+			private function cleanForm():void
+			{
+				this.txtID.reset();
+				this.dtfDate.reset();
+				this.cmbConectelPayroll.selectedIndex = 0;
+				this.txtName.reset();
+				this.txtEmail.reset();
+				this.txtPhone.reset();
+				this.txtAdvice.reset();
+				this.chkInmediatlyAction.selected = false;
+				this.txtInmediatlyAction.reset();
+				this.dtfImplementationDate.reset();
+				this.txtImplementationResponsible.reset();
+				this.cmbImplementationResult.selectedIndex = 0;
+				this.chkCorrectiveAction.selected = false;
+			}
+			
+			protected function responseUpdate_resultHandler(event:ResultEvent):void
+			{
+				var eventGeneralDataProjectUpdated:Event = new Event("adviceUpdated");
+				this.dispatchEvent( eventGeneralDataProjectUpdated );
+				this.cleanForm();
+			}
+			
+			protected function responseGetColaborador_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbConectelPayroll.dataProvider = Util.addEmptyCatalgo( data, "nombreCompleto" );
+				if( Util.isFill( this.cmbConectelPayroll ) && this._item 
+					&& this._item.colaborador != null ){
+					this.cmbConectelPayroll.selectedIndex = Util.selectedIndexFromCombo( this.cmbConectelPayroll.dataProvider as ArrayCollection, 
+						this._item.colaborador.id);
+				}
+			}
+			
+			protected function responseGetResultadoImplementacion_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbImplementationResult.dataProvider = data;
+				if( Util.isFill( this.cmbImplementationResult ) && this._item 
+					&& this._item.resultadoImplementacion != null ){
+					this.cmbImplementationResult.selectedIndex = Util.selectedIndexFromCombo( this.cmbImplementationResult.dataProvider as ArrayCollection, 
+						this._item.resultadoImplementacion.id);
+				}
+			}
+			
+			protected function initializeHandler(event:FlexEvent):void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+				}
+			}
+			
+			protected function cmbConectelPayroll_changeHandler(event:ListEvent):void
+			{
+				var colaborator:Colaborador = this.cmbConectelPayroll.selectedItem as Colaborador;
+				if( colaborator ){
+					this.txtName.text = "";
+					return;
+				}
+				this.txtName.text = colaborator.nombreCompleto;
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="adviceNew", type="flash.events.Event")]
+		[Event(name="adviceUpdated", type="flash.events.Event")]
+		[Event(name="adviceProjectDone", type="flash.events.Event")]
+	</mx:Metadata>
+	<mx:Form id="form">
+		<mx:FormItem id="frmID" label="ID:" direction="horizontal">
+			<components:TextInput id="txtID" width="80" textAlign="right"
+								  editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha:">
+			<components:DateField id="dtfDate" enabled="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Nómina Conectel:">
+			<mx:ComboBox id="cmbConectelPayroll" width="400"
+						 labelField="nombreCompleto"
+						 change="cmbConectelPayroll_changeHandler(event)"/>
+		</mx:FormItem>
+		<mx:FormItem label="Nombre:">
+			<components:TextInput id="txtName" width="350"/>
+		</mx:FormItem>
+		<mx:FormItem label="Correo Electrónico:">
+			<components:TextInput id="txtEmail" width="250"/>
+		</mx:FormItem>
+		<mx:FormItem label="Teléfono:">
+			<components:TextInput id="txtPhone" width="100"/>
+		</mx:FormItem>
+		<mx:FormItem label="Descripción del Comentario y/o Sugerencia:">
+			<components:TextArea id="txtAdvice" width="520"/>
+		</mx:FormItem>
+		<mx:FormItem label="Requiere Acción Inmediata:">
+			<mx:CheckBox id="chkInmediatlyAction"/>
+		</mx:FormItem>
+		<mx:FormItem label="Acción Inmediata:">
+			<components:TextInput id="txtInmediatlyAction" width="520"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha de Implementación:">
+			<components:DateField id="dtfImplementationDate"/>
+		</mx:FormItem>
+		<mx:FormItem label="Responsable de Implementación:">
+			<components:TextInput id="txtImplementationResponsible" width="350"/>
+		</mx:FormItem>
+		<mx:FormItem label="Resultado Implementación:">
+			<mx:ComboBox id="cmbImplementationResult" width="400"
+						 labelField="resultado"
+						 />
+		</mx:FormItem>
+		<mx:FormItem label="Requiere Acción Correctiva:">
+			<mx:CheckBox id="chkCorrectiveAction"/>
+		</mx:FormItem>
+		<mx:FormItem direction="horizontal">
+			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:RemoteObject id="registroSugerenciaService" destination="registroSugerenciaService" fault="registroSugerenciaService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
+	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
+	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="registroSugerenciaService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetColaborador" result="responseGetColaborador_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetResultadoImplementacion" result="responseGetResultadoImplementacion_resultHandler(event)"/>
+</mx:VBox>

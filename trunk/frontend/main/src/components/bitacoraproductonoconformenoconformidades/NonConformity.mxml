@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)"
+		 initialize="initializeHandler(event)"
+		 >
+	<mx:Script>
+		<![CDATA[
+			import components.clientes.Client;
+			
+			import events.GenericEvent;
+			
+			import model.AreaLevantaNoConformidad;
+			import model.ClasificacionFalta;
+			import model.ClasificacionPermiso;
+			import model.Colaborador;
+			import model.Constants;
+			import model.Contratacion;
+			import model.Deduccion;
+			import model.FormaPagoPrenomina;
+			import model.Model;
+			import model.NoConformidad;
+			import model.ResultadoImplementacion;
+			import model.TipoSancion;
+			import model.Util;
+			import model.Variacion;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.Constantes;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.com.gahm.componentes.validadores.ValidadorEmail;
+			import mx.com.gahm.componentes.validadores.ValidadorEntero;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			[Bindable]
+			private var mode:String = null;
+			private var _item:NoConformidad;
+			private var validators:InicializaValidadoresEtiquetas;
+			
+			[Bindable]
+			private var _readOnly:Boolean = false;
+			
+			public function set readOnly(value:Boolean):void{
+				this._readOnly = value;
+				this.label = Constants.DETALLE;
+			}
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				this.label = Constants.REGISTRAR;
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set nonConformity(value:NoConformidad):void{
+				if( value == null ){
+					return;
+				}
+				this.cleanForm();
+				this._item = value;
+				this.setItem(); 
+			}
+			
+			private function setItem():void
+			{
+				if( this._item == null ){
+					return;
+				}
+				this.txtID.text = this._item.id.toString();
+				if( Util.isFill( this.cmbAreaRaisesNonConformity ) && this._item 
+					&& this._item.areaLevantaNoConformidad != null ){
+					this.cmbAreaRaisesNonConformity.selectedIndex = Util.selectedIndexFromCombo( this.cmbAreaRaisesNonConformity.dataProvider as ArrayCollection, 
+						this._item.areaLevantaNoConformidad.id);
+				}
+				this.txtName.text = this._item.usuario.nombreCompleto;
+				this.dtfEventDate.selectedDate = this._item.fechaSuceso;
+				this.txtAreaWhoRaisedNonConformity.text = this._item.areaNombreSeLevanta;
+				this.txtEvent.text = this._item.sucesoEvento;
+				this.txtPlaceEvent.text = this._item.dondeOcurrio;
+				this.txtAffectation.text = this._item.cuantoAfecto;
+				this.txtCauses.text = this._item.causas;
+				this.txtEstablished.text = this._item.correccion;
+				this.txtObservations.text = this._item.observaciones;
+				this.chkCorrectiveAction.selected = this._item.requiereAccionCorrectiva;
+			}
+			
+			private function getNonConformity():NoConformidad{
+				var nonConformity:NoConformidad = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					nonConformity = new NoConformidad();
+				}else{
+					nonConformity = this._item;
+				}
+				nonConformity.areaLevantaNoConformidad = Util.validateCombo( this.cmbAreaRaisesNonConformity ) as AreaLevantaNoConformidad;
+				nonConformity.usuario = Model.getInstance().user;
+				nonConformity.fechaSuceso = this.dtfEventDate.selectedDate;
+				nonConformity.areaNombreSeLevanta = Util.validateEmpty( this.txtAreaWhoRaisedNonConformity.text );
+				nonConformity.sucesoEvento = Util.validateEmpty( this.txtEvent.text );
+				nonConformity.dondeOcurrio = Util.validateEmpty( this.txtPlaceEvent.text );
+				nonConformity.cuantoAfecto = Util.validateEmpty( this.txtAffectation.text );
+				nonConformity.causas = Util.validateEmpty( this.txtCauses.text );
+				nonConformity.correccion = Util.validateEmpty( this.txtEstablished.text );
+				nonConformity.observaciones = Util.validateEmpty( this.txtObservations.text );
+				nonConformity.requiereAccionCorrectiva = this.chkCorrectiveAction.selected;;
+				return nonConformity;
+			}
+			
+			private function fillCombos():void
+			{
+				this.responseGetAreaLevantaNoConformidad.token = this.catalogoService.getGetAreaLevantaNoConformidad();
+			}
+			
+			protected function noConformidadService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function btnAccept_clickHandler(event:MouseEvent):void
+			{
+				if( !this.validations() ){
+					Util.showMessageVerifyFields();
+					return;
+				}
+				if( this.mode == Constants.REGISTER_MODE ){
+					var nonConformity:NoConformidad = this.getNonConformity();
+					Util.showProperties( nonConformity );
+					this.responseSave.token = this.noConformidadService.save( nonConformity );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
+				}
+			}
+			
+			private function updateItem(event:CloseEvent):void{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var item:NoConformidad = this.getNonConformity();
+				Util.showProperties( item );
+				this.responseUpdate.token = this.noConformidadService.update( item );
+			}
+			
+			private function validations():Boolean
+			{
+				var value:Boolean = true;
+				value &&= this.validators.validarFormulario();
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+					form.removeChild( this.frmID );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+				}
+			}
+			
+			private function initializeValidators():void
+			{
+				this.validators = new InicializaValidadoresEtiquetas();
+				validators.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
+				this.validators.setValidador( this.txtAreaWhoRaisedNonConformity, "generic" );
+				this.validators.setValidador( this.txtEvent, "generic" );
+				this.validators.setValidador( this.txtPlaceEvent, "generic" );
+				this.validators.setValidador( this.txtAffectation, "generic" );
+				this.validators.setValidador( this.txtCauses, "generic" );
+				this.validators.setValidador( this.txtEstablished, "generic" );
+				this.validators.setValidador( this.txtObservations, "generic" );
+				//validators.crearValidadorRestrictor("genericDecimal", ValidadorDecimal.nombre, 9, 2);
+				//validators.crearValidadorRestrictor("genericInteger",ValidadorEntero.nombre, 5);
+			}
+			
+			protected function responseSave_resultHandler(event:ResultEvent):void
+			{
+				var eventGeneralDataProjectNew:Event = new Event("nonConformityNew");
+				this.dispatchEvent( eventGeneralDataProjectNew );
+				this.cleanForm();
+			}
+			
+			private function cleanForm():void
+			{
+				this.txtID.reset();
+				this.cmbAreaRaisesNonConformity.selectedIndex = 0;
+				this.txtName.reset();
+				this.dtfEventDate.reset();
+				this.txtAreaWhoRaisedNonConformity.reset();
+				this.txtEvent.reset();
+				this.txtPlaceEvent.reset();
+				this.txtAffectation.reset();
+				this.txtCauses.reset();
+				this.txtEstablished.reset();
+				this.txtObservations.reset();
+				this.chkCorrectiveAction.selected = false;
+			}
+			
+			protected function responseUpdate_resultHandler(event:ResultEvent):void
+			{
+				var eventGeneralDataProjectUpdated:Event = new Event("nonConformityUpdated");
+				this.dispatchEvent( eventGeneralDataProjectUpdated );
+				this.cleanForm();
+			}
+			
+			protected function responseGetAreaLevantaNoConformidad_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbAreaRaisesNonConformity.dataProvider = data;
+				if( Util.isFill( this.cmbAreaRaisesNonConformity ) && this._item 
+					&& this._item.areaLevantaNoConformidad != null ){
+					this.cmbAreaRaisesNonConformity.selectedIndex = Util.selectedIndexFromCombo( this.cmbAreaRaisesNonConformity.dataProvider as ArrayCollection, 
+						this._item.areaLevantaNoConformidad.id);
+				}
+			}
+			
+			protected function initializeHandler(event:FlexEvent):void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+				}
+			}
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="nonConformityNew", type="flash.events.Event")]
+		[Event(name="nonConformityUpdated", type="flash.events.Event")]
+		[Event(name="nonConformityProjectDone", type="flash.events.Event")]
+	</mx:Metadata>
+	<mx:Form id="form">
+		<mx:FormItem id="frmID" label="ID:" direction="horizontal">
+			<components:TextInput id="txtID" width="80" textAlign="right"
+								  editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Área que Levanta la No Conformidad:">
+			<mx:ComboBox id="cmbAreaRaisesNonConformity" width="400"
+						 labelField="area"
+						 />
+		</mx:FormItem>
+		<mx:FormItem label="Nombre de quién Levanta la No Conformidad:">
+			<components:TextInput id="txtName" width="350" editable="false"
+								  text="{Model.getInstance().user.nombreCompleto}"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha del Suceso:">
+			<components:DateField id="dtfEventDate"/>
+		</mx:FormItem>
+		<mx:FormItem label="Área a quién se Levanta la No Conformidad:">
+			<components:TextInput id="txtAreaWhoRaisedNonConformity" width="250"/>
+		</mx:FormItem>
+		<mx:FormItem label="Suceso/Evento:">
+			<components:TextArea id="txtEvent" width="520"/>
+		</mx:FormItem>
+		<mx:FormItem label="¿Dónde Ocurrió el Evento?:">
+			<components:TextInput id="txtPlaceEvent" width="520"/>
+		</mx:FormItem>
+		<mx:FormItem label="¿Cuánto Afecto?:">
+			<components:TextInput id="txtAffectation" width="400"/>
+		</mx:FormItem>
+		<mx:FormItem label="Causas de la Ocurrencia:">
+			<components:TextArea id="txtCauses" width="520"/>
+		</mx:FormItem>
+		<mx:FormItem label="Corrección Establecida:">
+			<components:TextArea id="txtEstablished" width="520"/>
+		</mx:FormItem>
+		<mx:FormItem label="Observaciones:">
+			<components:TextArea id="txtObservations" width="520"/>
+		</mx:FormItem>
+		<mx:FormItem label="Requiere Acción Correctiva:">
+			<mx:CheckBox id="chkCorrectiveAction"/>
+		</mx:FormItem>
+		<mx:FormItem direction="horizontal">
+			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"
+					   visible="{!this._readOnly}"/>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:RemoteObject id="noConformidadService" destination="noConformidadService" fault="noConformidadService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
+	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
+	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="noConformidadService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetAreaLevantaNoConformidad" result="responseGetAreaLevantaNoConformidad_resultHandler(event)"/>
+</mx:VBox>

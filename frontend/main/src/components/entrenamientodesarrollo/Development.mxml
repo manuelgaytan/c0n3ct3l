@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*" xmlns:notascreditoclientes="components.notascreditoclientes.*" xmlns:informacionfacturas="components.informacionfacturas.*" xmlns:notascreditoproveedores="components.notascreditoproveedores.*" xmlns:facturacionproveedores="components.facturacionproveedores.*" xmlns:comprobacionesviaticos="components.comprobacionesviaticos.*" xmlns:seleccion="components.seleccion.*"
+		 initialize="initializeHandler(event)" xmlns:reclutamientosolicitudempleo="components.reclutamientosolicitudempleo.*" xmlns:curso="components.curso.*" xmlns:contratacion="components.contratacion.*"
+		 >
+	<mx:Script>
+		<![CDATA[
+			import components.clientes.Client;
+			
+			import events.GenericEvent;
+			
+			import model.ClasificacionFalta;
+			import model.ClasificacionPermiso;
+			import model.Constants;
+			import model.Contratacion;
+			import model.Deduccion;
+			import model.FormaPagoPrenomina;
+			import model.Percepcion;
+			import model.Curso;
+			import model.TipoSancion;
+			import model.Util;
+			import model.Variacion;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.Constantes;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.com.gahm.componentes.validadores.ValidadorEmail;
+			import mx.com.gahm.componentes.validadores.ValidadorEntero;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			[Bindable]
+			private var mode:String = null;
+			private var _item:Curso;
+			private var validators:InicializaValidadoresEtiquetas;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				this.label = Constants.REGISTRAR;
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set development(value:Curso):void{
+				if( value == null ){
+					return;
+				}
+				this.cleanForm();
+				this._item = value;
+				this.setItem(); 
+			}
+			
+			private function setItem():void
+			{
+				if( this._item == null ){
+					return;
+				}
+				this.txtID.text = this._item.id.toString();
+				this.recruitmentConsult.datagrid.dataProvider = Util.asArrayCollection( this._item.contratacion );
+				this.dtfENCDate.selectedDate = this._item.fechaEnc;
+				this.txtENCGrade.text = this._item.resultadoEnc.toString();
+				this.chkENC.selected = this._item.enc;
+				this.txtTechnicalCourse.text = this._item.cursoTecnico;
+				this.txtTechnicalCourseInternalCoach.text = this._item.capacitadorInternoCt;
+				this.txtTechnicalCourseExternalCoach.text = this._item.capacitadorExternoCt;
+				this.chkApproveTechnicalCourse.selected = this._item.autorizacionCt;
+				this.txtTechnicalCourseGrade.text = this._item.resultadoCt.toString();
+				this.dtfTechnicalCourseDate.selectedDate = this._item.fechaCt;
+				this.txtGeneralCourse.text = this._item.cursoGeneral;
+				this.txtGeneralCourseInternalCoach.text = this._item.capacitadorInternoCg;
+				this.txtGeneralCourseExternalCoach.text = this._item.capacitadorExternoCg;
+				this.chkApproveGeneralCourse.selected = this._item.autorizacionCg;
+				this.txtGeneralCourseGrade.text = this._item.resultadoCg.toString();
+				this.dtfGeneralCourseDate.selectedDate = this._item.fechaCg;
+			}
+			
+			private function getDevelopment():Curso{
+				var development:Curso = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					development = new Curso();
+				}else{
+					development = this._item;
+				}
+				development.contratacion = this.recruitmentConsult.datagrid.selectedItem as Contratacion;
+				development.fechaEnc = this.dtfENCDate.selectedDate; 
+				development.resultadoEnc = Util.stringToNumber( this.txtENCGrade.text );
+				development.enc = this.chkENC.selected;
+				development.cursoTecnico = Util.validateEmpty( this.txtTechnicalCourse.text );
+				development.capacitadorInternoCt = Util.validateEmpty( this.txtTechnicalCourseInternalCoach.text );
+				development.capacitadorExternoCt = Util.validateEmpty( this.txtTechnicalCourseExternalCoach.text );
+				development.autorizacionCt = this.chkApproveTechnicalCourse.selected;
+				development.fechaCt = this.dtfTechnicalCourseDate.selectedDate;
+				development.resultadoCt = Util.stringToNumber( this.txtTechnicalCourseGrade.text );
+				development.cursoTecnico = Util.validateEmpty( this.txtGeneralCourse.text );
+				development.capacitadorInternoCg = Util.validateEmpty( this.txtGeneralCourseInternalCoach.text );
+				development.capacitadorExternoCg = Util.validateEmpty( this.txtGeneralCourseExternalCoach.text );
+				development.autorizacionCg = this.chkApproveGeneralCourse.selected;
+				development.fechaCg = this.dtfGeneralCourseDate.selectedDate;
+				development.resultadoCg = Util.stringToNumber( this.txtGeneralCourseGrade.text );
+				return development;
+			}
+			
+			private function fillCombos():void
+			{
+			}
+			
+			protected function cursoService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function btnAccept_clickHandler(event:MouseEvent):void
+			{
+				if( !this.validations() ){
+					Util.showMessageVerifyFields();
+					return;
+				}
+				if( this.mode == Constants.REGISTER_MODE ){
+					var development:Curso = this.getDevelopment();
+					Util.showProperties( development );
+					this.responseSave.token = this.cursoService.save( development );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
+				}
+			}
+			
+			private function updateItem(event:CloseEvent):void{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var item:Curso = this.getDevelopment();
+				Util.showProperties( item );
+				this.responseUpdate.token = this.cursoService.update( item );
+			}
+			
+			private function validations():Boolean
+			{
+				var value:Boolean = true;
+				value &&= this.validators.validarFormulario();
+				value &&= recruitmentConsult.datagrid.selectedItem != null;
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+					form.removeChild( this.frmID );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+				}
+			}
+			
+			private function initializeValidators():void
+			{
+				this.validators = new InicializaValidadoresEtiquetas();
+				this.validators.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
+				this.validators.setRestrictor( this.txtTechnicalCourse, "generic" );
+				this.validators.setRestrictor( this.txtGeneralCourse, "generic" );
+				this.validators.setRestrictor( this.txtTechnicalCourseInternalCoach, "generic" );
+				this.validators.setRestrictor( this.txtGeneralCourseInternalCoach, "generic" );
+				this.validators.setRestrictor( this.txtTechnicalCourseExternalCoach, "generic" );
+				this.validators.setRestrictor( this.txtGeneralCourseExternalCoach, "generic" );
+				this.validators.crearValidadorRestrictor("genericDecimal", ValidadorDecimal.nombre, 9, 2);
+				this.validators.setRestrictor( this.txtTechnicalCourseGrade, "genericDecimal" );
+				this.validators.setRestrictor( this.txtGeneralCourseGrade, "genericDecimal" );
+				//this.validators.crearValidadorRestrictor("genericInteger",ValidadorEntero.nombre, 5);
+			}
+			
+			protected function responseSave_resultHandler(event:ResultEvent):void
+			{
+				var eventGeneralDataProjectNew:Event = new Event("developmentNew");
+				this.dispatchEvent( eventGeneralDataProjectNew );
+				this.cleanForm();
+			}
+			
+			private function cleanForm():void
+			{
+				this.txtID.reset();
+				this.recruitmentConsult.datagrid.selectedItem = false;
+				this.dtfENCDate.reset();
+				this.txtENCGrade.reset();
+				this.chkENC.selected = false;
+				this.txtTechnicalCourse.reset();
+				this.txtTechnicalCourseInternalCoach.reset();
+				this.txtTechnicalCourseExternalCoach.reset();
+				this.chkApproveTechnicalCourse.selected = false;
+				this.dtfTechnicalCourseDate.reset();
+				this.txtTechnicalCourseGrade.reset();
+				this.txtGeneralCourse.reset();
+				this.txtGeneralCourseInternalCoach.reset();
+				this.txtGeneralCourseExternalCoach.reset();
+				this.chkApproveGeneralCourse.selected = false;
+				this.dtfGeneralCourseDate.reset();
+				this.txtGeneralCourseGrade.reset();
+			}
+			
+			protected function responseUpdate_resultHandler(event:ResultEvent):void
+			{
+				var eventGeneralDataProjectUpdated:Event = new Event("developmentUpdated");
+				this.dispatchEvent( eventGeneralDataProjectUpdated );
+				this.cleanForm();
+			}
+			
+			protected function initializeHandler(event:FlexEvent):void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+				}
+			}
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="developmentNew", type="flash.events.Event")]
+		[Event(name="developmentUpdated", type="flash.events.Event")]
+		[Event(name="developmentProjectDone", type="flash.events.Event")]
+	</mx:Metadata>
+	<mx:Form id="form">
+		<mx:FormItem id="frmID" label="ID:" direction="horizontal">
+			<components:TextInput id="txtID" width="80" textAlign="right"
+								  editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Contratación:"/>
+		<contratacion:Consult id="recruitmentConsult" readMode="true"/>
+		<mx:FormItem label="Fecha Evaluación de Necesidades de Competencia:">
+			<components:DateField id="dtfENCDate"/>
+		</mx:FormItem>
+		<mx:FormItem label="Resultado Evaluación de Necesidades de Competencia:">
+			<components:TextInput id="txtENCGrade" width="70" textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Evaluación de Necesidades de Competencia:">
+			<mx:CheckBox id="chkENC"/>
+		</mx:FormItem>
+		<mx:FormItem label="Curso Técnico:">
+			<components:TextInput id="txtTechnicalCourse" width="120"/>
+		</mx:FormItem>
+		<mx:FormItem label="Capacitador Interno Curso Técnico:">
+			<components:TextInput id="txtTechnicalCourseInternalCoach" width="150"/>
+		</mx:FormItem>
+		<mx:FormItem label="Capacitador Externo Curso Técnico:">
+			<components:TextInput id="txtTechnicalCourseExternalCoach" width="150"/>
+		</mx:FormItem>
+		<mx:FormItem label="Autorización Curso Técnico:">
+			<mx:CheckBox id="chkApproveTechnicalCourse"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha Curso Técnico:">
+			<components:DateField id="dtfTechnicalCourseDate"/>
+		</mx:FormItem>
+		<mx:FormItem label="Resultado Curso Técnico:">
+			<components:TextInput id="txtTechnicalCourseGrade" width="70"
+								  textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Curso General:">
+			<components:TextInput id="txtGeneralCourse" width="120"/>
+		</mx:FormItem>
+		<mx:FormItem label="Capacitador Interno Curso General:">
+			<components:TextInput id="txtGeneralCourseInternalCoach" width="150"/>
+		</mx:FormItem>
+		<mx:FormItem label="Capacitador Externo Curso General:">
+			<components:TextInput id="txtGeneralCourseExternalCoach" width="150"/>
+		</mx:FormItem>
+		<mx:FormItem label="Autorización Curso General:">
+			<mx:CheckBox id="chkApproveGeneralCourse"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha Curso General:">
+			<components:DateField id="dtfGeneralCourseDate"/>
+		</mx:FormItem>
+		<mx:FormItem label="Resultado Curso General:">
+			<components:TextInput id="txtGeneralCourseGrade" width="70"
+								  textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem direction="horizontal">
+			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:RemoteObject id="cursoService" destination="cursoService" fault="cursoService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
+	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
+</mx:VBox>

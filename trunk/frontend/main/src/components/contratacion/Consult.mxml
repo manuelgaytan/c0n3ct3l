@@ -36,7 +36,7 @@
 				items = event.result as ArrayCollection;
 			}
 			
-			protected function pagoOtraOperacionFinancieraService_faultHandler(event:FaultEvent):void
+			protected function contratacionService_faultHandler(event:FaultEvent):void
 			{
 				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
 			}
@@ -52,7 +52,7 @@
 					return;
 				}
 				var item:Contratacion = this.datagrid.selectedItem as Contratacion;
-				this.responseGetProyecto.token = this.pagoOtraOperacionFinancieraService.getItem( item.id );
+				this.responseGetProyecto.token = this.contratacionService.getItem( item.id );
 			}
 			
 			protected function responseGetItem_resultHandler(event:ResultEvent):void
@@ -68,7 +68,7 @@
 			
 			public function executeQuery():void
 			{
-				this.responseGetAll.token = this.pagoOtraOperacionFinancieraService.getAll();
+				this.responseGetAll.token = this.contratacionService.getAll();
 			}
 			
 			private function labelFunctionDate(object:Object, column:DataGridColumn):String{
@@ -95,7 +95,7 @@
 					return;
 				}
 				var items:ArrayCollection = Util.selectedIDs( this.datagrid.selectedItems ); 
-				this.responseDeleteItems.token = this.pagoOtraOperacionFinancieraService.deleteItems( items );
+				this.responseDeleteItems.token = this.contratacionService.deleteItems( items );
 			}
 			
 			protected function responseDeleteItems_resultHandler(event:ResultEvent):void
@@ -159,7 +159,7 @@
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"
 				   visible="{!this._readMode}"/>
 	</mx:HBox>
-	<mx:RemoteObject id="pagoOtraOperacionFinancieraService" destination="pagoOtraOperacionFinancieraService" fault="pagoOtraOperacionFinancieraService_faultHandler(event)"
+	<mx:RemoteObject id="contratacionService" destination="contratacionService" fault="contratacionService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetAll" result="responseGetAll_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetProyecto" result="responseGetItem_resultHandler(event)"/>

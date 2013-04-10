@@ -140,21 +140,24 @@
 								   width="100"/>
 				<mx:DataGridColumn id="dtgContractStartDate" headerText="{'Retardos'}"
 								   dataField="retardos"
+								   textAlign="right"
 								   width="60"/>
-				<mx:DataGridColumn id="dtgConfidentialInformationColaboratorType" headerText="{'Faltas'}"
+				<mx:DataGridColumn id="dtgFaultClass" headerText="{'Faltas'}"
 								   dataField="faltas"
+								   textAlign="right"
 								   width="60"
 								   />
-				<mx:DataGridColumn id="dtgAlergies" headerText="{'Tipo de\nSanción'}"
-								   dataField="alergias"
+				<mx:DataGridColumn id="dtgSantionClass" headerText="{'Tipo de\nSanción'}"
+								   dataField="tipoSancion.tipo"
 								   width="80"
 								   />
-				<mx:DataGridColumn id="dtgBloodType" headerText="{'Monto\nTotal\nDescuento'}"
-								   dataField="tipoSangre"
+				<mx:DataGridColumn id="dtgTotalAmountDiscount" headerText="{'Monto\nTotal\nDescuento'}"
+								   dataField="montoTotalDescuento"
+								   textAlign="right"
 								   width="70"
 								   />
-				<mx:DataGridColumn id="dtgConectelEmail" headerText="{'Forma de\nPago'}"
-								   dataField="correoElectronico"
+				<mx:DataGridColumn id="dtgPaymentForm" headerText="{'Forma de\nPago'}"
+								   dataField="formaPagoPrenomina.tipo"
 								   width="100"
 								   />
 			</mx:columns>

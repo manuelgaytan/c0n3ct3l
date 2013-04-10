@@ -142,6 +142,7 @@
 			private function validations():Boolean
 			{
 				var value:Boolean = true;
+				value &&= this.validators.validarFormulario();
 				value &&= recruitmentConsult.datagrid.selectedItem != null;
 				value &&= dtfIncidenceDate.selectedDate != null;
 				return value;
@@ -234,7 +235,6 @@
 		[Event(name="prenominaProjectDone", type="flash.events.Event")]
 	</mx:Metadata>
 	<mx:Form id="form">
-		<mx:FormHeading label="Especificaciones y Tipo de Contratación"/>
 		<mx:FormItem id="frmID" label="ID:" direction="horizontal">
 			<components:TextInput id="txtID" width="80" textAlign="right"
 								  editable="false"/>

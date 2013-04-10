@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*" xmlns:notascreditoclientes="components.notascreditoclientes.*" xmlns:informacionfacturas="components.informacionfacturas.*" xmlns:notascreditoproveedores="components.notascreditoproveedores.*" xmlns:facturacionproveedores="components.facturacionproveedores.*" xmlns:comprobacionesviaticos="components.comprobacionesviaticos.*" xmlns:seleccion="components.seleccion.*"
+		 initialize="initializeHandler(event)" xmlns:reclutamientosolicitudempleo="components.reclutamientosolicitudempleo.*" xmlns:registroPercepcion="components.registroPercepcion.*" xmlns:contratacion="components.contratacion.*"
+		 >
+	<mx:Script>
+		<![CDATA[
+			import components.clientes.Client;
+			
+			import events.GenericEvent;
+			
+			import model.ClasificacionFalta;
+			import model.ClasificacionPermiso;
+			import model.Constants;
+			import model.Contratacion;
+			import model.Deduccion;
+			import model.FormaPagoPrenomina;
+			import model.Percepcion;
+			import model.RegistroPercepcion;
+			import model.TipoSancion;
+			import model.Util;
+			import model.Variacion;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.Constantes;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.com.gahm.componentes.validadores.ValidadorEmail;
+			import mx.com.gahm.componentes.validadores.ValidadorEntero;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			[Bindable]
+			private var mode:String = null;
+			private var _item:RegistroPercepcion;
+			private var validators:InicializaValidadoresEtiquetas;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				this.label = Constants.REGISTRAR;
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set perception(value:RegistroPercepcion):void{
+				if( value == null ){
+					return;
+				}
+				this.cleanForm();
+				this._item = value;
+				this.setItem(); 
+			}
+			
+			private function setItem():void
+			{
+				if( this._item == null ){
+					return;
+				}
+				this.txtID.text = this._item.id.toString();
+				this.recruitmentConsult.datagrid.dataProvider = Util.asArrayCollection( this._item.contratacion );
+				if( Util.isFill( this.cmbPerception ) && this._item 
+					&& this._item.percepcion != null ){
+					this.cmbPerception.selectedIndex = Util.selectedIndexFromCombo( this.cmbPerception.dataProvider as ArrayCollection, 
+						this._item.percepcion.id);
+				}
+				this.txtContributionAmount.text = this._item.montoAportacion.toString();
+				if( Util.isFill( this.cmbVariation ) && this._item 
+					&& this._item.variacion != null ){
+					this.cmbVariation.selectedIndex = Util.selectedIndexFromCombo( this.cmbVariation.dataProvider as ArrayCollection, 
+						this._item.variacion.id);
+				}
+				this.txtCorrespondDays.text = this._item.diasCorrespondientes.toString();
+				this.dtfStartContractDate.selectedDate = this._item.contratacion.fechaInicioContrato;
+				this.dtfInitialDate.selectedDate = this._item.fechaInicio;
+				this.dtfFinalDate.selectedDate = this._item.fechaTermino;
+				this.chkVacationPay.selected = this._item.primaVacacional;
+			}
+			
+			private function getPerception():RegistroPercepcion{
+				var perception:RegistroPercepcion = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					perception = new RegistroPercepcion();
+				}else{
+					perception = this._item;
+				}
+				perception.contratacion = this.recruitmentConsult.datagrid.selectedItem as Contratacion;
+				perception.percepcion = Util.validateCombo( this.cmbPerception ) as Percepcion;
+				perception.montoAportacion = Util.stringToNumber( this.txtContributionAmount.text );
+				perception.variacion = Util.validateCombo( this.cmbVariation ) as Variacion;
+				perception.diasCorrespondientes = Util.stringToNumber( this.txtCorrespondDays.text );
+				perception.fechaInicio = this.dtfInitialDate.selectedDate;
+				perception.fechaTermino = this.dtfFinalDate.selectedDate;
+				perception.primaVacacional = this.chkVacationPay.selected;
+				return perception;
+			}
+			
+			private function fillCombos():void
+			{
+				this.responseGetPercepcion.token = this.catalogoService.getPercepcion();
+				this.responseGetVariacion.token = this.catalogoService.getGetVariacion();
+			}
+			
+			protected function registroPercepcionService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function btnAccept_clickHandler(event:MouseEvent):void
+			{
+				if( !this.validations() ){
+					Util.showMessageVerifyFields();
+					return;
+				}
+				if( this.mode == Constants.REGISTER_MODE ){
+					var perception:RegistroPercepcion = this.getPerception();
+					Util.showProperties( perception );
+					this.responseSave.token = this.registroPercepcionService.save( perception );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
+				}
+			}
+			
+			private function updateItem(event:CloseEvent):void{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var item:RegistroPercepcion = this.getPerception();
+				Util.showProperties( item );
+				this.responseUpdate.token = this.registroPercepcionService.update( item );
+			}
+			
+			private function validations():Boolean
+			{
+				var value:Boolean = true;
+				value &&= this.validators.validarFormulario();
+				value &&= recruitmentConsult.datagrid.selectedItem != null;
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+					form.removeChild( this.frmID );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+				}
+			}
+			
+			private function initializeValidators():void
+			{
+				this.validators = new InicializaValidadoresEtiquetas();
+				//validators.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
+				this.validators.crearValidadorRestrictor("genericDecimal", ValidadorDecimal.nombre, 9, 2);
+				this.validators.setValidador( this.txtContributionAmount, "genericDecimal" );
+				validators.crearValidadorRestrictor("genericInteger",ValidadorEntero.nombre, 5);
+				this.validators.setRestrictor( this.txtCorrespondDays, "genericInteger" );
+			}
+			
+			protected function responseSave_resultHandler(event:ResultEvent):void
+			{
+				var eventGeneralDataProjectNew:Event = new Event("perceptionNew");
+				this.dispatchEvent( eventGeneralDataProjectNew );
+				this.cleanForm();
+			}
+			
+			private function cleanForm():void
+			{
+				this.txtID.reset();
+				this.recruitmentConsult.datagrid.selectedItem = false;
+				this.cmbPerception.selectedIndex = 0;
+				this.txtContributionAmount.reset();
+				this.cmbVariation.selectedIndex = 0;
+				this.txtCorrespondDays.reset();
+				this.dtfStartContractDate.reset();
+				this.dtfInitialDate.reset();
+				this.dtfFinalDate.reset();
+				this.chkVacationPay.selected = false;
+			}
+			
+			protected function responseUpdate_resultHandler(event:ResultEvent):void
+			{
+				var eventGeneralDataProjectUpdated:Event = new Event("perceptionUpdated");
+				this.dispatchEvent( eventGeneralDataProjectUpdated );
+				this.cleanForm();
+			}
+			
+			protected function responseGetPercepcion_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbPerception.dataProvider = data;
+				if( Util.isFill( this.cmbPerception ) && this._item 
+					&& this._item.percepcion != null ){
+					this.cmbPerception.selectedIndex = Util.selectedIndexFromCombo( this.cmbPerception.dataProvider as ArrayCollection, 
+						this._item.percepcion.id);
+				}
+			}
+			
+			protected function responseGetVariacion_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbVariation.dataProvider = data;
+				if( Util.isFill( this.cmbVariation ) && this._item 
+					&& this._item.variacion != null ){
+					this.cmbVariation.selectedIndex = Util.selectedIndexFromCombo( this.cmbVariation.dataProvider as ArrayCollection, 
+						this._item.variacion.id);
+				}
+			}
+			
+			protected function initializeHandler(event:FlexEvent):void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+				}
+			}
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="perceptionNew", type="flash.events.Event")]
+		[Event(name="perceptionUpdated", type="flash.events.Event")]
+		[Event(name="perceptionProjectDone", type="flash.events.Event")]
+	</mx:Metadata>
+	<mx:Form id="form">
+		<mx:FormItem id="frmID" label="ID:" direction="horizontal">
+			<components:TextInput id="txtID" width="80" textAlign="right"
+								  editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Contratación:"/>
+		<contratacion:Consult id="recruitmentConsult" readMode="true"/>
+		<mx:FormItem label="Percepción:">
+			<mx:ComboBox id="cmbPerception" width="200"
+						 labelField="percepcion"/>
+		</mx:FormItem>
+		<mx:FormItem label="Monto Aportación:">
+			<components:TextInput id="txtContributionAmount" width="150"
+								  textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Variaciones:">
+			<mx:ComboBox id="cmbVariation" width="200"
+						 labelField="tipo"/>
+		</mx:FormItem>
+		<mx:FormItem label="Días Correspondientes:">
+			<components:TextInput id="txtCorrespondDays" width="100" textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha Inicio Contrato:">
+			<components:DateField id="dtfStartContractDate" enabled="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Inicio:">
+			<components:DateField id="dtfInitialDate"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fin:">
+			<components:DateField id="dtfFinalDate"/>
+		</mx:FormItem>
+		<mx:FormItem label="Prima Vacacional:">
+			<mx:CheckBox id="chkVacationPay"/>
+		</mx:FormItem>
+		<mx:FormItem direction="horizontal">
+			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:RemoteObject id="registroPercepcionService" destination="registroPercepcionService" fault="registroPercepcionService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
+	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
+	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="registroPercepcionService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetPercepcion" result="responseGetPercepcion_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetVariacion" result="responseGetVariacion_resultHandler(event)"/>
+</mx:VBox>

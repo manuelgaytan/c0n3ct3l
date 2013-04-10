@@ -8,7 +8,6 @@ package model
 		public var datosGeneralesSolicitante:DatosGeneralesSolicitante;
 		public var datosFamiliaresSolicitante:DatosFamiliaresSolicitante;
 		public var datosEscolaresHabilidades:DatosEscolaresHabilidades;
-		public var paqueteria:Paqueteria;
 		public var datosUltimoEmpleoSolicitante:DatosUltimoEmpleoSolicitante;
 		public var datosSobreConectelSolicitante:DatosSobreConectelSolicitante;
 		public var seleccionReclutamiento:SeleccionReclutamiento;

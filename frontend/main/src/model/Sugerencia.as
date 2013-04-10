@@ -11,11 +11,11 @@ package model
 		public var telefono:String;
 		public var sugerencia:String;
 		public var requiereAccionInmediata:Boolean;
-		public var requiereAccionCorrectiva:Boolean;
 		public var accionInmediata:String;
 		public var fechaImplementacion:Date;
 		public var responsableImplementacion:String;
 		public var resultadoImplementacion:ResultadoImplementacion;
+		public var requiereAccionCorrectiva:Boolean;
 		
 		public function Sugerencia()
 		{

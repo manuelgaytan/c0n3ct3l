@@ -11,13 +11,13 @@ package model
 		public var cursoTecnico:String;
 		public var capacitadorInternoCt:String;
 		public var capacitadorExternoCt:String;
-		public var autorizacionCt:String;
+		public var autorizacionCt:Boolean;
 		public var fechaCt:Date;
 		public var resultadoCt:*;
 		public var cursoGeneral:String;
 		public var capacitadorInternoCg:String;
 		public var capacitadorExternoCg:String;
-		public var autorizacionCg:String;
+		public var autorizacionCg:Boolean;
 		public var fechaCg:Date;
 		public var resultadoCg:*;
 		

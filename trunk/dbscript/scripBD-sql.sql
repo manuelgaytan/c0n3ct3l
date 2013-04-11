@@ -2373,6 +2373,26 @@
 	PRIMARY KEY (id)
 	);
 
+	/* Notificaciones */
+	CREATE TABLE EstadoNotificacion
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	estado VARCHAR(50) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE Notificacion
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_perfil INT(11) UNSIGNED NOT NULL,
+	fechaHora DATETIME NOT NULL,
+	notificacion VARCHAR(255) NOT NULL,
+	fk_estado INT(11) UNSIGNED NOT NULL,
+	fk_usuario_creacion INT(11) UNSIGNED NOT NULL,
+	fk_usuario_modificacion INT(11) UNSIGNED NOT NULL,
+	PRIMARY KEY (id)
+	);
+
 	ALTER TABLE Cliente ADD FOREIGN KEY id_contacto_idxfk (id_contacto) REFERENCES Contacto (id);
 
 	ALTER TABLE Proyecto ADD FOREIGN KEY id_categoria_proyecto_idxfk (id_categoria_proyecto) REFERENCES CategoriaProyecto (id);
@@ -2994,6 +3014,15 @@
 	ALTER TABLE ParticipanteMinuta ADD FOREIGN KEY fk_minuta_idxfk_1 (fk_minuta) REFERENCES Minuta (id);
 
 	ALTER TABLE ParticipanteMinuta ADD FOREIGN KEY fk_colaborador_idxfk_2 (fk_colaborador) REFERENCES Colaborador (id);
+
+	/* Notifiaciones */
+	ALTER TABLE Notificacion ADD FOREIGN KEY fk_perfil_idxfk (fk_perfil) REFERENCES Perfil (id);
+
+	ALTER TABLE Notificacion ADD FOREIGN KEY fk_estado_idxfk (fk_estado) REFERENCES EstadoNotificacion (id);
+
+	ALTER TABLE Notificacion ADD FOREIGN KEY fk_usuario_creacion_idxfk (fk_usuario_creacion) REFERENCES Usuario (id);
+
+	ALTER TABLE Notificacion ADD FOREIGN KEY fk_usuario_modificacion_idxfk (fk_usuario_modificacion) REFERENCES Usuario (id);
 
 	/* Perfiles */
 	INSERT INTO Perfil
@@ -4339,6 +4368,12 @@
 	VALUES (1, 'Participantes');
 	INSERT INTO ResponsableMinuta
 	VALUES (2, 'Otro');
+
+	/* Notifiaciones */
+	INSERT INTO EstadoNotificacion
+	VALUES (1, 'Pendiente');
+	INSERT INTO EstadoNotificacion
+	VALUES (2, 'Atendida');
 	/*
 	INSERT INTO 
 	VALUES (1, '');

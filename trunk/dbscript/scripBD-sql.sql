@@ -2237,7 +2237,7 @@
 	CREATE TABLE SistemaGestion
 	(
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
-	fk_proyecto INT(11) UNSIGNED NOT NULL,
+	fk_datos_generales_proyecto INT(11) UNSIGNED NOT NULL,
 	aplicacion_auditoria BOOLEAN NOT NULL,
 	fk_tipo_auditoria INT(11) UNSIGNED,
 	fk_forma_auditoria INT(11) UNSIGNED,
@@ -2978,7 +2978,7 @@
 	ALTER TABLE Curso ADD FOREIGN KEY fk_contratacion_idxfk_1 (fk_contratacion) REFERENCES Contratacion (id);
 
 	/* Sistema de Gestion */
-	ALTER TABLE SistemaGestion ADD FOREIGN KEY fk_proyecto_idxfk (fk_proyecto) REFERENCES Proyecto (id);
+	ALTER TABLE SistemaGestion ADD FOREIGN KEY fk_datos_generales_proyecto_idxfk (fk_datos_generales_proyecto) REFERENCES DatosGeneralesProyecto (id);
 
 	ALTER TABLE SistemaGestion ADD FOREIGN KEY fk_tipo_auditoria_idxfk (fk_tipo_auditoria) REFERENCES TipoAuditoria (id);
 

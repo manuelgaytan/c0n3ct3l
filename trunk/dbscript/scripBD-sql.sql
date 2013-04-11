@@ -2385,11 +2385,12 @@
 	(
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
 	fk_perfil INT(11) UNSIGNED NOT NULL,
-	fechaHora DATETIME NOT NULL,
+	fecha_hora_creacion DATETIME NOT NULL,
+	fecha_hora_modificacion DATETIME,
 	notificacion VARCHAR(255) NOT NULL,
 	fk_estado INT(11) UNSIGNED NOT NULL,
 	fk_usuario_creacion INT(11) UNSIGNED NOT NULL,
-	fk_usuario_modificacion INT(11) UNSIGNED NOT NULL,
+	fk_usuario_modificacion INT(11) UNSIGNED,
 	PRIMARY KEY (id)
 	);
 

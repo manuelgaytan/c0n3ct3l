@@ -63,6 +63,7 @@ import mx.com.gahm.conenctel.entities.NacionalidadDO;
 import mx.com.gahm.conenctel.entities.PercepcionDO;
 import mx.com.gahm.conenctel.entities.PrioridadDO;
 import mx.com.gahm.conenctel.entities.ProveedorDO;
+import mx.com.gahm.conenctel.entities.ResultadoImplementacionDO;
 import mx.com.gahm.conenctel.entities.SeguimientoDO;
 import mx.com.gahm.conenctel.entities.ServicioSolicitadoDO;
 import mx.com.gahm.conenctel.entities.SexoDO;
@@ -1266,5 +1267,19 @@ public class CatalogoService implements ICatalogoService {
 		}
 		return list;
 	}
-
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<ResultadoImplementacionDO> getResultadoImplementacion() throws ConectelException {
+		TypedQuery<ResultadoImplementacionDO> query = entityManager.createNamedQuery(
+				"ResultadoImplementacionDO.findAll", ResultadoImplementacionDO.class);
+		
+		List<ResultadoImplementacionDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
+	
 }

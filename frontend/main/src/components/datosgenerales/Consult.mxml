@@ -111,6 +111,7 @@
 			<mx:DataGridColumn id="dtgStartDateReal" headerText="{'Fecha\nInicio\nReal'}"
 							   dataField="fechaInicioReal"
 							   labelFunction="labelFunctionDate"
+							   textAlign="center"
 							   width="100"/>
 			<mx:DataGridColumn id="dtgEndDateReal" headerText="{'Fecha\nFin\nReal'}"
 							   dataField="fechaTerminoReal"

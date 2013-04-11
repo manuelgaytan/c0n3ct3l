@@ -4,7 +4,7 @@ package model
 	public class EstadoSistemaGestion
 	{
 		public var id:*;
-		public var forma:String;
+		public var estado:String;
 		
 		public function EstadoSistemaGestion()
 		{

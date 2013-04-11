@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
+		   width="950" height="545"
+		   xmlns:sistemasgestion="components.sistemasgestion.*"
+		   creationComplete="creationCompleteHandler(event)" xmlns:bitacoraproductonoconformenoconformidades="components.bitacoraproductonoconformenoconformidades.*" xmlns:datosgenerales="components.datosgenerales.*">
+	<mx:Script>
+		<![CDATA[
+			import events.GenericEvent;
+			
+			import model.SistemaGestion;
+			import model.DatosGeneralesProyecto;
+			import model.Usuario;
+			
+			import mx.events.FlexEvent;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				
+			}
+			
+			protected function consult_managementSystemsDetailHandler(event:GenericEvent):void
+			{
+				this.detail.managementSystems = event.information as model.SistemaGestion;
+				this.navigator.selectedChild = this.detail;
+			}
+			
+			protected function register_managementSystemsNewHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+			
+			protected function detail_managementSystemsUpdatedHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+			
+			protected function detail_generalDataSelectedHandler(event:GenericEvent):void
+			{
+				if( event == null ){
+					return;
+				}
+				var generalData:DatosGeneralesProyecto = event.information as DatosGeneralesProyecto;
+				if( generalData == null ){
+					return;
+				}
+				generalDataDetail.generalDataProject = generalData;
+				this.navigator.selectedChild = this.generalDataDetail;
+			}
+		]]>
+	</mx:Script>
+	<mx:TabNavigator id="navigator" width="950" height="100%" creationPolicy="all">
+		<sistemasgestion:Consult id="consult" itemDetail="consult_managementSystemsDetailHandler(event)"/>
+		<sistemasgestion:ManagementSystems id="detail" update="true" managementSystemsUpdated="detail_managementSystemsUpdatedHandler(event)"
+							 									generalDataSelected="detail_generalDataSelectedHandler(event)"/>
+		<sistemasgestion:ManagementSystems id="register" registrer="true" managementSystemsNew="register_managementSystemsNewHandler(event)"
+															   	generalDataSelected="detail_generalDataSelectedHandler(event)"/>
+		<datosgenerales:GeneralData id="generalDataDetail" readOnly="true"/>
+	</mx:TabNavigator>
+</mx:Module>

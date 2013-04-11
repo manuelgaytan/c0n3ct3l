@@ -28,6 +28,7 @@ import mx.com.gahm.conenctel.entities.DescripcionFondoFijoCajaChicaDO;
 import mx.com.gahm.conenctel.entities.DescripcionPagoContableServicioDO;
 import mx.com.gahm.conenctel.entities.DocumentacionExtranjerosDO;
 import mx.com.gahm.conenctel.entities.EstadoAcademicoDO;
+import mx.com.gahm.conenctel.entities.EstadoAccionPreventivaCorrectivaDO;
 import mx.com.gahm.conenctel.entities.EstadoCivilDO;
 import mx.com.gahm.conenctel.entities.EstadoComprobacionViaticosDO;
 import mx.com.gahm.conenctel.entities.EstadoFinalValidacionDO;
@@ -48,6 +49,7 @@ import mx.com.gahm.conenctel.entities.FaseContratacionDO;
 import mx.com.gahm.conenctel.entities.FaseSeleccionDO;
 import mx.com.gahm.conenctel.entities.FormaPagoDO;
 import mx.com.gahm.conenctel.entities.FormaPagoPrenominaDO;
+import mx.com.gahm.conenctel.entities.FuenteNoConformidadDO;
 import mx.com.gahm.conenctel.entities.FuenteReclutamientoDO;
 import mx.com.gahm.conenctel.entities.GrupoFamiliaADO;
 import mx.com.gahm.conenctel.entities.GrupoFamiliaBDO;
@@ -68,6 +70,7 @@ import mx.com.gahm.conenctel.entities.SeguimientoDO;
 import mx.com.gahm.conenctel.entities.ServicioSolicitadoDO;
 import mx.com.gahm.conenctel.entities.SexoDO;
 import mx.com.gahm.conenctel.entities.SuspensionDO;
+import mx.com.gahm.conenctel.entities.TipoAccionDO;
 import mx.com.gahm.conenctel.entities.TipoAlmacenDO;
 import mx.com.gahm.conenctel.entities.TipoCandidatoDO;
 import mx.com.gahm.conenctel.entities.TipoColaboradorDO;
@@ -1274,6 +1277,49 @@ public class CatalogoService implements ICatalogoService {
 				"ResultadoImplementacionDO.findAll", ResultadoImplementacionDO.class);
 		
 		List<ResultadoImplementacionDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
+	
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<TipoAccionDO> getTipoAccion() throws ConectelException {
+		TypedQuery<TipoAccionDO> query = entityManager.createNamedQuery(
+				"TipoAccionDO.findAll", TipoAccionDO.class);
+		
+		List<TipoAccionDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<FuenteNoConformidadDO> getFuenteNoConformidad() throws ConectelException {
+		TypedQuery<FuenteNoConformidadDO> query = entityManager.createNamedQuery(
+				"FuenteNoConformidadDO.findAll", FuenteNoConformidadDO.class);
+		
+		List<FuenteNoConformidadDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<EstadoAccionPreventivaCorrectivaDO> getEstadoAccionPreventivaCorrectiva() throws ConectelException {
+		TypedQuery<EstadoAccionPreventivaCorrectivaDO> query = entityManager.createNamedQuery(
+				"EstadoAccionPreventivaCorrectivaDO.findAll", EstadoAccionPreventivaCorrectivaDO.class);
+		
+		List<EstadoAccionPreventivaCorrectivaDO> list;
 		try {
 			list = query.getResultList();
 		} catch (NoResultException e) {

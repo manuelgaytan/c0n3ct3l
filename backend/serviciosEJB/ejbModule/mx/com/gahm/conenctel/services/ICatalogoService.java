@@ -58,6 +58,7 @@ import mx.com.gahm.conenctel.entities.NacionalidadDO;
 import mx.com.gahm.conenctel.entities.PercepcionDO;
 import mx.com.gahm.conenctel.entities.PrioridadDO;
 import mx.com.gahm.conenctel.entities.ProveedorDO;
+import mx.com.gahm.conenctel.entities.ResultadoImplementacionDO;
 import mx.com.gahm.conenctel.entities.SeguimientoDO;
 import mx.com.gahm.conenctel.entities.ServicioSolicitadoDO;
 import mx.com.gahm.conenctel.entities.SexoDO;
@@ -226,4 +227,5 @@ public interface ICatalogoService extends Serializable {
 	public List<TipoIncapacidadDO> getTipoIncapacidad() throws ConectelException;
 	public List<VariacionDO> getVariacion() throws ConectelException;
 	public List<PercepcionDO> getPercepcion() throws ConectelException;
+	public List<ResultadoImplementacionDO> getResultadoImplementacion() throws ConectelException;
 }

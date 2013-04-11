@@ -182,6 +182,14 @@
 		<class>mx.com.gahm.conenctel.entities.ComentarioPagoViaticosDO</class>
 		<class>mx.com.gahm.conenctel.entities.RegistroDeduccionDO</class>
 		<class>mx.com.gahm.conenctel.entities.ContratacionDO</class>
+		<class>mx.com.gahm.conenctel.entities.ComentarioCobranzaDO</class>
+		<class>mx.com.gahm.conenctel.entities.NoConformidadDO</class>
+		<class>mx.com.gahm.conenctel.entities.AreaLevantaNoConformidadDO</class>
+		<class>mx.com.gahm.conenctel.entities.ResultadoImplementacionDO</class>
+		<class>mx.com.gahm.conenctel.entities.TipoAccionDO</class>
+		<class>mx.com.gahm.conenctel.entities.FuenteNoConformidadDO</class>
+		<class>mx.com.gahm.conenctel.entities.EstadoAccionPreventivaCorrectivaDO</class>
+		<class>mx.com.gahm.conenctel.entities.AccionPreventivaCorrectivaDO</class>
 		<properties>
 			<property name="eclipselink.logging.level" value="FINE"/> 
 			<property name="eclipselink.logging.parameters" value="true"/>

@@ -521,6 +521,10 @@ package model
 			return Util.formatDateToString( object[column.dataField] );
 		}
 		
+		public static function labelFunctionDateHour(object:Object, column:DataGridColumn):String{
+			return Util.formatDateTimeToString( object[column.dataField] );
+		}
+		
 		public static function asArrayCollection(object:Object){
 			if( object == null ){
 				return null;

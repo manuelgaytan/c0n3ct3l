@@ -31,6 +31,14 @@
 			private var _generalDataProject:DatosGeneralesProyecto;
 			private var validators:InicializaValidadoresEtiquetas;
 			
+			[Bindable]
+			private var _readOnly:Boolean = false;
+			
+			public function set readOnly(value:Boolean):void{
+				this._readOnly = value;
+				this.label = Constants.DETALLE;
+			}
+			
 			public function set registrer(value:Boolean):void{
 				mode = Constants.REGISTER_MODE;
 				this.label = Constants.REGISTRAR;
@@ -519,8 +527,10 @@
 		</mx:FormItem>
 		<components:Observations id="observations" fase="{Estado.createEstado(Estado.ID_DATOS_GENERALES, Estado.DATOS_GENERALES)}"/>
 		<mx:FormItem direction="horizontal">
-			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
-			<mx:Button id="btnDone" label="Hecho" click="btnHecho_clickHandler(event)"/>
+			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"
+					   visible="{!this._readOnly}"/>
+			<mx:Button id="btnDone" label="Hecho" click="btnHecho_clickHandler(event)"
+					   visible="{!this._readOnly}"/>
 		</mx:FormItem>
 	</mx:Form>
 	<mx:RemoteObject id="colaboradorService" destination="colaboradorService" fault="colaboradorService_faultHandler(event)"

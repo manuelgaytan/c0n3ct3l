@@ -4,7 +4,7 @@ package model
 	public class SistemaGestion
 	{
 		public var id:*;
-		public var proyecto:Proyecto;
+		public var datosGeneralesProyecto:DatosGeneralesProyecto;
 		public var aplicacionAuditoria:Boolean;
 		public var tipoAuditoria:TipoAuditoria;
 		public var formaAuditoria:FormaAuditoria;

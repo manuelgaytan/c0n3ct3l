@@ -130,7 +130,9 @@
 			
 			private function fillCombos():void
 			{
-				this.responseGetAreaLevantaAccionPreventivaCorrectiva.token = this.catalogoService.getGetAreaLevantaAccionPreventivaCorrectiva();
+				this.responseGetTipoAccion.token = this.catalogoService.getGetTipoAccion();
+				this.responseGetFuenteNoConformidad.token = this.catalogoService.getGetFuenteNoConformidad();
+				this.responseGetEstadoAccionPreventivaCorrectiva.token = this.catalogoService.getGetEstadoAccionPreventivaCorrectiva();
 			}
 			
 			protected function accionPreventivaCorrectivaService_faultHandler(event:FaultEvent):void
@@ -223,22 +225,6 @@
 				this.cleanForm();
 			}
 			
-			protected function responseGetAreaLevantaAccionPreventivaCorrectiva_resultHandler(event:ResultEvent):void
-			{
-				var data:ArrayCollection = event.result as ArrayCollection;
-				if( data == null ){
-					return;
-				}
-				this.cmbActionType.dataProvider = data;
-				/*
-				if( Util.isFill( this.cmbActionType ) && this._item 
-					&& this._item.areaLevantaAccionPreventivaCorrectiva != null ){
-					this.cmbActionType.selectedIndex = Util.selectedIndexFromCombo( this.cmbActionType.dataProvider as ArrayCollection, 
-						this._item.areaLevantaAccionPreventivaCorrectiva.id);
-				}
-				*/
-			}
-			
 			protected function initializeHandler(event:FlexEvent):void
 			{
 				if( this.mode == Constants.REGISTER_MODE ){
@@ -258,6 +244,49 @@
 				genericEvent.information = nonConformity;
 				this.dispatchEvent( genericEvent );
 			}
+			
+			protected function responseGetTipoAccion_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbActionType.dataProvider = data;
+				if( Util.isFill( this.cmbActionType ) && this._item 
+					&& this._item.tipoAccion != null ){
+					this.cmbActionType.selectedIndex = Util.selectedIndexFromCombo( this.cmbActionType.dataProvider as ArrayCollection, 
+						this._item.tipoAccion.id);
+				}
+			}
+			
+			protected function responseGetFuenteNoConformidad_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbSourceNonConformity.dataProvider = data;
+				if( Util.isFill( this.cmbSourceNonConformity ) && this._item 
+					&& this._item.fuenteNoConformidad != null ){
+					this.cmbSourceNonConformity.selectedIndex = Util.selectedIndexFromCombo( this.cmbSourceNonConformity.dataProvider as ArrayCollection, 
+						this._item.fuenteNoConformidad.id);
+				}
+			}
+			
+			protected function responseGetEstadoAccionPreventivaCorrectiva_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbActionPCStatus.dataProvider = data;
+				if( Util.isFill( this.cmbActionPCStatus ) && this._item 
+					&& this._item.estadoAccionPreventivaCorrectiva != null ){
+					this.cmbActionPCStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbActionPCStatus.dataProvider as ArrayCollection, 
+						this._item.estadoAccionPreventivaCorrectiva.id);
+				}
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -271,6 +300,7 @@
 			<components:TextInput id="txtID" width="80" textAlign="right"
 								  editable="false"/>
 		</mx:FormItem>
+		<mx:FormItem label="No Conformidades:"/>
 		<bitacoraproductonoconformenoconformidades:Consult id="consultNonConformities"/>
 		<mx:FormItem label="Fecha Apertura:">
 			<components:DateField id="dtfOpenDate"/>
@@ -318,5 +348,7 @@
 	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
 	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="accionPreventivaCorrectivaService_faultHandler(event)"
 					 showBusyCursor="true"/>
-	<mx:CallResponder id="responseGetAreaLevantaAccionPreventivaCorrectiva" result="responseGetAreaLevantaAccionPreventivaCorrectiva_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetTipoAccion" result="responseGetTipoAccion_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetFuenteNoConformidad" result="responseGetFuenteNoConformidad_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetEstadoAccionPreventivaCorrectiva" result="responseGetEstadoAccionPreventivaCorrectiva_resultHandler(event)"/>
 </mx:VBox>

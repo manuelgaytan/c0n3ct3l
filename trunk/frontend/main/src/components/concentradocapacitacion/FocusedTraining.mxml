@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*" xmlns:notascreditoclientes="components.notascreditoclientes.*" xmlns:informacionfacturas="components.informacionfacturas.*" xmlns:notascreditoproveedores="components.notascreditoproveedores.*" xmlns:facturacionproveedores="components.facturacionproveedores.*" xmlns:comprobacionesviaticos="components.comprobacionesviaticos.*" xmlns:seleccion="components.seleccion.*"
+		 initialize="initializeHandler(event)" xmlns:reclutamientosolicitudempleo="components.reclutamientosolicitudempleo.*" xmlns:concentradoCapacitacion="components.concentradoCapacitacion.*" xmlns:contratacion="components.contratacion.*"
+		 >
+	<mx:Script>
+		<![CDATA[
+			import components.clientes.Client;
+			
+			import events.GenericEvent;
+			
+			import model.Colaborador;
+			import model.ConcentradoCapacitacion;
+			import model.Constants;
+			import model.Contratacion;
+			import model.TipoCapacitacion;
+			import model.TipoFormacion;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.Constantes;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.com.gahm.componentes.validadores.ValidadorEmail;
+			import mx.com.gahm.componentes.validadores.ValidadorEntero;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			[Bindable]
+			private var mode:String = null;
+			private var _item:ConcentradoCapacitacion;
+			private var validators:InicializaValidadoresEtiquetas;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				this.label = Constants.REGISTRAR;
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set focusedTraining(value:ConcentradoCapacitacion):void{
+				if( value == null ){
+					return;
+				}
+				this.cleanForm();
+				this._item = value;
+				this.setItem(); 
+			}
+			
+			private function setItem():void
+			{
+				if( this._item == null ){
+					return;
+				}
+				this.txtID.text = this._item.id.toString();
+				if( Util.isFill( this.cmbColaboratorType ) && Util.extractObject(this._item,"colaborador.tipoColaborador") != null ){
+					this.cmbColaboratorType.selectedIndex = Util.selectedIndexFromCombo( this.cmbColaboratorType.dataProvider as ArrayCollection, 
+						this._item.colaborador.tipoColaborador.id);
+					this.cmbColaboratorType.dispatchEvent( new ListEvent(ListEvent.CHANGE) );
+				}
+				if( Util.isFill( this.cmbFormationType ) && this._item 
+					&& this._item.tipoFormacion != null ){
+					this.cmbFormationType.selectedIndex = Util.selectedIndexFromCombo( this.cmbFormationType.dataProvider as ArrayCollection, 
+						this._item.tipoFormacion.id);
+				}
+				if( Util.isFill( this.cmbTrainingType ) && this._item 
+					&& this._item.tipoCapacitacion != null ){
+					this.cmbTrainingType.selectedIndex = Util.selectedIndexFromCombo( this.cmbTrainingType.dataProvider as ArrayCollection, 
+						this._item.tipoCapacitacion.id);
+				}
+				this.txtTrainingName.text = this._item.nombreCapacitacion;
+				this.dtfDateTrainingStart.selectedDate = this._item.fechaInicioCapacitacion;
+				this.dtfDateTrainingEnd.selectedDate = this._item.fechaTerminoCapacitacion;
+				this.txtTrainingPlace.text = this._item.lugarCapacitacion;
+				this.txtTrainerName.text = this._item.nombreInstructor;
+				this.txtTrainingGrade.text = this._item.calificacion.toString();
+				this.fltDlvEvidence.delivers = Util.asArrayCollection( this._item.constancia );
+			}
+			
+			private function getFocusedTraining():ConcentradoCapacitacion{
+				var focusedTraining:ConcentradoCapacitacion = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					focusedTraining = new ConcentradoCapacitacion();
+				}else{
+					focusedTraining = this._item;
+				}
+				focusedTraining.colaborador = this.cmbColaboratorName.selectedItem as Colaborador;
+				focusedTraining.tipoFormacion = Util.validateCombo( this.cmbFormationType ) as TipoFormacion;
+				focusedTraining.tipoCapacitacion = Util.validateCombo( this.cmbTrainingType ) as TipoCapacitacion;
+				focusedTraining.nombreCapacitacion = Util.validateEmpty( this.txtTrainingName.text );
+				focusedTraining.fechaInicioCapacitacion = this.dtfDateTrainingStart.selectedDate;
+				focusedTraining.fechaTerminoCapacitacion = this.dtfDateTrainingEnd.selectedDate;
+				focusedTraining.lugarCapacitacion = Util.validateEmpty( this.txtTrainingPlace.text );
+				focusedTraining.nombreInstructor = Util.validateEmpty( this.txtTrainerName.text );
+				focusedTraining.calificacion = Util.validateEmpty( this.txtTrainingGrade.text );
+				focusedTraining.constancia = this.fltDlvEvidence.firstDeliver as String;
+				return focusedTraining;
+			}
+			
+			private function fillCombos():void
+			{
+				this.responseGetTipoColaborador.token = this.catalogoService.getTipoColaborador();
+				this.responseGetTipoFormacion.token = this.catalogoService.getTipoFormacion();
+				this.responseGetTipoCapacitacion.token = this.catalogoService.getTipoCapacitacion();
+			}
+			
+			protected function concentradoCapacitacionService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function btnAccept_clickHandler(event:MouseEvent):void
+			{
+				if( !this.validations() ){
+					Util.showMessageVerifyFields();
+					return;
+				}
+				if( this.mode == Constants.REGISTER_MODE ){
+					var focusedTraining:ConcentradoCapacitacion = this.getFocusedTraining();
+					Util.showProperties( focusedTraining );
+					this.responseSave.token = this.concentradoCapacitacionService.save( focusedTraining );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
+				}
+			}
+			
+			private function updateItem(event:CloseEvent):void{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var item:ConcentradoCapacitacion = this.getFocusedTraining();
+				Util.showProperties( item );
+				this.responseUpdate.token = this.concentradoCapacitacionService.update( item );
+			}
+			
+			private function validations():Boolean
+			{
+				var value:Boolean = true;
+				value &&= this.validators.validarFormulario();
+				value &&= this.dtfDateTrainingStart.selectedDate;
+				value &&= this.dtfDateTrainingEnd.selectedDate;
+				value &&= Util.listBaseSelected( this.cmbColaboratorName );
+				value &&= Util.listBaseSelected( this.cmbFormationType );
+				value &&= Util.listBaseSelected( this.cmbTrainingType );
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+					form.removeChild( this.frmID );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+				}
+			}
+			
+			private function initializeValidators():void
+			{
+				this.validators = new InicializaValidadoresEtiquetas();
+				validators.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
+				validators.setValidador( this.txtTrainingName, "generic");
+				validators.setRestrictor( this.txtTrainingPlace, "generic");
+				validators.setRestrictor( this.txtTrainerName, "generic");
+				this.validators.crearValidadorRestrictor("genericDecimal", ValidadorDecimal.nombre, 4, 2);
+				this.validators.setRestrictor( this.txtTrainingGrade, "genericDecimal" );
+			}
+			
+			protected function responseSave_resultHandler(event:ResultEvent):void
+			{
+				var eventGeneralDataProjectNew:Event = new Event("focusedTrainingNew");
+				this.dispatchEvent( eventGeneralDataProjectNew );
+				this.cleanForm();
+			}
+			
+			private function cleanForm():void
+			{
+				this.txtID.reset();
+				this.cmbColaboratorType.selectedIndex = 0;
+				this.cmbColaboratorName.selectedIndex = 0;
+				this.txtPosition.reset();
+				this.cmbFormationType.selectedIndex = 0;
+				this.cmbTrainingType.selectedIndex = 0;
+				this.txtTrainingName.reset();
+				this.dtfDateTrainingStart.reset();
+				this.dtfDateTrainingEnd.reset();
+				this.txtTrainingPlace.reset();
+				this.txtTrainerName.reset();
+				this.txtTrainingGrade.reset();
+				this.fltDlvEvidence.reset();
+			}
+			
+			protected function responseUpdate_resultHandler(event:ResultEvent):void
+			{
+				var eventGeneralDataProjectUpdated:Event = new Event("focusedTrainingUpdated");
+				this.dispatchEvent( eventGeneralDataProjectUpdated );
+				this.cleanForm();
+			}
+			
+			protected function responseGetTipoColaborador_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbColaboratorType.dataProvider = Util.addEmptyCatalgo(data,"tipo");
+				if( Util.isFill( this.cmbColaboratorType ) && Util.extractObject(this._item,"colaborador.tipoColaborador") != null ){
+					this.cmbColaboratorType.selectedIndex = Util.selectedIndexFromCombo( this.cmbColaboratorType.dataProvider as ArrayCollection, 
+						this._item.colaborador.tipoColaborador.id);
+					this.cmbColaboratorType.dispatchEvent( new ListEvent(ListEvent.CHANGE) );
+				}
+			}
+			
+			protected function responseGetTipoFormacion_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbFormationType.dataProvider = data;
+				if( Util.isFill( this.cmbFormationType ) && this._item 
+					&& this._item.tipoFormacion != null ){
+					this.cmbFormationType.selectedIndex = Util.selectedIndexFromCombo( this.cmbFormationType.dataProvider as ArrayCollection, 
+						this._item.tipoFormacion.id);
+				}
+			}
+			
+			protected function responseGetTipoCapacitacion_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbTrainingType.dataProvider = data;
+				if( Util.isFill( this.cmbTrainingType ) && this._item 
+					&& this._item.tipoCapacitacion != null ){
+					this.cmbTrainingType.selectedIndex = Util.selectedIndexFromCombo( this.cmbTrainingType.dataProvider as ArrayCollection, 
+						this._item.tipoCapacitacion.id);
+				}
+			}
+			
+			protected function initializeHandler(event:FlexEvent):void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+				}
+			}
+			
+			protected function cmbColaboratorType_changeHandler(event:ListEvent):void
+			{
+				var idColaboratorType:* = Util.selectedId( this.cmbColaboratorType );
+				if( idColaboratorType == undefined ){
+					return;
+				}
+				this.responseGetColaborador.token = this.catalogoService.getColaboradorByTipoColaborador(idColaboratorType);
+				//this.responseGetContratacionByIdColaborador.token = this.contratacionService.getContratacionByIdColaborador(idColaboratorType);
+			}
+			
+			protected function responseGetColaborador_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbColaboratorName.dataProvider = Util.addEmptyCatalgo( data, "nombreCompleto" );
+				if( Util.extractObject(this._item,"colaborador") != null ){
+					this.cmbColaboratorName.selectedIndex = Util.selectedIndexFromCombo( this.cmbColaboratorName.dataProvider as ArrayCollection, 
+						this._item.colaborador.id);
+				}
+			}
+			
+			protected function responseGetContratacionByIdColaborador_resultHandler(event:ResultEvent):void
+			{
+				var contratacion:Contratacion = event.result as Contratacion;
+				if( contratacion == null ){
+					return;
+				}
+				this.txtPosition.text = Util.extractToText(contratacion,"reclutamientoSolicitudEmpleo.datosPrincipalesSolicitante.puestoSolicitado");
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="focusedTrainingNew", type="flash.events.Event")]
+		[Event(name="focusedTrainingUpdated", type="flash.events.Event")]
+		[Event(name="focusedTrainingProjectDone", type="flash.events.Event")]
+	</mx:Metadata>
+	<mx:Form id="form">
+		<mx:FormItem id="frmID" label="ID:" direction="horizontal">
+			<components:TextInput id="txtID" width="80" textAlign="right"
+								  editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Tipo de Colaborador:"
+					 direction="horizontal">
+			<mx:ComboBox id="cmbColaboratorType" width="130"
+						 labelField="tipo"
+						 change="cmbColaboratorType_changeHandler(event)"/>
+			<mx:ComboBox id="cmbColaboratorName" width="370"
+						 labelField="nombreCompleto"/>
+		</mx:FormItem>
+		<mx:FormItem label="Puesto:">
+			<components:TextInput id="txtPosition" textAlign="right"
+								  editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Tipo de Información:">
+			<mx:ComboBox id="cmbFormationType" width="200"
+						 labelField="tipo"/>
+		</mx:FormItem>
+		<mx:FormItem label="Tipo de Capacitación:">
+			<mx:ComboBox id="cmbTrainingType" width="200"
+						 labelField="tipo"/>
+		</mx:FormItem>
+		<mx:FormItem label="Nombre de la Capacitación:">
+			<components:TextInput id="txtTrainingName" width="300"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha de Inicio de Capacitación/Evaluación:">
+			<components:DateField id="dtfDateTrainingStart"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha de Término de Capacitación/Evaluación:">
+			<components:DateField id="dtfDateTrainingEnd"/>
+		</mx:FormItem>
+		<mx:FormItem label="Lugar de Capacitación/Evaluación:">
+			<components:TextInput id="txtTrainingPlace" width="300"/>
+		</mx:FormItem>
+		<mx:FormItem label="Nombre del Instructor/Evaluador:">
+			<components:TextInput id="txtTrainerName" width="300"/>
+		</mx:FormItem>
+		<mx:FormItem label="Calificación de Capacitación/Evaluación:">
+			<components:TextInput id="txtTrainingGrade" width="300"/>
+		</mx:FormItem>
+		<mx:FormItem label="Constancia/Evidencia:">
+			<components:FlatDeliver id="fltDlvEvidence"/>
+		</mx:FormItem>
+		<mx:FormItem direction="horizontal">
+			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:RemoteObject id="concentradoCapacitacionService" destination="concentradoCapacitacionService" fault="concentradoCapacitacionService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
+	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
+	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="concentradoCapacitacionService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetTipoColaborador" result="responseGetTipoColaborador_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetTipoFormacion" result="responseGetTipoFormacion_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetTipoCapacitacion" result="responseGetTipoCapacitacion_resultHandler(event)"/>
+	<mx:RemoteObject id="colaboradorService" destination="colaboradorService" fault="concentradoCapacitacionService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetColaborador" result="responseGetColaborador_resultHandler(event)"/>
+	<mx:RemoteObject id="contratacionService" destination="contratacionService" fault="concentradoCapacitacionService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetContratacionByIdColaborador" result="responseGetContratacionByIdColaborador_resultHandler(event)"/>
+</mx:VBox>

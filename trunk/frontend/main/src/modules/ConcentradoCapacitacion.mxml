@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
+		   width="850" height="525"
+		   xmlns:concentradocapacitacion="components.concentradocapacitacion.*"
+		   creationComplete="creationCompleteHandler(event)" xmlns:informacionfacturas="components.informacionfacturas.*" xmlns:notascreditoclientes="components.notascreditoclientes.*" xmlns:facturacionproveedores="components.facturacionproveedores.*" xmlns:notascreditoproveedores="components.notascreditoproveedores.*" xmlns:comprobacionesviaticos="components.comprobacionesviaticos.*">
+	<mx:Script>
+		<![CDATA[
+			import events.GenericEvent;
+			
+			import model.ConcentradoCapacitacion;
+			import model.Usuario;
+			
+			import mx.events.FlexEvent;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				
+			}
+			
+			protected function consult_focusedTrainingDetailHandler(event:GenericEvent):void
+			{
+				this.detail.focusedTraining = event.information as model.ConcentradoCapacitacion;
+				this.navigator.selectedChild = this.detail;
+			}
+			
+			protected function register_focusedTrainingNewHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+			
+			protected function detail_focusedTrainingUpdatedHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+		]]>
+	</mx:Script>
+	<mx:TabNavigator id="navigator" width="850" height="100%" creationPolicy="all">
+		<concentradocapacitacion:Consult id="consult" itemDetail="consult_focusedTrainingDetailHandler(event)"/>
+		<concentradocapacitacion:FocusedTraining id="detail" update="true" focusedTrainingUpdated="detail_focusedTrainingUpdatedHandler(event)"
+							 />
+		<concentradocapacitacion:FocusedTraining id="register" registrer="true" focusedTrainingNew="register_focusedTrainingNewHandler(event)"
+							 />
+	</mx:TabNavigator>
+</mx:Module>

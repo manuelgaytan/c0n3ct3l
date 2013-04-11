@@ -22,6 +22,7 @@
 			
 			import model.AccionPreventivaCorrectiva;
 			import model.ActividadTiempoLibre;
+			import model.AcuerdoMinuta;
 			import model.Aplica;
 			import model.AreaLevantaNoConformidad;
 			import model.AreaSolicitante;
@@ -149,6 +150,7 @@
 			import model.MaterialSolicitudAlmacen;
 			import model.MedioTransporte;
 			import model.MenuOption;
+			import model.Minuta;
 			import model.Model;
 			import model.MotivoTerminoContrato;
 			import model.MovimientoFondoFijoCajaChica;
@@ -168,6 +170,7 @@
 			import model.PagoViaticos;
 			import model.Pantalla;
 			import model.Paqueteria;
+			import model.ParticipanteMinuta;
 			import model.PartidaConcentradoOrdenCompraCliente;
 			import model.PartidaOrdenCompraSolicitudServicioMaquilado;
 			import model.PartidaRequisicionCompra;
@@ -189,6 +192,7 @@
 			import model.RegistroPercepcion;
 			import model.Requisicion;
 			import model.RequisicionCompra;
+			import model.ResponsableMinuta;
 			import model.ResultadoImplementacion;
 			import model.Seguimiento;
 			import model.SeleccionReclutamiento;
@@ -503,6 +507,10 @@
 			private var tipoIncapacidad:TipoIncapacidad;
 			private var tipoSancion:TipoSancion;
 			private var variacion:Variacion;
+			private var minuta:Minuta;
+			private var participanteMinuta:ParticipanteMinuta;
+			private var acuerdoMinuta:AcuerdoMinuta;
+			private var responsableMinuta:ResponsableMinuta;
 						
 			protected function login_readyHandler(event:ModuleEvent):void
 			{

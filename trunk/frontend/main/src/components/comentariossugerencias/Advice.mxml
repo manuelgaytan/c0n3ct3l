@@ -273,7 +273,7 @@
 								  editable="false"/>
 		</mx:FormItem>
 		<mx:FormItem label="Fecha:">
-			<components:DateField id="dtfDate" enabled="false"/>
+			<components:DateField id="dtfDate"/>
 		</mx:FormItem>
 		<mx:FormItem label="Nómina Conectel:">
 			<mx:ComboBox id="cmbConectelPayroll" width="400"

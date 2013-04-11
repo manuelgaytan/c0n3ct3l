@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
+		   width="950" height="525"
+		   xmlns:minutareunion="components.minutareunion.*"
+		   creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import events.GenericEvent;
+			
+			import model.Minuta;
+			import model.Usuario;
+			
+			import mx.events.FlexEvent;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				
+			}
+			
+			protected function consult_minutaMeetingDetailHandler(event:GenericEvent):void
+			{
+				this.detail.minutaMeeting = event.information as model.Minuta;
+				this.navigator.selectedChild = this.detail;
+			}
+			
+			protected function register_minutaMeetingNewHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+			
+			protected function detail_minutaMeetingUpdatedHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+		]]>
+	</mx:Script>
+	<mx:TabNavigator id="navigator" width="950" height="100%" creationPolicy="all">
+		<minutareunion:Consult id="consult" itemDetail="consult_minutaMeetingDetailHandler(event)"/>
+		<minutareunion:MinutaMeeting id="detail" update="true" minutaMeetingUpdated="detail_minutaMeetingUpdatedHandler(event)"
+							 />
+		<minutareunion:MinutaMeeting id="register" registrer="true" minutaMeetingNew="register_minutaMeetingNewHandler(event)"
+							 />
+	</mx:TabNavigator>
+</mx:Module>

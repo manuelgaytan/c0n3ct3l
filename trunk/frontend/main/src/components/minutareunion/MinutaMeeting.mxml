@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*" xmlns:notascreditoclientes="components.notascreditoclientes.*" xmlns:informacionfacturas="components.informacionfacturas.*" xmlns:notascreditoproveedores="components.notascreditoproveedores.*" xmlns:facturacionproveedores="components.facturacionproveedores.*" xmlns:comprobacionesviaticos="components.comprobacionesviaticos.*" xmlns:seleccion="components.seleccion.*"
+		 initialize="initializeHandler(event)" xmlns:reclutamientosolicitudempleo="components.reclutamientosolicitudempleo.*" xmlns:registroMinuta="components.registroMinuta.*" xmlns:contratacion="components.contratacion.*"
+		 >
+	<mx:Script>
+		<![CDATA[
+			import components.clientes.Client;
+			
+			import events.GenericEvent;
+			
+			import model.Catalogo;
+			import model.ClasificacionFalta;
+			import model.ClasificacionPermiso;
+			import model.Colaborador;
+			import model.Constants;
+			import model.Contratacion;
+			import model.Deduccion;
+			import model.FormaPagoPrenomina;
+			import model.Minuta;
+			import model.ResultadoImplementacion;
+			import model.TipoSancion;
+			import model.Util;
+			import model.Variacion;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.Constantes;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.com.gahm.componentes.validadores.ValidadorEmail;
+			import mx.com.gahm.componentes.validadores.ValidadorEntero;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			[Bindable]
+			private var mode:String = null;
+			private var _item:Minuta;
+			private var validators:InicializaValidadoresEtiquetas;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				this.label = Constants.REGISTRAR;
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set minutaMeeting(value:Minuta):void{
+				if( value == null ){
+					return;
+				}
+				this.cleanForm();
+				this._item = value;
+				this.setItem(); 
+			}
+			
+			private function setItem():void
+			{
+				if( this._item == null ){
+					return;
+				}
+				this.txtID.text = this._item.id.toString();
+				this.dtfDate.selectedDate = this._item.fechaHora;
+				this.nstHour.value = this._item.fechaHora.hours > 12 ? this._item.fechaHora.hours - 12 : this._item.fechaHora.hours;
+				this.nstMinutes.value = this._item.fechaHora.minutes;
+				if( Util.isFill( this.cmbAMPM ) && this._item 
+					&& this._item.fechaHora != null ){
+					var index:int = 2;
+					if( this._item.fechaHora.hours < 12 ){
+						index = 1;
+					}
+					this.cmbAMPM.selectedIndex = Util.selectedIndexFromCombo( this.cmbAMPM.dataProvider as ArrayCollection, 
+						index);
+				}
+				this.txtPlace.text = this._item.lugar;
+				this.txtSubject.text = this._item.asunto;
+			}
+			
+			private function getMinutaMeeting():Minuta{
+				var minutaMeeting:Minuta = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					minutaMeeting = new Minuta();
+				}else{
+					minutaMeeting = this._item;
+				}
+				minutaMeeting.fechaHora = this.dtfDate.selectedDate;
+				minutaMeeting.fechaHora.hours = this.cmbAMPM.selectedItem.id == 2 ? this.nstHour.value + 12 : this.nstHour.value;
+				minutaMeeting.fechaHora.minutes = this.nstMinutes.value;
+				minutaMeeting.lugar = Util.validateEmpty( this.txtPlace.text );
+				minutaMeeting.asunto = Util.validateEmpty( this.txtSubject.text );
+				return minutaMeeting;
+			}
+			
+			private function fillCombos():void
+			{
+			}
+			
+			protected function registroMinutaService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function btnAccept_clickHandler(event:MouseEvent):void
+			{
+				if( !this.validations() ){
+					Util.showMessageVerifyFields();
+					return;
+				}
+				if( this.mode == Constants.REGISTER_MODE ){
+					var minutaMeeting:Minuta = this.getMinutaMeeting();
+					Util.showProperties( minutaMeeting );
+					this.responseSave.token = this.registroMinutaService.save( minutaMeeting );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
+				}
+			}
+			
+			private function updateItem(event:CloseEvent):void{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var item:Minuta = this.getMinutaMeeting();
+				Util.showProperties( item );
+				this.responseUpdate.token = this.registroMinutaService.update( item );
+			}
+			
+			private function validations():Boolean
+			{
+				var value:Boolean = true;
+				value &&= this.validators.validarFormulario();
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+					form.removeChild( this.frmID );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+				}
+			}
+			
+			private function initializeValidators():void
+			{
+				this.validators = new InicializaValidadoresEtiquetas();
+				validators.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
+				this.validators.setValidador( this.txtPlace, "generic" );
+				this.validators.setValidador( this.txtSubject, "generic" );
+			}
+			
+			protected function responseSave_resultHandler(event:ResultEvent):void
+			{
+				var eventGeneralDataProjectNew:Event = new Event("minutaMeetingNew");
+				this.dispatchEvent( eventGeneralDataProjectNew );
+				this.cleanForm();
+			}
+			
+			private function cleanForm():void
+			{
+				this.txtID.reset();
+				this.dtfDate.reset();
+				this.cmbConectelPayroll.selectedIndex = 0;
+				this.txtPlace.reset();
+				this.txtSubject.reset();
+			}
+			
+			protected function responseUpdate_resultHandler(event:ResultEvent):void
+			{
+				var eventGeneralDataProjectUpdated:Event = new Event("minutaMeetingUpdated");
+				this.dispatchEvent( eventGeneralDataProjectUpdated );
+				this.cleanForm();
+			}
+			
+			protected function initializeHandler(event:FlexEvent):void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+				}
+			}
+			
+			protected function cmbConectelPayroll_changeHandler(event:ListEvent):void
+			{
+				var colaborator:Colaborador = this.cmbConectelPayroll.selectedItem as Colaborador;
+				if( colaborator ){
+					this.txtPlace.text = "";
+					return;
+				}
+				this.txtPlace.text = colaborator.nombreCompleto;
+			}
+			
+			private function getAMPM():ArrayCollection{
+				var data:ArrayCollection = new ArrayCollection();
+				var item:Catalogo = null;
+				item = new Catalogo();
+				item.id = 1;
+				item.etiqueta = "AM";
+				data.addItem( item );
+				item = new Catalogo();
+				item.id = 1;
+				item.etiqueta = "PM";
+				data.addItem( item );
+				return data;
+			}
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="minutaMeetingNew", type="flash.events.Event")]
+		[Event(name="minutaMeetingUpdated", type="flash.events.Event")]
+		[Event(name="minutaMeetingProjectDone", type="flash.events.Event")]
+	</mx:Metadata>
+	<mx:Form id="form">
+		<mx:FormItem id="frmID" label="ID:" direction="horizontal">
+			<components:TextInput id="txtID" width="80" textAlign="right"
+								  editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha:">
+			<components:DateField id="dtfDate"/>
+		</mx:FormItem>
+		<mx:FormItem label="Hora:" direction="horizontal">
+			<mx:NumericStepper id="nstHour" minimum="1" maximum="12"/>
+			<mx:NumericStepper id="nstMinutes" minimum="0" maximum="59"/>
+			<mx:ComboBox id="cmbAMPM" dataProvider="{this.getAMPM()}"
+						 labelField="etiqueta"/>
+		</mx:FormItem>
+		<mx:FormItem label="Nómina Conectel:">
+			<mx:ComboBox id="cmbConectelPayroll" width="400"
+						 labelField="nombreCompleto"
+						 change="cmbConectelPayroll_changeHandler(event)"/>
+		</mx:FormItem>
+		<mx:FormItem label="Nombre:">
+			<components:TextInput id="txtPlace" width="350"/>
+		</mx:FormItem>
+		<mx:FormItem label="Asunto:">
+			<components:TextInput id="txtSubject" width="420"/>
+		</mx:FormItem>
+		<mx:FormItem direction="horizontal">
+			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:RemoteObject id="registroMinutaService" destination="registroMinutaService" fault="registroMinutaService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
+	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
+</mx:VBox>

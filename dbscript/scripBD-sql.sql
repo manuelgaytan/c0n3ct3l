@@ -2357,8 +2357,8 @@
 	fk_responsable_minuta INT(11) UNSIGNED,
 	responsable VARCHAR(255) NOT NULL,
 	acuerdo VARCHAR(255) NOT NULL,
-	fechaCompromiso DATE,
-	responsableElaboracion VARCHAR(255),
+	fecha_compromiso DATE,
+	responsable_elaboracion VARCHAR(255),
 	PRIMARY KEY (id)
 	);
 

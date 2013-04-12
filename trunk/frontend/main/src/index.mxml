@@ -104,6 +104,7 @@
 			import model.EstadoComprobacionViaticos;
 			import model.EstadoFinalValidacion;
 			import model.EstadoInvestigacionCalidad;
+			import model.EstadoNotificacion;
 			import model.EstadoOrdenCompra;
 			import model.EstadoSalud;
 			import model.EstadoSistemaGestion;
@@ -160,6 +161,7 @@
 			import model.NombreSolicitante;
 			import model.NotaCreditoCliente;
 			import model.NotaCreditoProveedor;
+			import model.Notificacion;
 			import model.Observacion;
 			import model.OrdenCompraAlmacen;
 			import model.OrdenCompraCliente;
@@ -511,6 +513,8 @@
 			private var participanteMinuta:ParticipanteMinuta;
 			private var acuerdoMinuta:AcuerdoMinuta;
 			private var responsableMinuta:ResponsableMinuta;
+			private var notificacion:Notificacion;
+			private var estadoNotificacion:EstadoNotificacion;
 						
 			protected function login_readyHandler(event:ModuleEvent):void
 			{

@@ -69,8 +69,6 @@
 					   icon="@Embed(source='assets/images/clientes.png')"/>
 		<mx:LinkButton label="Configuración Prueba y Entrega" id="ConfiguracionPruebaEntrega" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/servicios.png')"/>
-		<mx:LinkButton label="Notificaciones" id="Notificaciones" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/clientes.png')"/>
 	</mx:VBox>
 	<mx:VBox label="Almacén" width="100%" height="100%">
 		<mx:LinkButton label="Manejo Almacén" id="Almacen" click="clickMenuHandler(event)"
@@ -178,5 +176,8 @@
 		<mx:LinkButton label="Gráfica de Evaluación de Facturación de Proyectos de Conectel" id="GraficaEvaluacionFacturacionProyectosConectel" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/clientes.png')"/>
 	</mx:VBox>
-	<mx:VBox id="empty"/>
+	<mx:VBox id="empty">
+		<mx:LinkButton label="Notificaciones" id="Notificaciones" click="clickMenuHandler(event)"
+					   icon="@Embed(source='assets/images/clientes.png')"/>
+	</mx:VBox>
 </mx:Accordion>

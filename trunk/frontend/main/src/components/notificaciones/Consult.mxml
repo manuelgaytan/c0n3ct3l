@@ -1,16 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
-		 horizontalAlign="right">
-	<mx:DataGrid id="datagrid" width="100%" height="100%">
+		 horizontalAlign="right"
+		 creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			[Bindable]
+			private var items:ArrayCollection = null;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.executeQuery();
+			}
+			
+			public function executeQuery():void
+			{
+				this.responseGetAll.token = this.notificacionService.getAll();
+			}
+			
+			protected function responseGetAll_resultHandler(event:ResultEvent):void
+			{
+				items = event.result as ArrayCollection;
+			}
+			
+			protected function notificacionService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function btnRefresh_clickHandler(event:MouseEvent):void
+			{
+				this.executeQuery();
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:DataGrid id="datagrid" width="100%" height="100%" dataProvider="{items}">
 		<mx:columns>
-			<mx:DataGridColumn id="dtgDateHour" headerText="Fecha y Hora"/>
-			<mx:DataGridColumn id="dtgAction" headerText="Acción" width="270"/>
-			<mx:DataGridColumn id="dtgProject" headerText="Proyecto"/>
-			<mx:DataGridColumn id="dtgUser" headerText="Usuario"/>
+			<mx:DataGridColumn id="dtgDateHour" headerText="Fecha y Hora" width="100"
+							   dataField="fechaHoraCreacion"
+							   labelFunction="{Util.labelFunctionDateHour}"/>
+			<mx:DataGridColumn id="dtgUserOriginated" headerText="{'Usuario\nCreación'}" width="100"
+							   dataField="usuarioCreacion.usuario"/>
+			<mx:DataGridColumn id="dtgAction" headerText="Notificación" width="270"
+							   dataField="notificacion"
+							   wordWrap="true"/>
+			<mx:DataGridColumn id="dtgPerfil" headerText="{'Dirigido a'}" width="120"
+							   dataField="perfil.perfil"/>
+			<!--<mx:DataGridColumn id="dtgUserUpdated" headerText="{'Usuario\nModificación'}" width="100"
+							   dataField="usuarioModificacion.usuario"/>-->
+			<!--<mx:DataGridColumn id="dtgUserUpdated" headerText="{'Estado'}" width="100"
+							   dataField="estado.estado"/>-->
+			
 		</mx:columns>
 	</mx:DataGrid>
+	<!--
 	<mx:HBox>
-		<mx:Button label="Exportar"/>
+		<mx:Button id="btnRefresh" label="Refrescar" click="btnRefresh_clickHandler(event)"/>
+		<mx:Button id="btnServer" label="Atendida"/>
 	</mx:HBox>
+	-->
+	<mx:RemoteObject id="notificacionService" destination="notificacionService" fault="notificacionService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetAll" result="responseGetAll_resultHandler(event)"/>
 </mx:VBox>

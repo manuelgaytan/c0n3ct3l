@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
-		   width="600" height="275"
+		   width="700" height="275"
 		   xmlns:notificaciones="components.notificaciones.*">
 	<mx:TabNavigator width="100%" height="100%" creationPolicy="all">
 		<notificaciones:Consult id="consult"/>

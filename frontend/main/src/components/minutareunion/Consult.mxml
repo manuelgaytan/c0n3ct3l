@@ -108,7 +108,7 @@
 		[Event(name="itemDetail", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:VBox id="vBox" width="100%" height="100%">
-		<mx:DataGrid id="datagrid" width="942" height="100%" dataProvider="{items}"
+		<mx:DataGrid id="datagrid" width="742" height="100%" dataProvider="{items}"
 					 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 					 allowMultipleSelection="true"
 					 >

@@ -7,7 +7,7 @@ package model
 		public var responsableMinuta:ResponsableMinuta;
 		public var responsable:String;
 		public var acuerdo:String;
-		public var fechaCompromiso
+		public var fechaCompromiso:Date;
 		public var responsableElaboracion:String;
 		
 		public function AcuerdoMinuta()

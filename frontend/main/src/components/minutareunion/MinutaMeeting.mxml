@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*" xmlns:notascreditoclientes="components.notascreditoclientes.*" xmlns:informacionfacturas="components.informacionfacturas.*" xmlns:notascreditoproveedores="components.notascreditoproveedores.*" xmlns:facturacionproveedores="components.facturacionproveedores.*" xmlns:comprobacionesviaticos="components.comprobacionesviaticos.*" xmlns:seleccion="components.seleccion.*"
-		 initialize="initializeHandler(event)" xmlns:reclutamientosolicitudempleo="components.reclutamientosolicitudempleo.*" xmlns:registroMinuta="components.registroMinuta.*" xmlns:contratacion="components.contratacion.*"
+		 initialize="initializeHandler(event)" xmlns:reclutamientosolicitudempleo="components.reclutamientosolicitudempleo.*" xmlns:registroMinuta="components.registroMinuta.*" xmlns:contratacion="components.contratacion.*" xmlns:minutareunion="components.minutareunion.*"
 		 >
 	<mx:Script>
 		<![CDATA[
@@ -92,6 +92,8 @@
 				}
 				this.txtPlace.text = this._item.lugar;
 				this.txtSubject.text = this._item.asunto;
+				this.participantForm.participants = this._item.participantesMinuta;
+				this.agreementForm.agreements = this._item.acuerdosMinuta;
 			}
 			
 			private function getMinutaMeeting():Minuta{
@@ -106,6 +108,8 @@
 				minutaMeeting.fechaHora.minutes = this.nstMinutes.value;
 				minutaMeeting.lugar = Util.validateEmpty( this.txtPlace.text );
 				minutaMeeting.asunto = Util.validateEmpty( this.txtSubject.text );
+				minutaMeeting.participantesMinuta = this.participantForm.participants;
+				minutaMeeting.acuerdosMinuta = this.agreementForm.agreements;
 				return minutaMeeting;
 			}
 			
@@ -178,7 +182,6 @@
 			{
 				this.txtID.reset();
 				this.dtfDate.reset();
-				this.cmbConectelPayroll.selectedIndex = 0;
 				this.txtPlace.reset();
 				this.txtSubject.reset();
 			}
@@ -196,16 +199,6 @@
 				}
 				if( this.mode == Constants.UPDATE_MODE ){
 				}
-			}
-			
-			protected function cmbConectelPayroll_changeHandler(event:ListEvent):void
-			{
-				var colaborator:Colaborador = this.cmbConectelPayroll.selectedItem as Colaborador;
-				if( colaborator ){
-					this.txtPlace.text = "";
-					return;
-				}
-				this.txtPlace.text = colaborator.nombreCompleto;
 			}
 			
 			private function getAMPM():ArrayCollection{
@@ -237,15 +230,10 @@
 			<components:DateField id="dtfDate"/>
 		</mx:FormItem>
 		<mx:FormItem label="Hora:" direction="horizontal">
-			<mx:NumericStepper id="nstHour" minimum="1" maximum="12"/>
-			<mx:NumericStepper id="nstMinutes" minimum="0" maximum="59"/>
+			<mx:NumericStepper id="nstHour" minimum="1" maximum="12" textAlign="right"/>
+			<mx:NumericStepper id="nstMinutes" minimum="0" maximum="59" textAlign="right"/>
 			<mx:ComboBox id="cmbAMPM" dataProvider="{this.getAMPM()}"
 						 labelField="etiqueta"/>
-		</mx:FormItem>
-		<mx:FormItem label="Nómina Conectel:">
-			<mx:ComboBox id="cmbConectelPayroll" width="400"
-						 labelField="nombreCompleto"
-						 change="cmbConectelPayroll_changeHandler(event)"/>
 		</mx:FormItem>
 		<mx:FormItem label="Nombre:">
 			<components:TextInput id="txtPlace" width="350"/>
@@ -253,6 +241,8 @@
 		<mx:FormItem label="Asunto:">
 			<components:TextInput id="txtSubject" width="420"/>
 		</mx:FormItem>
+		<minutareunion:ParticipantForm id="participantForm"/>
+		<minutareunion:AgreementForm id="agreementForm"/>
 		<mx:FormItem direction="horizontal">
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
 		</mx:FormItem>

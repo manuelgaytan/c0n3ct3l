@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Form xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:minutareunion="components.minutareunion.*" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import model.Colaborador;
+			import model.ParticipanteMinuta;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			private var validatorsEntry:InicializaValidadoresEtiquetas;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			private function fillCombos():void
+			{
+				this.responseGetTipoColaborador.token = this.catalogoService.getTipoColaborador();
+			}
+			
+			protected function cmbColaboratorType_changeHandler(event:ListEvent):void
+			{
+				this.cleanForm();
+				var idColaboratorType:* = Util.selectedId( this.cmbColaboratorType );
+				if( idColaboratorType == undefined ){
+					return;
+				}
+				this.responseGetColaborador.token = this.catalogoService.getColaboradorByTipoColaborador(idColaboratorType);
+			}
+			
+			protected function responseGetColaborador_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbColaboratorName.dataProvider = Util.addEmptyCatalgo( data, "nombreCompleto" );
+			}
+			
+			protected function responseGetTipoColaborador_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbColaboratorType.dataProvider = Util.addEmptyCatalgo(data,"tipo");
+			}
+			
+			protected function participantForm_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			private function initializeValidators():void
+			{
+				this.validatorsEntry = new InicializaValidadoresEtiquetas();
+				validatorsEntry.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
+				validatorsEntry.setValidador(txtName, "generic");
+				validatorsEntry.setValidador(txtCompany, "generic");
+				validatorsEntry.setRestrictor(txtPosition, "generic");
+			}
+			
+			private function isValidEntry():Boolean
+			{
+				return this.validatorsEntry.validarFormulario();
+			}
+			
+			private function getValidEntry():ParticipanteMinuta
+			{
+				var entry:ParticipanteMinuta = null;
+				if( !this.isValidEntry() ){
+					return entry;
+				}
+				entry = new ParticipanteMinuta();
+				entry.colaborador = Util.validateCombo( this.cmbColaboratorName ) as Colaborador;
+				entry.participante = Util.validateEmpty( this.txtName.text );
+				entry.empresa = Util.validateEmpty( this.txtCompany.text );
+				entry.puesto = Util.validateEmpty( this.txtPosition.text );
+				return entry;
+			}
+			
+			protected function btnAddItem_clickHandler(event:MouseEvent):void
+			{
+				var entry:ParticipanteMinuta = this.getValidEntry();
+				if( entry == null ){
+					Util.showErrorMessage("Valide los campos de la Partida");
+					return;
+				}
+				this.itemsManagement.addItem( entry );
+				this.cleanForm();
+				this.cmbColaboratorType.selectedIndex = 0;
+				this.cmbColaboratorType.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
+			}
+			
+			private function cleanForm():void
+			{
+				this.txtName.reset();
+				this.txtCompany.reset();
+				this.txtPosition.reset();
+			}
+			
+			protected function cmbColaboratorName_changeHandler(event:ListEvent):void
+			{
+				var idColaborator:* = Util.selectedId( this.cmbColaboratorName );
+				if( idColaborator == undefined ){
+					return;
+				}
+				this.txtName.text = (this.cmbColaboratorName.selectedItem as Colaborador).nombreCompleto;
+			}
+			
+			public function get participants():ArrayCollection{
+				return this.itemsManagement.dataProvider as ArrayCollection;
+			}
+			
+			public function set participants(value:ArrayCollection):void{
+				this.itemsManagement.dataProvider = value;
+			}
+		]]>
+	</mx:Script>
+	<mx:FormItem label="Tipo de Colaborador:"
+				 direction="horizontal">
+		<mx:ComboBox id="cmbColaboratorType" width="130"
+					 labelField="tipo"
+					 change="cmbColaboratorType_changeHandler(event)"/>
+		<mx:ComboBox id="cmbColaboratorName" width="370"
+					 labelField="nombreCompleto"
+					 change="cmbColaboratorName_changeHandler(event)"/>
+	</mx:FormItem>
+	<mx:FormItem label="Nombre:">
+		<components:TextInput id="txtName" width="380"/>
+	</mx:FormItem>
+	<mx:FormItem label="Empresa:">
+		<components:TextInput id="txtCompany"
+							  width="350"/>
+	</mx:FormItem>
+	<mx:FormItem label="Puesto:">
+		<components:TextInput id="txtPosition"
+							  width="280"
+							  />
+	</mx:FormItem>
+	<mx:FormItem>
+		<mx:Button id="btnAddItem" label="Agregar Participante" click="btnAddItem_clickHandler(event)"/>
+	</mx:FormItem>
+	<minutareunion:ItemsManagementParticipant id="itemsManagement"/>
+	<mx:RemoteObject id="colaboradorService" destination="colaboradorService" fault="participantForm_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetColaborador" result="responseGetColaborador_resultHandler(event)"/>
+	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="participantForm_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetTipoColaborador" result="responseGetTipoColaborador_resultHandler(event)"/>
+</mx:Form>

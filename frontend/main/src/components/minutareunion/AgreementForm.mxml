@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Form xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:minutareunion="components.minutareunion.*" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import model.AcuerdoMinuta;
+			import model.Colaborador;
+			import model.ResponsableMinuta;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			private var validatorsEntry:InicializaValidadoresEtiquetas;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			private function fillCombos():void
+			{
+				this.responseGetResponsableMinuta.token = this.catalogoService.getResponsableMinuta();
+			}
+			
+			protected function responseGetResponsableMinuta_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbResponsible.dataProvider = Util.addEmptyCatalgo(data,"responsable");
+			}
+			
+			protected function agreementForm_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			private function initializeValidators():void
+			{
+				this.validatorsEntry = new InicializaValidadoresEtiquetas();
+				validatorsEntry.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
+				validatorsEntry.setValidador(txtResponsible, "generic");
+				validatorsEntry.setValidador(txtAgreement, "generic");
+				validatorsEntry.setRestrictor(txtResponsibleElaboration, "generic");
+			}
+			
+			private function isValidEntry():Boolean
+			{
+				return this.validatorsEntry.validarFormulario();
+			}
+			
+			private function getValidEntry():AcuerdoMinuta
+			{
+				var entry:AcuerdoMinuta = null;
+				if( !this.isValidEntry() ){
+					return entry;
+				}
+				entry = new AcuerdoMinuta();
+				entry.responsableMinuta = Util.validateCombo( this.cmbResponsible ) as ResponsableMinuta;
+				entry.responsable = Util.validateEmpty( this.txtResponsible.text );
+				entry.acuerdo = Util.validateEmpty( this.txtAgreement.text );
+				entry.fechaCompromiso = this.dtfDate.selectedDate;
+				entry.responsableElaboracion = Util.validateEmpty( this.txtResponsibleElaboration.text );
+				return entry;
+			}
+			
+			protected function btnAddItem_clickHandler(event:MouseEvent):void
+			{
+				var entry:AcuerdoMinuta = this.getValidEntry();
+				if( entry == null ){
+					Util.showErrorMessage("Valide los campos de la Partida");
+					return;
+				}
+				this.itemsManagement.addItem( entry );
+				this.cleanForm();
+				this.cmbResponsible.selectedIndex = 0;
+				this.cmbResponsible.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
+			}
+			
+			private function cleanForm():void
+			{
+				this.txtResponsible.reset();
+				this.txtAgreement.reset();
+				this.dtfDate.reset();
+				this.txtResponsibleElaboration.reset();
+			}
+			
+			protected function cmbColaboratorName_changeHandler(event:ListEvent):void
+			{
+				var idColaborator:* = Util.selectedId( this.cmbResponsible );
+				if( idColaborator == undefined ){
+					return;
+				}
+				this.txtResponsible.text = (this.cmbResponsible.selectedItem as Colaborador).nombreCompleto;
+			}
+			
+			public function get agreements():ArrayCollection{
+				return this.itemsManagement.dataProvider as ArrayCollection;
+			}
+			
+			public function set agreements(value:ArrayCollection):void{
+				this.itemsManagement.dataProvider = value;
+			}
+		]]>
+	</mx:Script>
+	<mx:FormItem label="Tipo de Colaborador:"
+				 direction="horizontal">
+		<mx:ComboBox id="cmbResponsible" width="130"
+					 labelField="responsable"
+					 />
+	</mx:FormItem>
+	<mx:FormItem label="Nombre:">
+		<components:TextInput id="txtResponsible" width="380"/>
+	</mx:FormItem>
+	<mx:FormItem label="Empresa:">
+		<components:TextInput id="txtAgreement"
+							  width="350"/>
+	</mx:FormItem>
+	<mx:FormItem label="Fecha Compromiso:">
+		<components:DateField id="dtfDate"/>
+	</mx:FormItem>
+	<mx:FormItem label="Puesto:">
+		<components:TextInput id="txtResponsibleElaboration"
+							  width="280"
+							  />
+	</mx:FormItem>
+	<mx:FormItem>
+		<mx:Button id="btnAddItem" label="Agregar Agreemente" click="btnAddItem_clickHandler(event)"/>
+	</mx:FormItem>
+	<minutareunion:ItemsManagementAgreement id="itemsManagement"/>
+	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="agreementForm_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetResponsableMinuta" result="responseGetResponsableMinuta_resultHandler(event)"/>
+</mx:Form>

@@ -3054,6 +3054,8 @@
 	VALUES (13, 'Recursos Humanos');
 	INSERT INTO Perfil
 	VALUES (14, 'Sistemas Gestión');
+	INSERT INTO Perfil
+	VALUES (15, 'Validación Administrativa');
 
 	/* Pantallas */
 	INSERT INTO Pantalla
@@ -3251,15 +3253,15 @@
 	INSERT INTO PerfilPantalla
 	VALUES (43, 1, 25);
 	INSERT INTO PerfilPantalla
-	VALUES (44, 5, 21);
+	VALUES (44, 15, 21);
 	INSERT INTO PerfilPantalla
-	VALUES (45, 5, 22);
+	VALUES (45, 15, 22);
 	INSERT INTO PerfilPantalla
-	VALUES (46, 5, 23);
+	VALUES (46, 9, 23);
 	INSERT INTO PerfilPantalla
-	VALUES (47, 5, 24);
+	VALUES (47, 15, 24);
 	INSERT INTO PerfilPantalla
-	VALUES (48, 5, 25);
+	VALUES (48, 15, 25);
 	INSERT INTO PerfilPantalla
 	VALUES (49, 1, 26);
 	INSERT INTO PerfilPantalla
@@ -3390,6 +3392,20 @@
 	VALUES (112, 1, 52);
 	INSERT INTO PerfilPantalla
 	VALUES (113, 1, 53);
+	INSERT INTO PerfilPantalla
+	VALUES (114, 3, 8);
+	INSERT INTO PerfilPantalla
+	VALUES (115, 12, 8);
+	INSERT INTO PerfilPantalla
+	VALUES (116, 10, 8);
+	INSERT INTO PerfilPantalla
+	VALUES (117, 15, 8);
+	INSERT INTO PerfilPantalla
+	VALUES (118, 11, 8);
+	INSERT INTO PerfilPantalla
+	VALUES (119, 5, 8);
+	INSERT INTO PerfilPantalla
+	VALUES (120, 6, 8);
 
 	/* Usuarios */
 	INSERT INTO Usuario

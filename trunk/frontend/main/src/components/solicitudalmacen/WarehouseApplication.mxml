@@ -451,7 +451,7 @@
 			protected function btnAddItem_clickHandler(event:MouseEvent):void
 			{
 				var entry:PartidaSolicitudAlmacen = this.getValidEntry();
-				if( entry == false ){
+				if( entry == null ){
 					Util.showErrorMessage("Valide los campos de la Partida");
 					return;
 				}

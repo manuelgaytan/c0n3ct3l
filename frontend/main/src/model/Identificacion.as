@@ -1,6 +1,6 @@
 package model
 {
-	//[RemoteClass(alias="mx.com.gahm.conenctel.entities.IdentificacionDO")]
+	[RemoteClass(alias="mx.com.gahm.conenctel.entities.IdentificacionDO")]
 	public class Identificacion
 	{
 		public var id:*;

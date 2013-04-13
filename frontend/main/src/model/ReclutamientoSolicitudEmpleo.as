@@ -1,6 +1,6 @@
 package model
 {
-	//[RemoteClass(alias="mx.com.gahm.conenctel.entities.ReclutamientoSolicitudEmpleoDO")]
+	[RemoteClass(alias="mx.com.gahm.conenctel.entities.ReclutamientoSolicitudEmpleoDO")]
 	public class ReclutamientoSolicitudEmpleo
 	{
 		public var id:*;

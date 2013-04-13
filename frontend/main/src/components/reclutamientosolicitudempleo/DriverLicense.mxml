@@ -60,7 +60,7 @@
 				this.txtID.text = this._item.id.toString();
 				this.dtfExpire.selectedDate = this._item.vigencia;
 				this.txtLicenseNumber.text = this._item.numeroLicencia;
-				if( Util.isFill( this.cmbLicenseType ) && this._item.tipoLicencia != null ){
+				if( Util.isFill( this.cmbLicenseType ) && this._item != null && this._item.tipoLicencia != null ){
 					this.cmbLicenseType.selectedIndex = Util.selectedIndexFromCombo( this.cmbLicenseType.dataProvider as ArrayCollection, 
 						this._item.tipoLicencia.id);
 				}
@@ -127,7 +127,7 @@
 					return;
 				}
 				this.cmbLicenseType.dataProvider = data;
-				if( Util.isFill( this.cmbLicenseType ) && this._item.tipoLicencia != null ){
+				if( Util.isFill( this.cmbLicenseType ) && this._item != null && this._item.tipoLicencia != null ){
 					this.cmbLicenseType.selectedIndex = Util.selectedIndexFromCombo( this.cmbLicenseType.dataProvider as ArrayCollection, 
 						this._item.tipoLicencia.id);
 				}

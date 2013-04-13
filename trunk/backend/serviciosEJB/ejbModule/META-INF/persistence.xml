@@ -190,6 +190,8 @@
 		<class>mx.com.gahm.conenctel.entities.FuenteNoConformidadDO</class>
 		<class>mx.com.gahm.conenctel.entities.EstadoAccionPreventivaCorrectivaDO</class>
 		<class>mx.com.gahm.conenctel.entities.AccionPreventivaCorrectivaDO</class>
+		<class>mx.com.gahm.conenctel.entities.SeleccionReclutamientoDO</class>
+		<class>mx.com.gahm.conenctel.entities.InformacionPrenominaDO</class>
 		<class>mx.com.gahm.conenctel.entities.MinutaDO</class>
 		<class>mx.com.gahm.conenctel.entities.ParticipanteMinutaDO</class>
 		<class>mx.com.gahm.conenctel.entities.AcuerdoMinutaDO</class>

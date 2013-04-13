@@ -195,6 +195,9 @@
 		<class>mx.com.gahm.conenctel.entities.MinutaDO</class>
 		<class>mx.com.gahm.conenctel.entities.ParticipanteMinutaDO</class>
 		<class>mx.com.gahm.conenctel.entities.AcuerdoMinutaDO</class>
+		<class>mx.com.gahm.conenctel.entities.TipoFormacionDO</class>
+		<class>mx.com.gahm.conenctel.entities.TipoCapacitacionDO</class>
+		
 		<properties>
 			<property name="eclipselink.logging.level" value="FINE"/> 
 			<property name="eclipselink.logging.parameters" value="true"/>

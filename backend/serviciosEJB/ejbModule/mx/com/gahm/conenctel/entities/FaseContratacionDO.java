@@ -34,7 +34,7 @@ public class FaseContratacionDO  implements Serializable{
 	private long id;
 
 	@Column(name = "fase")
-	private String etiqueta;
+	private String fase;
 
 	public FaseContratacionDO() {
 		super();
@@ -44,7 +44,7 @@ public class FaseContratacionDO  implements Serializable{
 	public FaseContratacionDO(long id, String etiqueta) {
 		super();
 		this.id = id;
-		this.etiqueta = etiqueta;
+		this.fase = etiqueta;
 	}
 
 	/**
@@ -65,16 +65,16 @@ public class FaseContratacionDO  implements Serializable{
 	/**
 	 * @return the etiqueta
 	 */
-	public String getEtiqueta() {
-		return etiqueta;
+	public String getFase() {
+		return fase;
 	}
 
 	/**
 	 * @param etiqueta
 	 *            the etiqueta to set
 	 */
-	public void setEtiqueta(String etiqueta) {
-		this.etiqueta = etiqueta;
+	public void setFase(String etiqueta) {
+		this.fase = etiqueta;
 	}
 
 }

@@ -345,4 +345,125 @@
 			<scope>session</scope>
 		</properties>
 	</destination>
+	
+	<destination id="seleccionReclutamientoService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/SeleccionReclutamientoService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+	
+	<destination id="contratacionService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/ContratacionService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+	
+	<destination id="informacionConfidencialColaboradorService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/InformacionConfidencialColaboradorService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+	
+	<destination id="informacionPrenominaService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/InformacionPrenominaService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+	
+	<destination id="registroDeduccionService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/RegistroDeduccionService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+	
+	<destination id="registroPercepcionService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/RegistroPercepcionService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+	
+	<destination id="cursoService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/CursoService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+	
+	<destination id="sugerenciaService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/SugerenciaService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+	
+	<destination id="noConformidadService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/NoConformidadService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+	
+	<destination id="accionPreventivaCorrectivaService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/AccionPreventivaCorrectivaService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+	<!-- 
+	<destination id="">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+	
+	<destination id="">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+	
+	<destination id="">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+	
+	<destination id="">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+	
+	<destination id="">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+	 -->
 </service>

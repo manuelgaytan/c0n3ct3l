@@ -73,10 +73,12 @@ import mx.com.gahm.conenctel.entities.SuspensionDO;
 import mx.com.gahm.conenctel.entities.TipoAccionDO;
 import mx.com.gahm.conenctel.entities.TipoAlmacenDO;
 import mx.com.gahm.conenctel.entities.TipoCandidatoDO;
+import mx.com.gahm.conenctel.entities.TipoCapacitacionDO;
 import mx.com.gahm.conenctel.entities.TipoColaboradorDO;
 import mx.com.gahm.conenctel.entities.TipoContratacionDO;
 import mx.com.gahm.conenctel.entities.TipoContratoDO;
 import mx.com.gahm.conenctel.entities.TipoEmpleadoDO;
+import mx.com.gahm.conenctel.entities.TipoFormacionDO;
 import mx.com.gahm.conenctel.entities.TipoIncapacidadDO;
 import mx.com.gahm.conenctel.entities.TipoLicenciaDO;
 import mx.com.gahm.conenctel.entities.TipoMantenimientoDO;
@@ -1320,6 +1322,34 @@ public class CatalogoService implements ICatalogoService {
 				"EstadoAccionPreventivaCorrectivaDO.findAll", EstadoAccionPreventivaCorrectivaDO.class);
 		
 		List<EstadoAccionPreventivaCorrectivaDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<TipoFormacionDO> getTipoFormacion() throws ConectelException {
+		TypedQuery<TipoFormacionDO> query = entityManager.createNamedQuery(
+				"TipoFormacionDO.findAll", TipoFormacionDO.class);
+		
+		List<TipoFormacionDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<TipoCapacitacionDO> getTipoCapacitacion() throws ConectelException {
+		TypedQuery<TipoCapacitacionDO> query = entityManager.createNamedQuery(
+				"TipoCapacitacionDO.findAll", TipoCapacitacionDO.class);
+		
+		List<TipoCapacitacionDO> list;
 		try {
 			list = query.getResultList();
 		} catch (NoResultException e) {

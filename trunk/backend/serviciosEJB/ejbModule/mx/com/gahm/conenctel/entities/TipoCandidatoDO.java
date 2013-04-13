@@ -35,7 +35,7 @@ public class TipoCandidatoDO implements Serializable{
 	private long id;
 
 	@Column(name="tipo")
-	private String etiqueta;
+	private String tipo;
 
 	public TipoCandidatoDO() {
 		super();
@@ -45,7 +45,7 @@ public class TipoCandidatoDO implements Serializable{
 	public TipoCandidatoDO(long id, String etiqueta) {
 		super();
 		this.id = id;
-		this.etiqueta = etiqueta;
+		this.tipo = etiqueta;
 	}
 
 	/**
@@ -65,15 +65,15 @@ public class TipoCandidatoDO implements Serializable{
 	/**
 	 * @return the etiqueta
 	 */
-	public String getEtiqueta() {
-		return etiqueta;
+	public String getTipo() {
+		return tipo;
 	}
 
 	/**
 	 * @param etiqueta the etiqueta to set
 	 */
-	public void setEtiqueta(String etiqueta) {
-		this.etiqueta = etiqueta;
+	public void setTipo(String etiqueta) {
+		this.tipo = etiqueta;
 	}
 	
 	

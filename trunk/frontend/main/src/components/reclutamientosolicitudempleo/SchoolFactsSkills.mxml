@@ -80,7 +80,7 @@
 				}
 				this.txtLanguajes.text = this._item.idiomas.toString();
 				this.txtLanguajesPercent.text = this._item.porcentajeIdiomas.toString();
-				//this.officeEquipmentDominates.officeEquipmentDominates = this._item.equipoOficinaDomina; 
+				this.officeEquipmentDominates.officeEquipmentDominates = this._item.equipoOficinaDomina; 
 				this.software.software =  this._item.paqueteria;
 			}
 			
@@ -96,7 +96,7 @@
 				schoolFactsSkills.estadoAcademico = Util.validateCombo( this.cmbAcademicState ) as EstadoAcademico;
 				schoolFactsSkills.idiomas = Util.stringToNumber( this.txtLanguajes.text );
 				schoolFactsSkills.porcentajeIdiomas = Util.stringToNumber( this.txtLanguajesPercent.text );
-				//schoolFactsSkills.equipoOficinaDomina = this.officeEquipmentDominates.getOfficeEquipmentDominates();
+				schoolFactsSkills.equipoOficinaDomina = this.officeEquipmentDominates.getOfficeEquipmentDominates();
 				schoolFactsSkills.paqueteria = this.software.getSoftware();
 				return schoolFactsSkills;
 			}

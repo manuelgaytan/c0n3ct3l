@@ -9,7 +9,7 @@ package model
 		public var estadoAcademico:EstadoAcademico;
 		public var idiomas:String;
 		public var porcentajeIdiomas:String;
-		//public var equipoOficinaDomina:EquipoOficinaDomina;
+		public var equipoOficinaDomina:EquipoOficinaDomina;
 		public var paqueteria:Paqueteria;
 		
 		public function DatosEscolaresHabilidades()

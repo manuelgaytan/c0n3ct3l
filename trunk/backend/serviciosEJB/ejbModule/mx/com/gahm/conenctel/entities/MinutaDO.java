@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -52,10 +53,10 @@ public class MinutaDO implements Serializable{
 	@Column(name = "asunto", nullable = false)
 	private String asunto;
 	
-	@OneToMany(mappedBy="minuta", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy="minuta", fetch = FetchType.EAGER,cascade=CascadeType.ALL)
 	private List<ParticipanteMinutaDO> ParticipanteMinuta;
 	
-	@OneToMany(mappedBy="minuta", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy="minuta", fetch = FetchType.EAGER,cascade=CascadeType.ALL)
 	private List<AcuerdoMinutaDO> acuerdoMinuta;
 
 	public MinutaDO() {

@@ -33,7 +33,7 @@ public class UltimoGradoEstudiosDO implements Serializable {
 	private long id;
 
 	@Column(name = "estudios")
-	private String etiqueta;
+	private String estudios;
 
 	public UltimoGradoEstudiosDO() {
 		super();
@@ -43,7 +43,7 @@ public class UltimoGradoEstudiosDO implements Serializable {
 	public UltimoGradoEstudiosDO(long id, String etiqueta) {
 		super();
 		this.id = id;
-		this.etiqueta = etiqueta;
+		this.estudios = etiqueta;
 	}
 
 	public long getId() {
@@ -54,12 +54,12 @@ public class UltimoGradoEstudiosDO implements Serializable {
 		this.id = id;
 	}
 
-	public String getEtiqueta() {
-		return etiqueta;
+	public String getEstudios() {
+		return estudios;
 	}
 
-	public void setEtiqueta(String etiqueta) {
-		this.etiqueta = etiqueta;
+	public void setEstudios(String etiqueta) {
+		this.estudios = etiqueta;
 	}
 
 }

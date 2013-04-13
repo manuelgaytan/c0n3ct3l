@@ -28,8 +28,8 @@ public class FaseSeleccionDO implements Serializable{
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 
-	@Column(name = "relacion")
-	private String etiqueta;
+	@Column(name = "fase")
+	private String fase;
 
 	public FaseSeleccionDO() {
 		super();
@@ -39,7 +39,7 @@ public class FaseSeleccionDO implements Serializable{
 	public FaseSeleccionDO(long id, String etiqueta) {
 		super();
 		this.id = id;
-		this.etiqueta = etiqueta;
+		this.fase = etiqueta;
 	}
 
 	/**
@@ -59,15 +59,15 @@ public class FaseSeleccionDO implements Serializable{
 	/**
 	 * @return the etiqueta
 	 */
-	public String getEtiqueta() {
-		return etiqueta;
+	public String getFase() {
+		return fase;
 	}
 
 	/**
 	 * @param etiqueta the etiqueta to set
 	 */
-	public void setEtiqueta(String etiqueta) {
-		this.etiqueta = etiqueta;
+	public void setFase(String etiqueta) {
+		this.fase = etiqueta;
 	}
 
 

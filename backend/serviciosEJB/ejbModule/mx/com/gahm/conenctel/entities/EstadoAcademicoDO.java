@@ -34,8 +34,8 @@ public class EstadoAcademicoDO implements Serializable{
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
 
-	@Column(name="categoria")
-	private String etiqueta;
+	@Column(name="estado")
+	private String estado;
 
 	public EstadoAcademicoDO() {
 		super();
@@ -45,7 +45,7 @@ public class EstadoAcademicoDO implements Serializable{
 	public EstadoAcademicoDO(long id, String etiqueta) {
 		super();
 		this.id = id;
-		this.etiqueta = etiqueta;
+		this.estado = etiqueta;
 	}
 
 	public long getId() {
@@ -56,12 +56,12 @@ public class EstadoAcademicoDO implements Serializable{
 		this.id = id;
 	}
 
-	public String getEtiqueta() {
-		return etiqueta;
+	public String getEstado() {
+		return estado;
 	}
 
-	public void setEtiqueta(String etiqueta) {
-		this.etiqueta = etiqueta;
+	public void setEstado(String etiqueta) {
+		this.estado = etiqueta;
 	}
 
 }

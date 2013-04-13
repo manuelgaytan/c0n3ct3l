@@ -36,7 +36,7 @@ public class ViveConDO implements Serializable{
 	private long id;
 
 	@Column(name = "relacion")
-	private String etiqueta;
+	private String relacion;
 
 	public ViveConDO() {
 		super();
@@ -46,7 +46,7 @@ public class ViveConDO implements Serializable{
 	public ViveConDO(long id, String etiqueta) {
 		super();
 		this.id = id;
-		this.etiqueta = etiqueta;
+		this.relacion = etiqueta;
 	}
 
 	/**
@@ -66,15 +66,15 @@ public class ViveConDO implements Serializable{
 	/**
 	 * @return the etiqueta
 	 */
-	public String getEtiqueta() {
-		return etiqueta;
+	public String getRelacion() {
+		return relacion;
 	}
 
 	/**
 	 * @param etiqueta the etiqueta to set
 	 */
-	public void setEtiqueta(String etiqueta) {
-		this.etiqueta = etiqueta;
+	public void setRelacion(String etiqueta) {
+		this.relacion = etiqueta;
 	}
 
 		

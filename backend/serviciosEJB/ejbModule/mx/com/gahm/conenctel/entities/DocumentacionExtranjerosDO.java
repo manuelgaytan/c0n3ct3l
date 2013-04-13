@@ -34,7 +34,7 @@ public class DocumentacionExtranjerosDO implements Serializable{
 	private long id;
 
 	@Column(name="documento")
-	private String etiqueta;
+	private String documento;
 
 	
 	
@@ -46,7 +46,7 @@ public class DocumentacionExtranjerosDO implements Serializable{
 	public DocumentacionExtranjerosDO(long id, String etiqueta) {
 		super();
 		this.id = id;
-		this.etiqueta = etiqueta;
+		this.documento = etiqueta;
 	}
 
 	public long getId() {
@@ -57,12 +57,12 @@ public class DocumentacionExtranjerosDO implements Serializable{
 		this.id = id;
 	}
 
-	public String getEtiqueta() {
-		return etiqueta;
+	public String getDocumento() {
+		return documento;
 	}
 
-	public void setEtiqueta(String etiqueta) {
-		this.etiqueta = etiqueta;
+	public void setDocumento(String etiqueta) {
+		this.documento = etiqueta;
 	}
 
 }

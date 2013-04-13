@@ -33,13 +33,13 @@ public class FuenteReclutamientoDO implements Serializable{
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 
-	@Column(name = "estado")
-	private String etiqueta;
+	@Column(name = "fuente")
+	private String fuente;
 
 	public FuenteReclutamientoDO(long id, String etiqueta) {
 		super();
 		this.id = id;
-		this.etiqueta = etiqueta;
+		this.fuente = etiqueta;
 	}
 
 	public FuenteReclutamientoDO() {
@@ -55,12 +55,12 @@ public class FuenteReclutamientoDO implements Serializable{
 		this.id = id;
 	}
 
-	public String getEtiqueta() {
-		return etiqueta;
+	public String getFuente() {
+		return fuente;
 	}
 
-	public void setEtiqueta(String etiqueta) {
-		this.etiqueta = etiqueta;
+	public void setFuente(String etiqueta) {
+		this.fuente = etiqueta;
 	}
 
 }

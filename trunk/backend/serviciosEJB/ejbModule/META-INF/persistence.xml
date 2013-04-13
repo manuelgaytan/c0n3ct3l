@@ -190,6 +190,9 @@
 		<class>mx.com.gahm.conenctel.entities.FuenteNoConformidadDO</class>
 		<class>mx.com.gahm.conenctel.entities.EstadoAccionPreventivaCorrectivaDO</class>
 		<class>mx.com.gahm.conenctel.entities.AccionPreventivaCorrectivaDO</class>
+		<class>mx.com.gahm.conenctel.entities.MinutaDO</class>
+		<class>mx.com.gahm.conenctel.entities.ParticipanteMinutaDO</class>
+		<class>mx.com.gahm.conenctel.entities.AcuerdoMinutaDO</class>
 		<properties>
 			<property name="eclipselink.logging.level" value="FINE"/> 
 			<property name="eclipselink.logging.parameters" value="true"/>

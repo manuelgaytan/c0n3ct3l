@@ -199,7 +199,7 @@
 		<components:TextInput id="txtID" width="80" textAlign="right" editable="false"/>
 	</mx:FormItem>
 	<mx:FormItem label="Nombre Empresa:">
-		<components:TextInput id="txtCorporateName" width="120"/>
+		<components:TextInput id="txtCorporateName" width="250"/>
 	</mx:FormItem>
 	<mx:FormItem label="Domicilio:">
 		<components:TextInput id="txtAddress" width="250"/>
@@ -223,16 +223,16 @@
 		<components:TextInput id="txtReasonLeftJob" width="170"/>
 	</mx:FormItem>
 	<mx:FormItem label="Nombre Jefe Inmediato:">
-		<components:TextInput id="txtNameBossDirectly" width="110"/>
+		<components:TextInput id="txtNameBossDirectly" width="210"/>
 	</mx:FormItem>
-	<mx:FormItem label="Actividades Desempeñadaas:">
-		<components:TextInput id="txtJobDone" width="250"/>
+	<mx:FormItem label="Actividades Desempeñadas:">
+		<components:TextInput id="txtJobDone" width="350"/>
 	</mx:FormItem>
 	<mx:FormItem label="Nombre Empresa Anterior:">
-		<components:TextInput id="txtCorporateNameBefore" width="120"/>
+		<components:TextInput id="txtCorporateNameBefore" width="250"/>
 	</mx:FormItem>
 	<mx:FormItem label="Domicilio Anterior:">
-		<components:TextInput id="txtAddressBefore" width="250"/>
+		<components:TextInput id="txtAddressBefore" width="350"/>
 	</mx:FormItem>
 	<mx:FormItem label="Teléfonos Anterior:">
 		<components:TextInput id="txtPhonesBefore" width="100"/>
@@ -253,9 +253,9 @@
 		<components:TextInput id="txtReasonLeftJobBefore" width="170"/>
 	</mx:FormItem>
 	<mx:FormItem label="Nombre Jefe Inmediato Anterior:">
-		<components:TextInput id="txtNameBossDirectlyBefore" width="110"/>
+		<components:TextInput id="txtNameBossDirectlyBefore" width="210"/>
 	</mx:FormItem>
-	<mx:FormItem label="Actividades Desempeñadaas Anterior:">
-		<components:TextInput id="txtJobDoneBefore" width="250"/>
+	<mx:FormItem label="Actividades Desempeñadas Anterior:">
+		<components:TextInput id="txtJobDoneBefore" width="350"/>
 	</mx:FormItem>
 </mx:Form>

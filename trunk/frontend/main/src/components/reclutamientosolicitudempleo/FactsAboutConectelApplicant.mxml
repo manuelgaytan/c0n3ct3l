@@ -99,7 +99,7 @@
 			public function validations():Boolean
 			{
 				var value:Boolean = true;
-				value &&= this.validators.validarFormulario();
+				//value &&= this.validators.validarFormulario();
 				value &&= this.dtfDateWork.selectedDate != null;
 				return value;
 			}

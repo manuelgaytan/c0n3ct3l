@@ -20,7 +20,9 @@
 			import mx.collections.ArrayCollection;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
 			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorCombo;
 			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.com.gahm.componentes.validadores.ValidadorEmail;
 			import mx.com.gahm.componentes.validadores.ValidadorEntero;
 			import mx.controls.Alert;
 			import mx.events.CloseEvent;
@@ -202,17 +204,17 @@
 				this.validators.setValidador( this.txtMothersLastName, "genericAlfanumeric");
 				this.validators.setValidador( this.txtName, "genericAlfanumeric");
 				this.validators.setRestrictor( this.txtBirthdayPlace, "genericAlfanumeric");
-				this.validators.setValidador( this.txtPhone, "genericAlfanumeric");
-				this.validators.setRestrictor( this.txtEmail, "genericAlfanumeric");
 				this.validators.setRestrictor( this.txtRFC, "genericAlfanumeric");
 				this.validators.setRestrictor( this.txtNSS, "genericAlfanumeric");
 				this.validators.setRestrictor( this.txtCURP, "genericAlfanumeric");
+				this.validators.setValidador( this.txtPhone, "genericAlfanumeric");
 				this.validators.setRestrictor( this.txtChronicDisease, "genericAlfanumeric");
 				this.validators.crearValidadorRestrictor("genericInteger", ValidadorEntero.nombre, 2);
 				this.validators.setRestrictor( this.txtAge, "genericInteger" );
 				this.validators.crearValidadorRestrictor("genericInteger10", ValidadorEntero.nombre, 10);
 				this.validators.setRestrictor( this.txtMobile, "genericInteger10" );
-				
+				this.validators.crearValidadorRestrictor("genericEmail", ValidadorEmail.nombre);
+				this.validators.setRestrictor( this.txtEmail, "genericEmail");
 			}
 			
 			protected function responseSave_resultHandler(event:ResultEvent):void
@@ -389,16 +391,16 @@
 		<components:TextInput id="txtMothersLastName" width="270"/>
 	</mx:FormItem>
 	<mx:FormItem label="Nombres:">
-		<components:TextInput id="txtName" width="120"/>
+		<components:TextInput id="txtName" width="270"/>
 	</mx:FormItem>
 	<mx:FormItem label="Fecha de Nacimiento:">
 		<components:DateField id="dtfBirthdayDate"/>
 	</mx:FormItem>
 	<mx:FormItem label="Lugar de Nacimiento:">
-		<components:TextInput id="txtBirthdayPlace" textAlign="right" width="100"/>
+		<components:TextInput id="txtBirthdayPlace" width="200"/>
 	</mx:FormItem>
 	<mx:FormItem label="Edad:">
-		<components:TextInput id="txtAge" textAlign="right" width="100"/>
+		<components:TextInput id="txtAge" textAlign="right" width="50"/>
 	</mx:FormItem>
 	<mx:FormItem label="Nacionalidad:">
 		<mx:ComboBox id="cmbNationality" width="200"
@@ -422,22 +424,22 @@
 	</mx:FormItem>
 	<reclutamientosolicitudempleo:RequestAddress id="requestAddress"/>
 	<mx:FormItem label="Teléfono:">
-		<components:TextInput id="txtPhone" width="100"/>
+		<components:TextInput id="txtPhone" width="150"/>
 	</mx:FormItem>
 	<mx:FormItem label="Celular:">
 		<components:TextInput id="txtMobile" width="100"/>
 	</mx:FormItem>
 	<mx:FormItem label="Correo Electrónico:">
-		<components:TextInput id="txtEmail" width="150"/>
+		<components:TextInput id="txtEmail" width="150" upperCase="false"/>
 	</mx:FormItem>
 	<mx:FormItem label="R.F.C.:">
-		<components:TextInput id="txtRFC" width="65"/>
+		<components:TextInput id="txtRFC" width="115"/>
 	</mx:FormItem>
 	<mx:FormItem label="N.S.S.:">
-		<components:TextInput id="txtNSS" width="85"/>
+		<components:TextInput id="txtNSS" width="225"/>
 	</mx:FormItem>
 	<mx:FormItem label="C.U.R.P.:">
-		<components:TextInput id="txtCURP" width="85"/>
+		<components:TextInput id="txtCURP" width="200"/>
 	</mx:FormItem>
 	<reclutamientosolicitudempleo:DriverLicense id="driverLicense"/>
 	<mx:FormItem label="Carta Antecedentes Penales:">
@@ -449,7 +451,7 @@
 					 labelField="estado"/>
 	</mx:FormItem>
 	<mx:FormItem label="Enfermedad Crónica:">
-		<components:TextInput id="txtChronicDisease" width="105"/>
+		<components:TextInput id="txtChronicDisease" width="255"/>
 	</mx:FormItem>
 	<mx:FormItem label="Actividad Tiempo Libre:">
 		<mx:ComboBox id="cmbHobby" width="200"

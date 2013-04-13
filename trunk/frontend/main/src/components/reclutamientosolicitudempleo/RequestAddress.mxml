@@ -139,18 +139,18 @@
 		<components:TextInput id="txtID" width="80" textAlign="right" editable="false"/>
 	</mx:FormItem>
 	<mx:FormItem label="Calle y Número:">
-		<components:TextInput id="txtStreetNumber" width="150"/>
+		<components:TextInput id="txtStreetNumber" width="300"/>
 	</mx:FormItem>
 	<mx:FormItem label="Colonia:">
-		<components:TextInput id="txtNeighborhood" width="120"/>
+		<components:TextInput id="txtNeighborhood" width="220"/>
 	</mx:FormItem>
 	<mx:FormItem label="Código Postal:">
-		<components:TextInput id="txtZipCode" textAlign="right" width="30"/>
+		<components:TextInput id="txtZipCode" textAlign="right" width="50"/>
 	</mx:FormItem>
 	<mx:FormItem label="Delegación o Municipio:">
-		<components:TextInput id="txtMunicipally" width="120"/>
+		<components:TextInput id="txtMunicipally" width="220"/>
 	</mx:FormItem>
 	<mx:FormItem label="Entidad Federativa:">
-		<components:TextInput id="txtState" width="100"/>
+		<components:TextInput id="txtState" width="200"/>
 	</mx:FormItem>
 </mx:Form>

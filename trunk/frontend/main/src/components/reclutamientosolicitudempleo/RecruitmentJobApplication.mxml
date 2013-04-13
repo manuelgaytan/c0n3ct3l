@@ -116,7 +116,7 @@
 			{
 			}
 			
-			protected function pagoOtraOperacionFinancieraService_faultHandler(event:FaultEvent):void
+			protected function reclutamientoSolicitudEmpleoService_faultHandler(event:FaultEvent):void
 			{
 				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
 			}
@@ -130,7 +130,7 @@
 				if( this.mode == Constants.REGISTER_MODE ){
 					var recruitmentJobApplication:ReclutamientoSolicitudEmpleo = this.getRecruitmentJobApplication();
 					Util.showProperties( recruitmentJobApplication );
-					this.responseSave.token = this.pagoOtraOperacionFinancieraService.save( recruitmentJobApplication );
+					this.responseSave.token = this.reclutamientoSolicitudEmpleoService.save( recruitmentJobApplication );
 				}
 				if( this.mode == Constants.UPDATE_MODE ){
 					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
@@ -143,7 +143,7 @@
 				}
 				var item:ReclutamientoSolicitudEmpleo = this.getRecruitmentJobApplication();
 				Util.showProperties( item );
-				this.responseUpdate.token = this.pagoOtraOperacionFinancieraService.update( item );
+				this.responseUpdate.token = this.reclutamientoSolicitudEmpleoService.update( item );
 			}
 			
 			private function validations():Boolean
@@ -216,7 +216,7 @@
 		[Event(name="creditNoteSelected", type="events.GenericEvent")]
 		[Event(name="perDiemCheckSelected", type="events.GenericEvent")]
 	</mx:Metadata>
-	<mx:Accordion width="100%" height="100%">
+	<mx:Accordion width="100%" height="100%" creationPolicy="all">
 		<reclutamientosolicitudempleo:MainData id="mainData"/>
 		<reclutamientosolicitudempleo:GeneralInformation id="generalInformation"/>
 		<reclutamientosolicitudempleo:FamilyFacts id="familyFacts"/>
@@ -225,7 +225,7 @@
 		<reclutamientosolicitudempleo:FactsAboutConectelApplicant id="factsAboutConectelApplicant"/>
 	</mx:Accordion>
 	<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
-	<mx:RemoteObject id="pagoOtraOperacionFinancieraService" destination="pagoOtraOperacionFinancieraService" fault="pagoOtraOperacionFinancieraService_faultHandler(event)"
+	<mx:RemoteObject id="reclutamientoSolicitudEmpleoService" destination="reclutamientoSolicitudEmpleoService" fault="reclutamientoSolicitudEmpleoService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
 	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>

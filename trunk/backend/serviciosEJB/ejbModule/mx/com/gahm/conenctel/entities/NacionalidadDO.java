@@ -34,7 +34,7 @@ public class NacionalidadDO implements Serializable{
 	private long id;
 
 	@Column(name="nacionalidad")
-	private String etiqueta;
+	private String nacionalidad;
 
 	public long getId() {
 		return this.id;
@@ -44,12 +44,12 @@ public class NacionalidadDO implements Serializable{
 		this.id = id;
 	}
 
-	public String getEtiqueta() {
-		return etiqueta;
+	public String getNacionalidad() {
+		return nacionalidad;
 	}
 
-	public void setEtiqueta(String etiqueta) {
-		this.etiqueta = etiqueta;
+	public void setNacionalidad(String etiqueta) {
+		this.nacionalidad = etiqueta;
 	}
 
 }

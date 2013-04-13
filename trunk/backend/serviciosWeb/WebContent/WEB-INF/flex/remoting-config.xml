@@ -337,4 +337,12 @@
 			<scope>session</scope>
 		</properties>
 	</destination>
+	
+	<destination id="reclutamientoSolicitudEmpleoService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/ReclutamientoSolicitudEmpleoService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
 </service>

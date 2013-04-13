@@ -34,12 +34,12 @@ public class CartaAntecedentesPenalesDO implements Serializable{
 	private long id;
 
 	@Column(name = "tiene_carta")
-	private String etiqueta;
+	private String tieneCarta;
 
 	public CartaAntecedentesPenalesDO(long id, String etiqueta) {
 		super();
 		this.id = id;
-		this.etiqueta = etiqueta;
+		this.tieneCarta = etiqueta;
 	}
 
 	public CartaAntecedentesPenalesDO() {
@@ -55,12 +55,12 @@ public class CartaAntecedentesPenalesDO implements Serializable{
 		this.id = id;
 	}
 
-	public String getEtiqueta() {
-		return etiqueta;
+	public String getTieneCarta() {
+		return tieneCarta;
 	}
 
-	public void setEtiqueta(String etiqueta) {
-		this.etiqueta = etiqueta;
+	public void setTieneCarta(String etiqueta) {
+		this.tieneCarta = etiqueta;
 	}
 
 }

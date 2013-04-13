@@ -33,8 +33,8 @@ public class SexoDO implements Serializable{
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
 
-	@Column(name="estado")
-	private String etiqueta;
+	@Column(name="sexo")
+	private String sexo;
 	
 	
 
@@ -48,7 +48,7 @@ public class SexoDO implements Serializable{
 	public SexoDO(long id, String etiqueta) {
 		super();
 		this.id = id;
-		this.etiqueta = etiqueta;
+		this.sexo = etiqueta;
 	}
 
 
@@ -61,12 +61,12 @@ public class SexoDO implements Serializable{
 		this.id = id;
 	}
 
-	public String getEtiqueta() {
-		return etiqueta;
+	public String getSexo() {
+		return sexo;
 	}
 
-	public void setEtiqueta(String etiqueta) {
-		this.etiqueta = etiqueta;
+	public void setSexo(String etiqueta) {
+		this.sexo = etiqueta;
 	}
 
 	

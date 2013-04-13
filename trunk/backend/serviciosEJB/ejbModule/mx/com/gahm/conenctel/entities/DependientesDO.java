@@ -33,8 +33,8 @@ public class DependientesDO implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 
-	@Column(name = "relacion")
-	private String etiqueta;
+	@Column(name = "dependientes")
+	private String dependientes;
 
 	public DependientesDO() {
 		super();
@@ -44,7 +44,7 @@ public class DependientesDO implements Serializable {
 	public DependientesDO(long id, String etiqueta) {
 		super();
 		this.id = id;
-		this.etiqueta = etiqueta;
+		this.dependientes = etiqueta;
 	}
 
 	/**
@@ -64,15 +64,15 @@ public class DependientesDO implements Serializable {
 	/**
 	 * @return the etiqueta
 	 */
-	public String getEtiqueta() {
-		return etiqueta;
+	public String getDependientes() {
+		return dependientes;
 	}
 
 	/**
 	 * @param etiqueta the etiqueta to set
 	 */
-	public void setEtiqueta(String etiqueta) {
-		this.etiqueta = etiqueta;
+	public void setDependientes(String etiqueta) {
+		this.dependientes = etiqueta;
 	}
 
 }

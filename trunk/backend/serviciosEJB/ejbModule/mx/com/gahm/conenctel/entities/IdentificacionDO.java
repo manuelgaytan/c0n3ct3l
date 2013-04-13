@@ -34,7 +34,7 @@ public class IdentificacionDO implements Serializable{
 	private long id;
 
 	@Column(name="identificacion")
-	private String etiqueta;
+	private String identificacion;
 
 	public long getId() {
 		return this.id;
@@ -44,12 +44,12 @@ public class IdentificacionDO implements Serializable{
 		this.id = id;
 	}
 
-	public String getEtiqueta() {
-		return etiqueta;
+	public String getIdentificacion() {
+		return identificacion;
 	}
 
-	public void setEtiqueta(String etiqueta) {
-		this.etiqueta = etiqueta;
+	public void setIdentificacion(String etiqueta) {
+		this.identificacion = etiqueta;
 	}
 
 	

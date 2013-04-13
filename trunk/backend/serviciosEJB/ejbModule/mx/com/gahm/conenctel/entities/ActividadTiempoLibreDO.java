@@ -26,8 +26,8 @@ public class ActividadTiempoLibreDO implements Serializable{
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
 
-	@Column(name="categoria")
-	private String etiqueta;
+	@Column(name="actividad")
+	private String actividad;
 
 	public ActividadTiempoLibreDO() {
 		super();
@@ -37,7 +37,7 @@ public class ActividadTiempoLibreDO implements Serializable{
 	public ActividadTiempoLibreDO(long id, String etiqueta) {
 		super();
 		this.id = id;
-		this.etiqueta = etiqueta;
+		this.actividad = etiqueta;
 	}
 
 	public long getId() {
@@ -48,12 +48,12 @@ public class ActividadTiempoLibreDO implements Serializable{
 		this.id = id;
 	}
 
-	public String getEtiqueta() {
-		return etiqueta;
+	public String getActividad() {
+		return actividad;
 	}
 
-	public void setEtiqueta(String etiqueta) {
-		this.etiqueta = etiqueta;
+	public void setActividad(String etiqueta) {
+		this.actividad = etiqueta;
 	}
 
 }	

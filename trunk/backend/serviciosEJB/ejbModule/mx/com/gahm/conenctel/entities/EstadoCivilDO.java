@@ -33,12 +33,12 @@ public class EstadoCivilDO implements Serializable {
 	private long id;
 
 	@Column(name = "estado")
-	private String etiqueta;
+	private String estado;
 
 	public EstadoCivilDO(long id, String etiqueta) {
 		super();
 		this.id = id;
-		this.etiqueta = etiqueta;
+		this.estado = etiqueta;
 	}
 
 	public EstadoCivilDO() {
@@ -54,12 +54,12 @@ public class EstadoCivilDO implements Serializable {
 		this.id = id;
 	}
 
-	public String getEtiqueta() {
-		return etiqueta;
+	public String getEstado() {
+		return estado;
 	}
 
-	public void setEtiqueta(String etiqueta) {
-		this.etiqueta = etiqueta;
+	public void setEstado(String etiqueta) {
+		this.estado = etiqueta;
 	}
 
 }

@@ -55,9 +55,9 @@ public class MinutaDO implements Serializable{
 	@OneToMany(mappedBy="minuta", fetch = FetchType.EAGER)
 	private List<ParticipanteMinutaDO> ParticipanteMinuta;
 	
-	/*@OneToMany(mappedBy="minuta", fetch = FetchType.EAGER)
-	private List<Acuerdo> ParticipanteMinuta;
-*/
+	@OneToMany(mappedBy="minuta", fetch = FetchType.EAGER)
+	private List<AcuerdoMinutaDO> acuerdoMinuta;
+
 	public MinutaDO() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -125,6 +125,22 @@ public class MinutaDO implements Serializable{
 	 */
 	public void setAsunto(String asunto) {
 		this.asunto = asunto;
+	}
+
+	public List<ParticipanteMinutaDO> getParticipanteMinuta() {
+		return ParticipanteMinuta;
+	}
+
+	public void setParticipanteMinuta(List<ParticipanteMinutaDO> participanteMinuta) {
+		ParticipanteMinuta = participanteMinuta;
+	}
+
+	public List<AcuerdoMinutaDO> getAcuerdoMinuta() {
+		return acuerdoMinuta;
+	}
+
+	public void setAcuerdoMinuta(List<AcuerdoMinutaDO> acuerdoMinuta) {
+		this.acuerdoMinuta = acuerdoMinuta;
 	}
 	
 	

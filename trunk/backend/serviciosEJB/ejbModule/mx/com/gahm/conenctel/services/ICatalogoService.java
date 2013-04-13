@@ -68,10 +68,12 @@ import mx.com.gahm.conenctel.entities.SuspensionDO;
 import mx.com.gahm.conenctel.entities.TipoAccionDO;
 import mx.com.gahm.conenctel.entities.TipoAlmacenDO;
 import mx.com.gahm.conenctel.entities.TipoCandidatoDO;
+import mx.com.gahm.conenctel.entities.TipoCapacitacionDO;
 import mx.com.gahm.conenctel.entities.TipoColaboradorDO;
 import mx.com.gahm.conenctel.entities.TipoContratacionDO;
 import mx.com.gahm.conenctel.entities.TipoContratoDO;
 import mx.com.gahm.conenctel.entities.TipoEmpleadoDO;
+import mx.com.gahm.conenctel.entities.TipoFormacionDO;
 import mx.com.gahm.conenctel.entities.TipoIncapacidadDO;
 import mx.com.gahm.conenctel.entities.TipoLicenciaDO;
 import mx.com.gahm.conenctel.entities.TipoMantenimientoDO;
@@ -233,5 +235,7 @@ public interface ICatalogoService extends Serializable {
 	public List<ResultadoImplementacionDO> getResultadoImplementacion() throws ConectelException;
 	public List<TipoAccionDO> getTipoAccion() throws ConectelException; 	
 	public List<FuenteNoConformidadDO> getFuenteNoConformidad() throws ConectelException;
-	public List<EstadoAccionPreventivaCorrectivaDO> getEstadoAccionPreventivaCorrectiva() throws ConectelException; 	
+	public List<EstadoAccionPreventivaCorrectivaDO> getEstadoAccionPreventivaCorrectiva() throws ConectelException; 
+	public List<TipoFormacionDO> getTipoFormacion() throws ConectelException;
+	public List<TipoCapacitacionDO> getTipoCapacitacion() throws ConectelException;
 }

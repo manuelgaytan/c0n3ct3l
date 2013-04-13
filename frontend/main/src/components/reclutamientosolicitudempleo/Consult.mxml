@@ -127,7 +127,6 @@
 								   width="100"/>
 				<mx:DataGridColumn id="dtgDate" headerText="{'Apellido\nPaterno'}"
 								   dataField="datosGeneralesSolicitante.apellidoPaterno"
-								   labelFunction="{Util.labelFunctionDate}"
 								   textAlign="center"
 								   width="100"
 								   />

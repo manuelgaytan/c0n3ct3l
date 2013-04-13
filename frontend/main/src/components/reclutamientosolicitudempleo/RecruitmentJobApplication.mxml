@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*" xmlns:notascreditoclientes="components.notascreditoclientes.*" xmlns:informacionfacturas="components.informacionfacturas.*" xmlns:notascreditoproveedores="components.notascreditoproveedores.*" xmlns:facturacionproveedores="components.facturacionproveedores.*" xmlns:comprobacionesviaticos="components.comprobacionesviaticos.*" xmlns:otrasoperacionesfinancieras="components.otrasoperacionesfinancieras.*" xmlns:reclutamientosolicitudempleo="components.reclutamientosolicitudempleo.*"
-		 initialize="initializeHandler(event)">
+		 initialize="initializeHandler(event)"
+		 horizontalAlign="right">
 	<mx:Script>
 		<![CDATA[
 			import components.clientes.Client;
@@ -223,6 +224,7 @@
 		<reclutamientosolicitudempleo:LastJobApplicantData id="lastJobApplicantData"/>
 		<reclutamientosolicitudempleo:FactsAboutConectelApplicant id="factsAboutConectelApplicant"/>
 	</mx:Accordion>
+	<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
 	<mx:RemoteObject id="pagoOtraOperacionFinancieraService" destination="pagoOtraOperacionFinancieraService" fault="pagoOtraOperacionFinancieraService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>

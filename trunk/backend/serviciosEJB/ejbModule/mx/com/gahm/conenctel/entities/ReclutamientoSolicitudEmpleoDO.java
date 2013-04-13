@@ -13,6 +13,8 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -22,6 +24,9 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "ReclutamientoSolicitudEmpleo")
+@NamedQueries({
+	@NamedQuery(name = "ReclutamientoSolicitudEmpleoDO.findAll", 
+			query = "select oc from ReclutamientoSolicitudEmpleoDO oc") })
 public class ReclutamientoSolicitudEmpleoDO implements Serializable {
 
 	/**

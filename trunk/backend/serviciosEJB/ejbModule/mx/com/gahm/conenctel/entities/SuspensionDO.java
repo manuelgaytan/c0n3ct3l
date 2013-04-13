@@ -36,7 +36,7 @@ public class SuspensionDO implements Serializable{
 	private long id;
 	
 	@Column(name="suspension")
-	private String etiqueta;
+	private String suspension;
 
 	public SuspensionDO() {
 		super();
@@ -46,7 +46,7 @@ public class SuspensionDO implements Serializable{
 	public SuspensionDO(long id, String etiqueta) {
 		super();
 		this.id = id;
-		this.etiqueta = etiqueta;
+		this.suspension = etiqueta;
 	}
 
 	/**
@@ -66,15 +66,15 @@ public class SuspensionDO implements Serializable{
 	/**
 	 * @return the etiqueta
 	 */
-	public String getEtiqueta() {
-		return etiqueta;
+	public String getSuspension() {
+		return suspension;
 	}
 
 	/**
 	 * @param etiqueta the etiqueta to set
 	 */
-	public void setEtiqueta(String etiqueta) {
-		this.etiqueta = etiqueta;
+	public void setSuspension(String etiqueta) {
+		this.suspension = etiqueta;
 	}
 	
 	

@@ -35,7 +35,7 @@ public class ClaseIncidenciaDO implements Serializable{
 	private long id;
 
 	@Column(name="incidencia")
-	private String etiqueta;
+	private String incidencia;
 	
 	public ClaseIncidenciaDO() {
 		super();
@@ -45,7 +45,7 @@ public class ClaseIncidenciaDO implements Serializable{
 	public ClaseIncidenciaDO(long id, String etiqueta) {
 		super();
 		this.id = id;
-		this.etiqueta = etiqueta;
+		this.incidencia = etiqueta;
 	}
 
 	public long getId() {
@@ -56,12 +56,12 @@ public class ClaseIncidenciaDO implements Serializable{
 		this.id = id;
 	}
 
-	public String getEtiqueta() {
-		return etiqueta;
+	public String getIncidencia() {
+		return incidencia;
 	}
 
-	public void setEtiqueta(String etiqueta) {
-		this.etiqueta = etiqueta;
+	public void setIncidencia(String etiqueta) {
+		this.incidencia = etiqueta;
 	}
 
 	

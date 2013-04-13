@@ -30,7 +30,7 @@ public class MotivoTerminoContratoDO implements Serializable{
 	private long id;
 	
 	@Column(name="motivo")
-	private String etiqueta;
+	private String motivo;
 
 	public MotivoTerminoContratoDO() {
 		super();
@@ -40,7 +40,7 @@ public class MotivoTerminoContratoDO implements Serializable{
 	public MotivoTerminoContratoDO(long id, String etiqueta) {
 		super();
 		this.id = id;
-		this.etiqueta = etiqueta;
+		this.motivo = etiqueta;
 	}
 
 	/**
@@ -60,15 +60,15 @@ public class MotivoTerminoContratoDO implements Serializable{
 	/**
 	 * @return the etiqueta
 	 */
-	public String getEtiqueta() {
-		return etiqueta;
+	public String getMotivo() {
+		return motivo;
 	}
 
 	/**
 	 * @param etiqueta the etiqueta to set
 	 */
-	public void setEtiqueta(String etiqueta) {
-		this.etiqueta = etiqueta;
+	public void setMotivo(String etiqueta) {
+		this.motivo = etiqueta;
 	}
 	
 	

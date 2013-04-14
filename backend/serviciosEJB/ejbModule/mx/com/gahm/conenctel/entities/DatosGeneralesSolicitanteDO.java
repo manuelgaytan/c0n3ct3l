@@ -8,6 +8,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -77,8 +78,8 @@ public class DatosGeneralesSolicitanteDO implements Serializable{
 	@JoinColumn(name = "fk_documentacion_extranjeros", nullable = false)
 	private DocumentacionExtranjerosDO documentacionExtranjeros;
 	
-	@ManyToOne
-	@JoinColumn(name = "fk_direccion_solicitante", nullable = false)
+	@ManyToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name = "fk_direccion_solicitante", nullable = false )
 	private DireccionSolicitanteDO direccionSolicitante;
 	
 	@Column(name = "telefono", nullable = false)
@@ -100,7 +101,7 @@ public class DatosGeneralesSolicitanteDO implements Serializable{
 	private String curp;
 	
 	
-	@ManyToOne
+	@OneToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name = "fk_licencia", nullable = false)
 	private LicenciaDO licencia;
 	

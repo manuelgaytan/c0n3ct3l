@@ -59,5 +59,18 @@ public class ContratacionService implements IContratacionService{
 		ContratacionDO cotizacion = entityManager.find(ContratacionDO.class,id);
 		return cotizacion;
 	}
-
+	
+	@Override
+	public List<ContratacionDO> getContratacionByIdColaborador(long idColaborador ){
+	
+		List<ContratacionDO> datos= null;
+		TypedQuery<ContratacionDO>  query =null;
+		query = entityManager.createNamedQuery("ContratacionDO.getContratacionByIdColaborador",ContratacionDO.class);
+		query.setParameter("idColaborador", idColaborador);
+		datos = query.getResultList();
+		
+		return datos;
+	}  
+	
+	
 }

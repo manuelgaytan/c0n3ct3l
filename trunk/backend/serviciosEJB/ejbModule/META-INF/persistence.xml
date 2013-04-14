@@ -203,6 +203,7 @@
 		<class>mx.com.gahm.conenctel.entities.EstadoSistemaGestionDO</class>
 		<class>mx.com.gahm.conenctel.entities.EquipoOficinaDominaDO</class>
 		<class>mx.com.gahm.conenctel.entities.ExamenPsicometricoDO</class>
+		<class>mx.com.gahm.conenctel.entities.DocumentosContratacionDO</class>
 		
 		<properties>
 			<property name="eclipselink.logging.level" value="FINE"/> 

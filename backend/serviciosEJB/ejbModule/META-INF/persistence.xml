@@ -197,6 +197,10 @@
 		<class>mx.com.gahm.conenctel.entities.AcuerdoMinutaDO</class>
 		<class>mx.com.gahm.conenctel.entities.TipoFormacionDO</class>
 		<class>mx.com.gahm.conenctel.entities.TipoCapacitacionDO</class>
+		<class>mx.com.gahm.conenctel.entities.DatosGeneralesProyectoDO</class>
+		<class>mx.com.gahm.conenctel.entities.TipoAuditoriaDO</class>
+		<class>mx.com.gahm.conenctel.entities.FormaAuditoriaDO</class>
+		<class>mx.com.gahm.conenctel.entities.EstadoSistemaGestionDO</class>
 		
 		<properties>
 			<property name="eclipselink.logging.level" value="FINE"/> 

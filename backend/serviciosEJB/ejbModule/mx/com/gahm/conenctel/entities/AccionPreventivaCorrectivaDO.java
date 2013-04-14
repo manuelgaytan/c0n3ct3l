@@ -55,8 +55,8 @@ public class AccionPreventivaCorrectivaDO implements Serializable{
 	@JoinColumn(name = "fk_tipo_accion", nullable = false)
 	private TipoAccionDO tipoAccion;
 	
-	//@ManyToOne
-	//@JoinColumn(name = "fk_fuente_no_conformidad", nullable = false)
+	@ManyToOne
+	@JoinColumn(name = "fk_fuente_no_conformidad", nullable = false)
 	private FuenteNoConformidadDO fuenteNoConformidad;
 	
 	@Column(name = "participantes_analisis", nullable = false)
@@ -75,7 +75,7 @@ public class AccionPreventivaCorrectivaDO implements Serializable{
 	private Boolean accionTomadaEficaz;
 	
 	@ManyToOne
-	@JoinColumn(name = "fk_fuente_no_conformidad", nullable = false)
+	@JoinColumn(name = "fk_estado_accion_preventiva_correctiva", nullable = false)
 	private EstadoAccionPreventivaCorrectivaDO estadoAccionPreventivaCorrectiva;
 
 	public AccionPreventivaCorrectivaDO() {

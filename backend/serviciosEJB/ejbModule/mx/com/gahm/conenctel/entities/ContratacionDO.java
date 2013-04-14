@@ -29,7 +29,8 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name = "Contratacion")
 @NamedQueries({
-	@NamedQuery(name = "ContratacionDO.findAll", query = "select rc from ContratacionDO rc")
+	@NamedQuery(name = "ContratacionDO.findAll", query = "select rc from ContratacionDO rc"),
+	@NamedQuery(name = "ContratacionDO.getContratacionByIdColaborador", query = "select rc from ContratacionDO rc where rc.colaborador=:idColaborador")
 	})
 public class ContratacionDO implements Serializable{
 

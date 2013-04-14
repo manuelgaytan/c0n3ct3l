@@ -205,6 +205,9 @@
 		<class>mx.com.gahm.conenctel.entities.ExamenPsicometricoDO</class>
 		<class>mx.com.gahm.conenctel.entities.DocumentosContratacionDO</class>
 		<class>mx.com.gahm.conenctel.entities.PerfilEscalaDO</class>
+		<class>mx.com.gahm.conenctel.entities.PagoProveedorDO</class>
+		<class>mx.com.gahm.conenctel.entities.PagoMovimientoPagoContableServicioDO</class>
+		<class>mx.com.gahm.conenctel.entities.ComentarioPagoMovimientoPagoContableServicioDO</class>
 		<properties>
 			<property name="eclipselink.logging.level" value="FINE"/> 
 			<property name="eclipselink.logging.parameters" value="true"/>

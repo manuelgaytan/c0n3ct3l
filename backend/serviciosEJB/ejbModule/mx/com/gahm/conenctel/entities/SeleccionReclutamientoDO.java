@@ -44,6 +44,14 @@ public class SeleccionReclutamientoDO implements Serializable{
 	@JoinColumn(name = "fk_reclutamiento_solicitud_empleo", nullable = false)
 	private ReclutamientoSolicitudEmpleoDO reclutamientoSolicitudEmpleo;
 	
+	public ExamenPsicometricoDO getExamenPsicometrico() {
+		return ExamenPsicometrico;
+	}
+
+	public void setExamenPsicometrico(ExamenPsicometricoDO examenPsicometrico) {
+		ExamenPsicometrico = examenPsicometrico;
+	}
+
 	@ManyToOne
 	@JoinColumn(name = "fk_tipo_candidato", nullable = false)
 	private TipoCandidatoDO tipoCandidato;

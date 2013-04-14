@@ -8,6 +8,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -83,6 +84,15 @@ public class ContratacionDO implements Serializable{
 	@Column(name = "motivo_suspension", nullable = false)
 	private String motivSuspension;
 	
+	public DocumentosContratacionDO getDocumentosContratacion() {
+		return documentosContratacion;
+	}
+
+	public void setDocumentosContratacion(
+			DocumentosContratacionDO documentosContratacion) {
+		this.documentosContratacion = documentosContratacion;
+	}
+
 	@Temporal(TemporalType.DATE)
 	@Column(name = "fecha_termino_contrato", nullable = false, length = 10)
 	private Date fechaTerminoContrato;
@@ -96,6 +106,10 @@ public class ContratacionDO implements Serializable{
 	
 	@Column(name="indemnizacion")
 	private Boolean indemnizacion;
+	
+	@OneToOne(mappedBy="contratacion",cascade=CascadeType.ALL)
+	private DocumentosContratacionDO documentosContratacion;
+	
 
 	public ContratacionDO() {
 		super();

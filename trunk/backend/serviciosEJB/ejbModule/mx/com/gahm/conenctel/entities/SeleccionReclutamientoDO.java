@@ -7,6 +7,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -54,6 +55,9 @@ public class SeleccionReclutamientoDO implements Serializable{
 	@JoinColumn(name = "fk_fase_contratacion", nullable = false)
 	private FaseContratacionDO faseContratacion;
 
+	@OneToOne(mappedBy="reclutamientoSolicitudEmpleo",cascade=CascadeType.ALL)
+	private ExamenPsicometricoDO ExamenPsicometrico;
+	
 	public SeleccionReclutamientoDO() {
 		super();
 		// TODO Auto-generated constructor stub

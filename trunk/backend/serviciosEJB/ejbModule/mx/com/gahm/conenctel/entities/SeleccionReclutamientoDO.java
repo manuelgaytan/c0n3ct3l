@@ -55,7 +55,7 @@ public class SeleccionReclutamientoDO implements Serializable{
 	@JoinColumn(name = "fk_fase_contratacion", nullable = false)
 	private FaseContratacionDO faseContratacion;
 
-	@OneToOne(mappedBy="reclutamientoSolicitudEmpleo",cascade=CascadeType.ALL)
+	@OneToOne(mappedBy="seleccionReclutamiento",cascade=CascadeType.ALL)
 	private ExamenPsicometricoDO ExamenPsicometrico;
 	
 	public SeleccionReclutamientoDO() {

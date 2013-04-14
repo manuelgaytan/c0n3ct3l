@@ -201,6 +201,7 @@
 		<class>mx.com.gahm.conenctel.entities.TipoAuditoriaDO</class>
 		<class>mx.com.gahm.conenctel.entities.FormaAuditoriaDO</class>
 		<class>mx.com.gahm.conenctel.entities.EstadoSistemaGestionDO</class>
+		<class>mx.com.gahm.conenctel.entities.EquipoOficinaDominaDO</class>
 		
 		<properties>
 			<property name="eclipselink.logging.level" value="FINE"/> 

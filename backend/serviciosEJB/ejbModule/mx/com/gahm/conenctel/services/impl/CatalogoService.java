@@ -35,6 +35,7 @@ import mx.com.gahm.conenctel.entities.EstadoFinalValidacionDO;
 import mx.com.gahm.conenctel.entities.EstadoInvestigacionCalidadDO;
 import mx.com.gahm.conenctel.entities.EstadoOrdenCompraDO;
 import mx.com.gahm.conenctel.entities.EstadoSaludDO;
+import mx.com.gahm.conenctel.entities.EstadoSistemaGestionDO;
 import mx.com.gahm.conenctel.entities.EstadoSolicitudAlmacenDO;
 import mx.com.gahm.conenctel.entities.EstadoSolicitudServicioMaquiladoDO;
 import mx.com.gahm.conenctel.entities.EstadoTesoreriaDO;
@@ -47,6 +48,7 @@ import mx.com.gahm.conenctel.entities.EstatusCDO;
 import mx.com.gahm.conenctel.entities.EstatusRequisicionCompraDO;
 import mx.com.gahm.conenctel.entities.FaseContratacionDO;
 import mx.com.gahm.conenctel.entities.FaseSeleccionDO;
+import mx.com.gahm.conenctel.entities.FormaAuditoriaDO;
 import mx.com.gahm.conenctel.entities.FormaPagoDO;
 import mx.com.gahm.conenctel.entities.FormaPagoPrenominaDO;
 import mx.com.gahm.conenctel.entities.FuenteNoConformidadDO;
@@ -72,6 +74,7 @@ import mx.com.gahm.conenctel.entities.SexoDO;
 import mx.com.gahm.conenctel.entities.SuspensionDO;
 import mx.com.gahm.conenctel.entities.TipoAccionDO;
 import mx.com.gahm.conenctel.entities.TipoAlmacenDO;
+import mx.com.gahm.conenctel.entities.TipoAuditoriaDO;
 import mx.com.gahm.conenctel.entities.TipoCandidatoDO;
 import mx.com.gahm.conenctel.entities.TipoCapacitacionDO;
 import mx.com.gahm.conenctel.entities.TipoColaboradorDO;
@@ -1350,6 +1353,52 @@ public class CatalogoService implements ICatalogoService {
 				"TipoCapacitacionDO.findAll", TipoCapacitacionDO.class);
 		
 		List<TipoCapacitacionDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
+	
+	
+	
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<TipoAuditoriaDO> getTipoAuditoria() throws ConectelException {
+		TypedQuery<TipoAuditoriaDO> query = entityManager.createNamedQuery(
+				"TipoAuditoriaDO.findAll", TipoAuditoriaDO.class);
+		
+		List<TipoAuditoriaDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
+	
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<FormaAuditoriaDO> getFormaAuditoria() throws ConectelException {
+		TypedQuery<FormaAuditoriaDO> query = entityManager.createNamedQuery(
+				"FormaAuditoriaDO.findAll", FormaAuditoriaDO.class);
+		
+		List<FormaAuditoriaDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<EstadoSistemaGestionDO> getEstadoSistemaGestion() throws ConectelException {
+		TypedQuery<EstadoSistemaGestionDO> query = entityManager.createNamedQuery(
+				"EstadoSistemaGestionDO.findAll", EstadoSistemaGestionDO.class);
+		
+		List<EstadoSistemaGestionDO> list;
 		try {
 			list = query.getResultList();
 		} catch (NoResultException e) {

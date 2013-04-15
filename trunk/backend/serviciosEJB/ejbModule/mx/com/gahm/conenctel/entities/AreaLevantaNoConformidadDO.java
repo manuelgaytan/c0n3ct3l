@@ -35,7 +35,7 @@ public class AreaLevantaNoConformidadDO implements Serializable {
 	private long id;
 
 	@Column(name="area")
-	private String etiqueta;
+	private String area;
 
 	public AreaLevantaNoConformidadDO() {
 		super();
@@ -45,7 +45,7 @@ public class AreaLevantaNoConformidadDO implements Serializable {
 	public AreaLevantaNoConformidadDO(long id, String etiqueta) {
 		super();
 		this.id = id;
-		this.etiqueta = etiqueta;
+		this.area = etiqueta;
 	}
 
 	public long getId() {
@@ -56,12 +56,12 @@ public class AreaLevantaNoConformidadDO implements Serializable {
 		this.id = id;
 	}
 
-	public String getEtiqueta() {
-		return etiqueta;
+	public String getArea() {
+		return area;
 	}
 
-	public void setEtiqueta(String etiqueta) {
-		this.etiqueta = etiqueta;
+	public void setArea(String etiqueta) {
+		this.area = etiqueta;
 	}
 	
 	

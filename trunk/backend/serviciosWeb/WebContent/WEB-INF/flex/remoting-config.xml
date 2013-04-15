@@ -425,31 +425,32 @@
 			<scope>session</scope>
 		</properties>
 	</destination>
+	
+	<destination id="concentradoCapacitacionService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/ConcentradoCapacitacionService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+	
+	<destination id="sistemaGestionService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/SistemaGestionService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+
+	<destination id="minutaService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/MinutaService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+
 	<!-- 
-	<destination id="">
-		<properties>
-			<factory>ejb3</factory>
-			<source>ejb/</source>
-			<scope>session</scope>
-		</properties>
-	</destination>
-	
-	<destination id="">
-		<properties>
-			<factory>ejb3</factory>
-			<source>ejb/</source>
-			<scope>session</scope>
-		</properties>
-	</destination>
-	
-	<destination id="">
-		<properties>
-			<factory>ejb3</factory>
-			<source>ejb/</source>
-			<scope>session</scope>
-		</properties>
-	</destination>
-	
 	<destination id="">
 		<properties>
 			<factory>ejb3</factory>

@@ -7,6 +7,7 @@ import javax.ejb.Remote;
 
 import mx.com.gahm.conenctel.entities.ActividadTiempoLibreDO;
 import mx.com.gahm.conenctel.entities.AplicaDO;
+import mx.com.gahm.conenctel.entities.AreaLevantaNoConformidadDO;
 import mx.com.gahm.conenctel.entities.AreaSolicitanteDO;
 import mx.com.gahm.conenctel.entities.BancoConectelDO;
 import mx.com.gahm.conenctel.entities.CartaAntecedentesPenalesDO;
@@ -246,4 +247,5 @@ public interface ICatalogoService extends Serializable {
 	public List<FormaAuditoriaDO> getFormaAuditoria() throws ConectelException;
 	public List<EstadoSistemaGestionDO> getEstadoSistemaGestion() throws ConectelException;
 	public List<EstadoColaboradorDO> getEstadoColaborador() throws ConectelException;
+	public List<AreaLevantaNoConformidadDO> getAreaLevantaNoConformidad() throws ConectelException;
 }

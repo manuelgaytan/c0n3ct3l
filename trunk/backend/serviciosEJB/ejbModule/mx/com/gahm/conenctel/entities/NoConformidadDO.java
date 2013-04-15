@@ -69,5 +69,78 @@ public class NoConformidadDO implements Serializable{
 	private String observaciones;
 	@Column(name = "requiere_accion_correctiva", nullable = false)
 	private Boolean requiereAccionCorrectiva;
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	public AreaLevantaNoConformidadDO getAreaLevantaNoConformidad() {
+		return areaLevantaNoConformidad;
+	}
+	public void setAreaLevantaNoConformidad(
+			AreaLevantaNoConformidadDO areaLevantaNoConformidad) {
+		this.areaLevantaNoConformidad = areaLevantaNoConformidad;
+	}
+	public UsuarioDO getUsuario() {
+		return usuario;
+	}
+	public void setUsuario(UsuarioDO usuario) {
+		this.usuario = usuario;
+	}
+	public Date getFechaSuceso() {
+		return fechaSuceso;
+	}
+	public void setFechaSuceso(Date fechaSuceso) {
+		this.fechaSuceso = fechaSuceso;
+	}
+	public String getAreaNombreSeLevanta() {
+		return areaNombreSeLevanta;
+	}
+	public void setAreaNombreSeLevanta(String areaNombreSeLevanta) {
+		this.areaNombreSeLevanta = areaNombreSeLevanta;
+	}
+	public String getSucesoEvento() {
+		return sucesoEvento;
+	}
+	public void setSucesoEvento(String sucesoEvento) {
+		this.sucesoEvento = sucesoEvento;
+	}
+	public String getDondeOcurrio() {
+		return dondeOcurrio;
+	}
+	public void setDondeOcurrio(String dondeOcurrio) {
+		this.dondeOcurrio = dondeOcurrio;
+	}
+	public String getCuantoAfecto() {
+		return cuantoAfecto;
+	}
+	public void setCuantoAfecto(String cuantoAfecto) {
+		this.cuantoAfecto = cuantoAfecto;
+	}
+	public String getCausas() {
+		return causas;
+	}
+	public void setCausas(String causas) {
+		this.causas = causas;
+	}
+	public String getCorreccion() {
+		return correccion;
+	}
+	public void setCorreccion(String correccion) {
+		this.correccion = correccion;
+	}
+	public String getObservaciones() {
+		return observaciones;
+	}
+	public void setObservaciones(String observaciones) {
+		this.observaciones = observaciones;
+	}
+	public Boolean getRequiereAccionCorrectiva() {
+		return requiereAccionCorrectiva;
+	}
+	public void setRequiereAccionCorrectiva(Boolean requiereAccionCorrectiva) {
+		this.requiereAccionCorrectiva = requiereAccionCorrectiva;
+	}
 
 }

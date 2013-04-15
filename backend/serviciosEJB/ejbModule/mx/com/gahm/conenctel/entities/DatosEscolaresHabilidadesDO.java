@@ -61,10 +61,10 @@ public class DatosEscolaresHabilidadesDO implements Serializable{
 	
 	@Column(name = "porcentaje_idiomas", nullable = false)
 	private String porcentajeIdiomas;
-	
+	/*
 	@OneToOne(mappedBy="datosEscolaresHabilidades",cascade=CascadeType.ALL)  
 	private EquipoOficinaDominaDO equipoOficinaDomina;
-	
+	*/
 	@OneToOne(mappedBy="datosEscolaresHabilidades",cascade=CascadeType.ALL)
 	private PaqueteriaDO paqueteria;
 	

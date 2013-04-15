@@ -10,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
@@ -17,7 +19,9 @@ import javax.persistence.Table;
  *
  */
 @Entity
-@Table(name="compania")
+@NamedQueries({
+	@NamedQuery(name = "EstadoColaboradorDO.findAll", query = "select c from EstadoColaboradorDO c") })
+@Table(name="EstadoColaborador")
 public class EstadoColaboradorDO implements Serializable{
 
 	/**
@@ -30,7 +34,7 @@ public class EstadoColaboradorDO implements Serializable{
 	private Long id;
 
 	@Column(name="estado")
-	private String etiqueta;
+	private String estado;
 
 	public EstadoColaboradorDO() {
 		super();
@@ -40,7 +44,7 @@ public class EstadoColaboradorDO implements Serializable{
 	public EstadoColaboradorDO(Long id, String etiqueta) {
 		super();
 		this.id = id;
-		this.etiqueta = etiqueta;
+		this.estado = etiqueta;
 	}
 
 	/**
@@ -60,15 +64,15 @@ public class EstadoColaboradorDO implements Serializable{
 	/**
 	 * @return the etiqueta
 	 */
-	public String getEtiqueta() {
-		return etiqueta;
+	public String getEstado() {
+		return estado;
 	}
 
 	/**
 	 * @param etiqueta the etiqueta to set
 	 */
-	public void setEtiqueta(String etiqueta) {
-		this.etiqueta = etiqueta;
+	public void setEstado(String etiqueta) {
+		this.estado = etiqueta;
 	}
 	
 	

@@ -48,7 +48,7 @@ public class DocumentosContratacionDO implements Serializable{
 	@Column(name = "acta_nacimiento", nullable = false)
 	private Boolean actaNacimiento;
 	
-	@Column(name = "comprobanteDomicilio", nullable = false)
+	@Column(name = "comprobante_domicilio", nullable = false)
 	private Boolean comprobante_domicilio;
 	
 	@Column(name = "curp", nullable = false)

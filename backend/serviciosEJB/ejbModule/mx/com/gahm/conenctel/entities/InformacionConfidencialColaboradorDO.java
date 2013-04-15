@@ -42,7 +42,7 @@ public class InformacionConfidencialColaboradorDO implements Serializable{
 	private Integer id;
 	
 	@OneToOne
-	@JoinColumn(name = "fk_reclutamiento_solicitud_empleo", nullable = false)
+	@JoinColumn(name = "fk_contratacion", nullable = false)
 	private ContratacionDO contratacion;
 	
 	@Column(name = "foto", nullable = false)

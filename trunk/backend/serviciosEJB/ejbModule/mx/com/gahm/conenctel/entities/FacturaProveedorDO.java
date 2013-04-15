@@ -23,10 +23,12 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name = "FacturaProveedor")
 @NamedQueries({
-	@NamedQuery(name = "FacturaProveedorDO.findAll", query = "select rc from FacturaProveedorDO rc")
+	@NamedQuery(name = "FacturaProveedorDO.findAll", query = "select rc from FacturaProveedorDO rc"),
+	@NamedQuery(name = "FacturaProveedorDO.getFacturacionByIdMaquilador", query = "select rc from FacturaProveedorDO rc where rc.proveedorMaquilador.id=:idMaquilador"),
+	@NamedQuery(name = "FacturaProveedorDO.getFacturacionByIdCalificado", query = "select rc from FacturaProveedorDO rc where rc.proveedorCalificado.id=:idMaquilador")
 	})
 public class FacturaProveedorDO implements Serializable{
-
+	
 	/**
 	 * 
 	 */

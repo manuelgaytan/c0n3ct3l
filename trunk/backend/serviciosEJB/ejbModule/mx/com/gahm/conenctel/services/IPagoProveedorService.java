@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.ejb.Remote;
 
+import mx.com.gahm.conenctel.entities.FacturaProveedorDO;
 import mx.com.gahm.conenctel.entities.PagoProveedorDO;
 
 /**
@@ -21,4 +22,6 @@ public interface IPagoProveedorService{
 	PagoProveedorDO save( PagoProveedorDO item );
 	PagoProveedorDO update( PagoProveedorDO item );
 	PagoProveedorDO getItem( Integer id );	
+	public List<FacturaProveedorDO> getFacturasByIdCalificado(Integer idCalificado);
+	public List<FacturaProveedorDO> getFacturasByIdMaquilador(Integer idMaquilador);
 }

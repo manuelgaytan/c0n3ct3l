@@ -97,6 +97,7 @@
 				}
 				this.txtID.text = this._item.id.toString();
 				this.recruitmentConsult.datagrid.dataProvider = Util.asArrayCollection( this._item.contratacion );
+				this.recruitmentConsult.datagrid.selectedIndex = 0;
 				this.fltDlvPhoto.delivers = Util.asArrayCollection( this._item.foto );
 				this.txtSalary.text = this._item.sueldo.toString();
 				this.chkIMSS.selected = this._item.tieneImss;

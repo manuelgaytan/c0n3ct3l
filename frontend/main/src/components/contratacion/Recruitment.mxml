@@ -96,6 +96,7 @@
 				}
 				this.txtID.text = this._item.id.toString();
 				this.recruitmentJobApplication.datagrid.dataProvider = Util.asArrayCollection( this._item.reclutamientoSolicitudEmpleo );
+				this.recruitmentJobApplication.datagrid.selectedIndex = 0;
 				this.txtInitialSalary.text = this._item.sueldoInicial.toString();
 				this.recruitmentDocuments.recruitmentDocuments = this._item.documentosContratacion;
 				this.dtfDateIssueMedicalCertificate.selectedDate = this._item.fechaExpedicionCertificadoMedico;

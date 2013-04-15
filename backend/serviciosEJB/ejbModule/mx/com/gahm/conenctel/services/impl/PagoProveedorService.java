@@ -10,9 +10,8 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
-import mx.com.gahm.conenctel.entities.ComentarioPagoMovimientoPagoContableServicioDO;
 import mx.com.gahm.conenctel.entities.ComentarioPagoProveedorDO;
-import mx.com.gahm.conenctel.entities.PagoMovimientoPagoContableServicioDO;
+import mx.com.gahm.conenctel.entities.FacturaProveedorDO;
 import mx.com.gahm.conenctel.entities.PagoProveedorDO;
 import mx.com.gahm.conenctel.services.IPagoProveedorService;
 
@@ -95,4 +94,30 @@ public class PagoProveedorService implements IPagoProveedorService{
 		return cotizacion;
 	}
 
+	
+	public List<FacturaProveedorDO> getFacturasByIdCalificado(Integer idCalificado){
+	
+	List<FacturaProveedorDO> datos= null;
+	TypedQuery<FacturaProveedorDO>  query =null;
+	query = entityManager.createNamedQuery("FacturaProveedorDO.getFacturacionByICalificado",FacturaProveedorDO.class);
+	query.setParameter("idMaquilador", idCalificado);
+	datos = query.getResultList();
+	
+	return datos;
+	
+	}
+	
+	public List<FacturaProveedorDO> getFacturasByIdMaquilador(Integer idMaquilador){
+		
+		List<FacturaProveedorDO> datos= null;
+		TypedQuery<FacturaProveedorDO>  query =null;
+		query = entityManager.createNamedQuery("FacturaProveedorDO.getFacturacionByIdMaquilador",FacturaProveedorDO.class);
+		query.setParameter("idMaquilador", idMaquilador);
+		datos = query.getResultList();
+		
+		return datos;
+		
+		}
+	
+	
 }

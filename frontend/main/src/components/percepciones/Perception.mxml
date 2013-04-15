@@ -116,7 +116,7 @@
 			private function fillCombos():void
 			{
 				this.responseGetPercepcion.token = this.catalogoService.getPercepcion();
-				this.responseGetVariacion.token = this.catalogoService.getGetVariacion();
+				this.responseGetVariacion.token = this.catalogoService.getVariacion();
 			}
 			
 			protected function registroPercepcionService_faultHandler(event:FaultEvent):void

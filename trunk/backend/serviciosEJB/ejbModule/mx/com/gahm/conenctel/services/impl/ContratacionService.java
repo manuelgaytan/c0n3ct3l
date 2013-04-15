@@ -38,18 +38,21 @@ public class ContratacionService implements IContratacionService{
 		for (Integer id : idsItems) {
 			cotizacion =getItem(id);
 			entityManager.remove(cotizacion);
+			entityManager.remove(cotizacion.getColaborador());
 		}
 		
 	}
 
 	@Override
 	public ContratacionDO save(ContratacionDO item) {
+		entityManager.persist(item.getColaborador());
 		entityManager.persist(item);
 		return item;
 	}
 
 	@Override
 	public ContratacionDO update(ContratacionDO item) {
+		entityManager.merge(item.getColaborador());
 		entityManager.merge(item);
 		return item;
 	}

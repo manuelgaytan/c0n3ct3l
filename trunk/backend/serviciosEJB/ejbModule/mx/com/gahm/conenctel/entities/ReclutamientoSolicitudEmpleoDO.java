@@ -39,6 +39,9 @@ public class ReclutamientoSolicitudEmpleoDO implements Serializable {
 	@Column(name = "id", unique = true, nullable = false)
 	private Integer id;
 
+	@Column(name = "descripcion", nullable = false)
+	private String descripcion;
+	
 	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "reclutamientoSolicitudEmpleo")
 	private DatosPrincipalesSolicitanteDO datosPrincipalesSolicitante;
 	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "reclutamientoSolicitudEmpleo")
@@ -197,6 +200,14 @@ public class ReclutamientoSolicitudEmpleoDO implements Serializable {
 	public void setSeleccionReclutamiento(
 			SeleccionReclutamientoDO seleccionReclutamiento) {
 		this.seleccionReclutamiento = seleccionReclutamiento;
+	}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
 
 	/**

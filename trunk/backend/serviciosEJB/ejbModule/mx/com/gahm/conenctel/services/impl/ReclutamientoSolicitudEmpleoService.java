@@ -34,23 +34,74 @@ public class ReclutamientoSolicitudEmpleoService implements IReclutamientoSolici
 
 	@Override
 	public void deleteItems(List<Integer> idsItems) {
-		ReclutamientoSolicitudEmpleoDO cotizacion = null;
+		ReclutamientoSolicitudEmpleoDO item = null;
 		for (Integer id : idsItems) {
-			cotizacion =getItem(id);
-			entityManager.remove(cotizacion);
+			item =getItem(id);
+			
+			entityManager.remove(item.getDatosPrincipalesSolicitante());
+			entityManager.remove(item.getDatosGeneralesSolicitante());
+			entityManager.remove(item.getDatosFamiliaresSolicitante());
+			entityManager.remove(item.getDatosEscolaresHabilidades());
+			entityManager.remove(item.getDatosUltimoEmpleoSolicitante());
+			entityManager.remove(item.getDatosSobreConectelSolicitante());
+			entityManager.remove(item.getSeleccionReclutamiento());
+			
+			entityManager.remove(item);
 		}
 		
 	}
 
 	@Override
 	public ReclutamientoSolicitudEmpleoDO save(ReclutamientoSolicitudEmpleoDO item) {
+		
+		item.setDescripcion("descripcion");
 		entityManager.persist(item);
+		
+		item.getDatosPrincipalesSolicitante().setReclutamientoSolicitudEmpleo(item);
+		entityManager.persist(item.getDatosPrincipalesSolicitante());
+		
+		
+		item.getDatosGeneralesSolicitante().setReclutamientoSolicitudEmpleo(item);
+		entityManager.persist(item.getDatosGeneralesSolicitante());
+		
+		item.getDatosFamiliaresSolicitante().setReclutamientoSolicitudEmpleo(item);
+		entityManager.persist(item.getDatosFamiliaresSolicitante());
+		
+		item.getDatosEscolaresHabilidades().setReclutamientoSolicitudEmpleo(item);
+		entityManager.persist(item.getDatosEscolaresHabilidades());
+		
+		item.getDatosUltimoEmpleoSolicitante().setReclutamientoSolicitudEmpleo(item);
+		entityManager.persist(item.getDatosUltimoEmpleoSolicitante());
+		
+		item.getDatosSobreConectelSolicitante().setReclutamientoSolicitudEmpleo(item);
+		entityManager.persist(item.getDatosSobreConectelSolicitante());
+		
+		item.getSeleccionReclutamiento().setReclutamientoSolicitudEmpleo(item);
+		entityManager.persist(item.getSeleccionReclutamiento());
 		return item;
 	}
 
 	@Override
 	public ReclutamientoSolicitudEmpleoDO update(ReclutamientoSolicitudEmpleoDO item) {
 		entityManager.merge(item);
+		
+		
+		
+		item.getDatosPrincipalesSolicitante().setReclutamientoSolicitudEmpleo(item);
+		item.getDatosGeneralesSolicitante().setReclutamientoSolicitudEmpleo(item);
+		item.getDatosFamiliaresSolicitante().setReclutamientoSolicitudEmpleo(item);
+		item.getDatosEscolaresHabilidades().setReclutamientoSolicitudEmpleo(item);
+		item.getDatosUltimoEmpleoSolicitante().setReclutamientoSolicitudEmpleo(item);
+		item.getDatosSobreConectelSolicitante().setReclutamientoSolicitudEmpleo(item);
+		item.getSeleccionReclutamiento().setReclutamientoSolicitudEmpleo(item);
+		
+		entityManager.merge(item.getDatosPrincipalesSolicitante());
+		entityManager.merge(item.getDatosGeneralesSolicitante());
+		entityManager.merge(item.getDatosFamiliaresSolicitante());
+		entityManager.merge(item.getDatosEscolaresHabilidades());
+		entityManager.merge(item.getDatosUltimoEmpleoSolicitante());
+		entityManager.merge(item.getDatosSobreConectelSolicitante());
+		entityManager.merge(item.getSeleccionReclutamiento());
 		return item;
 	}
 

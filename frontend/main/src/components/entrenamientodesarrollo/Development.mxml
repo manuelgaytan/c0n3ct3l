@@ -77,6 +77,7 @@
 				}
 				this.txtID.text = this._item.id.toString();
 				this.recruitmentConsult.datagrid.dataProvider = Util.asArrayCollection( this._item.contratacion );
+				this.recruitmentConsult.datagrid.selectedIndex = 0;
 				this.dtfENCDate.selectedDate = this._item.fechaEnc;
 				this.txtENCGrade.text = this._item.resultadoEnc.toString();
 				this.chkENC.selected = this._item.enc;
@@ -111,7 +112,7 @@
 				development.autorizacionCt = this.chkApproveTechnicalCourse.selected;
 				development.fechaCt = this.dtfTechnicalCourseDate.selectedDate;
 				development.resultadoCt = Util.stringToNumber( this.txtTechnicalCourseGrade.text );
-				development.cursoTecnico = Util.validateEmpty( this.txtGeneralCourse.text );
+				development.cursoGeneral = Util.validateEmpty( this.txtGeneralCourse.text );
 				development.capacitadorInternoCg = Util.validateEmpty( this.txtGeneralCourseInternalCoach.text );
 				development.capacitadorExternoCg = Util.validateEmpty( this.txtGeneralCourseExternalCoach.text );
 				development.autorizacionCg = this.chkApproveGeneralCourse.selected;

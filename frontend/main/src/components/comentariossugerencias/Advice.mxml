@@ -124,10 +124,10 @@
 			private function fillCombos():void
 			{
 				this.responseGetColaborador.token = this.catalogoService.getColaboradorByTipoColaborador(2);
-				this.responseGetResultadoImplementacion.token = this.catalogoService.getGetResultadoImplementacion();
+				this.responseGetResultadoImplementacion.token = this.catalogoService.getResultadoImplementacion();
 			}
 			
-			protected function registroSugerenciaService_faultHandler(event:FaultEvent):void
+			protected function sugerenciaService_faultHandler(event:FaultEvent):void
 			{
 				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
 			}
@@ -141,7 +141,7 @@
 				if( this.mode == Constants.REGISTER_MODE ){
 					var advice:Sugerencia = this.getAdvice();
 					Util.showProperties( advice );
-					this.responseSave.token = this.registroSugerenciaService.save( advice );
+					this.responseSave.token = this.sugerenciaService.save( advice );
 				}
 				if( this.mode == Constants.UPDATE_MODE ){
 					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
@@ -154,7 +154,7 @@
 				}
 				var item:Sugerencia = this.getAdvice();
 				Util.showProperties( item );
-				this.responseUpdate.token = this.registroSugerenciaService.update( item );
+				this.responseUpdate.token = this.sugerenciaService.update( item );
 			}
 			
 			private function validations():Boolean
@@ -176,11 +176,15 @@
 			private function initializeValidators():void
 			{
 				this.validators = new InicializaValidadoresEtiquetas();
-				//validators.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
-				this.validators.crearValidadorRestrictor("genericDecimal", ValidadorDecimal.nombre, 9, 2);
-				this.validators.setValidador( this.txtName, "genericDecimal" );
-				validators.crearValidadorRestrictor("genericInteger",ValidadorEntero.nombre, 5);
-				this.validators.setRestrictor( this.txtEmail, "genericInteger" );
+				validators.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
+				this.validators.setRestrictor( this.txtName, "generic" );
+				this.validators.setValidador( this.txtAdvice, "generic" );
+				this.validators.setRestrictor( this.txtInmediatlyAction, "generic" );
+				this.validators.setValidador( this.txtImplementationResponsible, "generic" );
+				validators.crearValidadorRestrictor("generic50",ValidadorAlfanumerico.nombre, 0, 50, true);
+				this.validators.setRestrictor( this.txtPhone, "generic50" );
+				validators.crearValidadorRestrictor("genericEmail",ValidadorEmail.nombre);
+				this.validators.setRestrictor( this.txtEmail, "genericEmail" );
 			}
 			
 			protected function responseSave_resultHandler(event:ResultEvent):void
@@ -284,7 +288,7 @@
 			<components:TextInput id="txtName" width="350"/>
 		</mx:FormItem>
 		<mx:FormItem label="Correo Electrónico:">
-			<components:TextInput id="txtEmail" width="250"/>
+			<components:TextInput id="txtEmail" width="250" upperCase="false"/>
 		</mx:FormItem>
 		<mx:FormItem label="Teléfono:">
 			<components:TextInput id="txtPhone" width="100"/>
@@ -316,11 +320,11 @@
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
 		</mx:FormItem>
 	</mx:Form>
-	<mx:RemoteObject id="registroSugerenciaService" destination="registroSugerenciaService" fault="registroSugerenciaService_faultHandler(event)"
+	<mx:RemoteObject id="sugerenciaService" destination="sugerenciaService" fault="sugerenciaService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
 	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
-	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="registroSugerenciaService_faultHandler(event)"
+	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="sugerenciaService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetColaborador" result="responseGetColaborador_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetResultadoImplementacion" result="responseGetResultadoImplementacion_resultHandler(event)"/>

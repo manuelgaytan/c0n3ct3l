@@ -34,7 +34,7 @@ public class ResultadoImplementacionDO implements Serializable{
 	private long id;
 
 	@Column(name="resultado")
-	private String etiqueta;
+	private String resultado;
 
 	public ResultadoImplementacionDO() {
 		super();
@@ -44,7 +44,7 @@ public class ResultadoImplementacionDO implements Serializable{
 	public ResultadoImplementacionDO(long id, String etiqueta) {
 		super();
 		this.id = id;
-		this.etiqueta = etiqueta;
+		this.resultado = etiqueta;
 	}
 
 	public long getId() {
@@ -55,12 +55,12 @@ public class ResultadoImplementacionDO implements Serializable{
 		this.id = id;
 	}
 
-	public String getEtiqueta() {
-		return etiqueta;
+	public String getResultado() {
+		return resultado;
 	}
 
-	public void setEtiqueta(String etiqueta) {
-		this.etiqueta = etiqueta;
+	public void setResultado(String etiqueta) {
+		this.resultado = etiqueta;
 	}
 	
 	

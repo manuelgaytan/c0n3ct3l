@@ -12,6 +12,7 @@ import javax.persistence.TypedQuery;
 
 import mx.com.gahm.conenctel.entities.ActividadTiempoLibreDO;
 import mx.com.gahm.conenctel.entities.AplicaDO;
+import mx.com.gahm.conenctel.entities.AreaLevantaNoConformidadDO;
 import mx.com.gahm.conenctel.entities.AreaSolicitanteDO;
 import mx.com.gahm.conenctel.entities.BancoConectelDO;
 import mx.com.gahm.conenctel.entities.CartaAntecedentesPenalesDO;
@@ -1422,4 +1423,17 @@ public class CatalogoService implements ICatalogoService {
 		return list;
 	}
 	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<AreaLevantaNoConformidadDO> getAreaLevantaNoConformidad() throws ConectelException {
+		TypedQuery<AreaLevantaNoConformidadDO> query = entityManager.createNamedQuery(
+				"AreaLevantaNoConformidadDO.findAll", AreaLevantaNoConformidadDO.class);
+		
+		List<AreaLevantaNoConformidadDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
 }

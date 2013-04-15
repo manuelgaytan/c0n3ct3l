@@ -72,6 +72,7 @@
 				}
 				this.txtID.text = this._item.id.toString();
 				this.recruitmentConsult.datagrid.dataProvider = Util.asArrayCollection( this._item.contratacion );
+				this.recruitmentConsult.datagrid.selectedIndex = 0;
 				this.dtfIncidenceDate.selectedDate = this._item.fechaIncidencia;
 				if( Util.isFill( this.cmbIncidenceClass ) && this._item 
 					&& this._item.claseIncidencia != null ){

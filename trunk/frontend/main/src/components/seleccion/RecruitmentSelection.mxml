@@ -92,6 +92,7 @@
 				}
 				this.txtID.text = this._item.id.toString();
 				this.recruitmentJobApplication.datagrid.dataProvider = Util.asArrayCollection( this._item.reclutamientoSolicitudEmpleo );
+				this.recruitmentJobApplication.datagrid.selectedIndex = 0;
 				if( Util.isFill( this.cmbCandidateType ) && this._item 
 					&& this._item.tipoCandidato != null ){
 					this.cmbCandidateType.selectedIndex = Util.selectedIndexFromCombo( this.cmbCandidateType.dataProvider as ArrayCollection, 

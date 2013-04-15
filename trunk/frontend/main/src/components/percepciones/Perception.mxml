@@ -77,6 +77,7 @@
 				}
 				this.txtID.text = this._item.id.toString();
 				this.recruitmentConsult.datagrid.dataProvider = Util.asArrayCollection( this._item.contratacion );
+				this.recruitmentConsult.datagrid.selectedIndex = 0;
 				if( Util.isFill( this.cmbPerception ) && this._item 
 					&& this._item.percepcion != null ){
 					this.cmbPerception.selectedIndex = Util.selectedIndexFromCombo( this.cmbPerception.dataProvider as ArrayCollection, 

@@ -127,7 +127,7 @@
 			
 			private function fillCombos():void
 			{
-				this.responseGetAreaLevantaNoConformidad.token = this.catalogoService.getGetAreaLevantaNoConformidad();
+				this.responseGetAreaLevantaNoConformidad.token = this.catalogoService.getAreaLevantaNoConformidad();
 			}
 			
 			protected function noConformidadService_faultHandler(event:FaultEvent):void

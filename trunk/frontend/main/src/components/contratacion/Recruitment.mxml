@@ -134,6 +134,12 @@
 				var recruitment:Contratacion = null;
 				if( this.mode == Constants.REGISTER_MODE ){
 					recruitment = new Contratacion();
+					recruitment.colaborador = new Colaborador();
+					recruitment.colaborador.nombreCompleto = Util.extractToText( recruitment, "reclutamientoSolicitudEmpleo.datosGeneralesSolicitante.nombres" ) + " " +
+															 Util.extractToText( recruitment, ".reclutamientoSolicitudEmpleo.datosGeneralesSolicitante.apellidoPaterno" ) + " " +
+															 Util.extractToText( recruitment, ".reclutamientoSolicitudEmpleo.datosGeneralesSolicitante.apellidoMaterno" );
+					recruitment.colaborador.tipoColaborador = new TipoColaborador();
+					recruitment.colaborador.tipoColaborador.id = TipoColaborador.ID_NOMINA;
 				}else{
 					recruitment = this._item;
 				}

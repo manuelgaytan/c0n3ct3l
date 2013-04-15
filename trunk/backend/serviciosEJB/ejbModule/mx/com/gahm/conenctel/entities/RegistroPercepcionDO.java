@@ -69,7 +69,7 @@ public class RegistroPercepcionDO implements Serializable{
 	private Date fechaTermino;
 	
 	@Column(name = "prima_vacacional", nullable = false)
-	private Integer primaVacacional;
+	private Boolean primaVacacional;
 
 	public RegistroPercepcionDO() {
 		super();
@@ -79,7 +79,7 @@ public class RegistroPercepcionDO implements Serializable{
 	public RegistroPercepcionDO(Integer id, ContratacionDO contratacion,
 			PercepcionDO percepcion, Double montoAportacion,
 			VariacionDO variaciones, Integer diasCorrespondientes,
-			Date fechaInicio, Date fechaTermino, Integer primaVacacional) {
+			Date fechaInicio, Date fechaTermino, Boolean primaVacacional) {
 		super();
 		this.id = id;
 		this.contratacion = contratacion;
@@ -207,14 +207,14 @@ public class RegistroPercepcionDO implements Serializable{
 	/**
 	 * @return the primaVacacional
 	 */
-	public Integer getPrimaVacacional() {
+	public Boolean getPrimaVacacional() {
 		return primaVacacional;
 	}
 
 	/**
 	 * @param primaVacacional the primaVacacional to set
 	 */
-	public void setPrimaVacacional(Integer primaVacacional) {
+	public void setPrimaVacacional(Boolean primaVacacional) {
 		this.primaVacacional = primaVacacional;
 	}
 	

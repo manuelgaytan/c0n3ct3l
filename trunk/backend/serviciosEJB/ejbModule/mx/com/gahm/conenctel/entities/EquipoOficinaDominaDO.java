@@ -68,6 +68,95 @@ public class EquipoOficinaDominaDO implements Serializable{
 	
 	@Column(name = "otros", nullable = false)
 	private Boolean otros;
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public DatosEscolaresHabilidadesDO getDatosEscolaresHabilidades() {
+		return datosEscolaresHabilidades;
+	}
+
+	public void setDatosEscolaresHabilidades(
+			DatosEscolaresHabilidadesDO datosEscolaresHabilidades) {
+		this.datosEscolaresHabilidades = datosEscolaresHabilidades;
+	}
+
+	public Boolean getPc() {
+		return pc;
+	}
+
+	public void setPc(Boolean pc) {
+		this.pc = pc;
+	}
+
+	public Boolean getCalculadora() {
+		return calculadora;
+	}
+
+	public void setCalculadora(Boolean calculadora) {
+		this.calculadora = calculadora;
+	}
+
+	public Boolean getFax() {
+		return fax;
+	}
+
+	public void setFax(Boolean fax) {
+		this.fax = fax;
+	}
+
+	public Boolean getImpresora() {
+		return impresora;
+	}
+
+	public void setImpresora(Boolean impresora) {
+		this.impresora = impresora;
+	}
+
+	public Boolean getTelefono() {
+		return telefono;
+	}
+
+	public void setTelefono(Boolean telefono) {
+		this.telefono = telefono;
+	}
+
+	public Boolean getScanner() {
+		return scanner;
+	}
+
+	public void setScanner(Boolean scanner) {
+		this.scanner = scanner;
+	}
+
+	public Boolean getTablet() {
+		return tablet;
+	}
+
+	public void setTablet(Boolean tablet) {
+		this.tablet = tablet;
+	}
+
+	public Boolean getLaptop() {
+		return laptop;
+	}
+
+	public void setLaptop(Boolean laptop) {
+		this.laptop = laptop;
+	}
+
+	public Boolean getOtros() {
+		return otros;
+	}
+
+	public void setOtros(Boolean otros) {
+		this.otros = otros;
+	}
 	
 	
 	

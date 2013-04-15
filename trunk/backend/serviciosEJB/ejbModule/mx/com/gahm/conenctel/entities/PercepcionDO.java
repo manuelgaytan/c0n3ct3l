@@ -28,8 +28,8 @@ public class PercepcionDO implements Serializable{
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
 
-	@Column(name="incidencia")
-	private String etiqueta;
+	@Column(name="percepcion")
+	private String percepcion;
 	
 	public PercepcionDO() {
 		super();
@@ -39,7 +39,7 @@ public class PercepcionDO implements Serializable{
 	public PercepcionDO(long id, String etiqueta) {
 		super();
 		this.id = id;
-		this.etiqueta = etiqueta;
+		this.percepcion = etiqueta;
 	}
 
 	public long getId() {
@@ -50,12 +50,12 @@ public class PercepcionDO implements Serializable{
 		this.id = id;
 	}
 
-	public String getEtiqueta() {
-		return etiqueta;
+	public String getPercepcion() {
+		return percepcion;
 	}
 
-	public void setEtiqueta(String etiqueta) {
-		this.etiqueta = etiqueta;
+	public void setPercepcion(String etiqueta) {
+		this.percepcion = etiqueta;
 	}
 
 }

@@ -55,7 +55,7 @@ public class RegistroPercepcionDO implements Serializable{
 	
 	@ManyToOne
 	@JoinColumn(name = "fk_variaciones", nullable = false)
-	private VariacionDO variaciones;
+	private VariacionDO variacion;
 	
 	@Column(name = "dias_correspondientes", nullable = false)
 	private Integer diasCorrespondientes;
@@ -85,7 +85,7 @@ public class RegistroPercepcionDO implements Serializable{
 		this.contratacion = contratacion;
 		Percepcion = percepcion;
 		this.montoAportacion = montoAportacion;
-		this.variaciones = variaciones;
+		this.variacion = variaciones;
 		this.diasCorrespondientes = diasCorrespondientes;
 		this.fechaInicio = fechaInicio;
 		this.fechaTermino = fechaTermino;
@@ -151,15 +151,15 @@ public class RegistroPercepcionDO implements Serializable{
 	/**
 	 * @return the variaciones
 	 */
-	public VariacionDO getVariaciones() {
-		return variaciones;
+	public VariacionDO getVariacion() {
+		return variacion;
 	}
 
 	/**
 	 * @param variaciones the variaciones to set
 	 */
-	public void setVariaciones(VariacionDO variaciones) {
-		this.variaciones = variaciones;
+	public void setVariacion(VariacionDO variaciones) {
+		this.variacion = variaciones;
 	}
 
 	/**

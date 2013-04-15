@@ -34,7 +34,7 @@ public class TipoSancionDO implements Serializable{
 	private long id;
 
 	@Column(name="tipo")
-	private String etiqueta;
+	private String tipo;
 
 	public TipoSancionDO() {
 		super();
@@ -44,7 +44,7 @@ public class TipoSancionDO implements Serializable{
 	public TipoSancionDO(long id, String etiqueta) {
 		super();
 		this.id = id;
-		this.etiqueta = etiqueta;
+		this.tipo = etiqueta;
 	}
 
 	public long getId() {
@@ -55,12 +55,12 @@ public class TipoSancionDO implements Serializable{
 		this.id = id;
 	}
 
-	public String getEtiqueta() {
-		return etiqueta;
+	public String getTipo() {
+		return tipo;
 	}
 
-	public void setEtiqueta(String etiqueta) {
-		this.etiqueta = etiqueta;
+	public void setTipo(String etiqueta) {
+		this.tipo = etiqueta;
 	}
 
 }

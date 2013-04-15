@@ -30,6 +30,7 @@ import mx.com.gahm.conenctel.entities.DocumentacionExtranjerosDO;
 import mx.com.gahm.conenctel.entities.EstadoAcademicoDO;
 import mx.com.gahm.conenctel.entities.EstadoAccionPreventivaCorrectivaDO;
 import mx.com.gahm.conenctel.entities.EstadoCivilDO;
+import mx.com.gahm.conenctel.entities.EstadoColaboradorDO;
 import mx.com.gahm.conenctel.entities.EstadoComprobacionViaticosDO;
 import mx.com.gahm.conenctel.entities.EstadoFinalValidacionDO;
 import mx.com.gahm.conenctel.entities.EstadoInvestigacionCalidadDO;
@@ -1399,6 +1400,20 @@ public class CatalogoService implements ICatalogoService {
 				"EstadoSistemaGestionDO.findAll", EstadoSistemaGestionDO.class);
 		
 		List<EstadoSistemaGestionDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<EstadoColaboradorDO> getEstadoColaborador() throws ConectelException {
+		TypedQuery<EstadoColaboradorDO> query = entityManager.createNamedQuery(
+				"EstadoColaboradorDO.findAll", EstadoColaboradorDO.class);
+		
+		List<EstadoColaboradorDO> list;
 		try {
 			list = query.getResultList();
 		} catch (NoResultException e) {

@@ -34,8 +34,8 @@ public class DeduccionDO implements Serializable{
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
 
-	@Column(name="incidencia")
-	private String etiqueta;
+	@Column(name="deduccion")
+	private String deduccion;
 	
 	public DeduccionDO() {
 		super();
@@ -45,7 +45,7 @@ public class DeduccionDO implements Serializable{
 	public DeduccionDO(long id, String etiqueta) {
 		super();
 		this.id = id;
-		this.etiqueta = etiqueta;
+		this.deduccion = etiqueta;
 	}
 
 	public long getId() {
@@ -56,12 +56,12 @@ public class DeduccionDO implements Serializable{
 		this.id = id;
 	}
 
-	public String getEtiqueta() {
-		return etiqueta;
+	public String getDeduccion() {
+		return deduccion;
 	}
 
-	public void setEtiqueta(String etiqueta) {
-		this.etiqueta = etiqueta;
+	public void setDeduccion(String etiqueta) {
+		this.deduccion = etiqueta;
 	}
 
 	

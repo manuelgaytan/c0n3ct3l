@@ -6,6 +6,7 @@ package mx.com.gahm.conenctel.entities;
 import static javax.persistence.GenerationType.IDENTITY;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +18,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  * @author MHDolores
@@ -44,6 +47,10 @@ public class InformacionPrenominaDO implements Serializable{
 	@JoinColumn(name = "fk_contratacion", nullable = false)
 	private ContratacionDO contratacion;
 	
+	@Temporal(TemporalType.DATE)
+	@Column(name="fecha_incidencia")
+	private Date fechaIncidencia;
+	
 	@ManyToOne
 	@JoinColumn(name = "fk_clase_incidencia", nullable = false)
 	private ClaseIncidenciaDO claseIncidencia;
@@ -70,6 +77,7 @@ public class InformacionPrenominaDO implements Serializable{
 		super();
 		this.id = id;
 		this.contratacion = contratacion;
+		
 		this.claseIncidencia = claseIncidencia;
 		this.tipoIncapacidad = tipoIncapacidad;
 		this.montoImss = montoImss;
@@ -158,6 +166,14 @@ public class InformacionPrenominaDO implements Serializable{
 	 */
 	public void setMontoConectel(Double montoConectel) {
 		this.montoConectel = montoConectel;
+	}
+
+	public Date getFechaIncidencia() {
+		return fechaIncidencia;
+	}
+
+	public void setFechaIncidencia(Date fechaIncidencia) {
+		this.fechaIncidencia = fechaIncidencia;
 	}
 	
 	

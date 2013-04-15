@@ -25,6 +25,7 @@ import mx.com.gahm.conenctel.entities.DocumentacionExtranjerosDO;
 import mx.com.gahm.conenctel.entities.EstadoAcademicoDO;
 import mx.com.gahm.conenctel.entities.EstadoAccionPreventivaCorrectivaDO;
 import mx.com.gahm.conenctel.entities.EstadoCivilDO;
+import mx.com.gahm.conenctel.entities.EstadoColaboradorDO;
 import mx.com.gahm.conenctel.entities.EstadoComprobacionViaticosDO;
 import mx.com.gahm.conenctel.entities.EstadoFinalValidacionDO;
 import mx.com.gahm.conenctel.entities.EstadoInvestigacionCalidadDO;
@@ -244,4 +245,5 @@ public interface ICatalogoService extends Serializable {
 	public List<TipoAuditoriaDO> getTipoAuditoria() throws ConectelException;
 	public List<FormaAuditoriaDO> getFormaAuditoria() throws ConectelException;
 	public List<EstadoSistemaGestionDO> getEstadoSistemaGestion() throws ConectelException;
+	public List<EstadoColaboradorDO> getEstadoColaborador() throws ConectelException;
 }

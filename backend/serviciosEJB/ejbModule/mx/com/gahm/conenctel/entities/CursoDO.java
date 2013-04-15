@@ -88,7 +88,7 @@ public class CursoDO implements Serializable{
 	
 	@Temporal(TemporalType.DATE)
 	@Column(name="fecha_cg")
-	private Date fechaC;
+	private Date fechaCg;
 	
 	@Column(name = "resultado_cg", nullable = false)
 	private Double resultadoCg;
@@ -121,7 +121,7 @@ public class CursoDO implements Serializable{
 		this.capacitadorInternoCg = capacitadorInternoCg;
 		this.capacitadorExternoCg = capacitadorExternoCg;
 		this.autorizacionCg = autorizacionCg;
-		this.fechaC = fechaC;
+		this.fechaCg = fechaC;
 		this.resultadoCg = resultadoCg;
 	}
 
@@ -338,15 +338,15 @@ public class CursoDO implements Serializable{
 	/**
 	 * @return the fechaC
 	 */
-	public Date getFechaC() {
-		return fechaC;
+	public Date getFechaCg() {
+		return fechaCg;
 	}
 
 	/**
 	 * @param fechaC the fechaC to set
 	 */
-	public void setFechaC(Date fechaC) {
-		this.fechaC = fechaC;
+	public void setFechaCg(Date fechaC) {
+		this.fechaCg = fechaC;
 	}
 
 	/**

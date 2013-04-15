@@ -140,19 +140,19 @@
 								   labelFunction="{Util.labelFunctionDate}"
 								   width="100"/>
 				<mx:DataGridColumn id="dtgIncidenceClas" headerText="{'Clase\nIncidencia'}"
-								   dataField="contratacion."
+								   dataField="claseIncidencia.incidencia"
 								   width="100"/>
 				<mx:DataGridColumn id="dtgIncapacityType" headerText="{'Tipo de\nIncapacidad'}"
-								   dataField="telefonoEmergencia"
+								   dataField="tipoIncapacidad.tipo"
 								   width="100"
 								   />
 				<mx:DataGridColumn id="dtgIMSSAmount" headerText="{'Monto\nI.M.S.S.'}"
-								   dataField="alergias"
+								   dataField="montoImss"
 								   textAlign="right"
 								   width="100"
 								   />
 				<mx:DataGridColumn id="dtgConectelAmount" headerText="{'Monto\nConectel'}"
-								   dataField="tipoSangre"
+								   dataField="montoConectel"
 								   textAlign="right"
 								   width="100"
 								   />

@@ -139,10 +139,10 @@
 			private function fillCombos():void
 			{
 				this.responseGetDeduccion.token = this.catalogoService.getDeduccion();
-				this.responseGetClasificacionFalta.token = this.catalogoService.getGetClasificacionFalta();
-				this.responseGetClasificacionPermiso.token = this.catalogoService.getGetClasificacionFalta();
+				this.responseGetClasificacionFalta.token = this.catalogoService.getClasificacionFalta();
+				this.responseGetClasificacionPermiso.token = this.catalogoService.getClasificacionPermiso();
 				this.responseGetTipoSancion.token = this.catalogoService.getTipoSancion();
-				this.responseGetFormaPagoPrenomina.token = this.catalogoService.getTipoSancion();
+				this.responseGetFormaPagoPrenomina.token = this.catalogoService.getFormaPagoPrenomina();
 			}
 			
 			protected function registroDeduccionService_faultHandler(event:FaultEvent):void

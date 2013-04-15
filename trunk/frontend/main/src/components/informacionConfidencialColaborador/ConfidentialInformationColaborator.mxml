@@ -146,7 +146,7 @@
 			
 			private function fillCombos():void
 			{
-				this.responseGetEstadoColaborador.token = this.catalogoService.getTipoInformacionConfidencialColaborador();
+				this.responseGetEstadoColaborador.token = this.catalogoService.getEstadoColaborador();
 			}
 			
 			protected function informacionConfidencialColaboradorService_faultHandler(event:FaultEvent):void
@@ -322,7 +322,7 @@
 			<components:TextInput id="txtPayrollCardNumber" textAlign="right"/>
 		</mx:FormItem>
 		<mx:FormItem label="Correo Electrónico Conectel:">
-			<components:TextInput id="txtConectelEmail" width="300"/>
+			<components:TextInput id="txtConectelEmail" width="300" upperCase="false"/>
 		</mx:FormItem>
 		<mx:FormItem direction="horizontal">
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>

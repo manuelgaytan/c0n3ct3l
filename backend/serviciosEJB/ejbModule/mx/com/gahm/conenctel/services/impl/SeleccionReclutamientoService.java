@@ -34,10 +34,14 @@ public class SeleccionReclutamientoService implements ISeleccionReclutamientoSer
 
 	@Override
 	public void deleteItems(List<Integer> idsItems) {
-		SeleccionReclutamientoDO cotizacion = null;
+		SeleccionReclutamientoDO item = null;
 		for (Integer id : idsItems) {
-			cotizacion =getItem(id);
-			entityManager.remove(cotizacion);
+			item =getItem(id);
+			
+			entityManager.remove(item.getExamenPsicometrico());
+			entityManager.remove(item.getPerfilEscala());
+			
+			entityManager.remove(item);
 		}
 		
 	}
@@ -45,12 +49,24 @@ public class SeleccionReclutamientoService implements ISeleccionReclutamientoSer
 	@Override
 	public SeleccionReclutamientoDO save(SeleccionReclutamientoDO item) {
 		entityManager.persist(item);
+		item.getExamenPsicometrico().setSeleccionReclutamiento(item);
+		entityManager.persist(item.getExamenPsicometrico());
+		
+		item.getPerfilEscala().setSeleccionReclutamiento(item);
+		entityManager.persist(item.getPerfilEscala());
+		
 		return item;
 	}
 
 	@Override
 	public SeleccionReclutamientoDO update(SeleccionReclutamientoDO item) {
 		entityManager.merge(item);
+		
+		item.getExamenPsicometrico().setSeleccionReclutamiento(item);
+		entityManager.merge(item.getExamenPsicometrico());
+		
+		item.getPerfilEscala().setSeleccionReclutamiento(item);
+		entityManager.merge(item.getPerfilEscala());
 		return item;
 	}
 

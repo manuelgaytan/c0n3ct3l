@@ -56,10 +56,10 @@ public class SeleccionReclutamientoDO implements Serializable{
 	@JoinColumn(name = "fk_fase_contratacion", nullable = false)
 	private FaseContratacionDO faseContratacion;
 
-	@OneToOne(mappedBy="seleccionReclutamiento",cascade=CascadeType.ALL)
+	@OneToOne(mappedBy="seleccionReclutamiento",cascade=CascadeType.PERSIST)
 	private ExamenPsicometricoDO ExamenPsicometrico;
 	
-	@OneToOne(mappedBy="seleccionReclutamiento",cascade=CascadeType.ALL)
+	@OneToOne(mappedBy="seleccionReclutamiento",cascade=CascadeType.PERSIST)
 	private PerfilEscalaDO perfilEscala;
 	
 	public SeleccionReclutamientoDO() {
@@ -156,6 +156,14 @@ public class SeleccionReclutamientoDO implements Serializable{
 
 	public void setExamenPsicometrico(ExamenPsicometricoDO examenPsicometrico) {
 		ExamenPsicometrico = examenPsicometrico;
+	}
+
+	public PerfilEscalaDO getPerfilEscala() {
+		return perfilEscala;
+	}
+
+	public void setPerfilEscala(PerfilEscalaDO perfilEscala) {
+		this.perfilEscala = perfilEscala;
 	}
 
 	

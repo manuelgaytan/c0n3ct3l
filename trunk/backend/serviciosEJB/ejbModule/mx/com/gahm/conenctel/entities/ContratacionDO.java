@@ -83,7 +83,7 @@ public class ContratacionDO implements Serializable{
 	private SuspensionDO suspension;
 	
 	@Column(name = "motivo_suspension", nullable = false)
-	private String motivSuspension;
+	private String motivoSuspension;
 	
 	public DocumentosContratacionDO getDocumentosContratacion() {
 		return documentosContratacion;
@@ -103,7 +103,7 @@ public class ContratacionDO implements Serializable{
 	private MotivoTerminoContratoDO motivoTerminoContrato;
 	
 	@Column(name="finiquito")
-	private Boolean etiqueta;
+	private Boolean finiquito;
 	
 	@Column(name="indemnizacion")
 	private Boolean indemnizacion;
@@ -140,10 +140,10 @@ public class ContratacionDO implements Serializable{
 		this.vencimientoContratoEventual = vencimientoContratoEventual;
 		this.fechaInicioContrato = fechaInicioContrato;
 		this.suspension = suspension;
-		this.motivSuspension = motivSuspension;
+		this.motivoSuspension = motivSuspension;
 		this.fechaTerminoContrato = fechaTerminoContrato;
 		this.motivoTerminoContrato = motivoTerminoContrato;
-		this.etiqueta = etiqueta;
+		this.finiquito = etiqueta;
 		this.indemnizacion = indemnizacion;
 	}
 
@@ -307,15 +307,15 @@ public class ContratacionDO implements Serializable{
 	/**
 	 * @return the motivSuspension
 	 */
-	public String getMotivSuspension() {
-		return motivSuspension;
+	public String getMotivoSuspension() {
+		return motivoSuspension;
 	}
 
 	/**
 	 * @param motivSuspension the motivSuspension to set
 	 */
-	public void setMotivSuspension(String motivSuspension) {
-		this.motivSuspension = motivSuspension;
+	public void setMotivoSuspension(String motivSuspension) {
+		this.motivoSuspension = motivSuspension;
 	}
 
 	/**
@@ -350,15 +350,15 @@ public class ContratacionDO implements Serializable{
 	/**
 	 * @return the etiqueta
 	 */
-	public Boolean getEtiqueta() {
-		return etiqueta;
+	public Boolean getFiniquito() {
+		return finiquito;
 	}
 
 	/**
 	 * @param etiqueta the etiqueta to set
 	 */
-	public void setEtiqueta(Boolean etiqueta) {
-		this.etiqueta = etiqueta;
+	public void setFiniquito(Boolean etiqueta) {
+		this.finiquito = etiqueta;
 	}
 
 	/**

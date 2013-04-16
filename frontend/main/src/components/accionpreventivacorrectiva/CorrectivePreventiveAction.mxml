@@ -83,6 +83,7 @@
 				}
 				this.txtID.text = this._item.id.toString();
 				this.consultNonConformities.datagrid.dataProvider = Util.asArrayCollection( this._item.noConformidad );
+				this.consultNonConformities.datagrid.selectedIndex = 0;
 				this.dtfOpenDate.selectedDate = this._item.fechaApertura;
 				if( Util.isFill( this.cmbActionType ) && this._item 
 					&& this._item.tipoAccion != null ){
@@ -130,9 +131,9 @@
 			
 			private function fillCombos():void
 			{
-				this.responseGetTipoAccion.token = this.catalogoService.getGetTipoAccion();
-				this.responseGetFuenteNoConformidad.token = this.catalogoService.getGetFuenteNoConformidad();
-				this.responseGetEstadoAccionPreventivaCorrectiva.token = this.catalogoService.getGetEstadoAccionPreventivaCorrectiva();
+				this.responseGetTipoAccion.token = this.catalogoService.getTipoAccion();
+				this.responseGetFuenteNoConformidad.token = this.catalogoService.getFuenteNoConformidad();
+				this.responseGetEstadoAccionPreventivaCorrectiva.token = this.catalogoService.getEstadoAccionPreventivaCorrectiva();
 			}
 			
 			protected function accionPreventivaCorrectivaService_faultHandler(event:FaultEvent):void
@@ -301,18 +302,19 @@
 								  editable="false"/>
 		</mx:FormItem>
 		<mx:FormItem label="No Conformidades:"/>
-		<bitacoraproductonoconformenoconformidades:Consult id="consultNonConformities"/>
+		<bitacoraproductonoconformenoconformidades:Consult id="consultNonConformities" readMode="true"/>
+		<mx:Button label="Ver No Conformidad" click="btnViewPerDiemCheck_clickHandler(event)"/>
 		<mx:FormItem label="Fecha Apertura:">
 			<components:DateField id="dtfOpenDate"/>
 		</mx:FormItem>
 		<mx:FormItem label="Tipo de Acción:">
 			<mx:ComboBox id="cmbActionType" width="400"
-						 labelField="tipoAccion.accion"
+						 labelField="accion"
 						 />
 		</mx:FormItem>
 		<mx:FormItem label="Fuente de la No Conformidad:">
 			<mx:ComboBox id="cmbSourceNonConformity" width="400"
-						 labelField="fuenteNoConformidad.fuente"
+						 labelField="fuente"
 						 />
 		</mx:FormItem>
 		<mx:FormItem label="Especificar:">
@@ -335,7 +337,7 @@
 		</mx:FormItem>
 		<mx:FormItem label="Estado de la Acción Preventiva-Correctiva:">
 			<mx:ComboBox id="cmbActionPCStatus" width="400"
-						 labelField="estadoAccionPreventivaCorrectiva.estado"
+						 labelField="estado"
 						 />
 		</mx:FormItem>
 		<mx:FormItem direction="horizontal">

@@ -92,8 +92,8 @@
 				}
 				this.txtPlace.text = this._item.lugar;
 				this.txtSubject.text = this._item.asunto;
-				this.participantForm.participants = this._item.participantesMinuta;
-				this.agreementForm.agreements = this._item.acuerdosMinuta;
+				this.participantForm.participants = this._item.participanteMinuta;
+				this.agreementForm.agreements = this._item.acuerdoMinuta;
 			}
 			
 			private function getMinutaMeeting():Minuta{
@@ -108,8 +108,8 @@
 				minutaMeeting.fechaHora.minutes = this.nstMinutes.value;
 				minutaMeeting.lugar = Util.validateEmpty( this.txtPlace.text );
 				minutaMeeting.asunto = Util.validateEmpty( this.txtSubject.text );
-				minutaMeeting.participantesMinuta = this.participantForm.participants;
-				minutaMeeting.acuerdosMinuta = this.agreementForm.agreements;
+				minutaMeeting.participanteMinuta = this.participantForm.participants;
+				minutaMeeting.acuerdoMinuta = this.agreementForm.agreements;
 				return minutaMeeting;
 			}
 			
@@ -117,7 +117,7 @@
 			{
 			}
 			
-			protected function registroMinutaService_faultHandler(event:FaultEvent):void
+			protected function minutaService_faultHandler(event:FaultEvent):void
 			{
 				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
 			}
@@ -131,7 +131,7 @@
 				if( this.mode == Constants.REGISTER_MODE ){
 					var minutaMeeting:Minuta = this.getMinutaMeeting();
 					Util.showProperties( minutaMeeting );
-					this.responseSave.token = this.registroMinutaService.save( minutaMeeting );
+					this.responseSave.token = this.minutaService.save( minutaMeeting );
 				}
 				if( this.mode == Constants.UPDATE_MODE ){
 					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
@@ -144,7 +144,7 @@
 				}
 				var item:Minuta = this.getMinutaMeeting();
 				Util.showProperties( item );
-				this.responseUpdate.token = this.registroMinutaService.update( item );
+				this.responseUpdate.token = this.minutaService.update( item );
 			}
 			
 			private function validations():Boolean
@@ -247,7 +247,7 @@
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
 		</mx:FormItem>
 	</mx:Form>
-	<mx:RemoteObject id="registroMinutaService" destination="registroMinutaService" fault="registroMinutaService_faultHandler(event)"
+	<mx:RemoteObject id="minutaService" destination="minutaService" fault="minutaService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
 	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>

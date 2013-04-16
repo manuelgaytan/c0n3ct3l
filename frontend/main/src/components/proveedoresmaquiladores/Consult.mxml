@@ -114,14 +114,6 @@
 			<mx:DataGridColumn id="dtgDescription" headerText="{'Razón \nSocial'}"
 							   dataField="razonSocial"
 							   width="120"/>
-			<!--<mx:DataGridColumn id="dtgFamily2" headerText="{'Forma \nde Pago'}"
-							   width="80"
-							   dataField=""
-							   labelFunction="labelFunctionGenerico"/>-->
-			<!--<mx:DataGridColumn id="dtgExistence2" headerText="Tecnología"
-							   dataField="existencia"
-							   width="80"
-							   textAlign="right"/>-->
 			<mx:DataGridColumn id="dtgFamily3" headerText="{'Tipo de\nContrato'}"
 							   width="80"
 							   dataField="tipoContrato.tipo"

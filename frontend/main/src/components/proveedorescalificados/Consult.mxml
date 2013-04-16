@@ -110,10 +110,10 @@
 							   width="80"/>
 			<mx:DataGridColumn id="dtgExistence" headerText="Moneda"
 							   dataField="moneda"
-							   width="80"
-							   textAlign="right"/>
+							   width="80"/>
 			<mx:DataGridColumn id="dtgUnit" headerText="{'Límite de\nCrédito'}"
 							   dataField="limiteCredito"
+							   textAlign="right"
 							   width="80"
 							   labelFunction="labelFunctionGenerico"/>
 			<mx:DataGridColumn id="dtgStatus" headerText="{'Días de\nCrédito'}"

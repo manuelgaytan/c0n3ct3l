@@ -17,8 +17,10 @@
 			
 			import mx.collections.ArrayCollection;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
 			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
 			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.com.gahm.componentes.validadores.ValidadorEmail;
 			import mx.events.FlexEvent;
 			import mx.rpc.events.FaultEvent;
 			import mx.rpc.events.ResultEvent;
@@ -35,18 +37,17 @@
 			{
 				this.validators = new InicializaValidadoresEtiquetas();
 				validators.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
-				validators.setRestrictor(txtNombreComercial, "generic");
-				validators.setRestrictor(txtRazonSocial, "generic");
-				validators.setRestrictor(txtRFC, "generic");
-				validators.setRestrictor(txtDireccionFisica, "generic");
-				validators.setRestrictor(txtDireccionFiscal, "generic");
-				validators.setRestrictor(txtTelefonos, "generic");
-				validators.setRestrictor(txtCorreo, "generic");
-				validators.setRestrictor(txtPaginaWeb, "generic");
-				
-				
-				/* validators.crearValidadorRestrictor("number",ValidadorDecimal.nombre, 10, 4);
-				validators.setRestrictor(txtExistence, "number"); */ 
+				validators.setValidador(txtNombreComercial, "generic");
+				validators.setValidador(txtRazonSocial, "generic");
+				validators.setValidador(txtRFC, "generic");
+				validators.setValidador(txtDireccionFisica, "generic");
+				validators.setValidador(txtDireccionFiscal, "generic");
+				validators.setValidador(txtTelefonos, "generic");
+				validators.setRestrictor(txtContacto, "generic");
+				validators.crearValidadorRestrictor("email",ValidadorEmail.nombre);
+				validators.setRestrictor(txtCorreo, "email");
+				validators.crearValidadorRestrictor("webpage",ValidadorAlfabetico.nombre, 0, 50);
+				validators.setRestrictor(txtPaginaWeb, "webpage");
 			}
 			
 			public function validations():Boolean
@@ -223,38 +224,38 @@
 					 />
 	</mx:FormItem>
 	<mx:FormItem label="Nombre Comercial:">
-		<components:TextInput id="txtNombreComercial" width="300"/>
+		<components:TextInput id="txtNombreComercial" width="400"/>
 	</mx:FormItem>
 	<mx:FormItem label="Razón Social:">
-		<components:TextInput id="txtRazonSocial" width="300"/>
+		<components:TextInput id="txtRazonSocial" width="400"/>
 	</mx:FormItem>
 	<mx:FormItem label="R.F.C.:">
-		<components:TextInput id="txtRFC"
+		<components:TextInput id="txtRFC" width="120"
 							  />
 	</mx:FormItem>
 	<mx:FormItem label="Dirección Física:">
 		<components:TextInput id="txtDireccionFisica"
-							  width="400"/>
+							  width="500"/>
 	</mx:FormItem>
 	<mx:FormItem label="Dirección Fiscal:">
 		<components:TextInput id="txtDireccionFiscal"
-							  width="400"/>
+							  width="500"/>
 	</mx:FormItem>
 	<mx:FormItem label="Teléfonos:">
 		<components:TextInput id="txtTelefonos"
-							  />
+							  width="240"/>
 	</mx:FormItem>
 	<mx:FormItem id="frmItmContact" label="Contacto:">
 		<components:TextInput id="txtContacto"
-							  width="300"/>
+							  width="400"/>
 	</mx:FormItem>
 	<mx:FormItem label="Correo:">
-		<components:TextInput id="txtCorreo"
-							  />
+		<components:TextInput id="txtCorreo" upperCase="false"
+							  width="300"/>
 	</mx:FormItem>
 	<mx:FormItem id="frmItmWebPage" label="Página Web:">
-		<components:TextInput id="txtPaginaWeb"
-							  />
+		<components:TextInput id="txtPaginaWeb" upperCase="false"
+							  width="300"/>
 	</mx:FormItem>
 	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="catalogoService_faultHandler(event)"
 					 showBusyCursor="true"/>

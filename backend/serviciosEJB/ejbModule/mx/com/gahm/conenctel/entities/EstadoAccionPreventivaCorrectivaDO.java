@@ -32,7 +32,7 @@ public class EstadoAccionPreventivaCorrectivaDO implements Serializable{
 	private Long id;
 
 	@Column(name = "estado")
-	private String etiqueta;
+	private String estado;
 
 	public EstadoAccionPreventivaCorrectivaDO() {
 		super();
@@ -42,7 +42,7 @@ public class EstadoAccionPreventivaCorrectivaDO implements Serializable{
 	public EstadoAccionPreventivaCorrectivaDO(Long id, String etiqueta) {
 		super();
 		this.id = id;
-		this.etiqueta = etiqueta;
+		this.estado = etiqueta;
 	}
 
 	public Long getId() {
@@ -53,12 +53,12 @@ public class EstadoAccionPreventivaCorrectivaDO implements Serializable{
 		this.id = id;
 	}
 
-	public String getEtiqueta() {
-		return etiqueta;
+	public String getEstado() {
+		return estado;
 	}
 
-	public void setEtiqueta(String etiqueta) {
-		this.etiqueta = etiqueta;
+	public void setEstado(String etiqueta) {
+		this.estado = etiqueta;
 	}
 	
 	

@@ -54,7 +54,7 @@ public class MinutaDO implements Serializable{
 	private String asunto;
 	
 	@OneToMany(mappedBy="minuta", fetch = FetchType.EAGER,cascade=CascadeType.ALL)
-	private List<ParticipanteMinutaDO> ParticipanteMinuta;
+	private List<ParticipanteMinutaDO> participanteMinuta;
 	
 	@OneToMany(mappedBy="minuta", fetch = FetchType.EAGER,cascade=CascadeType.ALL)
 	private List<AcuerdoMinutaDO> acuerdoMinuta;
@@ -129,11 +129,11 @@ public class MinutaDO implements Serializable{
 	}
 
 	public List<ParticipanteMinutaDO> getParticipanteMinuta() {
-		return ParticipanteMinuta;
+		return participanteMinuta;
 	}
 
 	public void setParticipanteMinuta(List<ParticipanteMinutaDO> participanteMinuta) {
-		ParticipanteMinuta = participanteMinuta;
+		participanteMinuta = participanteMinuta;
 	}
 
 	public List<AcuerdoMinutaDO> getAcuerdoMinuta() {

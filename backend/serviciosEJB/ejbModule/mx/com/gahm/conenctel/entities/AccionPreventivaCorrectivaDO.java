@@ -59,6 +59,9 @@ public class AccionPreventivaCorrectivaDO implements Serializable{
 	@JoinColumn(name = "fk_fuente_no_conformidad", nullable = false)
 	private FuenteNoConformidadDO fuenteNoConformidad;
 	
+	@Column(name = "especificar", nullable = false)
+	private String especificar;
+	
 	@Column(name = "participantes_analisis", nullable = false)
 	private String participantesAnalisis;
 	
@@ -191,6 +194,14 @@ public class AccionPreventivaCorrectivaDO implements Serializable{
 	public void setEstadoAccionPreventivaCorrectiva(
 			EstadoAccionPreventivaCorrectivaDO estadoAccionPreventivaCorrectiva) {
 		this.estadoAccionPreventivaCorrectiva = estadoAccionPreventivaCorrectiva;
+	}
+
+	public String getEspecificar() {
+		return especificar;
+	}
+
+	public void setEspecificar(String especificar) {
+		this.especificar = especificar;
 	}
 	
 	

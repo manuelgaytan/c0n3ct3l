@@ -39,7 +39,7 @@ public class ParticipanteMinutaDO implements Serializable{
 	private Integer id;
 	
 	@ManyToOne
-	@JoinColumn(name = "fk_informacion_facturacion", nullable = false)
+	@JoinColumn(name = "fk_minuta", nullable = false)
 	private MinutaDO minuta;
 	
 	@ManyToOne

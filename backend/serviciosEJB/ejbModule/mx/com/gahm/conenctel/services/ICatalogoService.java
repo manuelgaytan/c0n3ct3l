@@ -64,6 +64,7 @@ import mx.com.gahm.conenctel.entities.NacionalidadDO;
 import mx.com.gahm.conenctel.entities.PercepcionDO;
 import mx.com.gahm.conenctel.entities.PrioridadDO;
 import mx.com.gahm.conenctel.entities.ProveedorDO;
+import mx.com.gahm.conenctel.entities.ResponsableMinutaDO;
 import mx.com.gahm.conenctel.entities.ResultadoImplementacionDO;
 import mx.com.gahm.conenctel.entities.SeguimientoDO;
 import mx.com.gahm.conenctel.entities.ServicioSolicitadoDO;
@@ -248,4 +249,5 @@ public interface ICatalogoService extends Serializable {
 	public List<EstadoSistemaGestionDO> getEstadoSistemaGestion() throws ConectelException;
 	public List<EstadoColaboradorDO> getEstadoColaborador() throws ConectelException;
 	public List<AreaLevantaNoConformidadDO> getAreaLevantaNoConformidad() throws ConectelException;
+	public List<ResponsableMinutaDO> getResponsableMinuta() throws ConectelException;
 }

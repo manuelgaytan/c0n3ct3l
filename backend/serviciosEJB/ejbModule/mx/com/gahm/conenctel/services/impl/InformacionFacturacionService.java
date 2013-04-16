@@ -55,7 +55,9 @@ public class InformacionFacturacionService implements IInformacionFacturacionSer
 	}
 	
 	private void saveComentarios3(InformacionFacturacionDO item,List<ComentarioInformacionFacturacion3DO> comentarios3){
-		
+		if( comentarios3 == null ){
+			return;
+		}
 		for (ComentarioInformacionFacturacion3DO dato : comentarios3) {
 			dato.setInformacionFacturacion(item);
 			entityManager.persist(item);
@@ -65,7 +67,9 @@ public class InformacionFacturacionService implements IInformacionFacturacionSer
 	}
 	
 	private void saveComentarios2(InformacionFacturacionDO item,List<ComentarioInformacionFacturacion2DO> comentarios2){
-		
+		if( comentarios2 == null ){
+			return;
+		}
 		for (ComentarioInformacionFacturacion2DO dato : comentarios2) {
 			dato.setInformacionFacturacion(item);
 			entityManager.persist(item);
@@ -75,7 +79,9 @@ public class InformacionFacturacionService implements IInformacionFacturacionSer
 	}
 
 private void saveComentarios1(InformacionFacturacionDO item,List<ComentarioInformacionFacturacion1DO> comentarios1){
-		
+		if( comentarios1 == null ){
+			return;
+		}
 		for (ComentarioInformacionFacturacion1DO dato : comentarios1) {
 			dato.setInformacionFacturacion(item);
 			entityManager.persist(item);

@@ -33,7 +33,7 @@ public class FuenteNoConformidadDO implements Serializable{
 	private Long id;
 
 	@Column(name = "fuente")
-	private String etiqueta;
+	private String fuente;
 
 	public FuenteNoConformidadDO() {
 		super();
@@ -43,7 +43,7 @@ public class FuenteNoConformidadDO implements Serializable{
 	public FuenteNoConformidadDO(Long id, String etiqueta) {
 		super();
 		this.id = id;
-		this.etiqueta = etiqueta;
+		this.fuente = etiqueta;
 	}
 
 	public Long getId() {
@@ -54,12 +54,12 @@ public class FuenteNoConformidadDO implements Serializable{
 		this.id = id;
 	}
 
-	public String getEtiqueta() {
-		return etiqueta;
+	public String getFuente() {
+		return fuente;
 	}
 
-	public void setEtiqueta(String etiqueta) {
-		this.etiqueta = etiqueta;
+	public void setFuente(String etiqueta) {
+		this.fuente = etiqueta;
 	}
 	
 	

@@ -43,7 +43,7 @@ public class SistemaGestionDO implements Serializable{
 	@Column(name = "id", unique = true, nullable = false)
 	private Integer id;
 	
-	@OneToOne(cascade=CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name = "fk_datos_generales_proyecto", nullable = false)
 	private DatosGrlsProyectoDO datosGeneralesProyecto;
 	

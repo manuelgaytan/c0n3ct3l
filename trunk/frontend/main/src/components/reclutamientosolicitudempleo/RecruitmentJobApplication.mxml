@@ -103,6 +103,7 @@
 				}else{
 					recruitmentJobApplication = this._item;
 				}
+				recruitmentJobApplication.descripcion = "foo";
 				recruitmentJobApplication.datosPrincipalesSolicitante = mainData.getMainData();
 				recruitmentJobApplication.datosGeneralesSolicitante = generalInformation.getGeneralInformation();
 				recruitmentJobApplication.datosFamiliaresSolicitante = familyFacts.getFamilyFacts();

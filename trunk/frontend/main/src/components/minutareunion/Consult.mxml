@@ -102,6 +102,15 @@
 			{
 				this.executeQuery();
 			}
+			
+			private function labelFunctionMinuta(object:Object, column:DataGridColumn):String{
+				if( object != null &&
+					object[column.dataField] != null ){
+					return object[column.dataField].length.toString();
+				}else{
+					return "0";
+				}
+			}
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -128,11 +137,13 @@
 								   dataField="asunto"
 								   width="180"/>
 				<mx:DataGridColumn id="dtgParticipantsNumber" headerText="{'Número\nParticipantes'}"
-								   dataField="participantesMinuta.length"
+								   dataField="participanteMinuta"
+								   labelFunction="labelFunctionMinuta"
 								   textAlign="right"
 								   width="80"/>
 				<mx:DataGridColumn id="dtgAgreementsNumber" headerText="{'Número\nAcuerdos'}"
-								   dataField="acuerdosMinuta.length"
+								   dataField="acuerdoMinuta"
+								   labelFunction="labelFunctionMinuta"
 								   width="80"
 								   textAlign="right"
 								   />

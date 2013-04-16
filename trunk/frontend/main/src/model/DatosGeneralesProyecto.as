@@ -33,6 +33,8 @@ package model
 		public var entregablesIngenieria:ArrayCollection;
 		public var observaciones:ArrayCollection;
 		
+		public var datosGrlsProyectoImplList:ArrayCollection;
+		
 		public function DatosGeneralesProyecto()
 		{
 		}

@@ -123,9 +123,9 @@
 			
 			private function fillCombos():void
 			{
-				this.responseGetTipoAuditoria.token = this.catalogoService.getGetTipoAuditoria();
-				this.responseGetFormaAuditoria.token = this.catalogoService.getGetFormaAuditoria();
-				this.responseGetEstadoSistemaGestion.token = this.catalogoService.getGetEstadoSistemaGestion();
+				this.responseGetTipoAuditoria.token = this.catalogoService.getTipoAuditoria();
+				this.responseGetFormaAuditoria.token = this.catalogoService.getFormaAuditoria();
+				this.responseGetEstadoSistemaGestion.token = this.catalogoService.getEstadoSistemaGestion();
 			}
 			
 			protected function sistemaGestionService_faultHandler(event:FaultEvent):void
@@ -229,7 +229,7 @@
 					Util.showErrorMessage("Primero debe seleccionar un elemento.");
 					return;
 				}
-				var genericEvent:GenericEvent = new GenericEvent("nonConformitySelected");
+				var genericEvent:GenericEvent = new GenericEvent("generalDataSelected");
 				genericEvent.information = nonConformity;
 				this.dispatchEvent( genericEvent );
 			}
@@ -240,7 +240,7 @@
 				if( data == null ){
 					return;
 				}
-				this.cmbAuditType.dataProvider = Util.addEmptyCatalgo( data, "tipoAuditoria.tipo" );
+				this.cmbAuditType.dataProvider = Util.addEmptyCatalgo( data, "tipo" );
 				if( Util.isFill( this.cmbAuditType ) && this._item 
 					&& this._item.tipoAuditoria != null ){
 					this.cmbAuditType.selectedIndex = Util.selectedIndexFromCombo( this.cmbAuditType.dataProvider as ArrayCollection, 
@@ -254,7 +254,7 @@
 				if( data == null ){
 					return;
 				}
-				this.cmbFormAudit.dataProvider = Util.addEmptyCatalgo( data, "formaAuditoria.forma" );
+				this.cmbFormAudit.dataProvider = Util.addEmptyCatalgo( data, "forma" );
 				if( Util.isFill( this.cmbFormAudit ) && this._item 
 					&& this._item.formaAuditoria != null ){
 					this.cmbFormAudit.selectedIndex = Util.selectedIndexFromCombo( this.cmbFormAudit.dataProvider as ArrayCollection, 
@@ -291,17 +291,18 @@
 		</mx:FormItem>
 		<mx:FormItem label="Proyectos:"/>
 		<datosgenerales:Consult id="consultGeneralProjectData"/>
+		<mx:Button label="Ver Datos Generales Proyecto" click="btnViewPerDiemCheck_clickHandler(event)"/>
 		<mx:FormItem label="Aplicación de Auditoría:">
 			<mx:CheckBox id="chkAuditApply"/>
 		</mx:FormItem>
 		<mx:FormItem label="Tipo de Auditoría:">
 			<mx:ComboBox id="cmbAuditType" width="250"
-						 labelField="tipoAuditoria.tipo"
+						 labelField="tipo"
 						 />
 		</mx:FormItem>
 		<mx:FormItem label="Forma de Auditoría:">
 			<mx:ComboBox id="cmbFormAudit" width="250"
-						 labelField="formaAuditoria.forma"
+						 labelField="forma"
 						 />
 		</mx:FormItem>
 		<mx:FormItem label="Fecha Envío Auditoría:">
@@ -321,7 +322,7 @@
 		</mx:FormItem>
 		<mx:FormItem label="Estado:">
 			<mx:ComboBox id="cmbManagementSystemStatus" width="250"
-						 labelField="estadoSistemaGestion.estado"
+						 labelField="estado"
 						 />
 		</mx:FormItem>
 		<mx:FormItem label="Correcciones:">

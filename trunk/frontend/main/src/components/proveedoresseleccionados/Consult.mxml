@@ -113,22 +113,14 @@
 			<mx:DataGridColumn id="dtgRFC" headerText="R.F.C."
 							   dataField="rfc"
 							   width="120"
-							   textAlign="right"/>
-			<mx:DataGridColumn id="dtgDirFisica" headerText="{'Dirección  \n Física'}"
-							   dataField="direccionFisica"
-							   width="150"
-							   />
-			<mx:DataGridColumn id="dtgDirFiscal" headerText="{'Dirección  \n Fiscal'}"
-							   dataField="direccionFisica"
-							   width="150"
 							   />
 			<mx:DataGridColumn id="dtgTelefono" headerText="Teléfonos"
 							   dataField="telefonos"
-							   width="150"
+							   width="50"
 							   />
 			<mx:DataGridColumn id="dtgContacto" headerText="Contacto"
 							   dataField="contacto"
-							   width="150"
+							   width="200"
 							   />
 			<mx:DataGridColumn id="dtgCorreo" headerText="Correo"
 							   dataField="contacto"

@@ -4,6 +4,7 @@ package model
 	public class ReclutamientoSolicitudEmpleo
 	{
 		public var id:*;
+		public var descripcion:String;
 		public var datosPrincipalesSolicitante:DatosPrincipalesSolicitante;
 		public var datosGeneralesSolicitante:DatosGeneralesSolicitante;
 		public var datosFamiliaresSolicitante:DatosFamiliaresSolicitante;

@@ -9,10 +9,14 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -20,6 +24,11 @@ import javax.persistence.TemporalType;
  * @author GUILLERMO
  * 
  */
+@Entity
+@Table(name = "ConcentradoCapacitacion")
+@NamedQueries({
+	@NamedQuery(name = "ConcentradoCapacitacionDO.findAll", query = "select rc from ConcentradoCapacitacionDO rc")
+	})
 public class ConcentradoCapacitacionDO implements Serializable {
 
 	/**
@@ -34,7 +43,7 @@ public class ConcentradoCapacitacionDO implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name = "fk_colaborador", nullable = false)
-	private UsuarioDO colaborador;
+	private ColaboradorDO colaborador;
 
 	@ManyToOne
 	@JoinColumn(name = "fk_tipo_formacion", nullable = false)
@@ -72,7 +81,7 @@ public class ConcentradoCapacitacionDO implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public ConcentradoCapacitacionDO(Integer id, UsuarioDO colaborador,
+	public ConcentradoCapacitacionDO(Integer id, ColaboradorDO colaborador,
 			TipoFormacionDO tipoFormacion, TipoCapacitacionDO tipoCapacitacion,
 			String nombreCapacitacion, Date fechaInicioCapacitacion,
 			Date fechaTerminoCapacitacion, String lugarCapacitacion,
@@ -99,11 +108,11 @@ public class ConcentradoCapacitacionDO implements Serializable {
 		this.id = id;
 	}
 
-	public UsuarioDO getColaborador() {
+	public ColaboradorDO getColaborador() {
 		return colaborador;
 	}
 
-	public void setColaborador(UsuarioDO colaborador) {
+	public void setColaborador(ColaboradorDO colaborador) {
 		this.colaborador = colaborador;
 	}
 

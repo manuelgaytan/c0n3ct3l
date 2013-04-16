@@ -10,7 +10,9 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
+import mx.com.gahm.conenctel.entities.AcuerdoMinutaDO;
 import mx.com.gahm.conenctel.entities.MinutaDO;
+import mx.com.gahm.conenctel.entities.ParticipanteMinutaDO;
 import mx.com.gahm.conenctel.services.IMinutaService;
 
 /**
@@ -44,8 +46,22 @@ public class MinutaService  implements IMinutaService{
 
 	@Override
 	public MinutaDO save(MinutaDO item) {
+		this.asignarMinuta(item);
 		entityManager.persist(item);
 		return item;
+	}
+	
+	private void asignarMinuta(MinutaDO item){
+		if( item.getParticipanteMinuta() != null ){
+			for (ParticipanteMinutaDO participanteMinutaDO : item.getParticipanteMinuta() ) {
+				participanteMinutaDO.setMinuta(item);
+			}
+		}
+		if( item.getAcuerdoMinuta() != null ){
+			for (AcuerdoMinutaDO acuerdoMinutaDO : item.getAcuerdoMinuta() ) {
+				acuerdoMinutaDO.setMinuta(item);
+			}
+		}
 	}
 
 	@Override

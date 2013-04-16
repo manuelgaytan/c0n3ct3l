@@ -75,7 +75,7 @@ public class CobranzaDO implements Serializable{
 	@Column(name = "monto", nullable = false)
 	private Double monto;
 	
-	@Column(name = "referenciaAbono", nullable = false)
+	@Column(name = "referencia_abono", nullable = false)
 	private Integer referenciaAbono;
 	
 	@OneToMany(mappedBy="cobranza", fetch = FetchType.EAGER)	

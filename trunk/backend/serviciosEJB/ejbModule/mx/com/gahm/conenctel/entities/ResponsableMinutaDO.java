@@ -33,7 +33,7 @@ public class ResponsableMinutaDO implements Serializable{
 	private long id;
 
 	@Column(name="responsable")
-	private String etiqueta;
+	private String responsable;
 
 	public ResponsableMinutaDO() {
 		super();
@@ -43,7 +43,7 @@ public class ResponsableMinutaDO implements Serializable{
 	public ResponsableMinutaDO(long id, String etiqueta) {
 		super();
 		this.id = id;
-		this.etiqueta = etiqueta;
+		this.responsable = etiqueta;
 	}
 
 	/**
@@ -63,15 +63,15 @@ public class ResponsableMinutaDO implements Serializable{
 	/**
 	 * @return the etiqueta
 	 */
-	public String getEtiqueta() {
-		return etiqueta;
+	public String getResponsable() {
+		return responsable;
 	}
 
 	/**
 	 * @param etiqueta the etiqueta to set
 	 */
-	public void setEtiqueta(String etiqueta) {
-		this.etiqueta = etiqueta;
+	public void setResponsable(String etiqueta) {
+		this.responsable = etiqueta;
 	}
 	
 	

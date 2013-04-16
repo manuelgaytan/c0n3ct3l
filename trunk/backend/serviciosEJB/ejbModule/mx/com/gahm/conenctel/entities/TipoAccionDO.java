@@ -33,7 +33,7 @@ public class TipoAccionDO implements Serializable {
 	private Long id;
 
 	@Column(name = "accion")
-	private String etiqueta;
+	private String accion;
 
 	public TipoAccionDO() {
 		super();
@@ -43,7 +43,7 @@ public class TipoAccionDO implements Serializable {
 	public TipoAccionDO(Long id, String etiqueta) {
 		super();
 		this.id = id;
-		this.etiqueta = etiqueta;
+		this.accion = etiqueta;
 	}
 
 	public Long getId() {
@@ -54,12 +54,12 @@ public class TipoAccionDO implements Serializable {
 		this.id = id;
 	}
 
-	public String getEtiqueta() {
-		return etiqueta;
+	public String getAccion() {
+		return accion;
 	}
 
-	public void setEtiqueta(String etiqueta) {
-		this.etiqueta = etiqueta;
+	public void setAccion(String etiqueta) {
+		this.accion = etiqueta;
 	}
 
 }

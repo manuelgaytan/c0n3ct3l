@@ -1765,6 +1765,7 @@
 	CREATE TABLE ReclutamientoSolicitudEmpleo
 	(
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	descripcion VARCHAR(255) NOT NULL,
 	PRIMARY KEY (id)
 	);
 
@@ -4391,6 +4392,8 @@
 	VALUES (1, 'Pendiente');
 	INSERT INTO EstadoNotificacion
 	VALUES (2, 'Atendida');
+
+	insert into ReclutamientoSolicitudEmpleo values(1,'test');
 	/*
 	INSERT INTO 
 	VALUES (1, '');

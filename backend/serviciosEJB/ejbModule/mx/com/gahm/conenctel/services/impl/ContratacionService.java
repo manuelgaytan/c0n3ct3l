@@ -10,7 +10,9 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
+import mx.com.gahm.conenctel.entities.ColaboradorDO;
 import mx.com.gahm.conenctel.entities.ContratacionDO;
+import mx.com.gahm.conenctel.entities.DocumentosContratacionDO;
 import mx.com.gahm.conenctel.services.IContratacionService;
 
 /**
@@ -45,7 +47,11 @@ public class ContratacionService implements IContratacionService{
 
 	@Override
 	public ContratacionDO save(ContratacionDO item) {
-		entityManager.persist(item.getColaborador());
+		
+		item.getDocumentosContratacion().setContratacion(item);
+		
+			
+		
 		entityManager.persist(item);
 		return item;
 	}

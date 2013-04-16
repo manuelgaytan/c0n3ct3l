@@ -48,7 +48,7 @@ public class ContratacionDO implements Serializable{
 	@JoinColumn(name = "fk_reclutamiento_solicitud_empleo", nullable = false)
 	private ReclutamientoSolicitudEmpleoDO reclutamientoSolicitudEmpleo;
 	
-	@OneToOne
+	@OneToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name = "fk_colaborador", nullable = false)
 	private ColaboradorDO colaborador; 
 	

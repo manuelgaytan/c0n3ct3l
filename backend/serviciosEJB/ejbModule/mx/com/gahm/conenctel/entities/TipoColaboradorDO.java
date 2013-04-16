@@ -17,7 +17,7 @@ import javax.persistence.Table;
  * @author Carlos Leyva
  */
 @Entity
-@Table(name="tipocolaborador")
+@Table(name="TipoColaborador")
 @NamedQueries({
 	@NamedQuery(name = "TipoColaboradorDO.findAll", query = "select es from TipoColaboradorDO es ")})
 public class TipoColaboradorDO implements Serializable {
@@ -31,6 +31,16 @@ public class TipoColaboradorDO implements Serializable {
 
 	public TipoColaboradorDO() {
 	}
+	
+	
+
+	public TipoColaboradorDO(long id, String tipo) {
+		super();
+		this.id = id;
+		this.tipo = tipo;
+	}
+
+
 
 	public long getId() {
 		return this.id;

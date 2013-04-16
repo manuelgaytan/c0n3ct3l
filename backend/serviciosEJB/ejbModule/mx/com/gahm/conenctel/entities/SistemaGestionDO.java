@@ -8,6 +8,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -42,9 +43,9 @@ public class SistemaGestionDO implements Serializable{
 	@Column(name = "id", unique = true, nullable = false)
 	private Integer id;
 	
-	@OneToOne
+	@OneToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name = "fk_datos_generales_proyecto", nullable = false)
-	private DatosGeneralesProyectoDO datosGeneralesProyecto;
+	private DatosGrlsProyectoDO datosGeneralesProyecto;
 	
 	@Column(name = "aplicacion_auditoria")
 	private Boolean aplicacionAuditoria;
@@ -91,7 +92,7 @@ public class SistemaGestionDO implements Serializable{
 	}
 
 	public SistemaGestionDO(Integer id,
-			DatosGeneralesProyectoDO datosGeneralesProyecto,
+			DatosGrlsProyectoDO datosGeneralesProyecto,
 			Boolean aplicacionAuditoria, TipoAuditoriaDO tipoAuditoria,
 			FormaAuditoriaDO formaAuditoria, Date fechaEnvio,
 			Date fechaRecepcion, String formatoAuditoria, String nombreAuditor,
@@ -122,12 +123,12 @@ public class SistemaGestionDO implements Serializable{
 		this.id = id;
 	}
 
-	public DatosGeneralesProyectoDO getDatosGeneralesProyecto() {
+	public DatosGrlsProyectoDO getDatosGeneralesProyecto() {
 		return datosGeneralesProyecto;
 	}
 
 	public void setDatosGeneralesProyecto(
-			DatosGeneralesProyectoDO datosGeneralesProyecto) {
+			DatosGrlsProyectoDO datosGeneralesProyecto) {
 		this.datosGeneralesProyecto = datosGeneralesProyecto;
 	}
 

@@ -210,6 +210,7 @@
 		<class>mx.com.gahm.conenctel.entities.ComentarioPagoMovimientoPagoContableServicioDO</class>
 		<class>mx.com.gahm.conenctel.entities.ComentarioPagoProveedorDO</class>
 		<class>mx.com.gahm.conenctel.entities.ComentarioCotizacionDO</class>
+		<class>mx.com.gahm.conenctel.entities.DocumentoComprobacionViaticosDO</class>
 		<properties>
 			<property name="eclipselink.logging.level" value="FINE"/> 
 			<property name="eclipselink.logging.parameters" value="true"/>

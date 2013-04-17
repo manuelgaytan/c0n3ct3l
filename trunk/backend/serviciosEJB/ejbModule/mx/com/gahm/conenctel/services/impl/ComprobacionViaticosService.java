@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import mx.com.gahm.conenctel.entities.ComprobacionViaticosDO;
+import mx.com.gahm.conenctel.entities.DocumentoComprobacionViaticosDO;
 import mx.com.gahm.conenctel.services.IComprobacionViaticosService;
 
 @Stateless(mappedName = "ejb/ComprobacionViaticosService")
@@ -45,6 +46,12 @@ public class ComprobacionViaticosService implements IComprobacionViaticosService
 	public ComprobacionViaticosDO save(ComprobacionViaticosDO item) {
 		try {
 
+			List<DocumentoComprobacionViaticosDO> documentos =item.getDocumentosComprobacionViaticos();
+			if(documentos!=null)
+			for (DocumentoComprobacionViaticosDO doc : documentos) {
+				doc.setComprobacionViatico(item);
+			}
+			
 			entityManager.persist(item);
 
 		} catch (Exception e) {
@@ -57,6 +64,11 @@ public class ComprobacionViaticosService implements IComprobacionViaticosService
 
 	@Override
 	public ComprobacionViaticosDO update(ComprobacionViaticosDO item) {
+		List<DocumentoComprobacionViaticosDO> documentos =item.getDocumentosComprobacionViaticos();
+		if(documentos!=null)
+		for (DocumentoComprobacionViaticosDO doc : documentos) {
+			doc.setComprobacionViatico(item);
+		}
 		entityManager.merge(item);
 
 		return item;

@@ -449,22 +449,53 @@
 			<scope>session</scope>
 		</properties>
 	</destination>
+	
 
-	<!-- 
-	<destination id="">
+	<destination id="cobranzaService">
 		<properties>
 			<factory>ejb3</factory>
-			<source>ejb/</source>
+			<source>ejb/CobranzaService</source>
 			<scope>session</scope>
 		</properties>
 	</destination>
 	
-	<destination id="">
+	<destination id="pagoProveedorService">
 		<properties>
 			<factory>ejb3</factory>
-			<source>ejb/</source>
+			<source>ejb/PagoProveedorService</source>
 			<scope>session</scope>
 		</properties>
 	</destination>
-	 -->
+	
+	<destination id="pagoViaticosService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/PagoViaticosService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+	
+	<destination id="pagoMovimientoPagoContableServicioService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/PagoMovimientoPagoContableServicioService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+	
+	<destination id="pagoOtraOperacionFinancieraService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/PagoOtraOperacionFinancieraService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+	
+	<destination id="bancoConectelService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/BancoConectelService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
 </service>

@@ -20,4 +20,5 @@ public interface IInformacionFacturacionService {
 	InformacionFacturacionDO save(InformacionFacturacionDO item);
 	InformacionFacturacionDO update(InformacionFacturacionDO item);
 	InformacionFacturacionDO getItem(Integer id);
+	public List<InformacionFacturacionDO> getAllByFiltro(Integer idCliente);
 }

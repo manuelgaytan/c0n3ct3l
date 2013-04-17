@@ -6,11 +6,13 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 import mx.com.gahm.conenctel.entities.ComentarioInformacionFacturacion1DO;
 import mx.com.gahm.conenctel.entities.ComentarioInformacionFacturacion2DO;
 import mx.com.gahm.conenctel.entities.ComentarioInformacionFacturacion3DO;
 import mx.com.gahm.conenctel.entities.InformacionFacturacionDO;
+import mx.com.gahm.conenctel.entities.NotaCreditoClienteDO;
 import mx.com.gahm.conenctel.services.IInformacionFacturacionService;
 
 @Stateless(mappedName = "ejb/InformacionFacturacionService")
@@ -109,7 +111,16 @@ private void saveComentarios1(InformacionFacturacionDO item,List<ComentarioInfor
 		
 	}
 	
-	
+	@Override
+	public List<InformacionFacturacionDO> getAllByFiltro(Integer idCliente){
+		List<InformacionFacturacionDO> datos = null;
+		TypedQuery<InformacionFacturacionDO>  query =null;
+		query = entityManager.createNamedQuery("InformacionFacturacionDO.NotasCrediByCliente",InformacionFacturacionDO.class);
+		query.setParameter("idCliente", idCliente);
+		datos = query.getResultList();
+
+		return datos;
+	}
 	
 	
 }

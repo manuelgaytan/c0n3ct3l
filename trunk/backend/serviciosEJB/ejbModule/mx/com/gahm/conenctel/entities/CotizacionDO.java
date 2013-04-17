@@ -4,13 +4,17 @@ package mx.com.gahm.conenctel.entities;
 import static javax.persistence.GenerationType.IDENTITY;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -31,7 +35,7 @@ public class CotizacionDO implements java.io.Serializable {
 	private String emisor;
 	private Date fecha;
 	private String nombreArchivo;
-
+	private List<ComentarioCotizacionDO> comentariosCotizacion;
 	
 	public CotizacionDO() {
 	}
@@ -90,6 +94,16 @@ public class CotizacionDO implements java.io.Serializable {
 
 	public void setNombreArchivo(String nombreArchivo) {
 		this.nombreArchivo = nombreArchivo;
+	}
+
+	@OneToMany(mappedBy="cotizacion", fetch = FetchType.EAGER,cascade=CascadeType.ALL)	
+	public List<ComentarioCotizacionDO> getComentariosCotizacion() {
+		return comentariosCotizacion;
+	}
+
+	public void setComentariosCotizacion(
+			List<ComentarioCotizacionDO> comentariosCotizacion) {
+		this.comentariosCotizacion = comentariosCotizacion;
 	}
 
 }

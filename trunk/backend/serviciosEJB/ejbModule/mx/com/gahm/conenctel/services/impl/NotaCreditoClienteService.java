@@ -6,6 +6,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 import mx.com.gahm.conenctel.entities.ComentarioCuentasPagarFacturacionDO;
 import mx.com.gahm.conenctel.entities.ComentarioNotaCreditoClienteDO;
@@ -115,5 +116,16 @@ public class NotaCreditoClienteService implements INotaCreditoClienteService {
 		}
 
 		return notaCreditoClienteDO;
+	}
+	
+	@Override
+	public List<NotaCreditoClienteDO> getAllByFiltro(Integer idCliente){
+		List<NotaCreditoClienteDO> datos = null;
+		TypedQuery<NotaCreditoClienteDO>  query =null;
+		query = entityManager.createNamedQuery("NotaCreditoClienteDO.NotasCrediByCliente",NotaCreditoClienteDO.class);
+		query.setParameter("idCliente", idCliente);
+		datos = query.getResultList();
+
+		return datos;
 	}
 }

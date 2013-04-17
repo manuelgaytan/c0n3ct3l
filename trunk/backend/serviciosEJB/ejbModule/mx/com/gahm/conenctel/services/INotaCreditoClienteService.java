@@ -21,5 +21,6 @@ public interface INotaCreditoClienteService {
 	NotaCreditoClienteDO save( NotaCreditoClienteDO item );
 	NotaCreditoClienteDO update( NotaCreditoClienteDO item );
 	NotaCreditoClienteDO getItem( Integer id );
+	public List<NotaCreditoClienteDO> getAllByFiltro(Integer idCliente);
 
 }

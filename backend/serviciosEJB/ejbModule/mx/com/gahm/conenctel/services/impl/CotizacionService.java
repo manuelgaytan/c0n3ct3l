@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
+import mx.com.gahm.conenctel.entities.ComentarioCotizacionDO;
 import mx.com.gahm.conenctel.entities.CotizacionDO;
 import mx.com.gahm.conenctel.services.ICotizacionService;
 
@@ -28,22 +29,50 @@ public class CotizacionService implements ICotizacionService{
 
 	@Override
 	public void deleteItems(List<Integer> idsItems) {
-		CotizacionDO cotizacion = null;
 		for (Integer id : idsItems) {
-			cotizacion =getItem(id);
-			entityManager.remove(cotizacion);
+			deletecomentarios(id);
 		}
 		
 	}
 
 	@Override
 	public CotizacionDO save(CotizacionDO item) {
+		
+		List<ComentarioCotizacionDO> comentarios= item.getComentariosCotizacion();
+		if(comentarios!=null){
+			savecomentarios(item ,comentarios);
+		}
+		
+		
 		entityManager.persist(item);
 		return item;
 	}
 
+	private void savecomentarios(CotizacionDO item ,List<ComentarioCotizacionDO> comentarios){
+		for (ComentarioCotizacionDO comentario : comentarios) {
+			entityManager.persist(comentario.getComentarioCompras());
+			comentario.setCotizacion(item);
+		}
+	}
+	
+	private void deletecomentarios(Integer id){
+		CotizacionDO item = getItem(id);
+		List<ComentarioCotizacionDO> comentarios= item.getComentariosCotizacion();
+		
+		for (ComentarioCotizacionDO comentario : comentarios) {
+			entityManager.remove(comentario);
+			entityManager.remove(comentario.getComentarioCompras());
+		}
+	}
+	
+	
 	@Override
 	public CotizacionDO update(CotizacionDO item) {
+		deletecomentarios(item.getId());
+		List<ComentarioCotizacionDO> comentarios= item.getComentariosCotizacion();
+		if(comentarios!=null){
+			savecomentarios(item ,comentarios);
+		}
 		entityManager.merge(item);
 		return item;
 	}

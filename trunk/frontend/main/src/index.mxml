@@ -41,6 +41,7 @@
 			import model.ComentarioCompras;
 			import model.ComentarioConcentradoOrdenCompraCliente;
 			import model.ComentarioContabilidad;
+			import model.ComentarioCotizacion;
 			import model.ComentarioCuentasPagarFacturacion;
 			import model.ComentarioFacturaProveedor;
 			import model.ComentarioGenerico;
@@ -515,6 +516,7 @@
 			private var responsableMinuta:ResponsableMinuta;
 			private var notificacion:Notificacion;
 			private var estadoNotificacion:EstadoNotificacion;
+			private var comentarioCotizacion:ComentarioCotizacion;
 						
 			protected function login_readyHandler(event:ModuleEvent):void
 			{

@@ -64,7 +64,7 @@
 				this.txtTransmitter.text = this._item.emisor;
 				this.dtfDate.selectedDate = this._item.fecha;
 				this.dlvFileName.delivers = new ArrayCollection([this._item.nombreArchivo]);
-				this.comments.comments = this._item.comentariosCotizacion;
+				this.comments.setCommentsIn( this._item.comentariosCotizacion, "comentarioCompras");
 			}
 			
 			private function getQuote():Cotizacion{
@@ -81,7 +81,7 @@
 					(this.dlvFileName.delivers.length > 0) ){
 					item.nombreArchivo = this.dlvFileName.delivers.getItemAt(0) as String;
 				}
-				item.comentariosCotizacion = this.comments.comments;
+				item.comentariosCotizacion = this.comments.getCommentsAsInWith("model.ComentarioCompras","model.ComentarioCotizacion","comentarioCompras")
 				return item;
 			}
 			

@@ -48,7 +48,7 @@
 					return;
 				}
 				var item:Proyecto = this.datagrid.selectedItem as Proyecto;
-				this.responseGetProyecto.token = this.ordenCompraClienteService.getProyecto( item.id );
+				this.responseGetProyecto.token = this.ordenCompraClienteService.getItem( item.id );
 			}
 			
 			protected function responseGetItem_resultHandler(event:ResultEvent):void
@@ -95,7 +95,7 @@
 								   itemRenderer="mx.controls.CheckBox"
 								   textAlign="center"/>
 				<mx:DataGridColumn id="dtgDate" headerText="Fecha"
-								   dataField="fecha"
+								   dataField="fechaOrdenCompra"
 								   labelFunction="{Util.labelFunctionDate}"
 								   textAlign="center"
 								   />
@@ -104,11 +104,11 @@
 								   textAlign="right"
 								   />
 				<mx:DataGridColumn id="dtgCostValidation" headerText="{'Validación\ndel Costo'}"
-								   dataField="estadoValidacionCosto.estiqueta"
+								   dataField="validacionCosto.estiqueta"
 								   textAlign="center"
 								   />
 				<mx:DataGridColumn id="dtgPurchaseOrderState" headerText="{'Estado\nOrden de\nCompra'}"
-								   dataField="estadoOrdenCompra"
+								   dataField="estadoOrdenCompra.etiqueta"
 								   textAlign="center"
 								   />
 			</mx:columns>

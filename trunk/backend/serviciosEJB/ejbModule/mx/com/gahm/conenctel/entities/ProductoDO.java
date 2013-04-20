@@ -75,6 +75,9 @@ public class ProductoDO implements Serializable {
 	
 	@Column(name = "dias_implementacion")
 	private int diasImplementacion;
+	
+	@Column(name = "alcances")
+	private String alcances;
 
 	@JoinColumn(name = "id_cliente")
 	private ClienteDO cliente;
@@ -192,6 +195,14 @@ public class ProductoDO implements Serializable {
 
 	public void setDiasImplementacion(int diasImplementacion) {
 		this.diasImplementacion = diasImplementacion;
+	}
+
+	public String getAlcances() {
+		return alcances;
+	}
+
+	public void setAlcances(String alcances) {
+		this.alcances = alcances;
 	}
 
 }

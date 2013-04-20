@@ -23,6 +23,7 @@
 			private var mode:String = null;
 			private var _product:Producto;
 			private var validators:InicializaValidadoresEtiquetas;
+			[Bindable]
 			private var _preciarios:Boolean = false;
 			
 			public function set registrer(value:Boolean):void{
@@ -55,6 +56,7 @@
 				this.txtLocalCostSupplier.enabled = value;
 				this.txtForaneoCostSupplier.enabled = value;
 				this.txtImplementationDays.enabled = value;
+				this.txtScope.enabled = value;
 			}
 			
 			protected function creationCompleteHandler(event:FlexEvent):void
@@ -94,6 +96,7 @@
 				this.txtLocalCostSupplier.text = Util.formatNumber(this._product.costoLocalProveedor);
 				this.txtForaneoCostSupplier.text = Util.formatNumber(this._product.costoForaneoProveedor);
 				this.txtImplementationDays.text = Util.numberToString(this._product.diasImplementacion);
+				this.txtScope.text = this._product.alcances;
 			}
 			
 			private function getClient():Producto{
@@ -118,6 +121,7 @@
 				product.costoLocalProveedor = Util.stringToNumber(this.txtLocalCostSupplier.text);
 				product.costoForaneoProveedor = Util.stringToNumber(this.txtForaneoCostSupplier.text);
 				product.diasImplementacion = Util.stringToNumber( this.txtImplementationDays.text );
+				product.alcances = Util.validateEmpty(this.txtScope.text) == null ? "" : Util.validateEmpty(this.txtScope.text);
 				return product;
 			}
 			
@@ -185,6 +189,7 @@
 				validators.crearValidadorRestrictor("a255",ValidadorAlfabetico.nombre, 0, 255, true);
 				validators.setValidador(txtActivity, "a255");
 				validators.setValidador(txtServiceDescription, "a255");
+				validators.setValidador(txtScope, "a255");
 				validators.crearValidadorRestrictor("cost",ValidadorDecimal.nombre, 9, 2);
 				validators.setRestrictor(txtLocalCostCustomer, "cost");
 				validators.setRestrictor(txtForaneoCostCustomer, "cost");
@@ -216,6 +221,7 @@
 				this.txtLocalCostSupplier.reset();
 				this.txtForaneoCostSupplier.reset();
 				this.txtImplementationDays.reset();
+				this.txtScope.reset();
 			}
 			
 			protected function responseUpdate_resultHandler(event:ResultEvent):void
@@ -305,6 +311,9 @@
 		</mx:FormItem>
 		<mx:FormItem label="Días de Implementación:">
 			<components:TextInput id="txtImplementationDays" width="150" textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Alcances:">
+			<components:TextArea id="txtScope" width="600"/>
 		</mx:FormItem>
 		<mx:FormItem direction="horizontal">
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"

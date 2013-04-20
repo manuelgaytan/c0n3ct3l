@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical" width="1200" height="400" 
+<mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical" width="1200" height="520" 
 		   xmlns:productos="components.productos.*">
 	<mx:Script>
 		<![CDATA[
@@ -33,18 +33,26 @@
 			{
 				this.navigator.selectedChild = this.consult;
 				this.consult.executeQuery();
+				this.filtro.fillCombos();
 			}
 			
 			protected function detail_productUpdatedHandler(event:Event):void
 			{
 				this.navigator.selectedChild = this.consult;
 				this.consult.executeQuery();
+				this.filtro.fillCombos();
 			}
+			
+			protected function consult_productsDeletedHandler(event:GenericEvent):void
+			{
+				this.filtro.fillCombos();
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:TabNavigator id="navigator" width="100%" height="100%" creationPolicy="all">
 		<productos:Filter id="filtro" filterCommand="filtro_filterCommandHandler(event)"/>
-		<productos:Consult id="consult" productDetail="consult_productDetailHandler(event)"/>
+		<productos:Consult id="consult" productDetail="consult_productDetailHandler(event)" productsDeleted="consult_productsDeletedHandler(event)"/>
 		<productos:Product id="detail" update="true" productUpdated="detail_productUpdatedHandler(event)"/>
 		<productos:Product id="register" registrer="true" productNew="register_productNewHandler(event)"/>
 	</mx:TabNavigator>

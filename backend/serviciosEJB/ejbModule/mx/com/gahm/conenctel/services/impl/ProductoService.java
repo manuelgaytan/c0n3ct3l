@@ -36,7 +36,7 @@ public class ProductoService implements IProductoService {
 	@Inject
 	private EntityManager entityManager;
 
-	private static final String QUERY_EXPORT_ALL_PRODUCTO = "SELECT CONCAT(c.nombre_comercial,',',p.tipo_proyecto,',',p.teconologia,',',p.equipo,',',p.actividad_realizar,',',p.modelo,',',p.descripcion_servicio,',',p.tipo_servicio,',',p.costo_local_cliente,',',p.costo_foraneo_cliente,',',p.costo_local_proveedor,',',p.costo_foraneo_proveedor,',',p.dias_implementacion) FROM producto p INNER JOIN cliente c ON p.id_cliente = c.id";
+	private static final String QUERY_EXPORT_ALL_PRODUCTO = "SELECT CONCAT(c.nombre_comercial,',',p.tipo_proyecto,',',p.teconologia,',',p.equipo,',',p.actividad_realizar,',',p.modelo,',',p.descripcion_servicio,',',p.tipo_servicio,',',p.costo_local_cliente,',',p.costo_foraneo_cliente,',',p.costo_local_proveedor,',',p.costo_foraneo_proveedor,',',p.dias_implementacion,',',p.alcances) FROM producto p INNER JOIN cliente c ON p.id_cliente = c.id";
 
 //	@EJB
 //	private TransformacionServiceEJB transformacionService;
@@ -458,6 +458,7 @@ public class ProductoService implements IProductoService {
 			producto.setCostoLocalProveedor(Double.valueOf((String) t.getValueAt(x, 8)));
 			producto.setCostoForaneoProveedor(Double.valueOf((String) t.getValueAt(x, 8)));
 			producto.setDiasImplementacion(Integer.valueOf((String) t.getValueAt(x, 9)));
+			producto.setAlcances((String) t.getValueAt(x, 10));
 			entityManager.persist(producto);
 		}
 	}

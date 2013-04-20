@@ -81,8 +81,9 @@
 				this.fillCombos();
 			}
 			
-			private function fillCombos():void
+			public function fillCombos():void
 			{
+				this.cleanCombos();
 				this.responseGetClientes.token  = this.clienteService.getClientes();
 			}
 			
@@ -91,6 +92,7 @@
 				var i:* = Util.selectedId( this.cmbClient );
 				if( i == undefined ||
 					i == 0 ){
+					cleanCombos( cmbClient.id );
 					return;
 				}
 				this.responseGetTiposProyecto.token = this.productoService.getTiposProyecto(i);
@@ -119,10 +121,16 @@
 					i);
 			}
 			
-			private function cleanCombos(id:String):void
+			private function cleanCombos(id:String = null):void
 			{
 				switch(id)
 				{
+					case null:
+					{
+						Util.freeDataProvider( cmbClient );
+						cmbClient.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
+						break;
+					}
 					case cmbClient.id:
 					{
 						Util.freeDataProvider( cmbProjectType );

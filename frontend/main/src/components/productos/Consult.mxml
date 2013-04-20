@@ -88,6 +88,8 @@
 			protected function responseDeleteProductos_resultHandler(event:ResultEvent):void
 			{
 				this.executeQuery();
+				var genericEvent:GenericEvent = new GenericEvent("productsDeleted");
+				this.dispatchEvent( genericEvent );
 			}
 			
 			public function executeQuery(filter:FiltroProducto = null):void
@@ -230,10 +232,13 @@
 							   />
 		</mx:columns>
 	</mx:DataGrid>
-	<mx:HBox>
-		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>
-		<mx:Button label="Exportar" id="btnExport" click="btnExport_clickHandler(event)"/>
-		<mx:Button label="Importar" id="btnImport" click="btnImport_clickHandler(event)"/>
+	<mx:HBox includeInLayout="{!this._preciarios}">
+		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"
+				   visible="{!this._preciarios}"/>
+		<mx:Button label="Exportar" id="btnExport" click="btnExport_clickHandler(event)"
+				   visible="{!this._preciarios}"/>
+		<mx:Button label="Importar" id="btnImport" click="btnImport_clickHandler(event)"
+				   visible="{!this._preciarios}"/>
 	</mx:HBox>
 	<mx:RemoteObject id="productoService" destination="productoService" fault="productoService_faultHandler(event)"
 					 showBusyCursor="true"/>

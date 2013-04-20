@@ -20,6 +20,7 @@ package model
 		public var costoLocalProveedor:Number;
 		public var costoForaneoProveedor:Number;
 		public var diasImplementacion:*;
+		public var alcances:String;
 		
 		public function Producto()
 		{

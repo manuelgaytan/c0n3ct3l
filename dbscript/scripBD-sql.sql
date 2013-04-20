@@ -123,7 +123,7 @@
 	costo_local_proveedor DECIMAL,
 	costo_foraneo_proveedor DECIMAL,
 	dias_implementacion INT(11),
-	alcances VARCHAR(255),
+	alcances VARCHAR(255) NOT NULL,
 	PRIMARY KEY (id)
 	);
 

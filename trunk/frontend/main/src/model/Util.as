@@ -5,6 +5,10 @@ package model
 	import flash.display.DisplayObject;
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
+	import flash.utils.getDefinitionByName;
+	
+	import model.ComentarioGenerico;
+	import model.TipoAlmacen;
 	
 	import mx.collections.ArrayCollection;
 	import mx.collections.Sort;
@@ -358,7 +362,7 @@ package model
 		
 		public static function showProperties(object:Object):void
 		{
-			//showErrorMessage( ObjectUtil.toString( object ) );
+			showErrorMessage( ObjectUtil.toString( object ) );
 		}
 		
 		public static function isFill(cmbProfile:ComboBox):Boolean
@@ -552,6 +556,25 @@ package model
 		public static function faultHandler(event:FaultEvent):void
 		{
 			Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+		}
+		
+		public static function getComentariosTipoAlmacen(transformTo:String, values:ArrayCollection, tipoAlmacen:TipoAlmacen):ArrayCollection{
+			if( transformTo == null || values == null || values.length == 0 || tipoAlmacen == null || tipoAlmacen.id == undefined ){
+				return null;
+			}
+			var returnValues:ArrayCollection = new ArrayCollection();
+			var objectType:Class = null;
+			objectType = getDefinitionByName(transformTo) as Class;
+			for each (var object:ComentarioGenerico in values) 
+			{
+				var item = new(objectType)();
+				item.tipoAlmacen = tipoAlmacen.id;
+				item.comentario = object.comentario;
+				item.fechaCaptura = object.fechaCaptura;
+				item.usuario = object.usuario;
+				returnValues.addItem( item );
+			}
+			return returnValues;
 		}
 	}
 }

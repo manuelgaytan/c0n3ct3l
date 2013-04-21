@@ -6,10 +6,13 @@
 		<![CDATA[
 			import model.Catalogo;
 			import model.Colaborador;
+			import model.ComentarioGenerico;
+			import model.Comentarios;
 			import model.Constants;
 			import model.EstatusA;
 			import model.GrupoFamiliaA;
 			import model.Herramienta;
+			import model.Model;
 			import model.Perfil;
 			import model.TipoAlmacen;
 			import model.TipoMantenimiento;
@@ -144,7 +147,7 @@
 				item.fkTipoMantenimiento = Util.extractId(item.tipoMantenimiento);
 				item.fechaMantenimiento = this.dtfServiceDate.selectedDate;
 				item.ordenMantenimiento = this.dlvServiceOrder.delivers;
-				item.comentarios = this.comments.comments;
+				item.comentarios = Util.getComentariosTipoAlmacen( "model.Comentarios", this.comments.comments,TipoAlmacen.getHerramienta());
 				return item;
 			}
 			
@@ -366,10 +369,10 @@
 			<components:TextInput id="txtModel"/>
 		</mx:FormItem>
 		<mx:FormItem label="Poliza de Garantía:">
-			<components:Deliver id="dlvWarranty"/>
+			<components:FlatDeliver id="dlvWarranty"/>
 		</mx:FormItem>
 		<mx:FormItem label="Poliza de Seguro:">
-			<components:Deliver id="dlvInsurance"/>
+			<components:FlatDeliver id="dlvInsurance"/>
 		</mx:FormItem>
 		<mx:FormItem label="Existencia:">
 			<components:TextInput id="txtExistence"
@@ -405,7 +408,7 @@
 			<components:DateField id="dtfNextCalibration"/>
 		</mx:FormItem>
 		<mx:FormItem label="Certificado de Calibración:">
-			<components:Deliver id="dlvCalibrationCertificate"/>
+			<components:FlatDeliver id="dlvCalibrationCertificate"/>
 		</mx:FormItem>
 		<mx:FormItem label="Mantenimiento o Servicio:">
 			<mx:ComboBox id="cmbService"
@@ -416,7 +419,7 @@
 			<components:DateField id="dtfServiceDate"/>
 		</mx:FormItem>
 		<mx:FormItem label="Orden de Mantenimiento o Servicio:">
-			<components:Deliver id="dlvServiceOrder"/>
+			<components:FlatDeliver id="dlvServiceOrder"/>
 		</mx:FormItem>
 		<components:Comments id="comments"/>
 		<mx:FormItem>

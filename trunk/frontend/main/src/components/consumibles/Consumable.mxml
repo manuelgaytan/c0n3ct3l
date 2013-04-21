@@ -116,7 +116,7 @@
 				item.fkResponsable = Util.extractId(item.responsable);
 				item.estatusC = Util.validateCombo( this.cmbStatus ) as EstatusC;
 				item.fkEstatusC = Util.extractId(item.estatusC);
-				item.comentarios = this.comments.comments;
+				item.comentarios = Util.getComentariosTipoAlmacen( this.comments.comments, TipoAlmacen.getConsumibles() );
 				return item;
 			}
 			

@@ -12,6 +12,7 @@
 			import model.Hardware;
 			import model.Perfil;
 			import model.TipoAlmacen;
+			import model.TipoDocumentoAlmacen;
 			import model.TipoMantenimiento;
 			import model.UbicacionB;
 			import model.UnidadC;
@@ -77,8 +78,8 @@
 				this.txtSerie.text = this._item.noSerie;
 				this.txtTrade.text = this._item.marca;
 				this.txtModel.text = this._item.modelo;
-				this.dlvWarranty.delivers = this._item.polizaGarantia;
-				this.dlvInsurance.delivers = this._item.polizaSeguro;
+				this.dlvWarranty.delivers = Util.setDocumentosAlmacen( this._item.polizaGarantia );
+				this.dlvInsurance.delivers = Util.setDocumentosAlmacen( this._item.polizaSeguro );
 				this.txtExistence.text = Util.numberToString( this._item.existencia );
 				if( Util.isFill( this.cmbUnit ) && this._item.unidadC != null ){
 					this.cmbUnit.selectedIndex = Util.selectedIndexFromCombo( this.cmbUnit.dataProvider as ArrayCollection, 
@@ -101,7 +102,7 @@
 						this._item.tipoMantenimiento.id);
 				}
 				this.dtfServiceDate.selectedDate = this._item.fechaMantenimiento;
-				this.dlvServiceOrder.delivers = this._item.ordenMantenimiento;
+				this.dlvServiceOrder.delivers = Util.setDocumentosAlmacen( this._item.ordenMantenimiento );
 				this.comments.comments = this._item.comentarios;
 			}
 			
@@ -121,8 +122,8 @@
 				item.noSerie = Util.validateEmpty( this.txtSerie.text );
 				item.marca = Util.validateEmpty( this.txtTrade.text );
 				item.modelo = Util.validateEmpty( this.txtModel.text );
-				item.polizaGarantia = this.dlvWarranty.delivers;
-				item.polizaSeguro = this.dlvInsurance.delivers;
+				item.polizaGarantia = Util.getDocumentosAlmacen( this.dlvWarranty.delivers, TipoAlmacen.getHardware(), TipoDocumentoAlmacen.getPolizaGarantia() );
+				item.polizaSeguro = Util.getDocumentosAlmacen( this.dlvInsurance.delivers, TipoAlmacen.getHardware(), TipoDocumentoAlmacen.getPolizaSeguro() );
 				item.existencia = Util.stringToNumber( this.txtExistence.text );
 				item.unidadC = Util.validateCombo( this.cmbUnit ) as UnidadC;
 				item.fkUnidadC = Util.extractId(item.unidadC);
@@ -135,8 +136,8 @@
 				item.tipoMantenimiento = Util.validateCombo( this.cmbService ) as TipoMantenimiento;
 				item.fkTipoMantenimiento = Util.extractId(item.tipoMantenimiento);
 				item.fechaMantenimiento = this.dtfServiceDate.selectedDate;
-				item.ordenMantenimiento = this.dlvServiceOrder.delivers;
-				item.comentarios = this.comments.comments;
+				item.ordenMantenimiento = Util.getDocumentosAlmacen( this.dlvServiceOrder.delivers, TipoAlmacen.getHardware(), TipoDocumentoAlmacen.getOrdenMantenimientoServicio() );
+				item.comentarios = Util.getComentariosTipoAlmacen( this.comments.comments, TipoAlmacen.getHardware() );
 				return item;
 			}
 			

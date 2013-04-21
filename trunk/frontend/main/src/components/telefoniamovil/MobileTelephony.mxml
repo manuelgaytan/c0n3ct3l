@@ -13,6 +13,7 @@
 			import model.Perfil;
 			import model.TelefoniaMovil;
 			import model.TipoAlmacen;
+			import model.TipoDocumentoAlmacen;
 			import model.TipoMantenimiento;
 			import model.UbicacionB;
 			import model.UnidadA;
@@ -78,8 +79,8 @@
 				this.txtSerie.text = this._item.noSerie;
 				this.txtTrade.text = this._item.marca;
 				this.txtModel.text = this._item.modelo;
-				this.dlvWarranty.delivers = this._item.polizaGarantia;
-				this.dlvInsurance.delivers = this._item.polizaSeguro;
+				this.dlvWarranty.delivers = Util.setDocumentosAlmacen( this._item.polizaGarantia );
+				this.dlvInsurance.delivers = Util.setDocumentosAlmacen( this._item.polizaSeguro );
 				this.txtIMEI.text = Util.numberToString( this._item.imei );
 				if( Util.isFill( this.cmbCompany ) && this._item.ubicacionB != null ){
 					this.cmbCompany.selectedIndex = Util.selectedIndexFromCombo( this.cmbCompany.dataProvider as ArrayCollection, 
@@ -119,8 +120,8 @@
 				item.noSerie = Util.validateEmpty( this.txtSerie.text );
 				item.marca = Util.validateEmpty( this.txtTrade.text );
 				item.modelo = Util.validateEmpty( this.txtModel.text );
-				item.polizaGarantia = this.dlvWarranty.delivers;
-				item.polizaSeguro = this.dlvInsurance.delivers;
+				item.polizaGarantia = Util.getDocumentosAlmacen( this.dlvWarranty.delivers, TipoAlmacen.getTelefoniaMovil(), TipoDocumentoAlmacen.getPolizaGarantia() );
+				item.polizaSeguro = Util.getDocumentosAlmacen( this.dlvInsurance.delivers, TipoAlmacen.getTelefoniaMovil(), TipoDocumentoAlmacen.getPolizaSeguro() );
 				item.imei = Util.validateEmpty( this.txtIMEI.text );
 				item.compania = Util.validateCombo( this.cmbCompany ) as Compania;
 				item.fkCompania = Util.extractId(item.compania);
@@ -133,7 +134,7 @@
 				item.fkResponsable = Util.extractId(item.responsable);
 				item.estatusB = Util.validateCombo( this.cmbStatus ) as EstatusB;
 				item.fkEstatusB = Util.extractId(item.estatusB);
-				item.comentarios = this.comments.comments;
+				item.comentarios = Util.getComentariosTipoAlmacen( this.comments.comments, TipoAlmacen.getTelefoniaMovil() );
 				return item;
 			}
 			

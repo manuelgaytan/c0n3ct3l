@@ -12,6 +12,7 @@
 			import model.GrupoFamiliaA;
 			import model.Perfil;
 			import model.TipoAlmacen;
+			import model.TipoDocumentoAlmacen;
 			import model.TipoMantenimiento;
 			import model.UbicacionA;
 			import model.UbicacionB;
@@ -75,8 +76,8 @@
 				this.txtSerie.text = this._item.noSerie;
 				this.txtTrade.text = this._item.marca;
 				this.txtModel.text = this._item.modelo;
-				this.dlvWarranty.delivers = this._item.polizaGarantia;
-				this.dlvInsurance.delivers = this._item.polizaSeguro;
+				this.dlvWarranty.delivers = Util.setDocumentosAlmacen( this._item.polizaGarantia );
+				this.dlvInsurance.delivers = Util.setDocumentosAlmacen( this._item.polizaSeguro );
 				if( Util.isFill( this.cmbLocation ) && this._item.ubicacionb != null ){
 					this.cmbLocation.selectedIndex = Util.selectedIndexFromCombo( this.cmbLocation.dataProvider as ArrayCollection, 
 						this._item.ubicacionb.id);
@@ -92,13 +93,13 @@
 				this.txtCertificateNumber.text = this._item.noCertificado;
 				this.dtfCalibration.selectedDate = this._item.fechaCalibracion;
 				this.dtfNextCalibration.selectedDate = this._item.fechaProximaCalibracion;
-				this.dlvCalibrationCertificate.delivers = this._item.certificadoCalibracion;
+				this.dlvCalibrationCertificate.delivers = Util.setDocumentosAlmacen( this._item.certificadoCalibracion );
 				if( Util.isFill( this.cmbService ) && this._item.tipomantenimiento != null ){
 					this.cmbService.selectedIndex = Util.selectedIndexFromCombo( this.cmbService.dataProvider as ArrayCollection, 
 						this._item.tipomantenimiento.id);
 				}
 				this.dtfServiceDate.selectedDate = this._item.fechaMantenimiento;
-				this.dlvServiceOrder.delivers = this._item.ordenMantenimiento;
+				this.dlvServiceOrder.delivers = Util.setDocumentosAlmacen( this._item.ordenMantenimiento );
 				this.comments.comments = this._item.comentarios;
 			}
 			
@@ -117,8 +118,8 @@
 				item.noSerie = Util.validateEmpty( this.txtSerie.text );
 				item.marca = Util.validateEmpty( this.txtTrade.text );
 				item.modelo = Util.validateEmpty( this.txtModel.text );
-				item.polizaGarantia = this.dlvWarranty.delivers;
-				item.polizaSeguro = this.dlvInsurance.delivers;
+				item.polizaGarantia = Util.getDocumentosAlmacen( this.dlvWarranty.delivers, TipoAlmacen.getEquipoMedicion(), TipoDocumentoAlmacen.getPolizaGarantia() );
+				item.polizaSeguro = Util.getDocumentosAlmacen( this.dlvInsurance.delivers, TipoAlmacen.getEquipoMedicion(), TipoDocumentoAlmacen.getPolizaSeguro() );
 				item.ubicacionb = Util.validateCombo( this.cmbLocation ) as UbicacionB;
 				item.fkUbicacionB = Util.extractId(item.ubicacionb);
 				item.responsable = Util.validateCombo( this.cmbResponsible ) as Colaborador;
@@ -128,12 +129,12 @@
 				item.noCertificado = Util.validateEmpty( this.txtCertificateNumber.text );
 				item.fechaCalibracion = this.dtfCalibration.selectedDate;
 				item.fechaProximaCalibracion = this.dtfNextCalibration.selectedDate;
-				item.certificadoCalibracion = this.dlvCalibrationCertificate.delivers;
+				item.certificadoCalibracion = Util.getDocumentosAlmacen( this.dlvCalibrationCertificate.delivers, TipoAlmacen.getEquipoMedicion(), TipoDocumentoAlmacen.getCertificadoCalibracion() );
 				item.tipomantenimiento = Util.validateCombo( this.cmbService ) as TipoMantenimiento;
 				item.fkTipoMantenimiento = Util.extractId(item.tipomantenimiento);
 				item.fechaMantenimiento = this.dtfServiceDate.selectedDate;
-				item.ordenMantenimiento = this.dlvServiceOrder.delivers;
-				item.comentarios = this.comments.comments;
+				item.ordenMantenimiento = Util.getDocumentosAlmacen( this.dlvServiceOrder.delivers, TipoAlmacen.getEquipoMedicion(), TipoDocumentoAlmacen.getOrdenMantenimientoServicio() );
+				item.comentarios = Util.getComentariosTipoAlmacen( this.comments.comments, TipoAlmacen.getEquipoMedicion() );
 				return item;
 			}
 			

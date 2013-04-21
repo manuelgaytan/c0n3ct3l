@@ -12,6 +12,7 @@
 			import model.Perfil;
 			import model.Software;
 			import model.TipoAlmacen;
+			import model.TipoDocumentoAlmacen;
 			import model.TipoMantenimiento;
 			import model.UbicacionB;
 			import model.UnidadA;
@@ -71,8 +72,8 @@
 				this.txtCode.text = this._item.codigo;
 				this.txtDescription.text = this._item.descripcion;
 				this.txtSerie.text = this._item.noSerie;
-				this.dlvWarranty.delivers = this._item.polizaGarantia;
-				this.dlvInsurance.delivers = this._item.polizaSeguro;
+				this.dlvWarranty.delivers = Util.setDocumentosAlmacen( this._item.polizaGarantia );
+				this.dlvInsurance.delivers = Util.setDocumentosAlmacen( this._item.polizaSeguro );
 				this.txtExistence.text = Util.numberToString( this._item.existencia );
 				this.txtUnit.text = this._item.unidad;
 				if( Util.isFill( this.cmbLocation ) && this._item.ubicacionB != null ){
@@ -100,8 +101,8 @@
 				item.codigo = Util.validateEmpty( this.txtCode.text );
 				item.descripcion = Util.validateEmpty( this.txtDescription.text );
 				item.noSerie = Util.validateEmpty( this.txtSerie.text );
-				item.polizaGarantia = this.dlvWarranty.delivers;
-				item.polizaSeguro = this.dlvInsurance.delivers;
+				item.polizaSeguro = Util.getDocumentosAlmacen( this.dlvInsurance.delivers, TipoAlmacen.getSoftware(), TipoDocumentoAlmacen.getPolizaSeguro() );
+				item.polizaGarantia = Util.getDocumentosAlmacen( this.dlvWarranty.delivers, TipoAlmacen.getSoftware(), TipoDocumentoAlmacen.getPolizaGarantia() );
 				item.existencia = Util.stringToNumber( this.txtExistence.text );
 				item.unidad = Util.validateEmpty( this.txtUnit.text );
 				item.ubicacionB = Util.validateCombo( this.cmbLocation ) as UbicacionB;
@@ -110,7 +111,7 @@
 				item.fkResponsable = Util.extractId(item.responsable);
 				item.licenciamientoInicial = this.dtfInitialLicensing.selectedDate;
 				item.licenciamientoFinal = this.dtfFinalLicensing.selectedDate;
-				item.comentarios = this.comments.comments;
+				item.comentarios = Util.getComentariosTipoAlmacen( this.comments.comments, TipoAlmacen.getSoftware() );
 				return item;
 			}
 			

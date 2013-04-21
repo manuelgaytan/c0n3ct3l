@@ -576,5 +576,39 @@ package model
 			}
 			return returnValues;
 		}
+		
+		public static function getDocumentosAlmacen(transformTo:String, values:ArrayCollection, tipoAlmacen:TipoAlmacen, tipoEntregable:TipoDocumentoAlmacen):ArrayCollection{
+			if( transformTo == null || values == null || values.length == 0 
+				|| tipoAlmacen == null || tipoAlmacen.id == undefined 
+				|| tipoEntregable == null || tipoEntregable.id == undefined ){
+				return null;
+			}
+			var returnValues:ArrayCollection = new ArrayCollection();
+			var objectType:Class = null;
+			objectType = getDefinitionByName(transformTo) as Class;
+			for each (var object:String in values) 
+			{
+				var item = new(objectType)();
+				item.fkTipoAlmacen = tipoAlmacen;
+				item.fkTipoEntregable = tipoEntregable;
+				item.nombreArchivo = object;
+				returnValues.addItem( item );
+			}
+			return returnValues;
+		}
+		
+		public static function setDocumentosAlmacen(values:ArrayCollection, propiedad:String):ArrayCollection{
+			if( values == null || values.length == 0 ||
+				propiedad == null ){
+				return null;
+			}
+			var returnValues:ArrayCollection = new ArrayCollection();
+			for each (var object:Object in values) 
+			{
+				var item = object[propiedad];
+				returnValues.addItem( item );
+			}
+			return returnValues;
+		}
 	}
 }

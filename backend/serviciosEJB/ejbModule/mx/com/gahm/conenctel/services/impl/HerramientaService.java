@@ -10,6 +10,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
+import mx.com.gahm.conenctel.entities.ComentariosDO;
+import mx.com.gahm.conenctel.entities.DocumentoAlmacenDO;
 import mx.com.gahm.conenctel.entities.HerramientaDO;
 import mx.com.gahm.conenctel.exceptions.ConectelException;
 import mx.com.gahm.conenctel.services.IHerramientaService;
@@ -54,7 +56,41 @@ public class HerramientaService implements IHerramientaService {
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public HerramientaDO save(HerramientaDO item) {
+		
+		List<DocumentoAlmacenDO> certificadoCalibracion =item.getCertificadoCalibracion();
+		List<DocumentoAlmacenDO> polizaSeguro=item.getPolizaSeguro();
+		List<DocumentoAlmacenDO> polizaGarantia=item.getPolizaGarantia();
+		List<ComentariosDO> comentarios=item.getComentarios();
+		
+		for (ComentariosDO comentario : comentarios) {
+			comentario.setAlmacen(item.getId());
+			entityManager.persist(comentario);
+		}
+		
+		for (DocumentoAlmacenDO documento : certificadoCalibracion) {
+			documento.setFkAlmacen(item.getId());
+			entityManager.persist(documento);
+		}
+		
+		for (DocumentoAlmacenDO documento : polizaSeguro) {
+			documento.setFkAlmacen(item.getId());
+			entityManager.persist(documento);
+		}
+		
+		for (DocumentoAlmacenDO documento : polizaGarantia) {
+			documento.setFkAlmacen(item.getId());
+			entityManager.persist(documento);
+		}
+		
+		
+		
+		
 		entityManager.persist(item);
+		
+		
+		
+		
+		
 		return null;
 	}
 

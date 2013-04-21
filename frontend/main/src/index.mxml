@@ -61,6 +61,7 @@
 			import model.ComentarioTesoreria;
 			import model.ComentarioValidacionAdministrativa;
 			import model.ComentarioValidacionCostoOrdenCompraCliente;
+			import model.Comentarios;
 			import model.Compania;
 			import model.ComprobacionViaticos;
 			import model.ConcentradoCapacitacion;
@@ -517,6 +518,7 @@
 			private var notificacion:Notificacion;
 			private var estadoNotificacion:EstadoNotificacion;
 			private var comentarioCotizacion:ComentarioCotizacion;
+			private var comentarios:Comentarios;
 						
 			protected function login_readyHandler(event:ModuleEvent):void
 			{

@@ -558,7 +558,8 @@ package model
 			Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
 		}
 		
-		public static function getComentariosTipoAlmacen(transformTo:String, values:ArrayCollection, tipoAlmacen:TipoAlmacen):ArrayCollection{
+		public static function getComentariosTipoAlmacen( values:ArrayCollection, tipoAlmacen:TipoAlmacen):ArrayCollection{
+			var transformTo:String = "model.Comentarios";
 			if( transformTo == null || values == null || values.length == 0 || tipoAlmacen == null || tipoAlmacen.id == undefined ){
 				return null;
 			}
@@ -577,7 +578,8 @@ package model
 			return returnValues;
 		}
 		
-		public static function getDocumentosAlmacen(transformTo:String, values:ArrayCollection, tipoAlmacen:TipoAlmacen, tipoEntregable:TipoDocumentoAlmacen):ArrayCollection{
+		public static function getDocumentosAlmacen( values:ArrayCollection, tipoAlmacen:TipoAlmacen, tipoEntregable:TipoDocumentoAlmacen ):ArrayCollection{
+			var transformTo:String = "model.DocumentoAlmacen";
 			if( transformTo == null || values == null || values.length == 0 
 				|| tipoAlmacen == null || tipoAlmacen.id == undefined 
 				|| tipoEntregable == null || tipoEntregable.id == undefined ){
@@ -597,7 +599,7 @@ package model
 			return returnValues;
 		}
 		
-		public static function setDocumentosAlmacen(values:ArrayCollection, propiedad:String):ArrayCollection{
+		public static function setDocumentosAlmacen(values:ArrayCollection, propiedad:String = "nombreArchivo"):ArrayCollection{
 			if( values == null || values.length == 0 ||
 				propiedad == null ){
 				return null;

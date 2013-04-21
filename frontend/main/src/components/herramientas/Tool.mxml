@@ -83,8 +83,8 @@
 				this.txtSerie.text = this._item.noSerie;
 				this.txtTrade.text = this._item.marca;
 				this.txtModel.text = this._item.modelo;
-				this.dlvWarranty.delivers = Util.setDocumentosAlmacen(this._item.polizaGarantia,"nombreArchivo");
-				this.dlvInsurance.delivers = Util.setDocumentosAlmacen(this._item.polizaSeguro,"nombreArchivo");
+				this.dlvWarranty.delivers = Util.setDocumentosAlmacen( this._item.polizaGarantia );
+				this.dlvInsurance.delivers = Util.setDocumentosAlmacen( this._item.polizaSeguro );
 				this.txtExistence.text = Util.numberToString( this._item.existencia );
 				if( Util.isFill( this.cmbUnit ) && this._item.unidadA != null ){
 					this.cmbUnit.selectedIndex = Util.selectedIndexFromCombo( this.cmbUnit.dataProvider as ArrayCollection, 
@@ -105,13 +105,13 @@
 				this.txtCertificateNumber.text = this._item.noCertificado;
 				this.dtfCalibration.selectedDate = this._item.fechaCalibracion;
 				this.dtfNextCalibration.selectedDate = this._item.fechaProximaCalibracion;
-				this.dlvCalibrationCertificate.delivers = Util.setDocumentosAlmacen(this._item.certificadoCalibracion,"nombreArchivo");
+				this.dlvCalibrationCertificate.delivers = Util.setDocumentosAlmacen( this._item.certificadoCalibracion );
 				if( Util.isFill( this.cmbService ) && this._item.tipoMantenimiento != null ){
 					this.cmbService.selectedIndex = Util.selectedIndexFromCombo( this.cmbService.dataProvider as ArrayCollection, 
 						this._item.tipoMantenimiento.id);
 				}
 				this.dtfServiceDate.selectedDate = this._item.fechaMantenimiento;
-				this.dlvServiceOrder.delivers = Util.setDocumentosAlmacen(this._item.ordenMantenimiento,"nombreArchivo");
+				this.dlvServiceOrder.delivers = Util.setDocumentosAlmacen( this._item.ordenMantenimiento );
 				this.comments.comments = this._item.comentarios;
 			}
 			
@@ -131,8 +131,8 @@
 				item.noSerie = Util.validateEmpty( this.txtSerie.text );
 				item.marca = Util.validateEmpty( this.txtTrade.text );
 				item.modelo = Util.validateEmpty( this.txtModel.text );
-				item.polizaGarantia = Util.getDocumentosAlmacen("model.DocumentoAlmacen",this.dlvWarranty.delivers, TipoAlmacen.getHerramienta(), TipoDocumentoAlmacen.getPolizaGarantia());
-				item.polizaSeguro = Util.getDocumentosAlmacen("model.DocumentoAlmacen",this.dlvInsurance.delivers, TipoAlmacen.getHerramienta(), TipoDocumentoAlmacen.getPolizaSeguro());
+				item.polizaGarantia = Util.getDocumentosAlmacen( this.dlvWarranty.delivers, TipoAlmacen.getHerramienta(), TipoDocumentoAlmacen.getPolizaGarantia());
+				item.polizaSeguro = Util.getDocumentosAlmacen( this.dlvInsurance.delivers, TipoAlmacen.getHerramienta(), TipoDocumentoAlmacen.getPolizaSeguro());
 				item.existencia = Util.stringToNumber( this.txtExistence.text );
 				item.unidadA = Util.validateCombo( this.cmbUnit ) as UnidadA;
 				item.fkUnidadA = Util.extractId(item.unidadA);
@@ -145,12 +145,12 @@
 				item.noCertificado = Util.validateEmpty( this.txtCertificateNumber.text );
 				item.fechaCalibracion = this.dtfCalibration.selectedDate;
 				item.fechaProximaCalibracion = this.dtfNextCalibration.selectedDate;
-				item.certificadoCalibracion = Util.getDocumentosAlmacen("model.DocumentoAlmacen",this.dlvCalibrationCertificate.delivers, TipoAlmacen.getHerramienta(), TipoDocumentoAlmacen.getCertificadoCalibracion());
+				item.certificadoCalibracion = Util.getDocumentosAlmacen( this.dlvCalibrationCertificate.delivers, TipoAlmacen.getHerramienta(), TipoDocumentoAlmacen.getCertificadoCalibracion());
 				item.tipoMantenimiento = Util.validateCombo( this.cmbService ) as TipoMantenimiento;
 				item.fkTipoMantenimiento = Util.extractId(item.tipoMantenimiento);
 				item.fechaMantenimiento = this.dtfServiceDate.selectedDate;
-				item.ordenMantenimiento = Util.getDocumentosAlmacen("model.DocumentoAlmacen",this.dlvServiceOrder.delivers, TipoAlmacen.getHerramienta(), TipoDocumentoAlmacen.getOrdenMantenimientoServicio());
-				item.comentarios = Util.getComentariosTipoAlmacen( "model.Comentarios", this.comments.comments,TipoAlmacen.getHerramienta());
+				item.ordenMantenimiento = Util.getDocumentosAlmacen( this.dlvServiceOrder.delivers, TipoAlmacen.getHerramienta(), TipoDocumentoAlmacen.getOrdenMantenimientoServicio());
+				item.comentarios = Util.getComentariosTipoAlmacen( this.comments.comments,TipoAlmacen.getHerramienta());
 				return item;
 			}
 			

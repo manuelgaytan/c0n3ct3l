@@ -18,6 +18,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 
 /**
@@ -67,8 +68,8 @@ public class HerramientaDO implements Serializable {
 
 	@Column(name="no_serie")
 	private String noSerie;
-/*
-	@OneToMany(mappedBy="herramienta")
+
+/*	@OneToMany(mappedBy="herramienta")
 	private List<ComentarioHerramientaDO> comentarios;
 */
 	@ManyToOne
@@ -94,7 +95,19 @@ public class HerramientaDO implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="fk_estatus_a")
 	private EstatusADO estatusA;
-
+	
+	@Transient
+	List<DocumentoAlmacenDO> polizaGarantia;
+	
+	@Transient
+	List<DocumentoAlmacenDO> polizaSeguro;
+	
+	@Transient
+	List<DocumentoAlmacenDO> certificadoCalibracion;
+	
+	@Transient
+	List<ComentariosDO> comentarios;
+	
 	public HerramientaDO() {
 	}
 
@@ -248,6 +261,39 @@ public class HerramientaDO implements Serializable {
 
 	public void setEstatusA(EstatusADO estatusA) {
 		this.estatusA = estatusA;
+	}
+
+	public List<DocumentoAlmacenDO> getPolizaGarantia() {
+		return polizaGarantia;
+	}
+
+	public void setPolizaGarantia(List<DocumentoAlmacenDO> polizaGarantia) {
+		this.polizaGarantia = polizaGarantia;
+	}
+
+	public List<DocumentoAlmacenDO> getPolizaSeguro() {
+		return polizaSeguro;
+	}
+
+	public void setPolizaSeguro(List<DocumentoAlmacenDO> polizaSeguro) {
+		this.polizaSeguro = polizaSeguro;
+	}
+
+	public List<DocumentoAlmacenDO> getCertificadoCalibracion() {
+		return certificadoCalibracion;
+	}
+
+	public void setCertificadoCalibracion(
+			List<DocumentoAlmacenDO> certificadoCalibracion) {
+		this.certificadoCalibracion = certificadoCalibracion;
+	}
+
+	public List<ComentariosDO> getComentarios() {
+		return comentarios;
+	}
+
+	public void setComentarios(List<ComentariosDO> comentarios) {
+		this.comentarios = comentarios;
 	}
 
 }

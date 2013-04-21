@@ -2566,8 +2566,6 @@
 
 	ALTER TABLE Comentarios ADD FOREIGN KEY fk_tipo_almacen_idxfk_8 (fk_tipo_almacen) REFERENCES TipoAlmacen (id);
 
-	ALTER TABLE Comentarios ADD FOREIGN KEY fk_almacen_idxfk (fk_almacen) REFERENCES Herramienta (id);
-
 	ALTER TABLE Comentarios ADD FOREIGN KEY fk_usuario_idxfk (fk_usuario) REFERENCES Usuario (id);
 
 	ALTER TABLE EquipoMedicion ADD FOREIGN KEY fk_tipo_almacen_idxfk_9 (fk_tipo_almacen) REFERENCES TipoAlmacen (id);

@@ -9,12 +9,15 @@
 			import model.ComentarioGenerico;
 			import model.Comentarios;
 			import model.Constants;
+			import model.DocumentoAlmacen;
 			import model.EstatusA;
 			import model.GrupoFamiliaA;
 			import model.Herramienta;
 			import model.Model;
 			import model.Perfil;
 			import model.TipoAlmacen;
+			import model.TipoDocumentoAlmacen;
+			import model.TipoEntregable;
 			import model.TipoMantenimiento;
 			import model.UbicacionA;
 			import model.UnidadA;
@@ -80,7 +83,7 @@
 				this.txtSerie.text = this._item.noSerie;
 				this.txtTrade.text = this._item.marca;
 				this.txtModel.text = this._item.modelo;
-				this.dlvWarranty.delivers = this._item.polizaGarantia;
+				this.dlvWarranty.delivers = Util.setDocumentosAlmacen("model.DocumentoAlmacen",this._item.polizaGarantia,"nombreArchivo");
 				this.dlvInsurance.delivers = this._item.polizaSeguro;
 				this.txtExistence.text = Util.numberToString( this._item.existencia );
 				if( Util.isFill( this.cmbUnit ) && this._item.unidadA != null ){
@@ -128,7 +131,7 @@
 				item.noSerie = Util.validateEmpty( this.txtSerie.text );
 				item.marca = Util.validateEmpty( this.txtTrade.text );
 				item.modelo = Util.validateEmpty( this.txtModel.text );
-				item.polizaGarantia = this.dlvWarranty.delivers;
+				item.polizaGarantia = Util.getDocumentosAlmacen("model.DocumentoAlmacen",this.dlvWarranty.delivers, TipoAlmacen.getHerramienta(), TipoDocumentoAlmacen.getPolizaGarantia());
 				item.polizaSeguro = this.dlvInsurance.delivers;
 				item.existencia = Util.stringToNumber( this.txtExistence.text );
 				item.unidadA = Util.validateCombo( this.cmbUnit ) as UnidadA;

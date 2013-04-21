@@ -6,9 +6,9 @@ package model
 	public class DocumentoAlmacen
 	{
 		public var id:*;
-		public var fkTipoAlmacen:*;
+		public var fkTipoAlmacen:TipoAlmacen;
 		public var fkAlmacen:*;
-		public var fkTipoEntregable:*;
+		public var fkTipoEntregable:TipoDocumentoAlmacen;
 		public var nombreArchivo:String;
 		
 		public function DocumentoAlmacen()

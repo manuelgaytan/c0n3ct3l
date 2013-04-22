@@ -7,7 +7,7 @@ package model
 	{
 		public var id:*;
 		public var fkTipoAlmacen:TipoAlmacen;
-		public var fkAlmacen:*;
+		public var almacen:*;
 		public var fkTipoEntregable:TipoDocumentoAlmacen;
 		public var nombreArchivo:String;
 		

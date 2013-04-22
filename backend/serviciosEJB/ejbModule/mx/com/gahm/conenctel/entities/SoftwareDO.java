@@ -39,9 +39,9 @@ public class SoftwareDO implements Serializable {
 
 	private Double existencia;
 
-	// TODO
-	@Column(name="fk_responsable")
-	private Long fkResponsable;
+	@ManyToOne
+	@JoinColumn(name = "fk_responsable", nullable = false)
+	private ColaboradorDO fkResponsable;
 
 	@Temporal(TemporalType.DATE)
 	@Column(name="licenciamiento_final")
@@ -99,11 +99,11 @@ public class SoftwareDO implements Serializable {
 		this.existencia = existencia;
 	}
 
-	public Long getFkResponsable() {
+	public ColaboradorDO getFkResponsable() {
 		return this.fkResponsable;
 	}
 
-	public void setFkResponsable(Long fkResponsable) {
+	public void setFkResponsable(ColaboradorDO fkResponsable) {
 		this.fkResponsable = fkResponsable;
 	}
 

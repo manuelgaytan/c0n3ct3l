@@ -4,7 +4,7 @@ package model
 	public class Comentarios extends ComentarioGenerico
 	{
 		public var tipoAlmacen:Number;
-		public var almacen:Number;
+		public var almacen:*;
 		
 		public function Comentarios()
 		{

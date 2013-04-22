@@ -340,10 +340,10 @@
 			<components:TextInput id="txtModel"/>
 		</mx:FormItem>
 		<mx:FormItem label="Poliza de Garantía:">
-			<components:Deliver id="dlvWarranty"/>
+			<components:FlatDeliver id="dlvWarranty"/>
 		</mx:FormItem>
 		<mx:FormItem label="Poliza de Seguro:">
-			<components:Deliver id="dlvInsurance"/>
+			<components:FlatDeliver id="dlvInsurance"/>
 		</mx:FormItem>
 		<mx:FormItem label="IMEI:">
 			<components:TextInput id="txtIMEI"/>

@@ -322,10 +322,10 @@
 			<components:TextInput id="txtModel"/>
 		</mx:FormItem>
 		<mx:FormItem label="Poliza de Garantía:">
-			<components:Deliver id="dlvWarranty"/>
+			<components:FlatDeliver id="dlvWarranty"/>
 		</mx:FormItem>
 		<mx:FormItem label="Poliza de Seguro:">
-			<components:Deliver id="dlvInsurance"/>
+			<components:FlatDeliver id="dlvInsurance"/>
 		</mx:FormItem>
 		<mx:FormItem label="Ubicación:">
 			<mx:ComboBox id="cmbLocation"
@@ -352,7 +352,7 @@
 			<components:DateField id="dtfNextCalibration"/>
 		</mx:FormItem>
 		<mx:FormItem label="Certificado de Calibración:">
-			<components:Deliver id="dlvCalibrationCertificate"/>
+			<components:FlatDeliver id="dlvCalibrationCertificate"/>
 		</mx:FormItem>
 		<mx:FormItem label="Mantenimiento o Servicio:">
 			<mx:ComboBox id="cmbService"
@@ -363,7 +363,7 @@
 			<components:DateField id="dtfServiceDate"/>
 		</mx:FormItem>
 		<mx:FormItem label="Orden de Mantenimiento o Servicio:">
-			<components:Deliver id="dlvServiceOrder"/>
+			<components:FlatDeliver id="dlvServiceOrder"/>
 		</mx:FormItem>
 		<components:Comments id="comments"/>
 		<mx:FormItem>

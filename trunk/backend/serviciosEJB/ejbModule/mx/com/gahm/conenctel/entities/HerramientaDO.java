@@ -100,6 +100,7 @@ public class HerramientaDO implements Serializable {
 	@Transient
 	List<String> polizaGarantia;
 	
+	
 	@Transient
 	List<String> polizaSeguro;
 	

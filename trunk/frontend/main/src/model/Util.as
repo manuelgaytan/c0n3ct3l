@@ -434,7 +434,7 @@ package model
 				return;
 			}
 			(list.dataProvider as ArrayCollection).removeAll();
-			list.dataProvider = null;
+			//list.dataProvider = null;
 		}
 		
 		public static function getIDConectelFormat(value:*):String{

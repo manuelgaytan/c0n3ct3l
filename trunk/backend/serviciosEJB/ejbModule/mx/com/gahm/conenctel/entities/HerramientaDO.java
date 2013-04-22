@@ -35,6 +35,7 @@ public class HerramientaDO implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "id", unique = true, nullable = false)
 	private Long id;
 
 	private String codigo;
@@ -72,7 +73,7 @@ public class HerramientaDO implements Serializable {
 /*	@OneToMany(mappedBy="herramienta")
 	private List<ComentarioHerramientaDO> comentarios;
 */
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="fk_tipo_mantenimiento")
 	private TipoMantenimientoDO tipoMantenimiento;
 
@@ -97,13 +98,13 @@ public class HerramientaDO implements Serializable {
 	private EstatusADO estatusA;
 	
 	@Transient
-	List<DocumentoAlmacenDO> polizaGarantia;
+	List<String> polizaGarantia;
 	
 	@Transient
-	List<DocumentoAlmacenDO> polizaSeguro;
+	List<String> polizaSeguro;
 	
 	@Transient
-	List<DocumentoAlmacenDO> certificadoCalibracion;
+	List<String> certificadoCalibracion;
 	
 	@Transient
 	List<ComentariosDO> comentarios;
@@ -263,37 +264,37 @@ public class HerramientaDO implements Serializable {
 		this.estatusA = estatusA;
 	}
 
-	public List<DocumentoAlmacenDO> getPolizaGarantia() {
-		return polizaGarantia;
-	}
-
-	public void setPolizaGarantia(List<DocumentoAlmacenDO> polizaGarantia) {
-		this.polizaGarantia = polizaGarantia;
-	}
-
-	public List<DocumentoAlmacenDO> getPolizaSeguro() {
-		return polizaSeguro;
-	}
-
-	public void setPolizaSeguro(List<DocumentoAlmacenDO> polizaSeguro) {
-		this.polizaSeguro = polizaSeguro;
-	}
-
-	public List<DocumentoAlmacenDO> getCertificadoCalibracion() {
-		return certificadoCalibracion;
-	}
-
-	public void setCertificadoCalibracion(
-			List<DocumentoAlmacenDO> certificadoCalibracion) {
-		this.certificadoCalibracion = certificadoCalibracion;
-	}
-
+	
 	public List<ComentariosDO> getComentarios() {
 		return comentarios;
 	}
 
 	public void setComentarios(List<ComentariosDO> comentarios) {
 		this.comentarios = comentarios;
+	}
+
+	public List<String> getPolizaGarantia() {
+		return polizaGarantia;
+	}
+
+	public void setPolizaGarantia(List<String> polizaGarantia) {
+		this.polizaGarantia = polizaGarantia;
+	}
+
+	public List<String> getPolizaSeguro() {
+		return polizaSeguro;
+	}
+
+	public void setPolizaSeguro(List<String> polizaSeguro) {
+		this.polizaSeguro = polizaSeguro;
+	}
+
+	public List<String> getCertificadoCalibracion() {
+		return certificadoCalibracion;
+	}
+
+	public void setCertificadoCalibracion(List<String> certificadoCalibracion) {
+		this.certificadoCalibracion = certificadoCalibracion;
 	}
 
 }

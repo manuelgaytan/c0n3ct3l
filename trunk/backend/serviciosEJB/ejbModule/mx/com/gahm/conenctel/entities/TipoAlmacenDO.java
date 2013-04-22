@@ -16,7 +16,10 @@ import java.util.List;
 @Table(name="tipoalmacen")
 public class TipoAlmacenDO implements Serializable {
 	private static final long serialVersionUID = 1L;
-
+	
+	public static final long ID_HERRAMIENTA = 1L;
+	public static final String HERRAMIENTA = "Herramienta";
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
@@ -30,6 +33,10 @@ public class TipoAlmacenDO implements Serializable {
 		this.etiqueta = etiqueta;
 	}
 	
+	public static TipoAlmacenDO getHerramienta(){
+		TipoAlmacenDO tipoAlmacen = new TipoAlmacenDO( ID_HERRAMIENTA, HERRAMIENTA);
+		return tipoAlmacen;
+	}
 	
 //	@OneToMany(mappedBy="fkTipoalmacen")
 //	private List<ComentarioDO> comentarios;

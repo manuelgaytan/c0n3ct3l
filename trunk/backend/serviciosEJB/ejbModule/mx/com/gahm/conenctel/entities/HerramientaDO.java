@@ -98,14 +98,16 @@ public class HerramientaDO implements Serializable {
 	private EstatusADO estatusA;
 	
 	@Transient
-	List<String> polizaGarantia;
-	
-	
-	@Transient
-	List<String> polizaSeguro;
+	List<DocumentoAlmacenDO> polizaGarantia;
 	
 	@Transient
-	List<String> certificadoCalibracion;
+	List<DocumentoAlmacenDO> polizaSeguro;
+	
+	@Transient
+	List<DocumentoAlmacenDO> certificadoCalibracion;
+	
+	@Transient
+	List<DocumentoAlmacenDO> ordenMantenimiento;
 	
 	@Transient
 	List<ComentariosDO> comentarios;
@@ -274,28 +276,36 @@ public class HerramientaDO implements Serializable {
 		this.comentarios = comentarios;
 	}
 
-	public List<String> getPolizaGarantia() {
+	public List<DocumentoAlmacenDO> getPolizaGarantia() {
 		return polizaGarantia;
 	}
 
-	public void setPolizaGarantia(List<String> polizaGarantia) {
+	public void setPolizaGarantia(List<DocumentoAlmacenDO> polizaGarantia) {
 		this.polizaGarantia = polizaGarantia;
 	}
 
-	public List<String> getPolizaSeguro() {
+	public List<DocumentoAlmacenDO> getPolizaSeguro() {
 		return polizaSeguro;
 	}
 
-	public void setPolizaSeguro(List<String> polizaSeguro) {
+	public void setPolizaSeguro(List<DocumentoAlmacenDO> polizaSeguro) {
 		this.polizaSeguro = polizaSeguro;
 	}
 
-	public List<String> getCertificadoCalibracion() {
+	public List<DocumentoAlmacenDO> getCertificadoCalibracion() {
 		return certificadoCalibracion;
 	}
 
-	public void setCertificadoCalibracion(List<String> certificadoCalibracion) {
+	public void setCertificadoCalibracion(List<DocumentoAlmacenDO> certificadoCalibracion) {
 		this.certificadoCalibracion = certificadoCalibracion;
+	}
+
+	public List<DocumentoAlmacenDO> getOrdenMantenimiento() {
+		return ordenMantenimiento;
+	}
+
+	public void setOrdenMantenimiento(List<DocumentoAlmacenDO> ordenMantenimiento) {
+		this.ordenMantenimiento = ordenMantenimiento;
 	}
 
 }

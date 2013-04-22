@@ -1,5 +1,6 @@
 package mx.com.gahm.conenctel.services.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -13,6 +14,8 @@ import javax.persistence.TypedQuery;
 import mx.com.gahm.conenctel.entities.ComentariosDO;
 import mx.com.gahm.conenctel.entities.DocumentoAlmacenDO;
 import mx.com.gahm.conenctel.entities.HerramientaDO;
+import mx.com.gahm.conenctel.entities.TipoAlmacenDO;
+import mx.com.gahm.conenctel.entities.TipoDocumentoAlmacenDO;
 import mx.com.gahm.conenctel.exceptions.ConectelException;
 import mx.com.gahm.conenctel.services.IHerramientaService;
 import mx.com.gahm.conenctel.util.DataTypeUtil;
@@ -32,9 +35,13 @@ public class HerramientaService implements IHerramientaService {
 		List<HerramientaDO> herramientaList;
 		try {
 			herramientaList = query.getResultList();
+			
 		} catch (NoResultException e) {
 			throw new ConectelException("No existen Herramientas registradas.");
 		}
+		
+		
+		
 		return herramientaList;
 	}
 
@@ -57,56 +64,156 @@ public class HerramientaService implements IHerramientaService {
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public HerramientaDO save(HerramientaDO item) {
 		
-		List<DocumentoAlmacenDO> certificadoCalibracion =item.getCertificadoCalibracion();
-		List<DocumentoAlmacenDO> polizaSeguro=item.getPolizaSeguro();
-		List<DocumentoAlmacenDO> polizaGarantia=item.getPolizaGarantia();
-		List<ComentariosDO> comentarios=item.getComentarios();
-		
-		for (ComentariosDO comentario : comentarios) {
-			comentario.setAlmacen(item.getId());
-			entityManager.persist(comentario);
-		}
-		
-		for (DocumentoAlmacenDO documento : certificadoCalibracion) {
-			documento.setFkAlmacen(item.getId());
-			entityManager.persist(documento);
-		}
-		
-		for (DocumentoAlmacenDO documento : polizaSeguro) {
-			documento.setFkAlmacen(item.getId());
-			entityManager.persist(documento);
-		}
-		
-		for (DocumentoAlmacenDO documento : polizaGarantia) {
-			documento.setFkAlmacen(item.getId());
-			entityManager.persist(documento);
-		}
-		
-		
-		
-		
 		entityManager.persist(item);
+		entityManager.flush();
+		saveDocumentos(item.getCertificadoCalibracion(), item.getId(),5L);
+		saveDocumentos(item.getPolizaSeguro(), item.getId(),2L);
+		saveDocumentos(item.getPolizaGarantia(), item.getId(),1L);
 		
-		
-		
-		
+		saveComentarios(item.getComentarios(), item.getId());
 		
 		return null;
 	}
 
+	private void saveDocumentos(List<String> documentos, Long id ,Long idTipoEntregable){
+		DocumentoAlmacenDO documentoAlmacen =null;
+		
+		for (String doc : documentos) {
+			documentoAlmacen = new DocumentoAlmacenDO();
+			
+			documentoAlmacen.setAlmacen(id);
+			documentoAlmacen.setFkTipoAlmacen(new TipoAlmacenDO());
+			documentoAlmacen.getFkTipoAlmacen().setId(1L);
+			documentoAlmacen.setFkTipoEntregable(new TipoDocumentoAlmacenDO());
+			documentoAlmacen.getFkTipoEntregable().setId(idTipoEntregable);
+			documentoAlmacen.setNombreArchivo(doc);
+			
+			entityManager.persist(documentoAlmacen);
+		}
+	}
+	
+	private void saveComentarios(List<ComentariosDO> comentarios, Long id ){
+		
+		for (ComentariosDO comentario : comentarios) {
+			comentario.setAlmacen(id);
+			comentario.setTipoAlmacen(new TipoAlmacenDO());
+			comentario.getTipoAlmacen().setId(1L);
+			entityManager.persist(comentario);
+		}
+	}
+
+		
+	
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public HerramientaDO update(HerramientaDO item) {
+		try {
+			deleteDocumentos(item.getId());
+		} catch (ConectelException e) {
+			e.printStackTrace();
+		}
+		
+		saveDocumentos(item.getCertificadoCalibracion(), item.getId(),5L);
+		saveDocumentos(item.getPolizaSeguro(), item.getId(),2L);
+		saveDocumentos(item.getPolizaGarantia(), item.getId(),1L);
+		
+		saveComentarios(item.getComentarios(), item.getId());
+		
 		entityManager.merge(item);
 		return null;
 	}
-
+	
+	public List<DocumentoAlmacenDO> getAllDocumentosById(Long id) throws ConectelException {
+		TypedQuery<DocumentoAlmacenDO> query = entityManager.createNamedQuery(
+				"DocumentoAlmacenDO.findAll", DocumentoAlmacenDO.class);
+		query.setParameter("almacen", id);
+		List<DocumentoAlmacenDO> datos;
+		try {
+			datos = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen Herramientas registradas.");
+		}
+		return datos;
+	}
+	
+	public List<DocumentoAlmacenDO> getDocumentosByTipo(Long id,Long tipoDocumento) throws ConectelException {
+		TypedQuery<DocumentoAlmacenDO> query = entityManager.createNamedQuery(
+				"DocumentoAlmacenDO.getDocumentosByTipo", DocumentoAlmacenDO.class);
+		query.setParameter("almacen", id);
+		query.setParameter("tipoDocumento", tipoDocumento);
+		List<DocumentoAlmacenDO> datos;
+		try {
+			datos = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen Herramientas registradas.");
+		}
+		return datos;
+	}
+	
+	public List<ComentariosDO> getAllComentariosById(Long id) throws ConectelException {
+		TypedQuery<ComentariosDO> query = entityManager.createNamedQuery(
+				"ComentariosDO.findAll", ComentariosDO.class);
+		query.setParameter("almacen", id);
+		List<ComentariosDO> datos;
+		try {
+			datos = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen Herramientas registradas.");
+		}
+		return datos;
+	}
+	
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public HerramientaDO getItem(Long id) throws ConectelException {
 		HerramientaDO herramienta = entityManager.find(HerramientaDO.class, id);
+		List<ComentariosDO> comentarios=null; 
+		
+		List<DocumentoAlmacenDO> certificadoCalibraccion = null;
+		List<DocumentoAlmacenDO> polizaSeguro = null;
+		List<DocumentoAlmacenDO> polizaGarantia = null;
+	
+		
 		if (herramienta == null) {
 			throw new ConectelException("La Herramienta no existe");
 		}
+		
+		comentarios = getAllComentariosById(herramienta.getId());
+		herramienta.setComentarios(comentarios);
+		
+		certificadoCalibraccion = getDocumentosByTipo(herramienta.getId(), 5L);
+		polizaSeguro  = getDocumentosByTipo(herramienta.getId(), 2L);
+		polizaGarantia  = getDocumentosByTipo(herramienta.getId(), 1L);
+
+		herramienta.setCertificadoCalibracion(getDocumentosString(certificadoCalibraccion));
+		herramienta.setPolizaSeguro(getDocumentosString(polizaSeguro));
+		herramienta.setPolizaGarantia(getDocumentosString(polizaGarantia));
+		
+		
+		
 		return herramienta;
 	}
+	
+	private List<String> getDocumentosString(List<DocumentoAlmacenDO> documentos){
+		List<String> datos= new ArrayList<String>();
+		
+		if(documentos!=null)
+		for (DocumentoAlmacenDO documentoAlmacenDO : documentos) {
+			datos.add(documentoAlmacenDO.getNombreArchivo());
+		}
+		
+		return datos;
+		
+	}
+	
+	
+	
+	private void deleteDocumentos(Long idAlmacen) throws ConectelException{
+		 List<DocumentoAlmacenDO> documentos = getAllDocumentosById(idAlmacen);
+		 
+		 for (DocumentoAlmacenDO documentoAlmacenDO : documentos) {
+			 entityManager.remove(documentoAlmacenDO);
+		}
+		
+	}
+	
 
 }

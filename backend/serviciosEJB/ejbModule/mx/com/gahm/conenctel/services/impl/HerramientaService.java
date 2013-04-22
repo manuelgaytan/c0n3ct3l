@@ -66,35 +66,31 @@ public class HerramientaService implements IHerramientaService {
 		
 		entityManager.persist(item);
 		entityManager.flush();
-		saveDocumentos(item.getCertificadoCalibracion(), item.getId(),5L);
-		saveDocumentos(item.getPolizaSeguro(), item.getId(),2L);
-		saveDocumentos(item.getPolizaGarantia(), item.getId(),1L);
+		
+		saveDocumentos(item.getCertificadoCalibracion(), item.getId(), TipoDocumentoAlmacenDO.ID_CERTIFICADO_CALIBRACION );
+		saveDocumentos(item.getPolizaSeguro(), item.getId(), TipoDocumentoAlmacenDO.ID_POLIZA_SEGURO );
+		saveDocumentos(item.getPolizaGarantia(), item.getId(), TipoDocumentoAlmacenDO.ID_POLIZA_GARANTIA );
+		saveDocumentos(item.getOrdenMantenimiento(), item.getId(), TipoDocumentoAlmacenDO.ID_ORDEN_MANTENIMIENTO_SERVICIO );
 		
 		saveComentarios(item.getComentarios(), item.getId());
 		
 		return null;
 	}
 
-	private void saveDocumentos(List<String> documentos, Long id ,Long idTipoEntregable){
-		DocumentoAlmacenDO documentoAlmacen =null;
-		
-		//comentario
-		for (String doc : documentos) {
-			documentoAlmacen = new DocumentoAlmacenDO();
-			
-			documentoAlmacen.setAlmacen(id);
-			documentoAlmacen.setFkTipoAlmacen(new TipoAlmacenDO());
-			documentoAlmacen.getFkTipoAlmacen().setId(1L);
-			documentoAlmacen.setFkTipoEntregable(new TipoDocumentoAlmacenDO());
-			documentoAlmacen.getFkTipoEntregable().setId(idTipoEntregable);
-			documentoAlmacen.setNombreArchivo(doc);
-			
-			entityManager.persist(documentoAlmacen);
+	private void saveDocumentos(List<DocumentoAlmacenDO> documentos, Long id,Long idTipoEntregable){
+		if( documentos == null || id == null ){
+			return;
+		}
+		for (DocumentoAlmacenDO doc : documentos) {
+			doc.setAlmacen(id);
+			entityManager.persist(doc);
 		}
 	}
 	
 	private void saveComentarios(List<ComentariosDO> comentarios, Long id ){
-		
+		if( comentarios == null || id == null ){
+			return;
+		}
 		for (ComentariosDO comentario : comentarios) {
 			comentario.setAlmacen(id);
 			comentario.setTipoAlmacen(new TipoAlmacenDO());
@@ -112,10 +108,16 @@ public class HerramientaService implements IHerramientaService {
 		} catch (ConectelException e) {
 			e.printStackTrace();
 		}
+		try {
+			deleteComentarios(item.getId());
+		} catch (ConectelException e) {
+			e.printStackTrace();
+		}
 		
-		saveDocumentos(item.getCertificadoCalibracion(), item.getId(),5L);
-		saveDocumentos(item.getPolizaSeguro(), item.getId(),2L);
-		saveDocumentos(item.getPolizaGarantia(), item.getId(),1L);
+		saveDocumentos(item.getCertificadoCalibracion(), item.getId(), TipoDocumentoAlmacenDO.ID_CERTIFICADO_CALIBRACION );
+		saveDocumentos(item.getPolizaSeguro(), item.getId(), TipoDocumentoAlmacenDO.ID_POLIZA_SEGURO );
+		saveDocumentos(item.getPolizaGarantia(), item.getId(), TipoDocumentoAlmacenDO.ID_POLIZA_GARANTIA );
+		saveDocumentos(item.getOrdenMantenimiento(), item.getId(), TipoDocumentoAlmacenDO.ID_ORDEN_MANTENIMIENTO_SERVICIO );
 		
 		saveComentarios(item.getComentarios(), item.getId());
 		
@@ -168,53 +170,37 @@ public class HerramientaService implements IHerramientaService {
 		HerramientaDO herramienta = entityManager.find(HerramientaDO.class, id);
 		List<ComentariosDO> comentarios=null; 
 		
-		List<DocumentoAlmacenDO> certificadoCalibraccion = null;
-		List<DocumentoAlmacenDO> polizaSeguro = null;
-		List<DocumentoAlmacenDO> polizaGarantia = null;
-	
-		
 		if (herramienta == null) {
 			throw new ConectelException("La Herramienta no existe");
 		}
 		
 		comentarios = getAllComentariosById(herramienta.getId());
 		herramienta.setComentarios(comentarios);
-		
-		certificadoCalibraccion = getDocumentosByTipo(herramienta.getId(), 5L);
-		polizaSeguro  = getDocumentosByTipo(herramienta.getId(), 2L);
-		polizaGarantia  = getDocumentosByTipo(herramienta.getId(), 1L);
 
-		herramienta.setCertificadoCalibracion(getDocumentosString(certificadoCalibraccion));
-		herramienta.setPolizaSeguro(getDocumentosString(polizaSeguro));
-		herramienta.setPolizaGarantia(getDocumentosString(polizaGarantia));
-		
-		
-		
 		return herramienta;
 	}
-	
-	private List<String> getDocumentosString(List<DocumentoAlmacenDO> documentos){
-		List<String> datos= new ArrayList<String>();
-		
-		if(documentos!=null)
-		for (DocumentoAlmacenDO documentoAlmacenDO : documentos) {
-			datos.add(documentoAlmacenDO.getNombreArchivo());
-		}
-		
-		return datos;
-		
-	}
-	
-	
 	
 	private void deleteDocumentos(Long idAlmacen) throws ConectelException{
 		 List<DocumentoAlmacenDO> documentos = getAllDocumentosById(idAlmacen);
 		 
+		 if( documentos == null ){
+			 return;
+		 }
 		 for (DocumentoAlmacenDO documentoAlmacenDO : documentos) {
 			 entityManager.remove(documentoAlmacenDO);
 		}
 		
 	}
 	
-
+	private void deleteComentarios(Long idAlmacen) throws ConectelException{
+		 List<ComentariosDO> comentarios = getAllComentariosById(idAlmacen);
+		 
+		 if( comentarios == null ){
+			 return;
+		 }
+		 for (ComentariosDO comentario : comentarios ) {
+			 entityManager.remove( comentario );
+		}
+		
+	}
 }

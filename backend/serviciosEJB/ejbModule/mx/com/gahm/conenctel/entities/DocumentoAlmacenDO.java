@@ -11,6 +11,10 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="documentoalmacen")
+@NamedQueries({
+	@NamedQuery(name = "DocumentoAlmacenDO.findAll", query = "select c from DocumentoAlmacenDO c where c.almacen=:almacen"),
+	@NamedQuery(name = "DocumentoAlmacenDO.getDocumentosByTipo", query = "select c from DocumentoAlmacenDO c where c.almacen=:almacen and c.fkTipoEntregable.id=:tipoDocumento") 
+})
 public class DocumentoAlmacenDO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -19,8 +23,8 @@ public class DocumentoAlmacenDO implements Serializable {
 	private Long id;
 
 	// TODO
-	@Column(name="fk_almacen")
-	private Long fkAlmacen;
+	@Column(name="almacen")
+	private Long almacen;
 
 	@Column(name="nombre_archivo")
 	private String nombreArchivo;
@@ -42,14 +46,6 @@ public class DocumentoAlmacenDO implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public Long getFkAlmacen() {
-		return this.fkAlmacen;
-	}
-
-	public void setFkAlmacen(Long fkAlmacen) {
-		this.fkAlmacen = fkAlmacen;
 	}
 
 	public String getNombreArchivo() {
@@ -74,6 +70,14 @@ public class DocumentoAlmacenDO implements Serializable {
 
 	public void setFkTipoAlmacen(TipoAlmacenDO fkTipoAlmacen) {
 		this.fkTipoAlmacen = fkTipoAlmacen;
+	}
+
+	public Long getAlmacen() {
+		return almacen;
+	}
+
+	public void setAlmacen(Long almacen) {
+		this.almacen = almacen;
 	}
 
 }

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -70,6 +71,22 @@ public class EquipoMedicionDO implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="fk_estatus_a")
 	private EstatusADO estatusa;
+	
+	@Transient
+	List<DocumentoAlmacenDO> polizaGarantia;
+	
+	@Transient
+	List<DocumentoAlmacenDO> polizaSeguro;
+	
+	@Transient
+	List<DocumentoAlmacenDO> certificadoCalibracion;
+	
+	@Transient
+	List<DocumentoAlmacenDO> ordenMantenimiento;
+	
+	@Transient
+	List<ComentariosDO> comentarios;
+	
 
 	public EquipoMedicionDO() {
 	}
@@ -200,6 +217,47 @@ public class EquipoMedicionDO implements Serializable {
 
 	public void setEstatusa(EstatusADO estatusa) {
 		this.estatusa = estatusa;
+	}
+
+	public List<DocumentoAlmacenDO> getPolizaGarantia() {
+		return polizaGarantia;
+	}
+
+	public void setPolizaGarantia(List<DocumentoAlmacenDO> polizaGarantia) {
+		this.polizaGarantia = polizaGarantia;
+	}
+
+	public List<DocumentoAlmacenDO> getPolizaSeguro() {
+		return polizaSeguro;
+	}
+
+	public void setPolizaSeguro(List<DocumentoAlmacenDO> polizaSeguro) {
+		this.polizaSeguro = polizaSeguro;
+	}
+
+	public List<DocumentoAlmacenDO> getCertificadoCalibracion() {
+		return certificadoCalibracion;
+	}
+
+	public void setCertificadoCalibracion(
+			List<DocumentoAlmacenDO> certificadoCalibracion) {
+		this.certificadoCalibracion = certificadoCalibracion;
+	}
+
+	public List<DocumentoAlmacenDO> getOrdenMantenimiento() {
+		return ordenMantenimiento;
+	}
+
+	public void setOrdenMantenimiento(List<DocumentoAlmacenDO> ordenMantenimiento) {
+		this.ordenMantenimiento = ordenMantenimiento;
+	}
+
+	public List<ComentariosDO> getComentarios() {
+		return comentarios;
+	}
+
+	public void setComentarios(List<ComentariosDO> comentarios) {
+		this.comentarios = comentarios;
 	}
 
 }

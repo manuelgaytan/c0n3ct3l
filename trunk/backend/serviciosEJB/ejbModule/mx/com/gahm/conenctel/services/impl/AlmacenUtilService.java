@@ -104,4 +104,15 @@ public class AlmacenUtilService implements IAlmacenUtilService{
 		}
 		return datos;
 	}
+	
+	public void saveDocumentos(List<DocumentoAlmacenDO> documentos, Long id,Long idTipoEntregable){
+		if( documentos == null || id == null ){
+			return;
+		}
+		for (DocumentoAlmacenDO doc : documentos) {
+			doc.setAlmacen(id);
+			entityManager.persist(doc);
+		}
+	}
+	
 }

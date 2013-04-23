@@ -2,6 +2,7 @@ package mx.com.gahm.conenctel.services.impl;
 
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -10,8 +11,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
+import mx.com.gahm.conenctel.entities.ComentariosDO;
 import mx.com.gahm.conenctel.entities.ConsumibleDO;
+import mx.com.gahm.conenctel.entities.TipoAlmacenDO;
 import mx.com.gahm.conenctel.exceptions.ConectelException;
+import mx.com.gahm.conenctel.services.IAlmacenUtilService;
 import mx.com.gahm.conenctel.services.IConsumibleService;
 import mx.com.gahm.conenctel.util.DataTypeUtil;
 
@@ -22,6 +26,9 @@ public class ConsumibleService implements IConsumibleService {
 
 	@Inject
 	private EntityManager entityManager;
+	
+	@EJB(mappedName="ejb/AlmacenUtilService")
+	private IAlmacenUtilService almacenUtilService; 
 	
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public List<ConsumibleDO> getAll() throws ConectelException {
@@ -55,21 +62,37 @@ public class ConsumibleService implements IConsumibleService {
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public ConsumibleDO save(ConsumibleDO item) {
 		entityManager.persist(item);
+		
+		almacenUtilService.saveComentarios(item.getComentarios(),item.getId());
 		return null;
 	}
+	
+	
+	
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public ConsumibleDO update(ConsumibleDO item) {
+		try {
+			almacenUtilService.deleteComentarios(item.getId());
+		} catch (ConectelException e) {
+			e.printStackTrace();
+		}
 		entityManager.merge(item);
+		almacenUtilService.saveComentarios(item.getComentarios(),item.getId());
 		return null;
 	}
 
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public ConsumibleDO getItem(Long id) throws ConectelException {
+		List<ComentariosDO> comentarios=null; 
 		ConsumibleDO consumible = entityManager.find(ConsumibleDO.class, id);
 		if (consumible == null) {
 			throw new ConectelException("El Consumible no existe");
 		}
+		
+		comentarios = almacenUtilService.getAllComentariosById(consumible.getId());
+		
+		consumible.setComentarios(comentarios);
 		return consumible;
 	}
 

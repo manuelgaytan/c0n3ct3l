@@ -1,6 +1,7 @@
 package mx.com.gahm.conenctel.entities;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 
 /**
@@ -59,6 +61,9 @@ public class ConsumibleDO implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="fk_ubicacion_c")
 	private UbicacionCDO ubicacionC;
+	
+	@Transient
+	List<ComentariosDO> comentarios;
 
 	public ConsumibleDO() {
 	}
@@ -141,6 +146,14 @@ public class ConsumibleDO implements Serializable {
 
 	public void setUbicacionC(UbicacionCDO ubicacionC) {
 		this.ubicacionC = ubicacionC;
+	}
+
+	public List<ComentariosDO> getComentarios() {
+		return comentarios;
+	}
+
+	public void setComentarios(List<ComentariosDO> comentarios) {
+		this.comentarios = comentarios;
 	}
 
 }

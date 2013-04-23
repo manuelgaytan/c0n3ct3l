@@ -29,4 +29,5 @@ public interface IAlmacenUtilService {
 	public void deleteComentarios(Long idAlmacen) throws ConectelException;
 	
 	public List<ComentariosDO> getAllComentariosById(Long id) throws ConectelException ;
+	public void saveDocumentos(List<DocumentoAlmacenDO> documentos, Long id,Long idTipoEntregable);
 }

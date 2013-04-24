@@ -1,5 +1,6 @@
 package mx.com.gahm.conenctel.services.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -14,9 +15,10 @@ import javax.persistence.TypedQuery;
 import mx.com.gahm.conenctel.entities.ComentariosDO;
 import mx.com.gahm.conenctel.entities.DocumentoAlmacenDO;
 import mx.com.gahm.conenctel.entities.HerramientaDO;
+import mx.com.gahm.conenctel.entities.TipoAlmacenDO;
 import mx.com.gahm.conenctel.entities.TipoDocumentoAlmacenDO;
 import mx.com.gahm.conenctel.exceptions.ConectelException;
-import mx.com.gahm.conenctel.services.IAlmacenUtilService;
+import mx.com.gahm.conenctel.services.IAlmacenUtilsService;
 import mx.com.gahm.conenctel.services.IHerramientaService;
 import mx.com.gahm.conenctel.util.DataTypeUtil;
 
@@ -28,8 +30,9 @@ public class HerramientaService implements IHerramientaService {
 	@Inject
 	private EntityManager entityManager;
 	
-	@EJB(mappedName="ejb/AlmacenUtilService")
-	private IAlmacenUtilService almacenUtilService; 
+	@EJB
+	private IAlmacenUtilsService almacenService;
+	
 	
 	
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
@@ -71,12 +74,12 @@ public class HerramientaService implements IHerramientaService {
 		entityManager.persist(item);
 		entityManager.flush();
 		
-		saveDocumentos(item.getCertificadoCalibracion(), item.getId(), TipoDocumentoAlmacenDO.ID_CERTIFICADO_CALIBRACION );
-		saveDocumentos(item.getPolizaSeguro(), item.getId(), TipoDocumentoAlmacenDO.ID_POLIZA_SEGURO );
-		saveDocumentos(item.getPolizaGarantia(), item.getId(), TipoDocumentoAlmacenDO.ID_POLIZA_GARANTIA );
-		saveDocumentos(item.getOrdenMantenimiento(), item.getId(), TipoDocumentoAlmacenDO.ID_ORDEN_MANTENIMIENTO_SERVICIO );
+		almacenService.saveDocumentos(item.getCertificadoCalibracion(), item.getId(), TipoDocumentoAlmacenDO.ID_CERTIFICADO_CALIBRACION );
+		almacenService.saveDocumentos(item.getPolizaSeguro(), item.getId(), TipoDocumentoAlmacenDO.ID_POLIZA_SEGURO );
+		almacenService.saveDocumentos(item.getPolizaGarantia(), item.getId(), TipoDocumentoAlmacenDO.ID_POLIZA_GARANTIA );
+		almacenService.saveDocumentos(item.getOrdenMantenimiento(), item.getId(), TipoDocumentoAlmacenDO.ID_ORDEN_MANTENIMIENTO_SERVICIO );
 		
-		almacenUtilService.saveComentarios(item.getComentarios(), item.getId());
+		saveComentarios(item.getComentarios(), item.getId());
 		
 		return null;
 	}
@@ -91,18 +94,29 @@ public class HerramientaService implements IHerramientaService {
 		}
 	}
 	
-	
+	private void saveComentarios(List<ComentariosDO> comentarios, Long id ){
+		if( comentarios == null || id == null ){
+			return;
+		}
+		for (ComentariosDO comentario : comentarios) {
+			comentario.setAlmacen(id);
+			comentario.setTipoAlmacen(new TipoAlmacenDO());
+			comentario.getTipoAlmacen().setId(1L);
+			entityManager.persist(comentario);
+		}
+	}
+
 		
 	
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public HerramientaDO update(HerramientaDO item) {
 		try {
-			almacenUtilService.deleteDocumentos(item.getId());
+			deleteDocumentos(item.getId());
 		} catch (ConectelException e) {
 			e.printStackTrace();
 		}
 		try {
-			almacenUtilService.deleteComentarios(item.getId());
+			deleteComentarios(item.getId());
 		} catch (ConectelException e) {
 			e.printStackTrace();
 		}
@@ -112,16 +126,51 @@ public class HerramientaService implements IHerramientaService {
 		saveDocumentos(item.getPolizaGarantia(), item.getId(), TipoDocumentoAlmacenDO.ID_POLIZA_GARANTIA );
 		saveDocumentos(item.getOrdenMantenimiento(), item.getId(), TipoDocumentoAlmacenDO.ID_ORDEN_MANTENIMIENTO_SERVICIO );
 		
-		almacenUtilService.saveComentarios(item.getComentarios(), item.getId());
+		saveComentarios(item.getComentarios(), item.getId());
 		
 		entityManager.merge(item);
 		return null;
 	}
 	
+	public List<DocumentoAlmacenDO> getAllDocumentosById(Long id) throws ConectelException {
+		TypedQuery<DocumentoAlmacenDO> query = entityManager.createNamedQuery(
+				"DocumentoAlmacenDO.findAll", DocumentoAlmacenDO.class);
+		query.setParameter("almacen", id);
+		List<DocumentoAlmacenDO> datos;
+		try {
+			datos = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen Herramientas registradas.");
+		}
+		return datos;
+	}
 	
+	public List<DocumentoAlmacenDO> getDocumentosByTipo(Long id,Long tipoDocumento) throws ConectelException {
+		TypedQuery<DocumentoAlmacenDO> query = entityManager.createNamedQuery(
+				"DocumentoAlmacenDO.getDocumentosByTipo", DocumentoAlmacenDO.class);
+		query.setParameter("almacen", id);
+		query.setParameter("tipoDocumento", tipoDocumento);
+		List<DocumentoAlmacenDO> datos;
+		try {
+			datos = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen Herramientas registradas.");
+		}
+		return datos;
+	}
 	
-	
-	
+	public List<ComentariosDO> getAllComentariosById(Long id) throws ConectelException {
+		TypedQuery<ComentariosDO> query = entityManager.createNamedQuery(
+				"ComentariosDO.findAll", ComentariosDO.class);
+		query.setParameter("almacen", id);
+		List<ComentariosDO> datos;
+		try {
+			datos = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen Herramientas registradas.");
+		}
+		return datos;
+	}
 	
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public HerramientaDO getItem(Long id) throws ConectelException {
@@ -132,19 +181,33 @@ public class HerramientaService implements IHerramientaService {
 			throw new ConectelException("La Herramienta no existe");
 		}
 		
-		comentarios = almacenUtilService.getAllComentariosById(herramienta.getId());
+		comentarios = getAllComentariosById(herramienta.getId());
 		herramienta.setComentarios(comentarios);
 
 		return herramienta;
 	}
-
-	public IAlmacenUtilService getAlmacenUtilService() {
-		return almacenUtilService;
-	}
-
-	public void setAlmacenUtilService(IAlmacenUtilService almacenUtilService) {
-		this.almacenUtilService = almacenUtilService;
+	
+	private void deleteDocumentos(Long idAlmacen) throws ConectelException{
+		 List<DocumentoAlmacenDO> documentos = getAllDocumentosById(idAlmacen);
+		 
+		 if( documentos == null ){
+			 return;
+		 }
+		 for (DocumentoAlmacenDO documentoAlmacenDO : documentos) {
+			 entityManager.remove(documentoAlmacenDO);
+		}
+		
 	}
 	
-	
+	private void deleteComentarios(Long idAlmacen) throws ConectelException{
+		 List<ComentariosDO> comentarios = getAllComentariosById(idAlmacen);
+		 
+		 if( comentarios == null ){
+			 return;
+		 }
+		 for (ComentariosDO comentario : comentarios ) {
+			 entityManager.remove( comentario );
+		}
+		
+	}
 }

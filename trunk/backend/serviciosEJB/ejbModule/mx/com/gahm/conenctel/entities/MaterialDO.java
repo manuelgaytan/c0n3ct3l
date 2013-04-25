@@ -1,6 +1,7 @@
 package mx.com.gahm.conenctel.entities;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 
 /**
@@ -28,6 +30,7 @@ public class MaterialDO implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "id", unique = true, nullable = false)
 	private Long id;
 
 	private String codigo;
@@ -60,6 +63,10 @@ public class MaterialDO implements Serializable {
 	@JoinColumn(name="fk_ubicacion_b")
 	private UbicacionBDO ubicacionB;
 
+	@Transient
+	List<ComentariosDO> comentarios;
+	
+	
 	public MaterialDO() {
 	}
 
@@ -141,6 +148,20 @@ public class MaterialDO implements Serializable {
 
 	public void setUbicacionB(UbicacionBDO ubicacionB) {
 		this.ubicacionB = ubicacionB;
+	}
+
+	/**
+	 * @return the comentarios
+	 */
+	public List<ComentariosDO> getComentarios() {
+		return comentarios;
+	}
+
+	/**
+	 * @param comentarios the comentarios to set
+	 */
+	public void setComentarios(List<ComentariosDO> comentarios) {
+		this.comentarios = comentarios;
 	}
 
 }

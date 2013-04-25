@@ -21,6 +21,7 @@ public class EquipoMedicionDO implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "id", unique = true, nullable = false)
 	private Long id;
 
 	private String codigo;

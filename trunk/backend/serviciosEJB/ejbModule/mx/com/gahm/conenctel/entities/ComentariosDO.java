@@ -27,7 +27,7 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name="Comentarios")
 @NamedQueries({
-	@NamedQuery(name = "ComentariosDO.findAll", query = "select c from ComentariosDO c where c.almacen=:almacen") })
+	@NamedQuery(name = "ComentariosDO.findAll", query = "select c from ComentariosDO c where c.almacen=:almacen and c.tipoAlmacen.id=:tipoAlmacen") })
 public class ComentariosDO implements Serializable{
 
 	/**

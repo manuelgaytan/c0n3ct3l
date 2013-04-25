@@ -20,7 +20,7 @@ public interface IAlmacenUtilService {
 	
 	public List<DocumentoAlmacenDO> getDocumentosByTipo(Long id,Long tipoDocumento) throws ConectelException;
 	
-	public void saveComentarios(List<ComentariosDO> comentarios, Long id );
+	public void saveComentarios(List<ComentariosDO> comentarios, Long id, Long idTipoAlmacen );
 	
 	public List<DocumentoAlmacenDO> getAllDocumentosById(Long id) throws ConectelException ;
 	
@@ -28,6 +28,6 @@ public interface IAlmacenUtilService {
 	
 	public void deleteComentarios(Long idAlmacen) throws ConectelException;
 	
-	public List<ComentariosDO> getAllComentariosById(Long id) throws ConectelException ;
+	public List<ComentariosDO> getAllComentariosById(Long id,Long tipoAlmacen) throws ConectelException ;
 	public void saveDocumentos(List<DocumentoAlmacenDO> documentos, Long id,Long idTipoEntregable);
 }

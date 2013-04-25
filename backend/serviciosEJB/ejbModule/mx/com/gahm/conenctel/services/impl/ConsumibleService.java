@@ -26,6 +26,7 @@ public class ConsumibleService implements IConsumibleService {
 
 	@Inject
 	private EntityManager entityManager;
+
 	
 	@EJB(mappedName="ejb/AlmacenUtilService")
 	private IAlmacenUtilService almacenUtilService; 
@@ -62,13 +63,23 @@ public class ConsumibleService implements IConsumibleService {
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public ConsumibleDO save(ConsumibleDO item) {
 		entityManager.persist(item);
-		
-		almacenUtilService.saveComentarios(item.getComentarios(),item.getId());
+		entityManager.flush();
+		saveComentarios(item.getComentarios(),item.getId(),TipoAlmacenDO.ID_CONSUMIBLES);
 		return null;
 	}
 	
 	
-	
+	private void saveComentarios(List<ComentariosDO> comentarios, Long id,Long idTipoAlmacen ){
+		if( comentarios == null || id == null ){
+			return;
+		}
+		for (ComentariosDO comentario : comentarios) {
+			comentario.setAlmacen(id);
+			comentario.setTipoAlmacen(new TipoAlmacenDO());
+			comentario.getTipoAlmacen().setId(idTipoAlmacen);
+			entityManager.persist(comentario);
+		}
+	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public ConsumibleDO update(ConsumibleDO item) {
@@ -78,7 +89,7 @@ public class ConsumibleService implements IConsumibleService {
 			e.printStackTrace();
 		}
 		entityManager.merge(item);
-		almacenUtilService.saveComentarios(item.getComentarios(),item.getId());
+		almacenUtilService.saveComentarios(item.getComentarios(),item.getId(),TipoAlmacenDO.ID_CONSUMIBLES);
 		return null;
 	}
 
@@ -90,7 +101,7 @@ public class ConsumibleService implements IConsumibleService {
 			throw new ConectelException("El Consumible no existe");
 		}
 		
-		comentarios = almacenUtilService.getAllComentariosById(consumible.getId());
+		comentarios = almacenUtilService.getAllComentariosById(consumible.getId(),TipoAlmacenDO.ID_CONSUMIBLES);
 		
 		consumible.setComentarios(comentarios);
 		return consumible;

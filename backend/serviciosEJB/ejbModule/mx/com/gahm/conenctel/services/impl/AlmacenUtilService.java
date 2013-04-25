@@ -42,14 +42,14 @@ public class AlmacenUtilService implements IAlmacenUtilService{
 		return datos;
 	}
 	
-	public void saveComentarios(List<ComentariosDO> comentarios, Long id ){
+	public void saveComentarios(List<ComentariosDO> comentarios, Long id,Long idTipoAlmacen ){
 		if( comentarios == null || id == null ){
 			return;
 		}
 		for (ComentariosDO comentario : comentarios) {
 			comentario.setAlmacen(id);
 			comentario.setTipoAlmacen(new TipoAlmacenDO());
-			comentario.getTipoAlmacen().setId(1L);
+			comentario.getTipoAlmacen().setId(idTipoAlmacen);
 			entityManager.persist(comentario);
 		}
 	}
@@ -80,7 +80,7 @@ public class AlmacenUtilService implements IAlmacenUtilService{
 	}
 	
 	public void deleteComentarios(Long idAlmacen) throws ConectelException{
-		 List<ComentariosDO> comentarios = getAllComentariosById(idAlmacen);
+		 List<ComentariosDO> comentarios = getAllComentariosById(idAlmacen,TipoAlmacenDO.ID_HERRAMIENTA);
 		 
 		 if( comentarios == null ){
 			 return;
@@ -92,10 +92,11 @@ public class AlmacenUtilService implements IAlmacenUtilService{
 	}
 
 	
-	public List<ComentariosDO> getAllComentariosById(Long id) throws ConectelException {
+	public List<ComentariosDO> getAllComentariosById(Long id,Long tipoAlmacen) throws ConectelException {
 		TypedQuery<ComentariosDO> query = entityManager.createNamedQuery(
 				"ComentariosDO.findAll", ComentariosDO.class);
 		query.setParameter("almacen", id);
+		query.setParameter("tipoAlmacen", tipoAlmacen);
 		List<ComentariosDO> datos;
 		try {
 			datos = query.getResultList();

@@ -14,6 +14,7 @@ import javax.persistence.TypedQuery;
 import mx.com.gahm.conenctel.entities.ComentariosDO;
 import mx.com.gahm.conenctel.entities.DocumentoAlmacenDO;
 import mx.com.gahm.conenctel.entities.EquipoMedicionDO;
+import mx.com.gahm.conenctel.entities.TipoAlmacenDO;
 import mx.com.gahm.conenctel.entities.TipoDocumentoAlmacenDO;
 import mx.com.gahm.conenctel.exceptions.ConectelException;
 import mx.com.gahm.conenctel.services.IAlmacenUtilService;
@@ -64,6 +65,7 @@ public class EquipoMedicionService implements IEquipoMedicionService {
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public EquipoMedicionDO save(EquipoMedicionDO item) {
 		entityManager.persist(item);
+		entityManager.flush();
 		saveDocumentos(item);
 		return null;
 	}
@@ -75,12 +77,23 @@ public class EquipoMedicionService implements IEquipoMedicionService {
 		almacenUtilService.saveDocumentos(item.getOrdenMantenimiento(), item.getId(), TipoDocumentoAlmacenDO.ID_ORDEN_MANTENIMIENTO_SERVICIO );
 		almacenUtilService.saveDocumentos(item.getCertificadoCalibracion(), item.getId(), TipoDocumentoAlmacenDO.ID_CERTIFICADO_CALIBRACION);
 		
-		almacenUtilService.saveComentarios(item.getComentarios(), item.getId());
+		almacenUtilService.saveComentarios(item.getComentarios(), item.getId(),TipoAlmacenDO.ID_EQUIPO_MEDICION);
 	}
 	
 	
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public EquipoMedicionDO update(EquipoMedicionDO item) {
+		try {
+			almacenUtilService.deleteDocumentos(item.getId());
+		} catch (ConectelException e) {
+			e.printStackTrace();
+		}
+		try {
+			almacenUtilService.deleteComentarios(item.getId());
+		} catch (ConectelException e) {
+			e.printStackTrace();
+		}
+		
 		entityManager.merge(item);
 		return null;
 	}
@@ -93,7 +106,7 @@ public class EquipoMedicionService implements IEquipoMedicionService {
 		if (equipoMedicion == null) {
 			throw new ConectelException("El Equipo de Medición no existe");
 		}
-		comentarios = almacenUtilService.getAllComentariosById(equipoMedicion.getId());
+		comentarios = almacenUtilService.getAllComentariosById(equipoMedicion.getId(),TipoAlmacenDO.ID_EQUIPO_MEDICION);
 		documentos =almacenUtilService.getDocumentosByTipo(equipoMedicion.getId(),TipoDocumentoAlmacenDO.ID_POLIZA_SEGURO);
 		equipoMedicion.setPolizaSeguro(documentos);
 		documentos =almacenUtilService.getDocumentosByTipo(equipoMedicion.getId(),TipoDocumentoAlmacenDO.ID_CERTIFICADO_CALIBRACION);

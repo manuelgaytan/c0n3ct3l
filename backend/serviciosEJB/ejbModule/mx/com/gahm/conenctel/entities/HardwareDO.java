@@ -2,6 +2,7 @@ package mx.com.gahm.conenctel.entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,6 +16,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 
 /**
@@ -31,6 +33,7 @@ public class HardwareDO implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "id", unique = true, nullable = false)
 	private Long id;
 
 	private String codigo;
@@ -77,6 +80,21 @@ public class HardwareDO implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="fk_estatus_b")
 	private EstatusBDO estatusB;
+	
+	@Transient
+	List<DocumentoAlmacenDO> polizaGarantia;
+	
+	@Transient
+	List<DocumentoAlmacenDO> polizaSeguro;
+	
+	@Transient
+	List<DocumentoAlmacenDO> certificadoCalibracion;
+	
+	@Transient
+	List<DocumentoAlmacenDO> ordenMantenimiento;
+	
+	@Transient
+	List<ComentariosDO> comentarios;
 
 	public HardwareDO() {
 	}
@@ -199,6 +217,77 @@ public class HardwareDO implements Serializable {
 
 	public void setEstatusB(EstatusBDO estatusB) {
 		this.estatusB = estatusB;
+	}
+
+	/**
+	 * @return the polizaGarantia
+	 */
+	public List<DocumentoAlmacenDO> getPolizaGarantia() {
+		return polizaGarantia;
+	}
+
+	/**
+	 * @param polizaGarantia the polizaGarantia to set
+	 */
+	public void setPolizaGarantia(List<DocumentoAlmacenDO> polizaGarantia) {
+		this.polizaGarantia = polizaGarantia;
+	}
+
+	/**
+	 * @return the polizaSeguro
+	 */
+	public List<DocumentoAlmacenDO> getPolizaSeguro() {
+		return polizaSeguro;
+	}
+
+	/**
+	 * @param polizaSeguro the polizaSeguro to set
+	 */
+	public void setPolizaSeguro(List<DocumentoAlmacenDO> polizaSeguro) {
+		this.polizaSeguro = polizaSeguro;
+	}
+
+	/**
+	 * @return the certificadoCalibracion
+	 */
+	public List<DocumentoAlmacenDO> getCertificadoCalibracion() {
+		return certificadoCalibracion;
+	}
+
+	/**
+	 * @param certificadoCalibracion the certificadoCalibracion to set
+	 */
+	public void setCertificadoCalibracion(
+			List<DocumentoAlmacenDO> certificadoCalibracion) {
+		this.certificadoCalibracion = certificadoCalibracion;
+	}
+
+	/**
+	 * @return the ordenMantenimiento
+	 */
+	public List<DocumentoAlmacenDO> getOrdenMantenimiento() {
+		return ordenMantenimiento;
+	}
+
+	/**
+	 * @param ordenMantenimiento the ordenMantenimiento to set
+	 */
+	public void setOrdenMantenimiento(List<DocumentoAlmacenDO> ordenMantenimiento) {
+		this.ordenMantenimiento = ordenMantenimiento;
+	}
+
+	/**
+	 * @return the comentarios
+	 */
+	public List<ComentariosDO> getComentarios() {
+		return comentarios;
+	}
+
+	/**
+	 * @param comentarios the comentarios to set
+	 */
+	public void setComentarios(List<ComentariosDO> comentarios) {
+		this.comentarios = comentarios;
 	}
 
 }

@@ -44,7 +44,8 @@ public class SoftwareDO implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name = "fk_responsable", nullable = false)
-	private ColaboradorDO fkResponsable;
+	private ColaboradorDO responsable;
+
 
 	@Temporal(TemporalType.DATE)
 	@Column(name="licenciamiento_final")
@@ -188,14 +189,6 @@ public class SoftwareDO implements Serializable {
 		this.existencia = existencia;
 	}
 
-	public ColaboradorDO getFkResponsable() {
-		return this.fkResponsable;
-	}
-
-	public void setFkResponsable(ColaboradorDO fkResponsable) {
-		this.fkResponsable = fkResponsable;
-	}
-
 	public Date getLicenciamientoFinal() {
 		return this.licenciamientoFinal;
 	}
@@ -242,6 +235,20 @@ public class SoftwareDO implements Serializable {
 
 	public void setUbicacionB(UbicacionBDO ubicacionB) {
 		this.ubicacionB = ubicacionB;
+	}
+
+	/**
+	 * @return the responsable
+	 */
+	public ColaboradorDO getResponsable() {
+		return responsable;
+	}
+
+	/**
+	 * @param responsable the responsable to set
+	 */
+	public void setResponsable(ColaboradorDO responsable) {
+		this.responsable = responsable;
 	}
 
 }

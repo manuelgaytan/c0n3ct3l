@@ -36,6 +36,8 @@ public class DesarrolloProyectoABDO implements Serializable {
 	@JoinColumn(name="id_plancha_base")
 	private SeguimientoDO planchaBase;
 
+
+	@ManyToOne(fetch= FetchType.EAGER)
 	@JoinColumn(name="id_proyecto")
 	private ProyectoDO proyecto;
 

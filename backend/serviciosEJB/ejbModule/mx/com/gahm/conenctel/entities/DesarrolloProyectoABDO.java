@@ -11,7 +11,7 @@ import javax.persistence.*;
  */
 @Entity
 @NamedQueries({
-	@NamedQuery(name = "DesarrolloProyectoABDO.findAll", query = "select d from DesarrolloProyectoABDO d") })
+	@NamedQuery(name = "DesarrolloProyectoABDO.findAll", query = "select d from DesarrolloProyectoABDO d where d.proyecto.estado.id=3") })
 @Table(name="desarrolloproyectoayb")
 public class DesarrolloProyectoABDO implements Serializable {
 	private static final long serialVersionUID = 1L;

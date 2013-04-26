@@ -39,9 +39,9 @@ public class ConsumibleDO implements Serializable {
 
 	private Double existencia;
 
-	// TODO
-	@Column(name="fk_responsable")
-	private Long fkResponsable;
+	@ManyToOne
+	@JoinColumn(name = "fk_responsable", nullable = false)
+	private ColaboradorDO responsable;
 
 	@ManyToOne
 	@JoinColumn(name="fk_estatus_c")
@@ -101,12 +101,12 @@ public class ConsumibleDO implements Serializable {
 		this.existencia = existencia;
 	}
 
-	public Long getFkResponsable() {
-		return this.fkResponsable;
+	public ColaboradorDO getResponsable() {
+		return this.responsable;
 	}
 
-	public void setFkResponsable(Long fkResponsable) {
-		this.fkResponsable = fkResponsable;
+	public void setResponsable(ColaboradorDO responsable) {
+		this.responsable = responsable;
 	}
 
 	public EstatusCDO getEstatusC() {

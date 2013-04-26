@@ -56,9 +56,9 @@ public class HerramientaDO implements Serializable {
 	@Column(name="fecha_proxima_calibracion")
 	private Date fechaProximaCalibracion;
 
-	// TODO
-	@Column(name="fk_responsable")
-	private Long fkResponsable;
+	@ManyToOne
+	@JoinColumn(name = "fk_responsable", nullable = false)
+	private ColaboradorDO responsable;
 
 	private String marca;
 
@@ -171,13 +171,7 @@ public class HerramientaDO implements Serializable {
 		this.fechaProximaCalibracion = fechaProximaCalibracion;
 	}
 
-	public Long getFkResponsable() {
-		return this.fkResponsable;
-	}
 
-	public void setFkResponsable(Long fkResponsable) {
-		this.fkResponsable = fkResponsable;
-	}
 
 	public String getMarca() {
 		return this.marca;
@@ -308,4 +302,19 @@ public class HerramientaDO implements Serializable {
 		this.ordenMantenimiento = ordenMantenimiento;
 	}
 
+	/**
+	 * @return the responsable
+	 */
+	public ColaboradorDO getResponsable() {
+		return responsable;
+	}
+
+	/**
+	 * @param responsable the responsable to set
+	 */
+	public void setResponsable(ColaboradorDO responsable) {
+		this.responsable = responsable;
+	}
+
+	
 }

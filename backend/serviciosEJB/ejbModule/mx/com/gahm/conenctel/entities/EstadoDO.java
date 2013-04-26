@@ -20,6 +20,13 @@ import javax.persistence.Table;
 public class EstadoDO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	public static final long ID_ALTA = 1L;
+	public static final long ID_DATOS_GENERALES = 2;
+	public static final long ID_DESARROLLO_PROYECTO_AB = 3;
+	public static final long ID_CONFIGURACION_PRUEBA_ENTREGA = 4;
+	public static final long ID_CERRADO = 5;
+	public static final long ID_CANCELADO = 6;
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;

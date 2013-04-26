@@ -41,8 +41,9 @@ public class EquipoMedicionDO implements Serializable {
 	private Date fechaProximaCalibracion;
 
 	// TODO
-	@Column(name="fk_responsable")
-	private Long fkResponsable;
+	@ManyToOne
+	@JoinColumn(name = "fk_responsable", nullable = false)
+	private ColaboradorDO responsable;
 
 	@Column(name="grupo_familia")
 	private String grupoFamilia;
@@ -138,14 +139,6 @@ public class EquipoMedicionDO implements Serializable {
 
 	public void setFechaProximaCalibracion(Date fechaProximaCalibracion) {
 		this.fechaProximaCalibracion = fechaProximaCalibracion;
-	}
-
-	public Long getFkResponsable() {
-		return this.fkResponsable;
-	}
-
-	public void setFkResponsable(Long fkResponsable) {
-		this.fkResponsable = fkResponsable;
 	}
 
 	public String getGrupoFamilia() {
@@ -259,6 +252,20 @@ public class EquipoMedicionDO implements Serializable {
 
 	public void setComentarios(List<ComentariosDO> comentarios) {
 		this.comentarios = comentarios;
+	}
+
+	/**
+	 * @return the fkResponsable
+	 */
+	public ColaboradorDO getResponsable() {
+		return responsable;
+	}
+
+	/**
+	 * @param fkResponsable the fkResponsable to set
+	 */
+	public void setResponsable(ColaboradorDO responsable) {
+		this.responsable = responsable;
 	}
 
 }

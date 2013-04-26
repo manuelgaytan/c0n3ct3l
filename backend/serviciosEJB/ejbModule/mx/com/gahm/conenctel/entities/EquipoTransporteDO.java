@@ -32,9 +32,9 @@ public class EquipoTransporteDO implements Serializable {
 	@Column(name="fecha_mantenimiento")
 	private Date fechaMantenimiento;
 
-	// TODO
-	@Column(name="fk_responsable")
-	private Long fkResponsable;
+	@ManyToOne
+	@JoinColumn(name = "fk_responsable", nullable = false)
+	private ColaboradorDO responsable;
 
 	private String marca;
 
@@ -117,14 +117,6 @@ public class EquipoTransporteDO implements Serializable {
 
 	public void setFechaMantenimiento(Date fechaMantenimiento) {
 		this.fechaMantenimiento = fechaMantenimiento;
-	}
-
-	public Long getFkResponsable() {
-		return this.fkResponsable;
-	}
-
-	public void setFkResponsable(Long fkResponsable) {
-		this.fkResponsable = fkResponsable;
 	}
 
 	public String getMarca() {
@@ -235,6 +227,7 @@ public class EquipoTransporteDO implements Serializable {
 		this.polizaSeguro = polizaSeguro;
 	}
 
+	
 	/**
 	 * @return the certificadoCalibracion
 	 */
@@ -276,6 +269,20 @@ public class EquipoTransporteDO implements Serializable {
 	 */
 	public void setComentarios(List<ComentariosDO> comentarios) {
 		this.comentarios = comentarios;
+	}
+
+	/**
+	 * @return the responsable
+	 */
+	public ColaboradorDO getResponsable() {
+		return responsable;
+	}
+
+	/**
+	 * @param responsable the responsable to set
+	 */
+	public void setResponsable(ColaboradorDO responsable) {
+		this.responsable = responsable;
 	}
 
 }

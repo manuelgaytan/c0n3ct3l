@@ -39,9 +39,10 @@ public class MaterialDO implements Serializable {
 
 	private Double existencia;
 
-	// TODO
-	@Column(name="fk_responsable")
-	private Long fkResponsable;
+	@ManyToOne
+	@JoinColumn(name = "fk_responsable", nullable = false)
+	private ColaboradorDO responsable;
+
 
 	@ManyToOne
 	@JoinColumn(name="fk_estatus_c")
@@ -101,15 +102,7 @@ public class MaterialDO implements Serializable {
 	public void setExistencia(Double existencia) {
 		this.existencia = existencia;
 	}
-
-	public Long getFkResponsable() {
-		return this.fkResponsable;
-	}
-
-	public void setFkResponsable(Long fkResponsable) {
-		this.fkResponsable = fkResponsable;
-	}
-
+	
 	public EstatusCDO getEstatusC() {
 		return estatusC;
 	}
@@ -162,6 +155,20 @@ public class MaterialDO implements Serializable {
 	 */
 	public void setComentarios(List<ComentariosDO> comentarios) {
 		this.comentarios = comentarios;
+	}
+
+	/**
+	 * @return the responsable
+	 */
+	public ColaboradorDO getResponsable() {
+		return responsable;
+	}
+
+	/**
+	 * @param responsable the responsable to set
+	 */
+	public void setResponsable(ColaboradorDO responsable) {
+		this.responsable = responsable;
 	}
 
 }

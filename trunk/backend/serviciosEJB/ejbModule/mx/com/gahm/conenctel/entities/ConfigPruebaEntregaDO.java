@@ -43,7 +43,7 @@ public class ConfigPruebaEntregaDO implements Serializable {
 	@Column(name="tarjetas_entregadas")
 	private String tarjetasEntregadas;
 
-	@ManyToOne
+	@ManyToOne(fetch= FetchType.EAGER)
 	@JoinColumn(name="id_proyecto")
 	private ProyectoDO proyecto;
 	

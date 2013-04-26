@@ -37,7 +37,7 @@ public class ObservacionDO implements Serializable {
 	@JoinColumn(name="id_imputable")
 	private ImputableDO imputable;
 
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="id_estado_proyecto")
 	private EstadoDO estado;
 

@@ -20,6 +20,7 @@ import javax.swing.table.TableModel;
 
 import mx.com.gahm.conenctel.entities.ClienteDO;
 import mx.com.gahm.conenctel.entities.ProductoDO;
+import mx.com.gahm.conenctel.entities.ProyectoDO;
 import mx.com.gahm.conenctel.exceptions.ConectelException;
 import mx.com.gahm.conenctel.model.Catalogo;
 import mx.com.gahm.conenctel.model.FiltroProducto;
@@ -94,11 +95,21 @@ public class ProductoService implements IProductoService {
 	public boolean deleteProductos(List<Long> ids) {
 		List<Long> idList = (List) DataTypeUtil.convertToLong(ids);
 		boolean response = true;
+		List<ProyectoDO> proyectos = null;
 		for (Long id : idList) {
 			ProductoDO current = entityManager.find(ProductoDO.class, id);
+			
 			if (current == null) {
 				response = false;
 			} else {
+				
+				TypedQuery<ProyectoDO> query = entityManager.createNamedQuery(" ProyectoDO.getProyectosByProducto", ProyectoDO.class);
+				query.setParameter("idProducto", current.getId());
+				proyectos = query.getResultList();
+				
+				if(proyectos!=null && proyectos.size()>0){
+					response = false;
+				}else
 				entityManager.remove(current);
 			}
 		}

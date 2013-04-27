@@ -18,7 +18,7 @@ import mx.com.gahm.conenctel.exceptions.ConectelException;
 @Local
 public interface IAlmacenUtilService {
 	
-	public List<DocumentoAlmacenDO> getDocumentosByTipo(Long id,Long tipoDocumento) throws ConectelException;
+	public List<DocumentoAlmacenDO> getDocumentosByTipo(Long id,Long tipoDocumento,Long tipoAlmacen) throws ConectelException;
 	
 	public void saveComentarios(List<ComentariosDO> comentarios, Long id, Long idTipoAlmacen );
 	

@@ -123,16 +123,16 @@ public class HerramientaService implements IHerramientaService {
 			throw new ConectelException("La Herramienta no existe");
 		}
 		
-		documentos =almacenUtilService.getDocumentosByTipo(id, TipoDocumentoAlmacenDO.ID_CERTIFICADO_CALIBRACION);
+		documentos =almacenUtilService.getDocumentosByTipo(id, TipoDocumentoAlmacenDO.ID_CERTIFICADO_CALIBRACION,TipoAlmacenDO.ID_HERRAMIENTA);
 		herramienta.setCertificadoCalibracion(documentos);
 		
-		documentos =almacenUtilService.getDocumentosByTipo(id, TipoDocumentoAlmacenDO.ID_POLIZA_GARANTIA);
+		documentos =almacenUtilService.getDocumentosByTipo(id, TipoDocumentoAlmacenDO.ID_POLIZA_GARANTIA,TipoAlmacenDO.ID_HERRAMIENTA);
 		herramienta.setPolizaGarantia(documentos);
 		
-		documentos =almacenUtilService.getDocumentosByTipo(id, TipoDocumentoAlmacenDO.ID_POLIZA_SEGURO);
+		documentos =almacenUtilService.getDocumentosByTipo(id, TipoDocumentoAlmacenDO.ID_POLIZA_SEGURO,TipoAlmacenDO.ID_HERRAMIENTA);
 		herramienta.setPolizaSeguro(documentos);
 		
-		documentos =almacenUtilService.getDocumentosByTipo(id, TipoDocumentoAlmacenDO.ID_ORDEN_MANTENIMIENTO_SERVICIO);
+		documentos =almacenUtilService.getDocumentosByTipo(id, TipoDocumentoAlmacenDO.ID_ORDEN_MANTENIMIENTO_SERVICIO,TipoAlmacenDO.ID_HERRAMIENTA);
 		herramienta.setOrdenMantenimiento(documentos);
 		
 		

@@ -105,16 +105,16 @@ public class SoftwareService implements ISoftwareService {
 			throw new ConectelException("El Software no existe");
 		}
 		
-		documentos =almacenUtilService.getDocumentosByTipo(id, TipoDocumentoAlmacenDO.ID_CERTIFICADO_CALIBRACION);
+		documentos =almacenUtilService.getDocumentosByTipo(id, TipoDocumentoAlmacenDO.ID_CERTIFICADO_CALIBRACION,TipoAlmacenDO.ID_SOFTWARE);
 		software.setCertificadoCalibracion(documentos);
 		
-		documentos =almacenUtilService.getDocumentosByTipo(id, TipoDocumentoAlmacenDO.ID_POLIZA_GARANTIA);
+		documentos =almacenUtilService.getDocumentosByTipo(id, TipoDocumentoAlmacenDO.ID_POLIZA_GARANTIA,TipoAlmacenDO.ID_SOFTWARE);
 		software.setPolizaGarantia(documentos);
 		
-		documentos =almacenUtilService.getDocumentosByTipo(id, TipoDocumentoAlmacenDO.ID_POLIZA_SEGURO);
+		documentos =almacenUtilService.getDocumentosByTipo(id, TipoDocumentoAlmacenDO.ID_POLIZA_SEGURO,TipoAlmacenDO.ID_SOFTWARE);
 		software.setPolizaSeguro(documentos);
 		
-		documentos =almacenUtilService.getDocumentosByTipo(id, TipoDocumentoAlmacenDO.ID_ORDEN_MANTENIMIENTO_SERVICIO);
+		documentos =almacenUtilService.getDocumentosByTipo(id, TipoDocumentoAlmacenDO.ID_ORDEN_MANTENIMIENTO_SERVICIO,TipoAlmacenDO.ID_SOFTWARE);
 		software.setOrdenMantenimiento(documentos);
 		
 		

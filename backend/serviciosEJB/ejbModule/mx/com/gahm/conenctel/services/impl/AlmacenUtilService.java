@@ -28,11 +28,12 @@ public class AlmacenUtilService implements IAlmacenUtilService{
 	@Inject
 	private EntityManager entityManager;
 	
-	public List<DocumentoAlmacenDO> getDocumentosByTipo(Long id,Long tipoDocumento) throws ConectelException {
+	public List<DocumentoAlmacenDO> getDocumentosByTipo(Long id,Long tipoDocumento,Long tipoAlmacen) throws ConectelException {
 		TypedQuery<DocumentoAlmacenDO> query = entityManager.createNamedQuery(
 				"DocumentoAlmacenDO.getDocumentosByTipo", DocumentoAlmacenDO.class);
 		query.setParameter("almacen", id);
 		query.setParameter("tipoDocumento", tipoDocumento);
+		query.setParameter("tipoAlmacen", tipoAlmacen);
 		List<DocumentoAlmacenDO> datos;
 		try {
 			datos = query.getResultList();

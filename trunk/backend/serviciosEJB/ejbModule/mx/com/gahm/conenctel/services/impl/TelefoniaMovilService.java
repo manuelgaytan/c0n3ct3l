@@ -105,16 +105,16 @@ public class TelefoniaMovilService implements ITelefoniaMovilService {
 			throw new ConectelException("El Telefonia Movil no existe");
 		}
 		
-		documentos =almacenUtilService.getDocumentosByTipo(id, TipoDocumentoAlmacenDO.ID_CERTIFICADO_CALIBRACION);
+		documentos =almacenUtilService.getDocumentosByTipo(id, TipoDocumentoAlmacenDO.ID_CERTIFICADO_CALIBRACION,TipoAlmacenDO.ID_TELEFONIA_MOVIL);
 		telefoniaMovil.setCertificadoCalibracion(documentos);
 		
-		documentos =almacenUtilService.getDocumentosByTipo(id, TipoDocumentoAlmacenDO.ID_POLIZA_GARANTIA);
+		documentos =almacenUtilService.getDocumentosByTipo(id, TipoDocumentoAlmacenDO.ID_POLIZA_GARANTIA,TipoAlmacenDO.ID_TELEFONIA_MOVIL);
 		telefoniaMovil.setPolizaGarantia(documentos);
 		
-		documentos =almacenUtilService.getDocumentosByTipo(id, TipoDocumentoAlmacenDO.ID_POLIZA_SEGURO);
+		documentos =almacenUtilService.getDocumentosByTipo(id, TipoDocumentoAlmacenDO.ID_POLIZA_SEGURO,TipoAlmacenDO.ID_TELEFONIA_MOVIL);
 		telefoniaMovil.setPolizaSeguro(documentos);
 		
-		documentos =almacenUtilService.getDocumentosByTipo(id, TipoDocumentoAlmacenDO.ID_ORDEN_MANTENIMIENTO_SERVICIO);
+		documentos =almacenUtilService.getDocumentosByTipo(id, TipoDocumentoAlmacenDO.ID_ORDEN_MANTENIMIENTO_SERVICIO,TipoAlmacenDO.ID_TELEFONIA_MOVIL);
 		telefoniaMovil.setOrdenMantenimiento(documentos);
 		
 		

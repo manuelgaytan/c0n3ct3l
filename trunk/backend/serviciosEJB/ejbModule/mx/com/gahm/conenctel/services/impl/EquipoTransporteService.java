@@ -112,20 +112,20 @@ public class EquipoTransporteService implements IEquipoTransporteService {
 			throw new ConectelException("El Equipo de Transporte no existe");
 		}
 		
-		documentos =almacenUtilService.getDocumentosByTipo(id, TipoDocumentoAlmacenDO.ID_CERTIFICADO_CALIBRACION);
+		documentos =almacenUtilService.getDocumentosByTipo(id, TipoDocumentoAlmacenDO.ID_CERTIFICADO_CALIBRACION,TipoAlmacenDO.ID_EQUIPO_TRANSPORTE);
 		equipoTransporte.setCertificadoCalibracion(documentos);
 		
-		documentos =almacenUtilService.getDocumentosByTipo(id, TipoDocumentoAlmacenDO.ID_POLIZA_GARANTIA);
+		documentos =almacenUtilService.getDocumentosByTipo(id, TipoDocumentoAlmacenDO.ID_POLIZA_GARANTIA,TipoAlmacenDO.ID_EQUIPO_TRANSPORTE);
 		equipoTransporte.setPolizaGarantia(documentos);
 		
-		documentos =almacenUtilService.getDocumentosByTipo(id, TipoDocumentoAlmacenDO.ID_POLIZA_SEGURO);
+		documentos =almacenUtilService.getDocumentosByTipo(id, TipoDocumentoAlmacenDO.ID_POLIZA_SEGURO,TipoAlmacenDO.ID_EQUIPO_TRANSPORTE);
 		equipoTransporte.setPolizaSeguro(documentos);
 		
-		documentos =almacenUtilService.getDocumentosByTipo(id, TipoDocumentoAlmacenDO.ID_ORDEN_MANTENIMIENTO_SERVICIO);
+		documentos =almacenUtilService.getDocumentosByTipo(id, TipoDocumentoAlmacenDO.ID_ORDEN_MANTENIMIENTO_SERVICIO,TipoAlmacenDO.ID_EQUIPO_TRANSPORTE);
 		equipoTransporte.setOrdenMantenimiento(documentos);
 		
 		
-		comentarios = almacenUtilService.getAllComentariosById(equipoTransporte.getId(),TipoAlmacenDO.ID_HERRAMIENTA);
+		comentarios = almacenUtilService.getAllComentariosById(equipoTransporte.getId(),TipoAlmacenDO.ID_EQUIPO_TRANSPORTE);
 		equipoTransporte.setComentarios(comentarios);
 
 		

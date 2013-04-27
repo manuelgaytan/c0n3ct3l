@@ -107,14 +107,14 @@ public class EquipoMedicionService implements IEquipoMedicionService {
 			throw new ConectelException("El Equipo de Medición no existe");
 		}
 		comentarios = almacenUtilService.getAllComentariosById(equipoMedicion.getId(),TipoAlmacenDO.ID_EQUIPO_MEDICION);
-		documentos =almacenUtilService.getDocumentosByTipo(equipoMedicion.getId(),TipoDocumentoAlmacenDO.ID_POLIZA_SEGURO);
+		documentos =almacenUtilService.getDocumentosByTipo(equipoMedicion.getId(),TipoDocumentoAlmacenDO.ID_POLIZA_SEGURO,TipoAlmacenDO.ID_EQUIPO_MEDICION);
 		equipoMedicion.setPolizaSeguro(documentos);
-		documentos =almacenUtilService.getDocumentosByTipo(equipoMedicion.getId(),TipoDocumentoAlmacenDO.ID_CERTIFICADO_CALIBRACION);
+		documentos =almacenUtilService.getDocumentosByTipo(equipoMedicion.getId(),TipoDocumentoAlmacenDO.ID_CERTIFICADO_CALIBRACION,TipoAlmacenDO.ID_EQUIPO_MEDICION);
 		equipoMedicion.setCertificadoCalibracion(documentos);
-		documentos =almacenUtilService.getDocumentosByTipo(equipoMedicion.getId(),TipoDocumentoAlmacenDO.ID_POLIZA_GARANTIA);
+		documentos =almacenUtilService.getDocumentosByTipo(equipoMedicion.getId(),TipoDocumentoAlmacenDO.ID_POLIZA_GARANTIA,TipoAlmacenDO.ID_EQUIPO_MEDICION);
 		equipoMedicion.setPolizaGarantia(documentos);
 		
-		documentos =almacenUtilService.getDocumentosByTipo(equipoMedicion.getId(),TipoDocumentoAlmacenDO.ID_ORDEN_MANTENIMIENTO_SERVICIO);
+		documentos =almacenUtilService.getDocumentosByTipo(equipoMedicion.getId(),TipoDocumentoAlmacenDO.ID_ORDEN_MANTENIMIENTO_SERVICIO,TipoAlmacenDO.ID_EQUIPO_MEDICION);
 		equipoMedicion.setOrdenMantenimiento(documentos);
 		
 		equipoMedicion.setComentarios(comentarios);

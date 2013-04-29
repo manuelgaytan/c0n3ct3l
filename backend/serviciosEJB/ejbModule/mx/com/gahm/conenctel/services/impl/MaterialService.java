@@ -70,7 +70,7 @@ public class MaterialService implements IMaterialService {
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public MaterialDO update(MaterialDO item) {
 		try {
-			almacenUtilService.deleteComentarios(item.getId());
+			almacenUtilService.deleteComentarios(item.getId(),TipoAlmacenDO.ID_MATERIALES);
 		} catch (ConectelException e) {
 			e.printStackTrace();
 		}

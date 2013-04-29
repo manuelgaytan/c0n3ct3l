@@ -93,7 +93,7 @@ public class HerramientaService implements IHerramientaService {
 			e.printStackTrace();
 		}
 		try {
-			almacenUtilService.deleteComentarios(item.getId());
+			almacenUtilService.deleteComentarios(item.getId(),TipoAlmacenDO.ID_HERRAMIENTA);
 		} catch (ConectelException e) {
 			e.printStackTrace();
 		}

@@ -84,7 +84,7 @@ public class ConsumibleService implements IConsumibleService {
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public ConsumibleDO update(ConsumibleDO item) {
 		try {
-			almacenUtilService.deleteComentarios(item.getId());
+			almacenUtilService.deleteComentarios(item.getId(),TipoAlmacenDO.ID_CONSUMIBLES);
 		} catch (ConectelException e) {
 			e.printStackTrace();
 		}

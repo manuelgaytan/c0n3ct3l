@@ -13,7 +13,8 @@ import javax.persistence.*;
 @Table(name="documentoalmacen")
 @NamedQueries({
 	@NamedQuery(name = "DocumentoAlmacenDO.findAll", query = "select c from DocumentoAlmacenDO c where c.almacen=:almacen"),
-	@NamedQuery(name = "DocumentoAlmacenDO.getDocumentosByTipo", query = "select c from DocumentoAlmacenDO c where c.almacen=:almacen and c.fkTipoEntregable.id=:tipoDocumento and c.fkTipoAlmacen.id =:tipoAlmacen") 
+	@NamedQuery(name = "DocumentoAlmacenDO.getDocumentosByTipo", query = "select c from DocumentoAlmacenDO c where c.almacen=:almacen and c.fkTipoEntregable.id=:tipoDocumento and c.fkTipoAlmacen.id =:tipoAlmacen"),
+	@NamedQuery(name = "DocumentoAlmacenDO.getDocumentosByTipoAlmacen", query = "select c from DocumentoAlmacenDO c where c.almacen=:almacen and c.fkTipoAlmacen.id =:tipoAlmacen") 
 })
 public class DocumentoAlmacenDO implements Serializable {
 	private static final long serialVersionUID = 1L;

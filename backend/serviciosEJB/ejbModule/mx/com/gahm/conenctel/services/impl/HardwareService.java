@@ -87,7 +87,7 @@ public class HardwareService implements IHardwareService {
 			e.printStackTrace();
 		}
 		try {
-			almacenUtilService.deleteComentarios(item.getId());
+			almacenUtilService.deleteComentarios(item.getId(),TipoAlmacenDO.ID_HARDWARE);
 		} catch (ConectelException e) {
 			e.printStackTrace();
 		}

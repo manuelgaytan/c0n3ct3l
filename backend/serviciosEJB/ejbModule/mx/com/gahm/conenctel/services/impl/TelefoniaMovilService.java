@@ -86,7 +86,7 @@ public class TelefoniaMovilService implements ITelefoniaMovilService {
 			e.printStackTrace();
 		}
 		try {
-			almacenUtilService.deleteComentarios(item.getId());
+			almacenUtilService.deleteComentarios(item.getId(),TipoAlmacenDO.ID_TELEFONIA_MOVIL);
 		} catch (ConectelException e) {
 			e.printStackTrace();
 		}

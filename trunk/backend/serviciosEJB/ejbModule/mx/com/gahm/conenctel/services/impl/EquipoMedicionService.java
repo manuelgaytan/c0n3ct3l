@@ -89,7 +89,7 @@ public class EquipoMedicionService implements IEquipoMedicionService {
 			e.printStackTrace();
 		}
 		try {
-			almacenUtilService.deleteComentarios(item.getId());
+			almacenUtilService.deleteComentarios(item.getId(),TipoAlmacenDO.ID_EQUIPO_MEDICION);
 		} catch (ConectelException e) {
 			e.printStackTrace();
 		}

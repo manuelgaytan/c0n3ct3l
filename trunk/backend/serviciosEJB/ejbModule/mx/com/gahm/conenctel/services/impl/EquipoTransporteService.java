@@ -89,7 +89,7 @@ public class EquipoTransporteService implements IEquipoTransporteService {
 			e.printStackTrace();
 		}
 		try {
-			almacenUtilService.deleteComentarios(item.getId());
+			almacenUtilService.deleteComentarios(item.getId(),TipoAlmacenDO.ID_EQUIPO_TRANSPORTE);
 		} catch (ConectelException e) {
 			e.printStackTrace();
 		}

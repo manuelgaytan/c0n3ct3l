@@ -85,7 +85,7 @@ public class SoftwareService implements ISoftwareService {
 			e.printStackTrace();
 		}
 		try {
-			almacenUtilService.deleteComentarios(item.getId());
+			almacenUtilService.deleteComentarios(item.getId(),TipoAlmacenDO.ID_SOFTWARE);
 		} catch (ConectelException e) {
 			e.printStackTrace();
 		}

@@ -68,6 +68,22 @@ public class AlmacenUtilService implements IAlmacenUtilService{
 		return datos;
 	}
 	
+	public List<DocumentoAlmacenDO> getDocumentosByTipoAlmacen(Long id,Long tipoAlmacen) throws ConectelException {
+		TypedQuery<DocumentoAlmacenDO> query = entityManager.createNamedQuery(
+				"DocumentoAlmacenDO.getDocumentosByTipoAlmacen", DocumentoAlmacenDO.class);
+		query.setParameter("almacen", id);
+		query.setParameter("tipoAlmacen", tipoAlmacen);
+		List<DocumentoAlmacenDO> datos;
+		try {
+			datos = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen Herramientas registradas.");
+		}
+		return datos;
+	}
+	
+	
+	
 	public void deleteDocumentos(Long idAlmacen) throws ConectelException{
 		 List<DocumentoAlmacenDO> documentos = getAllDocumentosById(idAlmacen);
 		 
@@ -80,8 +96,8 @@ public class AlmacenUtilService implements IAlmacenUtilService{
 		
 	}
 	
-	public void deleteComentarios(Long idAlmacen) throws ConectelException{
-		 List<ComentariosDO> comentarios = getAllComentariosById(idAlmacen,TipoAlmacenDO.ID_HERRAMIENTA);
+	public void deleteComentarios(Long idAlmacen,Long idTipoAlmacen) throws ConectelException{
+		 List<ComentariosDO> comentarios = getAllComentariosById(idAlmacen,idTipoAlmacen);
 		 
 		 if( comentarios == null ){
 			 return;

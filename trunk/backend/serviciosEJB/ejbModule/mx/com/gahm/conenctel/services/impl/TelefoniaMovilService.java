@@ -92,6 +92,7 @@ public class TelefoniaMovilService implements ITelefoniaMovilService {
 		}
 		
 		saveDocumentos(item);
+		almacenUtilService.saveComentarios(item.getComentarios(),item.getId(),TipoAlmacenDO.ID_TELEFONIA_MOVIL);
 		entityManager.merge(item);
 		return null;
 	}

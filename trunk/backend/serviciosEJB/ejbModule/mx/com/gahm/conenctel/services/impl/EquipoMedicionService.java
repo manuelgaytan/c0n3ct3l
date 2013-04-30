@@ -95,6 +95,9 @@ public class EquipoMedicionService implements IEquipoMedicionService {
 		}
 		
 		entityManager.merge(item);
+		saveDocumentos(item);
+		almacenUtilService.saveComentarios(item.getComentarios(), item.getId(),TipoAlmacenDO.ID_EQUIPO_MEDICION);
+
 		return null;
 	}
 

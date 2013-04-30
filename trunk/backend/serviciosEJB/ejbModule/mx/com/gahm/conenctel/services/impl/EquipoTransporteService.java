@@ -71,7 +71,7 @@ public class EquipoTransporteService implements IEquipoTransporteService {
 	}
 
 	private void saveDocumentos(EquipoTransporteDO item){
-		almacenUtilService.saveDocumentos(item.getCertificadoCalibracion(), item.getId(), TipoDocumentoAlmacenDO.ID_CERTIFICADO_CALIBRACION );
+		almacenUtilService.saveDocumentos(item.getTarjetaCirculacion(), item.getId(), TipoDocumentoAlmacenDO.ID_TARJETA_CIRCULACION );
 		almacenUtilService.saveDocumentos(item.getPolizaSeguro(), item.getId(), TipoDocumentoAlmacenDO.ID_POLIZA_SEGURO );
 		almacenUtilService.saveDocumentos(item.getPolizaGarantia(), item.getId(), TipoDocumentoAlmacenDO.ID_POLIZA_GARANTIA );
 		almacenUtilService.saveDocumentos(item.getOrdenMantenimiento(), item.getId(), TipoDocumentoAlmacenDO.ID_ORDEN_MANTENIMIENTO_SERVICIO );
@@ -95,6 +95,7 @@ public class EquipoTransporteService implements IEquipoTransporteService {
 		}
 		
 		saveDocumentos(item);
+		almacenUtilService.saveComentarios(item.getComentarios(), item.getId(),TipoAlmacenDO.ID_EQUIPO_TRANSPORTE);
 		
 		entityManager.merge(item);
 		
@@ -112,8 +113,8 @@ public class EquipoTransporteService implements IEquipoTransporteService {
 			throw new ConectelException("El Equipo de Transporte no existe");
 		}
 		
-		documentos =almacenUtilService.getDocumentosByTipo(id, TipoDocumentoAlmacenDO.ID_CERTIFICADO_CALIBRACION,TipoAlmacenDO.ID_EQUIPO_TRANSPORTE);
-		equipoTransporte.setCertificadoCalibracion(documentos);
+		documentos =almacenUtilService.getDocumentosByTipo(id, TipoDocumentoAlmacenDO.ID_TARJETA_CIRCULACION,TipoAlmacenDO.ID_EQUIPO_TRANSPORTE);
+		equipoTransporte.setTarjetaCirculacion(documentos);
 		
 		documentos =almacenUtilService.getDocumentosByTipo(id, TipoDocumentoAlmacenDO.ID_POLIZA_GARANTIA,TipoAlmacenDO.ID_EQUIPO_TRANSPORTE);
 		equipoTransporte.setPolizaGarantia(documentos);

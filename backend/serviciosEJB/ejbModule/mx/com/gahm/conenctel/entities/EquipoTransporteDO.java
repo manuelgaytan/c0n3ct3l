@@ -70,6 +70,9 @@ public class EquipoTransporteDO implements Serializable {
 	private EstatusBDO estatusb;
 
 	@Transient
+	List<DocumentoAlmacenDO> tarjetaCirculacion;
+	
+	@Transient
 	List<DocumentoAlmacenDO> polizaGarantia;
 	
 	@Transient
@@ -283,6 +286,20 @@ public class EquipoTransporteDO implements Serializable {
 	 */
 	public void setResponsable(ColaboradorDO responsable) {
 		this.responsable = responsable;
+	}
+
+	/**
+	 * @return the tarjetaCirculacion
+	 */
+	public List<DocumentoAlmacenDO> getTarjetaCirculacion() {
+		return tarjetaCirculacion;
+	}
+
+	/**
+	 * @param tarjetaCirculacion the tarjetaCirculacion to set
+	 */
+	public void setTarjetaCirculacion(List<DocumentoAlmacenDO> tarjetaCirculacion) {
+		this.tarjetaCirculacion = tarjetaCirculacion;
 	}
 
 }

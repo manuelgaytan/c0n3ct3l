@@ -91,7 +91,7 @@ public class SoftwareService implements ISoftwareService {
 		}
 		
 		saveDocumentos(item);
-		
+		almacenUtilService.saveComentarios(item.getComentarios(),item.getId(),TipoAlmacenDO.ID_SOFTWARE);
 		entityManager.merge(item);
 		return null;
 	}

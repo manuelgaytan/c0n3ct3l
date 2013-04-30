@@ -93,6 +93,7 @@ public class HardwareService implements IHardwareService {
 		}
 		saveDocumentos(item);
 		entityManager.merge(item);
+		almacenUtilService.saveComentarios(item.getComentarios(), item.getId(),TipoAlmacenDO.ID_HARDWARE);
 		return null;
 	}
 

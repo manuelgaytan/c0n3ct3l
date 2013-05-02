@@ -195,7 +195,7 @@
 				validatorsEntry.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
 				validatorsEntry.setValidador(txtCode, "generic");
 				validatorsEntry.setValidador(txtDescription, "generic");
-				validatorsEntry.crearValidadorRestrictor("genericEntero",ValidadorEntero.nombre, 0, 99);
+				validatorsEntry.crearValidadorRestrictor("genericEntero",ValidadorEntero.nombre, 99);
 				validatorsEntry.setValidador(txtItem, "genericEntero");
 				validatorsEntry.crearValidadorRestrictor("genericDecimal",ValidadorDecimal.nombre, 9, 2);
 				validatorsEntry.setValidador(txtPrice, "genericDecimal");

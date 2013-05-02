@@ -14,6 +14,10 @@
 			import mx.controls.LinkButton;
 			import mx.events.FlexEvent;
 			
+			private var titlesChanging:Array = [{id:"Proyectos",newTitle:"Alta de servicios"},
+												{id:"DatosGenerales",newTitle:"Datos Generales del Proyecto"},
+												{id:"DesarrolloProyectoAB",newTitle:"Desarrollo del Proyecto A y B"},
+												{id:"ConfiguracionPruebaEntrega",newTitle:"Configuración Prueba y Entrega"}];
 			protected function clickMenuHandler(event:MouseEvent):void
 			{
 				var linkButton:LinkButton = event.currentTarget as LinkButton;
@@ -22,7 +26,7 @@
 				}
 				var menuOption:MenuOption = new MenuOption();
 				menuOption.id = linkButton.id;
-				menuOption.label = linkButton.label;
+				menuOption.label = this.changeTitle( linkButton );//linkButton.label;
 				var genericEvent:GenericEvent = new GenericEvent("menuItemClick");
 				genericEvent.information = menuOption;
 				this.dispatchEvent( genericEvent );
@@ -45,6 +49,18 @@
 					}
 				}
 			}
+			
+			private function changeTitle(linkButton:LinkButton):String
+			{
+				for each (var newTitleOption:Object in this.titlesChanging ) 
+				{
+					if( linkButton.id == newTitleOption.id ){
+						return newTitleOption.newTitle;
+					}
+				}
+				return linkButton.label;
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -63,11 +79,11 @@
 					   icon="@Embed(source='assets/images/clientes.png')"/>
 		<mx:LinkButton label="Proyectos" id="Proyectos" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/servicios.png')"/>
-		<mx:LinkButton label="Datos Generales" id="DatosGenerales" click="clickMenuHandler(event)"
+		<mx:LinkButton label="Planeación del Proyecto" id="DatosGenerales" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/clientes.png')"/>
-		<mx:LinkButton label="Desarrollo Proyecto A y B" id="DesarrolloProyectoAB" click="clickMenuHandler(event)"
+		<mx:LinkButton label="Ejecución del Proyecto" id="DesarrolloProyectoAB" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/clientes.png')"/>
-		<mx:LinkButton label="Configuración Prueba y Entrega" id="ConfiguracionPruebaEntrega" click="clickMenuHandler(event)"
+		<mx:LinkButton label="Entrega y Revisión" id="ConfiguracionPruebaEntrega" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/servicios.png')"/>
 	</mx:VBox>
 	<mx:VBox label="Almacén" width="100%" height="100%">
@@ -89,7 +105,7 @@
 					   icon="@Embed(source='assets/images/clientes.png')"/>
 		<mx:LinkButton label="Cotizaciones" id="Cotizaciones" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/servicios.png')"/>
-		<mx:LinkButton label="Ordenes de Compra de Almacén" id="OrdenesCompraAlmacen" click="clickMenuHandler(event)"
+		<mx:LinkButton label="Orden de Compra de Material, Mantenimiento y Servicio" id="OrdenesCompraAlmacen" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/clientes.png')"/>
 		<mx:LinkButton label="Ordenes de Compra Servicio Maquilado" id="OrdenesCompraServicioMaquilado" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/servicios.png')"/>

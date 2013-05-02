@@ -103,7 +103,7 @@
 				 allowMultipleSelection="true">
 		<mx:columns>
 			<mx:DataGridColumn id="dtgCode" headerText="Código"
-							   dataField="codigo"
+							   dataField="id"
 							   width="100"/>
 			<mx:DataGridColumn id="dtgApplicationDate" headerText="{'Fecha\nSolicitud'}"
 							   dataField="fechaSolicitud"
@@ -119,18 +119,6 @@
 			<mx:DataGridColumn id="dtgApplicantArea" headerText="{'Área\nSolicitante'}"
 							   width="120"
 							   dataField="areaSolicitante.etiqueta"
-							   labelFunction="labelFunctionGenerico"/>
-			<mx:DataGridColumn id="dtgServiceRequested" headerText="{'Servicio\nSolicitado'}"
-							   width="120"
-							   dataField="servicioSolicitado.etiqueta"
-							   labelFunction="labelFunctionGenerico"/>
-			<mx:DataGridColumn id="dtgQuantity" headerText="Cantidad"
-							   dataField="cantidad"
-							   width="120"
-							   textAlign="right"/>
-			<mx:DataGridColumn id="dtgUnit" headerText="Unidad"
-							   dataField="unidadB.etiqueta"
-							   width="50"
 							   labelFunction="labelFunctionGenerico"/>
 			<mx:DataGridColumn id="dtgAllocationDate" headerText="{'Fecha\nAsignación'}"
 							   dataField="fechaSolicitud"

@@ -3,7 +3,25 @@
 			 dataProvider="{this._items}">
 	<mx:Script>
 		<![CDATA[
+			import model.Consumible;
+			import model.ConsumibleSolicitudAlmacen;
+			import model.EquipoMedicion;
+			import model.EquipoMedicionSolicitudAlmacen;
+			import model.EquipoTransporte;
+			import model.EquipoTransporteSolicitudAlmacen;
+			import model.Hardware;
+			import model.HardwareSolicitudAlmacen;
+			import model.Herramienta;
+			import model.HerramientaSolicitudAlmacen;
+			import model.Material;
+			import model.MaterialSolicitudAlmacen;
 			import model.PartidaSolicitudAlmacen;
+			import model.Software;
+			import model.SoftwareSolicitudAlmacen;
+			import model.SolicitudAlmacen;
+			import model.TelefoniaMovil;
+			import model.TelefoniaMovilSolicitudAlmacen;
+			import model.TipoAlmacen;
 			import model.Util;
 			
 			import mx.collections.ArrayCollection;
@@ -16,6 +34,116 @@
 					return;
 				}
 				this._items.addItem( entry );
+			}
+			
+			public function getEntries( warehouseApplication:SolicitudAlmacen ):void{
+				for each (var item:PartidaSolicitudAlmacen in this._items) 
+				{
+					switch(item.tipoAlmacen.id)
+					{
+						case TipoAlmacen.getConsumibles().id:
+						{
+							this.createList( warehouseApplication, 
+								item,
+								"consumible",
+								"consumiblesSolicitudAlmacen", 
+								"model.ConsumibleSolicitudAlmacen",
+								"model.Consumible" );
+							break;
+						}
+						case TipoAlmacen.getEquipoMedicion().id:
+						{
+							this.createList( warehouseApplication, 
+								item,
+								"equipoMedicion",
+								"equipoMedicionSolicitudAlmacen", 
+								"model.EquipoMedicionSolicitudAlmacen",
+								"model.EquipoMedicion" );
+							break;
+						}
+						case TipoAlmacen.getEquipoTransporte().id:
+						{
+							this.createList( warehouseApplication, 
+								item,
+								"equipoTransporte",
+								"equipoTransporteSolicitudAlmacen", 
+								"model.EquipoTransporteSolicitudAlmacen",
+								"model.EquipoTransporte" );
+							break;
+						}
+						case TipoAlmacen.getHardware().id:
+						{
+							this.createList( warehouseApplication, 
+								item,
+								"hardware",
+								"hardwareSolicitudAlmacen", 
+								"model.HardwareSolicitudAlmacen",
+								"model.Hardware" );
+							break;
+						}
+						case TipoAlmacen.getHerramienta().id:
+						{
+							this.createList( warehouseApplication, 
+								item,
+								"herramienta",
+								"herramientasSolicitudAlmacen", 
+								"model.HerramientaSolicitudAlmacen",
+								"model.Herramienta" );
+							break;
+						}
+						case TipoAlmacen.getMateriales().id:
+						{
+							this.createList( warehouseApplication, 
+								item,
+								"material",
+								"materialesSolicitudAlmacen", 
+								"model.MaterialSolicitudAlmacen",
+								"model.Material" );
+							break;
+						}
+						case TipoAlmacen.getSoftware().id:
+						{
+							this.createList( warehouseApplication, 
+								item,
+								"software",
+								"softwareSolicitudAlmacen", 
+								"model.SoftwareSolicitudAlmacen",
+								"model.Software" );
+							break;
+						}
+						case TipoAlmacen.getTelefoniaMovil().id:
+						{
+							this.createList( warehouseApplication, 
+											 item,
+											 "telefoniaMovil",
+											 "telefoniaMovilSolicitudAlmacen", 
+											 "model.TelefoniaMovilSolicitudAlmacen",
+											 "model.TelefoniaMovil" );
+							break;
+						}
+					}
+				}
+			}
+			
+			private function createList(warehouseApplication:SolicitudAlmacen, item:PartidaSolicitudAlmacen, property:String, listProperty:String, ItemSolicitudAlmacen:String, Item:String ):void{
+				var objectTypeSolicitudAlmacen:Class = null;
+				objectTypeSolicitudAlmacen = getDefinitionByName( ItemSolicitudAlmacen ) as Class;
+				var itemSolicitudAlmacen:Object = null;
+				var objectType:Class = null;
+				objectType = getDefinitionByName( Item ) as Class;
+				var itemStock:Object = null;
+				
+				itemSolicitudAlmacen = new(objectTypeSolicitudAlmacen)();
+				itemStock = new(objectType)();
+				itemStock.id = item.id;
+				itemSolicitudAlmacen[property] = itemStock;
+				itemSolicitudAlmacen.cantidadSolicitada = item.cantidad;
+				itemSolicitudAlmacen.regresoAlmacen = item.regresoAlmacen;
+				itemSolicitudAlmacen.observacion = item.observacion;
+				if( warehouseApplication[listProperty] == null ){
+					warehouseApplication[listProperty] = new ArrayCollection();
+				}
+				warehouseApplication[listProperty].addItem( itemSolicitudAlmacen );
 			}
 			
 			public function reset():void

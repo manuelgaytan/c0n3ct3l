@@ -123,6 +123,7 @@
 				item.entrega = Util.validateCombo( this.cmbDeliver ) as Colaborador;
 				item.recibe = Util.validateEmpty( this.txtReceives.text );
 				item.usuario = Model.getInstance().user;
+				itemsManagement.getEntries( item );
 				return item;
 			}
 			
@@ -202,7 +203,7 @@
 				validatorsEntry.setRestrictor(txtUnit, "generic");
 				validatorsEntry.setRestrictor(txtObservation, "generic");
 				validatorsEntry.crearValidadorRestrictor("number",ValidadorDecimal.nombre, 10, 4);
-				validatorsEntry.setRestrictor(txtQuantity, "number");
+				validatorsEntry.setValidador(txtQuantity, "number");
 			}
 			
 			protected function responseSave_resultHandler(event:ResultEvent):void
@@ -214,15 +215,18 @@
 			
 			private function cleanForm():void
 			{
-				this.txtCode.reset();
-				this.dtfApplicationDate.reset();
-				this.txtMotive.reset();
+				this.txtFolio.reset();
 				this.cmbPriority.selectedIndex = 0;
-				this.cmbApplicantState.selectedIndex = 0;
 				this.cmbApplicantArea.selectedIndex = 0;
+				this.dtfApplicationDate.selectedDate = new Date();
 				this.txtSite.reset();
+				this.cmbProduct.selectedIndex = 0;
+				this.cmbProduct.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
+				this.resetEntry();
+				// aqui me quede
+				this.cmbApplicantState.selectedIndex = 0;
+				this.txtMotive.reset();
 				this.cmbAuthorizedBy.selectedIndex = 0;
-				//this.autCmpDescription.reset();
 				this.txtQuantity.reset();
 				this.txtObservation.reset();
 			}
@@ -456,6 +460,7 @@
 					return;
 				}
 				this.itemsManagement.addItem( entry );
+				this.resetEntry();
 			}
 			
 			private function getValidEntry():PartidaSolicitudAlmacen
@@ -470,7 +475,7 @@
 				entry.codigo = Util.validateEmpty( this.txtCode.text );
 				entry.grupoFamilia = Util.validateEmpty( this.txtFamily.text );
 				entry.descripcion = Util.validateEmpty( this.txtDescription.text );
-				entry.cantidad = Util.validateEmpty( this.txtQuantity.text );
+				entry.cantidad = Util.stringToNumber( this.txtQuantity.text );
 				entry.unidad = Util.validateEmpty( this.txtUnit.text );
 				entry.regresoAlmacen = this.chkStockReturn.selected;
 				entry.observacion = Util.validateEmpty( this.txtObservation.text );
@@ -495,6 +500,19 @@
 				this._item.unidadB.id);
 				}
 				*/
+			}
+			
+			private function resetEntry():void
+			{
+				Util.cleanList( this.cmbStockType );
+				this.txtId.reset();
+				this.txtCode.reset();
+				this.txtFamily.reset();
+				this.txtDescription.reset();
+				this.txtQuantity.reset();
+				this.txtUnit.reset();
+				this.chkStockReturn.selected = false;
+				this.txtObservation.reset();
 			}
 			
 		]]>

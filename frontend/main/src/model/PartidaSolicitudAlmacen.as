@@ -9,7 +9,7 @@ package model
 		public var codigo:String;
 		public var grupoFamilia:String;
 		public var descripcion:String;
-		public var cantidad:String;
+		public var cantidad:Number;
 		public var unidad:String;
 		public var regresoAlmacen:Boolean;
 		public var observacion:String;

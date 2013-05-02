@@ -17,6 +17,14 @@ package model
 		public var autoriza:Colaborador;
 		public var entrega:Colaborador;
 		public var recibe:String;
+		public var consumiblesSolicitudAlmacen:ArrayCollection;
+		public var equipoMedicionSolicitudAlmacen:ArrayCollection;
+		public var equipoTransporteSolicitudAlmacen:ArrayCollection;
+		public var materialesSolicitudAlmacen:ArrayCollection;
+		public var telefoniaMovilSolicitudAlmacen:ArrayCollection;
+		public var hardwareSolicitudAlmacen:ArrayCollection;
+		public var softwareSolicitudAlmacen:ArrayCollection;
+		public var herramientasSolicitudAlmacen:ArrayCollection;
 		
 		public function SolicitudAlmacen()
 		{

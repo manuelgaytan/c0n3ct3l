@@ -92,6 +92,7 @@
 			import model.DocumentacionExtranjeros;
 			import model.DocumentoAlmacen;
 			import model.DocumentoComprobacionViaticos;
+			import model.DocumentoLiderProveedorMaquilador;
 			import model.Entregable;
 			import model.EquipoMedicion;
 			import model.EquipoMedicionSolicitudAlmacen;
@@ -519,6 +520,7 @@
 			private var estadoNotificacion:EstadoNotificacion;
 			private var comentarioCotizacion:ComentarioCotizacion;
 			private var comentarios:Comentarios;
+			private var documentoLiderProveedorMaquilador:DocumentoLiderProveedorMaquilador;
 						
 			protected function login_readyHandler(event:ModuleEvent):void
 			{

@@ -8,6 +8,7 @@
 			import model.Colaborador;
 			import model.Constants;
 			import model.DatoBancario;
+			import model.DocumentoLiderProveedorMaquilador;
 			import model.EstatusC;
 			import model.GrupoFamiliaD;
 			import model.Perfil;
@@ -74,15 +75,14 @@
 				this.txtBanco.text= this._item.datoBancario.banco;
 				this.txtCLBInterbancaria.text = this._item.datoBancario.clabeInterbancaria;
 				this.txtCuenta.text = this._item.datoBancario.cuentaBancaria;
-				this.txtCURP.text= this._item.curp;
 				this.txtNSS.text= _item.nss;
-				
+				this.txtCURP.text= this._item.curp;
 				if( Util.isFill( this.cmbTipoContrato ) && this._item.tipoContrato != null ){
 					this.cmbTipoContrato.selectedIndex = Util.selectedIndexFromCombo( this.cmbTipoContrato.dataProvider as ArrayCollection, 
 						this._item.tipoContrato.id);
 				}
-				
-				
+				this.dtfFechaContrato.selectedDate = this._item.fechaContrato;
+				this.fltDlvLeaderDocuments.delivers = this.convertDocumentLeaderToList( this._item.documentosLiderProveedorMaquilador );				
 			}
 			
 			private function getProveedor():ProveedorMaquilador{
@@ -101,11 +101,10 @@
 				item.datoBancario.cuentaBancaria= Util.validateEmpty(txtCuenta.text);
 				item.nss=Util.validateEmpty(txtNSS.text);
 				item.curp=Util.validateEmpty(txtCURP.text);
-				
 				item.tipoContrato= new TipoContrato;
 				item.tipoContrato.id = ((this.cmbTipoContrato.selectedItem as TipoContrato).id); 
 				item.fechaContrato= this.dtfFechaContrato.selectedDate;
-				
+				item.documentosLiderProveedorMaquilador = this.convertDocumentLeader( this.fltDlvLeaderDocuments.delivers );
 				return item;
 			}
 			
@@ -251,6 +250,39 @@
 				
 			}
 			
+			private function convertDocumentLeader(documentosLiderProveedorMaquilador:ArrayCollection):ArrayCollection
+			{
+				if( documentosLiderProveedorMaquilador == null ||
+					documentosLiderProveedorMaquilador.length == 0 ){
+					return null;
+				}
+				var documentsConverted:ArrayCollection = new ArrayCollection();
+				var document:DocumentoLiderProveedorMaquilador;
+				for each (var documento:String in documentosLiderProveedorMaquilador) 
+				{
+					document = new DocumentoLiderProveedorMaquilador();
+					document.documento = documento;
+					documentsConverted.addItem( document );
+				}				
+				return documentsConverted;
+			}
+			
+			private function convertDocumentLeaderToList(documentosLiderProveedorMaquilador:ArrayCollection):ArrayCollection
+			{
+				if( documentosLiderProveedorMaquilador == null ||
+					documentosLiderProveedorMaquilador.length == 0 ){
+					return null;
+				}
+				var documentsConverted:ArrayCollection = new ArrayCollection();
+				var document:String;
+				for each (var documento:DocumentoLiderProveedorMaquilador in documentosLiderProveedorMaquilador) 
+				{
+					document = documento.documento;
+					documentsConverted.addItem( document );
+				}				
+				return documentsConverted;
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -298,7 +330,7 @@
 			<components:DateField id="dtfFechaContrato" />
 		</mx:FormItem>
 		<mx:FormItem label="Documentos de Líder:">
-			<components:Deliver/>
+			<components:FlatDeliver id="fltDlvLeaderDocuments"/>
 		</mx:FormItem>
 		<mx:FormItem>
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>

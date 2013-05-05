@@ -28,6 +28,7 @@
 				productFilter.modelo = Util.selectedLabel( cmbModel );
 				productFilter.descripcionServicio = Util.selectedLabel( cmbServiceDescription );
 				productFilter.tipoServicio = Util.selectedLabel( cmbServiceType );
+				productFilter.proyectoPadre = Util.validateEmpty( this.txtParentProject.text );
 				
 				var filterEvent:GenericEvent = new GenericEvent("filterCommand");
 				filterEvent.information = productFilter;
@@ -339,6 +340,9 @@
 			<mx:ComboBox id="cmbServiceType" width="250"
 						 change="cmbServiceType_changeHandler(event)"
 						 labelField="etiqueta"/>
+		</mx:FormItem>
+		<mx:FormItem label="Proyecto Padre:">
+			<components:TextInput id="txtParentProject" width="250"/>
 		</mx:FormItem>
 		<mx:FormItem>
 			<mx:Button id="btnFilter" label="Filtrar" click="btnFilter_clickHandler(event)"/>

@@ -3036,7 +3036,7 @@
 
 	/* Cambios */
 	ALTER TABLE DesarrolloProyectoAyB ADD FOREIGN KEY fk_tipo_desarrollo_proyecto_idxfk (fk_tipo_desarrollo_proyecto) REFERENCES TipoDesarrolloProyecto (id);
-	
+
 	/* Perfiles */
 	INSERT INTO Perfil
 	VALUES (1, 'Director General');
@@ -4404,6 +4404,12 @@
 	INSERT INTO EstadoNotificacion
 	VALUES (2, 'Atendida');
 
+	/* Cambio */
+	INSERT INTO TipoDesarrolloProyecto
+	VALUES (1, 'A');
+	INSERT INTO TipoDesarrolloProyecto
+	VALUES (2, 'B');
+	
 	insert into ReclutamientoSolicitudEmpleo values(1,'test');
 	/*
 	INSERT INTO 

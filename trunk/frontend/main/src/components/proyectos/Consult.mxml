@@ -78,6 +78,7 @@
 				}else if( this._filter == null ){
 					return;
 				}
+				Util.showProperties( this._filter );
 				this.responseGetAllByFiltro.token = this.proyectoService.getAllByFiltro(this._filter);
 			}
 			

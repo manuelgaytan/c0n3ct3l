@@ -14,6 +14,7 @@ package model
 		public var descripcionServicio:String;
 		public var tipoServicio:String;
 		public var idCosto:*;
+		public var proyectoPadre:String;
 		
 		public function FiltroProyecto()
 		{

@@ -297,6 +297,7 @@
 	id_alimentacion_seguimiento INT(11) UNSIGNED,
 	id_fibra_cliente_final INT(11) UNSIGNED,
 	id_plancha_base INT(11),
+	fk_tipo_desarrollo_proyecto INT(11) UNSIGNED NOT NULL UNIQUE,
 	PRIMARY KEY (id)
 	);
 
@@ -613,7 +614,7 @@
 	(
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
 	fk_tipo_almacen INT(11) UNSIGNED NOT NULL,
-	fk_almacen INT(11) UNSIGNED NOT NULL,
+	almacen INT(11) UNSIGNED NOT NULL,
 	comentario VARCHAR(255) NOT NULL,
 	fecha_captura DATE NOT NULL,
 	fk_usuario INT(11) UNSIGNED NOT NULL,
@@ -645,7 +646,7 @@
 	(
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
 	fk_tipo_almacen INT(11) UNSIGNED NOT NULL,
-	fk_almacen INT(11) NOT NULL,
+	almacen INT(11) UNSIGNED NOT NULL,
 	fk_tipo_entregable INT(11) UNSIGNED NOT NULL,
 	nombre_archivo VARCHAR(255) NOT NULL,
 	PRIMARY KEY (id)
@@ -2396,6 +2397,14 @@
 	PRIMARY KEY (id)
 	);
 
+	/* Cambios */
+	CREATE TABLE TipoDesarrolloProyecto
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	tipo VARCHAR(25) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
 	ALTER TABLE Cliente ADD FOREIGN KEY id_contacto_idxfk (id_contacto) REFERENCES Contacto (id);
 
 	ALTER TABLE Proyecto ADD FOREIGN KEY id_categoria_proyecto_idxfk (id_categoria_proyecto) REFERENCES CategoriaProyecto (id);
@@ -3025,6 +3034,9 @@
 
 	ALTER TABLE Notificacion ADD FOREIGN KEY fk_usuario_modificacion_idxfk (fk_usuario_modificacion) REFERENCES Usuario (id);
 
+	/* Cambios */
+	ALTER TABLE DesarrolloProyectoAyB ADD FOREIGN KEY fk_tipo_desarrollo_proyecto_idxfk (fk_tipo_desarrollo_proyecto) REFERENCES TipoDesarrolloProyecto (id);
+	
 	/* Perfiles */
 	INSERT INTO Perfil
 	VALUES (1, 'Director General');

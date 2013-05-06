@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
-		 creationComplete="creationCompleteHandler(event)"
+		 creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*"
 		 >
 	<mx:Script>
 		<![CDATA[
+			import events.GenericEvent;
+			
 			import model.Catalogo;
 			import model.Constants;
 			import model.DesarrolloProyecto;
 			import model.Estado;
+			import model.FiltroProyecto;
 			import model.Proyecto;
 			import model.Seguimiento;
+			import model.TipoDesarrolloProyecto;
 			import model.Util;
 			
 			import mx.collections.ArrayCollection;
@@ -61,7 +65,8 @@
 				if( this._developmentProjectAB == null ){
 					return;
 				}
-				this.txtConectelID.text = Util.numberToString( this._developmentProjectAB.proyecto.id );
+				//this.txtConectelID.text = Util.numberToString( this._developmentProjectAB.proyecto.id );
+				this.projectsConsult.datagrid = Util.asArrayCollection( this._developmentProjectAB.proyecto );
 				this.txtFrame.text = this._developmentProjectAB.bastidorGabinete;
 				this.txtLedge.text = this._developmentProjectAB.repisa;
 				this.txtVersion.text = this._developmentProjectAB.version;
@@ -118,6 +123,10 @@
 						this._developmentProjectAB.planchaBase.id);
 				}
 				this.observations.observations = this._developmentProjectAB.proyecto.observaciones;
+				if( Util.isFill( this.cmbDevelopmentProjectType ) && this._developmentProjectAB.tipoDesarrolloProyecto != null ){
+					this.cmbDevelopmentProjectType.selectedIndex = Util.selectedIndexFromCombo( this.cmbDevelopmentProjectType.dataProvider as ArrayCollection, 
+						this._developmentProjectAB.tipoDesarrolloProyecto.id);
+				}
 			}
 			
 			private function getGeneralDataProject():DesarrolloProyecto{
@@ -127,8 +136,11 @@
 				}else{
 					developmentProjectAB = this._developmentProjectAB;
 				}
+				/*
 				developmentProjectAB.proyecto = new Proyecto();
 				developmentProjectAB.proyecto.id = Util.stringToNumber( this.txtConectelID.text );
+				*/
+				developmentProjectAB.proyecto = this.projectsConsult.datagrid.selectedItem as Proyecto;
 				developmentProjectAB.proyecto.estado = new Estado();
 				developmentProjectAB.proyecto.estado.id = Estado.ID_DESARROLLO_PROYECTO_A_Y_B;
 				developmentProjectAB.bastidorGabinete = Util.validateEmpty( this.txtFrame.text );
@@ -163,12 +175,14 @@
 				developmentProjectAB.fibraClienteFinal = this.cmbFiberEndCustomer.selectedItem as Seguimiento;
 				developmentProjectAB.planchaBase = this.cmbBase.selectedItem as Seguimiento;
 				developmentProjectAB.proyecto.observaciones = this.observations.observations;
+				developmentProjectAB.tipoDesarrolloProyecto = this.cmbDevelopmentProjectType.selectedItem as TipoDesarrolloProyecto;
 				return developmentProjectAB;
 			}
 			
 			private function fillCombos():void
 			{
 				this.responseGetSeguimiento.token = this.catalogoService.getSeguimiento();
+				this.responseGetTipoDesarrolloProyecto.token = this.catalogoService.getTipoDesarrolloProyecto();
 			}
 			
 			protected function responseGetSoportes_resultHandler(data:ArrayCollection):void
@@ -280,6 +294,7 @@
 				value &&= Util.listBaseSelected( this.cmbFeeding );
 				value &&= Util.listBaseSelected( this.cmbFiberEndCustomer );
 				value &&= Util.listBaseSelected( this.cmbBase );
+				value &&= this.projectsConsult.datagrid.selectedItem != null;
 				return value;
 			}
 			
@@ -287,10 +302,11 @@
 			{
 				if( this.mode == Constants.REGISTER_MODE ){
 					this.btnDone.visible = false;
-					this.txtConectelID.editable = true;
+					//this.txtConectelID.editable = true;
+					this.executeProjectQuery();
 				}
 				if( this.mode == Constants.UPDATE_MODE ){
-					this.txtConectelID.editable = false;
+					//this.txtConectelID.editable = false;
 				}
 			}
 			
@@ -298,7 +314,7 @@
 			{
 				this.validators = new InicializaValidadoresEtiquetas();
 				validators.crearValidadorRestrictor("numerico11",ValidadorEntero.nombre, 11);
-				validators.setValidador(txtConectelID, "numerico11");
+				//validators.setValidador(txtConectelID, "numerico11");
 				validators.crearValidadorRestrictor("alfanumerico50",ValidadorAlfanumerico.nombre, 0, 50, true);
 				validators.setRestrictor(txtFrame, "alfanumerico50");
 				validators.setRestrictor(txtLedge, "alfanumerico50");
@@ -336,7 +352,9 @@
 			
 			private function cleanForm():void
 			{
-				this.txtConectelID.reset();
+				//this.txtConectelID.reset();
+				this.verticalScrollPosition = 0;
+				this.projectsConsult.datagrid.selectedIndex = -1;
 				this.txtFrame.reset();
 				this.txtLedge.reset();
 				this.txtVersion.reset();
@@ -369,6 +387,7 @@
 				this.cmbFiberEndCustomer.selectedIndex = 0;
 				this.cmbBase.selectedIndex = 0;
 				this.observations.reset();
+				this.cmbDevelopmentProjectType.selectedIndex = 0;
 			}
 			
 			protected function responseUpdate_resultHandler(event:ResultEvent):void
@@ -432,6 +451,47 @@
 				this.responseGetPlanchaBase_resultHandler(data);
 			}
 			
+			protected function responseGetTipoDesarrolloProyecto_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbDevelopmentProjectType.dataProvider = data;
+				if( Util.extractObject(this._developmentProjectAB,"tipoDesarrolloProyecto") != null ){
+					this.cmbDevelopmentProjectType.selectedIndex = Util.selectedIndexFromCombo( this.cmbDevelopmentProjectType.dataProvider as ArrayCollection, 
+						this._developmentProjectAB.tipoDesarrolloProyecto.id);
+				}
+			}
+			
+			private function executeProjectQuery():void
+			{
+				var filter:FiltroProyecto = new FiltroProyecto();
+				filter.idConectel = null;
+				filter.idCategoria = undefined;
+				filter.idCliente = undefined;
+				filter.tipoProyecto = undefined;
+				filter.tecnologia = undefined;
+				filter.equipo = undefined;
+				filter.actividadRealizar = undefined;
+				filter.modelo = undefined;
+				filter.descripcionServicio = undefined;
+				filter.tipoServicio = undefined;
+				this.responseGetAllByFiltro.token = this.proyectoService.getAllByFiltro(filter);
+			}
+			
+			protected function projectsConsult_projectSelectedHandler(event:GenericEvent):void
+			{
+				var project:Proyecto = event.information as Proyecto;
+				if( project == null ){
+					return;
+				}
+			}
+			
+			protected function responseGetAll_resultHandler(event:ResultEvent):void
+			{
+				projectsConsult.setDataGridData( event.result as ArrayCollection );
+			}
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -439,10 +499,18 @@
 		[Event(name="developmentProjectABUpdated", type="flash.events.Event")]
 	</mx:Metadata>
 	<mx:Form id="form">
+		<!--
 		<mx:FormItem label="ID Conectel:" direction="horizontal">
 			<mx:Label text="CON"/>
 			<components:TextInput id="txtConectelID" width="150" textAlign="right"/>
 		</mx:FormItem>
+		-->
+		<mx:FormItem label="Tipo Desarrollo Proyecto:">
+			<mx:ComboBox id="cmbDevelopmentProjectType" width="150"
+						 labelField="etiqueta"/>
+		</mx:FormItem>
+		<mx:FormHeading label="Proyectos"/>
+		<proyectos:Consult id="projectsConsult" projectSelected="projectsConsult_projectSelectedHandler(event)"/>
 		<mx:FormItem label="Bastidor/Gabinete:">
 			<components:TextInput id="txtFrame" width="200" textAlign="right"/>
 		</mx:FormItem>
@@ -553,6 +621,7 @@
 	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="utilService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetSeguimiento" result="responseGetSeguimiento_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetTipoDesarrolloProyecto" result="responseGetTipoDesarrolloProyecto_resultHandler(event)"/>
 	<!--
 	<mx:CallResponder id="responseGetSoportes" result="responseGetSoportes_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetAntena" result="responseGetAntena_resultHandler(event)"/>
@@ -568,4 +637,7 @@
 	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
 	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
 	<mx:CallResponder id="responseDone" result="responseDone_resultHandler(event)"/>
+	<mx:RemoteObject id="proyectoService" destination="proyectoService" fault="desarrolloProyectoABService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetAllByFiltro" result="responseGetAll_resultHandler(event)"/>
 </mx:VBox>

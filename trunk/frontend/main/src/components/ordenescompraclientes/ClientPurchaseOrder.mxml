@@ -178,6 +178,7 @@
 			
 			private function cleanForm():void
 			{
+				this.verticalScrollPosition = 0;
 				this.txtID.reset();
 				Util.removeItems(this.projectsConsult.datagrid.dataProvider);
 				this,chbPurchaseOrder.selected = false;
@@ -301,7 +302,7 @@
 			<components:TextInput id="txtID" width="80" textAlign="right"
 								  editable="false"/>
 		</mx:FormItem>
-		<mx:FormHeading label="Datos de Orden de Compra del Cliente"/>
+		<mx:FormHeading label="Datos de Proyecto"/>
 		<proyectos:Consult id="projectsConsult" projectSelected="projectsConsult_projectSelectedHandler(event)"/>
 		<mx:FormItem label="Orden de Compra:">
 			<mx:CheckBox id="chbPurchaseOrder"/>

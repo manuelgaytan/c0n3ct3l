@@ -221,6 +221,7 @@
 			import model.TipoCapacitacion;
 			import model.TipoColaborador;
 			import model.TipoContratacion;
+			import model.TipoDesarrolloProyecto;
 			import model.TipoDocumentoAlmacen;
 			import model.TipoEntregable;
 			import model.TipoFormacion;
@@ -521,6 +522,7 @@
 			private var comentarioCotizacion:ComentarioCotizacion;
 			private var comentarios:Comentarios;
 			private var documentoLiderProveedorMaquilador:DocumentoLiderProveedorMaquilador;
+			private var tipoDesarrolloProyecto:TipoDesarrolloProyecto;
 						
 			protected function login_readyHandler(event:ModuleEvent):void
 			{

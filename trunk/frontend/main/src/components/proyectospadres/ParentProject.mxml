@@ -153,6 +153,7 @@
 			
 			private function cleanForm():void
 			{
+				this.verticalScrollPosition = 0;
 				this.txtID.reset();
 				this.txtDescription.reset();
 				this.txtCreationDate.reset();

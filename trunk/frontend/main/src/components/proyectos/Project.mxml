@@ -68,6 +68,7 @@
 			
 			private function cleanForm():void
 			{
+				this.verticalScrollPosition = 0;
 				this.cmbCategory.selectedIndex = 0;
 				this.cmbClient.selectedIndex = 0;
 				Util.freeDataProvider( this.cmbProjectType );

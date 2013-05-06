@@ -66,7 +66,7 @@
 					return;
 				}
 				//this.txtConectelID.text = Util.numberToString( this._developmentProjectAB.proyecto.id );
-				this.projectsConsult.datagrid = Util.asArrayCollection( this._developmentProjectAB.proyecto );
+				this.projectsConsult.datagrid.dataProvider = Util.asArrayCollection( this._developmentProjectAB.proyecto );
 				this.txtFrame.text = this._developmentProjectAB.bastidorGabinete;
 				this.txtLedge.text = this._developmentProjectAB.repisa;
 				this.txtVersion.text = this._developmentProjectAB.version;

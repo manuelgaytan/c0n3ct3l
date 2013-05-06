@@ -339,6 +339,7 @@
 			
 			private function cleanForm():void
 			{
+				this.verticalScrollPosition = 0;
 				this.txtConectelID.reset();
 				this.txtDivision.reset();
 				this.txtArea.reset();

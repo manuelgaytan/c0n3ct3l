@@ -39,6 +39,7 @@ package model
 		public var fibraClienteFinal:Seguimiento;
 		public var planchaBase:Seguimiento;
 		public var observaciones:ArrayCollection;
+		public var tipoDesarrolloProyecto:TipoDesarrolloProyecto;
 		
 		public function DesarrolloProyecto()
 		{

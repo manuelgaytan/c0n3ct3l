@@ -49,6 +49,7 @@ public class ProyectoService implements IProyectoService {
 		query.setParameter("modelo", projectFilter.getModelo());
 		query.setParameter("descripcionServicio", projectFilter.getDescripcionServicio());
 		query.setParameter("tipoServicio", projectFilter.getTipoServicio());
+		query.setParameter("proyectoPadre", "%"+projectFilter.getProyectoPadre()+"%" );
 		//query.setParameter("costo", projectFilter.getCosto());
 		//query.setParameter("idEstado", 1);
 		List<ProyectoDO> projectList;

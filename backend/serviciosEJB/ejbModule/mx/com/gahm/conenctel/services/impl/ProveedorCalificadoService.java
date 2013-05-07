@@ -12,6 +12,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
+import mx.com.gahm.conenctel.entities.ComentarioProveedorDO;
 import mx.com.gahm.conenctel.entities.ProductoDO;
 import mx.com.gahm.conenctel.entities.ProveedorCalificadoComboDO;
 import mx.com.gahm.conenctel.entities.ProveedorCalificadoDO;
@@ -71,10 +72,35 @@ public class ProveedorCalificadoService implements IProveedorCalificadoService {
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public ProveedorCalificadoDO saveProveedorCalificado(
 			ProveedorCalificadoDO proveedor) throws ConectelException {
-		// TODO Auto-generated method stub
+		
+		
+		saveComentarios(proveedor);
 		entityManager.persist(proveedor);
 		return null;
 	}
+	
+	private void saveComentarios(ProveedorCalificadoDO item){
+		List<ComentarioProveedorDO> comentarios = item.getComentariosProovedor();
+		if(comentarios!=null)
+		for (ComentarioProveedorDO comentario : comentarios) {
+			entityManager.persist(comentario.getComentarioCompras());
+			comentario.setProveedorCalificado(item);
+		}
+		
+	}
+	
+	private void deleteComentarios(ProveedorCalificadoDO item){
+		List<ComentarioProveedorDO> comentarios = item.getComentariosProovedor();
+		if(comentarios!=null)
+		for (ComentarioProveedorDO comentario : comentarios) {
+			entityManager.remove(comentario);
+			entityManager.remove(comentario.getComentarioCompras());
+			
+		}
+		
+	}
+	
+	
 
 	/* (non-Javadoc)
 	 * @see mx.com.gahm.conenctel.services.IProveedorCalificadoService#deleteProveedoresCalificados(java.util.List)
@@ -103,7 +129,10 @@ public class ProveedorCalificadoService implements IProveedorCalificadoService {
 	@Override
 	public ProductoDO updateProveedorCalificado(ProveedorCalificadoDO proveedor)
 			throws ConectelException {
-		// TODO Auto-generated method stub
+		
+		deleteComentarios(proveedor);
+		
+		saveComentarios(proveedor);
 		entityManager.merge(proveedor);
 		return null;
 	}

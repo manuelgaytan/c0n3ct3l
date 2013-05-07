@@ -12,6 +12,9 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
+import com.sun.faces.config.DocumentOrderingWrapper;
+
+import mx.com.gahm.conenctel.entities.DocumentoLiderProveedorMaquiladorDO;
 import mx.com.gahm.conenctel.entities.ProductoDO;
 import mx.com.gahm.conenctel.entities.ProveedorMaquiladorDO;
 import mx.com.gahm.conenctel.exceptions.ConectelException;
@@ -60,6 +63,12 @@ public class ProveedorMaquiladorService implements IProveedorMaquiladorService {
 	public ProveedorMaquiladorDO saveProveedorMaquilador(
 			ProveedorMaquiladorDO proveedor) throws ConectelException {
 		// TODO Auto-generated method stub
+		List<DocumentoLiderProveedorMaquiladorDO> documentos = proveedor.getDocumentosLiderProveedorMaquilador();
+		
+		for (DocumentoLiderProveedorMaquiladorDO documento : documentos) {
+			documento.setProveedorMaquilador(proveedor);
+		}
+		
 		entityManager.persist(proveedor);
 		return null;
 	}

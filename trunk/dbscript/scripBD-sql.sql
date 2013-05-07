@@ -364,6 +364,7 @@
 	fk_autoriza INT(11) UNSIGNED NOT NULL,
 	fk_entrega INT(11) UNSIGNED NOT NULL,
 	recibe VARCHAR(255) NOT NULL,
+	fk_autoriza_final INT(11) UNSIGNED,
 	PRIMARY KEY (id)
 	);
 
@@ -3036,6 +3037,8 @@
 
 	/* Cambios */
 	ALTER TABLE DesarrolloProyectoAyB ADD FOREIGN KEY fk_tipo_desarrollo_proyecto_idxfk (fk_tipo_desarrollo_proyecto) REFERENCES TipoDesarrolloProyecto (id);
+
+	ALTER TABLE SolicitudAlmacen ADD FOREIGN KEY fk_autoriza_final_idxfk (fk_autoriza_final) REFERENCES Colaborador (id);
 
 	/* Perfiles */
 	INSERT INTO Perfil

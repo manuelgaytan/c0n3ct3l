@@ -83,6 +83,7 @@ import mx.com.gahm.conenctel.entities.TipoCapacitacionDO;
 import mx.com.gahm.conenctel.entities.TipoColaboradorDO;
 import mx.com.gahm.conenctel.entities.TipoContratacionDO;
 import mx.com.gahm.conenctel.entities.TipoContratoDO;
+import mx.com.gahm.conenctel.entities.TipoDesarrolloProyectoDO;
 import mx.com.gahm.conenctel.entities.TipoEmpleadoDO;
 import mx.com.gahm.conenctel.entities.TipoFormacionDO;
 import mx.com.gahm.conenctel.entities.TipoIncapacidadDO;
@@ -1451,4 +1452,21 @@ public class CatalogoService implements ICatalogoService {
 		}
 		return list;
 	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<TipoDesarrolloProyectoDO> getTipoDesarrolloProyecto() throws ConectelException {
+		TypedQuery<TipoDesarrolloProyectoDO> query = entityManager.createNamedQuery(
+				"TipoDesarrolloProyectoDO.findAll", TipoDesarrolloProyectoDO.class);
+		
+		List<TipoDesarrolloProyectoDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
+	
+	
+	
 }

@@ -61,7 +61,7 @@ public class SolicitudAlmacenService implements ISolicitudAlmacenService {
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public SolicitudAlmacenDO save(SolicitudAlmacenDO item) {
 		
-		entityManager.persist(item);
+		
 		/*
 
 
@@ -116,6 +116,8 @@ public class SolicitudAlmacenService implements ISolicitudAlmacenService {
 					dato.setSolicitudAlmacen(item);	
 				}
 			}
+		
+		entityManager.persist(item);
 			return null;
 	}
 

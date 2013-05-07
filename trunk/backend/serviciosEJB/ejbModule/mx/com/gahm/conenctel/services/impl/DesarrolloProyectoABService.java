@@ -110,5 +110,20 @@ public class DesarrolloProyectoABService implements IDesarrolloProyectoABService
 			long idDevelopmentProject) throws ConectelException {
 		return entityManager.find(DesarrolloProyectoABDO.class, idDevelopmentProject);
 	}
-
+    
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<ProyectoDO> getAllBySinDesarrolloProyecto() throws ConectelException {
+		TypedQuery<ProyectoDO> query = entityManager.createNamedQuery(
+				"ProyectoDO.getProyectosNoAsociados", ProyectoDO.class);
+		List<ProyectoDO> developmentProjectList =null;
+		try {
+			developmentProjectList = query.getResultList();
+		} catch(NoResultException e) {
+			e.printStackTrace();
+		}
+		
+		return developmentProjectList;
+	}
+	
+	
 }

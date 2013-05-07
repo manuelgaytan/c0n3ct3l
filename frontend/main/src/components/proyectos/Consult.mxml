@@ -101,6 +101,9 @@
 			<mx:DataGridColumn id="dtgProjectID" headerText="{'ID\nProyecto'}"
 							   dataField="id"
 							   labelFunction="labelFunctionIDProyecto"/>
+			<mx:DataGridColumn id="dtgParentProject" headerText="{'Proyecto\nPadre'}"
+							   dataField="proyectoPadreHijo.proyectoPadre.descripcion"
+							   />
 			<mx:DataGridColumn id="dtgProjectState" headerText="{'Estado\nProyecto'}"
 							   dataField="estado.etiqueta"
 							   labelFunction="labelFunctionGenerico"/>

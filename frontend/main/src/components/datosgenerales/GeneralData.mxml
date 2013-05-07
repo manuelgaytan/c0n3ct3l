@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
-		 creationComplete="creationCompleteHandler(event)"
+		 creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*"
 		 >
 	<mx:Script>
 		<![CDATA[
+			import events.GenericEvent;
+			
 			import model.Aplica;
 			import model.Catalogo;
 			import model.Colaborador;
 			import model.Constants;
 			import model.DatosGeneralesProyecto;
 			import model.Estado;
+			import model.FiltroProyecto;
 			import model.Proyecto;
 			import model.TipoEntregable;
 			import model.Util;
@@ -73,7 +76,8 @@
 				if( this._generalDataProject == null ){
 					return;
 				}
-				this.txtConectelID.text = Util.numberToString( this._generalDataProject.proyecto.id );
+				//this.txtConectelID.text = Util.numberToString( this._generalDataProject.proyecto.id );
+				this.projectsConsult.datagrid = Util.asArrayCollection( this._generalDataProject.proyecto );
 				this.txtDivision.text = this._generalDataProject.divisionRegion;
 				this.txtArea.text = this._generalDataProject.areaGoa;
 				this.txtFinalClient.text = this._generalDataProject.clienteFinal;
@@ -137,8 +141,11 @@
 				}else{
 					generalDataProject = this._generalDataProject;
 				}
+				/*
 				generalDataProject.proyecto = new Proyecto();
 				generalDataProject.proyecto.id = Util.stringToNumber( this.txtConectelID.text );
+				*/
+				generalDataProject.proyecto = this.projectsConsult.datagrid.selectedItem as Proyecto;
 				generalDataProject.proyecto.estado = new Estado();
 				generalDataProject.proyecto.estado.id = Estado.ID_DATOS_GENERALES;
 				generalDataProject.divisionRegion = Util.validateEmpty( this.txtDivision.text );
@@ -295,6 +302,7 @@
 				value &&= Util.listBaseSelected( this.cmbPerDiem );
 				value &&= this.dtfStartDateReal.selectedDate;
 				value &&= this.dtfEndDateReal.selectedDate;
+				value &&= this.projectsConsult.datagrid.selectedItem != null;
 				//value &&= this.dlvEngineeringDeliverable.existElements();
 				return value;
 			}
@@ -303,10 +311,11 @@
 			{
 				if( this.mode == Constants.REGISTER_MODE ){
 					this.btnDone.visible = false;
-					this.txtConectelID.editable = true;
+					//this.txtConectelID.editable = true;
+					this.executeProjectQuery();
 				}
 				if( this.mode == Constants.UPDATE_MODE ){
-					this.txtConectelID.editable = false;
+					//this.txtConectelID.editable = false;
 				}
 					
 			}
@@ -315,7 +324,7 @@
 			{
 				this.validators = new InicializaValidadoresEtiquetas();
 				validators.crearValidadorRestrictor("numerico11",ValidadorEntero.nombre, 11);
-				validators.setValidador(txtConectelID, "numerico11");
+				//validators.setValidador(txtConectelID, "numerico11");
 				validators.crearValidadorRestrictor("alfanumerico100",ValidadorAlfanumerico.nombre, 0, 100, true);
 				validators.setRestrictor(txtDivision, "alfanumerico100");
 				validators.setRestrictor(txtArea, "alfanumerico100");
@@ -340,7 +349,8 @@
 			private function cleanForm():void
 			{
 				this.verticalScrollPosition = 0;
-				this.txtConectelID.reset();
+				//this.txtConectelID.reset();
+				this.projectsConsult.datagrid.selectedIndex = -1;
 				this.txtDivision.reset();
 				this.txtArea.reset();
 				this.txtFinalClient.reset();
@@ -432,6 +442,34 @@
 				this.responseGetResponsableImplementacion.token = this.catalogoService.getColaboradorByTipoColaborador(idColaboratorType);
 			}
 			
+			private function executeProjectQuery():void
+			{
+				var filter:FiltroProyecto = new FiltroProyecto();
+				filter.idConectel = null;
+				filter.idCategoria = undefined;
+				filter.idCliente = undefined;
+				filter.tipoProyecto = undefined;
+				filter.tecnologia = undefined;
+				filter.equipo = undefined;
+				filter.actividadRealizar = undefined;
+				filter.modelo = undefined;
+				filter.descripcionServicio = undefined;
+				filter.tipoServicio = undefined;
+				this.responseGetAllByFiltro.token = this.proyectoService.getAllByFiltro(filter);
+			}
+			
+			protected function projectsConsult_projectSelectedHandler(event:GenericEvent):void
+			{
+				var project:Proyecto = event.information as Proyecto;
+				if( project == null ){
+					return;
+				}
+			}
+			
+			protected function responseGetAll_resultHandler(event:ResultEvent):void
+			{
+				projectsConsult.setDataGridData( event.result as ArrayCollection );
+			}
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -439,10 +477,14 @@
 		[Event(name="generalDataProjectUpdated", type="flash.events.Event")]
 	</mx:Metadata>
 	<mx:Form id="form">
+		<!--
 		<mx:FormItem label="ID Conectel:" direction="horizontal">
 			<mx:Label text="CON"/>
 			<components:TextInput id="txtConectelID" width="150" textAlign="right"/>
 		</mx:FormItem>
+		-->
+		<mx:FormHeading label="Proyectos"/>
+		<proyectos:Consult id="projectsConsult" projectSelected="projectsConsult_projectSelectedHandler(event)"/>
 		<mx:FormItem label="Divisón o Región:">
 			<components:TextInput id="txtDivision" width="200"/>
 		</mx:FormItem>
@@ -551,4 +593,7 @@
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetAplica" result="responseGetAplica_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetTipoColaborador" result="responseGetTipoColaborador_resultHandler(event)"/>
+	<mx:RemoteObject id="proyectoService" destination="proyectoService" fault="datosGeneralesProyectoService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetAllByFiltro" result="responseGetAll_resultHandler(event)"/>
 </mx:VBox>

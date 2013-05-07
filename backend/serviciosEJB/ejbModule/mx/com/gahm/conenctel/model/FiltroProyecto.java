@@ -17,8 +17,20 @@ public class FiltroProyecto implements Serializable {
 	private String descripcionServicio;
 	private String tipoServicio;	
 	private Double costo;
-
+	private String proyectoPadre;	
 	
+	/**
+	 * @return the proyectoPadre
+	 */
+	public String getProyectoPadre() {
+		return proyectoPadre;
+	}
+	/**
+	 * @param proyectoPadre the proyectoPadre to set
+	 */
+	public void setProyectoPadre(String proyectoPadre) {
+		this.proyectoPadre = proyectoPadre;
+	}
 	public long getIdConectel() {
 		return idConectel;
 	}

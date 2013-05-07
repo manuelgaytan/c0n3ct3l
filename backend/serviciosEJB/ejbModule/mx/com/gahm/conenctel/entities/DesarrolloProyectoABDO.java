@@ -41,6 +41,11 @@ public class DesarrolloProyectoABDO implements Serializable {
 	@JoinColumn(name="id_proyecto")
 	private ProyectoDO proyecto;
 
+	@ManyToOne(fetch= FetchType.EAGER)
+	@JoinColumn(name="fk_tipo_desarrollo_proyecto")
+	private TipoDesarrolloProyectoDO tipoDesarrolloProyecto;
+	
+	
 	@Column(name="longitud_cable")
 	private String longitudCable;
 
@@ -374,6 +379,21 @@ public class DesarrolloProyectoABDO implements Serializable {
 
 	public void setAlimentacionSeguimiento(SeguimientoDO alimentacionSeguimiento) {
 		this.alimentacionSeguimiento = alimentacionSeguimiento;
+	}
+
+	/**
+	 * @return the tipoDesarrolloProyecto
+	 */
+	public TipoDesarrolloProyectoDO getTipoDesarrolloProyecto() {
+		return tipoDesarrolloProyecto;
+	}
+
+	/**
+	 * @param tipoDesarrolloProyecto the tipoDesarrolloProyecto to set
+	 */
+	public void setTipoDesarrolloProyecto(
+			TipoDesarrolloProyectoDO tipoDesarrolloProyecto) {
+		this.tipoDesarrolloProyecto = tipoDesarrolloProyecto;
 	}
 
 }

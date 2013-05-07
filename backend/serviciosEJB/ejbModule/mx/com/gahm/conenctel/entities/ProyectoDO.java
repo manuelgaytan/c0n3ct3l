@@ -21,9 +21,10 @@ import java.util.List;
 			"or p.producto.teconologia = :tecnologia) and ((:equipo is null or :equipo = '') or p.producto.equipo = :equipo) and ((:actividadRealizar is null " +
 			"or :actividadRealizar = '') or p.producto.actividadRealizar = :actividadRealizar) and ((:modelo is null or :modelo = '') or p.producto.modelo = " +
 			":modelo) and ((:descripcionServicio is null or :descripcionServicio = '') or p.producto.descripcionServicio = :descripcionServicio) and " +
-			"((:tipoServicio is null or :tipoServicio = '') or p.producto.tipoServicio = :tipoServicio)"),
+			"((:tipoServicio is null or :tipoServicio = '') or p.producto.tipoServicio = :tipoServicio) or p.proyectoPadreHijo.proyectoPadre.descripcion like (:proyectoPadre)"),
 			
-			@NamedQuery(name = "ProyectoDO.getProyectosByProducto", query = "select c from ProyectoDO c where c.producto.id=:idProducto")
+			@NamedQuery(name = "ProyectoDO.getProyectosByProducto", query = "select c from ProyectoDO c where c.producto.id=:idProducto"),
+			@NamedQuery(name = "ProyectoDO.getProyectosNoAsociados", query = "select c from ProyectoDO c where c.id NOT IN(select dp.proyecto.id from DesarrolloProyectoABDO dp)")
 	
 })
 @Table(name = "proyecto")
@@ -67,6 +68,8 @@ public class ProyectoDO implements Serializable {
 	
 	@OneToOne(mappedBy="proyecto")
 	private ValidacionProyectoDO validacionProyecto;
+	
+	
 	
 	public ProyectoDO() {
 	}

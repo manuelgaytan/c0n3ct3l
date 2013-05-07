@@ -52,7 +52,7 @@ public class RequisicionCompraDO implements java.io.Serializable {
 	private EstatusRequisicionCompraDO estatusRequisicionCompra;
 	@OneToMany(mappedBy="requisicionCompra", fetch = FetchType.EAGER)
 	private List<SolicitanteRequisicionDO> solicitantesRequisicion;
-	@OneToMany(mappedBy="requisicionCompra", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy="requisicionCompra", fetch = FetchType.EAGER,cascade=CascadeType.ALL)
     private List<PartidaRequisicionCompraDO> partidasRequisicionCompra;
 	@OneToMany(mappedBy="requisicionCompra", fetch = FetchType.EAGER)
     private List<ComentarioRequisicionDO> comentariosRequisicion;

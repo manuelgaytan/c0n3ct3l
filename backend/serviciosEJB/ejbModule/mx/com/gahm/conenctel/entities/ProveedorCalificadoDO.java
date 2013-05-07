@@ -4,11 +4,13 @@
 package mx.com.gahm.conenctel.entities;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,6 +18,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -65,6 +68,10 @@ public class ProveedorCalificadoDO implements Serializable {
 	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name = "fk_dato_bancario")
 	private DatoBancarioDO datoBancario;
+	
+	@OneToMany(mappedBy="proveedorCalificado", fetch = FetchType.EAGER,cascade=CascadeType.ALL)
+	private List<ComentarioProveedorDO> comentariosProovedor;
+	
 
 	/**
 	 * @return the id
@@ -200,6 +207,21 @@ public class ProveedorCalificadoDO implements Serializable {
 	 */
 	public void setDatoBancario(DatoBancarioDO datoBancario) {
 		this.datoBancario = datoBancario;
+	}
+
+	/**
+	 * @return the comentariosProovedor
+	 */
+	public List<ComentarioProveedorDO> getComentariosProovedor() {
+		return comentariosProovedor;
+	}
+
+	/**
+	 * @param comentariosProovedor the comentariosProovedor to set
+	 */
+	public void setComentariosProovedor(
+			List<ComentarioProveedorDO> comentariosProovedor) {
+		this.comentariosProovedor = comentariosProovedor;
 	}
 
 }

@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
-		 creationComplete="creationCompleteHandler(event)"
+		 creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*"
 		 >
 	<mx:Script>
 		<![CDATA[
+			import events.GenericEvent;
+			
 			import model.Catalogo;
 			import model.ConfiguracionPruebaEntrega;
 			import model.Constants;
 			import model.Estado;
 			import model.EstadoValidacionOperativa;
+			import model.FiltroProyecto;
 			import model.Proyecto;
 			import model.TipoEntregable;
 			import model.Util;
@@ -62,7 +65,8 @@
 				if( this._configurationTestingDelivery == null ){
 					return;
 				}
-				this.txtConectelID.text = Util.numberToString( this._configurationTestingDelivery.proyecto.id );
+				//this.txtConectelID.text = Util.numberToString( this._configurationTestingDelivery.proyecto.id );
+				this.projectsConsult.datagrid = Util.asArrayCollection( this._configurationTestingDelivery.proyecto );
 				this.txtCommissioner.text = this._configurationTestingDelivery.comisionado;
 				this.txtPortsDelivered.text = this._configurationTestingDelivery.puertosEntregados;
 				this.txtAlign.text = this._configurationTestingDelivery.alineacion;
@@ -151,8 +155,11 @@
 				}else{
 					configurationTestingDelivery = this._configurationTestingDelivery;
 				}
+				/*
 				configurationTestingDelivery.proyecto = new Proyecto();
 				configurationTestingDelivery.proyecto.id = Util.stringToNumber( this.txtConectelID.text );
+				*/
+				configurationTestingDelivery.proyecto = this.projectsConsult.datagrid.selectedItem as Proyecto;
 				configurationTestingDelivery.proyecto.estado = new Estado();
 				configurationTestingDelivery.proyecto.estado.id = Estado.ID_CONFIGURACION_PRUEBA_Y_ENTREGA;
 				configurationTestingDelivery.comisionado = Util.validateEmpty( this.txtCommissioner.text );
@@ -224,6 +231,7 @@
 				value &&= this.validators.validarFormulario();
 				value &&= this.dtfDeliveryDate.selectedDate;
 				/* value &&= this.dlvEngineeringDeliverable.existElements(); */
+				value &&= this.projectsConsult.datagrid.selectedItem != null;
 				return value;
 			}
 			
@@ -231,10 +239,11 @@
 			{
 				if( this.mode == Constants.REGISTER_MODE ){
 					this.btnProjectDone.visible = false;
-					this.txtConectelID.editable = true;
+					//this.txtConectelID.editable = true;
+					this.executeProjectQuery();
 				}
 				if( this.mode == Constants.UPDATE_MODE ){
-					this.txtConectelID.editable = false;
+					//this.txtConectelID.editable = false;
 				}
 			}
 			
@@ -242,7 +251,7 @@
 			{
 				this.validators = new InicializaValidadoresEtiquetas();
 				validators.crearValidadorRestrictor("numerico11",ValidadorEntero.nombre, 11);
-				validators.setValidador(txtConectelID, "numerico11");
+				//validators.setValidador(txtConectelID, "numerico11");
 				validators.crearValidadorRestrictor("alfanumerico100",ValidadorAlfanumerico.nombre, 0, 100, true);
 				validators.setRestrictor(txtCommissioner, "alfanumerico100");
 				validators.setRestrictor(txtPortsDelivered, "alfanumerico100");
@@ -264,7 +273,8 @@
 			private function cleanForm():void
 			{
 				this.verticalScrollPosition = 0;
-				this.txtConectelID.reset();
+				//this.txtConectelID.reset();
+				this.projectsConsult.datagrid.selectedIndex = -1;
 				this.txtCommissioner.reset();
 				this.txtPortsDelivered.reset();
 				this.txtAlign.reset();
@@ -338,6 +348,34 @@
 				}
 			}
 			
+			private function executeProjectQuery():void
+			{
+				var filter:FiltroProyecto = new FiltroProyecto();
+				filter.idConectel = null;
+				filter.idCategoria = undefined;
+				filter.idCliente = undefined;
+				filter.tipoProyecto = undefined;
+				filter.tecnologia = undefined;
+				filter.equipo = undefined;
+				filter.actividadRealizar = undefined;
+				filter.modelo = undefined;
+				filter.descripcionServicio = undefined;
+				filter.tipoServicio = undefined;
+				this.responseGetAllByFiltro.token = this.proyectoService.getAllByFiltro(filter);
+			}
+			
+			protected function projectsConsult_projectSelectedHandler(event:GenericEvent):void
+			{
+				var project:Proyecto = event.information as Proyecto;
+				if( project == null ){
+					return;
+				}
+			}
+			
+			protected function responseGetAll_resultHandler(event:ResultEvent):void
+			{
+				projectsConsult.setDataGridData( event.result as ArrayCollection );
+			}
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -346,10 +384,14 @@
 		[Event(name="configurationTestingDeliveryProjectDone", type="flash.events.Event")]
 	</mx:Metadata>
 	<mx:Form id="form">
+		<!--
 		<mx:FormItem label="ID Conectel:" direction="horizontal">
 			<mx:Label text="CON"/>
 			<components:TextInput id="txtConectelID" width="150" textAlign="right"/>
 		</mx:FormItem>
+		-->
+		<mx:FormHeading label="Proyectos"/>
+		<proyectos:Consult id="projectsConsult" projectSelected="projectsConsult_projectSelectedHandler(event)"/>
 		<mx:FormItem label="Comisionado:">
 			<components:TextInput id="txtCommissioner" width="200" textAlign="right"/>
 		</mx:FormItem>
@@ -433,4 +475,7 @@
 	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="datosGeneralesProyectoService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetEstadoValidacionOperativa" result="responseGetEstadoValidacionOperativa_resultHandler(event)"/>
+	<mx:RemoteObject id="proyectoService" destination="proyectoService" fault="datosGeneralesProyectoService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetAllByFiltro" result="responseGetAll_resultHandler(event)"/>
 </mx:VBox>

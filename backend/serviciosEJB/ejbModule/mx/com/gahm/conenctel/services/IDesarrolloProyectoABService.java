@@ -5,6 +5,7 @@ import java.util.List;
 import javax.ejb.Remote;
 
 import mx.com.gahm.conenctel.entities.DesarrolloProyectoABDO;
+import mx.com.gahm.conenctel.entities.ProyectoDO;
 import mx.com.gahm.conenctel.exceptions.ConectelException;
 
 @Remote
@@ -21,4 +22,6 @@ public interface IDesarrolloProyectoABService {
 	
 	public DesarrolloProyectoABDO getDesarrolloProyectoAB(long idDevelopmentProject)
 			throws ConectelException;
+	
+	public List<ProyectoDO> getAllBySinDesarrolloProyecto() throws ConectelException;
 }

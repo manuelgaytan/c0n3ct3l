@@ -78,6 +78,7 @@ import mx.com.gahm.conenctel.entities.TipoCapacitacionDO;
 import mx.com.gahm.conenctel.entities.TipoColaboradorDO;
 import mx.com.gahm.conenctel.entities.TipoContratacionDO;
 import mx.com.gahm.conenctel.entities.TipoContratoDO;
+import mx.com.gahm.conenctel.entities.TipoDesarrolloProyectoDO;
 import mx.com.gahm.conenctel.entities.TipoEmpleadoDO;
 import mx.com.gahm.conenctel.entities.TipoFormacionDO;
 import mx.com.gahm.conenctel.entities.TipoIncapacidadDO;
@@ -250,4 +251,5 @@ public interface ICatalogoService extends Serializable {
 	public List<EstadoColaboradorDO> getEstadoColaborador() throws ConectelException;
 	public List<AreaLevantaNoConformidadDO> getAreaLevantaNoConformidad() throws ConectelException;
 	public List<ResponsableMinutaDO> getResponsableMinuta() throws ConectelException;
+	public List<TipoDesarrolloProyectoDO> getTipoDesarrolloProyecto() throws ConectelException;
 }

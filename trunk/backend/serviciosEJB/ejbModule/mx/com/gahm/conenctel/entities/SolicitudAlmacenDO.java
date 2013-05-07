@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -34,6 +35,7 @@ public class SolicitudAlmacenDO implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "id", unique = true, nullable = false)
 	private Long id;
 	
 	@ManyToOne
@@ -76,28 +78,28 @@ public class SolicitudAlmacenDO implements Serializable {
 	@Column(name="recibe")
 	private String recibe;
 	
-	@OneToMany(mappedBy="solicitudAlmacen", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy="solicitudAlmacen", fetch = FetchType.EAGER,cascade=CascadeType.ALL)
 	private List<HerramientaSolicitudAlmacenDO> herramientasSolicitudAlmacen;
 
-	@OneToMany(mappedBy="solicitudAlmacen", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy="solicitudAlmacen", fetch = FetchType.EAGER,cascade=CascadeType.ALL)
 	private List<HardwareSolicitudAlmacenDO> hardwareSolicitudAlmacen;
 	
-	@OneToMany(mappedBy="solicitudAlmacen", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy="solicitudAlmacen", fetch = FetchType.EAGER,cascade=CascadeType.ALL)
 	private List<SoftwareSolicitudAlmacenDO> softwareSolicitudAlmacen;
 	
-	@OneToMany(mappedBy="solicitudAlmacen", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy="solicitudAlmacen", fetch = FetchType.EAGER,cascade=CascadeType.ALL)
 	private List<ConsumibleSolicitudAlmacenDO> consumiblesSolicitudAlmacen;
 	
-	@OneToMany(mappedBy="solicitudAlmacen", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy="solicitudAlmacen", fetch = FetchType.EAGER,cascade=CascadeType.ALL)
 	private List<TelefoniaMovilSolicitudAlmacenDO> telefoniaMovilSolicitudAlmacen;
 	
-	@OneToMany(mappedBy="solicitudAlmacen", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy="solicitudAlmacen", fetch = FetchType.EAGER,cascade=CascadeType.ALL)
 	private List<MaterialSolicitudAlmacenDO> materialesSolicitudAlmacen;
 	
-	@OneToMany(mappedBy="solicitudAlmacen", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy="solicitudAlmacen", fetch = FetchType.EAGER,cascade=CascadeType.ALL)
 	private List<EquipoTransporteSolicitudAlmacenDO> equipoTransporteSolicitudAlmacen;
 	
-	@OneToMany(mappedBy="solicitudAlmacen", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy="solicitudAlmacen", fetch = FetchType.EAGER,cascade=CascadeType.ALL)
 	private List<EquipoMedicionSolicitudAlmacenDO> equipoMedicionSolicitudAlmacen;
 	
 	

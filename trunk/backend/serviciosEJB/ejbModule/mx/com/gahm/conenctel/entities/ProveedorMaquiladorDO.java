@@ -4,6 +4,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -51,6 +52,10 @@ public class ProveedorMaquiladorDO extends ProveedorDO implements Serializable{
 
 	@Column(name="nss")
 	private String nss;
+	
+	
+	@OneToMany(mappedBy="proveedorMaquilador", fetch = FetchType.EAGER,cascade=CascadeType.ALL)
+	private List<DocumentoLiderProveedorMaquiladorDO> documentosLiderProveedorMaquilador;
 
 	public ProveedorMaquiladorDO() {
 	}
@@ -135,6 +140,23 @@ public class ProveedorMaquiladorDO extends ProveedorDO implements Serializable{
 	 */
 	public void setTipoContrato(TipoContratoDO tipoContrato) {
 		this.tipoContrato = tipoContrato;
+	}
+
+
+	/**
+	 * @return the documentosLiderProveedorMaquilador
+	 */
+	public List<DocumentoLiderProveedorMaquiladorDO> getDocumentosLiderProveedorMaquilador() {
+		return documentosLiderProveedorMaquilador;
+	}
+
+
+	/**
+	 * @param documentosLiderProveedorMaquilador the documentosLiderProveedorMaquilador to set
+	 */
+	public void setDocumentosLiderProveedorMaquilador(
+			List<DocumentoLiderProveedorMaquiladorDO> documentosLiderProveedorMaquilador) {
+		this.documentosLiderProveedorMaquilador = documentosLiderProveedorMaquilador;
 	}
 
 }

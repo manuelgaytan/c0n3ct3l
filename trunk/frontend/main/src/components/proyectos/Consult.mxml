@@ -100,7 +100,8 @@
 		<mx:columns>
 			<mx:DataGridColumn id="dtgProjectID" headerText="{'ID\nProyecto'}"
 							   dataField="id"
-							   labelFunction="labelFunctionIDProyecto"/>
+							   labelFunction="labelFunctionIDProyecto"
+							   width="150"/>
 			<mx:DataGridColumn id="dtgParentProject" headerText="{'Proyecto\nPadre'}"
 							   dataField="proyectoPadreHijo.proyectoPadre.descripcion"
 							   />

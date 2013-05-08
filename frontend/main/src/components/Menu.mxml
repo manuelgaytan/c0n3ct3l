@@ -109,7 +109,7 @@
 					   icon="@Embed(source='assets/images/clientes.png')"/>
 		<mx:LinkButton label="Ordenes de Compra Servicio Maquilado" id="OrdenesCompraServicioMaquilado" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/servicios.png')"/>
-		<mx:LinkButton label="Facturación de Compra" id="FacturacionCompra" click="clickMenuHandler(event)"
+		<mx:LinkButton label="Programación de Pagos de Compras" id="FacturacionCompra" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/clientes.png')"/>
 		<mx:LinkButton label="Preciarios Maquiladores" id="PreciariosMaquiladores" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/servicios.png')"/>

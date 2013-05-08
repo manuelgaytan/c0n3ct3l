@@ -90,6 +90,7 @@
 					this.cmbMaquiladoSupplier.dispatchEvent( new ListEvent(ListEvent.CHANGE) );
 				}
 				this.txtValidationKey.text = this._item.claveValidacion;
+				this.txtLegend.text = this._item.leyenda;
 			}
 			
 			private function setMaquiladorSupplier( supplier:ProveedorMaquilador ):void{
@@ -118,6 +119,7 @@
 				item.proveedorMaquilador = new ProveedorMaquilador(); 
 				item.proveedorMaquilador.id = (Util.validateCombo( this.cmbMaquiladoSupplier ) as ProveedorMaquilador).id;
 				item.claveValidacion = Util.validateEmpty( this.txtValidationKey.text );
+				item.leyenda = Util.validateEmpty( this.txtLegend.text );
 				return item;
 			}
 			
@@ -176,6 +178,7 @@
 				this.validators = new InicializaValidadoresEtiquetas();
 				validators.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
 				validators.setRestrictor(txtValidationKey, "generic");
+				this.validators.setRestrictor( this.txtLegend, "generic");
 			}
 			
 			protected function responseSave_resultHandler(event:ResultEvent):void
@@ -194,6 +197,7 @@
 				this.cleanFormQualifiedSupplier();
 				this.itemsManagement.reset();
 				this.txtValidationKey.reset();
+				this.txtLegend.reset();
 			}
 			
 			private function cleanFormQualifiedSupplier():void{
@@ -327,6 +331,9 @@
 		<ordenescompraserviciosmaquilado:ItemsManagement id="itemsManagement"/>
 		<mx:FormItem label="Clave de Validación:">
 			<components:TextInput id="txtValidationKey" width="200"/>
+		</mx:FormItem>
+		<mx:FormItem label="Leyenda:">
+			<components:TextArea id="txtLegend" width="600"/>
 		</mx:FormItem>
 		<mx:FormItem>
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>

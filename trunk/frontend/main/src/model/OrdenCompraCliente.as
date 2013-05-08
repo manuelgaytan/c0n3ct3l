@@ -15,5 +15,6 @@ package model
 		public var comentarioValidacionCostoOrdenCompraCliente:ArrayCollection;
 		public var estadoOrdenCompra:EstadoOrdenCompra;
 		public var comentarioOrdenCompraCliente:ArrayCollection;
+		public var leyenda:String;
 	}
 }

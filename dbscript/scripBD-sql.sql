@@ -873,7 +873,7 @@
 	(
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
 	fk_cotizacion INT(11) UNSIGNED,
-	fecha VARCHAR(255) NOT NULL,
+	fecha DATE NOT NULL,
 	fk_proveedor_calificado INT(11) UNSIGNED NOT NULL,
 	fk_proyecto INT(11) UNSIGNED NOT NULL,
 	fk_requisicion_compra INT(11) UNSIGNED NOT NULL,
@@ -885,6 +885,7 @@
 	otros_impuestos DECIMAL,
 	total DECIMAL NOT NULL,
 	fecha_entrega_almacen DATE NOT NULL,
+	leyenda VARCHAR(255),
 	PRIMARY KEY (id)
 	);
 
@@ -923,6 +924,7 @@
 	fecha DATE NOT NULL,
 	fk_proveedor_maquilador INT(11) UNSIGNED NOT NULL,
 	clave_validacion VARCHAR(255),
+	leyenda VARCHAR(255),
 	PRIMARY KEY (id)
 	);
 
@@ -1087,6 +1089,7 @@
 	costo_orden_compra DECIMAL,
 	fk_validacion_costo INT(11) UNSIGNED,
 	fk_estado_orden_compra INT(11) UNSIGNED,
+	leyenda VARCHAR(255),
 	PRIMARY KEY (id)
 	);
 

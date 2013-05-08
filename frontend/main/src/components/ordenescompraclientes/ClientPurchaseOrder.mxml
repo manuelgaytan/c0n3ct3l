@@ -85,6 +85,7 @@
 					this.cmbPurchaseOrderStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbPurchaseOrderStatus.dataProvider as ArrayCollection, 
 						this._item.estadoOrdenCompra.id);
 				}
+				this.txtLegend.text = this._item.leyenda;
 				this.commentsPurchaseOrderStatus.setCommentsIn( this._item.comentarioOrdenCompraCliente, "comentarioValidacionAdministrativa");
 			}
 			
@@ -104,6 +105,7 @@
 				clientPurchaseOrder.comentarioValidacionCostoOrdenCompraCliente = this.commentsCostValidation.getCommentsAsInWith("model.ComentarioValidacionAdministrativa","model.ComentarioValidacionCostoOrdenCompraCliente","comentarioValidacionAdministrativa");
 				clientPurchaseOrder.estadoOrdenCompra = Util.validateCombo( this.cmbPurchaseOrderStatus ) as EstadoOrdenCompra;
 				clientPurchaseOrder.comentarioOrdenCompraCliente = this.commentsPurchaseOrderStatus.getCommentsAsInWith("model.ComentarioValidacionAdministrativa","model.ComentarioOrdenCompraCliente","comentarioValidacionAdministrativa");
+				clientPurchaseOrder.leyenda = Util.validateEmpty( this.txtLegend.text );
 				return clientPurchaseOrder;
 			}
 			
@@ -167,6 +169,8 @@
 				this.validators = new InicializaValidadoresEtiquetas();
 				this.validators.crearValidadorRestrictor("genericDecimal", ValidadorDecimal.nombre, 9, 2);
 				this.validators.setRestrictor( this.txtPurchaseOrderCost, "genericDecimal" );
+				this.validators.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
+				this.validators.setRestrictor( this.txtLegend, "generic");
 			}
 			
 			protected function responseSave_resultHandler(event:ResultEvent):void
@@ -189,6 +193,7 @@
 				this.cmbCostValidationStatus.selectedIndex = 0;
 				this.commentsCostValidation.reset();
 				this.cmbPurchaseOrderStatus.selectedIndex = 0;
+				this.txtLegend.reset();
 				this.commentsPurchaseOrderStatus.reset();
 			}
 			
@@ -327,6 +332,9 @@
 		<mx:FormItem label="Validación del Costo:">
 			<mx:ComboBox id="cmbCostValidationStatus" width="200"
 						 labelField="etiqueta"/>
+		</mx:FormItem>
+		<mx:FormItem label="Leyenda:">
+			<components:TextArea id="txtLegend" width="600"/>
 		</mx:FormItem>
 		<components:Comments id="commentsCostValidation"/>
 		<mx:FormHeading label="Modificación de Estado de Orden de Compra"/>

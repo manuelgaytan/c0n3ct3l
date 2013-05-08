@@ -97,6 +97,7 @@
 				this.txtOtherTaxes.text = Util.numberToString( this._item.otrosImpuestos );
 				this.txtTotal.text = Util.numberToString( this._item.total );
 				this.dtfWarehouseDeliveryDate.selectedDate = this._item.fechaEntregaAlmacen;
+				this.txtLegend.text = this._item.leyenda;
 			}
 			
 			private function setQualifiedSupplier( supplier:ProveedorCalificado ):void{
@@ -142,6 +143,7 @@
 				item.otrosImpuestos = Util.stringToNumber( this.txtOtherTaxes.text );
 				item.total = Util.stringToNumber( this.txtTotal.text );
 				item.fechaEntregaAlmacen = this.dtfDate.selectedDate;
+				item.leyenda = Util.validateEmpty( this.txtLegend.text );
 				return item;
 			}
 			
@@ -183,7 +185,7 @@
 			private function validations():Boolean
 			{
 				var value:Boolean = true;
-				//value &&= this.validators.validarFormulario();
+				value &&= this.validators.validarFormulario();
 				return value;
 			}
 			
@@ -196,8 +198,10 @@
 			
 			private function initializeValidators():void
 			{
-				/*
 				this.validators = new InicializaValidadoresEtiquetas();
+				this.validators.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
+				this.validators.setRestrictor( this.txtLegend, "generic");
+				/*
 				validators.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
 				validators.setRestrictor(txtCode, "generic");
 				validators.setRestrictor(txtDescription, "generic");
@@ -229,6 +233,7 @@
 				this.txtOtherTaxes.reset();
 				this.txtTotal.reset();
 				this.dtfWarehouseDeliveryDate.reset();
+				this.txtLegend.reset();
 				this.cleanFormQualifiedSupplier();
 			}
 			
@@ -433,6 +438,9 @@
 		</mx:FormItem>
 		<mx:FormItem label="Fecha de Entrega Almacén:">
 			<components:DateField id="dtfWarehouseDeliveryDate" textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Leyenda:">
+			<components:TextArea id="txtLegend" width="600"/>
 		</mx:FormItem>
 		<mx:FormItem>
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>

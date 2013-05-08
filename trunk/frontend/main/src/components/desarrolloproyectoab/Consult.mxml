@@ -79,6 +79,9 @@
 							   dataField="proyecto.id"
 							   labelFunction="labelFunctionIDProyecto"
 							   width="130"/>
+			<mx:DataGridColumn id="dtgType" headerText="{'Tipo'}"
+							   dataField="tipoDesarrolloProyecto.tipo"
+							   width="50"/>
 			<mx:DataGridColumn id="dtgFrame" headerText="{'Bastidor/Gabinete'}"
 							   dataField="bastidorGabinete"
 							   width="130"/>

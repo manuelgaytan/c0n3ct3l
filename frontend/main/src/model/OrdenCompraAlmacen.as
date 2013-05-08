@@ -22,6 +22,7 @@ package model
 		public var proveedorCalificado:ProveedorCalificado;
 		public var proyecto:Proyecto;
 		public var requisicionCompra:RequisicionCompra;
+		public var leyenda:String;
 		
 		public function OrdenCompraAlmacen()
 		{

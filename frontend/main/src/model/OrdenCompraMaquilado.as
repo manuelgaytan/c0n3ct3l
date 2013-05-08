@@ -10,6 +10,7 @@ package model
 		public var solicitudServicioMaquilado:SolicitudServicioMaquilado;
 		public var proveedorMaquilador:ProveedorMaquilador;
 		public var claveValidacion:String;
+		public var leyenda:String;
 		
 		public function OrdenCompraMaquilado()
 		{

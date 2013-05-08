@@ -67,6 +67,7 @@
 				}
 				//this.txtConectelID.text = Util.numberToString( this._developmentProjectAB.proyecto.id );
 				this.projectsConsult.datagrid.dataProvider = Util.asArrayCollection( this._developmentProjectAB.proyecto );
+				this.projectsConsult.datagrid.selectedIndex = 0;
 				this.txtFrame.text = this._developmentProjectAB.bastidorGabinete;
 				this.txtLedge.text = this._developmentProjectAB.repisa;
 				this.txtVersion.text = this._developmentProjectAB.version;
@@ -507,7 +508,7 @@
 		-->
 		<mx:FormItem label="Tipo Desarrollo Proyecto:">
 			<mx:ComboBox id="cmbDevelopmentProjectType" width="150"
-						 labelField="etiqueta"/>
+						 labelField="tipo"/>
 		</mx:FormItem>
 		<mx:FormHeading label="Proyectos"/>
 		<proyectos:Consult id="projectsConsult" projectSelected="projectsConsult_projectSelectedHandler(event)"/>

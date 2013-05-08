@@ -67,6 +67,7 @@
 				}
 				//this.txtConectelID.text = Util.numberToString( this._configurationTestingDelivery.proyecto.id );
 				this.projectsConsult.datagrid = Util.asArrayCollection( this._configurationTestingDelivery.proyecto );
+				this.projectsConsult.datagrid.selectedIndex = 0;
 				this.txtCommissioner.text = this._configurationTestingDelivery.comisionado;
 				this.txtPortsDelivered.text = this._configurationTestingDelivery.puertosEntregados;
 				this.txtAlign.text = this._configurationTestingDelivery.alineacion;

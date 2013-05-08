@@ -57,6 +57,8 @@ public class OrdenCompraClienteDO implements java.io.Serializable {
 	@OneToMany(mappedBy = "ordenCompraCliente", fetch = FetchType.EAGER)
 	private List<ComentarioValidacionCostoOrdenCompraClienteDO> comentarioValidacionCostoOrdenCompraCliente;
 
+	private String leyenda;
+	
 	/**
 	 * 
 	 */
@@ -170,6 +172,14 @@ public class OrdenCompraClienteDO implements java.io.Serializable {
 	public void setComentarioOrdenCompraCliente(
 			List<ComentarioOrdenCompraClienteDO> comentarioOrdenCompraCliente) {
 		this.comentarioOrdenCompraCliente = comentarioOrdenCompraCliente;
+	}
+
+	public String getLeyenda() {
+		return leyenda;
+	}
+
+	public void setLeyenda(String leyenda) {
+		this.leyenda = leyenda;
 	}
 
 }

@@ -78,6 +78,7 @@
 				}
 				//this.txtConectelID.text = Util.numberToString( this._generalDataProject.proyecto.id );
 				this.projectsConsult.datagrid = Util.asArrayCollection( this._generalDataProject.proyecto );
+				this.projectsConsult.datagrid.selectedIndex = 0;
 				this.txtDivision.text = this._generalDataProject.divisionRegion;
 				this.txtArea.text = this._generalDataProject.areaGoa;
 				this.txtFinalClient.text = this._generalDataProject.clienteFinal;

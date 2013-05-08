@@ -48,6 +48,7 @@ public class OrdenCompraDO  implements java.io.Serializable {
      private Long otrosImpuestos;
      private Long total;
      private Date fechaEntregaAlmacen;
+     private String leyenda;
      
      private ProveedorCalificadoDO proveedorCalificado;
      private CotizacionDO cotizacion;
@@ -227,6 +228,14 @@ public class OrdenCompraDO  implements java.io.Serializable {
     public void setFechaEntregaAlmacen(Date fechaEntregaAlmacen) {
         this.fechaEntregaAlmacen = fechaEntregaAlmacen;
     }
+
+	public String getLeyenda() {
+		return leyenda;
+	}
+
+	public void setLeyenda(String leyenda) {
+		this.leyenda = leyenda;
+	}
    
 
 

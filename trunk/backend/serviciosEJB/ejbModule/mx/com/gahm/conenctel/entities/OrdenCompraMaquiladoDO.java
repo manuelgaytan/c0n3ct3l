@@ -33,6 +33,7 @@ public class OrdenCompraMaquiladoDO implements java.io.Serializable {
 	private Date fecha;
 	private ProveedorMaquiladorDO proveedorMaquilador;
 	private String claveValidacion;
+	private String leyenda;
 	
 	public OrdenCompraMaquiladoDO() {
 	}
@@ -93,6 +94,14 @@ public class OrdenCompraMaquiladoDO implements java.io.Serializable {
 
 	public void setClaveValidacion(String claveValidacion) {
 		this.claveValidacion = claveValidacion;
+	}
+
+	public String getLeyenda() {
+		return leyenda;
+	}
+
+	public void setLeyenda(String leyenda) {
+		this.leyenda = leyenda;
 	}
 
 }

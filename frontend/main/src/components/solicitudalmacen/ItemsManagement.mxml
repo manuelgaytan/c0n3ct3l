@@ -36,6 +36,113 @@
 				this._items.addItem( entry );
 			}
 			
+			public function reset():void{
+				if( _items == null ){
+					return;
+				}
+				Util.removeItems( this._items );
+				this._items.refresh();
+			}
+			
+			public function setEntries( warehouseApplication:SolicitudAlmacen ):void{
+				for each ( var itemC:ConsumibleSolicitudAlmacen in warehouseApplication.consumiblesSolicitudAlmacen ) 
+				{
+					this.addItem( PartidaSolicitudAlmacen.createPartidaSolicitudAlmacen( itemC.id, 
+																						 TipoAlmacen.getConsumibles(), 
+																						 itemC.consumible.codigo, 
+																						 itemC.consumible.grupoFamiliaD.etiqueta, 
+																						 itemC.consumible.descripcion, 
+																						 itemC.cantidadSolicitada, 
+																						 itemC.consumible.unidadB.etiqueta, 
+																						 itemC.regresoAlmacen, 
+																						 itemC.observacion ) );
+				}
+				for each ( var itemEM:EquipoMedicionSolicitudAlmacen in warehouseApplication.equipoMedicionSolicitudAlmacen ) 
+				{
+					this.addItem( PartidaSolicitudAlmacen.createPartidaSolicitudAlmacen( itemEM.id, 
+																						 TipoAlmacen.getEquipoMedicion(),
+																						 itemEM.equipoMedicion.codigo, 
+																						 itemEM.equipoMedicion.grupoFamilia,
+																						 itemEM.equipoMedicion.descripcion, 
+																						 itemEM.cantidadSolicitada, 
+																						 "", 
+																						 itemEM.regresoAlmacen, 
+																						 itemEM.observacion ) );
+				}
+				for each ( var itemET:EquipoTransporteSolicitudAlmacen in warehouseApplication.equipoTransporteSolicitudAlmacen ) 
+				{
+					this.addItem( PartidaSolicitudAlmacen.createPartidaSolicitudAlmacen( itemET.id, 
+																						TipoAlmacen.getEquipoTransporte(),
+																						itemET.equipoTransporte.codigo, 
+																						itemET.equipoTransporte.grupofamiliab.etiqueta,
+																						itemET.equipoTransporte.descripcion, 
+																						itemET.cantidadSolicitada, 
+																						"", 
+																						itemET.regresoAlmacen, 
+																						itemET.observacion ) );
+				}
+				for each ( var itemM:MaterialSolicitudAlmacen in warehouseApplication.materialesSolicitudAlmacen ) 
+				{
+					this.addItem( PartidaSolicitudAlmacen.createPartidaSolicitudAlmacen( itemM.id, 
+																						TipoAlmacen.getMateriales(),
+																						itemM.material.codigo, 
+																						itemM.material.grupoFamiliaC.etiqueta,
+																						itemM.material.descripcion, 
+																						itemM.cantidadSolicitada, 
+																						itemM.material.unidadB.etiqueta, 
+																						itemM.regresoAlmacen, 
+																						itemM.observacion ) );
+				}
+				for each ( var itemTM:TelefoniaMovilSolicitudAlmacen in warehouseApplication.telefoniaMovilSolicitudAlmacen ) 
+				{
+					this.addItem( PartidaSolicitudAlmacen.createPartidaSolicitudAlmacen( itemTM.id, 
+																						TipoAlmacen.getTelefoniaMovil(),
+																						itemTM.telefoniaMovil.codigo, 
+																						itemTM.telefoniaMovil.grupoFamiliaF.etiqueta,
+																						itemTM.telefoniaMovil.descripcion, 
+																						itemTM.cantidadSolicitada, 
+																						"", 
+																						itemTM.regresoAlmacen, 
+																						itemTM.observacion ) );
+				}
+				for each ( var itemH:HardwareSolicitudAlmacen in warehouseApplication.hardwareSolicitudAlmacen ) 
+				{
+					this.addItem( PartidaSolicitudAlmacen.createPartidaSolicitudAlmacen( itemH.id, 
+																						TipoAlmacen.getHardware(),
+																						itemH.hardware.codigo, 
+																						itemH.hardware.grupoFamiliaE.etiqueta,
+																						itemH.hardware.descripcion, 
+																						itemH.cantidadSolicitada, 
+																						itemH.hardware.unidadC.etiqueta, 
+																						itemH.regresoAlmacen, 
+																						itemH.observacion ) );
+				}
+				for each ( var itemS:SoftwareSolicitudAlmacen in warehouseApplication.softwareSolicitudAlmacen ) 
+				{
+					this.addItem( PartidaSolicitudAlmacen.createPartidaSolicitudAlmacen( itemS.id, 
+																						TipoAlmacen.getSoftware(),
+																						itemS.software.codigo, 
+																						itemS.software.ubicacionB.etiqueta,
+																						itemS.software.descripcion, 
+																						itemS.cantidadSolicitada, 
+																						itemS.software.unidad, 
+																						itemS.regresoAlmacen, 
+																						itemS.observacion ) );
+				}
+				for each ( var itemHe:HerramientaSolicitudAlmacen in warehouseApplication.herramientasSolicitudAlmacen ) 
+				{
+					this.addItem( PartidaSolicitudAlmacen.createPartidaSolicitudAlmacen( itemHe.id, 
+																						TipoAlmacen.getHerramienta(),
+																						itemHe.herramienta.codigo, 
+																						itemHe.herramienta.grupoFamiliaA.etiqueta,
+																						itemHe.herramienta.descripcion, 
+																						itemHe.cantidadSolicitada, 
+																						itemHe.herramienta.unidadA.etiqueta, 
+																						itemHe.regresoAlmacen, 
+																						itemHe.observacion ) );
+				}
+			}
+			
 			public function getEntries( warehouseApplication:SolicitudAlmacen ):void{
 				for each (var item:PartidaSolicitudAlmacen in this._items) 
 				{
@@ -144,11 +251,6 @@
 					warehouseApplication[listProperty] = new ArrayCollection();
 				}
 				warehouseApplication[listProperty].addItem( itemSolicitudAlmacen );
-			}
-			
-			public function reset():void
-			{
-				Util.removeItems( this._items );
 			}
 		]]>
 	</mx:Script>

@@ -15,6 +15,7 @@ package model
 		public var estadoSolicitudAlmacen:EstadoSolicitudAlmacen;
 		public var nombreSolicitante:String;
 		public var autoriza:Colaborador;
+		public var autorizaFinal:Colaborador;
 		public var entrega:Colaborador;
 		public var recibe:String;
 		public var consumiblesSolicitudAlmacen:ArrayCollection;

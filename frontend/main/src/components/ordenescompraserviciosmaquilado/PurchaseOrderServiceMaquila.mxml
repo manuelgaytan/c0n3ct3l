@@ -97,11 +97,11 @@
 				if( supplier == null ){
 					return;
 				}
-				this.txtBusinessName.text = supplier.razonSocial;
-				this.txtRFC.text = supplier.rfc;
-				this.txtTaxAddress.text = supplier.direccionFiscal;
-				this.txtPhones.text = supplier.telefonos;
-				this.txtMail.text = supplier.correo;
+				this.txtBusinessName.text = supplier.proveedor.razonSocial;
+				this.txtRFC.text = supplier.proveedor.rfc;
+				this.txtTaxAddress.text = supplier.proveedor.direccionFiscal;
+				this.txtPhones.text = supplier.proveedor.telefonos;
+				this.txtMail.text = supplier.proveedor.correo;
 				this.txtContractType.text = supplier.tipoContrato.tipo;
 				this.txtNSS.text = supplier.nss;
 			}

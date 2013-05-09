@@ -7,6 +7,7 @@
 			import model.Constants;
 			import model.Consumible;
 			import model.GrupoFamiliaD;
+			import model.Proveedor;
 			import model.ProveedorMaquilador;
 			import model.ProveedorSeleccionado;
 			import model.TipoAlmacen;
@@ -101,18 +102,18 @@
 				if( this._itemMaquilado == null ){
 					return;
 				}
-				this.txtNombreComercial.text= this._itemMaquilado.nombreComercial;
-				this.txtRazonSocial.text= this._itemMaquilado.razonSocial;
-				this.txtRFC.text= this._itemMaquilado.rfc;
-				this.txtDireccionFisica.text= this._itemMaquilado.direccionFisica;
-				this.txtDireccionFiscal.text= this._itemMaquilado.direccionFiscal;
-				this.txtTelefonos.text= this._itemMaquilado.telefonos;
+				this.txtNombreComercial.text= this._itemMaquilado.proveedor.nombreComercial;
+				this.txtRazonSocial.text= this._itemMaquilado.proveedor.razonSocial;
+				this.txtRFC.text= this._itemMaquilado.proveedor.rfc;
+				this.txtDireccionFisica.text= this._itemMaquilado.proveedor.direccionFisica;
+				this.txtDireccionFiscal.text= this._itemMaquilado.proveedor.direccionFiscal;
+				this.txtTelefonos.text= this._itemMaquilado.proveedor.telefonos;
 				//this.txtContacto.text= this._itemMaquilado.contacto;
-				 this.txtCorreo.text= this._itemMaquilado.correo;
+				 this.txtCorreo.text= this._itemMaquilado.proveedor.correo;
 				//this.txtPaginaWeb.text= this._itemMaquilado.paginaWeb; */
-				if( Util.isFill( this.cmbPersona ) && this._itemMaquilado.tipoPersona != null ){
+				if( Util.isFill( this.cmbPersona ) && this._itemMaquilado.proveedor.tipoPersona != null ){
 					this.cmbPersona.selectedIndex = Util.selectedIndexFromCombo( this.cmbPersona.dataProvider as ArrayCollection, 
-						this._itemMaquilado.tipoPersona.id);
+						this._itemMaquilado.proveedor.tipoPersona.id);
 				}
 				/*
 				this.txtDescription.text = this._item.descripcion;
@@ -147,16 +148,17 @@
 				}else{
 					item = this._itemMaquilado;
 				}
-				item.tipoPersona= new TipoPersona();
-				item.tipoPersona.id= (this.cmbPersona.selectedItem as TipoPersona).id;
-				item.nombreComercial=	Util.validateEmpty(this.txtNombreComercial.text);
-				item.razonSocial= Util.validateEmpty(this.txtRazonSocial.text);
-				item.rfc=  Util.validateEmpty(this.txtRFC.text);
-				item.direccionFisica= Util.validateEmpty(this.txtDireccionFisica.text);
-				item.direccionFiscal= Util.validateEmpty(this.txtDireccionFiscal.text);
-				item.telefonos=Util.validateEmpty(this.txtTelefonos.text);
+				item.proveedor = new Proveedor();
+				item.proveedor.tipoPersona= new TipoPersona();
+				item.proveedor.tipoPersona.id= (this.cmbPersona.selectedItem as TipoPersona).id;
+				item.proveedor.nombreComercial=	Util.validateEmpty(this.txtNombreComercial.text);
+				item.proveedor.razonSocial= Util.validateEmpty(this.txtRazonSocial.text);
+				item.proveedor.rfc=  Util.validateEmpty(this.txtRFC.text);
+				item.proveedor.direccionFisica= Util.validateEmpty(this.txtDireccionFisica.text);
+				item.proveedor.direccionFiscal= Util.validateEmpty(this.txtDireccionFiscal.text);
+				item.proveedor.telefonos=Util.validateEmpty(this.txtTelefonos.text);
 				//item.contacto=Util.validateEmpty(this.txtContacto.text);
-				 item.correo=Util.validateEmpty(this.txtCorreo.text);
+				 item.proveedor.correo=Util.validateEmpty(this.txtCorreo.text);
 			//	item.paginaWeb=Util.validateEmpty(this.txtPaginaWeb.text); */
 				return item;
 			}

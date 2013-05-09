@@ -5,8 +5,11 @@ package model
 	import mx.collections.ArrayCollection;
 
 	[RemoteClass(alias="mx.com.gahm.conenctel.entities.ProveedorMaquiladorDO")]
-	public class ProveedorMaquilador extends Proveedor
+	public class ProveedorMaquilador// extends Proveedor
 	{
+		public var id:*;
+		
+		public var proveedor:Proveedor;
 		
 		public var curp:String;
 		

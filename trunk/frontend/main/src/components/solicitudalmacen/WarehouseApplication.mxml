@@ -19,6 +19,7 @@
 			import model.ServicioSolicitado;
 			import model.SolicitudAlmacen;
 			import model.TipoAlmacen;
+			import model.TipoColaborador;
 			import model.UnidadB;
 			import model.Util;
 			
@@ -89,6 +90,7 @@
 						this._item.areaSolicitante.id);
 				}
 				this.txtSite.text = this._item.centralSitio;
+				itemsManagement.setEntries( this._item );
 				if( Util.isFill( this.cmbApplicantState ) && this._item.estadoSolicitudAlmacen != null ){
 					this.cmbApplicantState.selectedIndex = Util.selectedIndexFromCombo( this.cmbApplicantState.dataProvider as ArrayCollection, 
 						this._item.estadoSolicitudAlmacen.id);
@@ -97,6 +99,10 @@
 				if( Util.isFill( this.cmbAuthorizedBy ) && this._item.autoriza != null ){
 					this.cmbAuthorizedBy.selectedIndex = Util.selectedIndexFromCombo( this.cmbAuthorizedBy.dataProvider as ArrayCollection, 
 						this._item.autoriza.id);
+				}
+				if( Util.isFill( this.cmbAreaCordinator ) && this._item.autorizaFinal != null ){
+					this.cmbAreaCordinator.selectedIndex = Util.selectedIndexFromCombo( this.cmbAreaCordinator.dataProvider as ArrayCollection, 
+						this._item.autorizaFinal.id);
 				}
 				if( Util.isFill( this.cmbDeliver ) && this._item.autoriza != null ){
 					this.cmbDeliver.selectedIndex = Util.selectedIndexFromCombo( this.cmbDeliver.dataProvider as ArrayCollection, 
@@ -120,6 +126,7 @@
 				item.estadoSolicitudAlmacen = Util.validateCombo( this.cmbApplicantState ) as EstadoSolicitudAlmacen;
 				item.nombreSolicitante = Util.validateEmpty( this.txtApplicantName.text );
 				item.autoriza = Util.validateCombo( this.cmbAuthorizedBy ) as Colaborador;
+				item.autorizaFinal = Util.validateCombo( this.cmbAreaCordinator ) as Colaborador;
 				item.entrega = Util.validateCombo( this.cmbDeliver ) as Colaborador;
 				item.recibe = Util.validateEmpty( this.txtReceives.text );
 				item.usuario = Model.getInstance().user;
@@ -130,18 +137,15 @@
 			private function fillCombos():void
 			{
 				this.responseGetPrioridad.token = this.catalogoService.getPrioridad();
-				this.responseGetColaborador.token = this.catalogoService.getColaborador();
 				this.responseGetAreaSolicitante.token = this.catalogoService.getAreaSolicitante();
-				this.responseGetServicioSolicitado.token = this.catalogoService.getServicioSolicitado();
-				this.responseGetDescripcionAlmacen.token = this.catalogoService.getDescripcionAlmacen();
-				this.responseGetUnidadB.token = this.catalogoService.getUnidadB();
 				this.responseGetAlmacen.token = this.catalogoService.getTipoAlmacen();
 				this.responseEstadoSolicitudAlmacen.token = this.catalogoService.getEstadoSolicitudAlmacen();
+				this.responseGetColaborador.token = this.catalogoService.getColaboradorByTipoColaborador( TipoColaborador.ID_NOMINA );
 			}
 			
 			protected function solicitudAlmacenService_faultHandler(event:FaultEvent):void
 			{
-				//Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
 			}
 			
 			protected function btnAccept_clickHandler(event:MouseEvent):void
@@ -174,6 +178,9 @@
 				var value:Boolean = true;
 				value &&= this.validators.validarFormulario();
 				value &&= this.dtfApplicationDate.selectedDate != null;
+				if( this.mode == Constants.UPDATE_MODE ){
+					value &&= Util.listBaseSelected( this.cmbAreaCordinator, "id", true );
+				}
 				return value;
 			}
 			
@@ -182,6 +189,7 @@
 				if( this.mode == Constants.REGISTER_MODE ){
 					form.removeChild( this.frmItmCode );
 					this.btnPrint.visible = false;
+					form.removeChild( this.frmAreaCordinator );
 				}
 			}
 			
@@ -216,19 +224,21 @@
 			private function cleanForm():void
 			{
 				this.txtFolio.reset();
+				this.txtMotive.reset();
 				this.cmbPriority.selectedIndex = 0;
 				this.cmbApplicantArea.selectedIndex = 0;
 				this.dtfApplicationDate.selectedDate = new Date();
 				this.txtSite.reset();
+				this.itemsManagement.reset();
 				this.cmbProduct.selectedIndex = 0;
 				this.cmbProduct.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
 				this.resetEntry();
-				// aqui me quede
 				this.cmbApplicantState.selectedIndex = 0;
-				this.txtMotive.reset();
+				this.txtApplicantName.reset();
 				this.cmbAuthorizedBy.selectedIndex = 0;
-				this.txtQuantity.reset();
-				this.txtObservation.reset();
+				this.cmbAreaCordinator.selectedIndex = 0;
+				this.cmbDeliver.selectedIndex = 0;
+				this.txtReceives.reset();
 			}
 			
 			protected function responseUpdate_resultHandler(event:ResultEvent):void
@@ -273,19 +283,20 @@
 					return;
 				}
 				this.cmbAuthorizedBy.dataProvider = data;
-				/*
-				if( this._item != null && this._item.nombresSolicitantes != null ){
+				if( Util.isFill( this.cmbAuthorizedBy ) && Util.propertyOfObject( this._item, "autoriza" ) != null ){
 					this.cmbAuthorizedBy.selectedIndex = Util.selectedIndexFromCombo( this.cmbAuthorizedBy.dataProvider as ArrayCollection, 
-						this._item.nombresSolicitantes.id);
+						this._item.autoriza.id);
 				}
-				*/
 				this.cmbDeliver.dataProvider = data;
-				/*
-				if( this._item != null && this._item.nombresSolicitantes != null ){
-					this.cmbAuthorizedBy.selectedIndex = Util.selectedIndexFromCombo( this.cmbAuthorizedBy.dataProvider as ArrayCollection, 
-						this._item.nombresSolicitantes.id);
+				if( Util.isFill( this.cmbDeliver ) && Util.propertyOfObject( this._item, "entrega" ) != null ){
+					this.cmbDeliver.selectedIndex = Util.selectedIndexFromCombo( this.cmbDeliver.dataProvider as ArrayCollection, 
+						this._item.entrega.id);
 				}
-				*/
+				this.cmbAreaCordinator.dataProvider = Util.addEmptyCatalgo( data, "nombreCompleto" );
+				if( Util.isFill( this.cmbAreaCordinator ) && Util.propertyOfObject( this._item, "autorizaFinal" ) != null ){
+					this.cmbAreaCordinator.selectedIndex = Util.selectedIndexFromCombo( this.cmbAreaCordinator.dataProvider as ArrayCollection, 
+						this._item.autorizaFinal.id);
+				}
 			}
 			
 			protected function responseGetAreaSolicitante_resultHandler(event:ResultEvent):void
@@ -301,39 +312,9 @@
 				}
 			}
 			
-			protected function responseGetServicioSolicitado_resultHandler(event:ResultEvent):void
-			{
-				var data:ArrayCollection = event.result as ArrayCollection;
-				if( data == null ){
-					return;
-				}
-				/*
-				this.cmbAuthorizedBy.dataProvider = data;//Util.addEmptyCatalgo( data );
-				if( this._item != null && this._item.servicioSolicitado != null ){
-					this.cmbAuthorizedBy.selectedIndex = Util.selectedIndexFromCombo( this.cmbAuthorizedBy.dataProvider as ArrayCollection, 
-						this._item.servicioSolicitado.id);
-				}
-				*/
-			}
-			
-			protected function responseGetDescripcionAlmacen_resultHandler(event:ResultEvent):void
-			{
-				var data:ArrayCollection = event.result as ArrayCollection;
-				if( data == null ){
-					return;
-				}
-				/*
-				this.cmbDeliver.dataProvider = data;//Util.addEmptyCatalgo( data );
-				if( this._item != null && this._item.descripcionAlmacen != null ){
-					this.cmbDeliver.selectedItemId = Util.selectedIndexFromCombo( this.cmbDeliver.dataProvider as ArrayCollection, 
-						this._item.descripcionAlmacen.id);
-				}
-				*/
-			}
-			
 			protected function catalogoService_faultHandler(event:FaultEvent):void
 			{
-				//Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
 			}
 			
 			protected function cmbProduct_changeHandler(event:ListEvent):void
@@ -494,12 +475,10 @@
 					return;
 				}
 				this.cmbApplicantState.dataProvider = data;//Util.addEmptyCatalgo( data );
-				/*
-				if( this._item != null && this._item.unidadB != null ){
-				this.cmbUnit.selectedIndex = Util.selectedIndexFromCombo( this.cmbUnit.dataProvider as ArrayCollection, 
-				this._item.unidadB.id);
+				if( this._item != null && this._item.estadoSolicitudAlmacen != null ){
+					this.cmbApplicantState.selectedIndex = Util.selectedIndexFromCombo( this.cmbApplicantState.dataProvider as ArrayCollection, 
+						this._item.estadoSolicitudAlmacen.id);
 				}
-				*/
 			}
 			
 			private function resetEntry():void
@@ -629,11 +608,16 @@
 			<mx:ComboBox id="cmbApplicantState"
 						 labelField="etiqueta"/>
 		</mx:FormItem>
-		<mx:FormItem label="Nombre de los Solicitante:">
+		<mx:FormItem label="Nombre del Solicitante:">
 			<components:TextInput id="txtApplicantName" width="400"/>
 		</mx:FormItem>
 		<mx:FormItem label="Autorizado por:">
 			<mx:ComboBox id="cmbAuthorizedBy"
+						 labelField="nombreCompleto"
+						 />
+		</mx:FormItem>
+		<mx:FormItem label="Coordinador de Área:" id="frmAreaCordinator">
+			<mx:ComboBox id="cmbAreaCordinator"
 						 labelField="nombreCompleto"
 						 />
 		</mx:FormItem>
@@ -659,9 +643,6 @@
 	<mx:CallResponder id="responseGetPrioridad" result="responseGetPrioridad_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetColaborador" result="responseGetColaborador_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetAreaSolicitante" result="responseGetAreaSolicitante_resultHandler(event)"/>
-	<mx:CallResponder id="responseGetServicioSolicitado" result="responseGetServicioSolicitado_resultHandler(event)"/>
-	<mx:CallResponder id="responseGetDescripcionAlmacen" result="responseGetDescripcionAlmacen_resultHandler(event)"/>
-	<mx:CallResponder id="responseGetUnidadB" result="responseGetUnidadB_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetAlmacen" result="responseGetAlmacen_resultHandler(event)"/>
 	<mx:CallResponder id="responseEstadoSolicitudAlmacen" result="responseEstadoSolicitudAlmacen_resultHandler(event)"/>
 	<mx:RemoteObject id="telefoniaMovilService" destination="telefoniaMovilService" fault="solicitudAlmacenService_faultHandler(event)"

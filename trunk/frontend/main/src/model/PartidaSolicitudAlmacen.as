@@ -17,5 +17,20 @@ package model
 		public function PartidaSolicitudAlmacen()
 		{
 		}
+		
+		public static function createPartidaSolicitudAlmacen(id:*, tipoAlmacen:TipoAlmacen, codigo:String, grupoFamilia:String, descripcion:String, cantidad:Number, unidad:String, regresoAlmacen:Boolean, observacion:String):PartidaSolicitudAlmacen
+		{
+			var item:PartidaSolicitudAlmacen = new PartidaSolicitudAlmacen();
+			item.id = id;
+			item.tipoAlmacen = tipoAlmacen;
+			item.codigo = codigo;
+			item.grupoFamilia = grupoFamilia;
+			item.descripcion = descripcion;
+			item.cantidad = cantidad;
+			item.unidad = unidad;
+			item.regresoAlmacen = regresoAlmacen;
+			item.observacion = observacion;
+			return item;
+		}
 	}
 }

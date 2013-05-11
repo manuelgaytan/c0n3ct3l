@@ -178,7 +178,7 @@
 					return;
 				}
 				var proveedor:ProveedorCalificado = this.getProveedor();
-				//Util.showProperties( proveedor );
+				Util.showProperties( proveedor );
 				this.responseUpdate.token = this.ProveedorCalificadoService.updateProveedorCalificado( proveedor ); 
 			}
 			

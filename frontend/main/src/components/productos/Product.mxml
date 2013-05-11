@@ -208,7 +208,7 @@
 			
 			private function cleanForm():void
 			{
-				this.verticalScrollPosition = 0;
+				Util.upScroll( this );
 				this.cmbClient.selectedIndex = 0;
 				this.txtProjectType.reset();
 				this.txtTechnology.reset();

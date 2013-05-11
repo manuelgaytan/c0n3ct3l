@@ -28,6 +28,7 @@
 				if( value == null ){
 					return;
 				}
+				this.cleanForm();
 				this._project = value;
 				this.setProject(); 
 			}
@@ -44,7 +45,7 @@
 			
 			private function cleanForm():void
 			{
-				this.verticalScrollPosition = 0;
+				Util.upScroll( this );
 				this.requirements.reset();
 				this.observations.reset();
 			}

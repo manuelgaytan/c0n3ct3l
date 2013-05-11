@@ -185,7 +185,7 @@
 			
 			private function cleanForm():void
 			{
-				this.verticalScrollPosition = 0;
+				Util.upScroll( this );
 				this.txtWholeName.reset();
 				this.cmbProfile.selectedIndex = 0;
 				this.txtUser.reset();

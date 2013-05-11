@@ -185,6 +185,7 @@
 			
 			private function cleanForm():void
 			{
+				Util.upScroll( this );
 				this.txtCode.reset();
 				this.txtDescription.reset();
 				this.txtSerie.reset();

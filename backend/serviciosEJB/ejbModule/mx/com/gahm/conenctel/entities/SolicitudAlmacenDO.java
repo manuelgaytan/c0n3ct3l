@@ -70,6 +70,10 @@ public class SolicitudAlmacenDO implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="fk_autoriza")
 	private ColaboradorDO autoriza;
+	
+	@ManyToOne
+	@JoinColumn(name="fk_autoriza_final")
+	private ColaboradorDO autorizaFinal;
 
 	@ManyToOne
 	@JoinColumn(name="fk_entrega")
@@ -296,6 +300,14 @@ public class SolicitudAlmacenDO implements Serializable {
 	public void setEquipoMedicionSolicitudAlmacen(
 			List<EquipoMedicionSolicitudAlmacenDO> equipoMedicionSolicitudAlmacen) {
 		this.equipoMedicionSolicitudAlmacen = equipoMedicionSolicitudAlmacen;
+	}
+
+	public ColaboradorDO getAutorizaFinal() {
+		return autorizaFinal;
+	}
+
+	public void setAutorizaFinal(ColaboradorDO autorizaFinal) {
+		this.autorizaFinal = autorizaFinal;
 	}
 	
 	

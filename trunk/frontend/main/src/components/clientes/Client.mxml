@@ -198,7 +198,7 @@
 			
 			private function cleanForm():void
 			{
-				this.verticalScrollPosition = 0;
+				Util.upScroll( this );
 				this.txtComercialName.reset();
 				this.txtLegalName.reset();
 				this.txtRFC.reset();

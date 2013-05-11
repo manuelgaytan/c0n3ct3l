@@ -209,6 +209,7 @@
 			
 			private function cleanForm():void
 			{
+				Util.upScroll( this );
 				this.txtCode.reset();
 				this.txtFamily.reset();
 				this.txtDescription.reset();

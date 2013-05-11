@@ -19,6 +19,7 @@ package model
 	import mx.controls.List;
 	import mx.controls.dataGridClasses.DataGridColumn;
 	import mx.core.Application;
+	import mx.core.Container;
 	import mx.formatters.CurrencyFormatter;
 	import mx.formatters.DateFormatter;
 	import mx.formatters.NumberFormatter;
@@ -612,5 +613,13 @@ package model
 			}
 			return returnValues;
 		}
+		
+		public static function upScroll(view:Container):void{
+			if( view == null ){
+				return;
+			}
+			view.verticalScrollPosition = 0;
+		}
+			
 	}
 }

@@ -223,6 +223,7 @@
 			
 			private function cleanForm():void
 			{
+				Util.upScroll( this );
 				this.txtFolio.reset();
 				this.txtMotive.reset();
 				this.cmbPriority.selectedIndex = 0;

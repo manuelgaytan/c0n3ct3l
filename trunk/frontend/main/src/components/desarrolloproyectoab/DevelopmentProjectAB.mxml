@@ -353,6 +353,7 @@
 			
 			private function cleanForm():void
 			{
+				Util.upScroll( this );
 				//this.txtConectelID.reset();
 				this.verticalScrollPosition = 0;
 				this.projectsConsult.datagrid.selectedIndex = -1;

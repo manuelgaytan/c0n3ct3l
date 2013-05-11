@@ -60,7 +60,7 @@
 				}
 				this.cleanForm();
 				this._item = value;
-				this.setTransportEquipment(); 
+				this.setTransportEquipment();
 			}
 			
 			private function setTransportEquipment():void
@@ -224,6 +224,7 @@
 			
 			private function cleanForm():void
 			{
+				Util.upScroll( this );
 				this.txtCode.reset();
 				this.cmbFamily.selectedIndex = 0;
 				this.txtDescription.reset();

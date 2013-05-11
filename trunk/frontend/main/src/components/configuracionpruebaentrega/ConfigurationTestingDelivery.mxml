@@ -273,7 +273,7 @@
 			
 			private function cleanForm():void
 			{
-				this.verticalScrollPosition = 0;
+				Util.upScroll( this );
 				//this.txtConectelID.reset();
 				this.projectsConsult.datagrid.selectedIndex = -1;
 				this.txtCommissioner.reset();

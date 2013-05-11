@@ -79,18 +79,18 @@
 				if( this._item == null ){
 					return;
 				}
-				this.txtNombreComercial.text= this._item.nombreComercial;
-				this.txtRazonSocial.text= this._item.razonSocial;
-				this.txtRFC.text= this._item.rfc;
-				this.txtDireccionFisica.text= this._item.direccionFisica;
-				this.txtDireccionFiscal.text= this._item.direccionFiscal;
-				this.txtTelefonos.text= this._item.telefonos;
-				this.txtContacto.text= this._item.contacto;
-				this.txtCorreo.text= this._item.correo;
-				this.txtPaginaWeb.text= this._item.paginaWeb;
-				if( Util.isFill( this.cmbPersona ) && this._item.tipoPersona != null ){
+				this.txtNombreComercial.text= this._item.proveedor.nombreComercial;
+				this.txtRazonSocial.text= this._item.proveedor.razonSocial;
+				this.txtRFC.text= this._item.proveedor.rfc;
+				this.txtDireccionFisica.text= this._item.proveedor.direccionFisica;
+				this.txtDireccionFiscal.text= this._item.proveedor.direccionFiscal;
+				this.txtTelefonos.text= this._item.proveedor.telefonos;
+				this.txtContacto.text= this._item.proveedor.contacto;
+				this.txtCorreo.text= this._item.proveedor.correo;
+				this.txtPaginaWeb.text= this._item.proveedor.paginaWeb;
+				if( Util.isFill( this.cmbPersona ) && this._item.proveedor.tipoPersona != null ){
 					this.cmbPersona.selectedIndex = Util.selectedIndexFromCombo( this.cmbPersona.dataProvider as ArrayCollection, 
-						this._item.tipoPersona.id);
+						this._item.proveedor.tipoPersona.id);
 				}
 				/*
 				this.txtDescription.text = this._item.descripcion;
@@ -127,17 +127,18 @@
 				}else{
 					item = this._item;
 				}
-				item.tipoPersona= new TipoPersona();
-				item.tipoPersona.id= (this.cmbPersona.selectedItem as TipoPersona).id;
-			    item.nombreComercial=	Util.validateEmpty(this.txtNombreComercial.text);
-				item.razonSocial= Util.validateEmpty(this.txtRazonSocial.text);
-				item.rfc=  Util.validateEmpty(this.txtRFC.text);
-				item.direccionFisica= Util.validateEmpty(this.txtDireccionFisica.text);
-				item.direccionFiscal= Util.validateEmpty(this.txtDireccionFiscal.text);
-				item.telefonos=Util.validateEmpty(this.txtTelefonos.text);
-				item.contacto=Util.validateEmpty(this.txtContacto.text);
-				item.correo=Util.validateEmpty(this.txtCorreo.text);
-				item.paginaWeb=Util.validateEmpty(this.txtPaginaWeb.text);
+				item.proveedor = new Proveedor();
+				item.proveedor.tipoPersona = new TipoPersona();
+				item.proveedor.tipoPersona.id = (this.cmbPersona.selectedItem as TipoPersona).id;
+			    item.proveedor.nombreComercial =	Util.validateEmpty(this.txtNombreComercial.text);
+				item.proveedor.razonSocial = Util.validateEmpty(this.txtRazonSocial.text);
+				item.proveedor.rfc = Util.validateEmpty(this.txtRFC.text);
+				item.proveedor.direccionFisica = Util.validateEmpty(this.txtDireccionFisica.text);
+				item.proveedor.direccionFiscal = Util.validateEmpty(this.txtDireccionFiscal.text);
+				item.proveedor.telefonos = Util.validateEmpty(this.txtTelefonos.text);
+				item.proveedor.contacto = Util.validateEmpty(this.txtContacto.text);
+				item.proveedor.correo = Util.validateEmpty(this.txtCorreo.text);
+				item.proveedor.paginaWeb = Util.validateEmpty(this.txtPaginaWeb.text);
 				return item;
 			}
 			

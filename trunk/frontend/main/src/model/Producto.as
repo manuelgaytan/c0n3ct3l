@@ -1,10 +1,14 @@
 package model
 {
+	import mx.collections.ArrayCollection;
+
 	[RemoteClass(alias="mx.com.gahm.conenctel.entities.ProductoDO")]
 	public class Producto
 	{
 		public static const TIPO_SERVICIO_LOCAL:String = "LOCAL";
 		public static const TIPO_SERVICIO_FORANEO:String = "FORANEO";
+		
+		public static const TIPOS_SERVICIO:ArrayCollection = new ArrayCollection( [{id:TIPO_SERVICIO_LOCAL}, {id:TIPO_SERVICIO_FORANEO}] );
 		
 		public var id:*;
 		public var cliente:Cliente;

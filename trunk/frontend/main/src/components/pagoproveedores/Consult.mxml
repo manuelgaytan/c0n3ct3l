@@ -113,9 +113,9 @@
 					return "";
 				}
 				if( providerPayment.facturaProveedor.proveedorCalificado != null ){
-					return providerPayment.facturaProveedor.proveedorCalificado.proveedorSeleccionado.nombreComercial;
+					return providerPayment.facturaProveedor.proveedorCalificado.proveedorSeleccionado.proveedor.nombreComercial;
 				}else{
-					return providerPayment.facturaProveedor.proveedorMaquilador.nombreComercial;
+					return providerPayment.facturaProveedor.proveedorMaquilador.proveedor.nombreComercial;
 				}
 			}
 		]]>

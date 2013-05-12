@@ -147,6 +147,7 @@
 				}
 				this.dtfOperationalValidationDate.selectedDate = this._configurationTestingDelivery.fechaValidacionOperativa;
 				this.observations.observations = this._configurationTestingDelivery.proyecto.observaciones;
+				this.txtAuditKey.text = this._configurationTestingDelivery.proyecto.claveAuditoria;
 			}
 			
 			private function getGeneralDataProject():ConfiguracionPruebaEntrega{
@@ -163,6 +164,7 @@
 				configurationTestingDelivery.proyecto = this.projectsConsult.datagrid.selectedItem as Proyecto;
 				configurationTestingDelivery.proyecto.estado = new Estado();
 				configurationTestingDelivery.proyecto.estado.id = Estado.ID_CONFIGURACION_PRUEBA_Y_ENTREGA;
+				configurationTestingDelivery.proyecto.claveAuditoria = Util.validateEmpty( this.txtAuditKey.text );
 				configurationTestingDelivery.comisionado = Util.validateEmpty( this.txtCommissioner.text );
 				configurationTestingDelivery.puertosEntregados = Util.validateEmpty( this.txtPortsDelivered.text );
 				configurationTestingDelivery.alineacion = Util.validateEmpty( this.txtAlign.text );
@@ -262,6 +264,8 @@
 				validators.crearValidadorRestrictor("alfanumerico150",ValidadorAlfanumerico.nombre, 0, 150, true);
 				validators.setRestrictor(txtCardDelivered, "alfanumerico150");
 				validators.setRestrictor(txtAcceptationKey, "alfanumerico150");
+				validators.crearValidadorRestrictor("alfanumerico255",ValidadorAlfanumerico.nombre, 0, 255, true);
+				validators.setRestrictor(txtAuditKey, "alfanumerico255");
 			}
 			
 			protected function responseSave_resultHandler(event:ResultEvent):void
@@ -300,6 +304,7 @@
 				this.cmbOperationalValidationStatus.selectedIndex = 0;
 				this.dtfOperationalValidationDate.reset();
 				this.observations.reset();
+				this.txtAuditKey.reset();
 			}
 			
 			protected function responseUpdate_resultHandler(event:ResultEvent):void
@@ -315,6 +320,10 @@
 					Util.showMessageVerifyFields();
 					return;
 				}
+				if( Util.validateEmpty( this.txtAuditKey.text ) == null ){
+					Util.showErrorMessage( "Requiere la Clave de Auditoría para dar por terminado el proyecto." );
+					return;
+				}			
 				if( this.mode == Constants.UPDATE_MODE ){
 					Alert.show("Confirme si desea dar por terminado el proyecto.","Advertencia",Alert.YES+Alert.NO,this, faseDone);
 				}
@@ -326,7 +335,7 @@
 					return;
 				}
 				Util.showProperties( this._configurationTestingDelivery.proyecto.id );
-				this.responseUpdate.token = this.configuracionPruebaEntregaService.terminarProyecto( this._configurationTestingDelivery.proyecto.id );
+				this.responseUpdate.token = this.configuracionPruebaEntregaService.terminarProyecto( this._configurationTestingDelivery.proyecto.id, Util.validateEmpty( this.txtAuditKey.text ) );
 			}
 			
 			protected function responseProjectDone_resultHandler(event:ResultEvent):void
@@ -371,6 +380,7 @@
 				if( project == null ){
 					return;
 				}
+				this.txtAuditKey.text = project.claveAuditoria;
 			}
 			
 			protected function responseGetAll_resultHandler(event:ResultEvent):void
@@ -463,6 +473,9 @@
 			<components:DateField id="dtfOperationalValidationDate"/>
 		</mx:FormItem>
 		<components:Observations id="observations" fase="{Estado.createEstado(Estado.ID_CONFIGURACION_PRUEBA_Y_ENTREGA, Estado.CONFIGURACION_PRUEBA_Y_ENTREGA)}"/>
+		<mx:FormItem label="Clave Auditoría:">
+			<components:TextInput id="txtAuditKey" width="300"/>
+		</mx:FormItem>
 		<mx:FormItem direction="horizontal">
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
 			<mx:Button id="btnProjectDone" label="Terminar Proyecto" click="btnProjectDone_clickHandler(event)"/>

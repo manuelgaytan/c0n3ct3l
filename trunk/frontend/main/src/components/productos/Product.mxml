@@ -50,7 +50,7 @@
 				this.txtActivity.enabled = value;
 				this.txtModel.enabled = value;
 				this.txtServiceDescription.enabled = value;
-				this.txtServiceType.enabled = value;
+				this.cmbServiceType.enabled = value;
 				this.txtLocalCostCustomer.enabled = value;
 				this.txtForaneoCostCustomer.enabled = value;
 				this.txtLocalCostSupplier.enabled = value;
@@ -90,7 +90,7 @@
 				this.txtActivity.text = this._product.actividadRealizar;
 				this.txtModel.text = this._product.modelo;
 				this.txtServiceDescription.text = this._product.descripcionServicio;
-				this.txtServiceType.text = this._product.tipoServicio;
+				this.cmbServiceType.selectedIndex = Util.selectedIndexFromCombo( this.cmbServiceType.dataProvider as ArrayCollection, this._product.tipoServicio );
 				this.txtLocalCostCustomer.text = Util.formatNumber(this._product.costoLocalCliente);
 				this.txtForaneoCostCustomer.text = Util.formatNumber(this._product.costoForaneoCliente);
 				this.txtLocalCostSupplier.text = Util.formatNumber(this._product.costoLocalProveedor);
@@ -115,7 +115,7 @@
 				product.actividadRealizar = Util.validateEmpty(this.txtActivity.text);
 				product.modelo = Util.validateEmpty(this.txtModel.text);
 				product.descripcionServicio = Util.validateEmpty(this.txtServiceDescription.text);
-				product.tipoServicio  = Util.validateEmpty(this.txtServiceType.text);
+				product.tipoServicio  = this.cmbServiceType.selectedLabel;
 				product.costoLocalCliente = Util.stringToNumber(this.txtLocalCostCustomer.text);
 				product.costoForaneoCliente = Util.stringToNumber(this.txtForaneoCostCustomer.text);
 				product.costoLocalProveedor = Util.stringToNumber(this.txtLocalCostSupplier.text);
@@ -185,7 +185,6 @@
 				validators.setValidador(txtTechnology, "a200");
 				validators.setValidador(txtEquipment, "a200");
 				validators.setValidador(txtModel, "a200");
-				validators.setValidador(txtServiceType, "a200");
 				validators.crearValidadorRestrictor("a255",ValidadorAlfabetico.nombre, 0, 255, true);
 				validators.setValidador(txtActivity, "a255");
 				validators.setValidador(txtServiceDescription, "a255");
@@ -216,7 +215,7 @@
 				this.txtActivity.reset();
 				this.txtModel.reset();
 				this.txtServiceDescription.reset();
-				this.txtServiceType.reset();
+				this.cmbServiceType.selectedIndex = 0;
 				this.txtLocalCostCustomer.reset();
 				this.txtForaneoCostCustomer.reset();
 				this.txtLocalCostSupplier.reset();
@@ -290,7 +289,9 @@
 			<components:TextInput id="txtServiceDescription" width="600"/>
 		</mx:FormItem>
 		<mx:FormItem label="Tipo de Servicio:">
-			<components:TextInput id="txtServiceType" width="250"/>
+			<!--<components:TextInput id="txtServiceType" width="250"/>-->
+			<mx:ComboBox id="cmbServiceType" width="250" labelField="id"
+						 dataProvider="{Producto.TIPOS_SERVICIO}"/>
 		</mx:FormItem>
 		<mx:FormItem label="Costo Local Cliente:"
 					 id="frmItmLocalCostCustomer"

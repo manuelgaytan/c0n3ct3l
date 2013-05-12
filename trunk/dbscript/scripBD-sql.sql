@@ -52,6 +52,7 @@
 	id_estato INT(11) UNSIGNED NOT NULL,
 	fecha_captura DATE NOT NULL,
 	fk_estado_solicitud_servicio_maquilado INT(11) UNSIGNED,
+	clave_auditoria VARCHAR(255),
 	PRIMARY KEY (id)
 	);
 

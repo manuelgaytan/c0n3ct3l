@@ -13,6 +13,7 @@
 			import model.FiltroProyecto;
 			import model.Proyecto;
 			import model.Seguimiento;
+			import model.TipoAuditoria;
 			import model.TipoDesarrolloProyecto;
 			import model.Util;
 			
@@ -68,6 +69,12 @@
 				//this.txtConectelID.text = Util.numberToString( this._developmentProjectAB.proyecto.id );
 				this.projectsConsult.datagrid.dataProvider = Util.asArrayCollection( this._developmentProjectAB.proyecto );
 				this.projectsConsult.datagrid.selectedIndex = 0;
+				if( Util.isFill( this.cmbAuditType ) && this._developmentProjectAB != null &&
+					this._developmentProjectAB.proyecto != null &&
+					this._developmentProjectAB.proyecto.tipoAuditoria != null ){
+					this.cmbAuditType.selectedIndex = Util.selectedIndexFromCombo( this.cmbAuditType.dataProvider as ArrayCollection, 
+						this._developmentProjectAB.proyecto.tipoAuditoria.id);
+				}
 				this.txtFrame.text = this._developmentProjectAB.bastidorGabinete;
 				this.txtLedge.text = this._developmentProjectAB.repisa;
 				this.txtVersion.text = this._developmentProjectAB.version;
@@ -144,6 +151,7 @@
 				developmentProjectAB.proyecto = this.projectsConsult.datagrid.selectedItem as Proyecto;
 				developmentProjectAB.proyecto.estado = new Estado();
 				developmentProjectAB.proyecto.estado.id = Estado.ID_DESARROLLO_PROYECTO_A_Y_B;
+				developmentProjectAB.proyecto.tipoAuditoria = Util.validateCombo( this.cmbAuditType ) as TipoAuditoria;
 				developmentProjectAB.bastidorGabinete = Util.validateEmpty( this.txtFrame.text );
 				developmentProjectAB.repisa = Util.validateEmpty( this.txtLedge.text );
 				developmentProjectAB.version = Util.validateEmpty( this.txtVersion.text );
@@ -182,6 +190,7 @@
 			
 			private function fillCombos():void
 			{
+				this.responseGetTipoAuditoria.token = this.catalogoService.getTipoAuditoria();
 				this.responseGetSeguimiento.token = this.catalogoService.getSeguimiento();
 				this.responseGetTipoDesarrolloProyecto.token = this.catalogoService.getTipoDesarrolloProyecto();
 			}
@@ -355,7 +364,6 @@
 			{
 				Util.upScroll( this );
 				//this.txtConectelID.reset();
-				this.verticalScrollPosition = 0;
 				this.projectsConsult.datagrid.selectedIndex = -1;
 				this.txtFrame.reset();
 				this.txtLedge.reset();
@@ -390,6 +398,22 @@
 				this.cmbBase.selectedIndex = 0;
 				this.observations.reset();
 				this.cmbDevelopmentProjectType.selectedIndex = 0;
+				this.cmbAuditType.selectedIndex = 0;
+			}
+			
+			protected function responseGetTipoAuditoria_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbAuditType.dataProvider = Util.addEmptyCatalgo( data, "tipo" );
+				if( Util.isFill( this.cmbAuditType ) && this._developmentProjectAB != null &&
+					this._developmentProjectAB.proyecto != null &&
+					this._developmentProjectAB.proyecto.tipoAuditoria != null ){
+					this.cmbAuditType.selectedIndex = Util.selectedIndexFromCombo( this.cmbAuditType.dataProvider as ArrayCollection, 
+						this._developmentProjectAB.proyecto.tipoAuditoria.id);
+				}
 			}
 			
 			protected function responseUpdate_resultHandler(event:ResultEvent):void
@@ -615,6 +639,11 @@
 						 labelField="etiqueta"/>
 		</mx:FormItem>
 		<components:Observations id="observations" fase="{Estado.createEstado(Estado.ID_DESARROLLO_PROYECTO_A_Y_B, Estado.DESARROLLO_PROYECTO_A_Y_B)}"/>
+		<mx:FormItem label="Tipo de Auditoría:">
+			<mx:ComboBox id="cmbAuditType" width="150"
+						 labelField="tipo"
+						 />
+		</mx:FormItem>
 		<mx:FormItem direction="horizontal">
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
 			<mx:Button id="btnDone" label="Hecho" click="btnHecho_clickHandler(event)"/>
@@ -624,6 +653,7 @@
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetSeguimiento" result="responseGetSeguimiento_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetTipoDesarrolloProyecto" result="responseGetTipoDesarrolloProyecto_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetTipoAuditoria" result="responseGetTipoAuditoria_resultHandler(event)"/>
 	<!--
 	<mx:CallResponder id="responseGetSoportes" result="responseGetSoportes_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetAntena" result="responseGetAntena_resultHandler(event)"/>

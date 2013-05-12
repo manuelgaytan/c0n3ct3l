@@ -320,7 +320,12 @@
 					Util.showMessageVerifyFields();
 					return;
 				}
-				if( Util.validateEmpty( this.txtAuditKey.text ) == null ){
+				var proyecto:Proyecto = this.projectsConsult.datagrid.selectedItem as Proyecto;
+				if( proyecto == null ){
+					Util.showErrorMessage( "Debe estar seleccionado un proyecto." );
+				}
+				if(	proyecto.tipoAuditoria != null &&
+					Util.validateEmpty( this.txtAuditKey.text ) == null ){
 					Util.showErrorMessage( "Requiere la Clave de Auditoría para dar por terminado el proyecto." );
 					return;
 				}			

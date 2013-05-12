@@ -22,5 +22,5 @@ public interface IConfiguracionPruebaEntregaService {
 	public ConfigPruebaEntregaDO getConfigPruebaEntrega(long idConfig)
 			throws ConectelException;
 	
-	public void terminarProyecto(long idProject) throws ConectelException;
+	public void terminarProyecto(long idProject, String claveAuditoria) throws ConectelException;
 }

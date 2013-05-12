@@ -69,7 +69,8 @@ public class ProyectoDO implements Serializable {
 	@OneToOne(mappedBy="proyecto")
 	private ValidacionProyectoDO validacionProyecto;
 	
-	
+	@Column(name = "clave_auditoria")
+	private String claveAuditoria;
 	
 	public ProyectoDO() {
 	}
@@ -170,5 +171,13 @@ public class ProyectoDO implements Serializable {
 
 	public void setValidacionProyecto(ValidacionProyectoDO validacionProyecto) {
 		this.validacionProyecto = validacionProyecto;
+	}
+
+	public String getClaveAuditoria() {
+		return claveAuditoria;
+	}
+
+	public void setClaveAuditoria(String claveAuditoria) {
+		this.claveAuditoria = claveAuditoria;
 	}
 }

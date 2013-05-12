@@ -275,13 +275,14 @@ public class ConfiguracionPruebaEntregaService implements IConfiguracionPruebaEn
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public void terminarProyecto(long idProject) throws ConectelException {
+	public void terminarProyecto(long idProject, String claveAuditoria) throws ConectelException {
 		ProyectoDO project = entityManager.find(ProyectoDO.class, idProject);
 		if (project == null) {
 			throw new ConectelException("El proyecto no existe");
 		}
 		EstadoDO estado = new EstadoDO(EstadoProyecto.CERRADO.getId());
 		project.setEstado(estado);
+		project.setClaveAuditoria(claveAuditoria);
 		entityManager.merge(project);
 	}
 

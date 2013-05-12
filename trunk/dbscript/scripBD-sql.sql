@@ -53,6 +53,7 @@
 	fecha_captura DATE NOT NULL,
 	fk_estado_solicitud_servicio_maquilado INT(11) UNSIGNED,
 	clave_auditoria VARCHAR(255),
+	fk_tipo_auditoria INT(11) UNSIGNED,
 	PRIMARY KEY (id)
 	);
 
@@ -3043,6 +3044,8 @@
 	ALTER TABLE DesarrolloProyectoAyB ADD FOREIGN KEY fk_tipo_desarrollo_proyecto_idxfk (fk_tipo_desarrollo_proyecto) REFERENCES TipoDesarrolloProyecto (id);
 
 	ALTER TABLE SolicitudAlmacen ADD FOREIGN KEY fk_autoriza_final_idxfk (fk_autoriza_final) REFERENCES Colaborador (id);
+
+	ALTER TABLE Proyecto ADD FOREIGN KEY fk_tipo_auditoria_idxfk (fk_tipo_auditoria) REFERENCES TipoAuditoria (id);
 
 	/* Perfiles */
 	INSERT INTO Perfil

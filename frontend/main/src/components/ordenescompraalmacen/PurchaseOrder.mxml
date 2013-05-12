@@ -104,13 +104,13 @@
 				if( supplier == null ){
 					return;
 				}
-				this.txtBusinessName.text = supplier.proveedorSeleccionado.razonSocial;
-				this.txtRFC.text = supplier.proveedorSeleccionado.rfc;
-				this.txtTaxAddress.text = supplier.proveedorSeleccionado.direccionFiscal;
-				this.txtPhones.text = supplier.proveedorSeleccionado.telefonos;
-				this.txtContact.text = supplier.proveedorSeleccionado.contacto;
-				this.txtMail.text = supplier.proveedorSeleccionado.correo;
-				this.txtWebPage.text = supplier.proveedorSeleccionado.paginaWeb;
+				this.txtBusinessName.text = supplier.proveedorSeleccionado.proveedor.razonSocial;
+				this.txtRFC.text = supplier.proveedorSeleccionado.proveedor.rfc;
+				this.txtTaxAddress.text = supplier.proveedorSeleccionado.proveedor.direccionFiscal;
+				this.txtPhones.text = supplier.proveedorSeleccionado.proveedor.telefonos;
+				this.txtContact.text = supplier.proveedorSeleccionado.proveedor.contacto;
+				this.txtMail.text = supplier.proveedorSeleccionado.proveedor.correo;
+				this.txtWebPage.text = supplier.proveedorSeleccionado.proveedor.paginaWeb;
 				this.txtPaymentMethod.text = supplier.formaPago.forma;
 				this.txtPaymentType.text = supplier.tipoPago.tipo;
 				this.txtCurrency.text = supplier.moneda;

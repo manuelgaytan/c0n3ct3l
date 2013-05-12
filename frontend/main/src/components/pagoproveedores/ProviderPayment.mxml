@@ -359,12 +359,12 @@
 				var supplier:Proveedor = null; 
 				if( Util.selectedId( this.cmbSupplierType ) == 1 ){
 					var proveedorCalificado:ProveedorCalificado = Util.validateCombo( this.cmbSupplier ) as ProveedorCalificado;
-					supplier = proveedorCalificado.proveedorSeleccionado;
+					supplier = proveedorCalificado.proveedorSeleccionado.proveedor;
 					this.responseGetAllByFiltro.token = this.facturaProveedorService.getAll();//AlmacenByFiltro( supplier.id );
 					this.responseCreditNoteGetAllByFiltro.token = this.notaCreditoProveedorService.getAll();//AlmacenByFiltro( supplier.id );
 				}else{
 					var proveedorMaquilador:ProveedorMaquilador = Util.validateCombo( this.cmbSupplier ) as ProveedorMaquilador;
-					supplier = proveedorMaquilador;
+					supplier = proveedorMaquilador.proveedor;
 					this.responseGetAllByFiltro.token = this.facturaProveedorService.getAll();//MaquiladoFiltro( supplier.id );
 					this.responseCreditNoteGetAllByFiltro.token = this.notaCreditoProveedorService.getAll();//MaquiladoByFiltro( supplier.id );
 				}

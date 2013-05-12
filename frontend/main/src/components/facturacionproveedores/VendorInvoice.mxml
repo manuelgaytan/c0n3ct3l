@@ -445,10 +445,10 @@
 				var supplier:Proveedor = null; 
 				if( Util.selectedId( this.cmbSupplierType ) == 1 ){
 					var proveedorCalificado:ProveedorCalificado = Util.validateCombo( this.cmbSupplier ) as ProveedorCalificado;
-					supplier = proveedorCalificado.proveedorSeleccionado;
+					supplier = proveedorCalificado.proveedorSeleccionado.proveedor;
 				}else{
 					var proveedorMaquilador:ProveedorMaquilador = Util.validateCombo( this.cmbSupplier ) as ProveedorMaquilador;
-					supplier = proveedorMaquilador;
+					supplier = proveedorMaquilador.proveedor;
 				}
 				this.setSupplier( supplier );
 			}

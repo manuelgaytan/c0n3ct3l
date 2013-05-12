@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical" width="1200" height="520" 
+<mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical" width="1200" height="550" 
 		   xmlns:productos="components.productos.*">
 	<mx:Script>
 		<![CDATA[

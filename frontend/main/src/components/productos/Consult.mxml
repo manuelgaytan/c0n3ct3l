@@ -188,26 +188,35 @@
 		[Event(name="productDetail", type="events.GenericEvent")]
 		[Event(name="productsDeleted", type="events.GenericEvent")]
 	</mx:Metadata>
-	<mx:DataGrid id="datagrid" width="100%" height="100%" dataProvider="{products}"
+	<mx:HBox width="1195" height="100%">
+	<mx:DataGrid id="datagrid" width="1800" height="100%" dataProvider="{products}"
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 				 allowMultipleSelection="true">
 		<mx:columns>
 			<mx:DataGridColumn id="dtgClient" headerText="Cliente"
-							   labelFunction="labelFunctionCliente"/>
+							   labelFunction="labelFunctionCliente"
+							   width="150"/>
 			<mx:DataGridColumn id="dtgProjectType" headerText="{'Tipo de\nProyecto'}"
-							   dataField="tipoProyecto"/>
+							   dataField="tipoProyecto"
+							   width="150"/>
 			<mx:DataGridColumn id="dtgTechnology" headerText="Tecnología"
-							   dataField="teconologia"/>
+							   dataField="teconologia"
+							   width="150"/>
 			<mx:DataGridColumn id="dtgEquipment" headerText="Equipo"
-							   dataField="equipo"/>
-			<mx:DataGridColumn id="dtgActivity" headerText="{'Actividad\na Realizar'}" width="165"
+							   dataField="equipo"
+							   width="150"/>
+			<mx:DataGridColumn id="dtgActivity" headerText="{'Actividad\na Realizar'}" 
+							   width="205"
 							   dataField="actividadRealizar"/>
 			<mx:DataGridColumn id="dtgModel" headerText="Modelo"
-							   dataField="modelo"/>
+							   dataField="modelo"
+							   width="150"/>
 			<mx:DataGridColumn id="dtgServiceDescription" headerText="{'Descripción\ndel Servicio'}"
-							   dataField="descripcionServicio"/>
+							   dataField="descripcionServicio"
+							   width="205"/>
 			<mx:DataGridColumn id="dtgServiceType" headerText="{'Tipo de\nServicio'}"
-							   dataField="tipoServicio"/>
+							   dataField="tipoServicio"
+							   width="150"/>
 			<mx:DataGridColumn id="dtgLocalCostCustomer" headerText="{'Costo\nLocal\nCliente'}" textAlign="right"
 							   dataField="costoLocalCliente"
 							   labelFunction="{Util.labelFunctionCurrency}"
@@ -232,6 +241,7 @@
 							   />
 		</mx:columns>
 	</mx:DataGrid>
+	</mx:HBox>
 	<mx:HBox includeInLayout="{!this._preciarios}">
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"
 				   visible="{!this._preciarios}"/>

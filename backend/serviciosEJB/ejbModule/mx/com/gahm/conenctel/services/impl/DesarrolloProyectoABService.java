@@ -75,6 +75,14 @@ public class DesarrolloProyectoABService implements IDesarrolloProyectoABService
 				}
 			}
 			entityManager.persist(developmentProject);
+			
+			ProyectoDO project = entityManager.find(ProyectoDO.class, developmentProject.getProyecto().getId());
+			if (project == null) {
+				throw new ConectelException("El proyecto no existe");
+			}
+			project.setTipoAuditoria( developmentProject.getProyecto().getTipoAuditoria() );
+			entityManager.merge(project);
+			
 		/*} catch (ConectelMappingException e) {
 			throw new ConectelException("Error de sistema.");
 		}*/

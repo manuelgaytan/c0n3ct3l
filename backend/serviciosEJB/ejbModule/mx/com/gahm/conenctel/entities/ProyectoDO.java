@@ -72,6 +72,10 @@ public class ProyectoDO implements Serializable {
 	@Column(name = "clave_auditoria")
 	private String claveAuditoria;
 	
+	@ManyToOne(fetch= FetchType.EAGER)
+	@JoinColumn(name="fk_tipo_auditoria")
+	private TipoAuditoriaDO tipoAuditoria;
+	
 	public ProyectoDO() {
 	}
 
@@ -179,5 +183,13 @@ public class ProyectoDO implements Serializable {
 
 	public void setClaveAuditoria(String claveAuditoria) {
 		this.claveAuditoria = claveAuditoria;
+	}
+
+	public TipoAuditoriaDO getTipoAuditoria() {
+		return tipoAuditoria;
+	}
+
+	public void setTipoAuditoria(TipoAuditoriaDO tipoAuditoria) {
+		this.tipoAuditoria = tipoAuditoria;
 	}
 }

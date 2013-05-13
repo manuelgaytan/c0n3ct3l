@@ -16,6 +16,7 @@ import com.sun.faces.config.DocumentOrderingWrapper;
 
 import mx.com.gahm.conenctel.entities.DocumentoLiderProveedorMaquiladorDO;
 import mx.com.gahm.conenctel.entities.ProductoDO;
+import mx.com.gahm.conenctel.entities.ProveedorDO;
 import mx.com.gahm.conenctel.entities.ProveedorMaquiladorDO;
 import mx.com.gahm.conenctel.exceptions.ConectelException;
 import mx.com.gahm.conenctel.services.IProveedorMaquiladorService;
@@ -67,9 +68,11 @@ public class ProveedorMaquiladorService implements IProveedorMaquiladorService {
 		
 		for (DocumentoLiderProveedorMaquiladorDO documento : documentos) {
 			documento.setProveedorMaquilador(proveedor);
+
 		}
 		
 		entityManager.persist(proveedor);
+		
 		return null;
 	}
 
@@ -96,6 +99,5 @@ public class ProveedorMaquiladorService implements IProveedorMaquiladorService {
 		entityManager.merge(proveedor);
 		return null;
 	}
-
 
 }

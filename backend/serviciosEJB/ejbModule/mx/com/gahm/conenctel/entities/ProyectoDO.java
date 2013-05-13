@@ -11,7 +11,7 @@ import java.util.List;
  * 
  * @author Carlos Leyva
  */
-@Cacheable(false)
+
 @Entity
 @NamedQueries({ 
 	@NamedQuery(name = "ProyectoDO.findByFilter", query = "select p from ProyectoDO p " +

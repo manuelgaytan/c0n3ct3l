@@ -12,20 +12,19 @@ import java.util.List;
  * The persistent class for the proveedormaquilador database table.
  * 
  */
-@Cacheable(false)
+
 @Entity
-@PrimaryKeyJoinColumn(name="fk_proveedor")
-@DiscriminatorValue("2")
 @NamedQueries({
 	@NamedQuery(name = "ProveedorMaquiladorDO.findAll", query = "select p from ProveedorMaquiladorDO p "),
 	@NamedQuery(name = "ClienteDO.findByName", query = "select c from ClienteDO c where c.nombreComercial = :nombre") })
 @Table(name="proveedormaquilador")
-public class ProveedorMaquiladorDO extends ProveedorDO implements Serializable{
+public class ProveedorMaquiladorDO  implements Serializable{
 	private static final long serialVersionUID = 1L;
 
-//	@Id
-//	@GeneratedValue(strategy=GenerationType.IDENTITY)
-//	private int id;
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "id", unique = true, nullable = false)
+	private Integer id;
 
 	@Column(name="curp")
 	private String curp;
@@ -44,8 +43,9 @@ public class ProveedorMaquiladorDO extends ProveedorDO implements Serializable{
 	@JoinColumn(name="fk_pago")
 	private TipoPagoDO pago;
 
-//	@JoinColumn(name="fk_proveedor")
-//	private int fkProveedor;
+	@OneToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name = "fk_proveedor", nullable = false)
+	private ProveedorDO proveedor;
 
 	@JoinColumn(name="fk_tipo_contrato")
 	private TipoContratoDO tipoContrato;
@@ -158,5 +158,38 @@ public class ProveedorMaquiladorDO extends ProveedorDO implements Serializable{
 			List<DocumentoLiderProveedorMaquiladorDO> documentosLiderProveedorMaquilador) {
 		this.documentosLiderProveedorMaquilador = documentosLiderProveedorMaquilador;
 	}
+
+
+	/**
+	 * @return the id
+	 */
+	public Integer getId() {
+		return id;
+	}
+
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+
+	/**
+	 * @return the proveedor
+	 */
+	public ProveedorDO getProveedor() {
+		return proveedor;
+	}
+
+
+	/**
+	 * @param proveedor the proveedor to set
+	 */
+	public void setProveedor(ProveedorDO proveedor) {
+		this.proveedor = proveedor;
+	}
+
 
 }

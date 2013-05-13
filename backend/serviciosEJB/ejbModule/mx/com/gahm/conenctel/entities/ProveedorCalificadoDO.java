@@ -26,13 +26,12 @@ import javax.persistence.Table;
  * 
  */
 
-@Cacheable(false)
 @Entity
 @NamedQueries({
 		@NamedQuery(name = "ProveedorCalificadoDO.findAll", query = "select p from ProveedorCalificadoDO p "),
 		@NamedQuery(name = "ClienteDO.findByName", query = "select c from ClienteDO c where c.nombreComercial = :nombre"),
 		@NamedQuery(name = "ProveedorCalificadoDO.findAllCombo", 
-		query = "select new mx.com.gahm.conenctel.entities.ProveedorCalificadoComboDO(pc.id,pc.proveedorSeleccionado.nombreComercial) "
+		query = "select new mx.com.gahm.conenctel.entities.ProveedorCalificadoComboDO(pc.id,pc.proveedorSeleccionado.proveedor.nombreComercial) "
 		+ " from ProveedorCalificadoDO pc")
 })
 @Table(name = "proveedorcalificado")

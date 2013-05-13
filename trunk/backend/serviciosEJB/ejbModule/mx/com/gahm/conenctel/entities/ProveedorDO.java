@@ -24,15 +24,11 @@ import javax.persistence.Table;
  * @author lespinosa
  * Clase de persistencia para la proveedor.
  */
-@Cacheable(false)
 @Entity
-@Inheritance(strategy=InheritanceType.JOINED)
 @NamedQueries({
 	@NamedQuery(name = "ProveedorDO.findAll", query = "select p from  ProveedorDO p")
 	})
 @Table(name = "proveedor")
-@DiscriminatorColumn(name="type_Proveedor", discriminatorType=DiscriminatorType.INTEGER)
-
 public class ProveedorDO implements Serializable {
 	
 	
@@ -65,7 +61,8 @@ public class ProveedorDO implements Serializable {
 
 		@Id
 		@GeneratedValue(strategy = GenerationType.IDENTITY)
-		private long id;
+		@Column(name = "id", unique = true, nullable = false)
+		protected long id;
 		
 		@JoinColumn(name="fk_tipo_persona")
 		private TipoPersonaDO tipoPersona;

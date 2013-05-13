@@ -37,8 +37,23 @@ public class ProyectoService implements IProyectoService {
 	//TODO Solo devuelve proyectos activos
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public List<ProyectoDO> getAllByFiltro(FiltroProyecto projectFilter) throws ConectelException {
-		TypedQuery<ProyectoDO> query = entityManager.createNamedQuery(
-				"ProyectoDO.findByFilter", ProyectoDO.class);
+		
+		String queryString ="select p from ProyectoDO p " +
+				"where ((:idProyecto is null or :idProyecto = 0) or p.id = :idProyecto) and ((:idCategoria is null or :idCategoria = 0)" +
+				" or p.categoria.id = :idCategoria) and ((:idCliente is null or :idCliente = 0) or p.producto.cliente.id = :idCliente) and " +
+				"((:tipoProyecto is null or :tipoProyecto = '') or p.producto.tipoProyecto = :tipoProyecto) and ((:tecnologia is null or :tecnologia = '') " +
+				"or p.producto.teconologia = :tecnologia) and ((:equipo is null or :equipo = '') or p.producto.equipo = :equipo) and ((:actividadRealizar is null " +
+				"or :actividadRealizar = '') or p.producto.actividadRealizar = :actividadRealizar) and ((:modelo is null or :modelo = '') or p.producto.modelo = " +
+				":modelo) and ((:descripcionServicio is null or :descripcionServicio = '') or p.producto.descripcionServicio = :descripcionServicio) and " +
+				"((:tipoServicio is null or :tipoServicio = '') or p.producto.tipoServicio = :tipoServicio) " ;
+			
+				if(projectFilter.getProyectoPadre()!=null && !projectFilter.getProyectoPadre().isEmpty())
+					queryString+=" and p.proyectoPadreHijo.proyectoPadre.id in(select p.id from ProyectoPadreDO pp where pp.descripcion like :proyectoPadre))"
+				;
+		
+		
+		TypedQuery<ProyectoDO> query = entityManager.createQuery(
+				queryString, ProyectoDO.class);
 		query.setParameter("idProyecto", projectFilter.getIdConectel());
 		query.setParameter("idCategoria", projectFilter.getIdCategoria());
 		query.setParameter("idCliente", projectFilter.getIdCliente());
@@ -49,7 +64,7 @@ public class ProyectoService implements IProyectoService {
 		query.setParameter("modelo", projectFilter.getModelo());
 		query.setParameter("descripcionServicio", projectFilter.getDescripcionServicio());
 		query.setParameter("tipoServicio", projectFilter.getTipoServicio());
-		query.setParameter("proyectoPadre", "%"+projectFilter.getProyectoPadre()+"%" );
+		
 		//query.setParameter("costo", projectFilter.getCosto());
 		//query.setParameter("idEstado", 1);
 		List<ProyectoDO> projectList;

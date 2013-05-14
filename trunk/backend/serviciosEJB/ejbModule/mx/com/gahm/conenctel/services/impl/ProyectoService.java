@@ -152,7 +152,8 @@ public class ProyectoService implements IProyectoService {
 
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public ProyectoDO getProyecto(long idProject) throws ConectelException {
-		return entityManager.find(ProyectoDO.class, idProject);
+		ProyectoDO proyecto = entityManager.find(ProyectoDO.class, idProject);
+		return proyecto;
 	}
 	
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)

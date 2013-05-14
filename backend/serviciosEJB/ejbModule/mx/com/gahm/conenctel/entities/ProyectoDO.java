@@ -33,6 +33,7 @@ public class ProyectoDO implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id", unique = true, nullable = false)
 	private long id;
 
 	@Column(name = "central_sitio")
@@ -63,7 +64,7 @@ public class ProyectoDO implements Serializable {
 	@JoinColumn(name = "fk_estado_solicitud_servicio_maquilado")
 	private EstadoSolicitudServicioMaquiladoDO estadoSolicitudServicioMaquilado;
 	
-	@OneToOne(mappedBy="proyecto")
+	@OneToOne(mappedBy="proyecto",cascade=CascadeType.ALL)
 	private ProyectoPadreHijoDO proyectoPadreHijo;
 	
 	@OneToOne(mappedBy="proyecto")

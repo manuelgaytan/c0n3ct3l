@@ -48,8 +48,7 @@ public class ProyectoService implements IProyectoService {
 				"((:tipoServicio is null or :tipoServicio = '') or p.producto.tipoServicio = :tipoServicio) " ;
 			
 				if(projectFilter.getProyectoPadre()!=null && !projectFilter.getProyectoPadre().isEmpty())
-					queryString+=" and p.proyectoPadreHijo.proyectoPadre.id in(select p.id from ProyectoPadreDO pp where pp.descripcion like :proyectoPadre))"
-				;
+					queryString+=" or p.proyectoPadreHijo.proyectoPadre.id in(select pp.id from ProyectoPadreDO pp where pp.descripcion like :proyectoPadre)";
 		
 		
 		TypedQuery<ProyectoDO> query = entityManager.createQuery(
@@ -64,6 +63,10 @@ public class ProyectoService implements IProyectoService {
 		query.setParameter("modelo", projectFilter.getModelo());
 		query.setParameter("descripcionServicio", projectFilter.getDescripcionServicio());
 		query.setParameter("tipoServicio", projectFilter.getTipoServicio());
+		
+		if(projectFilter.getProyectoPadre()!=null && !projectFilter.getProyectoPadre().isEmpty()){
+			query.setParameter("proyectoPadre","%"+ projectFilter.getProyectoPadre()+"%");
+		}
 		
 		//query.setParameter("costo", projectFilter.getCosto());
 		//query.setParameter("idEstado", 1);
@@ -97,10 +100,11 @@ public class ProyectoService implements IProyectoService {
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public ProyectoDO save(ProyectoDO project) throws ConectelException {
-		entityManager.persist(project);
 		project.getProyectoPadreHijo().setProyecto(project);
-		entityManager.persist(project.getProyectoPadreHijo());
+		entityManager.persist(project);
 		/*
+		entityManager.persist(project.getProyectoPadreHijo());
+		*//*
 		 * 	entityManager.persist(project);
 		 */
 		return null;

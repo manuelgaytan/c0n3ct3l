@@ -178,4 +178,15 @@ public class ProyectoService implements IProyectoService {
 			entityManager.persist(proyecto);
 		}
 	}
+
+	public List<ProyectoDO> getAllByEstado(Long idEstado){
+		TypedQuery<ProyectoDO> query = entityManager.createNamedQuery(
+				"ProyectoDO.getProyectosByEstado", ProyectoDO.class);
+		query.setParameter("idEstado",idEstado);
+		List<ProyectoDO> categoryList = query.getResultList();
+		
+		return categoryList;
+	} 
+
+
 }

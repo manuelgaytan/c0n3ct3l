@@ -24,7 +24,8 @@ import java.util.List;
 			"((:tipoServicio is null or :tipoServicio = '') or p.producto.tipoServicio = :tipoServicio) or p.proyectoPadreHijo.proyectoPadre.descripcion like (:proyectoPadre)"),
 			
 			@NamedQuery(name = "ProyectoDO.getProyectosByProducto", query = "select c from ProyectoDO c where c.producto.id=:idProducto"),
-			@NamedQuery(name = "ProyectoDO.getProyectosNoAsociados", query = "select c from ProyectoDO c where c.id NOT IN(select dp.proyecto.id from DesarrolloProyectoABDO dp)")
+			@NamedQuery(name = "ProyectoDO.getProyectosNoAsociados", query = "select c from ProyectoDO c where c.id NOT IN(select dp.proyecto.id from DesarrolloProyectoABDO dp)"),
+			@NamedQuery(name = "ProyectoDO.getProyectosByEstado", query = "select c from ProyectoDO c where c.estado.id=:idEstado")
 	
 })
 @Table(name = "proyecto")

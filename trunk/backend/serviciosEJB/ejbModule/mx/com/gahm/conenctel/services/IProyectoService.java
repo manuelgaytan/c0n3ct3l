@@ -24,4 +24,5 @@ public interface IProyectoService {
 	public List<CategoriaDO> getCategorias() throws ConectelException;
 	
 	public ProyectoDO getProyecto(long idProject) throws ConectelException;
+	public List<ProyectoDO> getAllByEstado(Long idEstado);
 }

@@ -35,7 +35,7 @@ public class ProyectoDO implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", unique = true, nullable = false)
-	private long id;
+	private Long id;
 
 	@Column(name = "central_sitio")
 	private String centralSitio;
@@ -44,31 +44,35 @@ public class ProyectoDO implements Serializable {
 	@Temporal(javax.persistence.TemporalType.DATE)
 	private Date fechaCaptura;
 
+	@ManyToOne
 	@JoinColumn(name = "id_categoria_proyecto")
 	private CategoriaDO categoria;
 
+	@ManyToOne
 	@JoinColumn(name = "id_producto")
 	private ProductoDO producto;
 
-	@OneToMany(mappedBy = "proyecto", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "proyecto", fetch = FetchType.EAGER,cascade=CascadeType.ALL)
 	private List<ObservacionDO> observaciones;
-
+	
+	@ManyToOne
 	@JoinColumn(name = "id_estato")
 	private EstadoDO estado;
 
-	@OneToMany(mappedBy = "proyecto", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "proyecto", fetch = FetchType.EAGER,cascade=CascadeType.ALL)
 	private List<RequisicionDO> requisiciones;
 	
 	@OneToMany(mappedBy="proyecto", fetch = FetchType.EAGER)
 	private List<ProyectoEntregableDO> proyectoEntregables;
-
+	
+	@ManyToOne
 	@JoinColumn(name = "fk_estado_solicitud_servicio_maquilado")
 	private EstadoSolicitudServicioMaquiladoDO estadoSolicitudServicioMaquilado;
 	
 	@OneToOne(mappedBy="proyecto",cascade=CascadeType.ALL)
 	private ProyectoPadreHijoDO proyectoPadreHijo;
 	
-	@OneToOne(mappedBy="proyecto")
+	@OneToOne(mappedBy="proyecto", fetch = FetchType.EAGER)
 	private ValidacionProyectoDO validacionProyecto;
 	
 	@Column(name = "clave_auditoria")
@@ -81,11 +85,46 @@ public class ProyectoDO implements Serializable {
 	public ProyectoDO() {
 	}
 
-	public long getId() {
+	
+	
+	public ProyectoDO(
+			Long id,
+			String centralSitio,
+			Date fechaCaptura,
+			CategoriaDO categoria,
+			ProductoDO producto,
+			List<ObservacionDO> observaciones,
+			EstadoDO estado,
+			List<RequisicionDO> requisiciones,
+			List<ProyectoEntregableDO> proyectoEntregables,
+			EstadoSolicitudServicioMaquiladoDO estadoSolicitudServicioMaquilado,
+			ProyectoPadreHijoDO proyectoPadreHijo,
+			ValidacionProyectoDO validacionProyecto, String claveAuditoria,
+			TipoAuditoriaDO tipoAuditoria) {
+		super();
+		this.id = id;
+		this.centralSitio = centralSitio;
+		this.fechaCaptura = fechaCaptura;
+		this.categoria = categoria;
+		this.producto = producto;
+		this.observaciones = observaciones;
+		this.estado = estado;
+		this.requisiciones = requisiciones;
+		this.proyectoEntregables = proyectoEntregables;
+		this.estadoSolicitudServicioMaquilado = estadoSolicitudServicioMaquilado;
+		this.proyectoPadreHijo = proyectoPadreHijo;
+		this.validacionProyecto = validacionProyecto;
+		this.claveAuditoria = claveAuditoria;
+		this.tipoAuditoria = tipoAuditoria;
+	}
+
+
+
+	public Long getId() {
 		return this.id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

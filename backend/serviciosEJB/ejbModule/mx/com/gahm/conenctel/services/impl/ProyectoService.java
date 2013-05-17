@@ -115,19 +115,15 @@ public class ProyectoService implements IProyectoService {
 		ProyectoDO regProject = entityManager.find(ProyectoDO.class, project.getId());
 		
 		if (project.getRequisiciones() != null) {
-			List<RequisicionDO> requisiciones = regProject.getRequisiciones();
-			for (RequisicionDO current:requisiciones) {
-				entityManager.remove(current);
-			}
+			List<RequisicionDO> requisiciones = project.getRequisiciones();
+			
 			for (RequisicionDO current:requisiciones) {
 				current.setProyecto(project);
 			}
 		}
 		if (project.getObservaciones() != null) {
 			List<ObservacionDO> observaciones=project.getObservaciones(); 
-			for (ObservacionDO current:observaciones) {
-				entityManager.remove(current);
-			}
+			
 			for (ObservacionDO current:observaciones) {
 				current.setProyecto(project);
 				current.setEstado(project.getEstado());

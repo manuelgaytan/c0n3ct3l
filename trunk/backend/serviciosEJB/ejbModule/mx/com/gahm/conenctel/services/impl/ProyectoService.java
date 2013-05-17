@@ -113,26 +113,31 @@ public class ProyectoService implements IProyectoService {
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public ProyectoDO update(ProyectoDO project) throws ConectelException {
 		ProyectoDO regProject = entityManager.find(ProyectoDO.class, project.getId());
+		
 		if (project.getRequisiciones() != null) {
-			for (RequisicionDO current:regProject.getRequisiciones()) {
+			List<RequisicionDO> requisiciones = regProject.getRequisiciones();
+			for (RequisicionDO current:requisiciones) {
 				entityManager.remove(current);
 			}
-			for (RequisicionDO current:project.getRequisiciones()) {
+			for (RequisicionDO current:requisiciones) {
 				current.setProyecto(project);
-				entityManager.persist(current);
 			}
 		}
 		if (project.getObservaciones() != null) {
-			for (ObservacionDO current:regProject.getObservaciones()) {
+			List<ObservacionDO> observaciones=project.getObservaciones(); 
+			for (ObservacionDO current:observaciones) {
 				entityManager.remove(current);
 			}
-			for (ObservacionDO current:project.getObservaciones()) {
+			for (ObservacionDO current:observaciones) {
 				current.setProyecto(project);
 				current.setEstado(project.getEstado());
-				entityManager.persist(current);
 			}
 		}
-		return null;
+		regProject.setObservaciones(project.getObservaciones());
+		regProject.setRequisiciones(project.getRequisiciones());
+		entityManager.merge(regProject);
+		entityManager.flush();
+		return regProject;
 	}
 
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
@@ -153,6 +158,8 @@ public class ProyectoService implements IProyectoService {
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public ProyectoDO getProyecto(long idProject) throws ConectelException {
 		ProyectoDO proyecto = entityManager.find(ProyectoDO.class, idProject);
+		proyecto.setObservaciones(proyecto.getObservaciones());
+		
 		return proyecto;
 	}
 	

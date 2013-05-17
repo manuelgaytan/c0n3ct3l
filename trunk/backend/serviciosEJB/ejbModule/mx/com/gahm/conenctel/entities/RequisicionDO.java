@@ -16,13 +16,31 @@ public class RequisicionDO implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id", unique = true, nullable = false)
 	private long id;
-
+	
+	@Column(name="requisicion")
 	private String requisicion;
 
 	@ManyToOne
 	@JoinColumn(name="id_proyecto")
 	private ProyectoDO proyecto;
+
+	
+	
+	
+	
+	public RequisicionDO(long id, String requisicion, ProyectoDO proyecto) {
+		super();
+		this.id = id;
+		this.requisicion = requisicion;
+		this.proyecto = proyecto;
+	}
+
+	public RequisicionDO() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 	public long getId() {
 		return this.id;

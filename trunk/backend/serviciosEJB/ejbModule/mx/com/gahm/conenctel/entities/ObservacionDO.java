@@ -18,6 +18,7 @@ public class ObservacionDO implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id", unique = true, nullable = false)
 	private long id;
 
 	@Column(name="fecha_captura")
@@ -29,7 +30,7 @@ public class ObservacionDO implements Serializable {
 	@JoinColumn(name="usuario")
 	private UsuarioDO usuario;
 
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="id_proyecto")
 	private ProyectoDO proyecto;
 
@@ -40,6 +41,27 @@ public class ObservacionDO implements Serializable {
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="id_estado_proyecto")
 	private EstadoDO estado;
+
+	
+	
+	
+	public ObservacionDO(long id, Date fechaCaptura, String requisicion,
+			UsuarioDO usuario, ProyectoDO proyecto, ImputableDO imputable,
+			EstadoDO estado) {
+		super();
+		this.id = id;
+		this.fechaCaptura = fechaCaptura;
+		this.requisicion = requisicion;
+		this.usuario = usuario;
+		this.proyecto = proyecto;
+		this.imputable = imputable;
+		this.estado = estado;
+	}
+
+	public ObservacionDO() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 	public long getId() {
 		return this.id;

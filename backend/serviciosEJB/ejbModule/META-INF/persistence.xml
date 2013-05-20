@@ -218,6 +218,8 @@
 		<properties>
 			<property name="eclipselink.logging.level" value="FINE"/> 
 			<property name="eclipselink.logging.parameters" value="true"/>
+			<!-- property name="hibernate.cache.use_query_cache" value="false"/ -->
+			<property name="eclipselink.cache.shared.default" value="false"/>
 		</properties>
 	</persistence-unit>
 </persistence>

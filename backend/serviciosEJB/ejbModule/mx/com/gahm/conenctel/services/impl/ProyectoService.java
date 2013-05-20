@@ -46,26 +46,30 @@ public class ProyectoService implements IProyectoService {
 				"or :actividadRealizar = '') or p.producto.actividadRealizar = :actividadRealizar) and ((:modelo is null or :modelo = '') or p.producto.modelo = " +
 				":modelo) and ((:descripcionServicio is null or :descripcionServicio = '') or p.producto.descripcionServicio = :descripcionServicio) and " +
 				"((:tipoServicio is null or :tipoServicio = '') or p.producto.tipoServicio = :tipoServicio) " ;
-			
+			/*
 				if(projectFilter.getProyectoPadre()!=null && !projectFilter.getProyectoPadre().isEmpty())
 					queryString+=" or p.proyectoPadreHijo.proyectoPadre.id in(select pp.id from ProyectoPadreDO pp where pp.descripcion like :proyectoPadre)";
-		
+			*/
+		if(projectFilter.getProyectoPadre()!=null && !projectFilter.getProyectoPadre().isEmpty())
+			queryString=" select p from ProyectoDO p where p.proyectoPadreHijo.proyectoPadre.descripcion like (:proyectoPadre)";	
+			
 		
 		TypedQuery<ProyectoDO> query = entityManager.createQuery(
 				queryString, ProyectoDO.class);
-		query.setParameter("idProyecto", projectFilter.getIdConectel());
-		query.setParameter("idCategoria", projectFilter.getIdCategoria());
-		query.setParameter("idCliente", projectFilter.getIdCliente());
-		query.setParameter("tipoProyecto", projectFilter.getTipoProyecto());
-		query.setParameter("tecnologia", projectFilter.getTecnologia());
-		query.setParameter("equipo", projectFilter.getEquipo());
-		query.setParameter("actividadRealizar", projectFilter.getActividadRealizar());
-		query.setParameter("modelo", projectFilter.getModelo());
-		query.setParameter("descripcionServicio", projectFilter.getDescripcionServicio());
-		query.setParameter("tipoServicio", projectFilter.getTipoServicio());
 		
 		if(projectFilter.getProyectoPadre()!=null && !projectFilter.getProyectoPadre().isEmpty()){
 			query.setParameter("proyectoPadre","%"+ projectFilter.getProyectoPadre()+"%");
+		}else{
+			query.setParameter("idProyecto", projectFilter.getIdConectel());
+			query.setParameter("idCategoria", projectFilter.getIdCategoria());
+			query.setParameter("idCliente", projectFilter.getIdCliente());
+			query.setParameter("tipoProyecto", projectFilter.getTipoProyecto());
+			query.setParameter("tecnologia", projectFilter.getTecnologia());
+			query.setParameter("equipo", projectFilter.getEquipo());
+			query.setParameter("actividadRealizar", projectFilter.getActividadRealizar());
+			query.setParameter("modelo", projectFilter.getModelo());
+			query.setParameter("descripcionServicio", projectFilter.getDescripcionServicio());
+			query.setParameter("tipoServicio", projectFilter.getTipoServicio());
 		}
 		
 		//query.setParameter("costo", projectFilter.getCosto());

@@ -27,6 +27,7 @@ public class EstadoSolicitudAlmacenDO implements Serializable {
 	/**
 	 * 
 	 */
+	public static final long ID_AUTORIZADO = 4L;
 	private static final long serialVersionUID = 1258999436745740307L;
 
 	@Id

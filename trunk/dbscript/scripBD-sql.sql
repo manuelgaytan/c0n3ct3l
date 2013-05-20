@@ -299,7 +299,7 @@
 	id_alimentacion_seguimiento INT(11) UNSIGNED,
 	id_fibra_cliente_final INT(11) UNSIGNED,
 	id_plancha_base INT(11),
-	fk_tipo_desarrollo_proyecto INT(11) UNSIGNED NOT NULL UNIQUE,
+	fk_tipo_desarrollo_proyecto INT(11) UNSIGNED NOT NULL,
 	PRIMARY KEY (id)
 	);
 

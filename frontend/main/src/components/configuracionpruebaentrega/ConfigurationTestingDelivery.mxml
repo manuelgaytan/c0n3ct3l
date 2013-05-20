@@ -24,6 +24,7 @@
 			import mx.controls.Alert;
 			import mx.events.CloseEvent;
 			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
 			import mx.rpc.events.FaultEvent;
 			import mx.rpc.events.ResultEvent;
 			
@@ -65,9 +66,11 @@
 				if( this._configurationTestingDelivery == null ){
 					return;
 				}
+				this.stateValidation();
 				//this.txtConectelID.text = Util.numberToString( this._configurationTestingDelivery.proyecto.id );
-				this.projectsConsult.datagrid = Util.asArrayCollection( this._configurationTestingDelivery.proyecto );
+				this.projectsConsult.datagrid.dataProvider = Util.asArrayCollection( this._configurationTestingDelivery.proyecto );
 				this.projectsConsult.datagrid.selectedIndex = 0;
+				this.projectsConsult.datagrid.dispatchEvent( new ListEvent(ListEvent.CHANGE) );
 				this.txtCommissioner.text = this._configurationTestingDelivery.comisionado;
 				this.txtPortsDelivered.text = this._configurationTestingDelivery.puertosEntregados;
 				this.txtAlign.text = this._configurationTestingDelivery.alineacion;
@@ -279,7 +282,11 @@
 			{
 				Util.upScroll( this );
 				//this.txtConectelID.reset();
-				this.projectsConsult.datagrid.selectedIndex = -1;
+				if( this.mode == Constants.REGISTER_MODE ){
+					this.projectsConsult.datagrid.selectedIndex = -1;
+				}else{
+					Util.cleanList( this.projectsConsult.datagrid );
+				}
 				this.txtCommissioner.reset();
 				this.txtPortsDelivered.reset();
 				this.txtAlign.reset();
@@ -318,6 +325,10 @@
 			{
 				if( !this.validations() ){
 					Util.showMessageVerifyFields();
+					return;
+				}
+				if( !this.auditValidations() ){
+					Util.showErrorMessage( "La clave de auditoria es requerida, para el proyecto seleccionado." );
 					return;
 				}
 				var proyecto:Proyecto = this.projectsConsult.datagrid.selectedItem as Proyecto;
@@ -363,8 +374,9 @@
 				}
 			}
 			
-			private function executeProjectQuery():void
+			public function executeProjectQuery():void
 			{
+				/*
 				var filter:FiltroProyecto = new FiltroProyecto();
 				filter.idConectel = null;
 				filter.idCategoria = undefined;
@@ -376,7 +388,8 @@
 				filter.modelo = undefined;
 				filter.descripcionServicio = undefined;
 				filter.tipoServicio = undefined;
-				this.responseGetAllByFiltro.token = this.proyectoService.getAllByFiltro(filter);
+				*/
+				this.responseGetAllByFiltro.token = this.proyectoService.getAllByEstado( Estado.ID_DESARROLLO_PROYECTO_A_Y_B );
 			}
 			
 			protected function projectsConsult_projectSelectedHandler(event:GenericEvent):void
@@ -392,6 +405,32 @@
 			{
 				projectsConsult.setDataGridData( event.result as ArrayCollection );
 			}
+			
+			private function stateValidation():void
+			{
+				var value:Boolean = false;
+				if( Util.projectStateValidation( this._configurationTestingDelivery.proyecto, Estado.ID_DESARROLLO_PROYECTO_A_Y_B ) ){
+					value = true;
+				}
+				this.btnAccept.enabled = value;
+				this.btnProjectDone.enabled = value;
+			}
+			
+			private function auditValidations():Boolean
+			{
+				var project:Proyecto = this.projectsConsult.datagrid.selectedItem as Proyecto;
+				if( project == null ){
+					return false;
+				}
+				var value:Boolean = true;
+				if( project.tipoAuditoria != null ){
+					if( Util.validateEmpty( this.txtAuditKey.text ) == null ){
+						value = false;
+					}
+				}
+				return value;
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:Metadata>

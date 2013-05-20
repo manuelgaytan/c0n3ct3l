@@ -4,6 +4,8 @@
 		 >
 	<mx:Script>
 		<![CDATA[
+			import flash.net.navigateToURL;
+			
 			import model.AreaSolicitante;
 			import model.Catalogo;
 			import model.Colaborador;
@@ -16,6 +18,7 @@
 			import model.PartidaSolicitudAlmacen;
 			import model.Perfil;
 			import model.Prioridad;
+			import model.Reportes;
 			import model.ServicioSolicitado;
 			import model.SolicitudAlmacen;
 			import model.TipoAlmacen;
@@ -78,6 +81,7 @@
 				if( this._item == null ){
 					return;
 				}
+				this.stateValidation();
 				this.txtFolio.text = Util.numberToString( this._item.id );
 				this.dtfApplicationDate.selectedDate = this._item.fechaSolicitud;
 				this.txtMotive.text = this._item.motivo;
@@ -188,7 +192,7 @@
 			{
 				if( this.mode == Constants.REGISTER_MODE ){
 					form.removeChild( this.frmItmCode );
-					this.btnPrint.visible = false;
+					//this.btnPrint.visible = false;
 					form.removeChild( this.frmAreaCordinator );
 				}
 			}
@@ -495,6 +499,23 @@
 				this.txtObservation.reset();
 			}
 			
+			protected function btnPrint_clickHandler(event:MouseEvent):void
+			{
+				var params:Array = [{key:"id", value:5}];//this._item.id}];
+				Util.launchReport( Reportes.SOLICITUD_ALMANCEN, params );
+			}
+			
+			private function stateValidation():void
+			{
+				var value:Boolean = true;
+				if( this._item.estadoSolicitudAlmacen.id == EstadoSolicitudAlmacen.ID_CERRADO ){
+					value = false;
+				}
+				this.btnAddItem.enabled = value;
+				this.itemsManagement.doubleClickEnabled = value;
+				this.btnAccept.enabled = value;
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -632,7 +653,7 @@
 		<mx:FormItem direction="horizontal">
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
 			<!--<mx:Button id="btnOrdenCompra" label="Generar Orden de Compra" click="btnAccept_clickHandler(event)"/>-->
-			<mx:Button id="btnPrint" label="Imprimir"/>
+			<mx:Button id="btnPrint" label="Imprimir" click="btnPrint_clickHandler(event)"/>
 		</mx:FormItem>
 	</mx:Form>
 	<mx:RemoteObject id="solicitudAlmacenService" destination="solicitudAlmacenService" fault="solicitudAlmacenService_faultHandler(event)"

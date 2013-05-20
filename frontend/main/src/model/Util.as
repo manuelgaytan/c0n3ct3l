@@ -4,6 +4,9 @@ package model
 	
 	import flash.display.DisplayObject;
 	import flash.events.TimerEvent;
+	import flash.net.URLRequest;
+	import flash.net.URLVariables;
+	import flash.net.navigateToURL;
 	import flash.utils.Timer;
 	import flash.utils.getDefinitionByName;
 	
@@ -363,7 +366,7 @@ package model
 		
 		public static function showProperties(object:Object):void
 		{
-			Alert.show( ObjectUtil.toString( object ), "Show Properties" );
+			//Alert.show( ObjectUtil.toString( object ), "Show Properties" );
 		}
 		
 		public static function isFill(cmbProfile:ComboBox):Boolean
@@ -620,6 +623,34 @@ package model
 			}
 			view.verticalScrollPosition = 0;
 		}
-			
+		
+		public static function launchReport(report:String, params:Array):void{
+			if( report == null ){
+				return;
+			}
+			var url:URLRequest = new URLRequest( report ); 
+			var uv:URLVariables = new URLVariables(); 
+			url.method = "POST";
+			for each (var param:Object in params) 
+			{
+				uv[param.key] = param.value;     
+			}
+			url.data = uv;
+			navigateToURL(url,"_self"); 
+		}
+		
+		public static function projectStateValidation(project:Proyecto, idState:Number):Boolean{
+			if( project == null ||
+				project.estado == null ||
+				isNaN( idState ) ){
+				return false;
+			}
+			var value:Boolean = false;
+			if( idState == project.estado.id )
+			{
+				value = true;
+			}
+			return value;
+		}
 	}
 }

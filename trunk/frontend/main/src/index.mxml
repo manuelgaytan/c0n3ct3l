@@ -195,6 +195,7 @@
 			import model.ReclutamientoSolicitudEmpleo;
 			import model.RegistroDeduccion;
 			import model.RegistroPercepcion;
+			import model.Reportes;
 			import model.Requisicion;
 			import model.RequisicionCompra;
 			import model.ResponsableMinuta;
@@ -523,6 +524,7 @@
 			private var comentarios:Comentarios;
 			private var documentoLiderProveedorMaquilador:DocumentoLiderProveedorMaquilador;
 			private var tipoDesarrolloProyecto:TipoDesarrolloProyecto;
+			private var reportes:Reportes;
 						
 			protected function login_readyHandler(event:ModuleEvent):void
 			{

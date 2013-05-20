@@ -76,8 +76,9 @@
 				if( this._generalDataProject == null ){
 					return;
 				}
+				this.stateValidation();
 				//this.txtConectelID.text = Util.numberToString( this._generalDataProject.proyecto.id );
-				this.projectsConsult.datagrid = Util.asArrayCollection( this._generalDataProject.proyecto );
+				this.projectsConsult.datagrid.dataProvider = Util.asArrayCollection( this._generalDataProject.proyecto );
 				this.projectsConsult.datagrid.selectedIndex = 0;
 				this.txtDivision.text = this._generalDataProject.divisionRegion;
 				this.txtArea.text = this._generalDataProject.areaGoa;
@@ -351,7 +352,11 @@
 			{
 				Util.upScroll( this );
 				//this.txtConectelID.reset();
-				this.projectsConsult.datagrid.selectedIndex = -1;
+				if( this.mode == Constants.REGISTER_MODE ){
+					this.projectsConsult.datagrid.selectedIndex = -1;
+				}else{
+					Util.cleanList( this.projectsConsult.datagrid );
+				}
 				this.txtDivision.reset();
 				this.txtArea.reset();
 				this.txtFinalClient.reset();
@@ -443,8 +448,9 @@
 				this.responseGetResponsableImplementacion.token = this.catalogoService.getColaboradorByTipoColaborador(idColaboratorType);
 			}
 			
-			private function executeProjectQuery():void
+			public function executeProjectQuery():void
 			{
+				/*
 				var filter:FiltroProyecto = new FiltroProyecto();
 				filter.idConectel = null;
 				filter.idCategoria = undefined;
@@ -456,7 +462,8 @@
 				filter.modelo = undefined;
 				filter.descripcionServicio = undefined;
 				filter.tipoServicio = undefined;
-				this.responseGetAllByFiltro.token = this.proyectoService.getAllByFiltro(filter);
+				*/
+				this.responseGetAllByFiltro.token = this.proyectoService.getAllByEstado( Estado.ID_ALTA );
 			}
 			
 			protected function projectsConsult_projectSelectedHandler(event:GenericEvent):void
@@ -470,6 +477,16 @@
 			protected function responseGetAll_resultHandler(event:ResultEvent):void
 			{
 				projectsConsult.setDataGridData( event.result as ArrayCollection );
+			}
+			
+			private function stateValidation():void
+			{
+				var value:Boolean = false;
+				if( Util.projectStateValidation( this._generalDataProject.proyecto, Estado.ID_ALTA ) ){
+					value = true;
+				}
+				this.btnAccept.enabled = value;
+				this.btnDone.enabled = value;
 			}
 		]]>
 	</mx:Script>

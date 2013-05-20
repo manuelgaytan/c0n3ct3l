@@ -341,6 +341,7 @@
 						 change="cmbServiceType_changeHandler(event)"
 						 labelField="etiqueta"/>
 		</mx:FormItem>
+		<mx:HRule width="100%"/>
 		<mx:FormItem label="Proyecto Padre:">
 			<components:TextInput id="txtParentProject" width="250"/>
 		</mx:FormItem>

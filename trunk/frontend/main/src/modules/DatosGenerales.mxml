@@ -33,6 +33,7 @@
 			{
 				this.navigator.selectedChild = this.consult;
 				this.consult.executeQuery();
+				this.register.executeProjectQuery();
 			}
 			
 		]]>

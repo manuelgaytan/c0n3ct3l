@@ -3871,6 +3871,8 @@
 	VALUES (2, 'Pendiente');
 	INSERT INTO EstadoSolicitudAlmacen
 	VALUES (3, 'Cerrado');
+	INSERT INTO EstadoSolicitudAlmacen
+	VALUES (4, 'Autorizado');
 
 	INSERT INTO EstadoValidacionAdministrativa
 	VALUES (1, 'Validado');

@@ -147,6 +147,7 @@
 			}
 			
 			public function getEntries( warehouseApplication:SolicitudAlmacen ):void{
+				this.cleanLists( warehouseApplication );
 				for each (var item:PartidaSolicitudAlmacen in this._items) 
 				{
 					switch(item.tipoAlmacen.id)
@@ -273,6 +274,28 @@
 				}
 				this._items.removeItemAt( this.selectedIndex );
 			}
+			
+			private function cleanLists(warehouseApplication:SolicitudAlmacen):void
+			{
+				this.cleanList(warehouseApplication.consumiblesSolicitudAlmacen);
+				this.cleanList(warehouseApplication.equipoMedicionSolicitudAlmacen);
+				this.cleanList(warehouseApplication.equipoTransporteSolicitudAlmacen);
+				this.cleanList(warehouseApplication.materialesSolicitudAlmacen);
+				this.cleanList(warehouseApplication.telefoniaMovilSolicitudAlmacen);
+				this.cleanList(warehouseApplication.hardwareSolicitudAlmacen);
+				this.cleanList(warehouseApplication.softwareSolicitudAlmacen);
+				this.cleanList(warehouseApplication.herramientasSolicitudAlmacen);
+			}
+			
+			private function cleanList(list:ArrayCollection):void
+			{
+				if( list == null ){
+					return;
+				}
+				list.removeAll();
+				list = null;
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:columns>

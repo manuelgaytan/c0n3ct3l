@@ -508,7 +508,7 @@
 			private function stateValidation():void
 			{
 				var value:Boolean = true;
-				if( this._item.estadoSolicitudAlmacen.id == EstadoSolicitudAlmacen.ID_CERRADO ){
+				if( this._item.estadoSolicitudAlmacen.id == EstadoSolicitudAlmacen.ID_AUTORIZADO ){
 					value = false;
 				}
 				this.btnAddItem.enabled = value;

@@ -10,9 +10,11 @@ package model
 		public static var ID_ABIERTO:Number = 1;
 		public static var ID_PENDIENTE:Number = 2;
 		public static var ID_CERRADO:Number = 3;
+		public static var ID_AUTORIZADO:Number = 4;
 		public static var ABIERTO:String = "Abierto";
 		public static var PENDIENTE:String = "Pendiente";
 		public static var CERRADO:String = "Cerrado";
+		public static var AUTORIZADO:String = "Autorizado";
 		
 		public function EstadoSolicitudAlmacen()
 		{

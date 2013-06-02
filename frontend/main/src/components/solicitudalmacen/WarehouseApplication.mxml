@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)" xmlns:solicitudalmacen="components.solicitudalmacen.*"
+		 width="100%"
 		 >
 	<mx:Script>
 		<![CDATA[
@@ -456,7 +457,7 @@
 					return entry;
 				}
 				entry = new PartidaSolicitudAlmacen();
-				entry.id = Util.validateEmpty( this.txtId.text );
+				entry.idAlmacen = Util.validateEmpty( this.txtId.text );
 				entry.tipoAlmacen = this.cmbStockType.selectedItem as TipoAlmacen; 
 				entry.codigo = Util.validateEmpty( this.txtCode.text );
 				entry.grupoFamilia = Util.validateEmpty( this.txtFamily.text );

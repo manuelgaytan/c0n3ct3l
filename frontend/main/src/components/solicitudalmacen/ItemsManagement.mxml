@@ -51,7 +51,8 @@
 				for each ( var itemC:ConsumibleSolicitudAlmacen in warehouseApplication.consumiblesSolicitudAlmacen ) 
 				{
 					this.addItem( PartidaSolicitudAlmacen.createPartidaSolicitudAlmacen( itemC.id, 
-																						 TipoAlmacen.getConsumibles(), 
+																						 TipoAlmacen.getConsumibles(),
+																						 itemC.consumible.id,
 																						 itemC.consumible.codigo, 
 																						 itemC.consumible.grupoFamiliaD.etiqueta, 
 																						 itemC.consumible.descripcion, 
@@ -64,6 +65,7 @@
 				{
 					this.addItem( PartidaSolicitudAlmacen.createPartidaSolicitudAlmacen( itemEM.id, 
 																						 TipoAlmacen.getEquipoMedicion(),
+																						 itemEM.equipoMedicion.id,
 																						 itemEM.equipoMedicion.codigo, 
 																						 itemEM.equipoMedicion.grupoFamilia,
 																						 itemEM.equipoMedicion.descripcion, 
@@ -76,6 +78,7 @@
 				{
 					this.addItem( PartidaSolicitudAlmacen.createPartidaSolicitudAlmacen( itemET.id, 
 																						TipoAlmacen.getEquipoTransporte(),
+																						itemET.equipoTransporte.id,
 																						itemET.equipoTransporte.codigo, 
 																						itemET.equipoTransporte.grupofamiliab.etiqueta,
 																						itemET.equipoTransporte.descripcion, 
@@ -88,6 +91,7 @@
 				{
 					this.addItem( PartidaSolicitudAlmacen.createPartidaSolicitudAlmacen( itemM.id, 
 																						TipoAlmacen.getMateriales(),
+																						itemM.material.id,
 																						itemM.material.codigo, 
 																						itemM.material.grupoFamiliaC.etiqueta,
 																						itemM.material.descripcion, 
@@ -100,6 +104,7 @@
 				{
 					this.addItem( PartidaSolicitudAlmacen.createPartidaSolicitudAlmacen( itemTM.id, 
 																						TipoAlmacen.getTelefoniaMovil(),
+																						itemTM.telefoniaMovil.id,
 																						itemTM.telefoniaMovil.codigo, 
 																						itemTM.telefoniaMovil.grupoFamiliaF.etiqueta,
 																						itemTM.telefoniaMovil.descripcion, 
@@ -112,6 +117,7 @@
 				{
 					this.addItem( PartidaSolicitudAlmacen.createPartidaSolicitudAlmacen( itemH.id, 
 																						TipoAlmacen.getHardware(),
+																						itemH.hardware.id,
 																						itemH.hardware.codigo, 
 																						itemH.hardware.grupoFamiliaE.etiqueta,
 																						itemH.hardware.descripcion, 
@@ -124,6 +130,7 @@
 				{
 					this.addItem( PartidaSolicitudAlmacen.createPartidaSolicitudAlmacen( itemS.id, 
 																						TipoAlmacen.getSoftware(),
+																						itemS.software.id,
 																						itemS.software.codigo, 
 																						itemS.software.ubicacionB.etiqueta,
 																						itemS.software.descripcion, 
@@ -136,6 +143,7 @@
 				{
 					this.addItem( PartidaSolicitudAlmacen.createPartidaSolicitudAlmacen( itemHe.id, 
 																						TipoAlmacen.getHerramienta(),
+																						itemHe.herramienta.id,
 																						itemHe.herramienta.codigo, 
 																						itemHe.herramienta.grupoFamiliaA.etiqueta,
 																						itemHe.herramienta.descripcion, 
@@ -246,7 +254,8 @@
 				
 				itemSolicitudAlmacen = new(objectTypeSolicitudAlmacen)();
 				itemStock = new(objectType)();
-				itemStock.id = item.id;
+				itemStock.id = item.idAlmacen;
+				itemSolicitudAlmacen.id = item.id;
 				itemSolicitudAlmacen[property] = itemStock;
 				itemSolicitudAlmacen.cantidadSolicitada = item.cantidad;
 				itemSolicitudAlmacen.regresoAlmacen = item.regresoAlmacen;
@@ -326,6 +335,6 @@
 						   textAlign="center"/>
 		<mx:DataGridColumn id="dtgItemEstatus" headerText="Observación"
 						   dataField="observacion"
-						   width="80"/>
+						   width="250"/>
 	</mx:columns>
 </mx:DataGrid>	

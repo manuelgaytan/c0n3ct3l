@@ -6,6 +6,7 @@ package model
 	{
 		public var id:*;
 		public var tipoAlmacen:TipoAlmacen;
+		public var idAlmacen:*;
 		public var codigo:String;
 		public var grupoFamilia:String;
 		public var descripcion:String;
@@ -18,11 +19,12 @@ package model
 		{
 		}
 		
-		public static function createPartidaSolicitudAlmacen(id:*, tipoAlmacen:TipoAlmacen, codigo:String, grupoFamilia:String, descripcion:String, cantidad:Number, unidad:String, regresoAlmacen:Boolean, observacion:String):PartidaSolicitudAlmacen
+		public static function createPartidaSolicitudAlmacen(id:*, tipoAlmacen:TipoAlmacen, idAlmacen:*, codigo:String, grupoFamilia:String, descripcion:String, cantidad:Number, unidad:String, regresoAlmacen:Boolean, observacion:String):PartidaSolicitudAlmacen
 		{
 			var item:PartidaSolicitudAlmacen = new PartidaSolicitudAlmacen();
 			item.id = id;
 			item.tipoAlmacen = tipoAlmacen;
+			item.idAlmacen = idAlmacen;
 			item.codigo = codigo;
 			item.grupoFamilia = grupoFamilia;
 			item.descripcion = descripcion;

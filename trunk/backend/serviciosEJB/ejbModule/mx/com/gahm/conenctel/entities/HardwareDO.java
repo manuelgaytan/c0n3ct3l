@@ -89,9 +89,6 @@ public class HardwareDO implements Serializable {
 	List<DocumentoAlmacenDO> polizaSeguro;
 	
 	@Transient
-	List<DocumentoAlmacenDO> certificadoCalibracion;
-	
-	@Transient
 	List<DocumentoAlmacenDO> ordenMantenimiento;
 	
 	@Transient
@@ -238,21 +235,6 @@ public class HardwareDO implements Serializable {
 	 */
 	public void setPolizaSeguro(List<DocumentoAlmacenDO> polizaSeguro) {
 		this.polizaSeguro = polizaSeguro;
-	}
-
-	/**
-	 * @return the certificadoCalibracion
-	 */
-	public List<DocumentoAlmacenDO> getCertificadoCalibracion() {
-		return certificadoCalibracion;
-	}
-
-	/**
-	 * @param certificadoCalibracion the certificadoCalibracion to set
-	 */
-	public void setCertificadoCalibracion(
-			List<DocumentoAlmacenDO> certificadoCalibracion) {
-		this.certificadoCalibracion = certificadoCalibracion;
 	}
 
 	/**

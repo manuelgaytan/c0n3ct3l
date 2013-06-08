@@ -92,6 +92,7 @@ public class DesarrolloProyectoABService implements IDesarrolloProyectoABService
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public DesarrolloProyectoABDO update(
 			DesarrolloProyectoABDO developmentProject) throws ConectelException {
+		this.actualizarTipoAuditoria( developmentProject );
 		/*try {
 			DesarrolloProyectoABDO current = transformacionService
 					.map(developmentProject, DesarrolloProyectoABDO.class);*/
@@ -111,6 +112,20 @@ public class DesarrolloProyectoABService implements IDesarrolloProyectoABService
 			throw new ConectelException("Error de sistema.");
 		}*/
 		return null;
+	}
+
+	private void actualizarTipoAuditoria(
+			DesarrolloProyectoABDO developmentProject) {
+		System.out.println("* * * actualizarTipoAuditoria");
+		if( developmentProject != null &&
+			developmentProject.getProyecto() != null &&
+			developmentProject.getProyecto().getId() != null ){
+			System.out.println( "ID proyecto: " + developmentProject.getProyecto().getId().toString() );
+			System.out.println( "Tipo Audotpria: " + developmentProject.getProyecto().getTipoAuditoria().getId() );
+			ProyectoDO proyectoDO = entityManager.find(ProyectoDO.class, developmentProject.getProyecto().getId());
+			proyectoDO.setTipoAuditoria( developmentProject.getProyecto().getTipoAuditoria() );
+			entityManager.merge( proyectoDO );
+		}
 	}
 
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)

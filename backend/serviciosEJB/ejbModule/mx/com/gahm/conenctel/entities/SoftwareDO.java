@@ -68,6 +68,8 @@ public class SoftwareDO implements Serializable {
 	@JoinColumn(name="fk_ubicacion_b")
 	private UbicacionBDO ubicacionB;
 	
+	private Double costo;
+	
 	@Transient
 	List<DocumentoAlmacenDO> polizaGarantia;
 	
@@ -249,6 +251,14 @@ public class SoftwareDO implements Serializable {
 	 */
 	public void setResponsable(ColaboradorDO responsable) {
 		this.responsable = responsable;
+	}
+
+	public Double getCosto() {
+		return costo;
+	}
+
+	public void setCosto(Double costo) {
+		this.costo = costo;
 	}
 
 }

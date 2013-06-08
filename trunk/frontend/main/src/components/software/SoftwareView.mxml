@@ -76,6 +76,7 @@
 				this.dlvInsurance.delivers = Util.setDocumentosAlmacen( this._item.polizaSeguro );
 				this.txtExistence.text = Util.numberToString( this._item.existencia );
 				this.txtUnit.text = this._item.unidad;
+				this.txtCost.text = Util.numberToString( this._item.costo );
 				if( Util.isFill( this.cmbLocation ) && this._item.ubicacionB != null ){
 					this.cmbLocation.selectedIndex = Util.selectedIndexFromCombo( this.cmbLocation.dataProvider as ArrayCollection, 
 						this._item.ubicacionB.id);
@@ -104,6 +105,7 @@
 				item.polizaSeguro = Util.getDocumentosAlmacen( this.dlvInsurance.delivers, TipoAlmacen.getSoftware(), TipoDocumentoAlmacen.getPolizaSeguro() );
 				item.polizaGarantia = Util.getDocumentosAlmacen( this.dlvWarranty.delivers, TipoAlmacen.getSoftware(), TipoDocumentoAlmacen.getPolizaGarantia() );
 				item.existencia = Util.stringToNumber( this.txtExistence.text );
+				item.costo = Util.stringToNumber( this.txtCost.text );
 				item.unidad = Util.validateEmpty( this.txtUnit.text );
 				item.ubicacionB = Util.validateCombo( this.cmbLocation ) as UbicacionB;
 				item.fkUbicacionB = Util.extractId(item.ubicacionB);
@@ -192,6 +194,7 @@
 				this.dlvWarranty.reset();
 				this.dlvInsurance.reset();
 				this.txtExistence.reset();
+				this.txtCost.reset();
 				this.txtUnit.reset();
 				this.cmbLocation.selectedIndex = 0;
 				this.cmbResponsible.selectedIndex = 0;
@@ -283,6 +286,10 @@
 		</mx:FormItem>
 		<mx:FormItem label="Licenciamiento Final:">
 			<components:DateField id="dtfFinalLicensing"/>
+		</mx:FormItem>
+		<mx:FormItem label="Costo:">
+			<components:TextInput id="txtCost"
+								  textAlign="right"/>
 		</mx:FormItem>
 		<components:Comments id="comments"/>
 		<mx:FormItem>

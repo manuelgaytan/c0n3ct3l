@@ -86,6 +86,7 @@
 				this.dlvWarranty.delivers = Util.setDocumentosAlmacen( this._item.polizaGarantia );
 				this.dlvInsurance.delivers = Util.setDocumentosAlmacen( this._item.polizaSeguro );
 				this.txtExistence.text = Util.numberToString( this._item.existencia );
+				this.txtCost.text = Util.numberToString( this._item.costo );
 				if( Util.isFill( this.cmbUnit ) && this._item.unidadA != null ){
 					this.cmbUnit.selectedIndex = Util.selectedIndexFromCombo( this.cmbUnit.dataProvider as ArrayCollection, 
 						this._item.unidadA.id);
@@ -134,6 +135,7 @@
 				item.polizaGarantia = Util.getDocumentosAlmacen( this.dlvWarranty.delivers, TipoAlmacen.getHerramienta(), TipoDocumentoAlmacen.getPolizaGarantia());
 				item.polizaSeguro = Util.getDocumentosAlmacen( this.dlvInsurance.delivers, TipoAlmacen.getHerramienta(), TipoDocumentoAlmacen.getPolizaSeguro());
 				item.existencia = Util.stringToNumber( this.txtExistence.text );
+				item.costo = Util.stringToNumber( this.txtCost.text );
 				item.unidadA = Util.validateCombo( this.cmbUnit ) as UnidadA;
 				item.fkUnidadA = Util.extractId(item.unidadA);
 				item.ubicacionA = Util.validateCombo( this.cmbLocation ) as UbicacionA;
@@ -252,6 +254,7 @@
 				this.dlvWarranty.reset();
 				this.dlvInsurance.reset();
 				this.txtExistence.reset();
+				this.txtCost.reset();
 				this.cmbUnit.selectedIndex = 0;
 				this.cmbLocation.selectedIndex = 0;
 				this.cmbResponsible.selectedIndex = 0;
@@ -424,6 +427,10 @@
 		</mx:FormItem>
 		<mx:FormItem label="Orden de Mantenimiento o Servicio:">
 			<components:FlatDeliver id="dlvServiceOrder"/>
+		</mx:FormItem>
+		<mx:FormItem label="Costo:">
+			<components:TextInput id="txtCost"
+								  textAlign="right"/>
 		</mx:FormItem>
 		<components:Comments id="comments"/>
 		<mx:FormItem>

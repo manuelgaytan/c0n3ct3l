@@ -79,6 +79,7 @@
 				this.txtSerie.text = this._item.noSerie;
 				this.txtTrade.text = this._item.marca;
 				this.txtModel.text = this._item.modelo;
+				this.txtCost.text = Util.numberToString( this._item.costo );
 				this.dlvWarranty.delivers = Util.setDocumentosAlmacen( this._item.polizaGarantia );
 				this.dlvInsurance.delivers = Util.setDocumentosAlmacen( this._item.polizaSeguro );
 				this.txtIMEI.text = Util.numberToString( this._item.imei );
@@ -128,6 +129,7 @@
 				item.noTelefono = Util.validateEmpty( this.txtTelephoneNumber.text );
 				item.tipoPlanContratado = Util.validateEmpty( this.txtPlanType.text );
 				item.existencia = Util.stringToNumber( this.txtExistence.text );
+				item.costo = Util.stringToNumber( this.txtCost.text );
 				item.ubicacionB = Util.validateCombo( this.cmbLocation ) as UbicacionB;
 				item.fkUbicacionB = Util.extractId(item.ubicacionB);
 				item.responsable = Util.validateCombo( this.cmbResponsible ) as Colaborador;
@@ -254,6 +256,7 @@
 				this.txtTelephoneNumber.reset();
 				this.txtPlanType.reset();
 				this.txtExistence.reset();
+				this.txtCost.reset();
 				this.cmbLocation.selectedIndex = 0;
 				this.cmbResponsible.selectedIndex = 0;
 				this.cmbStatus.selectedIndex = 0;
@@ -373,6 +376,10 @@
 			<mx:ComboBox id="cmbResponsible"
 						 labelField="nombreCompleto"
 						 />
+		</mx:FormItem>
+		<mx:FormItem label="Costo:">
+			<components:TextInput id="txtCost"
+								  textAlign="right"/>
 		</mx:FormItem>
 		<mx:FormItem label="Estatus:">
 			<mx:ComboBox id="cmbStatus"

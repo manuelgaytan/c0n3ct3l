@@ -76,6 +76,7 @@
 				this.txtSerie.text = this._item.noSerie;
 				this.txtTrade.text = this._item.marca;
 				this.txtModel.text = this._item.modelo;
+				this.txtCost.text = Util.numberToString( this._item.costo );
 				this.dlvWarranty.delivers = Util.setDocumentosAlmacen( this._item.polizaGarantia );
 				this.dlvInsurance.delivers = Util.setDocumentosAlmacen( this._item.polizaSeguro );
 				if( Util.isFill( this.cmbLocation ) && this._item.ubicacionb != null ){
@@ -124,6 +125,7 @@
 				item.fkUbicacionB = Util.extractId(item.ubicacionb);
 				item.responsable = Util.validateCombo( this.cmbResponsible ) as Colaborador;
 				item.fkResponsable = Util.extractId(item.responsable);
+				item.costo = Util.stringToNumber( this.txtCost.text );
 				item.estatusa = Util.validateCombo( this.cmbStatus ) as EstatusA;
 				item.fkEstatusA = Util.extractId(item.estatusa);
 				item.noCertificado = Util.validateEmpty( this.txtCertificateNumber.text );
@@ -220,6 +222,7 @@
 				this.dlvInsurance.reset();
 				this.cmbLocation.selectedIndex = 0;
 				this.cmbResponsible.selectedIndex = 0;
+				this.txtCost.reset();
 				this.cmbStatus.selectedIndex = 0;
 				this.txtCertificateNumber.reset();
 				this.dtfCalibration.reset();
@@ -365,6 +368,10 @@
 		</mx:FormItem>
 		<mx:FormItem label="Orden de Mantenimiento o Servicio:">
 			<components:FlatDeliver id="dlvServiceOrder"/>
+		</mx:FormItem>
+		<mx:FormItem label="Costo:">
+			<components:TextInput id="txtCost"
+								  textAlign="right"/>
 		</mx:FormItem>
 		<components:Comments id="comments"/>
 		<mx:FormItem>

@@ -20,6 +20,7 @@ package model
 		public var fkEstatusB:*;
 		public var fkTipoMantenimiento:*;
 		public var fechaMantenimiento:Date;
+		public var costo:*;
 		
 		public var tarjetaCirculacion:ArrayCollection;//DocumentoAlmacen
 		public var polizaGarantia:ArrayCollection;//DocumentoAlmacen

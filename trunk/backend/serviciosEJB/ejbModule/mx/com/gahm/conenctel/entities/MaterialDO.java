@@ -64,6 +64,8 @@ public class MaterialDO implements Serializable {
 	@JoinColumn(name="fk_ubicacion_b")
 	private UbicacionBDO ubicacionB;
 
+	private Double costo;
+	
 	@Transient
 	List<ComentariosDO> comentarios;
 	
@@ -169,6 +171,14 @@ public class MaterialDO implements Serializable {
 	 */
 	public void setResponsable(ColaboradorDO responsable) {
 		this.responsable = responsable;
+	}
+
+	public Double getCosto() {
+		return costo;
+	}
+
+	public void setCosto(Double costo) {
+		this.costo = costo;
 	}
 
 }

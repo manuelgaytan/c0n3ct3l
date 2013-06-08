@@ -68,7 +68,9 @@ public class EquipoTransporteDO implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="fk_estatus_b")
 	private EstatusBDO estatusb;
-
+	
+	private Double costo;
+	
 	@Transient
 	List<DocumentoAlmacenDO> tarjetaCirculacion;
 	
@@ -300,6 +302,14 @@ public class EquipoTransporteDO implements Serializable {
 	 */
 	public void setTarjetaCirculacion(List<DocumentoAlmacenDO> tarjetaCirculacion) {
 		this.tarjetaCirculacion = tarjetaCirculacion;
+	}
+
+	public Double getCosto() {
+		return costo;
+	}
+
+	public void setCosto(Double costo) {
+		this.costo = costo;
 	}
 
 }

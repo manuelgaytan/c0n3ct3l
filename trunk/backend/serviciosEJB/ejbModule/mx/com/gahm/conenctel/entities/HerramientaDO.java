@@ -97,6 +97,8 @@ public class HerramientaDO implements Serializable {
 	@JoinColumn(name="fk_estatus_a")
 	private EstatusADO estatusA;
 	
+	private Double costo;
+	
 	@Transient
 	List<DocumentoAlmacenDO> polizaGarantia;
 	
@@ -314,6 +316,14 @@ public class HerramientaDO implements Serializable {
 	 */
 	public void setResponsable(ColaboradorDO responsable) {
 		this.responsable = responsable;
+	}
+
+	public Double getCosto() {
+		return costo;
+	}
+
+	public void setCosto(Double costo) {
+		this.costo = costo;
 	}
 
 	

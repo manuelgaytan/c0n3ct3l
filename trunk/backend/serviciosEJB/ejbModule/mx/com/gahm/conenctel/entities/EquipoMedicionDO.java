@@ -74,6 +74,8 @@ public class EquipoMedicionDO implements Serializable {
 	@JoinColumn(name="fk_estatus_a")
 	private EstatusADO estatusa;
 	
+	private Double costo;
+	
 	@Transient
 	List<DocumentoAlmacenDO> polizaGarantia;
 	
@@ -266,6 +268,14 @@ public class EquipoMedicionDO implements Serializable {
 	 */
 	public void setResponsable(ColaboradorDO responsable) {
 		this.responsable = responsable;
+	}
+
+	public Double getCosto() {
+		return costo;
+	}
+
+	public void setCosto(Double costo) {
+		this.costo = costo;
 	}
 
 }

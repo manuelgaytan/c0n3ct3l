@@ -82,6 +82,8 @@ public class HardwareDO implements Serializable {
 	@JoinColumn(name="fk_estatus_b")
 	private EstatusBDO estatusB;
 	
+	private Double costo;
+	
 	@Transient
 	List<DocumentoAlmacenDO> polizaGarantia;
 	
@@ -277,6 +279,14 @@ public class HardwareDO implements Serializable {
 	 */
 	public void setResponsable(ColaboradorDO responsable) {
 		this.responsable = responsable;
+	}
+
+	public Double getCosto() {
+		return costo;
+	}
+
+	public void setCosto(Double costo) {
+		this.costo = costo;
 	}
 
 }

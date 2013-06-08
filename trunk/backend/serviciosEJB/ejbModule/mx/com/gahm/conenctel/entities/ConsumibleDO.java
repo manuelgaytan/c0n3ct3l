@@ -63,6 +63,8 @@ public class ConsumibleDO implements Serializable {
 	@JoinColumn(name="fk_ubicacion_c")
 	private UbicacionCDO ubicacionC;
 	
+	private Double costo;
+	
 	@Transient
 	List<ComentariosDO> comentarios;
 
@@ -155,6 +157,14 @@ public class ConsumibleDO implements Serializable {
 
 	public void setComentarios(List<ComentariosDO> comentarios) {
 		this.comentarios = comentarios;
+	}
+
+	public Double getCosto() {
+		return costo;
+	}
+
+	public void setCosto(Double costo) {
+		this.costo = costo;
 	}
 
 }

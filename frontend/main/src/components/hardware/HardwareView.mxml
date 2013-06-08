@@ -125,6 +125,7 @@
 				item.polizaGarantia = Util.getDocumentosAlmacen( this.dlvWarranty.delivers, TipoAlmacen.getHardware(), TipoDocumentoAlmacen.getPolizaGarantia() );
 				item.polizaSeguro = Util.getDocumentosAlmacen( this.dlvInsurance.delivers, TipoAlmacen.getHardware(), TipoDocumentoAlmacen.getPolizaSeguro() );
 				item.existencia = Util.stringToNumber( this.txtExistence.text );
+				item.costo = Util.stringToNumber( this.txtCost.text );
 				item.unidadC = Util.validateCombo( this.cmbUnit ) as UnidadC;
 				item.fkUnidadC = Util.extractId(item.unidadC);
 				item.ubicacionB = Util.validateCombo( this.cmbLocation ) as UbicacionB;
@@ -241,6 +242,7 @@
 				this.cmbUnit.selectedIndex = 0;
 				this.cmbLocation.selectedIndex = 0;
 				this.cmbResponsible.selectedIndex = 0;
+				this.txtCost.reset();
 				this.cmbStatus.selectedIndex = 0;
 				this.cmbService.selectedIndex = 0;
 				this.dtfServiceDate.reset();
@@ -378,6 +380,10 @@
 			<mx:ComboBox id="cmbResponsible"
 						 labelField="nombreCompleto"
 						 />
+		</mx:FormItem>
+		<mx:FormItem label="Costo:">
+			<components:TextInput id="txtCost"
+								  textAlign="right"/>
 		</mx:FormItem>
 		<mx:FormItem label="Estatus:">
 			<mx:ComboBox id="cmbStatus"

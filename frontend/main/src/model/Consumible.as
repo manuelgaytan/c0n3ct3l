@@ -15,6 +15,7 @@ package model
 		public var fkUbicacionC:*;
 		public var fkResponsable:*;
 		public var fkEstatusC:*;
+		public var costo:*;
 		
 		public var comentarios:ArrayCollection;//Comentario
 		

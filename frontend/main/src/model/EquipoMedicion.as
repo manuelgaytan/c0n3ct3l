@@ -21,6 +21,7 @@ package model
 		public var fechaProximaCalibracion:Date;
 		public var fkTipoMantenimiento:*;
 		public var fechaMantenimiento:Date;
+		public var costo:*;
 		
 		public var polizaGarantia:ArrayCollection;//DocumentoAlmacen
 		public var polizaSeguro:ArrayCollection;//DocumentoAlmacen

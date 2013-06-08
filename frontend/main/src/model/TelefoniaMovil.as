@@ -21,6 +21,7 @@ package model
 		public var fkUbicacionB:*;
 		public var fkResponsable:*;
 		public var fkEstatusB:*;
+		public var costo:*;
 		
 		public var polizaGarantia:ArrayCollection;//DocumentoAlmacen
 		public var polizaSeguro:ArrayCollection;//DocumentoAlmacen

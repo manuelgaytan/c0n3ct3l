@@ -79,6 +79,7 @@
 				this.txtModel.text = this._item.modelo;
 				this.txtPlaces.text = this._item.noPlacas;
 				this.txtCirculationCard.text = this._item.noTarjetaCirculacion;
+				this.txtCost.text = Util.numberToString( this._item.costo );
 				this.dlvCirculationCard.delivers = Util.setDocumentosAlmacen( this._item.tarjetaCirculacion );
 				this.dlvWarranty.delivers = Util.setDocumentosAlmacen( this._item.polizaGarantia );
 				this.dlvInsurance.delivers = Util.setDocumentosAlmacen( this._item.polizaSeguro );
@@ -128,6 +129,7 @@
 				item.fkUbicacionB = Util.extractId(item.ubicacionb);
 				item.responsable = Util.validateCombo( this.cmbResponsible ) as Colaborador;
 				item.fkResponsable = Util.extractId(item.responsable);
+				item.costo = Util.stringToNumber( this.txtCost.text );
 				item.estatusb = Util.validateCombo( this.cmbStatus ) as EstatusB;
 				item.fkEstatusB = Util.extractId(item.estatusb);
 				item.tipomantenimiento = Util.validateCombo( this.cmbService ) as TipoMantenimiento;
@@ -238,6 +240,7 @@
 				this.dlvInsurance.reset();
 				this.cmbLocation.selectedIndex = 0;
 				this.cmbResponsible.selectedIndex = 0;
+				this.txtCost.reset();
 				this.cmbStatus.selectedIndex = 0;
 				this.cmbService.selectedIndex = 0;
 				this.dtfServiceDate.reset();
@@ -362,6 +365,10 @@
 			<mx:ComboBox id="cmbResponsible"
 						 labelField="nombreCompleto"
 						 />
+		</mx:FormItem>
+		<mx:FormItem label="Costo:">
+			<components:TextInput id="txtCost"
+								  textAlign="right"/>
 		</mx:FormItem>
 		<mx:FormItem label="Estatus:">
 			<mx:ComboBox id="cmbStatus"

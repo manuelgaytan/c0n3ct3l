@@ -16,6 +16,7 @@ package model
 		public var fkResponsable:*;
 		public var licenciamientoInicial:Date;
 		public var licenciamientoFinal:Date;
+		public var costo:*;
 		
 		public var polizaGarantia:ArrayCollection;//DocumentoAlmacen
 		public var polizaSeguro:ArrayCollection;//DocumentoAlmacen

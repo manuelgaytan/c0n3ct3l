@@ -75,6 +75,7 @@
 				}
 				this.txtDescription.text = this._item.descripcion;
 				this.txtExistence.text = Util.numberToString( this._item.existencia );
+				this.txtCost.text = Util.numberToString( this._item.costo );
 				if( Util.isFill( this.cmbUnit ) && this._item.unidadB != null ){
 					this.cmbUnit.selectedIndex = Util.selectedIndexFromCombo( this.cmbUnit.dataProvider as ArrayCollection, 
 						this._item.unidadB.id);
@@ -108,6 +109,7 @@
 				item.fkGrupoFamiliaD = Util.extractId(item.grupoFamiliaD);
 				item.descripcion = Util.validateEmpty( this.txtDescription.text );
 				item.existencia = Util.stringToNumber( this.txtExistence.text );
+				item.costo = Util.stringToNumber( this.txtCost.text );
 				item.unidadB = Util.validateCombo( this.cmbUnit ) as UnidadB;
 				item.fkUnidadB = Util.extractId(item.unidadB);
 				item.ubicacionC = Util.validateCombo( this.cmbLocation ) as UbicacionC;
@@ -208,6 +210,7 @@
 				this.cmbFamily.selectedIndex = 0;
 				this.txtDescription.reset();
 				this.txtExistence.reset();
+				this.txtCost.reset();
 				this.cmbUnit.selectedIndex = 0;
 				this.cmbLocation.selectedIndex = 0;
 				this.cmbResponsible.selectedIndex = 0;
@@ -315,6 +318,10 @@
 			<mx:ComboBox id="cmbResponsible"
 						 labelField="nombreCompleto"
 						 />
+		</mx:FormItem>
+		<mx:FormItem label="Costo:">
+			<components:TextInput id="txtCost"
+								  textAlign="right"/>
 		</mx:FormItem>
 		<mx:FormItem label="Estatus:">
 			<mx:ComboBox id="cmbStatus"

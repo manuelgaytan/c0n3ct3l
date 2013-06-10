@@ -15,6 +15,7 @@
 			import model.EstadoSolicitudAlmacen;
 			import model.GrupoFamiliaA;
 			import model.Model;
+			import model.Notificacion;
 			import model.PartidaRequisicionCompra;
 			import model.PartidaSolicitudAlmacen;
 			import model.Perfil;
@@ -193,7 +194,8 @@
 			{
 				if( this.mode == Constants.REGISTER_MODE ){
 					form.removeChild( this.frmItmCode );
-					//this.btnPrint.visible = false;
+					this.btnPrint.visible = false;
+					this.btnBought.visible = false;
 					form.removeChild( this.frmAreaCordinator );
 				}
 			}
@@ -517,6 +519,41 @@
 				this.btnAccept.enabled = value;
 			}
 			
+			protected function btnBought_clickHandler(event:MouseEvent):void
+			{
+				if( this.mode == Constants.UPDATE_MODE ){
+					Alert.show("Confirme si desea enviar notificación de Comprado.","Advertencia",Alert.YES+Alert.NO,this, boughtNotification);
+				}
+			}
+			
+			private function boughtNotification(event:CloseEvent):void{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var notificacion:Notificacion = null;
+				notificacion = new Notificacion();
+				notificacion.perfil = Perfil.getPerfil( Perfil.ID_ALMACEN );
+				notificacion.notificacion = Notificacion.MATERIAL_COMPRADO + this._item.id;
+				notificacion.usuarioCreacion = Model.getInstance().user;
+				this.responseSaveNotificacion.token = this.notificacionService.save( notificacion );
+				notificacion = new Notificacion();
+				notificacion.perfil = Perfil.getPerfil( Perfil.ID_COMPRAS );
+				notificacion.notificacion = Notificacion.MATERIAL_COMPRADO_ACUSE + this._item.id;
+				notificacion.usuarioCreacion = Model.getInstance().user;
+				this.responseSaveMySelfNotificacion.token = this.notificacionService.save( notificacion );
+			}
+			
+			protected function responseSaveMySelfNotificacion_resultHandler(event:ResultEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
+			protected function responseSaveNotificacion_resultHandler(event:ResultEvent):void
+			{
+				Alert.show( "Se ha notificado al área de Álmacen." );
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -655,6 +692,7 @@
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
 			<!--<mx:Button id="btnOrdenCompra" label="Generar Orden de Compra" click="btnAccept_clickHandler(event)"/>-->
 			<mx:Button id="btnPrint" label="Imprimir" click="btnPrint_clickHandler(event)"/>
+			<mx:Button id="btnBought" label="Comprado" click="btnBought_clickHandler(event)"/>
 		</mx:FormItem>
 	</mx:Form>
 	<mx:RemoteObject id="solicitudAlmacenService" destination="solicitudAlmacenService" fault="solicitudAlmacenService_faultHandler(event)"
@@ -684,5 +722,9 @@
 					 showBusyCursor="true"/>
 	<mx:RemoteObject id="consumibleService" destination="consumibleService" fault="solicitudAlmacenService_faultHandler(event)"
 					 showBusyCursor="true"/>
+	<mx:RemoteObject id="notificacionService" destination="notificacionService" fault="solicitudAlmacenService_faultHandler(event)"
+					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetAllAlmacen" result="responseGetAllAlmacen_resultHandler(event)"/>
+	<mx:CallResponder id="responseSaveNotificacion" result="responseSaveNotificacion_resultHandler(event)"/>
+	<mx:CallResponder id="responseSaveMySelfNotificacion" result="responseSaveMySelfNotificacion_resultHandler(event)"/>
 </mx:VBox>

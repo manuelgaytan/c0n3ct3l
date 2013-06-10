@@ -498,4 +498,12 @@
 			<scope>session</scope>
 		</properties>
 	</destination>
+	
+	<destination id="notificacionService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/NotificacionService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
 </service>

@@ -25,6 +25,17 @@ public class NotificacionService  implements INotificacionService{
 	private EntityManager entityManager;
 	
 	@Override
+	public List<NotificacionDO> findByFilter( Integer idPerfil ) {
+		List<NotificacionDO> datos= null;
+		TypedQuery<NotificacionDO>  query =null;
+		query = entityManager.createNamedQuery("NotificacionDO.findByFilter",NotificacionDO.class);
+		query.setParameter("idPerfil", idPerfil);
+		datos = query.getResultList();
+		
+		return datos;
+	}
+	
+	@Override
 	public List<NotificacionDO> getAll() {
 		List<NotificacionDO> datos= null;
 		TypedQuery<NotificacionDO>  query =null;
@@ -59,6 +70,12 @@ public class NotificacionService  implements INotificacionService{
 	
 	@Override
 	public NotificacionDO update(NotificacionDO item) {
+		Date fechaHoraModificacion = new Date();
+		item.setFechaHoraCreacion(fechaHoraModificacion );
+		EstadoNotificacionDO estado = new EstadoNotificacionDO();
+		estado.setId( EstadoNotificacionDO.ID_ATENDIDA );
+		item.setEstado( estado  );
+		item.setFechaHoraModificacion( fechaHoraModificacion );
 		entityManager.merge(item);
 		return item;
 	}

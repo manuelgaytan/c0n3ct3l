@@ -16,6 +16,7 @@ import mx.com.gahm.conenctel.entities.NotificacionDO;
 @Remote
 public interface INotificacionService {
 	List<NotificacionDO> getAll();
+	List<NotificacionDO> findByFilter( Integer idPerfil );
 	void deleteItems( List<Integer> idsItems);
 	NotificacionDO save( NotificacionDO item );
 	NotificacionDO update( NotificacionDO item );

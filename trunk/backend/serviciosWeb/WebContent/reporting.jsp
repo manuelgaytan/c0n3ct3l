@@ -1,54 +1,97 @@
-<%@page import="net.sf.jasperreports.engine.JasperCompileManager"%>
-<%@page import="net.sf.jasperreports.engine.xml.JRXmlLoader"%>
-<%@page import="net.sf.jasperreports.engine.design.JasperDesign"%>
-<%@page import="net.sf.jasperreports.engine.JasperReport"%>
-<%@page import="java.util.HashMap"%>
-<%@page import="net.sf.jasperreports.engine.JasperPrint"%>
-<%@page import="net.sf.jasperreports.view.JasperViewer"%>
-<%@page import="net.sf.jasperreports.engine.JREmptyDataSource"%>
+<%@page import="mx.com.gahm.conenctel.services.ISolicitudAlmacenService"%>
+<%@page import="javax.naming.Context"%>
+<%@page import="mx.com.gahm.conenctel.services.impl.SolicitudAlmacenService"%>
+<%@page import="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"%>
+<%@page import="mx.com.gahm.conenctel.entities.SolicitudAlmacenDO"%>
+<%@page import="net.sf.jasperreports.engine.JasperExportManager"%>
+<%@page import="java.sql.SQLException"%>
+<%@page import="net.sf.jasperreports.engine.JasperRunManager"%>
+<%@page import="java.sql.DriverManager"%>
+<%@page import="java.sql.Connection"%>
 <%@page import="net.sf.jasperreports.engine.JasperFillManager"%>
+<%@page import="net.sf.jasperreports.engine.JasperPrint"%>
+<%@page import="net.sf.jasperreports.engine.JasperCompileManager"%>
+<%@page import="net.sf.jasperreports.engine.JasperReport"%>
+<%@page import="net.sf.jasperreports.engine.JRException"%>
+<%@page import="com.archivos.utils.GenerarReporte"%>
+<%@page import="com.archivos.utils.ClienteDTO"%>
+<%@page import="javax.naming.InitialContext"%>
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.Date"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
+<%@page import="java.util.Map"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Reporting...</title>
+<title>Insert title here</title>
 </head>
-<body>
-	<%=request.getParameter("item")%>
-	<%=request.getParameter("id")%>
-	<%
-		/*
-		HashMap<String, Object> response = new HashMap<String, Object>();
-		String fileName = "/Users/manuel/temp/EjemploiReport.jxrml";
-		String pdfFile = "C:\\temp\\";
-		JasperReport mainReport;
-		JasperDesign mainReportDesign;
+<%
+	Long idSolicitudAlmacen = Long.parseLong( request.getParameter("id") );
+	long start = System.currentTimeMillis();
+	Connection conn = null;
 
-		try {
-			mainReportDesign = JRXmlLoader.load(fileName);
-			mainReport = JasperCompileManager.compileReport(mainReportDesign);
-			pdfFile = pdfFile + "report.pdf";
-			JasperPrint jasperPrint = JasperFillManager.fillReport(
-					mainReport, response, new JREmptyDataSource());
+	//Cargamos el driver JDBC
+	try {
+	  Class.forName("com.mysql.jdbc.Driver");
+	}
+	catch (ClassNotFoundException e) {
+	  System.out.println("MySQL JDBC Driver not found.");
+	  System.exit(1);
+	}
+	//Para iniciar el Logger.
+	//inicializaLogger();
+	try {
+	  conn = DriverManager.getConnection("jdbc:mysql://localhost/conectel","root", "notiene");
+	  conn.setAutoCommit(false);
+	}
+	catch (SQLException e) {
+	  System.out.println("Error de conexión: " + e.getMessage());
+	  System.exit(4);
+	}
 
-			if (reportFormat.equalsIgnoreCase("PDF"))
-				JasperExportManager.exportReportToPdfFile(jasperPrint,
-						pdfFile);
-			else if (reportFormat.equalsIgnoreCase("CSV")) {
-				JRExporter exporter = new JRCsvExporter();
-				exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,
-						pdfFile);
-				exporter.setParameter(JRExporterParameter.JASPER_PRINT,
-						jasperPrint);
-				exporter.exportReport();
-			}
-
-		} catch (JRException e) {
-			e.printStackTrace();
-		}
-		*/		
-	%>
-</body>
+	try {
+		
+		Context context = new InitialContext();
+		ISolicitudAlmacenService service = (ISolicitudAlmacenService) context.lookup("ejb/SolicitudAlmacenService");
+		SolicitudAlmacenDO almacenDO = service.getItem( idSolicitudAlmacen );
+		List<SolicitudAlmacenDO> list = new ArrayList<SolicitudAlmacenDO>();
+		list.add( almacenDO );
+		
+		JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(list);
+		
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("title", "Solicitud Almacén");
+	    parameters.put("confidence", "Esta información es confidencial y exclusiva para el uso de Conectel.");
+	    JasperReport report = JasperCompileManager.compileReport(
+	          application.getRealPath("/reports/SolicitudAlmacen.jrxml") );
+	    JasperPrint print = JasperFillManager.fillReport(report, parameters, beanCollectionDataSource);
+	      
+      	response.setContentType("application/pdf");
+        response.addHeader("Content-disposition", "attachment; filename=report.pdf");  
+        ServletOutputStream servletOutputStream = response.getOutputStream();  
+        JasperExportManager.exportReportToPdfStream(print, servletOutputStream);  
+	      
+	    response.flushBuffer();
+	    servletOutputStream.flush();
+	    servletOutputStream.close();
+	}catch (Exception e) {
+	    e.printStackTrace();
+	}finally {
+	    /*
+	     * Cleanup antes de salir
+	     */
+	    try {
+	      if (conn != null) {
+	        conn.rollback();
+	        System.out.println("ROLLBACK EJECUTADO");
+	        conn.close();
+	      }
+	    }catch (Exception e) {
+	    	e.printStackTrace();
+	 	}
+	 }
+%>
 </html>

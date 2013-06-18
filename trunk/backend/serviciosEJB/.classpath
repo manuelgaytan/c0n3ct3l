@@ -7,7 +7,7 @@
 			<attribute name="owner.project.facets" value="jst.ejb"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.6.0_23">
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.launching.macosx.MacOSXType/Java SE 6 (MacOS X Default)">
 		<attributes>
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
@@ -18,5 +18,12 @@
 			<attribute name="owner.project.facets" value="jpt.jpa"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="/Users/manuel/Projects/c0n3ct3l/backend/serviciosEJB/ejbModule/APP-INF/lib/antlr-2.7.5H3.jar"/>
+	<classpathentry kind="lib" path="/Users/manuel/Projects/c0n3ct3l/backend/serviciosEJB/ejbModule/APP-INF/lib/commons-beanutils-1.8.0.jar"/>
+	<classpathentry kind="lib" path="/Users/manuel/Projects/c0n3ct3l/backend/serviciosEJB/ejbModule/APP-INF/lib/commons-collections-2.1.jar"/>
+	<classpathentry kind="lib" path="/Users/manuel/Projects/c0n3ct3l/backend/serviciosEJB/ejbModule/APP-INF/lib/commons-digester-1.7.jar"/>
+	<classpathentry kind="lib" path="/Users/manuel/Projects/c0n3ct3l/backend/serviciosEJB/ejbModule/APP-INF/lib/commons-logging-1.0.2.jar"/>
+	<classpathentry kind="lib" path="/Users/manuel/Projects/c0n3ct3l/backend/serviciosEJB/ejbModule/APP-INF/lib/itext-2.1.7.jar"/>
+	<classpathentry kind="lib" path="/Users/manuel/Projects/c0n3ct3l/backend/serviciosEJB/ejbModule/APP-INF/lib/jasperreports-3.7.2.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

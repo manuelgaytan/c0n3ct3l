@@ -132,7 +132,7 @@
 																						TipoAlmacen.getSoftware(),
 																						itemS.software.id,
 																						itemS.software.codigo, 
-																						itemS.software.ubicacionB.etiqueta,
+																						"",
 																						itemS.software.descripcion, 
 																						itemS.cantidadSolicitada, 
 																						itemS.software.unidad, 

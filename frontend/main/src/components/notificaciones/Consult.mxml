@@ -5,9 +5,13 @@
 		 creationComplete="creationCompleteHandler(event)">
 	<mx:Script>
 		<![CDATA[
+			import model.Model;
+			import model.Notificacion;
 			import model.Util;
 			
 			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
 			import mx.events.FlexEvent;
 			import mx.rpc.events.FaultEvent;
 			import mx.rpc.events.ResultEvent;
@@ -22,12 +26,13 @@
 			
 			public function executeQuery():void
 			{
-				this.responseGetAll.token = this.notificacionService.getAll();
+				this.responseGetAll.token = this.notificacionService.findByFilter( Model.getInstance().user.perfil.id );
 			}
 			
 			protected function responseGetAll_resultHandler(event:ResultEvent):void
 			{
 				items = event.result as ArrayCollection;
+				Util.showProperties( items );
 			}
 			
 			protected function notificacionService_faultHandler(event:FaultEvent):void
@@ -40,34 +45,59 @@
 				this.executeQuery();
 			}
 			
+			protected function btnServer_clickHandler(event:MouseEvent):void
+			{
+				if( this.datagrid.selectedItems == null ||
+					this.datagrid.selectedItems.length == 0 ){
+					Util.showErrorMessage("Debe seleccionar elementos de la tabla.");
+					return;
+				}
+				Alert.show("Desea modificar la notificación.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
+			}
+			
+			private function updateItem(event:CloseEvent):void
+			{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var items:Array = this.datagrid.selectedItems; 
+				var notification:Notificacion = items[ 0 ] as Notificacion;
+				notification.usuarioModificacion = Model.getInstance().user;
+				this.responseUpdateNotification.token = this.notificacionService.update( notification );
+			}
+			
+			protected function responseUpdateNotification_resultHandler(event:ResultEvent):void
+			{
+				Util.showInfoMessage("La notificación ha sido actualizada.");
+				this.executeQuery();
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:DataGrid id="datagrid" width="100%" height="100%" dataProvider="{items}">
 		<mx:columns>
-			<mx:DataGridColumn id="dtgDateHour" headerText="Fecha y Hora" width="100"
+			<mx:DataGridColumn id="dtgCreationDate" headerText="Fecha" width="100"
 							   dataField="fechaHoraCreacion"
-							   labelFunction="{Util.labelFunctionDateHour}"/>
+							   labelFunction="{Util.labelFunctionDate}"/>
 			<mx:DataGridColumn id="dtgUserOriginated" headerText="{'Usuario\nCreación'}" width="100"
 							   dataField="usuarioCreacion.usuario"/>
 			<mx:DataGridColumn id="dtgAction" headerText="Notificación" width="270"
 							   dataField="notificacion"
 							   wordWrap="true"/>
 			<mx:DataGridColumn id="dtgPerfil" headerText="{'Dirigido a'}" width="120"
-							   dataField="perfil.perfil"/>
-			<!--<mx:DataGridColumn id="dtgUserUpdated" headerText="{'Usuario\nModificación'}" width="100"
-							   dataField="usuarioModificacion.usuario"/>-->
-			<!--<mx:DataGridColumn id="dtgUserUpdated" headerText="{'Estado'}" width="100"
-							   dataField="estado.estado"/>-->
-			
+							   dataField="perfil.etiqueta"/>
+			<mx:DataGridColumn id="dtgUserUpdated" headerText="{'Usuario\nModificación'}" width="100"
+							   dataField="usuarioModificacion.usuario"/>
+			<mx:DataGridColumn id="dtgUpdatedDate" headerText="{'Estado'}" width="100"
+							   dataField="estado.estado"/>
 		</mx:columns>
 	</mx:DataGrid>
-	<!--
 	<mx:HBox>
 		<mx:Button id="btnRefresh" label="Refrescar" click="btnRefresh_clickHandler(event)"/>
-		<mx:Button id="btnServer" label="Atendida"/>
+		<mx:Button id="btnServer" label="Atendida" click="btnServer_clickHandler(event)"/>
 	</mx:HBox>
-	-->
 	<mx:RemoteObject id="notificacionService" destination="notificacionService" fault="notificacionService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetAll" result="responseGetAll_resultHandler(event)"/>
+	<mx:CallResponder id="responseUpdateNotification" result="responseUpdateNotification_resultHandler(event)"/>
 </mx:VBox>

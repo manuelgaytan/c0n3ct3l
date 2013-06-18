@@ -198,6 +198,9 @@
 					this.btnBought.visible = false;
 					form.removeChild( this.frmAreaCordinator );
 				}
+				if( this.mode == Constants.UPDATE_MODE ){
+					this.btnBought.visible = Model.getInstance().user.allowedPerfil( Perfil.ID_COMPRAS );
+				}
 			}
 			
 			private function initializeValidators():void
@@ -504,7 +507,7 @@
 			
 			protected function btnPrint_clickHandler(event:MouseEvent):void
 			{
-				var params:Array = [{key:"id", value:5}];//this._item.id}];
+				var params:Array = [{key:"id", value:this._item.id}, {key:"item", value:Reportes.SOLICITUD_ALMANCEN}];
 				Util.launchReport( Reportes.SOLICITUD_ALMANCEN, params );
 			}
 			
@@ -551,7 +554,7 @@
 			
 			protected function responseSaveNotificacion_resultHandler(event:ResultEvent):void
 			{
-				Alert.show( "Se ha notificado al área de Álmacen." );
+				Util.showInfoMessage("Se ha notificado al área de Álmacen." );
 			}
 			
 		]]>

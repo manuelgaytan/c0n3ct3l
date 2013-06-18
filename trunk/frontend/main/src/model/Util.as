@@ -364,6 +364,11 @@ package model
 			Alert.show(mensaje, Constants.ERROR);
 		}
 		
+		public static function showInfoMessage(mensaje:String):void
+		{
+			Alert.show(mensaje, Constants.INFO);
+		}
+		
 		public static function showProperties(object:Object):void
 		{
 			Alert.show( ObjectUtil.toString( object ), "Show Properties" );
@@ -636,7 +641,7 @@ package model
 				uv[param.key] = param.value;     
 			}
 			url.data = uv;
-			navigateToURL(url,"_self"); 
+			navigateToURL(url,"_blank"); 
 		}
 		
 		public static function projectStateValidation(project:Proyecto, idState:Number):Boolean{

@@ -6,8 +6,11 @@
 		 horizontalGap="0">
 	<mx:Script>
 		<![CDATA[
+			import flash.net.navigateToURL;
+			
 			import model.Usuario;
 			
+			import mx.core.Application;
 			import mx.events.FlexEvent;
 			import mx.rpc.events.ResultEvent;
 			public function set user(value:Usuario):void{
@@ -20,6 +23,13 @@
 			protected function creationCompleteHandler(event:FlexEvent):void
 			{
 			}
+			
+			protected function imgLogOut_clickHandler(event:MouseEvent):void
+			{
+				var url = Application.application.url.replace( "swf", "html" );
+				navigateToURL( new URLRequest( url ), "_self" );
+			}
+			
 		]]>
 	</mx:Script>
 	<!--<mx:Image source="assets/images/logoERP.png"/>-->
@@ -27,4 +37,6 @@
 	<mx:Image source="assets/images/login.png"/>
 	<mx:Label text="Bienvenid@" color="white"/>
 	<mx:Label id="lblWholeName" color="white"/>
+	<mx:Spacer width="10"/>
+	<mx:Image id="imgLogOut" source="assets/images/downloads.png" toolTip="Cerrar Sesión" click="imgLogOut_clickHandler(event)"/>
 </mx:HBox>

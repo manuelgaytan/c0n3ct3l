@@ -5,6 +5,7 @@ package model
 		public static const IVA:Number = 0.16;
 		
 		public static const ERROR:String = "Error";
+		public static const INFO:String = "Informativo";
 		public static const REQUIRED_FIELD:String = "Por favor requisite los campos requeridos.";
 		public static var REGISTRAR:String = "Registrar";
 		public static var REGISTER_MODE:String = "register";

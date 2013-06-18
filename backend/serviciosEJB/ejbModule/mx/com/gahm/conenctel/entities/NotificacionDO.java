@@ -27,7 +27,8 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name = "Notificacion")
 @NamedQueries({
-	@NamedQuery(name = "NotificacionDO.findAll", query = "select rc from NotificacionDO rc")
+	@NamedQuery(name = "NotificacionDO.findAll", query = "select rc from NotificacionDO rc"),
+	@NamedQuery(name = "NotificacionDO.findByFilter", query = "select rc from NotificacionDO rc where rc.perfil.id = :idPerfil")
 	})
 public class NotificacionDO implements Serializable{
 	/**

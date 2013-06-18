@@ -1,6 +1,7 @@
 package mx.com.gahm.conenctel.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -117,6 +118,7 @@ public class SolicitudAlmacenDO implements Serializable {
 			AreaSolicitanteDO areaSolicitante, String centralSitio,
 			EstadoSolicitudAlmacenDO estadoSolicitudAlmacen,
 			String nombreSolicitante, ColaboradorDO autoriza,
+			ColaboradorDO autorizaFinal,
 			ColaboradorDO entrega, String recibe) {
 		super();
 		this.id = id;
@@ -129,10 +131,164 @@ public class SolicitudAlmacenDO implements Serializable {
 		this.estadoSolicitudAlmacen = estadoSolicitudAlmacen;
 		this.nombreSolicitante = nombreSolicitante;
 		this.autoriza = autoriza;
+		this.autorizaFinal = autorizaFinal;
 		this.entrega = entrega;
 		this.recibe = recibe;
 	}
 
+	public List<PartidaSolicitudAlmacen> getListaPlana(){
+		List<PartidaSolicitudAlmacen> partidaSolicitudAlmacen = new ArrayList<PartidaSolicitudAlmacen>();
+		if( this.validarLista(this.consumiblesSolicitudAlmacen) ){
+			for (ConsumibleSolicitudAlmacenDO iterable_element : this.consumiblesSolicitudAlmacen) {
+				partidaSolicitudAlmacen.add( this.crearDeConsumible(iterable_element) );
+			}
+		}
+		if( this.validarLista(this.equipoMedicionSolicitudAlmacen) ){
+			for (EquipoMedicionSolicitudAlmacenDO iterable_element : this.equipoMedicionSolicitudAlmacen) {
+				partidaSolicitudAlmacen.add( this.crearDeEquipoMedicion(iterable_element) );
+			}
+		}
+		if( this.validarLista(this.equipoTransporteSolicitudAlmacen) ){
+			for (EquipoTransporteSolicitudAlmacenDO iterable_element : this.equipoTransporteSolicitudAlmacen) {
+				partidaSolicitudAlmacen.add( this.crearDeEquipoTransporte(iterable_element) );
+			}
+		}
+		if( this.validarLista(this.materialesSolicitudAlmacen) ){
+			for (MaterialSolicitudAlmacenDO iterable_element : this.materialesSolicitudAlmacen) {
+				partidaSolicitudAlmacen.add( this.crearDeMaterial(iterable_element) );
+			}
+		}
+		if( this.validarLista(this.telefoniaMovilSolicitudAlmacen) ){
+			for (TelefoniaMovilSolicitudAlmacenDO iterable_element : this.telefoniaMovilSolicitudAlmacen) {
+				partidaSolicitudAlmacen.add( this.crearDeTelefoniaMovil(iterable_element) );
+			}
+		}
+		if( this.validarLista(this.hardwareSolicitudAlmacen) ){
+			for (HardwareSolicitudAlmacenDO iterable_element : this.hardwareSolicitudAlmacen) {
+				partidaSolicitudAlmacen.add( this.crearDeHardware(iterable_element) );
+			}
+		}
+		if( this.validarLista(this.softwareSolicitudAlmacen) ){
+			for (SoftwareSolicitudAlmacenDO iterable_element : this.softwareSolicitudAlmacen) {
+				partidaSolicitudAlmacen.add( this.crearDeSoftware(iterable_element) );
+			}
+		}
+		if( this.validarLista(this.herramientasSolicitudAlmacen) ){
+			for (HerramientaSolicitudAlmacenDO iterable_element : this.herramientasSolicitudAlmacen) {
+				partidaSolicitudAlmacen.add( this.crearDeHerramienta(iterable_element) );
+			}
+		}
+		return partidaSolicitudAlmacen;
+	}
+	
+	private boolean validarLista(List lista){
+		return !( lista == null || lista.size() == 0 );
+	}
+	
+	private PartidaSolicitudAlmacen crearDeConsumible(ConsumibleSolicitudAlmacenDO item){
+		PartidaSolicitudAlmacen partidaSolicitudAlmacen = new PartidaSolicitudAlmacen();
+		partidaSolicitudAlmacen.setTipoAlmacen( TipoAlmacenDO.CONSUMIBLES );
+		partidaSolicitudAlmacen.setCodigo( item.getConsumible().getCodigo() );
+		partidaSolicitudAlmacen.setGrupoFamilia(item.getConsumible().getGrupoFamiliaD().getEtiqueta());
+		partidaSolicitudAlmacen.setDescripcion(item.getConsumible().getDescripcion());
+		partidaSolicitudAlmacen.setCantidad(item.getCantidadSolicitada());
+		partidaSolicitudAlmacen.setUnidad(item.getConsumible().getUnidadB().getEtiqueta());
+		partidaSolicitudAlmacen.setRegresoAlmacen(item.getRegresoAlmacen());
+		partidaSolicitudAlmacen.setObservacion(item.getObservacion());
+		return partidaSolicitudAlmacen; 
+	}
+	
+	private PartidaSolicitudAlmacen crearDeEquipoMedicion(EquipoMedicionSolicitudAlmacenDO item){
+		PartidaSolicitudAlmacen partidaSolicitudAlmacen = new PartidaSolicitudAlmacen();
+		partidaSolicitudAlmacen.setTipoAlmacen( TipoAlmacenDO.EQUIPO_MEDICION );
+		partidaSolicitudAlmacen.setCodigo( item.getEquipoMedicion().getCodigo() );
+		partidaSolicitudAlmacen.setGrupoFamilia(item.getEquipoMedicion().getGrupoFamilia());
+		partidaSolicitudAlmacen.setDescripcion(item.getEquipoMedicion().getDescripcion());
+		partidaSolicitudAlmacen.setCantidad(item.getCantidadSolicitada());
+		partidaSolicitudAlmacen.setUnidad("");
+		partidaSolicitudAlmacen.setRegresoAlmacen(item.getRegresoAlmacen());
+		partidaSolicitudAlmacen.setObservacion(item.getObservacion());
+		return partidaSolicitudAlmacen; 
+	}
+	
+	private PartidaSolicitudAlmacen crearDeEquipoTransporte(EquipoTransporteSolicitudAlmacenDO item){
+		PartidaSolicitudAlmacen partidaSolicitudAlmacen = new PartidaSolicitudAlmacen();
+		partidaSolicitudAlmacen.setTipoAlmacen( TipoAlmacenDO.EQUIPO_TRANSPORTE );
+		partidaSolicitudAlmacen.setCodigo( item.getEquipoTransporte().getCodigo() );
+		partidaSolicitudAlmacen.setGrupoFamilia(item.getEquipoTransporte().getGrupofamiliab().getEtiqueta());
+		partidaSolicitudAlmacen.setDescripcion(item.getEquipoTransporte().getDescripcion());
+		partidaSolicitudAlmacen.setCantidad(item.getCantidadSolicitada());
+		partidaSolicitudAlmacen.setUnidad("");
+		partidaSolicitudAlmacen.setRegresoAlmacen(item.getRegresoAlmacen());
+		partidaSolicitudAlmacen.setObservacion(item.getObservacion());
+		return partidaSolicitudAlmacen; 
+	}
+	
+	private PartidaSolicitudAlmacen crearDeMaterial(MaterialSolicitudAlmacenDO item){
+		PartidaSolicitudAlmacen partidaSolicitudAlmacen = new PartidaSolicitudAlmacen();
+		partidaSolicitudAlmacen.setTipoAlmacen( TipoAlmacenDO.MATERIALES );
+		partidaSolicitudAlmacen.setCodigo( item.getMaterial().getCodigo() );
+		partidaSolicitudAlmacen.setGrupoFamilia(item.getMaterial().getGrupoFamiliaC().getEtiqueta());
+		partidaSolicitudAlmacen.setDescripcion(item.getMaterial().getDescripcion());
+		partidaSolicitudAlmacen.setCantidad(item.getCantidadSolicitada());
+		partidaSolicitudAlmacen.setUnidad(item.getMaterial().getUnidadB().getEtiqueta());
+		partidaSolicitudAlmacen.setRegresoAlmacen(item.getRegresoAlmacen());
+		partidaSolicitudAlmacen.setObservacion(item.getObservacion());
+		return partidaSolicitudAlmacen; 
+	}
+	
+	private PartidaSolicitudAlmacen crearDeTelefoniaMovil(TelefoniaMovilSolicitudAlmacenDO item){
+		PartidaSolicitudAlmacen partidaSolicitudAlmacen = new PartidaSolicitudAlmacen();
+		partidaSolicitudAlmacen.setTipoAlmacen( TipoAlmacenDO.TELEFONIA_MOVIL );
+		partidaSolicitudAlmacen.setCodigo( item.getTelefoniaMovil().getCodigo() );
+		partidaSolicitudAlmacen.setGrupoFamilia(item.getTelefoniaMovil().getGrupoFamiliaF().getEtiqueta());
+		partidaSolicitudAlmacen.setDescripcion(item.getTelefoniaMovil().getDescripcion());
+		partidaSolicitudAlmacen.setCantidad(item.getCantidadSolicitada());
+		partidaSolicitudAlmacen.setUnidad("");
+		partidaSolicitudAlmacen.setRegresoAlmacen(item.getRegresoAlmacen());
+		partidaSolicitudAlmacen.setObservacion(item.getObservacion());
+		return partidaSolicitudAlmacen; 
+	}
+	
+	private PartidaSolicitudAlmacen crearDeHardware(HardwareSolicitudAlmacenDO item){
+		PartidaSolicitudAlmacen partidaSolicitudAlmacen = new PartidaSolicitudAlmacen();
+		partidaSolicitudAlmacen.setTipoAlmacen( TipoAlmacenDO.HARDWARE );
+		partidaSolicitudAlmacen.setCodigo( item.getHardware().getCodigo() );
+		partidaSolicitudAlmacen.setGrupoFamilia(item.getHardware().getGrupoFamiliaE().getEtiqueta());
+		partidaSolicitudAlmacen.setDescripcion(item.getHardware().getDescripcion());
+		partidaSolicitudAlmacen.setCantidad(item.getCantidadSolicitada());
+		partidaSolicitudAlmacen.setUnidad(item.getHardware().getUnidadC().getEtiqueta());
+		partidaSolicitudAlmacen.setRegresoAlmacen(item.getRegresoAlmacen());
+		partidaSolicitudAlmacen.setObservacion(item.getObservacion());
+		return partidaSolicitudAlmacen; 
+	}
+	
+	private PartidaSolicitudAlmacen crearDeSoftware(SoftwareSolicitudAlmacenDO item){
+		PartidaSolicitudAlmacen partidaSolicitudAlmacen = new PartidaSolicitudAlmacen();
+		partidaSolicitudAlmacen.setTipoAlmacen( TipoAlmacenDO.SOFTWARE );
+		partidaSolicitudAlmacen.setCodigo( item.getSoftware().getCodigo() );
+		partidaSolicitudAlmacen.setGrupoFamilia("");
+		partidaSolicitudAlmacen.setDescripcion(item.getSoftware().getDescripcion());
+		partidaSolicitudAlmacen.setCantidad(item.getCantidadSolicitada());
+		partidaSolicitudAlmacen.setUnidad(item.getSoftware().getUnidad());
+		partidaSolicitudAlmacen.setRegresoAlmacen(item.getRegresoAlmacen());
+		partidaSolicitudAlmacen.setObservacion(item.getObservacion());
+		return partidaSolicitudAlmacen; 
+	}
+	
+	private PartidaSolicitudAlmacen crearDeHerramienta(HerramientaSolicitudAlmacenDO item){
+		PartidaSolicitudAlmacen partidaSolicitudAlmacen = new PartidaSolicitudAlmacen();
+		partidaSolicitudAlmacen.setTipoAlmacen( TipoAlmacenDO.HERRAMIENTA );
+		partidaSolicitudAlmacen.setCodigo( item.getHerramienta().getCodigo() );
+		partidaSolicitudAlmacen.setGrupoFamilia(item.getHerramienta().getGrupoFamiliaA().getEtiqueta());
+		partidaSolicitudAlmacen.setDescripcion(item.getHerramienta().getDescripcion());
+		partidaSolicitudAlmacen.setCantidad(item.getCantidadSolicitada());
+		partidaSolicitudAlmacen.setUnidad(item.getHerramienta().getUnidadA().getEtiqueta());
+		partidaSolicitudAlmacen.setRegresoAlmacen(item.getRegresoAlmacen());
+		partidaSolicitudAlmacen.setObservacion(item.getObservacion());
+		return partidaSolicitudAlmacen; 
+	}
+	
 	public Long getId() {
 		return id;
 	}

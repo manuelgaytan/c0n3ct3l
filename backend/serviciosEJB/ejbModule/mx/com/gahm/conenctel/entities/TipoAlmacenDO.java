@@ -17,14 +17,20 @@ public class TipoAlmacenDO implements Serializable {
 
 	public static final long ID_HERRAMIENTA = 1L;
 	public static final String HERRAMIENTA = "Herramienta";
-
 	public static final long ID_EQUIPO_MEDICION = 2L;
+	public static final String EQUIPO_MEDICION = "Equipo de Medici—n";
 	public static final long ID_EQUIPO_TRANSPORTE = 3;
+	public static final String EQUIPO_TRANSPORTE = "Equipo de Transporte";
 	public static final long ID_MATERIALES = 4;
+	public static final String MATERIALES = "Materiales";
 	public static final long ID_CONSUMIBLES = 5;
+	public static final String CONSUMIBLES = "Consumibles";
 	public static final long ID_HARDWARE = 6;
+	public static final String HARDWARE = "Hardware";
 	public static final long ID_SOFTWARE = 7;
+	public static final String SOFTWARE = "Software";
 	public static final long ID_TELEFONIA_MOVIL = 8;
+	public static final String TELEFONIA_MOVIL = "Telefon’a M—vil";
 	public static final long ID_SOLICITUD_ALMACEN = 9;
 
 	@Id

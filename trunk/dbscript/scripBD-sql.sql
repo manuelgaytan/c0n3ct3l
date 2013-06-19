@@ -3436,6 +3436,18 @@
 	VALUES (119, 5, 8);
 	INSERT INTO PerfilPantalla
 	VALUES (120, 6, 8);
+	INSERT INTO PerfilPantalla
+	VALUES (121, 4, 8);
+	INSERT INTO PerfilPantalla
+	VALUES (122, 7, 8);
+	INSERT INTO PerfilPantalla
+	VALUES (123, 8, 8);
+	INSERT INTO PerfilPantalla
+	VALUES (124, 9, 8);
+	INSERT INTO PerfilPantalla
+	VALUES (125, 13, 8);
+	INSERT INTO PerfilPantalla
+	VALUES (126, 14, 8);
 
 	/* Usuarios */
 	INSERT INTO Usuario

@@ -26,6 +26,22 @@ import javax.persistence.Table;
 @Table(name="perfil")
 public class PerfilDO implements Serializable {
 	private static final long serialVersionUID = 1L;
+	
+	public static final Integer ID_DIRECTOR_GENERAL = 1;
+	public static final Integer ID_ADMINISTRADOR_CATALOGOS = 2;
+	public static final Integer ID_ALMACEN = 3;
+	public static final Integer ID_RECURSOS_HUMANOS = 4;
+	public static final Integer ID_GERENTE_OPERATIVO = 5;
+	public static final Integer ID_COORDINADOR_OPERATIVO = 6;
+	public static final Integer ID_COMPRAS = 7;
+	public static final Integer ID_PUBLICO = 8;
+	public static final Integer ID_CUENTAS_POR_PAGAR = 9;
+	public static final Integer ID_FACTURACION = 10;
+	public static final Integer ID_CONTABILIDAD = 11;
+	public static final Integer ID_TESORERIA = 12;
+	//public static final Integer ID_RECURSOS_HUMANOS = 13;
+	public static final Integer ID_SISTEMAS_GESTION = 14;
+	public static final Integer ID_VALIDACION_ADMINISTRATIVA = 15;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)

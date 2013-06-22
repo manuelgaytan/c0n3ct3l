@@ -103,14 +103,15 @@ public class ProductoService implements IProductoService {
 				response = false;
 			} else {
 				
-				TypedQuery<ProyectoDO> query = entityManager.createNamedQuery(" ProyectoDO.getProyectosByProducto", ProyectoDO.class);
+				TypedQuery<ProyectoDO> query = entityManager.createNamedQuery("ProyectoDO.getProyectosByProducto", ProyectoDO.class);
 				query.setParameter("idProducto", current.getId());
 				proyectos = query.getResultList();
 				
 				if(proyectos!=null && proyectos.size()>0){
 					response = false;
-				}else
-				entityManager.remove(current);
+				}else{
+					entityManager.remove(current);
+				}
 			}
 		}
 		return response;

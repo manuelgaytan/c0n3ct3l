@@ -27,6 +27,8 @@ import javax.persistence.Table;
 public class UsuarioDO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	public static final long ID_AUTOMATICO = 14l;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;

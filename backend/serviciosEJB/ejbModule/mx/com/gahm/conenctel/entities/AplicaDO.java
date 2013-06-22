@@ -23,7 +23,10 @@ import javax.persistence.Table;
 @Table(name="aplica")
 public class AplicaDO implements Serializable {
 	private static final long serialVersionUID = 1L;
-
+	
+	public static long ID_SI = 1l;
+	public static long ID_NO = 2l;
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;

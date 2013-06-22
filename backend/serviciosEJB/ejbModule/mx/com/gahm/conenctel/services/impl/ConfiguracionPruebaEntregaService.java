@@ -1,6 +1,7 @@
 package mx.com.gahm.conenctel.services.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -14,9 +15,13 @@ import javax.persistence.TypedQuery;
 import mx.com.gahm.conenctel.constants.EstadoProyecto;
 import mx.com.gahm.conenctel.entities.ConfigPruebaEntregaDO;
 import mx.com.gahm.conenctel.entities.EstadoDO;
+import mx.com.gahm.conenctel.entities.EstadoNotificacionDO;
+import mx.com.gahm.conenctel.entities.NotificacionDO;
 import mx.com.gahm.conenctel.entities.ObservacionDO;
+import mx.com.gahm.conenctel.entities.PerfilDO;
 import mx.com.gahm.conenctel.entities.ProyectoDO;
 import mx.com.gahm.conenctel.entities.ProyectoEntregableDO;
+import mx.com.gahm.conenctel.entities.UsuarioDO;
 import mx.com.gahm.conenctel.exceptions.ConectelException;
 import mx.com.gahm.conenctel.services.IConfiguracionPruebaEntregaService;
 
@@ -284,6 +289,32 @@ public class ConfiguracionPruebaEntregaService implements IConfiguracionPruebaEn
 		project.setEstado(estado);
 		project.setClaveAuditoria(claveAuditoria);
 		entityManager.merge(project);
+		this.validarEnvioNotificaciones( project );
 	}
 
+	private void validarEnvioNotificaciones(ProyectoDO project) {
+		if( project == null ){
+			return;
+		}
+		String mensaje = null;
+		mensaje = NotificacionDO.PROYECTO_TERMINO + project.getId();
+		this.enviarNotificacion(PerfilDO.ID_VALIDACION_ADMINISTRATIVA, mensaje);
+		this.enviarNotificacion(PerfilDO.ID_FACTURACION, mensaje);
+		this.enviarNotificacion(PerfilDO.ID_TESORERIA, mensaje);
+		this.enviarNotificacion(PerfilDO.ID_COORDINADOR_OPERATIVO, mensaje);
+		this.enviarNotificacion(PerfilDO.ID_GERENTE_OPERATIVO, mensaje);
+	}
+	
+	private void enviarNotificacion(int idPerfil, String mensaje) {
+		PerfilDO perfil = entityManager.find(PerfilDO.class, idPerfil);
+		UsuarioDO usuario = entityManager.find(UsuarioDO.class, UsuarioDO.ID_AUTOMATICO);
+		EstadoNotificacionDO estado = entityManager.find(EstadoNotificacionDO.class, EstadoNotificacionDO.ID_PENDIENTE);
+		NotificacionDO notificacion = new NotificacionDO();
+		notificacion.setPerfil(perfil);
+		notificacion.setNotificacion(mensaje);
+		notificacion.setUsuarioCreacion(usuario);
+		notificacion.setFechaHoraCreacion(new Date());
+		notificacion.setEstado(estado);
+		entityManager.persist(notificacion);
+	}
 }

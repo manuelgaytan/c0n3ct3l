@@ -87,9 +87,14 @@
 			
 			protected function responseDeleteProductos_resultHandler(event:ResultEvent):void
 			{
-				this.executeQuery();
-				var genericEvent:GenericEvent = new GenericEvent("productsDeleted");
-				this.dispatchEvent( genericEvent );
+				var result:Boolean = event.result as Boolean;
+				if( result ){
+					this.executeQuery();
+					var genericEvent:GenericEvent = new GenericEvent("productsDeleted");
+					this.dispatchEvent( genericEvent );
+				}else{
+					Util.showErrorMessage("No se puede eliminar ya que hay proyecto(s) asociado(s).");
+				}
 			}
 			
 			public function executeQuery(filter:FiltroProducto = null):void

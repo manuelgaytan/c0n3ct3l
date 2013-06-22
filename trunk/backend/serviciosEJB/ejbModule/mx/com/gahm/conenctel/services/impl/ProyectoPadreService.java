@@ -1,5 +1,6 @@
 package mx.com.gahm.conenctel.services.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -40,6 +41,7 @@ public class ProyectoPadreService implements IProyectoPadreService{
 
 	@Override
 	public ProyectoPadreDO save(ProyectoPadreDO item) {
+		item.setFechaCreacion(new Date());
 		entityManager.persist(item);
 		
 		return item;

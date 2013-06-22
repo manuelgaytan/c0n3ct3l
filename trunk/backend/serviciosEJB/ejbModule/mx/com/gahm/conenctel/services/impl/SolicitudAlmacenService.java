@@ -1,6 +1,7 @@
 package mx.com.gahm.conenctel.services.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -71,6 +72,7 @@ public class SolicitudAlmacenService implements ISolicitudAlmacenService {
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public SolicitudAlmacenDO save(SolicitudAlmacenDO item) {
 		this.colocarSolicitudAlmacenAListas(item);
+		item.setFechaSolicitud(new Date());
 		entityManager.persist(item);
 		return item;
 	}

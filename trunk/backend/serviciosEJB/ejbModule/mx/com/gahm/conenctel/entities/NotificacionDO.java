@@ -35,6 +35,11 @@ public class NotificacionDO implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 9129720797707900471L;
+	
+	public static final String PROYECTO_ALMACEN = "Se ha requerido Material, Herramienta, Equipo — Unidad en el Proyecto con id: ";
+	public static final String PROYECTO_VIATICOS = "Se ha requerido Vi‡ticos en el Proyecto con id: ";
+	public static final String PROYECTO_CREACION = "Se ha creado un Proyecto con id: ";
+	public static final String PROYECTO_TERMINO = "Se ha terminado el Proyecto con id: ";;
 
 	@Id
 	@GeneratedValue(strategy = IDENTITY)

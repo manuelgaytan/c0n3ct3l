@@ -413,7 +413,7 @@
 				if( data == null ){
 					return;
 				}
-				data = Util.addEmptyCatalgo( data );
+				//data = Util.addEmptyCatalgo( data );
 				this.responseGetMaterial_resultHandler(data);
 				this.responseGetHerramienta_resultHandler(data);
 				this.responseGetEquipo_resultHandler(data);

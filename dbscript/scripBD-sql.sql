@@ -236,7 +236,7 @@
 	fecha_termino_programada DATE,
 	id_responsable_conectel INT(11) UNSIGNED,
 	id_responsable_implementacion INT(11) UNSIGNED,
-	id_material INT(11) UNSIGNED,
+	id_material INT(11) NOT NULL,
 	id_herramienta INT(11) NOT NULL,
 	id_equipo INT(11) NOT NULL,
 	id_unidad INT(11) NOT NULL,

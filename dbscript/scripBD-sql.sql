@@ -2463,8 +2463,6 @@
 
 	ALTER TABLE DatosGeneralesProyecto ADD FOREIGN KEY id_responsable_implementacion_idxfk (id_responsable_implementacion) REFERENCES Colaborador (id);
 
-	ALTER TABLE DatosGeneralesProyecto ADD FOREIGN KEY id_material_idxfk (id_material) REFERENCES Aplica (id);
-
 	ALTER TABLE DatosGeneralesProyectoImplementacion ADD FOREIGN KEY id_datos_generales_idxfk (id_datos_generales) REFERENCES DatosGeneralesProyecto (id);
 
 	ALTER TABLE DatosGeneralesProyectoImplementacion ADD FOREIGN KEY id_colaborador_idxfk (id_colaborador) REFERENCES Colaborador (id);

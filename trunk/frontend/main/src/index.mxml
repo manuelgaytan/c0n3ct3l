@@ -57,6 +57,7 @@
 			import model.ComentarioPagoProveedor;
 			import model.ComentarioPagoViaticos;
 			import model.ComentarioPantallaValidacionAdministrativa;
+			import model.ComentarioProveedor;
 			import model.ComentarioRequisicion;
 			import model.ComentarioTesoreria;
 			import model.ComentarioValidacionAdministrativa;
@@ -525,6 +526,7 @@
 			private var documentoLiderProveedorMaquilador:DocumentoLiderProveedorMaquilador;
 			private var tipoDesarrolloProyecto:TipoDesarrolloProyecto;
 			private var reportes:Reportes;
+			private var comentarioProveedor:ComentarioProveedor;
 						
 			protected function login_readyHandler(event:ModuleEvent):void
 			{

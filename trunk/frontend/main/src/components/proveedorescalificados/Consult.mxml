@@ -99,7 +99,7 @@
 				 allowMultipleSelection="true">
 		<mx:columns>
 			<mx:DataGridColumn id="dtgCode" headerText="Proveedor"
-							   dataField="proveedorSeleccionado.razonSocial"
+							   dataField="proveedorSeleccionado.proveedor.nombreComercial"
 							   width="160"/>
 			<mx:DataGridColumn id="dtgFamily" headerText="{'Forma \nde Pago'}"
 							   width="80"
@@ -119,6 +119,7 @@
 			<mx:DataGridColumn id="dtgStatus" headerText="{'Días de\nCrédito'}"
 							   dataField="diasCredito"
 							   labelFunction="labelFunctionGenerico"
+							   textAlign="right"
 							   width="70"/>
 			<mx:DataGridColumn id="dtgStatus2" headerText="Banco"
 							   dataField="datoBancario.banco"

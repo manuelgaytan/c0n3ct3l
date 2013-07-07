@@ -1,5 +1,7 @@
 package model
 {
+	import mx.collections.ArrayCollection;
+
 	[RemoteClass(alias="mx.com.gahm.conenctel.entities.ProveedorCalificadoDO")]
 	public class ProveedorCalificado
 	{
@@ -22,10 +24,6 @@ package model
 		
 		public var datoBancario:DatoBancario;
 		
-		
-		
-		
-		
-	
+		public var comentariosProovedor:ArrayCollection;	
 	}
 }

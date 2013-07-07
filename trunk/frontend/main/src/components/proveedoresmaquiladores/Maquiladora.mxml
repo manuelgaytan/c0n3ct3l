@@ -188,9 +188,16 @@
 			
 			private function cleanForm():void
 			{
-				/* this.cmbFamily.selectedIndex = 0;
-				this.cmbUnit.selectedIndex = 0;
-				this.cmbLocation.selectedIndex = 0; */
+				Util.upScroll( this );
+				this.provider.cleanForm();
+				this.txtCuenta.reset();
+				this.txtBanco.reset();
+				this.txtCLBInterbancaria.reset();
+				this.txtNSS.reset();
+				this.txtCURP.reset();
+				this.cmbTipoContrato.selectedIndex = 0;
+				this.dtfFechaContrato.reset();
+				this.fltDlvLeaderDocuments.reset();
 			}
 			
 			protected function responseUpdate_resultHandler(event:ResultEvent):void
@@ -292,11 +299,6 @@
 	</mx:Metadata>
 	<mx:Form id="form">
 		<components:Provider limitedInformation="false" creationComplete="provider_creationCompleteHandler(event)" id="provider"/>
-		<!--<mx:FormItem label="Forma de Pago:">
-			<mx:ComboBox id="cmbFormaPago"
-						 labelField="forma"
-						 />
-		</mx:FormItem>-->
 		<mx:FormItem label="Cuenta Bancaria:">
 			<components:TextInput id="txtCuenta"
 								  />

@@ -70,130 +70,130 @@
 		<mx:LinkButton label="Clientes" id="Clientes" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/clientes.png')"/>
 		<mx:LinkButton label="Productos y Servicios" id="Productos" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/servicios.png')"/>
+					   icon="@Embed(source='assets/images/productos.png')"/>
 		<mx:LinkButton label="Usuarios" id="Usuarios" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/usuarios.png')"/>
 	</mx:VBox>
 	<mx:VBox label="Operación" width="100%" height="100%">
 		<mx:LinkButton label="Proyectos Padre" id="ProyectosPadres" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/clientes.png')"/>
+					   icon="@Embed(source='assets/images/proyectospadre.png')"/>
 		<mx:LinkButton label="Proyectos" id="Proyectos" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/servicios.png')"/>
+					   icon="@Embed(source='assets/images/altaservicios.png')"/>
 		<mx:LinkButton label="Planeación del Proyecto" id="DatosGenerales" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/clientes.png')"/>
+					   icon="@Embed(source='assets/images/datosgeneralesproyecto.png')"/>
 		<mx:LinkButton label="Ejecución del Proyecto" id="DesarrolloProyectoAB" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/clientes.png')"/>
+					   icon="@Embed(source='assets/images/desarrolloproyecto.png')"/>
 		<mx:LinkButton label="Entrega y Revisión" id="ConfiguracionPruebaEntrega" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/servicios.png')"/>
+					   icon="@Embed(source='assets/images/configuracionpruebaentrega.png')"/>
 	</mx:VBox>
 	<mx:VBox label="Almacén" width="100%" height="100%">
 		<mx:LinkButton label="Manejo Almacén" id="Almacen" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/servicios.png')"/>
+					   icon="@Embed(source='assets/images/manejoalmacen.png')"/>
 		<mx:LinkButton label="Solicitud Almacén" id="SolicitudAlmacenModule" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/clientes.png')"/>
+					   icon="@Embed(source='assets/images/solicitudalmacen.png')"/>
 	</mx:VBox>
 	<mx:VBox label="Compras" width="100%" height="100%">
 		<mx:LinkButton label="Proveedores Seleccionados" id="ProveedoresSeleccionados" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/clientes.png')"/>
+					   icon="@Embed(source='assets/images/proveedoresseleccionados.png')"/>
 		<mx:LinkButton label="Proveedores Calificados" id="ProveedoresCalificados" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/servicios.png')"/>
+					   icon="@Embed(source='assets/images/proveedorescalificados.png')"/>
 		<mx:LinkButton label="Proveedores Maquiladores" id="ProveedoresMaquiladores" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/clientes.png')"/>
+					   icon="@Embed(source='assets/images/proveedoresmaquiladores.png')"/>
 		<mx:LinkButton label="Requisiciones de Compra" id="RequisicionesCompra" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/servicios.png')"/>
+					   icon="@Embed(source='assets/images/requisicionescompra.png')"/>
 		<mx:LinkButton label="Solicitudes Servicio Maquilado" id="SolicitudServicioMaquilado" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/clientes.png')"/>
+					   icon="@Embed(source='assets/images/solicitudesserviciomaquilado.png')"/>
 		<mx:LinkButton label="Cotizaciones" id="Cotizaciones" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/servicios.png')"/>
+					   icon="@Embed(source='assets/images/cotizaciones.png')"/>
 		<mx:LinkButton label="Orden de Compra de Material, Mantenimiento y Servicio" id="OrdenesCompraAlmacen" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/clientes.png')"/>
+					   icon="@Embed(source='assets/images/ordenescompramaterial.png')"/>
 		<mx:LinkButton label="Ordenes de Compra Servicio Maquilado" id="OrdenesCompraServicioMaquilado" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/servicios.png')"/>
+					   icon="@Embed(source='assets/images/ordencompraserviciomaquilado.png')"/>
 		<mx:LinkButton label="Programación de Pagos de Compras" id="FacturacionCompra" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/clientes.png')"/>
+					   icon="@Embed(source='assets/images/programacionpagos.png')"/>
 		<mx:LinkButton label="Preciarios Maquiladores" id="PreciariosMaquiladores" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/servicios.png')"/>
+					   icon="@Embed(source='assets/images/preciariosmaquiladores.png')"/>
 	</mx:VBox>
 	<mx:VBox label="Validación Administrativa" width="100%" height="100%">
 		<mx:LinkButton label="Validación del Proyecto" id="ValidacionesProyectos" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/clientes.png')"/>
+					   icon="@Embed(source='assets/images/validacionproyecto.png')"/>
 		<mx:LinkButton label="Ordenes de Compra Clientes" id="OrdenesCompraClientes" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/servicios.png')"/>
+					   icon="@Embed(source='assets/images/ordenescompra.png')"/>
 		<mx:LinkButton label="Validación Adminsitrativa" id="ValidacionesAdministrativas" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/clientes.png')"/>
+					   icon="@Embed(source='assets/images/validacionadministrativa.png')"/>
 		<mx:LinkButton label="Concentrado Ordenes de Compra" id="ConcentradoOrdenesCompra" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/servicios.png')"/>
+					   icon="@Embed(source='assets/images/concentradoordenescompra.png')"/>
 	</mx:VBox>
 	<mx:VBox label="Cuentas por Pagar" width="100%" height="100%">
 		<mx:LinkButton label="Facturación Proveedor" id="FacturacionProveedores" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/clientes.png')"/>
+					   icon="@Embed(source='assets/images/facturacionproveedor.png')"/>
 		<mx:LinkButton label="Nota de Crédito" id="NotasCreditoProveedores" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/servicios.png')"/>
+					   icon="@Embed(source='assets/images/notacredito.png')"/>
 	</mx:VBox>
 	<mx:VBox label="Facturación" width="100%" height="100%">
 		<mx:LinkButton label="Información Facturación" id="InformacionFacturas" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/clientes.png')"/>
+					   icon="@Embed(source='assets/images/informacionfacturacion.png')"/>
 		<mx:LinkButton label="Nota de Crédito" id="NotasCreditoClientes" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/servicios.png')"/>
+					   icon="@Embed(source='assets/images/notacreditofacturacion.png')"/>
 	</mx:VBox>
 	<mx:VBox label="Contabilidad" width="100%" height="100%">
 		<mx:LinkButton label="Solicitud de Viáticos" id="SolicitudesViaticos" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/servicios.png')"/>
+					   icon="@Embed(source='assets/images/solicitudviaticos.png')"/>
 		<mx:LinkButton label="Comprobación de Viáticos" id="ComprobacionesViaticos" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/clientes.png')"/>
+					   icon="@Embed(source='assets/images/comprobacionviaticos.png')"/>
 		<mx:LinkButton label="Fondo Fijo de Caja Chica" id="FondosFijosCajaChica" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/servicios.png')"/>
+					   icon="@Embed(source='assets/images/fondocajachica.png')"/>
 		<mx:LinkButton label="Pagos Contables y Servicios" id="PagosContablesServicios" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/clientes.png')"/>
+					   icon="@Embed(source='assets/images/pagoscontables.png')"/>
 	</mx:VBox>
 	<mx:VBox label="Tesorería" width="100%" height="100%">
 		<mx:LinkButton label="Cobranza" id="Cobranza" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/servicios.png')"/>
+					   icon="@Embed(source='assets/images/cobranza.png')"/>
 		<mx:LinkButton label="Pago a Proveedores" id="PagoProveedores" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/clientes.png')"/>
+					   icon="@Embed(source='assets/images/pagoproveedores.png')"/>
 		<mx:LinkButton label="Pago a Viáticos" id="PagoViaticos" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/servicios.png')"/>
+					   icon="@Embed(source='assets/images/pagoviaticos.png')"/>
 		<mx:LinkButton label="Pagos Contables y Servicios" id="PagoPagosContablesServicios" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/clientes.png')"/>
+					   icon="@Embed(source='assets/images/pagoservicios.png')"/>
 		<mx:LinkButton label="Otras Operaciones Financieras" id="OtrasOperacionesFinancieras" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/clientes.png')"/>
+					   icon="@Embed(source='assets/images/otrasoperacionesfinancieras.png')"/>
 	</mx:VBox>
 	<mx:VBox label="Recursos Humanos" width="100%" height="100%">
 		<mx:LinkButton label="Reclutamiento Solicitud Empleo" id="ReclutamientoSolicitudEmpleo" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/servicios.png')"/>
+					   icon="@Embed(source='assets/images/reclutamiento.png')"/>
 		<mx:LinkButton label="Selección" id="Seleccion" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/clientes.png')"/>
+					   icon="@Embed(source='assets/images/seleccion.png')"/>
 		<mx:LinkButton label="Contratación" id="Contratacion" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/servicios.png')"/>
+					   icon="@Embed(source='assets/images/contratacion.png')"/>
 		<mx:LinkButton label="Administación del Colaborador" id="AdministracionColaborador" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/clientes.png')"/>
+					   icon="@Embed(source='assets/images/administracioncolaborador.png')"/>
 		<mx:LinkButton label="Prenómina" id="Prenomina" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/clientes.png')"/>
+					   icon="@Embed(source='assets/images/prenomina.png')"/>
 		<mx:LinkButton label="Deducciones" id="Deducciones" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/clientes.png')"/>
+					   icon="@Embed(source='assets/images/deducciones.png')"/>
 		<mx:LinkButton label="Percepciones" id="Percepciones" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/clientes.png')"/>
+					   icon="@Embed(source='assets/images/percepcion.png')"/>
 		<mx:LinkButton label="Entrenamiento y Desarrollo" id="EntrenamientoDesarrollo" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/clientes.png')"/>
+					   icon="@Embed(source='assets/images/entrenamiento.png')"/>
 	</mx:VBox>
 	<mx:VBox label="Sistemas de Gestión" width="100%" height="100%">
 		<mx:LinkButton label="Comentarios y/o Sugerencias" id="ComentariosSugerencias" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/servicios.png')"/>
+					   icon="@Embed(source='assets/images/comentarios.png')"/>
 		<mx:LinkButton label="Bitácora de Producto No Conforme o No Conformidades" id="BitacoraProductoNoConformeNoConformidades" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/clientes.png')"/>
+					   icon="@Embed(source='assets/images/noconforme.png')"/>
 		<mx:LinkButton label="Acción Preventiva-Correctiva" id="AccionPreventivaCorrectiva" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/servicios.png')"/>
+					   icon="@Embed(source='assets/images/accionpreventiva.png')"/>
 		<mx:LinkButton label="Concentrado de Capacitación" id="ConcentradoCapacitacion" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/clientes.png')"/>
+					   icon="@Embed(source='assets/images/capacitacion.png')"/>
 		<mx:LinkButton label="Sistemas de Gestión" id="SistemasGestion" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/clientes.png')"/>
+					   icon="@Embed(source='assets/images/sistemasgestion.png')"/>
 		<mx:LinkButton label="Minuta de Reunión" id="MinutaReunion" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/clientes.png')"/>
+					   icon="@Embed(source='assets/images/minutareunion.png')"/>
 		<mx:LinkButton label="Gráfica de Evaluación de Facturación de Proyectos de Conectel" id="GraficaEvaluacionFacturacionProyectosConectel" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/clientes.png')"/>
+					   icon="@Embed(source='assets/images/graficas.png')"/>
 	</mx:VBox>
 	<mx:VBox id="empty">
 		<mx:LinkButton label="Notificaciones" id="Notificaciones" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/clientes.png')"/>
+					   icon="@Embed(source='assets/images/notificacionessistema.png')"/>
 	</mx:VBox>
 </mx:Accordion>

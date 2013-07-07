@@ -26,7 +26,7 @@ import javax.persistence.Table;
  */
 @Entity
 @NamedQueries({
-		@NamedQuery(name = "ProveedorSeleccionadoDO.findAll", query = "select p from ProveedorDO p "),
+		@NamedQuery(name = "ProveedorSeleccionadoDO.findAll", query = "select p from ProveedorSeleccionadoDO p "),
 		@NamedQuery(name = "ClienteDO.findByName", query = "select c from ClienteDO c where c.nombreComercial = :nombre") })
 @Table(name = "proveedorseleccionado")
 public class ProveedorSeleccionadoDO implements Serializable {
@@ -39,7 +39,7 @@ public class ProveedorSeleccionadoDO implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", unique = true, nullable = false)
-	private Integer id;
+	private long id;
 
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "fk_proveedor", nullable = false)
@@ -50,7 +50,7 @@ public class ProveedorSeleccionadoDO implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public ProveedorSeleccionadoDO(Integer id, ProveedorDO proveedor) {
+	public ProveedorSeleccionadoDO(long id, ProveedorDO proveedor) {
 		super();
 		this.id = id;
 		this.proveedor = proveedor;
@@ -59,7 +59,7 @@ public class ProveedorSeleccionadoDO implements Serializable {
 	/**
 	 * @return the id
 	 */
-	public Integer getId() {
+	public long getId() {
 		return id;
 	}
 
@@ -67,7 +67,7 @@ public class ProveedorSeleccionadoDO implements Serializable {
 	 * @param id
 	 *            the id to set
 	 */
-	public void setId(Integer id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 

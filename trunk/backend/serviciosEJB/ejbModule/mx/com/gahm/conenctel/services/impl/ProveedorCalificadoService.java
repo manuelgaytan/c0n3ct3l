@@ -72,10 +72,11 @@ public class ProveedorCalificadoService implements IProveedorCalificadoService {
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public ProveedorCalificadoDO saveProveedorCalificado(
 			ProveedorCalificadoDO proveedor) throws ConectelException {
-		
-		
-		saveComentarios(proveedor);
+		List<ComentarioProveedorDO> comentarios = proveedor.getComentariosProovedor();
+		proveedor.setComentariosProovedor(null);
 		entityManager.persist(proveedor);
+		proveedor.setComentariosProovedor(comentarios);
+		saveComentarios(proveedor);
 		return null;
 	}
 	
@@ -85,19 +86,19 @@ public class ProveedorCalificadoService implements IProveedorCalificadoService {
 		for (ComentarioProveedorDO comentario : comentarios) {
 			entityManager.persist(comentario.getComentarioCompras());
 			comentario.setProveedorCalificado(item);
+			entityManager.persist(comentario);
 		}
 		
 	}
 	
 	private void deleteComentarios(ProveedorCalificadoDO item){
-		List<ComentarioProveedorDO> comentarios = item.getComentariosProovedor();
-		if(comentarios!=null)
-		for (ComentarioProveedorDO comentario : comentarios) {
-			entityManager.remove(comentario);
-			entityManager.remove(comentario.getComentarioCompras());
-			
+		ProveedorCalificadoDO proveedorCalificado = entityManager.find( ProveedorCalificadoDO.class,  item.getId() ); 
+		List<ComentarioProveedorDO> comentarios = proveedorCalificado.getComentariosProovedor();
+		if(comentarios!=null){
+			for (ComentarioProveedorDO comentario : comentarios) {
+				entityManager.remove(comentario);
+			}
 		}
-		
 	}
 	
 	
@@ -129,14 +130,21 @@ public class ProveedorCalificadoService implements IProveedorCalificadoService {
 	@Override
 	public ProductoDO updateProveedorCalificado(ProveedorCalificadoDO proveedor)
 			throws ConectelException {
-		
 		deleteComentarios(proveedor);
-		
-		saveComentarios(proveedor);
+		this.colocarProveedorCalificado( proveedor );
 		entityManager.merge(proveedor);
 		return null;
 	}
 
+	private void colocarProveedorCalificado(ProveedorCalificadoDO proveedorCalificado){
+		List<ComentarioProveedorDO> comentarios = proveedorCalificado.getComentariosProovedor();
+		if(comentarios!=null){
+			for (ComentarioProveedorDO comentario : comentarios) {
+				comentario.setProveedorCalificado(proveedorCalificado);
+			}
+		}
+	}
+	
 	@Override
 	public List<ProveedorCalificadoComboDO> getProveedoresCalificadosCombo() {
 		

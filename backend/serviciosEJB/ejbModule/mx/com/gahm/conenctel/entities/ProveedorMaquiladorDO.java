@@ -15,8 +15,7 @@ import java.util.List;
 
 @Entity
 @NamedQueries({
-	@NamedQuery(name = "ProveedorMaquiladorDO.findAll", query = "select p from ProveedorMaquiladorDO p "),
-	@NamedQuery(name = "ClienteDO.findByName", query = "select c from ClienteDO c where c.nombreComercial = :nombre") })
+	@NamedQuery(name = "ProveedorMaquiladorDO.findAll", query = "select p from ProveedorMaquiladorDO p ") })
 @Table(name="proveedormaquilador")
 public class ProveedorMaquiladorDO  implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -24,7 +23,7 @@ public class ProveedorMaquiladorDO  implements Serializable{
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "id", unique = true, nullable = false)
-	private Integer id;
+	private long id;
 
 	@Column(name="curp")
 	private String curp;
@@ -163,7 +162,7 @@ public class ProveedorMaquiladorDO  implements Serializable{
 	/**
 	 * @return the id
 	 */
-	public Integer getId() {
+	public long getId() {
 		return id;
 	}
 
@@ -171,7 +170,7 @@ public class ProveedorMaquiladorDO  implements Serializable{
 	/**
 	 * @param id the id to set
 	 */
-	public void setId(Integer id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 

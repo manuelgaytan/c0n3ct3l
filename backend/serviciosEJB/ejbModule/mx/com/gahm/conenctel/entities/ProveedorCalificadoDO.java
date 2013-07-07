@@ -68,7 +68,7 @@ public class ProveedorCalificadoDO implements Serializable {
 	@JoinColumn(name = "fk_dato_bancario")
 	private DatoBancarioDO datoBancario;
 	
-	@OneToMany(mappedBy="proveedorCalificado", fetch = FetchType.EAGER,cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="proveedorCalificado", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	private List<ComentarioProveedorDO> comentariosProovedor;
 	
 

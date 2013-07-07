@@ -14,8 +14,10 @@ import javax.persistence.TypedQuery;
 
 import com.sun.faces.config.DocumentOrderingWrapper;
 
+import mx.com.gahm.conenctel.entities.ComentarioProveedorDO;
 import mx.com.gahm.conenctel.entities.DocumentoLiderProveedorMaquiladorDO;
 import mx.com.gahm.conenctel.entities.ProductoDO;
+import mx.com.gahm.conenctel.entities.ProveedorCalificadoDO;
 import mx.com.gahm.conenctel.entities.ProveedorDO;
 import mx.com.gahm.conenctel.entities.ProveedorMaquiladorDO;
 import mx.com.gahm.conenctel.exceptions.ConectelException;
@@ -95,9 +97,29 @@ public class ProveedorMaquiladorService implements IProveedorMaquiladorService {
 	@Override
 	public ProductoDO updateProveedorMaquilador(ProveedorMaquiladorDO proveedor)
 			throws ConectelException {
-		// TODO Auto-generated method stub
+		this.deleteDocumentos(proveedor);
+		this.colocarProveedorMaquilador(proveedor);
 		entityManager.merge(proveedor);
 		return null;
+	}
+	
+	private void colocarProveedorMaquilador(ProveedorMaquiladorDO proveedorMaquilador){
+		List<DocumentoLiderProveedorMaquiladorDO> documentos = proveedorMaquilador.getDocumentosLiderProveedorMaquilador();
+		if(documentos!=null){
+			for (DocumentoLiderProveedorMaquiladorDO documento : documentos) {
+				documento.setProveedorMaquilador( proveedorMaquilador );
+			}
+		}
+	}
+	
+	private void deleteDocumentos(ProveedorMaquiladorDO item){
+		ProveedorMaquiladorDO proveedorMaquilador = entityManager.find( ProveedorMaquiladorDO.class,  item.getId() ); 
+		List<DocumentoLiderProveedorMaquiladorDO> documentos = proveedorMaquilador.getDocumentosLiderProveedorMaquilador();
+		if(documentos!=null){
+			for (DocumentoLiderProveedorMaquiladorDO documento : documentos) {
+				entityManager.remove( documento );
+			}
+		}
 	}
 
 }

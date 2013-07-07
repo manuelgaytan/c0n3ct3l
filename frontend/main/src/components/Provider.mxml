@@ -170,7 +170,7 @@
 				if( data == null ){
 					return;
 				}
-				this.cmbPersona.dataProvider = Util.addEmptyCatalgo( data, "tipo" );
+				this.cmbPersona.dataProvider = data;//Util.addEmptyCatalgo( data, "tipo" );
 				/* if( this._item != null && this._item.tipoPersona != null ){
 					this.cmbPersona.selectedIndex = Util.selectedIndexFromCombo( this.cmbPersona.dataProvider as ArrayCollection, 
 						this._item.tipoPersona.id);

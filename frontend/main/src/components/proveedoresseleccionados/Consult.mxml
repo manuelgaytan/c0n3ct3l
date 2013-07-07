@@ -96,43 +96,45 @@
 	<mx:Metadata>
 		[Event(name="proveedorSeleccionadoDetail", type="events.GenericEvent")]
 	</mx:Metadata>
-	<mx:DataGrid id="datagrid" width="100%" height="100%" dataProvider="{items}"
+	<mx:HBox width="1095" height="100%">
+	<mx:DataGrid id="datagrid" width="1200" height="100%" dataProvider="{items}"
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 				 allowMultipleSelection="true">
 		<mx:columns>
 			<mx:DataGridColumn id="dtgCode" headerText="{'Tipo \nPersona'}"
-							   dataField="tipoPersona.tipo"
+							   dataField="proveedor.tipoPersona.tipo"
 							   width="100"/>
 			<mx:DataGridColumn id="dtgNombreComercial" headerText="{'Nombre \nComercial'}"
 							   width="260"
-							   dataField="nombreComercial"
+							   dataField="proveedor.nombreComercial"
 							   labelFunction="labelFunctionGenerico"/>
 			<mx:DataGridColumn id="dtgRazonSocial" headerText="{'Razón \nSocial'}"
-							   dataField="razonSocial"
+							   dataField="proveedor.razonSocial"
 							   width="260"/>
 			<mx:DataGridColumn id="dtgRFC" headerText="R.F.C."
-							   dataField="rfc"
+							   dataField="proveedor.rfc"
 							   width="120"
 							   />
 			<mx:DataGridColumn id="dtgTelefono" headerText="Teléfonos"
-							   dataField="telefonos"
-							   width="50"
+							   dataField="proveedor.telefonos"
+							   width="100"
 							   />
 			<mx:DataGridColumn id="dtgContacto" headerText="Contacto"
-							   dataField="contacto"
+							   dataField="proveedor.contacto"
 							   width="200"
 							   />
 			<mx:DataGridColumn id="dtgCorreo" headerText="Correo"
-							   dataField="contacto"
+							   dataField="proveedor.correo"
 							   width="150"
 							   />
 			
 			<mx:DataGridColumn id="dtgPaginaWeb" headerText="Pagina Web"
-							   dataField="paginaWeb"
+							   dataField="proveedor.paginaWeb"
 							   width="150"
 							   />
 		</mx:columns>
 	</mx:DataGrid>
+	</mx:HBox>
 	<mx:HBox>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>
 	</mx:HBox>

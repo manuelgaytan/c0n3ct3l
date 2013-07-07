@@ -105,14 +105,14 @@
 				 allowMultipleSelection="true">
 		<mx:columns>
 			<mx:DataGridColumn id="dtgCode" headerText="{'Tipo \nPersona'}"
-							   dataField="tipoPersona.tipo"
+							   dataField="proveedor.tipoPersona.tipo"
 							   width="80"/>
 			<mx:DataGridColumn id="dtgFamily" headerText="{'Nombre \nComercial'}"
 							   width="120"
-							   dataField="nombreComercial"
+							   dataField="proveedor.nombreComercial"
 							   labelFunction="labelFunctionGenerico"/>
 			<mx:DataGridColumn id="dtgDescription" headerText="{'Razón \nSocial'}"
-							   dataField="razonSocial"
+							   dataField="proveedor.razonSocial"
 							   width="120"/>
 			<mx:DataGridColumn id="dtgFamily3" headerText="{'Tipo de\nContrato'}"
 							   width="80"
@@ -121,6 +121,7 @@
 			<mx:DataGridColumn id="dtgFamily4" headerText="{'Fecha de\nContrato'}"
 							   width="100"
 							   dataField="fechaContrato"
+							   textAlign="center"
 							   labelFunction="labelFunctionDate"/>
 		</mx:columns>
 	</mx:DataGrid>

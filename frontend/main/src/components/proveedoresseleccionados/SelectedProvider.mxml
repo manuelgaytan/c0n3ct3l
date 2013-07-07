@@ -149,6 +149,7 @@
 			
 			private function cleanForm():void
 			{
+				Util.upScroll( this );
 				this.provider.cleanForm();
 			}
 			

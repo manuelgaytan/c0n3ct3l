@@ -28,6 +28,7 @@
 			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
 			import mx.com.gahm.componentes.validadores.ValidadorNumerico;
 			import mx.controls.Alert;
+			import mx.core.mx_internal;
 			import mx.events.CloseEvent;
 			import mx.events.FlexEvent;
 			import mx.rpc.events.FaultEvent;
@@ -92,10 +93,7 @@
 				this.txtCuenta.text = this._item.datoBancario.cuentaBancaria;
 				this.txtDescuentos.text=Util.numberToString(this._item.descuentos); 
 				this.txtDiasCredito.text=Util.numberToString(  this._item.diasCredito);
-				
-
-				
-				//this.comments.comments = this._item.comentarios;
+				this.comments.setCommentsIn( this._item.comentariosProovedor, "comentarioCompras");
 			}
 			
 			private function getProveedor():ProveedorCalificado{
@@ -105,8 +103,6 @@
 				}else{
 					item = this._item;
 				}
-				//item.datoBancario = new DatoBancario();
-				//item.datoBancario.id= (this.cmbPersona.selectedItem as TipoPersona).id;
 				item.proveedorSeleccionado = new ProveedorSeleccionado();
 				item.proveedorSeleccionado.id = ((this.cmbProveedor.selectedItem as ProveedorSeleccionado).id);
 				item.formaPago = new FormaPago();
@@ -121,12 +117,7 @@
 				item.descuentos= Util.stringToNumber(this.txtDescuentos.text);
 				item.diasCredito= Util.stringToNumber(this.txtDiasCredito.text);
 				item.moneda= Util.validateEmpty(txtMoneda.text);
-				
-				
-				
-				
-				
-				
+				item.comentariosProovedor = this.comments.getCommentsAsInWith("model.ComentarioCompras","model.ComentarioProveedor","comentarioCompras");
 				return item; 
 			}
 			
@@ -136,20 +127,6 @@
 				this.responseProveedor.token= this.proveedorRO.getProveedoresSeleccionados();
 				this.responseFormaPago.token= this.catalogoService.getFormaPago();
 				this.responseTiposPago.token= this.catalogoService.getTipoPago();
-			}
-			
-			
-			protected function responseGetGrupoFamiliaD_resultHandler(event:ResultEvent):void
-			{
-				/* var data:ArrayCollection = event.result as ArrayCollection;
-				if( data == null ){
-					return;
-				}
-				this.cmbFamily.dataProvider = Util.addEmptyCatalgo( data );
-				if( this._item != null && this._item.grupoFamiliaD != null ){
-					this.cmbFamily.selectedIndex = Util.selectedIndexFromCombo( this.cmbFamily.dataProvider as ArrayCollection, 
-						this._item.grupoFamiliaD.id);
-				} */
 			}
 			
 			protected function ProveedorCalificadoService_faultHandler(event:FaultEvent):void
@@ -213,14 +190,10 @@
 				this.dispatchEvent( eventProveedorNew );
 				this.cleanForm();
 			}
-			
-			
-			
-			
-			
-			
+
 			private function cleanForm():void
 			{
+				Util.upScroll( this );
 				this.txtMoneda.reset();
 				this.cmbProveedor.selectedIndex = 0;
 				this.cmbFormaPago.selectedIndex	=0;
@@ -231,6 +204,7 @@
 				this.txtCuenta.reset();
 				this.txtDescuentos.reset(); 
 				this.txtDiasCredito.reset();
+				this.comments.reset();
 			}
 			
 			protected function responseUpdate_resultHandler(event:ResultEvent):void
@@ -238,32 +212,6 @@
 				var eventProveedorUpdated:Event = new Event("proveedorUpdated");
 				this.dispatchEvent( eventProveedorUpdated );
 				this.cleanForm();
-			}
-			
-			protected function responseGetUnidadB_resultHandler(event:ResultEvent):void
-			{
-				/* var data:ArrayCollection = event.result as ArrayCollection;
-				if( data == null ){
-					return;
-				}
-				this.cmbUnit.dataProvider = Util.addEmptyCatalgo( data );
-				if( this._item != null && this._item.unidadB != null ){
-					this.cmbUnit.selectedIndex = Util.selectedIndexFromCombo( this.cmbUnit.dataProvider as ArrayCollection, 
-						this._item.unidadB.id);
-				} */
-			}
-			
-			protected function responseGetUbicacionC_resultHandler(event:ResultEvent):void
-			{
-				/* var data:ArrayCollection = event.result as ArrayCollection;
-				if( data == null ){
-					return;
-				}
-				this.cmbLocation.dataProvider = Util.addEmptyCatalgo( data );
-				if( this._item != null && this._item.ubicacionC != null ){
-					this.cmbLocation.selectedIndex = Util.selectedIndexFromCombo( this.cmbLocation.dataProvider as ArrayCollection, 
-						this._item.ubicacionC.id);
-				} */
 			}
 			
 			protected function catalogoService_faultHandler(event:FaultEvent):void
@@ -277,7 +225,7 @@
 				if( data == null ){
 				return;
 				}
-				this.cmbProveedor.dataProvider = Util.addEmptyCatalgo( data, "nombreComercial" );
+				this.cmbProveedor.dataProvider = data;
 				if( this._item != null && this._item.proveedorSeleccionado != null ){
 				this.cmbProveedor.selectedIndex = Util.selectedIndexFromCombo( this.cmbProveedor.dataProvider as ArrayCollection, 
 				this._item.proveedorSeleccionado.id);
@@ -290,7 +238,7 @@
 				if( data == null ){
 					return;
 				}
-				this.cmbFormaPago.dataProvider = Util.addEmptyCatalgo( data ,"forma");
+				this.cmbFormaPago.dataProvider = data;//Util.addEmptyCatalgo( data ,"forma");
 				if( this._item != null && this._item.formaPago != null ){
 					this.cmbFormaPago.selectedIndex = Util.selectedIndexFromCombo( this.cmbFormaPago.dataProvider as ArrayCollection, 
 						this._item.formaPago.id);
@@ -304,14 +252,16 @@
 				if( data == null ){
 					return;
 				}
-				this.cmbTipPago.dataProvider = Util.addEmptyCatalgo( data, "tipo" );
+				this.cmbTipPago.dataProvider = data;//Util.addEmptyCatalgo( data, "tipo" );
 				if( this._item != null && this._item.tipoPago != null ){
 					this.cmbTipPago.selectedIndex = Util.selectedIndexFromCombo( this.cmbTipPago.dataProvider as ArrayCollection, 
 						this._item.tipoPago.id);
 				} 
-				
 			}
 			
+			private function nombreProveedor( item:Object ):String{
+				return Util.extractToText( item, "proveedor.nombreComercial" );
+			}
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -321,7 +271,7 @@
 	<mx:Form id="form">
 		<mx:FormItem label="Proveedor Seleccionado:">
 			<mx:ComboBox id="cmbProveedor"
-						 labelField="nombreComercial"
+						 labelFunction="nombreProveedor"
 						 />
 		</mx:FormItem>
 		<mx:FormItem label="Forma de Pago:">
@@ -366,8 +316,6 @@
 		</mx:FormItem>
 	</mx:Form>
 	<mx:RemoteObject id="proveedorRO" destination="proveedorService" fault="ProveedorCalificadoService_faultHandler(event)"/>
-		
-	
 	<mx:RemoteObject id="ProveedorCalificadoService" destination="proveedorCalificadoService" fault="ProveedorCalificadoService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseProveedor" result="responseProveedor_resultHandler(event)"/>

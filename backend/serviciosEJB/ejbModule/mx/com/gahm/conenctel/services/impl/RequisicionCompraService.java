@@ -1,5 +1,6 @@
 package mx.com.gahm.conenctel.services.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -9,7 +10,9 @@ import javax.persistence.Query;
 
 import mx.com.gahm.conenctel.entities.ComentarioComprasDO;
 import mx.com.gahm.conenctel.entities.ComentarioRequisicionDO;
+import mx.com.gahm.conenctel.entities.DocumentoLiderProveedorMaquiladorDO;
 import mx.com.gahm.conenctel.entities.PartidaRequisicionCompraDO;
+import mx.com.gahm.conenctel.entities.ProveedorMaquiladorDO;
 import mx.com.gahm.conenctel.entities.RequisicionCompraDO;
 import mx.com.gahm.conenctel.entities.SolicitanteRequisicionDO;
 import mx.com.gahm.conenctel.services.IRequisicionCompraService;
@@ -36,7 +39,7 @@ public class RequisicionCompraService  implements IRequisicionCompraService{
 		RequisicionCompraDO requisicion =null;
 		for (Integer id : idsItems) {
 			requisicion = entityManager.find(RequisicionCompraDO.class, id);
-			deletePartidas(requisicion.getPartidasRequisicionCompra());
+			//deletePartidas(requisicion.getPartidasRequisicionCompra());
 			entityManager.remove(requisicion);
 		}
 	}
@@ -50,6 +53,7 @@ public class RequisicionCompraService  implements IRequisicionCompraService{
 		item.setPartidasRequisicionCompra(null);
 		item.setComentariosRequisicion(null);
 
+		item.setFechaSolicitud(new Date());
 		entityManager.persist(item);
 		
 		savePartidas(item,partidasRequisicionCompra);
@@ -63,12 +67,49 @@ public class RequisicionCompraService  implements IRequisicionCompraService{
 
 	@Override
 	public RequisicionCompraDO update(RequisicionCompraDO item) {
-		deletePartidas(item.getPartidasRequisicionCompra());
-		savePartidas(item, item.getPartidasRequisicionCompra());
+		deleteSolicitantesRequisicion(item);
+		deletePartidas(item);
+		deleteComentariosRequisicion(item);
+		List<SolicitanteRequisicionDO> solicitantesRequisicion = item.getSolicitantesRequisicion();
+		List<PartidaRequisicionCompraDO> partidasRequisicionCompra = item.getPartidasRequisicionCompra();
+		List<ComentarioRequisicionDO> comentariosRequisicion = item.getComentariosRequisicion();
+		item.setSolicitantesRequisicion(null);
+		item.setPartidasRequisicionCompra(null);
+		item.setComentariosRequisicion(null);
+		this.colocarRequisicionCompra( item );
+		
 		entityManager.merge(item);
+		
+		savePartidas(item,partidasRequisicionCompra);
+		saveComentariosRequisicion(item, comentariosRequisicion);
+		saveSolicitantesRequisicion(item, solicitantesRequisicion);
+		item.setSolicitantesRequisicion(solicitantesRequisicion);
+		item.setPartidasRequisicionCompra(partidasRequisicionCompra);
+		item.setComentariosRequisicion(comentariosRequisicion);
 		return item;
 	}
 
+	private void colocarRequisicionCompra(RequisicionCompraDO requisicionCompra){
+		List<PartidaRequisicionCompraDO> partidas = requisicionCompra.getPartidasRequisicionCompra();
+		if(partidas!=null){
+			for (PartidaRequisicionCompraDO partida : partidas) {
+				partida.setRequisicionCompra( requisicionCompra );
+			}
+		}
+		List<ComentarioRequisicionDO> comentarios = requisicionCompra.getComentariosRequisicion();
+		if(comentarios!=null){
+			for (ComentarioRequisicionDO comentario : comentarios) {
+				comentario.setRequisicionCompra( requisicionCompra );
+			}
+		}
+		List<SolicitanteRequisicionDO> solicitantes = requisicionCompra.getSolicitantesRequisicion();
+		if(solicitantes!=null){
+			for (SolicitanteRequisicionDO solicitante : solicitantes) {
+				solicitante.setRequisicionCompra( requisicionCompra );
+			}
+		}
+	}
+	
 	@Override
 	public RequisicionCompraDO getItem(Integer id) {
 		RequisicionCompraDO dato=null;
@@ -82,19 +123,40 @@ public class RequisicionCompraService  implements IRequisicionCompraService{
 		
 	}
 	
-	
-	private void deletePartidas(List<PartidaRequisicionCompraDO> partidas){
-		if( partidas == null ){
+	private void deleteSolicitantesRequisicion(RequisicionCompraDO requisicionCompra ){
+		RequisicionCompraDO item = entityManager.find(RequisicionCompraDO.class, requisicionCompra.getId());
+		if( item == null || item.getSolicitantesRequisicion() == null){
 			return;
 		}
-		PartidaRequisicionCompraDO partidaDO =null;
-		for (PartidaRequisicionCompraDO partida : partidas) {
-			partidaDO = entityManager.find(PartidaRequisicionCompraDO.class, partida.getId());
-			if(partidaDO!=null){
-				entityManager.remove(partidaDO);
+		for (SolicitanteRequisicionDO solicitante : item.getSolicitantesRequisicion()) {
+			if(solicitante!=null){
+				entityManager.remove(solicitante);
 			}
 		}
-		 
+	}
+	
+	private void deleteComentariosRequisicion(RequisicionCompraDO requisicionCompra ){
+		RequisicionCompraDO item = entityManager.find(RequisicionCompraDO.class, requisicionCompra.getId());
+		if( item == null || item.getComentariosRequisicion() == null){
+			return;
+		}
+		for (ComentarioRequisicionDO comentario : item.getComentariosRequisicion()) {
+			if(comentario!=null){
+				entityManager.remove(comentario);
+			}
+		}
+	}
+	
+	private void deletePartidas(RequisicionCompraDO requisicionCompra ){
+		RequisicionCompraDO item = entityManager.find(RequisicionCompraDO.class, requisicionCompra.getId());
+		if( item == null || item.getPartidasRequisicionCompra() == null){
+			return;
+		}
+		for (PartidaRequisicionCompraDO partida : item.getPartidasRequisicionCompra()) {
+			if(partida!=null){
+				entityManager.remove(partida);
+			}
+		}
 	}
 	
 	private void savePartidas(RequisicionCompraDO requisicionCompra,List<PartidaRequisicionCompraDO> partidas){

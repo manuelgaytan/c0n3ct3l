@@ -2,7 +2,9 @@
 <mx:DataGrid xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="250"
 			 dataProvider="{new ArrayCollection()}"
 			 editable="false"
-			 variableRowHeight="true">
+			 variableRowHeight="true"
+			 doubleClick="doubleClickHandler(event)"
+			 doubleClickEnabled="true">
 	<mx:Script>
 		<![CDATA[
 			import model.Constants;
@@ -15,6 +17,8 @@
 			
 			import mx.collections.ArrayCollection;
 			import mx.com.gahm.componentes.validadores.Constantes;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
 			private var _purchaseOrderMode:Boolean = false;
 			
 			public function set purchaseOrderMode(value:Boolean):void{
@@ -101,33 +105,50 @@
 				entry.importe = entry.cantidad + entry.costo;
 				this.addItem( entry );
 			}
+			
+			protected function doubleClickHandler(event:MouseEvent):void
+			{
+				if( this.selectedItems == null ||
+					this.selectedItems.length == 0 ){
+					Util.showErrorMessage("Debe seleccionar elementos de la tabla.");
+					return;
+				}
+				Alert.show("Confirme si desea eliminar los elementos.","Advertencia",Alert.YES+Alert.NO,this, deleteItems);
+			}
+			
+			private function deleteItems(event:CloseEvent):void
+			{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				(this.dataProvider as ArrayCollection).removeItemAt( this.selectedIndex );
+			}
 		]]>
 	</mx:Script>
 	<mx:columns>
-		<mx:DataGridColumn id="dtgID" headerText="Partida"
+		<!--<mx:DataGridColumn id="dtgID" headerText="Partida"
 						   dataField="partida"
 						   width="60"
-						   textAlign="center"/>
-		<mx:DataGridColumn id="dtgQuantity" headerText="Cantidad"
-						   dataField="cantidad"
-						   width="60"
-						   textAlign="right"/>
+						   textAlign="center"/>-->
+		<mx:DataGridColumn id="dtgCode" headerText="Código"
+						   dataField="codigo"
+						   width="100"/>
+		<mx:DataGridColumn id="dtgFamilyGroup" headerText="{'Grupo o\nFamilia'}"
+						   dataField="grupoFamilia"
+						   width="100"/>
+		<mx:DataGridColumn id="dtgDescription" headerText="Descripción"
+						   dataField="descripcion" wordWrap="true"
+						   width="160"/>
 		<mx:DataGridColumn id="dtgUnit" headerText="Unidad"
 						   dataField="unidad"
 						   width="80"
 						   textAlign="right"/>
-		<mx:DataGridColumn id="dtgDescription" headerText="Descripción"
-						   dataField="descripcion" wordWrap="true"
-						   width="160"/>
-		<mx:DataGridColumn id="dtgCost" headerText="{'Precio\nUnitario'}"
-						   dataField="costo"
-						   width="80"
+		<mx:DataGridColumn id="dtgQuantity" headerText="Cantidad"
+						   dataField="cantidad"
+						   width="60"
 						   textAlign="right"/>
-		<mx:DataGridColumn id="dtgImport" headerText="Importe"
-						   dataField="importe"
-						   width="80"
-						   labelFunction="labelFunctionImporte"
-						   textAlign="right"
-						   editable="false"/>
+		<mx:DataGridColumn id="dtgImport" headerText="Validación"
+						   dataField="validacion"
+						   width="120"/>
 	</mx:columns>
 </mx:DataGrid>	

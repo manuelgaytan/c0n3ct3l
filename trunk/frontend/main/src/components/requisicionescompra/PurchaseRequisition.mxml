@@ -211,11 +211,12 @@
 			
 			private function cleanForm():void
 			{
+				Util.upScroll( this );
 				this.txtID.reset();
-				this.dtfApplicationDate.reset();
+				this.dtfApplicationDate.selectedDate = new Date();
 				this.txtReason.reset();
 				this.cmbPriority.selectedIndex = 0;
-				this.cmbApplicantArea.selectedIndex = 0;
+				this.cmbApplicantsNames.reset();
 				this.cmbApplicantArea.selectedIndex = 0;
 				this.txtSite.reset();
 				this.cmbProduct.selectedIndex = 0;
@@ -229,7 +230,6 @@
 				this.txtUnit.reset();
 				this.txtValidation.reset();
 				this.itemsManagement.reset();
-				//this.cmbItemStatus.selectedIndex = 0;
 				this.cmbStatus.selectedIndex = 0;
 				this.comments.reset();
 			}
@@ -544,11 +544,6 @@
 								  width="200"
 								  />
 		</mx:FormItem>
-		<!--<mx:FormItem label="Estatus:">
-			<mx:ComboBox id="cmbItemStatus"
-						 labelField="estatus"
-						 />
-		</mx:FormItem>-->
 		<mx:FormItem>
 			<mx:Button id="btnAddItem" label="Agregar Partida" click="btnAddItem_clickHandler(event)"/>
 		</mx:FormItem>

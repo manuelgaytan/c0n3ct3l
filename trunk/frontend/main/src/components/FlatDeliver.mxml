@@ -11,6 +11,9 @@
 				if( this._delivers == null ){
 					this._delivers = new ArrayCollection();
 				}
+				if( !validaInsertar() ){
+					return;
+				}
 				this._delivers.addItem( text );
 			}
 			

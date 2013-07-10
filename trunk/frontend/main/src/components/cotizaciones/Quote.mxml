@@ -151,6 +151,7 @@
 			
 			private function cleanForm():void
 			{
+				Util.upScroll( this );
 				this.txtID.reset();
 				this.txtDescription.reset();
 				this.txtTransmitter.reset();
@@ -192,7 +193,7 @@
 			<components:DateField id="dtfDate"/>
 		</mx:FormItem>
 		<mx:FormItem label="Nombre Archivo:">
-			<components:FlatDeliver id="dlvFileName"/>
+			<components:FlatDeliver id="dlvFileName" limitedTo="1"/>
 		</mx:FormItem>
 		<components:Comments id="comments"/>
 		<mx:FormItem>

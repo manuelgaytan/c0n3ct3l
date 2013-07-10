@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
-		   width="700" height="525"
+		   width="900" height="555"
 		   xmlns:solicitudesserviciomaquilado="components.solicitudesserviciomaquilado.*"
 		   creationComplete="creationCompleteHandler(event)">
 	<mx:Script>

@@ -25,6 +25,9 @@
 			[Bindable]
 			public var deliveryType:Number;
 			
+			[Bindable]
+			public var limitedTo:Number = NaN;
+			
 			public function existElements():Boolean{
 				if( this._delivers == null ||
 					this._delivers.length == 0 ){
@@ -114,10 +117,25 @@
 				this.txtDeliver.reset();
 			}
 			
+			protected function validaInsertar():Boolean{
+				var value:Boolean = true;
+				if( isNaN( this.limitedTo ) ){
+					return value;
+				}
+				value &&= this._delivers.length < this.limitedTo;
+				if( !value ){
+					Util.showErrorMessage( "Este componente solo soporta " + this.limitedTo.toString() + " elemento(s)." );
+				}
+				return value;
+			}
+			
 			public function addDelivery(text:String):void
 			{
 				if( this._delivers == null ){
 					this._delivers = new ArrayCollection();
+				}
+				if( !validaInsertar() ){
+					return;
 				}
 				var proyectoEntregable:ProyectoEntregable = new ProyectoEntregable();
 				proyectoEntregable.entregable = new Entregable();

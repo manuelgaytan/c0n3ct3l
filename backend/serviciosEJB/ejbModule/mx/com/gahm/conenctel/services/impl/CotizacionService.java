@@ -8,7 +8,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 import mx.com.gahm.conenctel.entities.ComentarioCotizacionDO;
+import mx.com.gahm.conenctel.entities.ComentarioProveedorDO;
 import mx.com.gahm.conenctel.entities.CotizacionDO;
+import mx.com.gahm.conenctel.entities.ProveedorCalificadoDO;
 import mx.com.gahm.conenctel.services.ICotizacionService;
 
 @Stateless(mappedName = "ejb/CotizacionService")
@@ -30,51 +32,58 @@ public class CotizacionService implements ICotizacionService{
 	@Override
 	public void deleteItems(List<Integer> idsItems) {
 		for (Integer id : idsItems) {
-			deletecomentarios(id);
+			CotizacionDO item = new CotizacionDO();
+			item.setId(id);
+			deleteComentarios(item);
 		}
-		
 	}
 
 	@Override
 	public CotizacionDO save(CotizacionDO item) {
-		
 		List<ComentarioCotizacionDO> comentarios= item.getComentariosCotizacion();
-		if(comentarios!=null){
-			savecomentarios(item ,comentarios);
-		}
-		
-		
+		item.setComentariosCotizacion(null);
 		entityManager.persist(item);
+		item.setComentariosCotizacion(comentarios);
+		saveComentarios(item);
 		return item;
 	}
 
-	private void savecomentarios(CotizacionDO item ,List<ComentarioCotizacionDO> comentarios){
+	private void saveComentarios(CotizacionDO item){
+		List<ComentarioCotizacionDO> comentarios = item.getComentariosCotizacion();
+		if(comentarios!=null)
 		for (ComentarioCotizacionDO comentario : comentarios) {
 			entityManager.persist(comentario.getComentarioCompras());
 			comentario.setCotizacion(item);
+			entityManager.persist(comentario);
 		}
 	}
 	
-	private void deletecomentarios(Integer id){
-		CotizacionDO item = getItem(id);
+	private void deleteComentarios(CotizacionDO cotizacion){
+		CotizacionDO item = getItem( cotizacion.getId() );
 		List<ComentarioCotizacionDO> comentarios= item.getComentariosCotizacion();
-		
-		for (ComentarioCotizacionDO comentario : comentarios) {
-			entityManager.remove(comentario);
-			entityManager.remove(comentario.getComentarioCompras());
+		if(comentarios!=null){
+			for (ComentarioCotizacionDO comentario : comentarios) {
+				entityManager.remove(comentario);
+			}
 		}
 	}
 	
 	
 	@Override
 	public CotizacionDO update(CotizacionDO item) {
-		deletecomentarios(item.getId());
-		List<ComentarioCotizacionDO> comentarios= item.getComentariosCotizacion();
-		if(comentarios!=null){
-			savecomentarios(item ,comentarios);
-		}
+		deleteComentarios(item);
+		this.colocarCotizacion( item );
 		entityManager.merge(item);
-		return item;
+		return null;
+	}
+	
+	private void colocarCotizacion(CotizacionDO item){
+		List<ComentarioCotizacionDO> comentarios = item.getComentariosCotizacion();
+		if(comentarios!=null){
+			for (ComentarioCotizacionDO comentario : comentarios) {
+				comentario.setCotizacion(item);
+			}
+		}
 	}
 
 	@Override

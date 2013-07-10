@@ -96,7 +96,7 @@ public class CotizacionDO implements java.io.Serializable {
 		this.nombreArchivo = nombreArchivo;
 	}
 
-	@OneToMany(mappedBy="cotizacion", fetch = FetchType.EAGER,cascade=CascadeType.ALL)	
+	@OneToMany(mappedBy="cotizacion", fetch = FetchType.EAGER,cascade=CascadeType.REMOVE)	
 	public List<ComentarioCotizacionDO> getComentariosCotizacion() {
 		return comentariosCotizacion;
 	}

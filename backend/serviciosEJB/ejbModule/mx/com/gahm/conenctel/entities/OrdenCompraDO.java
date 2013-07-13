@@ -40,13 +40,13 @@ public class OrdenCompraDO  implements java.io.Serializable {
 	 private Integer id;
      private Date fecha;
      private ProyectoDO proyecto;
-     private Long subtotal;
-     private Long iva;
-     private Long ieps;
-     private Long retencionIsr;
-     private Long retencionIva;
-     private Long otrosImpuestos;
-     private Long total;
+     private Double subtotal;
+     private Double iva;
+     private Double ieps;
+     private Double retencionIsr;
+     private Double retencionIva;
+     private Double otrosImpuestos;
+     private Double total;
      private Date fechaEntregaAlmacen;
      private String leyenda;
      
@@ -59,7 +59,7 @@ public class OrdenCompraDO  implements java.io.Serializable {
     public OrdenCompraDO() {
     }
 
-	public OrdenCompraDO(Date fecha,ProveedorCalificadoDO proveedorCalificado, ProyectoDO proyecto, RequisicionCompraDO requisicionCompra, Long subtotal, Long iva, Long total, Date fechaEntregaAlmacen) {
+	public OrdenCompraDO(Date fecha,ProveedorCalificadoDO proveedorCalificado, ProyectoDO proyecto, RequisicionCompraDO requisicionCompra, Double subtotal, Double iva, Double total, Date fechaEntregaAlmacen) {
         this.fecha = fecha;
         this.proveedorCalificado = proveedorCalificado;
         this.proyecto = proyecto;
@@ -70,7 +70,7 @@ public class OrdenCompraDO  implements java.io.Serializable {
         this.fechaEntregaAlmacen = fechaEntregaAlmacen;
     }
     
-    public OrdenCompraDO(CotizacionDO cotizacion, Date fecha, ProveedorCalificadoDO proveedorCalificado, ProyectoDO proyecto, RequisicionCompraDO requisicionCompra, Long subtotal, Long iva, Long ieps, Long retencionIsr, Long retencionIva, Long otrosImpuestos, Long total, Date fechaEntregaAlmacen) {
+    public OrdenCompraDO(CotizacionDO cotizacion, Date fecha, ProveedorCalificadoDO proveedorCalificado, ProyectoDO proyecto, RequisicionCompraDO requisicionCompra, Double subtotal, Double iva, Double ieps, Double retencionIsr, Double retencionIva, Double otrosImpuestos, Double total, Date fechaEntregaAlmacen) {
         this.cotizacion = cotizacion;
         this.fecha = fecha;
         this.proveedorCalificado = proveedorCalificado;
@@ -151,71 +151,71 @@ public class OrdenCompraDO  implements java.io.Serializable {
     
     @Column(name="subtotal", nullable=false, precision=10, scale=0)
 
-    public Long getSubtotal() {
+    public Double getSubtotal() {
         return this.subtotal;
     }
     
-    public void setSubtotal(Long subtotal) {
+    public void setSubtotal(Double subtotal) {
         this.subtotal = subtotal;
     }
     
     @Column(name="iva", nullable=false, precision=10, scale=0)
 
-    public Long getIva() {
+    public Double getIva() {
         return this.iva;
     }
     
-    public void setIva(Long iva) {
+    public void setIva(Double iva) {
         this.iva = iva;
     }
     
     @Column(name="ieps", precision=10, scale=0)
 
-    public Long getIeps() {
+    public Double getIeps() {
         return this.ieps;
     }
     
-    public void setIeps(Long ieps) {
+    public void setIeps(Double ieps) {
         this.ieps = ieps;
     }
     
     @Column(name="retencion_isr", precision=10, scale=0)
 
-    public Long getRetencionIsr() {
+    public Double getRetencionIsr() {
         return this.retencionIsr;
     }
     
-    public void setRetencionIsr(Long retencionIsr) {
+    public void setRetencionIsr(Double retencionIsr) {
         this.retencionIsr = retencionIsr;
     }
     
     @Column(name="retencion_iva", precision=10, scale=0)
 
-    public Long getRetencionIva() {
+    public Double getRetencionIva() {
         return this.retencionIva;
     }
     
-    public void setRetencionIva(Long retencionIva) {
+    public void setRetencionIva(Double retencionIva) {
         this.retencionIva = retencionIva;
     }
     
     @Column(name="otros_impuestos", precision=10, scale=0)
 
-    public Long getOtrosImpuestos() {
+    public Double getOtrosImpuestos() {
         return this.otrosImpuestos;
     }
     
-    public void setOtrosImpuestos(Long otrosImpuestos) {
+    public void setOtrosImpuestos(Double otrosImpuestos) {
         this.otrosImpuestos = otrosImpuestos;
     }
     
     @Column(name="total", nullable=false, precision=10, scale=0)
 
-    public Long getTotal() {
+    public Double getTotal() {
         return this.total;
     }
     
-    public void setTotal(Long total) {
+    public void setTotal(Double total) {
         this.total = total;
     }
     @Temporal(TemporalType.DATE)

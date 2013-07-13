@@ -35,23 +35,29 @@ public class PartidaRequisicionCompraDO implements java.io.Serializable {
 	private String descripcion;
 	@Column( nullable = false)
 	private String cantidad;
-	@Column( nullable = false)
+	@Column( nullable = true)
 	private String unidad;
-	@Column( nullable = false)
+	@Column( nullable = true)
 	private String validacion;
 	@Column(name = "fk_estatus", nullable = false)
 	private Integer fkEstatus;
+	@Column(nullable = true)
+	private Double costo;
+	@Column(nullable = true)
+	private Double importe;
 
 	public PartidaRequisicionCompraDO() {
 	}
 
 	public PartidaRequisicionCompraDO(String descripcion, String cantidad,
-			String unidad, String validacion, Integer fkEstatus) {
+			String unidad, String validacion, Integer fkEstatus, Double costo, Double importe) {
 		this.descripcion = descripcion;
 		this.cantidad = cantidad;
 		this.unidad = unidad;
 		this.validacion = validacion;
 		this.fkEstatus = fkEstatus;
+		this.costo = costo;
+		this.importe = importe;
 	}
 
 	/** full constructor */
@@ -138,6 +144,14 @@ public class PartidaRequisicionCompraDO implements java.io.Serializable {
 
 	public void setFkEstatus(Integer fkEstatus) {
 		this.fkEstatus = fkEstatus;
+	}
+
+	public Double getCosto() {
+		return costo;
+	}
+
+	public void setCosto(Double costo) {
+		this.costo = costo;
 	}
 
 }

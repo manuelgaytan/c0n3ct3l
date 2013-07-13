@@ -10,6 +10,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import mx.com.gahm.conenctel.entities.OrdenCompraDO;
+import mx.com.gahm.conenctel.entities.PartidaRequisicionCompraDO;
+import mx.com.gahm.conenctel.entities.RequisicionCompraDO;
 import mx.com.gahm.conenctel.services.IOrdenCompraService;
 
 @Stateless(mappedName = "ejb/OrdenCompraService")
@@ -50,6 +52,9 @@ public class OrdenCompraService  implements IOrdenCompraService{
 	public OrdenCompraDO save(OrdenCompraDO item) {
 	    try {
 	    	entityManager.persist(item);
+	    	RequisicionCompraDO requisicionCompra = entityManager.find(RequisicionCompraDO.class, item.getRequisicionCompra().getId());
+	    	this.deletePartidasRequisicionCompra( requisicionCompra );
+	    	this.savePartidasRequisicionCompra( item.getRequisicionCompra() );
 	    	entityManager.flush();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -57,11 +62,33 @@ public class OrdenCompraService  implements IOrdenCompraService{
 		
 	return item;
 	}
+	
+	private void deletePartidasRequisicionCompra( RequisicionCompraDO item ){
+		RequisicionCompraDO requisicionCompra = entityManager.find(RequisicionCompraDO.class, item.getId());
+		List<PartidaRequisicionCompraDO> list = requisicionCompra.getPartidasRequisicionCompra();
+		if( list == null ){
+			for (PartidaRequisicionCompraDO partidaRequisicionCompraDO : list) {
+				entityManager.remove(partidaRequisicionCompraDO);
+			}
+		}
+	}
+	
+	private void savePartidasRequisicionCompra( RequisicionCompraDO item ){
+		List<PartidaRequisicionCompraDO> list = item.getPartidasRequisicionCompra();
+		if( list == null ){
+			for (PartidaRequisicionCompraDO partidaRequisicionCompraDO : list) {
+				partidaRequisicionCompraDO.setRequisicionCompra(item);
+				entityManager.persist(partidaRequisicionCompraDO);
+			}
+		}
+	}
 
 	@Override
 	public OrdenCompraDO update(OrdenCompraDO item) {
 		entityManager.merge(item);
-		
+		RequisicionCompraDO requisicionCompra = entityManager.find(RequisicionCompraDO.class, item.getRequisicionCompra().getId());
+    	this.deletePartidasRequisicionCompra( requisicionCompra );
+    	this.savePartidasRequisicionCompra( item.getRequisicionCompra() );
 		return item;
 	}
 

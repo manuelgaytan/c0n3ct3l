@@ -835,9 +835,11 @@
 	grupo_familia VARCHAR(255),
 	descripcion VARCHAR(255) NOT NULL,
 	cantidad VARCHAR(255) NOT NULL,
-	unidad VARCHAR(255) NOT NULL,
-	validacion VARCHAR(255) NOT NULL,
+	unidad VARCHAR(255) NULL,
+	validacion VARCHAR(255) NULL,
 	fk_estatus INT(11) UNSIGNED NOT NULL,
+	costo DECIMAL(11,2),
+	importe DECIMAL(11,2),
 	PRIMARY KEY (id)
 	);
 

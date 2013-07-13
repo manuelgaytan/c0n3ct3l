@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:DataGrid xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="250"
 			 dataProvider="{new ArrayCollection()}"
-			 editable="false"
+			 editable="{this._purchaseOrderMode}"
 			 variableRowHeight="true"
 			 doubleClick="doubleClickHandler(event)"
 			 doubleClickEnabled="true">
@@ -19,6 +19,7 @@
 			import mx.com.gahm.componentes.validadores.Constantes;
 			import mx.controls.Alert;
 			import mx.events.CloseEvent;
+			
 			private var _purchaseOrderMode:Boolean = false;
 			
 			public function set purchaseOrderMode(value:Boolean):void{
@@ -108,6 +109,9 @@
 			
 			protected function doubleClickHandler(event:MouseEvent):void
 			{
+				if( this._purchaseOrderMode ){
+					return;
+				}
 				if( this.selectedItems == null ||
 					this.selectedItems.length == 0 ){
 					Util.showErrorMessage("Debe seleccionar elementos de la tabla.");
@@ -132,23 +136,43 @@
 						   textAlign="center"/>-->
 		<mx:DataGridColumn id="dtgCode" headerText="Código"
 						   dataField="codigo"
-						   width="100"/>
+						   width="100"
+						   editable="false"/>
 		<mx:DataGridColumn id="dtgFamilyGroup" headerText="{'Grupo o\nFamilia'}"
 						   dataField="grupoFamilia"
-						   width="100"/>
+						   width="100"
+						   editable="false"/>
 		<mx:DataGridColumn id="dtgDescription" headerText="Descripción"
 						   dataField="descripcion" wordWrap="true"
-						   width="160"/>
+						   width="160"
+						   editable="false"/>
 		<mx:DataGridColumn id="dtgUnit" headerText="Unidad"
 						   dataField="unidad"
 						   width="80"
-						   textAlign="right"/>
+						   textAlign="right"
+						   editable="false"/>
 		<mx:DataGridColumn id="dtgQuantity" headerText="Cantidad"
 						   dataField="cantidad"
 						   width="60"
-						   textAlign="right"/>
-		<mx:DataGridColumn id="dtgImport" headerText="Validación"
+						   textAlign="right"
+						   editable="false"/>
+		<mx:DataGridColumn id="dtgValidation" headerText="Validación"
 						   dataField="validacion"
-						   width="120"/>
+						   width="120"
+						   visible="{!this._purchaseOrderMode}"
+						   editable="false"/>
+		<mx:DataGridColumn id="dtgCost" headerText="{'Precio\nUnitario'}"
+						   dataField="costo"
+						   width="80"
+						   textAlign="right"
+						   visible="{this._purchaseOrderMode}"
+						   editable="{this._purchaseOrderMode}"/>
+		<mx:DataGridColumn id="dtgImport" headerText="Importe"
+						   dataField="importe"
+						   width="80"
+						   labelFunction="labelFunctionImporte"
+						   textAlign="right"
+						   editable="false"
+						   visible="{this._purchaseOrderMode}"/>
 	</mx:columns>
 </mx:DataGrid>	

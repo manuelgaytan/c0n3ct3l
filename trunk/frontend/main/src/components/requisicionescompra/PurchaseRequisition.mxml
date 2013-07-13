@@ -229,6 +229,7 @@
 				this.txtQuantity.reset();
 				this.txtUnit.reset();
 				this.txtValidation.reset();
+				this.txtCost.reset();
 				this.itemsManagement.reset();
 				this.cmbStatus.selectedIndex = 0;
 				this.comments.reset();
@@ -361,7 +362,7 @@
 				this.txtFamily.text = this.findGrupoFamilia(item);
 				this.txtDescription.text = Util.extractToText(item,"descripcion");
 				this.txtUnit.text = this.findUnidad(item);
-				
+				this.txtCost.text = item.costo.toString();				
 			}
 			
 			private function findGrupoFamilia(item:Object):String{
@@ -428,6 +429,7 @@
 				entry.cantidad = Util.validateEmpty( this.txtQuantity.text );
 				entry.unidad = Util.validateEmpty( this.txtUnit.text );
 				entry.validacion = Util.validateEmpty( this.txtValidation.text );
+				entry.costo = Util.validateEmpty( this.txtCost.text );
 				return entry;
 			}
 			
@@ -446,6 +448,7 @@
 				this.txtQuantity.reset();
 				this.txtUnit.reset();
 				this.txtValidation.reset();
+				this.txtCost.reset();
 			}
 			
 		]]>
@@ -544,10 +547,15 @@
 								  width="200"
 								  />
 		</mx:FormItem>
+		<mx:FormItem label="Costo:" includeInLayout="false">
+			<components:TextInput id="txtCost"
+								  width="200"
+								  />
+		</mx:FormItem>
 		<mx:FormItem>
 			<mx:Button id="btnAddItem" label="Agregar Partida" click="btnAddItem_clickHandler(event)"/>
 		</mx:FormItem>
-		<requisicionescompra:ItemsManagement id="itemsManagement"/>
+		<requisicionescompra:ItemsManagement id="itemsManagement" purchaseOrderMode="true"/>
 		<mx:FormItem label="Estatus:">
 			<mx:ComboBox id="cmbStatus"
 						 labelField="estatus"

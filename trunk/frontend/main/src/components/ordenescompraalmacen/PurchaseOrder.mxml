@@ -130,6 +130,7 @@
 				item.proyecto.id = Util.stringToNumber( this.txtProjectID.text );
 				item.requisicionCompra = new RequisicionCompra();
 				item.requisicionCompra.id = Util.stringToNumber( this.txtRequisicionID.text );
+				item.requisicionCompra.partidasRequisicionCompra = this.itemsManagement.dataProvider as ArrayCollection;
 				item.cotizacion = new Cotizacion();
 				item.cotizacion.id = Util.stringToNumber( this.txtQuotationID.text );
 				item.fecha = this.dtfDate.selectedDate;
@@ -219,6 +220,7 @@
 			
 			private function cleanForm():void
 			{
+				Util.upScroll( this );
 				this.txtID.reset();
 				this.txtProjectID.reset();
 				this.txtRequisicionID.reset();
@@ -345,7 +347,7 @@
 	</mx:Metadata>
 	<mx:Form id="form">
 		<mx:FormItem label="ID:" id="frmID">
-			<components:TextInput id="txtID" textAlign="right"/>
+			<components:TextInput id="txtID" textAlign="right" editable="false"/>
 		</mx:FormItem>
 		<mx:FormItem label="ID Proyecto:" direction="horizontal">
 			<components:TextInput id="txtProjectID" textAlign="right"/>

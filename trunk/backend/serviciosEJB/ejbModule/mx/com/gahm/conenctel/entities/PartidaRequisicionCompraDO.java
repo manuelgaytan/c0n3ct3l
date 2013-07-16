@@ -41,16 +41,29 @@ public class PartidaRequisicionCompraDO implements java.io.Serializable {
 	private String validacion;
 	@Column(name = "fk_estatus", nullable = false)
 	private Integer fkEstatus;
-	@Column(nullable = true)
+	@Column(name = "costo", nullable = true)
 	private Double costo;
-	@Column(nullable = true)
+	@Column(name = "importe", nullable = true)
 	private Double importe;
 
 	public PartidaRequisicionCompraDO() {
 	}
 
 	public PartidaRequisicionCompraDO(String descripcion, String cantidad,
-			String unidad, String validacion, Integer fkEstatus, Double costo, Double importe) {
+			String unidad, String validacion, Integer fkEstatus) {
+		this.descripcion = descripcion;
+		this.cantidad = cantidad;
+		this.unidad = unidad;
+		this.validacion = validacion;
+		this.fkEstatus = fkEstatus;
+	}
+	
+	public PartidaRequisicionCompraDO(RequisicionCompraDO requisicionCompra,
+			String codigo, String grupoFamilia, String descripcion,
+			String cantidad, String unidad, String validacion, Integer fkEstatus, Double costo, Double importe) {
+		this.requisicionCompra = requisicionCompra;
+		this.codigo = codigo;
+		this.grupoFamilia = grupoFamilia;
 		this.descripcion = descripcion;
 		this.cantidad = cantidad;
 		this.unidad = unidad;
@@ -60,22 +73,8 @@ public class PartidaRequisicionCompraDO implements java.io.Serializable {
 		this.importe = importe;
 	}
 
-	/** full constructor */
-	public PartidaRequisicionCompraDO(RequisicionCompraDO requisicionCompra,
-			String codigo, String grupoFamilia, String descripcion,
-			String cantidad, String unidad, String validacion, Integer fkEstatus) {
-		this.requisicionCompra = requisicionCompra;
-		this.codigo = codigo;
-		this.grupoFamilia = grupoFamilia;
-		this.descripcion = descripcion;
-		this.cantidad = cantidad;
-		this.unidad = unidad;
-		this.validacion = validacion;
-		this.fkEstatus = fkEstatus;
-	}
-
 	public Integer getId() {
-		return this.id;
+		return id;
 	}
 
 	public void setId(Integer id) {
@@ -83,15 +82,15 @@ public class PartidaRequisicionCompraDO implements java.io.Serializable {
 	}
 
 	public RequisicionCompraDO getRequisicionCompra() {
-		return this.requisicionCompra;
+		return requisicionCompra;
 	}
 
-	public void setRequisicionCompra(RequisicionCompraDO eequisicionCompra) {
-		this.requisicionCompra = eequisicionCompra;
+	public void setRequisicionCompra(RequisicionCompraDO requisicionCompra) {
+		this.requisicionCompra = requisicionCompra;
 	}
 
 	public String getCodigo() {
-		return this.codigo;
+		return codigo;
 	}
 
 	public void setCodigo(String codigo) {
@@ -99,7 +98,7 @@ public class PartidaRequisicionCompraDO implements java.io.Serializable {
 	}
 
 	public String getGrupoFamilia() {
-		return this.grupoFamilia;
+		return grupoFamilia;
 	}
 
 	public void setGrupoFamilia(String grupoFamilia) {
@@ -107,7 +106,7 @@ public class PartidaRequisicionCompraDO implements java.io.Serializable {
 	}
 
 	public String getDescripcion() {
-		return this.descripcion;
+		return descripcion;
 	}
 
 	public void setDescripcion(String descripcion) {
@@ -115,7 +114,7 @@ public class PartidaRequisicionCompraDO implements java.io.Serializable {
 	}
 
 	public String getCantidad() {
-		return this.cantidad;
+		return cantidad;
 	}
 
 	public void setCantidad(String cantidad) {
@@ -123,7 +122,7 @@ public class PartidaRequisicionCompraDO implements java.io.Serializable {
 	}
 
 	public String getUnidad() {
-		return this.unidad;
+		return unidad;
 	}
 
 	public void setUnidad(String unidad) {
@@ -131,7 +130,7 @@ public class PartidaRequisicionCompraDO implements java.io.Serializable {
 	}
 
 	public String getValidacion() {
-		return this.validacion;
+		return validacion;
 	}
 
 	public void setValidacion(String validacion) {
@@ -139,7 +138,7 @@ public class PartidaRequisicionCompraDO implements java.io.Serializable {
 	}
 
 	public Integer getFkEstatus() {
-		return this.fkEstatus;
+		return fkEstatus;
 	}
 
 	public void setFkEstatus(Integer fkEstatus) {
@@ -154,4 +153,11 @@ public class PartidaRequisicionCompraDO implements java.io.Serializable {
 		this.costo = costo;
 	}
 
+	public Double getImporte() {
+		return importe;
+	}
+
+	public void setImporte(Double importe) {
+		this.importe = importe;
+	}
 }

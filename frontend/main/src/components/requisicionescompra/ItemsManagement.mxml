@@ -45,7 +45,8 @@
 					item.costo != null ){
 					var cantidad:Number = Util.stringToNumber(item.cantidad);
 					if( !isNaN( cantidad ) ){
-						returnValue = (cantidad*item.costo).toString();
+						item.importe = (cantidad*item.costo);
+						returnValue = item.importe.toString();
 					}
 				}
 				return returnValue;
@@ -87,7 +88,7 @@
 				if( proyecto.producto.tipoServicio == Producto.TIPO_SERVICIO_FORANEO ){
 					entry.costo = proyecto.producto.costoForaneoProveedor;
 				}
-				entry.importe = entry.cantidad + entry.costo;
+				entry.importe = Number(entry.cantidad) * entry.costo;
 				this.addItem( entry );
 				i++;
 				entry = new PartidaRequisicionCompra();
@@ -103,7 +104,7 @@
 				if( proyecto.producto.tipoServicio == Producto.TIPO_SERVICIO_FORANEO ){
 					entry.costo = proyecto.producto.costoForaneoProveedor;
 				}
-				entry.importe = entry.cantidad + entry.costo;
+				entry.importe = Number(entry.cantidad) * entry.costo;
 				this.addItem( entry );
 			}
 			

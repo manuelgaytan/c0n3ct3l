@@ -153,20 +153,23 @@
 							   textAlign="center"/>
 			<mx:DataGridColumn id="dtgSupplier" headerText="Proveedor"
 							   width="80"
-							   dataField="proveedorCalificado.proveedorSeleccionado.nombreComercial"
+							   dataField="proveedorCalificado.proveedorSeleccionado.proveedor.nombreComercial"
 							   labelFunction="labelFunctionGenerico"/>
 			<mx:DataGridColumn id="dtgSubtotal" headerText="Subtotal"
 							   width="80"
 							   dataField="subtotal"
-							   labelFunction="{Util.labelFunctionCurrency}"/>
+							   labelFunction="{Util.labelFunctionCurrency}"
+							   textAlign="right"/>
 			<mx:DataGridColumn id="dtgIVA" headerText="I.V.A."
 							   width="80"
 							   dataField="iva"
-							   labelFunction="{Util.labelFunctionCurrency}"/>
+							   labelFunction="{Util.labelFunctionCurrency}"
+							   textAlign="right"/>
 			<mx:DataGridColumn id="dtgTotal" headerText="Total"
 							   width="80"
 							   dataField="total"
-							   labelFunction="{Util.labelFunctionCurrency}"/>
+							   labelFunction="{Util.labelFunctionCurrency}"
+							   textAlign="right"/>
 		</mx:columns>
 	</mx:DataGrid>
 	<mx:HBox>

@@ -1,5 +1,6 @@
 package mx.com.gahm.conenctel.services.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -51,6 +52,7 @@ public class OrdenCompraService  implements IOrdenCompraService{
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public OrdenCompraDO save(OrdenCompraDO item) {
 	    try {
+	    	item.setFecha( new Date() );
 	    	entityManager.persist(item);
 	    	RequisicionCompraDO requisicionCompra = entityManager.find(RequisicionCompraDO.class, item.getRequisicionCompra().getId());
 	    	this.deletePartidasRequisicionCompra( requisicionCompra );
@@ -66,7 +68,7 @@ public class OrdenCompraService  implements IOrdenCompraService{
 	private void deletePartidasRequisicionCompra( RequisicionCompraDO item ){
 		RequisicionCompraDO requisicionCompra = entityManager.find(RequisicionCompraDO.class, item.getId());
 		List<PartidaRequisicionCompraDO> list = requisicionCompra.getPartidasRequisicionCompra();
-		if( list == null ){
+		if( list != null ){
 			for (PartidaRequisicionCompraDO partidaRequisicionCompraDO : list) {
 				entityManager.remove(partidaRequisicionCompraDO);
 			}
@@ -75,8 +77,9 @@ public class OrdenCompraService  implements IOrdenCompraService{
 	
 	private void savePartidasRequisicionCompra( RequisicionCompraDO item ){
 		List<PartidaRequisicionCompraDO> list = item.getPartidasRequisicionCompra();
-		if( list == null ){
+		if( list != null ){
 			for (PartidaRequisicionCompraDO partidaRequisicionCompraDO : list) {
+				partidaRequisicionCompraDO.setId(null);
 				partidaRequisicionCompraDO.setRequisicionCompra(item);
 				entityManager.persist(partidaRequisicionCompraDO);
 			}

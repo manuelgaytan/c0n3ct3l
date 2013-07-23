@@ -11,6 +11,7 @@
 			
 			import model.Constants;
 			import model.OrdenCompraAlmacen;
+			import model.Reportes;
 			import model.Util;
 			
 			import mx.collections.ArrayCollection;
@@ -111,7 +112,9 @@
 					Util.showErrorMessage("Debe seleccionar un elemento de la tabla.");
 					return;
 				}
-				navigateToURL(new URLRequest("../formats/ODCM.pdf"));//+this.datagrid.selectedItem.id));
+				//navigateToURL(new URLRequest("../formats/ODCM.pdf"));
+				var params:Array = [{key:"id", value:this.datagrid.selectedItem.id}];
+				Util.launchReport( Reportes.ORDEN_COMPRA_ALMANCEN, params );
 			}
 			
 			public function setDataGridData(datas:ArrayCollection):void

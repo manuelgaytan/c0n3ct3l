@@ -507,7 +507,7 @@
 			
 			protected function btnPrint_clickHandler(event:MouseEvent):void
 			{
-				var params:Array = [{key:"id", value:this._item.id}, {key:"item", value:Reportes.SOLICITUD_ALMANCEN}];
+				var params:Array = [{key:"id", value:this._item.id}];
 				Util.launchReport( Reportes.SOLICITUD_ALMANCEN, params );
 			}
 			

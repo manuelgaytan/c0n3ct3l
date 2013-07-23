@@ -29,7 +29,7 @@
 <title>Insert title here</title>
 </head>
 <%
-	Long idSolicitudAlmacen = Long.parseLong( request.getParameter("id") );
+	Long id = Long.parseLong( request.getParameter("id") );
 	long start = System.currentTimeMillis();
 	Connection conn = null;
 
@@ -56,7 +56,7 @@
 		
 		Context context = new InitialContext();
 		ISolicitudAlmacenService service = (ISolicitudAlmacenService) context.lookup("ejb/SolicitudAlmacenService");
-		SolicitudAlmacenDO almacenDO = service.getItem( idSolicitudAlmacen );
+		SolicitudAlmacenDO almacenDO = service.getItem( id );
 		List<SolicitudAlmacenDO> list = new ArrayList<SolicitudAlmacenDO>();
 		list.add( almacenDO );
 		

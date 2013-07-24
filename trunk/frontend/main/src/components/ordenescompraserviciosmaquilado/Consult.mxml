@@ -129,20 +129,20 @@
 		<mx:columns>
 			<mx:DataGridColumn id="dtgID" headerText="ID"
 							   dataField="id"
-							   width="80"
+							   width="70"
 							   textAlign="right"/>
 			<mx:DataGridColumn id="dtgProjectID" headerText="{'ID \nProyecto'}"
-							   width="80"
+							   width="70"
 							   dataField="solicitudServicioMaquilado.proyecto.id"
 							   labelFunction="labelFunctionGenerico"
 							   textAlign="right"/>
 			<mx:DataGridColumn id="dtgProjectParentID" headerText="{'ID \nProyecto\nPadre'}"
-							   width="80"
+							   width="70"
 							   dataField="solicitudServicioMaquilado.proyectoPadre.id"
 							   labelFunction="labelFunctionGenerico"
 							   textAlign="right"/>
 			<mx:DataGridColumn id="dtgRequisicionID" headerText="{'ID \nSolicitud\nServicio\nMaquilado'}"
-							   width="90"
+							   width="70"
 							   dataField="solicitudServicioMaquilado.id"
 							   labelFunction="labelFunctionGenerico"
 							   textAlign="right"/>
@@ -152,11 +152,11 @@
 							   labelFunction="labelFunctionDate"
 							   textAlign="center"/>
 			<mx:DataGridColumn id="dtgSupplier" headerText="Proveedor"
-							   width="80"
-							   dataField="proveedorMaquilador.nombreComercial"
+							   width="140"
+							   dataField="proveedorMaquilador.proveedor.nombreComercial"
 							   labelFunction="labelFunctionGenerico"/>
 			<mx:DataGridColumn id="dtgValidationKey" headerText="{'Clave\nValidación'}"
-							   width="80"
+							   width="100"
 							   dataField="claveValidacion"
 							   labelFunction="labelFunctionGenerico"/>
 		</mx:columns>

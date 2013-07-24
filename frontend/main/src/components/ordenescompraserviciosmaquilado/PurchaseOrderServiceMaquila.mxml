@@ -222,7 +222,7 @@
 				if( data == null ){
 					return;
 				}
-				this.cmbMaquiladoSupplier.dataProvider = Util.addEmptyCatalgo(data,"nombreComercial");
+				this.cmbMaquiladoSupplier.dataProvider = Util.addEmptyCatalgo(data,"proveedor.nombreComercial");
 				if( this._item != null && this._item.proveedorMaquilador != null ){
 					this.cmbMaquiladoSupplier.selectedIndex = Util.selectedIndexFromCombo( this.cmbMaquiladoSupplier.dataProvider as ArrayCollection, 
 						this._item.proveedorMaquilador.id);
@@ -282,6 +282,10 @@
 			{
 				itemsManagement.reset();
 			}
+			
+			private function labelFunctionProveedor(item:Object):String{
+				return Util.extractToText(item, "proveedor.nombreComercial");
+			}
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -303,7 +307,7 @@
 		<mx:FormItem label="Proveedor Maquilador:">
 			<mx:ComboBox id="cmbMaquiladoSupplier"
 						 change="cmbQualifiedSupplier_changeHandler(event)"
-						 labelField="nombreComercial"/>
+						 labelFunction="labelFunctionProveedor"/>
 		</mx:FormItem>
 		<!-- Campos de Seleccion Automatica por el Proveedor Calificado -->
 		<mx:FormItem label="Razón Social:">

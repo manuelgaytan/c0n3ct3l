@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="OrdenCompraAlmacen" language="groovy" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0a99f18f-48d8-429d-93ad-51869a41c8cf">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="OrdenCompraMaquilado" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0a99f18f-48d8-429d-93ad-51869a41c8cf">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -40,23 +40,20 @@
 	<parameter name="area" class="java.lang.String"/>
 	<parameter name="phonesContact" class="java.lang.String"/>
 	<field name="id" class="java.lang.Long"/>
-	<field name="proveedorCalificado.proveedorSeleccionado.proveedor.razonSocial" class="java.lang.String"/>
-	<field name="proveedorCalificado.proveedorSeleccionado.proveedor.rfc" class="java.lang.String"/>
-	<field name="proveedorCalificado.proveedorSeleccionado.proveedor.direccionFiscal" class="java.lang.String"/>
-	<field name="proveedorCalificado.proveedorSeleccionado.proveedor.nombreComercial" class="java.lang.String"/>
-	<field name="proveedorCalificado.proveedorSeleccionado.proveedor.telefonos" class="java.lang.String"/>
-	<field name="proveedorCalificado.proveedorSeleccionado.proveedor.direccionFisica" class="java.lang.String"/>
-	<field name="ieps" class="java.lang.Double"/>
-	<field name="retencionIsr" class="java.lang.Double"/>
-	<field name="retencionIva" class="java.lang.Double"/>
-	<field name="otrosImpuestos" class="java.lang.Double"/>
+	<field name="proveedorMaquilador.proveedor.razonSocial" class="java.lang.String"/>
+	<field name="proveedorMaquilador.proveedor.rfc" class="java.lang.String"/>
+	<field name="proveedorMaquilador.proveedor.direccionFiscal" class="java.lang.String"/>
+	<field name="proveedorMaquilador.proveedor.nombreComercial" class="java.lang.String"/>
+	<field name="proveedorMaquilador.proveedor.telefonos" class="java.lang.String"/>
+	<field name="proveedorMaquilador.proveedor.direccionFisica" class="java.lang.String"/>
 	<field name="total" class="java.lang.Double"/>
-	<field name="requisicionCompra.partidasRequisicionCompra" class="java.util.List"/>
+	<field name="partidas" class="java.util.List"/>
 	<field name="fecha" class="java.util.Date"/>
 	<field name="iva" class="java.lang.Double"/>
 	<field name="subtotal" class="java.lang.Double"/>
 	<field name="leyenda" class="java.lang.String"/>
-	<field name="proveedorCalificado.proveedorSeleccionado.proveedor.contacto" class="java.lang.String"/>
+	<field name="proveedorMaquilador.proveedor.contacto" class="java.lang.String"/>
+	<field name="claveValidacion" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -99,21 +96,21 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($F{proveedorCalificado.proveedorSeleccionado.proveedor.rfc})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{proveedorMaquilador.proveedor.rfc})]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement uuid="b368cebe-2c5a-4b14-8f92-2f67d2a1df30" x="104" y="227" width="465" height="20"/>
 				<textElement verticalAlignment="Middle">
 					<font size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{proveedorCalificado.proveedorSeleccionado.proveedor.nombreComercial}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{proveedorMaquilador.proveedor.nombreComercial}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement uuid="a9bea577-5758-4d97-844e-f6d95f0772c2" x="87" y="207" width="482" height="20"/>
 				<textElement verticalAlignment="Middle">
 					<font size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{proveedorCalificado.proveedorSeleccionado.proveedor.direccionFiscal}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{proveedorMaquilador.proveedor.direccionFiscal}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement uuid="9a11e869-d6a0-4982-901c-37a2020a3d8a" mode="Opaque" x="7" y="58" width="462" height="20" forecolor="#FFFFFF" backcolor="#003399"/>
@@ -163,14 +160,14 @@
 				<textElement verticalAlignment="Middle">
 					<font size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{proveedorCalificado.proveedorSeleccionado.proveedor.direccionFisica}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{proveedorMaquilador.proveedor.direccionFisica}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement uuid="93049b8b-224f-4c5d-8375-e14714a768da" x="75" y="187" width="344" height="20"/>
 				<textElement verticalAlignment="Middle">
 					<font size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{proveedorCalificado.proveedorSeleccionado.proveedor.razonSocial}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{proveedorMaquilador.proveedor.razonSocial}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement uuid="fe7fc052-96dd-4bf0-a662-e683b7f0a7f2" x="419" y="187" width="34" height="20"/>
@@ -226,7 +223,7 @@
 				<textElement verticalAlignment="Middle">
 					<font size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{proveedorCalificado.proveedorSeleccionado.proveedor.telefonos}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{proveedorMaquilador.proveedor.telefonos}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement uuid="d67a65eb-6985-4427-9d26-da64aa599f65" x="7" y="78" width="34" height="20"/>
@@ -240,7 +237,7 @@
 				<textElement verticalAlignment="Middle">
 					<font size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{proveedorCalificado.proveedorSeleccionado.proveedor.contacto}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{proveedorMaquilador.proveedor.razonSocial}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
@@ -248,8 +245,8 @@
 		<band height="241" splitType="Stretch">
 			<subreport>
 				<reportElement uuid="21903da1-aee3-43c4-9a98-2aafdb9f0ba7" x="7" y="3" width="558" height="228"/>
-				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{requisicionCompra.partidasRequisicionCompra})]]></dataSourceExpression>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "OrdenCompraAlmacen_Items.jasper"]]></subreportExpression>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{partidas})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "OrdenCompraMaquilado_Items.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 	</detail>
@@ -312,14 +309,7 @@
 				<text><![CDATA[I.V.A.:]]></text>
 			</staticText>
 			<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
-				<reportElement uuid="4f07ea6f-22bd-4cab-8046-eace3d635167" x="442" y="64" width="120" height="20"/>
-				<textElement textAlignment="Right">
-					<font size="10"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{retencionIsr}]]></textFieldExpression>
-			</textField>
-			<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
-				<reportElement uuid="d7c3b7dd-7771-4f5f-8ef6-85135aed994d" x="442" y="126" width="120" height="20"/>
+				<reportElement uuid="d7c3b7dd-7771-4f5f-8ef6-85135aed994d" x="442" y="42" width="120" height="20"/>
 				<textElement textAlignment="Right">
 					<font size="10"/>
 				</textElement>
@@ -332,47 +322,12 @@
 				</textElement>
 				<text><![CDATA[Subtotal:]]></text>
 			</staticText>
-			<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
-				<reportElement uuid="f7c530b7-adb7-4d3d-bc02-62589760fe50" x="442" y="85" width="120" height="20"/>
-				<textElement textAlignment="Right">
-					<font size="10"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{retencionIva}]]></textFieldExpression>
-			</textField>
-			<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
-				<reportElement uuid="56a22f03-dee1-49db-a717-6c52346358c2" x="442" y="106" width="120" height="20"/>
-				<textElement textAlignment="Right">
-					<font size="10"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{otrosImpuestos}]]></textFieldExpression>
-			</textField>
 			<staticText>
-				<reportElement uuid="d1497203-c105-4787-b45e-a3a9570ceb28" x="330" y="42" width="107" height="16"/>
-				<textElement textAlignment="Right">
-					<font size="10" isBold="true"/>
-				</textElement>
-				<text><![CDATA[I.E.P.S.:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="d6a9c744-40d8-4cdc-86c0-df023ba6d63e" x="330" y="64" width="107" height="16"/>
-				<textElement textAlignment="Right">
-					<font size="10" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Retención I.S.R.:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="b11f2f57-c196-4485-9ebb-e33416e3e56f" x="330" y="126" width="107" height="16"/>
+				<reportElement uuid="b11f2f57-c196-4485-9ebb-e33416e3e56f" x="330" y="42" width="107" height="16"/>
 				<textElement textAlignment="Right">
 					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Total:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="ce75265f-f0b9-409a-985c-f0efbe74e3b7" x="330" y="106" width="107" height="16"/>
-				<textElement textAlignment="Right">
-					<font size="10" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Otros Impuestos:]]></text>
 			</staticText>
 			<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
 				<reportElement uuid="f9453d53-31da-45b2-b702-1df1c5140014" x="442" y="21" width="120" height="20"/>
@@ -380,20 +335,6 @@
 					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{iva}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement uuid="aaeeb787-8945-44bf-a7d5-133d5b6d68b1" x="330" y="85" width="107" height="16"/>
-				<textElement textAlignment="Right">
-					<font size="10" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Retención I.V.A.:]]></text>
-			</staticText>
-			<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
-				<reportElement uuid="5cf6e8d5-4702-4f8c-bed8-9f0269424c5e" x="442" y="42" width="120" height="20"/>
-				<textElement textAlignment="Right">
-					<font size="10"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{ieps}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
 				<reportElement uuid="926b1409-bd88-458d-b96e-93ea47123cb4" x="442" y="0" width="120" height="20"/>
@@ -435,6 +376,16 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{authorizer}]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement uuid="b57fe5da-84fd-43c5-8342-58b4f1dae605" x="330" y="106" width="232" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{claveValidacion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="2868725a-3e48-4955-9fc9-947604c3cfa9" x="330" y="85" width="100" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Clave de Validación:]]></text>
+			</staticText>
 		</band>
 	</summary>
 </jasperReport>

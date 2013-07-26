@@ -1,7 +1,10 @@
 package mx.com.gahm.conenctel.entities;
 
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -35,6 +38,13 @@ public class OrdenCompraMaquiladoDO implements java.io.Serializable {
 	private String claveValidacion;
 	private String leyenda;
 	
+	public static Double OC_QUANTITY = 0.5;
+	public static String OC_UNIT = "PROYECTO";
+	public static String OC_SITE = "SITIO";
+	public static String OC_ADVANCE = "ANTICIPO";
+	public static String OC_SETTLEMENT = "FINIQUITO";
+	public static Double IVA = 0.16;
+	
 	public OrdenCompraMaquiladoDO() {
 	}
 
@@ -45,6 +55,76 @@ public class OrdenCompraMaquiladoDO implements java.io.Serializable {
 		this.proveedorMaquilador = proveedorMaquilador;
 	}
 
+	public Double getSubtotal(){
+		Double subtotal = 0d;
+		for (PartidaOrdenCompraSolicitudServicioMaquilado item : this.getPartidas()) {
+			subtotal += item.getImporte();
+		}
+		return subtotal;
+	}
+	
+	public Double getIva(){
+		Double iva = this.getSubtotal() * IVA;
+		return iva;
+	}
+	
+	public Double getTotal(){
+		Double total = this.getSubtotal() + this.getIva();
+		return total;
+	}
+	
+	public List<PartidaOrdenCompraSolicitudServicioMaquilado> getPartidas(){
+		List<PartidaOrdenCompraSolicitudServicioMaquilado> partidasOrdenCompraMaquilado = new ArrayList<PartidaOrdenCompraSolicitudServicioMaquilado>();
+		Integer i = 1;
+		if( this.getSolicitudServicioMaquilado().getProyectoPadre() == null ){
+			this.dividirProyecto(partidasOrdenCompraMaquilado, i, this.getSolicitudServicioMaquilado().getProyecto());
+		}else{
+			for (ProyectoPadreHijoDO proyectoPadreHijo : this.getSolicitudServicioMaquilado().getProyectoPadre().getProyectoPadreHijos() ) {
+				this.dividirProyecto(partidasOrdenCompraMaquilado, i, proyectoPadreHijo.getProyecto());
+				i+=2;
+			}
+		}
+		return partidasOrdenCompraMaquilado;
+	}
+	
+	private void dividirProyecto(List<PartidaOrdenCompraSolicitudServicioMaquilado> partidasOrdenCompraMaquilado, Integer i, ProyectoDO proyecto){
+		if( proyecto == null ){
+			return;
+		}
+		PartidaOrdenCompraSolicitudServicioMaquilado entry = null;
+		entry = new PartidaOrdenCompraSolicitudServicioMaquilado();
+		entry.setPartida( i );
+		entry.setCantidad( OC_QUANTITY );
+		entry.setUnidad( OC_UNIT );
+		entry.setDescripcion( OC_ADVANCE + " " + proyecto.getProducto().getModelo() + 
+							"\n" + proyecto.getProducto().getActividadRealizar() + ", " + proyecto.getProducto().getEquipo() + 
+							"\n" + proyecto.getProducto().getTipoServicio() + " " + OC_SITE + " " + proyecto.getCentralSitio() );
+		if( proyecto.getProducto().getTipoServicio().compareTo( ProductoDO.TIPO_SERVICIO_LOCAL ) == 0 ){
+			entry.setCosto( proyecto.getProducto().getCostoLocalProveedor() );
+		}
+		if( proyecto.getProducto().getTipoServicio().compareTo( ProductoDO.TIPO_SERVICIO_FORANEO ) == 0 ){
+			entry.setCosto( proyecto.getProducto().getCostoForaneoProveedor() );
+		}
+		entry.setImporte( entry.getCantidad() * entry.getCosto() );
+		partidasOrdenCompraMaquilado.add( entry );
+		i++;
+		entry = new PartidaOrdenCompraSolicitudServicioMaquilado();
+		entry.setPartida( i );
+		entry.setCantidad( OC_QUANTITY );
+		entry.setUnidad( OC_UNIT );
+		entry.setDescripcion( OC_SETTLEMENT + " " + proyecto.getProducto().getModelo() + 
+			"\n" + proyecto.getProducto().getActividadRealizar() + ", " + proyecto.getProducto().getEquipo() + 
+			"\n" + proyecto.getProducto().getTipoServicio() + " " + OC_SITE + " " + proyecto.getCentralSitio() );
+		if( proyecto.getProducto().getTipoServicio().compareTo( ProductoDO.TIPO_SERVICIO_LOCAL ) == 0 ){
+			entry.setCosto( proyecto.getProducto().getCostoLocalProveedor() );
+		}
+		if( proyecto.getProducto().getTipoServicio().compareTo( ProductoDO.TIPO_SERVICIO_FORANEO ) == 0 ){
+			entry.setCosto( proyecto.getProducto().getCostoForaneoProveedor() );
+		}
+		entry.setImporte( entry.getCantidad() * entry.getCosto() );
+		partidasOrdenCompraMaquilado.add( entry );
+	}
+	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id", unique = true, nullable = false)

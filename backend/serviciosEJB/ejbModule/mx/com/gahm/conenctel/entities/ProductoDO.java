@@ -38,6 +38,9 @@ import javax.persistence.Table;
 @Table(name = "producto")
 public class ProductoDO implements Serializable {
 	private static final long serialVersionUID = 1L;
+	
+	public static String TIPO_SERVICIO_LOCAL = "LOCAL";
+	public static String TIPO_SERVICIO_FORANEO = "FORANEO";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

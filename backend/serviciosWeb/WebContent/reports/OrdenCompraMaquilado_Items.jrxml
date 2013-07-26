@@ -3,41 +3,33 @@
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
-	<field name="codigo" class="java.lang.String"/>
-	<field name="grupoFamilia" class="java.lang.String"/>
-	<field name="descripcion" class="java.lang.String"/>
+	<field name="partida" class="java.lang.Integer"/>
+	<field name="cantidad" class="java.lang.Double"/>
 	<field name="unidad" class="java.lang.String"/>
+	<field name="descripcion" class="java.lang.String"/>
 	<field name="costo" class="java.math.BigDecimal"/>
 	<field name="importe" class="java.math.BigDecimal"/>
-	<field name="cantidad" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<columnHeader>
 		<band height="28" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="6c221910-bc4f-4736-95d2-c5eae7648273" x="115" y="3" width="47" height="20"/>
+				<reportElement uuid="6c221910-bc4f-4736-95d2-c5eae7648273" x="3" y="3" width="47" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[Código]]></text>
+				<text><![CDATA[Partida]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="6d36d12d-d22e-4846-8101-d5aa0469c486" x="163" y="3" width="78" height="20"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[Grupo Familia]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="84464cdb-92be-4252-a299-d9a2b451872e" x="242" y="3" width="153" height="20"/>
+				<reportElement uuid="84464cdb-92be-4252-a299-d9a2b451872e" x="179" y="3" width="216" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Descripción]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="e74b5059-a157-4421-bd8b-c5d28062a878" x="61" y="3" width="53" height="20"/>
+				<reportElement uuid="e74b5059-a157-4421-bd8b-c5d28062a878" x="109" y="3" width="69" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
@@ -61,7 +53,7 @@
 				<text><![CDATA[Importe]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="5824887d-9bcc-4be5-acb3-33431820b3a2" x="3" y="3" width="57" height="20"/>
+				<reportElement uuid="5824887d-9bcc-4be5-acb3-33431820b3a2" x="51" y="3" width="57" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
@@ -72,17 +64,12 @@
 	<detail>
 		<band height="18" splitType="Stretch">
 			<textField>
-				<reportElement uuid="b5e766e5-34aa-4340-b144-75f6d706634c" x="115" y="2" width="47" height="15"/>
+				<reportElement uuid="b5e766e5-34aa-4340-b144-75f6d706634c" x="3" y="2" width="47" height="15"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression><![CDATA[$F{codigo}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{partida}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="a71e3f11-cd01-4dd8-b825-2ec3a3ab5f70" x="163" y="2" width="78" height="15"/>
-				<textElement/>
-				<textFieldExpression><![CDATA[$F{grupoFamilia}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement uuid="9ae0be80-0911-4534-9c56-dacd47de9875" x="242" y="2" width="153" height="15"/>
+				<reportElement uuid="9ae0be80-0911-4534-9c56-dacd47de9875" stretchType="RelativeToBandHeight" x="179" y="2" width="216" height="15"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
 			</textField>
@@ -92,7 +79,7 @@
 				<textFieldExpression><![CDATA[$F{importe}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.000">
-				<reportElement uuid="d5e08141-6ac7-4624-b36c-43449b75e3cf" x="61" y="2" width="53" height="15"/>
+				<reportElement uuid="d5e08141-6ac7-4624-b36c-43449b75e3cf" x="109" y="2" width="69" height="15"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{unidad}]]></textFieldExpression>
 			</textField>
@@ -101,8 +88,8 @@
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{costo}]]></textFieldExpression>
 			</textField>
-			<textField pattern="¤ #,##0.00">
-				<reportElement uuid="f6e6eb1a-ca45-482b-b535-2dd3e317f2eb" x="3" y="2" width="57" height="15"/>
+			<textField pattern="#,##0.000">
+				<reportElement uuid="f6e6eb1a-ca45-482b-b535-2dd3e317f2eb" x="51" y="2" width="57" height="15"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
 			</textField>

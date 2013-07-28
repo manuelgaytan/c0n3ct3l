@@ -45,6 +45,6 @@
 	<mx:TabNavigator id="navigator" width="100%" height="100%" creationPolicy="all">
 		<productos:Filter id="filtro" filterCommand="filtro_filterCommandHandler(event)"/>
 		<productos:Consult id="consult" preciarios="true" productDetail="consult_productDetailHandler(event)"/>
-		<productos:Product id="detail" preciarios="true" />
+		<productos:Product id="detail" preciarios="true"/>
 	</mx:TabNavigator>
 </mx:Module>

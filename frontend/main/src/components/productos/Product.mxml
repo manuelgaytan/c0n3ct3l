@@ -7,6 +7,7 @@
 			import model.Cliente;
 			import model.Constants;
 			import model.Producto;
+			import model.Reportes;
 			import model.Util;
 			
 			import mx.collections.ArrayCollection;
@@ -256,9 +257,13 @@
 			
 			protected function btnPrint_clickHandler(event:MouseEvent):void
 			{
-				Alert.show("En construccion ...","Info");
+				if( this._product == null ){
+					Util.showErrorMessage("Debe seleccionar un elemento de la tabla.");
+					return;
+				}
+				var params:Array = [{key:"id", value:this._product.id}];
+				Util.launchReport( Reportes.PRECIARIO_MAQUILADOR, params );
 			}
-			
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -268,54 +273,68 @@
 	<mx:Form>
 		<mx:FormItem label="Cliente:">
 			<mx:ComboBox id="cmbClient" width="400"
-						 labelField="nombreComercial"/>
+						 labelField="nombreComercial"
+						 editable="{!this._preciarios}"/>
 		</mx:FormItem>
 		<mx:FormItem label="Tipo de Proyecto:">
-			<components:TextInput id="txtProjectType" width="300"/>
+			<components:TextInput id="txtProjectType" width="300"
+								  editable="{!this._preciarios}"/>
 		</mx:FormItem>
 		<mx:FormItem label="Tecnología:">
-			<components:TextInput id="txtTechnology" width="250"/>
+			<components:TextInput id="txtTechnology" width="250"
+								  editable="{!this._preciarios}"/>
 		</mx:FormItem>
 		<mx:FormItem label="Equipo:">
-			<components:TextInput id="txtEquipment" width="300"/>
+			<components:TextInput id="txtEquipment" width="300"
+								  editable="{!this._preciarios}"/>
 		</mx:FormItem>
 		<mx:FormItem label="Actividad a Realizar:">
-			<components:TextInput id="txtActivity" width="600"/>
+			<components:TextInput id="txtActivity" width="600"
+								  editable="{!this._preciarios}"/>
 		</mx:FormItem>
 		<mx:FormItem label="Modelo:">
-			<components:TextInput id="txtModel" width="450"/>
+			<components:TextInput id="txtModel" width="450"
+								  editable="{!this._preciarios}"/>
 		</mx:FormItem>
 		<mx:FormItem label="Descripción del Servicio:">
-			<components:TextInput id="txtServiceDescription" width="600"/>
+			<components:TextInput id="txtServiceDescription" width="600"
+								  editable="{!this._preciarios}"/>
 		</mx:FormItem>
 		<mx:FormItem label="Tipo de Servicio:">
 			<!--<components:TextInput id="txtServiceType" width="250"/>-->
 			<mx:ComboBox id="cmbServiceType" width="250" labelField="id"
-						 dataProvider="{Producto.TIPOS_SERVICIO}"/>
+						 dataProvider="{Producto.TIPOS_SERVICIO}"
+						 editable="{!this._preciarios}"/>
 		</mx:FormItem>
 		<mx:FormItem label="Costo Local Cliente:"
 					 id="frmItmLocalCostCustomer"
 					 includeInLayout="{!this._preciarios}"
 					 visible="{!this._preciarios}">
-			<components:TextInput id="txtLocalCostCustomer" width="150" textAlign="right"/>
+			<components:TextInput id="txtLocalCostCustomer" width="150" textAlign="right"
+								  editable="{!this._preciarios}"/>
 		</mx:FormItem>
 		<mx:FormItem label="Costo Foraneo Cliente:"
 					 id="frmItmForaneoCostCustomer"
 					 includeInLayout="{!this._preciarios}"
 					 visible="{!this._preciarios}">
-			<components:TextInput id="txtForaneoCostCustomer" width="150" textAlign="right"/>
+			<components:TextInput id="txtForaneoCostCustomer" width="150" textAlign="right"
+								  editable="{!this._preciarios}"/>
 		</mx:FormItem>
 		<mx:FormItem label="Costo Local Proveedor:">
-			<components:TextInput id="txtLocalCostSupplier" width="150" textAlign="right"/>
+			<components:TextInput id="txtLocalCostSupplier" width="150" textAlign="right"
+								  editable="{!this._preciarios}"/>
 		</mx:FormItem>
 		<mx:FormItem label="Costo Foraneo Proveedor:">
-			<components:TextInput id="txtForaneoCostSupplier" width="150" textAlign="right"/>
+			<components:TextInput id="txtForaneoCostSupplier" width="150" textAlign="right"
+								  editable="{!this._preciarios}"/>
 		</mx:FormItem>
 		<mx:FormItem label="Días de Implementación:">
-			<components:TextInput id="txtImplementationDays" width="150" textAlign="right"/>
+			<components:TextInput id="txtImplementationDays" width="150" textAlign="right"
+								  editable="{!this._preciarios}"/>
 		</mx:FormItem>
 		<mx:FormItem label="Alcances:">
-			<components:TextArea id="txtScope" width="600"/>
+			<components:TextArea id="txtScope" width="600"
+								 editable="{!this._preciarios}"/>
 		</mx:FormItem>
 		<mx:FormItem direction="horizontal">
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"

@@ -99,7 +99,7 @@
 				if( !(this._item.ordenCompra == null) ){
 					purchaseOrderNumber = String( this._item.ordenCompra.id );
 					maquiladoraService = false;
-					supplier = Util.extractToText( this._item, "ordenCompra.proveedorCalificado.proveedorSeleccionado.nombreComercial" );
+					supplier = Util.extractToText( this._item, "ordenCompra.proveedorCalificado.proveedorSeleccionado.proveedor.nombreComercial" );
 					subtotal = Util.extractToText( this._item, "ordenCompra.subtotal" );
 					iva = Util.extractToText( this._item, "ordenCompra.iva" );
 					ieps = Util.extractToText( this._item, "ordenCompra.ieps" );
@@ -111,15 +111,15 @@
 				if( !(this._item.ordenCompraMaquilado == null) ){
 					purchaseOrderNumber = String( this._item.ordenCompraMaquilado.id );
 					maquiladoraService = true;
-					supplier = Util.extractToText(this._item, "ordenCompraMaquilado.proveedorMaquilador.proveedorSeleccionado.razonSocial" );
-					supplier = Util.extractToText( this._item, "ordenCompraMaquilado.proveedorCalificado.proveedorSeleccionado.nombreComercial" );
-					subtotal = Util.extractToText( this._item, "ordenCompraMaquilado.subtotal" );
-					iva = Util.extractToText( this._item, "ordenCompraMaquilado.iva" );
-					ieps = Util.extractToText( this._item, "ordenCompraMaquilado.ieps" );
-					isrRet = Util.extractToText( this._item, "ordenCompraMaquilado.retencionIsr" );
-					ivaRet = Util.extractToText( this._item, "ordenCompraMaquilado.retencionIva" );
-					otherTaxes = Util.extractToText( this._item, "ordenCompraMaquilado.otrosImpuestos" );
-					total = Util.extractToText( this._item, "ordenCompraMaquilado.total" );
+					supplier = Util.extractToText(this._item, "ordenCompraMaquilado.proveedorMaquilador.proveedor.razonSocial" );
+					supplier = Util.extractToText( this._item, "ordenCompraMaquilado.proveedorMaquilador.proveedor.nombreComercial" );
+					subtotal = Util.extractToText( this._item, "ordenCompraMaquilado.subtotalCalculado" );
+					iva = Util.extractToText( this._item, "ordenCompraMaquilado.ivaCalculado" );
+					ieps = Util.extractToText( this._item, "" );
+					isrRet = Util.extractToText( this._item, "" );
+					ivaRet = Util.extractToText( this._item, "" );
+					otherTaxes = Util.extractToText( this._item, "" );
+					total = Util.extractToText( this._item, "ordenCompraMaquilado.totalCalculado" );
 				}
 				if( Util.isFill( this.cmbPurchaseOrderType )  ){
 					var purchaseOrderType:Number = maquiladoraService == false ? ID_ODC_ALMACEN : ID_ODC_SERVICIO;
@@ -135,13 +135,13 @@
 				this.lblSupplier.text = supplier;
 				this.txtFolio.text = this._item.folio;
 				this.dtfDate.selectedDate = this._item.fecha;
-				this.lblSubtotal.text = subtotal;
-				this.lblIVA.text = iva;
-				this.lblIEPS.text = ieps;
-				this.lblISRRetention.text = isrRet;
-				this.lblIVARetention.text = ivaRet;
-				this.lblOtherTaxes.text = otherTaxes;
-				this.lblTotal.text = total;
+				this.lblSubtotal.text = Util.formatCurrency(subtotal);
+				this.lblIVA.text = Util.formatCurrency(iva);
+				this.lblIEPS.text = Util.formatCurrency(ieps);
+				this.lblISRRetention.text = Util.formatCurrency(isrRet);
+				this.lblIVARetention.text = Util.formatCurrency(ivaRet);
+				this.lblOtherTaxes.text = Util.formatCurrency(otherTaxes);
+				this.lblTotal.text = Util.formatCurrency(total);
 				this.dtfPaymentDate.selectedDate = this._item.fechaPago;
 			}
 			
@@ -269,13 +269,13 @@
 					return;
 				}
 				if( odcType == ID_ODC_ALMACEN ){
-					responseGetAllODCAlmacen.token = this.ordenCompraService.getAll();
+					responseGetAllODC.token = this.ordenCompraService.getAll();
 				}else{
-					
+					responseGetAllODC.token = this.ordenCompraMaquiladoService.getAll();
 				}
 			}
 			
-			protected function responseGetAllODCAlmacen_resultHandler(event:ResultEvent):void
+			protected function responseGetAllODC_resultHandler(event:ResultEvent):void
 			{
 				this.dtgRequisicionID.dataField = "requisicionCompra.id";
 				this.dtgPurchaseOrder.dataProvider = event.result as ArrayCollection;
@@ -302,7 +302,7 @@
 				if( odcType == ID_ODC_ALMACEN ){
 					maquiladoraService = false;
 					var ordenCompraAlmacen:OrdenCompraAlmacen = this.dtgPurchaseOrder.selectedItem as OrdenCompraAlmacen;
-					supplier = Util.extractToText( ordenCompraAlmacen, "proveedorCalificado.proveedorSeleccionado.nombreComercial" );
+					supplier = Util.extractToText( ordenCompraAlmacen, "proveedorCalificado.proveedorSeleccionado.proveedor.nombreComercial" );
 					subtotal = Util.extractToText( ordenCompraAlmacen, "subtotal" );
 					iva = Util.extractToText( ordenCompraAlmacen, "iva" );
 					ieps = Util.extractToText( ordenCompraAlmacen, "ieps" );
@@ -313,23 +313,65 @@
 				}else{
 					maquiladoraService = true;
 					var ordenCompraMaquilado:OrdenCompraMaquilado = this.dtgPurchaseOrder.selectedItem as OrdenCompraMaquilado;
-					supplier = Util.extractToText( ordenCompraMaquilado, "proveedorCalificado.proveedorSeleccionado.nombreComercial" );
-					subtotal = Util.extractToText( ordenCompraMaquilado, "subtotal" );
-					iva = Util.extractToText( ordenCompraMaquilado, "iva" );
-					ieps = Util.extractToText( ordenCompraMaquilado, "ieps" );
-					isrRet = Util.extractToText( ordenCompraMaquilado, "retencionIsr" );
-					ivaRet = Util.extractToText( ordenCompraMaquilado, "retencionIva" );
-					otherTaxes = Util.extractToText( ordenCompraMaquilado, "otrosImpuestos" );
-					total = Util.extractToText( ordenCompraMaquilado, "total" );
+					supplier = Util.extractToText( ordenCompraMaquilado, "proveedorMaquilador.proveedor.nombreComercial" );
+					subtotal = Util.extractToText( ordenCompraMaquilado, "subtotalCalculado" );
+					iva = Util.extractToText( ordenCompraMaquilado, "ivaCalculado" );
+					ieps = Util.extractToText( ordenCompraMaquilado, "" );
+					isrRet = Util.extractToText( ordenCompraMaquilado, "" );
+					ivaRet = Util.extractToText( ordenCompraMaquilado, "" );
+					otherTaxes = Util.extractToText( ordenCompraMaquilado, "" );
+					total = Util.extractToText( ordenCompraMaquilado, "totalCalculado" );
 				}
 				this.lblSupplier.text = supplier;
-				this.lblSubtotal.text = subtotal;
-				this.lblIVA.text = iva;
-				this.lblIEPS.text = ieps;
-				this.lblISRRetention.text = isrRet;
-				this.lblIVARetention.text = ivaRet;
-				this.lblOtherTaxes.text = otherTaxes;
-				this.lblTotal.text = total;
+				this.lblSubtotal.text = Util.formatCurrency(subtotal);
+				this.lblIVA.text = Util.formatCurrency(iva);
+				this.lblIEPS.text = Util.formatCurrency(ieps);
+				this.lblISRRetention.text = Util.formatCurrency(isrRet);
+				this.lblIVARetention.text = Util.formatCurrency(ivaRet);
+				this.lblOtherTaxes.text = Util.formatCurrency(otherTaxes);
+				this.lblTotal.text = Util.formatCurrency(total);
+			}
+			
+			private function providerLabelFunction( item:Object, column:DataGridColumn ):String{
+				var provider:String = "";
+				if( item == null ){
+					return "";
+				}
+				if( item is OrdenCompraMaquilado ){
+					provider = (item as OrdenCompraMaquilado).proveedorMaquilador.proveedor.razonSocial;
+				}
+				if( item is OrdenCompraAlmacen  ){
+					provider = (item as OrdenCompraAlmacen).proveedorCalificado.proveedorSeleccionado.proveedor.razonSocial;
+				}
+				return provider;
+			}
+			
+			private function projectLabelFunction( item:Object, column:DataGridColumn ):String{
+				var returnValue:String = "";
+				if( item == null ){
+					return "";
+				}
+				if( item is OrdenCompraMaquilado ){
+					returnValue = (item as OrdenCompraMaquilado).solicitudServicioMaquilado.proyecto.id;
+				}
+				if( item is OrdenCompraAlmacen  ){
+					returnValue = (item as OrdenCompraAlmacen).proyecto.id;
+				}
+				return returnValue;
+			}
+			
+			private function requisitionLabelFunction( item:Object, column:DataGridColumn ):String{
+				var returnValue:String = "";
+				if( item == null ){
+					return "";
+				}
+				if( item is OrdenCompraMaquilado ){
+					returnValue = (item as OrdenCompraMaquilado).solicitudServicioMaquilado.id;
+				}
+				if( item is OrdenCompraAlmacen  ){
+					returnValue = (item as OrdenCompraAlmacen).requisicionCompra.id;
+				}
+				return returnValue;
 			}
 		]]>
 	</mx:Script>
@@ -359,11 +401,11 @@
 								   textAlign="right"/>
 				<mx:DataGridColumn id="dtgProjectID" headerText="{'ID \nProyecto'}"
 								   width="80"
-								   dataField="proyecto.id"
+								   labelFunction="projectLabelFunction"
 								   textAlign="right"/>
 				<mx:DataGridColumn id="dtgRequisicionID" headerText="{'ID \nRequisición/\nSolicitud'}"
 								   width="90"
-								   dataField="requisicionCompra.id"
+								   labelFunction="requisitionLabelFunction"
 								   textAlign="right"/>
 				<mx:DataGridColumn id="dtgDate" headerText="Fecha"
 								   width="80"
@@ -372,7 +414,7 @@
 								   textAlign="center"/>
 				<mx:DataGridColumn id="dtgSupplier" headerText="Proveedor"
 								   width="200"
-								   dataField="proveedorCalificado.proveedorSeleccionado.nombreComercial"
+								   labelFunction="providerLabelFunction"
 								   />
 			</mx:columns>
 		</mx:DataGrid>
@@ -419,5 +461,8 @@
 	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
 	<mx:RemoteObject id="ordenCompraService" destination="ordenCompraService" fault="facturaPorPagarService_faultHandler(event)"
 					 showBusyCursor="true"/>
-	<mx:CallResponder id="responseGetAllODCAlmacen" result="responseGetAllODCAlmacen_resultHandler(event)"/>
+	<mx:RemoteObject id="ordenCompraMaquiladoService" destination="ordenCompraMaquiladoService" fault="facturaPorPagarService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetAllODC" result="responseGetAllODC_resultHandler(event)"/>
 </mx:VBox>
+	

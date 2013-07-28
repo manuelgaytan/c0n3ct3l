@@ -68,8 +68,8 @@
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{partida}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement uuid="9ae0be80-0911-4534-9c56-dacd47de9875" stretchType="RelativeToBandHeight" x="179" y="2" width="216" height="15"/>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="9ae0be80-0911-4534-9c56-dacd47de9875" x="179" y="2" width="216" height="15"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
 			</textField>

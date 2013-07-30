@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -54,10 +55,10 @@ public class ConcentradoOrdenCompraClienteDO implements Serializable{
 	@Column(name = "condicion_pago")
 	private String condicionPago;
 	
-	@OneToMany(mappedBy="concentradoOrdenCompraCliente", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy="concentradoOrdenCompraCliente", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<ComentarioConcentradoOrdenCompraClienteDO> comentariosConcentradoOrdenCompraCliente;
 	
-	@OneToMany(mappedBy="concentradoOrdenCompraCliente", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy="concentradoOrdenCompraCliente", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<PartidaConcentradoOrdenCompraClienteDO> partidasConcentradoOrdenCompraCliente;
 
 	public ConcentradoOrdenCompraClienteDO() {

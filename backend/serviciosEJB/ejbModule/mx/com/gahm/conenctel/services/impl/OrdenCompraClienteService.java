@@ -3,6 +3,7 @@
  */
 package mx.com.gahm.conenctel.services.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -14,8 +15,13 @@ import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
 import mx.com.gahm.conenctel.entities.ComentarioOrdenCompraClienteDO;
+import mx.com.gahm.conenctel.entities.ComentarioRequisicionDO;
+import mx.com.gahm.conenctel.entities.ComentarioValidacionAdministrativaDO;
 import mx.com.gahm.conenctel.entities.ComentarioValidacionCostoOrdenCompraClienteDO;
 import mx.com.gahm.conenctel.entities.OrdenCompraClienteDO;
+import mx.com.gahm.conenctel.entities.PartidaRequisicionCompraDO;
+import mx.com.gahm.conenctel.entities.RequisicionCompraDO;
+import mx.com.gahm.conenctel.entities.SolicitanteRequisicionDO;
 import mx.com.gahm.conenctel.exceptions.ConectelException;
 import mx.com.gahm.conenctel.services.IOrdenCompraClienteService;
 
@@ -46,21 +52,15 @@ public class OrdenCompraClienteService implements IOrdenCompraClienteService{
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public OrdenCompraClienteDO save(OrdenCompraClienteDO item) {
-		
-		
 		if(item!=null){
 			List<ComentarioValidacionCostoOrdenCompraClienteDO> comentariosValidacion=item.getComentarioValidacionCostoOrdenCompraCliente();
 			List<ComentarioOrdenCompraClienteDO> comentatiosOrden =item.getComentarioOrdenCompraCliente();
-			
 			item.setComentarioOrdenCompraCliente(null);
 			item.setComentarioValidacionCostoOrdenCompraCliente(null);
 			entityManager.persist(item);
 			saveComentariosValidacion(item,comentariosValidacion);
 			saveComentariosOrden(item,comentatiosOrden);
-			
 		}
-		
-		
 		return item;
 	}
 	
@@ -69,32 +69,88 @@ public class OrdenCompraClienteService implements IOrdenCompraClienteService{
 			return;
 		}
 		for (ComentarioValidacionCostoOrdenCompraClienteDO dato : comentariosValidacion) {
+			ComentarioValidacionAdministrativaDO comentarioValidacionAdministrativaDO = dato.getComentarioValidacionAdministrativa();
+			entityManager.persist( comentarioValidacionAdministrativaDO );
+			dato.setComentarioValidacionAdministrativa( comentarioValidacionAdministrativaDO );
 			dato.setOrdenCompraCliente(item);
 			entityManager.persist(dato);
-			
 		}
-		item.setComentarioValidacionCostoOrdenCompraCliente(comentariosValidacion);
 	}
 
-	private void saveComentariosOrden(OrdenCompraClienteDO item,List<ComentarioOrdenCompraClienteDO> comentatiosOrden){
-		if( comentatiosOrden == null ){
+	private void saveComentariosOrden(OrdenCompraClienteDO item,List<ComentarioOrdenCompraClienteDO> comentariosOrden){
+		if( comentariosOrden == null ){
 			return;
 		}
-		for (ComentarioOrdenCompraClienteDO dato : comentatiosOrden) {
-			
+		for (ComentarioOrdenCompraClienteDO dato : comentariosOrden) {
+			ComentarioValidacionAdministrativaDO comentarioValidacionAdministrativaDO = dato.getComentarioValidacionAdministrativa();
+			entityManager.persist( comentarioValidacionAdministrativaDO );
+			dato.setComentarioValidacionAdministrativa( comentarioValidacionAdministrativaDO );
 			dato.setOrdenCompraCliente(item);
 			entityManager.persist(dato);
 		}
-		item.setComentarioOrdenCompraCliente(comentatiosOrden);
 	}
 	
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public OrdenCompraClienteDO update(OrdenCompraClienteDO item) {
+		deleteComentariosValidacionCostoOrdenCompraCliente(item);
+		deleteComentariosOrdenCompraCliente(item);
+		List<ComentarioValidacionCostoOrdenCompraClienteDO> comentarioValidacionCostoOrdenCompraCliente = item.getComentarioValidacionCostoOrdenCompraCliente();
+		List<ComentarioOrdenCompraClienteDO> comentarioOrdenCompraCliente = item.getComentarioOrdenCompraCliente();
+		item.setComentarioValidacionCostoOrdenCompraCliente(null);
+		item.setComentarioOrdenCompraCliente(null);
+		this.colocarOrdenCompraCliente( item );
 		entityManager.merge(item);
+		saveComentariosValidacion(item,comentarioValidacionCostoOrdenCompraCliente);
+		saveComentariosOrden(item,comentarioOrdenCompraCliente);
+		item.setComentarioValidacionCostoOrdenCompraCliente(comentarioValidacionCostoOrdenCompraCliente);
+		item.setComentarioOrdenCompraCliente(comentarioOrdenCompraCliente);
 		return item;
 	}
 
 	
+
+	private void colocarOrdenCompraCliente(OrdenCompraClienteDO item) {
+		List<ComentarioValidacionCostoOrdenCompraClienteDO> comentarios = item.getComentarioValidacionCostoOrdenCompraCliente();
+		if(comentarios!=null){
+			for (ComentarioValidacionCostoOrdenCompraClienteDO comentario : comentarios) {
+				comentario.setOrdenCompraCliente( item );
+			}
+		}
+		List<ComentarioOrdenCompraClienteDO> comentarios2= item.getComentarioOrdenCompraCliente();
+		if(comentarios2!=null){
+			for (ComentarioOrdenCompraClienteDO comentario : comentarios2) {
+				comentario.setOrdenCompraCliente( item );
+			}
+		}
+	}
+
+
+	private void deleteComentariosOrdenCompraCliente(OrdenCompraClienteDO itemParam) {
+		OrdenCompraClienteDO item = entityManager.find(OrdenCompraClienteDO.class, itemParam.getId());
+		if( item == null || item.getComentarioOrdenCompraCliente() == null){
+			return;
+		}
+		for (ComentarioOrdenCompraClienteDO comentario : item.getComentarioOrdenCompraCliente()) {
+			if(comentario!=null){
+				entityManager.remove(comentario);
+			}
+		}
+	}
+
+
+	private void deleteComentariosValidacionCostoOrdenCompraCliente(
+			OrdenCompraClienteDO itemParam) {
+		OrdenCompraClienteDO item = entityManager.find(OrdenCompraClienteDO.class, itemParam.getId());
+		if( item == null || item.getComentarioValidacionCostoOrdenCompraCliente() == null){
+			return;
+		}
+		for (ComentarioValidacionCostoOrdenCompraClienteDO comentario : item.getComentarioValidacionCostoOrdenCompraCliente()) {
+			if(comentario!=null){
+				entityManager.remove(comentario);
+			}
+		}
+	}
+
 
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public OrdenCompraClienteDO getItem(Long id) throws ConectelException {

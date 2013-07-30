@@ -1,5 +1,7 @@
 package mx.com.gahm.conenctel.entities;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,7 +16,12 @@ import javax.persistence.Table;
 @NamedQueries({
 	@NamedQuery(name = "ComentarioConcentradoOrdenCompraClienteDO.findAll", query = "select c from ComentarioConcentradoOrdenCompraClienteDO c") })
 @Table(name="ComentarioConcentradoOrdenCompraCliente")
-public class ComentarioConcentradoOrdenCompraClienteDO {
+public class ComentarioConcentradoOrdenCompraClienteDO implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7136210686653931917L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -25,7 +32,7 @@ public class ComentarioConcentradoOrdenCompraClienteDO {
 	private ConcentradoOrdenCompraClienteDO concentradoOrdenCompraCliente;
 	
 	@ManyToOne
-	@JoinColumn(name="fk_validacion_administrativa")
+	@JoinColumn(name="fk_comentario_validacion_administrativa")
 	private ComentarioValidacionAdministrativaDO comentarioValidacionAdministrativa;
 
 	public ComentarioConcentradoOrdenCompraClienteDO() {

@@ -24,7 +24,7 @@ public class PartidaConcentradoOrdenCompraClienteDO implements Serializable {
 	private static final long serialVersionUID = 7306989193621279441L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
 	@ManyToOne

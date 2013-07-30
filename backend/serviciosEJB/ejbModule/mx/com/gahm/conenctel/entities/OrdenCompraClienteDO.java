@@ -31,14 +31,14 @@ public class OrdenCompraClienteDO implements java.io.Serializable {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id", unique = true, nullable = false)
-	private Integer id;
+	private Long id;
 	@OneToOne
 	@JoinColumn(name = "fk_proyecto", nullable = false)
 	private ProyectoDO proyecto;
 	@Column(name = "orden_compra", nullable = false)
 	private Boolean ordenCompra;
 	@Column(name = "numero_orden_compra", nullable = false)
-	private Long numeroOrdenCompra;
+	private String numeroOrdenCompra;
 	@Temporal(TemporalType.DATE)
 	@Column(name = "fecha_orden_compra", nullable = false, length = 10)
 	private Date fechaOrdenCompra;
@@ -77,8 +77,8 @@ public class OrdenCompraClienteDO implements java.io.Serializable {
 	 * @param validacionCosto
 	 * @param estadoOrdenCompra
 	 */
-	public OrdenCompraClienteDO(Integer id, ProyectoDO proyecto,
-			Boolean ordenCompra, Long numeroOrdenCompra, Date fechaOrdenCompra,
+	public OrdenCompraClienteDO(Long id, ProyectoDO proyecto,
+			Boolean ordenCompra, String numeroOrdenCompra, Date fechaOrdenCompra,
 			Double costoOrdenCompra, ValidacionCostoDO validacionCosto,
 			EstadoOrdenCompraDO estadoOrdenCompra) {
 		super();
@@ -92,11 +92,11 @@ public class OrdenCompraClienteDO implements java.io.Serializable {
 		this.estadoOrdenCompra = estadoOrdenCompra;
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -116,11 +116,11 @@ public class OrdenCompraClienteDO implements java.io.Serializable {
 		this.ordenCompra = ordenCompra;
 	}
 
-	public Long getNumeroOrdenCompra() {
+	public String getNumeroOrdenCompra() {
 		return numeroOrdenCompra;
 	}
 
-	public void setNumeroOrdenCompra(Long numeroOrdenCompra) {
+	public void setNumeroOrdenCompra(String numeroOrdenCompra) {
 		this.numeroOrdenCompra = numeroOrdenCompra;
 	}
 

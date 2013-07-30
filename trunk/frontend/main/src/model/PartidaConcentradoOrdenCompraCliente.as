@@ -2,7 +2,7 @@ package model
 {
 	import mx.collections.ArrayCollection;
 
-	//[RemoteClass(alias="mx.com.gahm.conenctel.entities.PartidaConcentradoOrdenCompraClienteDO")]
+	[RemoteClass(alias="mx.com.gahm.conenctel.entities.PartidaConcentradoOrdenCompraClienteDO")]
 	public class PartidaConcentradoOrdenCompraCliente
 	{
 		public var id:*;

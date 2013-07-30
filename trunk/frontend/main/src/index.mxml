@@ -66,6 +66,7 @@
 			import model.Compania;
 			import model.ComprobacionViaticos;
 			import model.ConcentradoCapacitacion;
+			import model.ConcentradoOrdenCompraCliente;
 			import model.ConceptoOtraOperacionFinanciera;
 			import model.ConfiguracionPruebaEntrega;
 			import model.Constants;
@@ -527,6 +528,7 @@
 			private var tipoDesarrolloProyecto:TipoDesarrolloProyecto;
 			private var reportes:Reportes;
 			private var comentarioProveedor:ComentarioProveedor;
+			private var concentradoOrdenCompraCliente:ConcentradoOrdenCompraCliente;
 						
 			protected function login_readyHandler(event:ModuleEvent):void
 			{

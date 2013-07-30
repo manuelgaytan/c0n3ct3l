@@ -95,7 +95,7 @@
 				this.txtSiteID.text = this._item.idSitio;
 				this.txtServiceType.text = this._item.localForaneo;
 				this.txtPayCondition.text = this._item.idSitio;
-				this.comments.comments = this._item.comentariosConcentradoOrdenCompraCliente;
+				this.comments.setCommentsIn( this._item.comentariosConcentradoOrdenCompraCliente, "comentarioValidacionAdministrativa");
 			}
 			
 			private function getConcentratedCustomerPurchaseOrders():ConcentradoOrdenCompraCliente{
@@ -114,7 +114,7 @@
 				item.idSitio = Util.validateEmpty(this.txtSiteID.text);
 				item.localForaneo = Util.validateEmpty(this.txtServiceType.text);
 				item.condicionPago = Util.validateEmpty(this.txtPayCondition.text);
-				item.comentariosConcentradoOrdenCompraCliente = this.comments.comments;
+				item.comentariosConcentradoOrdenCompraCliente = this.comments.getCommentsAsInWith("model.ComentarioValidacionAdministrativa","model.ComentarioConcentradoOrdenCompraCliente","comentarioValidacionAdministrativa");
 				return item;
 			}
 			
@@ -210,6 +210,7 @@
 			
 			private function cleanForm():void
 			{
+				Util.upScroll( this );
 				this.txtID.reset();
 				this.cmbClient.selectedIndex = 0;
 				this.txtPurchaseOrder.reset();

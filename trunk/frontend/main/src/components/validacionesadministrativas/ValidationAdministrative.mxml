@@ -233,6 +233,7 @@
 			
 			private function cleanForm():void
 			{
+				Util.upScroll( this );
 				this.txtID.reset();
 				this.cmbAdministrativeValidationStatus.selectedIndex = 0;
 				this.cmbTypeValidationAdministrative.selectedIndex = 0;

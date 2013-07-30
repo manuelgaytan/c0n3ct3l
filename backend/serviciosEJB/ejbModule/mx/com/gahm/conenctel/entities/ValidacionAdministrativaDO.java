@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -99,7 +100,7 @@ public class ValidacionAdministrativaDO implements Serializable{
 	private ImputableDO imputable;
 	
 	
-	@OneToMany(mappedBy="validacionAdministrativa", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy="validacionAdministrativa", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<ComentarioPantallaValidacionAdministrativaDO> comentariosPantallaValidacionAdministrativa;
    	
 	@OneToOne  

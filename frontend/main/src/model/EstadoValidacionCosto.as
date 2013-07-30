@@ -2,7 +2,7 @@ package model
 {
 	import mx.collections.ArrayCollection;
 
-	[RemoteClass(alias="mx.com.gahm.conenctel.entities.EstadoValidacionCostoDO")]
+	[RemoteClass(alias="mx.com.gahm.conenctel.entities.ValidacionCostoDO")]
 	public class EstadoValidacionCosto
 	{
 		public var id:*;

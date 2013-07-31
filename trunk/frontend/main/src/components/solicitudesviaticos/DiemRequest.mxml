@@ -77,6 +77,7 @@
 				this.txtID.text = this._item.id.toString();
 				this.dtfDate.selectedDate = this._item.fecha;
 				this.projectsConsult.datagrid.dataProvider = Util.asArrayCollection( this._item.proyecto );
+				this.projectsConsult.datagrid.selectedIndex = 0;
 				if( Util.isFill( this.cmbResponsibleViaticum ) && this._item.colaborador != null ){
 					this.cmbResponsibleViaticum.selectedIndex = Util.selectedIndexFromCombo( this.cmbResponsibleViaticum.dataProvider as ArrayCollection, 
 						this._item.colaborador.id);

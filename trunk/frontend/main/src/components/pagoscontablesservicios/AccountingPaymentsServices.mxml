@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)"
 		 >
@@ -391,13 +391,13 @@
 		<mx:FormItem label="Fecha:">
 			<components:DateField id="dtfDate" creationComplete="this.dtfDate.selectedDate = new Date()" enabled="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Tipo Operaci贸n:">
+		<mx:FormItem label="Tipo Operaci髇:">
 			<mx:ComboBox id="cmbOperationType"
 						 labelField="etiqueta"
 						 width="150"
 						 change="cmbOperationType_changeHandler(event)"/>
 		</mx:FormItem>
-		<mx:FormItem label="Descripci贸n:">
+		<mx:FormItem label="Descripci髇:">
 			<mx:ComboBox id="cmbDescription"
 						 labelField="descripcion"
 						 width="150"/>
@@ -430,10 +430,10 @@
 		<mx:FormItem label="Redondeo:">
 			<components:TextInput id="txtRounding" width="150" textAlign="right"/>
 		</mx:FormItem>
-		<mx:FormItem label="I.S.R. Retenci贸n:">
+		<mx:FormItem label="I.S.R. Retenci髇:">
 			<components:TextInput id="txtISRRetention" width="150" textAlign="right"/>
 		</mx:FormItem>
-		<mx:FormItem label="I.V.A. Retenci贸n:">
+		<mx:FormItem label="I.V.A. Retenci髇:">
 			<components:TextInput id="txtIVARetention" width="150" textAlign="right"/>
 		</mx:FormItem>
 		<mx:FormItem label="Otros Impuestos:">
@@ -442,7 +442,7 @@
 		<mx:FormItem label="Total a Pagar:">
 			<components:TextInput id="txtTotalToPay" width="150" textAlign="right"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha L铆mite de Pago:">
+		<mx:FormItem label="Fecha L韒ite de Pago:">
 			<components:DateField id="dtfLimitPaymentDate"/>
 		</mx:FormItem>
 		<components:Comments id="comments"/>

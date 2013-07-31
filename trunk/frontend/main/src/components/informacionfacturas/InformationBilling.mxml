@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)" xmlns:concentradoordenescompracliente="components.concentradoordenescompracliente.*" xmlns:validacionesadministrativas="components.validacionesadministrativas.*"
 		 >
@@ -322,10 +322,10 @@
 			<components:TextInput id="txtID" editable="false"
 								  textAlign="right"/>
 		</mx:FormItem>
-		<mx:FormItem label="Validaci贸n Administrativa:"/>
+		<mx:FormItem label="Validaci髇 Administrativa:"/>
 		<validacionesadministrativas:Consult id="validacionesAdministrativas" readMode="true"
 											 validationAdministrativeDetail="validacionesAdministrativas_doubleClickHandler(event)"/>
-		<mx:FormHeading label="Informaci贸n Factura 1"/>
+		<mx:FormHeading label="Informaci髇 Factura 1"/>
 		<mx:FormItem label="Folio Factura 1:">
 			<components:TextInput id="txtFolio1"
 								  textAlign="right"/>
@@ -344,14 +344,14 @@
 			<components:TextInput id="txtTotal1"
 								  textAlign="right"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha Emisi贸n 1:">
+		<mx:FormItem label="Fecha Emisi髇 1:">
 			<components:DateField id="dtfIssued1"
 								  />
 		</mx:FormItem>
 		<mx:FormItem label="Fecha Ingreso 1:">
 			<components:DateField id="dtfAdmissionDate1"/>
 		</mx:FormItem>
-		<mx:FormItem label="D铆as Cr茅dito 1:">
+		<mx:FormItem label="D韆s Cr閐ito 1:">
 			<components:TextInput id="txtCreditDays1"
 								  textAlign="right"/>
 		</mx:FormItem>
@@ -363,7 +363,7 @@
 			<components:TextInput id="txtPaymentState1"/>
 		</mx:FormItem>
 		<components:Comments id="comments1" />
-		<mx:FormHeading label="Informaci贸n Factura 2"/>
+		<mx:FormHeading label="Informaci髇 Factura 2"/>
 		<mx:FormItem label="Folio Factura 2:">
 			<components:TextInput id="txtFolio2"
 								  textAlign="right"/>
@@ -382,14 +382,14 @@
 			<components:TextInput id="txtTotal2"
 								  textAlign="right"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha Emisi贸n 2:">
+		<mx:FormItem label="Fecha Emisi髇 2:">
 			<components:DateField id="dtfIssued2"
 								  />
 		</mx:FormItem>
 		<mx:FormItem label="Fecha Ingreso 2:">
 			<components:DateField id="dtfAdmissionDate2"/>
 		</mx:FormItem>
-		<mx:FormItem label="D铆as Cr茅dito 2:">
+		<mx:FormItem label="D韆s Cr閐ito 2:">
 			<components:TextInput id="txtCreditDays2"
 								  textAlign="right"/>
 		</mx:FormItem>
@@ -401,7 +401,7 @@
 			<components:TextInput id="txtPaymentState2"/>
 		</mx:FormItem>
 		<components:Comments id="comments2" />
-		<mx:FormHeading label="Informaci贸n Factura 3"/>
+		<mx:FormHeading label="Informaci髇 Factura 3"/>
 		<mx:FormItem label="Folio Factura 3:">
 			<components:TextInput id="txtFolio3"
 								  textAlign="right"/>
@@ -420,14 +420,14 @@
 			<components:TextInput id="txtTotal3"
 								  textAlign="right"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha Emisi贸n 3:">
+		<mx:FormItem label="Fecha Emisi髇 3:">
 			<components:DateField id="dtfIssued3"
 								  />
 		</mx:FormItem>
 		<mx:FormItem label="Fecha Ingreso 3:">
 			<components:DateField id="dtfAdmissionDate3"/>
 		</mx:FormItem>
-		<mx:FormItem label="D铆as Cr茅dito 3:">
+		<mx:FormItem label="D韆s Cr閐ito 3:">
 			<components:TextInput id="txtCreditDays3"
 								  textAlign="right"/>
 		</mx:FormItem>

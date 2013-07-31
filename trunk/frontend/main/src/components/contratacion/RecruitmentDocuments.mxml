@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:Form xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)">
 	<mx:Script>
@@ -145,7 +145,7 @@
 			}
 		]]>
 	</mx:Script>
-	<mx:FormHeading label="Documentos de ContrataciÃ³n"/>
+	<mx:FormHeading label="Documentos de Contratación"/>
 	<mx:FormItem id="frmID" label="ID:" direction="horizontal">
 		<components:TextInput id="txtID" width="80" textAlign="right" editable="false"/>
 	</mx:FormItem>
@@ -179,10 +179,10 @@
 	<mx:FormItem label="Carta de Antecedentes No Penales:">
 		<mx:CheckBox id="chkLetterCriminal"/>
 	</mx:FormItem>
-	<mx:FormItem label="Certificado MÃ©dico:">
+	<mx:FormItem label="Certificado Médico:">
 		<mx:CheckBox id="chkMedicalCertificate"/>
 	</mx:FormItem>
-	<mx:FormItem label="Cartas de RecomendaciÃ³n Laboral o Personal:">
+	<mx:FormItem label="Cartas de Recomendación Laboral o Personal:">
 		<mx:CheckBox id="chkLettersRecommendation"/>
 	</mx:FormItem>
 	<mx:FormItem label="Curriculum:">
@@ -191,7 +191,7 @@
 	<mx:FormItem label="FM2 FM3:">
 		<mx:CheckBox id="chkFM2FM3"/>
 	</mx:FormItem>
-	<mx:FormItem label="FotografÃ­a:">
+	<mx:FormItem label="Fotografía:">
 		<mx:CheckBox id="chkPicture"/>
 	</mx:FormItem>
 </mx:Form>

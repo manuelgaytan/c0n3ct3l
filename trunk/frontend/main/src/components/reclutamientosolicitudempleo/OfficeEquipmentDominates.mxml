@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:Form xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)">
 	<mx:Script>
@@ -143,10 +143,10 @@
 	<mx:FormItem label="Fax:">
 		<mx:CheckBox id="chkFax"/>
 	</mx:FormItem>
-	<mx:FormItem label="TelÃ©fono:">
+	<mx:FormItem label="Teléfono:">
 		<mx:CheckBox id="chkPhone"/>
 	</mx:FormItem>
-	<mx:FormItem label="EscÃ¡ner:">
+	<mx:FormItem label="Escáner:">
 		<mx:CheckBox id="chkScanner"/>
 	</mx:FormItem>
 	<mx:FormItem label="Tableta:">

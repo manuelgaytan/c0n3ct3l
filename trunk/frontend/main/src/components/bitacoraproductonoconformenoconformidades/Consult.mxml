@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
 		 creationComplete="creationCompleteHandler(event)">
@@ -112,23 +112,23 @@
 								   dataField="id"
 								   width="60"
 								   textAlign="right"/>
-				<mx:DataGridColumn id="dtgAreaRaisesNonConformity" headerText="{'Ãrea que\nLevanta la\nNo Conformidad'}"
+				<mx:DataGridColumn id="dtgAreaRaisesNonConformity" headerText="{'Área que\nLevanta la\nNo Conformidad'}"
 								   dataField="areaLevantaNoConformidad.area"
 								   width="150"/>
 				<mx:DataGridColumn id="dtgEventDate" headerText="{'Fecha del\nSuceso'}"
 								   labelFunction="{Util.labelFunctionDate}"
 								   dataField="fechaSuceso"
 								   width="100"/>
-				<mx:DataGridColumn id="dtgName" headerText="{'Nombre de\nquiÃ©n Levanta\nla No Conformidad'}"
+				<mx:DataGridColumn id="dtgName" headerText="{'Nombre de\nquién Levanta\nla No Conformidad'}"
 								   dataField="areaNombreSeLevanta"
 								   width="150"/>
-				<mx:DataGridColumn id="dtgAreaWhoRaisedNonConformity" headerText="{'Ãrea a quiÃ©n\nse Levanta la\nNo Conformidad'}"
+				<mx:DataGridColumn id="dtgAreaWhoRaisedNonConformity" headerText="{'Área a quién\nse Levanta la\nNo Conformidad'}"
 								   dataField="areaNombreSeLevanta"
 								   width="150"/>
 				<mx:DataGridColumn id="dtgEvent" headerText="{'Suceso/Evento'}"
 								   dataField="sucesoEvento"
 								   width="370"/>
-				<mx:DataGridColumn id="dtgInmediatlyAction" headerText="{'Requiere\nAcciÃ³n\nCorrectiva'}"
+				<mx:DataGridColumn id="dtgInmediatlyAction" headerText="{'Requiere\nAcción\nCorrectiva'}"
 								   dataField="requiereAccionCorrectiva"
 								   width="80"
 								   textAlign="center"

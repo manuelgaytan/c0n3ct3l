@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
 		 creationComplete="creationCompleteHandler(event)">
@@ -135,19 +135,19 @@
 				<mx:DataGridColumn id="dtgPosition" headerText="{'Puesto'}"
 								   dataField="contratacion.reclutamientoSolicitudEmpleo.datosPrincipalesSolicitante.puestoSolicitado"
 								   width="100"/>
-				<mx:DataGridColumn id="dtgENCDate" headerText="{'Fecha\nEvaluaciÃ³n de\nNecesidades\nde\nCompetencia'}"
+				<mx:DataGridColumn id="dtgENCDate" headerText="{'Fecha\nEvaluación de\nNecesidades\nde\nCompetencia'}"
 								   dataField="fechaEnc"
 								   labelFunction="{Util.labelFunctionDate}"
 								   width="80"/>
-				<mx:DataGridColumn id="dtgENCGrade" headerText="{'Resultado\nEvaluaciÃ³n de\nNecesidades\nde\nCompetencia'}"
+				<mx:DataGridColumn id="dtgENCGrade" headerText="{'Resultado\nEvaluación de\nNecesidades\nde\nCompetencia'}"
 								   dataField="resultadoEnc"
 								   textAlign="right"
 								   width="80"/>
-				<mx:DataGridColumn id="dtgTechnicalCourseDate" headerText="{'Fecha\nCurso\nTÃ©cnico'}"
+				<mx:DataGridColumn id="dtgTechnicalCourseDate" headerText="{'Fecha\nCurso\nTécnico'}"
 								   dataField="fechaCt"
 								   labelFunction="{Util.labelFunctionDate}"
 								   width="80"/>
-				<mx:DataGridColumn id="dtgTechnicalCourse" headerText="{'Curso\nTÃ©cnico'}"
+				<mx:DataGridColumn id="dtgTechnicalCourse" headerText="{'Curso\nTécnico'}"
 								   dataField="cursoTecnico"
 								   width="100"/>
 				<mx:DataGridColumn id="dtgTechnicalCourseGrade" headerText="{'Resultado'}"

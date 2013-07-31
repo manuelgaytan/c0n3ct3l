@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
 		 horizontalAlign="right"
@@ -126,7 +126,7 @@
 							   width="120"
 							   dataField="proveedorMaquilador.nombreComercial"
 							   />
-			<mx:DataGridColumn id="dtgDescription" headerText="DescripciÃ³n"
+			<mx:DataGridColumn id="dtgDescription" headerText="Descripción"
 							   width="90"
 							   dataField="descripcionPagoContableServicio.descripcion"
 							   />
@@ -140,7 +140,7 @@
 							   textAlign="right"
 							   labelFunction="{Util.labelFunctionCurrency}"
 							   width="100"/>
-			<mx:DataGridColumn id="dtgDate" headerText="{'Fecha\nLÃ­mite\nde Pago'}"
+			<mx:DataGridColumn id="dtgDate" headerText="{'Fecha\nLímite\nde Pago'}"
 							   dataField="fechaLimitePago"
 							   width="80"
 							   textAlign="center"

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
 		 creationComplete="creationCompleteHandler(event)">
@@ -106,7 +106,7 @@
 								   textAlign="right"
 								   width="130"
 								   />
-				<mx:DataGridColumn id="dtgCostValidation" headerText="{'ValidaciÃ³n\ndel Costo'}"
+				<mx:DataGridColumn id="dtgCostValidation" headerText="{'Validación\ndel Costo'}"
 								   dataField="validacionCosto.etiqueta"
 								   textAlign="center"
 								   width="150"

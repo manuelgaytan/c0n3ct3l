@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
 		 creationComplete="creationCompleteHandler(event)">
@@ -143,7 +143,7 @@
 								   labelFunction="{Util.labelFunctionDate}"
 								   dataField="fechaInicioContrato"
 								   width="120"/>
-				<mx:DataGridColumn id="dtgRecruitmentType" headerText="{'Tipo de\nContrataciÃ³n'}"
+				<mx:DataGridColumn id="dtgRecruitmentType" headerText="{'Tipo de\nContratación'}"
 								   dataField="tipoContratacion.tipo"
 								   width="120"
 								   />

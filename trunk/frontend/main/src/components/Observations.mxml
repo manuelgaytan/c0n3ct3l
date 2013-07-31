@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:Form xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)"
 		 paddingTop="5" paddingBottom="5">
@@ -109,7 +109,7 @@
 		<mx:ComboBox id="cmbImputable"
 					 labelField="etiqueta"/>
 	</mx:FormItem>
-	<mx:FormItem label="ObservaciÃ³n:" direction="vertical">
+	<mx:FormItem label="Observación:" direction="vertical">
 		<mx:HBox>			
 			<components:TextArea id="txtObservation" width="400"/>
 			<mx:Button label="+" id="btnAddObservation" click="btnAddObservation_clickHandler(event)"/>

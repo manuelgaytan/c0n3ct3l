@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)"
 		 >
@@ -263,10 +263,10 @@
 		<mx:FormItem label="Moneda:">
 			<components:TextInput id="txtCode"/>
 		</mx:FormItem>
-		<mx:FormItem label="LÃ­mite de CrÃ©dito:">
+		<mx:FormItem label="Límite de Crédito:">
 			<components:TextInput id="txtDescription"/>
 		</mx:FormItem>
-		<mx:FormItem label="DÃ­as de CrÃ©dito:">
+		<mx:FormItem label="Días de Crédito:">
 			<components:TextInput id="txtExistence"
 								  textAlign="right" width="70"/>
 		</mx:FormItem>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
 		 creationComplete="creationCompleteHandler(event)">
@@ -134,7 +134,7 @@
 				<mx:DataGridColumn id="dtgClient" headerText="{'Cliente'}"
 								   dataField="proyecto.producto.cliente.nombreComercial"
 								   width="170"/>
-				<mx:DataGridColumn id="dtgResponsibleViaticum" headerText="{'Responsable\nViÃ¡tico'}"
+				<mx:DataGridColumn id="dtgResponsibleViaticum" headerText="{'Responsable\nViático'}"
 								   dataField="colaborador.nombreCompleto"
 								   textAlign="right"
 								   width="170"

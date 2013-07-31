@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:Form xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 width="100%" height="100%" label="Datos Sobre Conectel del Solicitante"
 		 creationComplete="creationCompleteHandler(event)">
@@ -173,7 +173,7 @@
 		<components:DateField id="dtfDateWork"
 							  creationComplete="this.dtfDateWork.selectedDate = new Date()"/>
 	</mx:FormItem>
-	<mx:FormItem label="Fase SelecciÃ³n:">
+	<mx:FormItem label="Fase Selección:">
 		<mx:ComboBox id="cmbSelectionPhase" width="200"
 					 labelField="fase"/>
 	</mx:FormItem>

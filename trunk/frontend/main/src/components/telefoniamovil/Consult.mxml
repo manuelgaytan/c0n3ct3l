@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
 		 horizontalAlign="right"
@@ -98,14 +98,14 @@
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 				 allowMultipleSelection="true">
 		<mx:columns>
-			<mx:DataGridColumn id="dtgCode" headerText="CÃ³digo"
+			<mx:DataGridColumn id="dtgCode" headerText="Código"
 							   dataField="codigo"
 							   width="100"/>
 			<mx:DataGridColumn id="dtgFamily" headerText="{'Grupo o\nFamilia'}"
 							   width="160"
 							   dataField="grupoFamiliaF.etiqueta"
 							   labelFunction="labelFunctionGenerico"/>
-			<mx:DataGridColumn id="dtgDescription" headerText="DescripciÃ³n"
+			<mx:DataGridColumn id="dtgDescription" headerText="Descripción"
 							   dataField="descripcion"
 							   width="120"/>
 			<mx:DataGridColumn id="dtgTrade" headerText="Marca"
@@ -114,11 +114,11 @@
 			<mx:DataGridColumn id="dtgModel" headerText="Modelo"
 							   dataField="modelo"
 							   width="100"/>
-			<mx:DataGridColumn id="dtgCompany" headerText="CompaÃ±Ã­a"
+			<mx:DataGridColumn id="dtgCompany" headerText="Compañía"
 							   dataField="compania.etiqueta"
 							   labelFunction="labelFunctionGenerico"
 							   width="100"/>
-			<mx:DataGridColumn id="dtgTelephoneNumber" headerText="{'NÃºmero de\nTelÃ©fono'}"
+			<mx:DataGridColumn id="dtgTelephoneNumber" headerText="{'Número de\nTeléfono'}"
 							   dataField="noTelefono"
 							   width="100"/>
 			<mx:DataGridColumn id="dtgPlanType" headerText="{'Tipo de Plan\nContratado'}"

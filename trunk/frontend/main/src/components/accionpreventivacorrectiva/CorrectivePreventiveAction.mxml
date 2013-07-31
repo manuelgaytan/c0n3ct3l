@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)"
 		 initialize="initializeHandler(event)" xmlns:bitacoraproductonoconformenoconformidades="components.bitacoraproductonoconformenoconformidades.*"
@@ -307,7 +307,7 @@
 		<mx:FormItem label="Fecha Apertura:">
 			<components:DateField id="dtfOpenDate"/>
 		</mx:FormItem>
-		<mx:FormItem label="Tipo de Acci贸n:">
+		<mx:FormItem label="Tipo de Acci髇:">
 			<mx:ComboBox id="cmbActionType" width="400"
 						 labelField="accion"
 						 />
@@ -320,10 +320,10 @@
 		<mx:FormItem label="Especificar:">
 			<components:TextInput id="txtSpecify" width="350"/>
 		</mx:FormItem>
-		<mx:FormItem label="Participantes del An谩lisis:">
+		<mx:FormItem label="Participantes del An醠isis:">
 			<components:TextArea id="txtFromAnalysis" width="250"/>
 		</mx:FormItem>
-		<mx:FormItem label="Determinaci贸n de las Causas:">
+		<mx:FormItem label="Determinaci髇 de las Causas:">
 			<components:TextArea id="txtDeterminationCauses" width="520"/>
 		</mx:FormItem>
 		<mx:FormItem label="Responsable de Acciones de Seguimiento:">
@@ -332,10 +332,10 @@
 		<mx:FormItem label="Acciones de Seguimiento:">
 			<components:TextArea id="txtFollowUpActions" width="520"/>
 		</mx:FormItem>
-		<mx:FormItem label="驴La Acci贸n tomada fue Eficaz?:">
+		<mx:FormItem label="縇a Acci髇 tomada fue Eficaz?:">
 			<mx:CheckBox id="chkEffectiveAction"/>
 		</mx:FormItem>
-		<mx:FormItem label="Estado de la Acci贸n Preventiva-Correctiva:">
+		<mx:FormItem label="Estado de la Acci髇 Preventiva-Correctiva:">
 			<mx:ComboBox id="cmbActionPCStatus" width="400"
 						 labelField="estado"
 						 />

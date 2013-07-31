@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
 		 horizontalAlign="right"
@@ -87,7 +87,7 @@
 							   dataField="proyecto.id"
 							   labelFunction="labelFunctionIDProyecto"
 							   width="70"/>
-			<mx:DataGridColumn id="dtgDivision" headerText="{'DivisiÃ³n\no RegiÃ³n'}"
+			<mx:DataGridColumn id="dtgDivision" headerText="{'División\no Región'}"
 							   dataField="divisionRegion"
 							   width="70"/>
 			<mx:DataGridColumn id="dtgArea" headerText="{'Area/GOA'}"
@@ -100,7 +100,7 @@
 							   dataField="reponsableConectel.nombreCompleto"
 							   labelFunction="labelFunctionGenerico"
 							   width="105"/>
-			<mx:DataGridColumn id="dtgImplementationResponsable" headerText="{'Responsable\nImplementaciÃ³n'}"
+			<mx:DataGridColumn id="dtgImplementationResponsable" headerText="{'Responsable\nImplementación'}"
 							   dataField="responsableImpl.nombreCompleto"
 							   labelFunction="labelFunctionGenerico"
 							   width="105"/>

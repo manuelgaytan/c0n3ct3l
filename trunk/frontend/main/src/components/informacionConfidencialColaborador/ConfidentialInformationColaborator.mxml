@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*" xmlns:notascreditoclientes="components.notascreditoclientes.*" xmlns:informacionfacturas="components.informacionfacturas.*" xmlns:notascreditoproveedores="components.notascreditoproveedores.*" xmlns:facturacionproveedores="components.facturacionproveedores.*" xmlns:comprobacionesviaticos="components.comprobacionesviaticos.*" xmlns:seleccion="components.seleccion.*"
 		 initialize="initializeHandler(event)" xmlns:reclutamientosolicitudempleo="components.reclutamientosolicitudempleo.*" xmlns:informacionConfidencialColaborador="components.informacionConfidencialColaborador.*" xmlns:contratacion="components.contratacion.*"
@@ -277,7 +277,7 @@
 			<components:TextInput id="txtID" width="80" textAlign="right"
 								  editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="ContrataciÃ³n:"/>
+		<mx:FormItem label="Contratación:"/>
 		<contratacion:Consult id="recruitmentConsult" readMode="true"/>
 		<mx:FormItem label="Foto:">
 			<components:FlatDeliver id="fltDlvPhoto"/>
@@ -294,7 +294,7 @@
 		<mx:FormItem label="Baja I.M.S.S.:">
 			<components:DateField id="dtfExpirationDateIMSS"/>
 		</mx:FormItem>
-		<mx:FormItem label="ModificaciÃ³n I.M.S.S.:">
+		<mx:FormItem label="Modificación I.M.S.S.:">
 			<components:DateField id="dtfUpdateDateIMSS"/>
 		</mx:FormItem>
 		<mx:FormItem label="Estado del Colaborador:">
@@ -304,25 +304,25 @@
 		<mx:FormItem label="En Caso de Accidente Avisar:">
 			<components:TextInput id="txtAccidentCaseNotify" width="300"/>
 		</mx:FormItem>
-		<mx:FormItem label="TelÃ©fono para Emergencia:">
+		<mx:FormItem label="Teléfono para Emergencia:">
 			<components:TextInput id="txtEmergencyNumber" width="300"/>
 		</mx:FormItem>
 		<mx:FormItem label="Se Encuentra Bajo Tratamiento:">
 			<mx:CheckBox id="chkTreatment"/>
 		</mx:FormItem>
-		<mx:FormItem label="Â¿QuÃ© Medicamento?:">
+		<mx:FormItem label="¿Qué Medicamento?:">
 			<components:TextInput id="txtMedicament" width="300"/>
 		</mx:FormItem>
-		<mx:FormItem label="AlergÃ­as:">
+		<mx:FormItem label="Alergías:">
 			<components:TextInput id="txtAlergies" width="300"/>
 		</mx:FormItem>
 		<mx:FormItem label="Tipo de Sangre:">
 			<components:TextInput id="txtBloodType"/>
 		</mx:FormItem>
-		<mx:FormItem label="NÃºmero Tarjeta de NÃ³mina:">
+		<mx:FormItem label="Número Tarjeta de Nómina:">
 			<components:TextInput id="txtPayrollCardNumber" textAlign="right"/>
 		</mx:FormItem>
-		<mx:FormItem label="Correo ElectrÃ³nico Conectel:">
+		<mx:FormItem label="Correo Electrónico Conectel:">
 			<components:TextInput id="txtConectelEmail" width="300" upperCase="false"/>
 		</mx:FormItem>
 		<mx:FormItem direction="horizontal">

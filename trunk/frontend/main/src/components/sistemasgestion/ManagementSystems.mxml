@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)"
 		 initialize="initializeHandler(event)" xmlns:bitacoraproductonoconformenoconformidades="components.bitacoraproductonoconformenoconformidades.*" xmlns:datosgenerales="components.datosgenerales.*"
@@ -292,32 +292,32 @@
 		<mx:FormItem label="Proyectos:"/>
 		<datosgenerales:Consult id="consultGeneralProjectData"/>
 		<mx:Button label="Ver Datos Generales Proyecto" click="btnViewPerDiemCheck_clickHandler(event)"/>
-		<mx:FormItem label="AplicaciÃ³n de AuditorÃ­a:">
+		<mx:FormItem label="Aplicación de Auditoría:">
 			<mx:CheckBox id="chkAuditApply"/>
 		</mx:FormItem>
-		<mx:FormItem label="Tipo de AuditorÃ­a:">
+		<mx:FormItem label="Tipo de Auditoría:">
 			<mx:ComboBox id="cmbAuditType" width="250"
 						 labelField="tipo"
 						 />
 		</mx:FormItem>
-		<mx:FormItem label="Forma de AuditorÃ­a:">
+		<mx:FormItem label="Forma de Auditoría:">
 			<mx:ComboBox id="cmbFormAudit" width="250"
 						 labelField="forma"
 						 />
 		</mx:FormItem>
-		<mx:FormItem label="Fecha EnvÃ­o AuditorÃ­a:">
+		<mx:FormItem label="Fecha Envío Auditoría:">
 			<components:DateField id="dtfShippingDateAudit"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha de RecepciÃ³n:">
+		<mx:FormItem label="Fecha de Recepción:">
 			<components:DateField id="dtfReceiptDate"/>
 		</mx:FormItem>
-		<mx:FormItem label="Formato de AuditorÃ­a:">
+		<mx:FormItem label="Formato de Auditoría:">
 			<components:FlatDeliver id="fltDlvAuditFormat"/>
 		</mx:FormItem>
 		<mx:FormItem label="Nombre del Auditor:">
 			<components:TextInput id="txtNameAuditor" width="350"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha EnvÃ­o Correcciones:">
+		<mx:FormItem label="Fecha Envío Correcciones:">
 			<components:DateField id="dtfCorrectionsShippingDate"/>
 		</mx:FormItem>
 		<mx:FormItem label="Estado:">

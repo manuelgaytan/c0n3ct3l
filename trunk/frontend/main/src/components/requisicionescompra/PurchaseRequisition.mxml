@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)" xmlns:requisicionescompra="components.requisicionescompra.*"
 		 >
@@ -478,7 +478,7 @@
 			<components:ComboList id="cmbApplicantsNames" labelField="nombreCompleto"
 						 />
 		</mx:FormItem>
-		<mx:FormItem label="脕rea Solicitante:">
+		<mx:FormItem label="羠ea Solicitante:">
 			<mx:ComboBox id="cmbApplicantArea"
 						 labelField="etiqueta"
 						 />
@@ -498,13 +498,13 @@
 					 doubleClickEnabled="true"
 					 doubleClick="dtgProducts_doubleClickHandler(event)">
 			<mx:columns>
-				<mx:DataGridColumn id="dtgCode" headerText="C贸digo"
+				<mx:DataGridColumn id="dtgCode" headerText="C骴igo"
 								   dataField="codigo"
 								   width="80"/>
 				<mx:DataGridColumn id="dtgFamily" headerText="{'Grupo o\nFamilia'}"
 								   width="100"
 								   labelFunction="labelFunctionGrupoFamilia"/>
-				<mx:DataGridColumn id="dtgDescription" headerText="Descripci贸n"
+				<mx:DataGridColumn id="dtgDescription" headerText="Descripci髇"
 								   dataField="descripcion"
 								   width="160"/>
 				<mx:DataGridColumn id="dtgExistence" headerText="Existencia"
@@ -517,7 +517,7 @@
 								   labelFunction="labelFunctionUnidad"/>
 			</mx:columns>
 		</mx:DataGrid>
-		<mx:FormItem label="C贸digo:">
+		<mx:FormItem label="C骴igo:">
 			<components:TextInput id="txtCode"
 								  editable="false"/>
 		</mx:FormItem>
@@ -526,7 +526,7 @@
 								  editable="false"
 								  />
 		</mx:FormItem>
-		<mx:FormItem label="Descripci贸n:">
+		<mx:FormItem label="Descripci髇:">
 			<components:TextInput id="txtDescription"
 								  width="400"
 								  />
@@ -542,7 +542,7 @@
 								  width="200"
 								  />
 		</mx:FormItem>
-		<mx:FormItem label="Validaci贸n:">
+		<mx:FormItem label="Validaci髇:">
 			<components:TextInput id="txtValidation"
 								  width="200"
 								  />

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*" xmlns:ordenescompraalmacen="components.ordenescompraalmacen.*" xmlns:ordenescompraserviciosmaquilado="components.ordenescompraserviciosmaquilado.*"
 		 >
@@ -208,6 +208,7 @@
 			
 			private function cleanForm():void
 			{
+				Util.upScroll( this );
 				this.txtID.reset();
 				this.cmbQualityResearchStatus.selectedIndex = 0;
 				this.cmbTreasuryStatus.selectedIndex = 0;
@@ -217,7 +218,6 @@
 				this.txtVendorInvoiceNumber.reset();
 				this.dtfReviewDate.reset();
 				this.dtfPaymentDate.reset();
-				this.txtBank.reset();
 				this.comments.reset();
 			}
 			
@@ -227,6 +227,7 @@
 				this.txtPhones.reset();
 				this.txtContact.reset();
 				this.txtMail.reset();
+				this.txtBank.reset();
 				Util.removeItems(this.odcAlmacen.datagrid.dataProvider);
 				Util.removeItems(this.odcMaquilado.datagrid.dataProvider);
 				this.cleanPurchaseOrderForm();
@@ -309,7 +310,7 @@
 					this.setProject( purchaseOrder.solicitudServicioMaquilado.proyecto );
 				}
 				if( purchaseOrder.solicitudServicioMaquilado.proyectoPadre != null ){
-					Alert.show( "Se omiten los datos de Cliente dado que la Orden de Compra Maquilado est√° asociada a un Proyecto Padre, le cu√°l tiene uno o m√°s Proyectos hijos. Para ver el detalle del Proyecto Padre, por favor consulte el Cat√°logo de Proyectos Padre.", "Informaci√≥n" );
+					Alert.show( "Se omiten los datos de Cliente dado que la Orden de Compra Maquilado est· asociada a un Proyecto Padre, le cu·l tiene uno o m·s Proyectos hijos. Para ver el detalle del Proyecto Padre, por favor consulte el Cat·logo de Proyectos Padre.", "InformaciÛn" );
 				}
 				this.setPurchaseOrder( purchaseOrder );
 			}
@@ -377,7 +378,11 @@
 			}
 			
 			private function qualifiedSupplier( item:Object ):String{
-				return Util.extractToText( item, "proveedorSeleccionado.nombreComercial" );
+				return Util.extractToText( item, "proveedorSeleccionado.proveedor.nombreComercial" );
+			}
+			
+			private function maquiladorSupplier( item:Object ):String{
+				return Util.extractToText( item, "proveedor.nombreComercial" );
 			}
 			
 			protected function cmbSupplierType_changeHandler(event:ListEvent):void
@@ -392,8 +397,8 @@
 					this.responseGetAllProveedorCalificado.token = this.proveedorCalificadoService.getProveedoresCalificados();
 					this.loadPurchaseOrderAlmacen();
 				}else{	//Maquiladores
-					this.cmbSupplier.labelField = "nombreComercial";
-					this.cmbSupplier.labelFunction = null;
+					this.cmbSupplier.labelField = null;
+					this.cmbSupplier.labelFunction = maquiladorSupplier;
 					this.responseGetAllProveedorMaquilador.token = this.proveedorMaquiladorService.getProveedoresMaquiladores();
 					this.loadPurchaseOrderMaquilado();
 				}
@@ -405,6 +410,8 @@
 					this.odcAlmacen.executeQuery();
 				}else{
 					this.odcAlmacen.datagrid.dataProvider = Util.asArrayCollection( this._item.ordenCompra );
+					this.odcAlmacen.datagrid.selectedIndex = 0;
+					this.odcAlmacen.datagrid.dispatchEvent( new MouseEvent( MouseEvent.DOUBLE_CLICK ) );
 					this.setPurchaseOrder( this._item.ordenCompra );
 				}
 			}
@@ -415,6 +422,8 @@
 					this.odcMaquilado.executeQuery();
 				}else{
 					this.odcMaquilado.datagrid.dataProvider = Util.asArrayCollection( this._item.ordenCompraMaquilado );
+					this.odcMaquilado.datagrid.selectedIndex = 0;
+					this.odcMaquilado.datagrid.dispatchEvent( new MouseEvent( MouseEvent.DOUBLE_CLICK ) );
 					this.setPurchaseOrder( this._item.ordenCompraMaquilado );
 				}	
 			}
@@ -446,9 +455,11 @@
 				if( Util.selectedId( this.cmbSupplierType ) == 1 ){
 					var proveedorCalificado:ProveedorCalificado = Util.validateCombo( this.cmbSupplier ) as ProveedorCalificado;
 					supplier = proveedorCalificado.proveedorSeleccionado.proveedor;
+					this.txtBank.text = proveedorCalificado.datoBancario.banco;
 				}else{
 					var proveedorMaquilador:ProveedorMaquilador = Util.validateCombo( this.cmbSupplier ) as ProveedorMaquilador;
 					supplier = proveedorMaquilador.proveedor;
+					this.txtBank.text = proveedorMaquilador.datoBancario.banco;
 				}
 				this.setSupplier( supplier );
 			}
@@ -465,10 +476,10 @@
 			<components:TextInput id="txtID" width="80" textAlign="right"
 								  editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Estado de Investigaci√≥n de Calidad:">
+		<mx:FormItem label="Estado de InvestigaciÛn de Calidad:">
 			<mx:ComboBox id="cmbQualityResearchStatus" labelField="etiqueta"/>
 		</mx:FormItem>
-		<mx:FormItem label="Estado de Tesorer√≠a:">
+		<mx:FormItem label="Estado de TesorerÌa:">
 			<mx:ComboBox id="cmbTreasuryStatus" labelField="etiqueta"/>
 		</mx:FormItem>
 		<mx:FormItem label="Semana:">
@@ -485,7 +496,7 @@
 						 change="cmbSupplier_changeHandler(event)"
 						 />
 		</mx:FormItem>
-		<mx:FormItem label="Tel√©fonos:">
+		<mx:FormItem label="TelÈfonos:">
 			<components:TextInput id="txtPhones" editable="false"/>
 		</mx:FormItem>
 		<mx:FormItem label="Contacto:">
@@ -494,7 +505,7 @@
 		<mx:FormItem label="Correo:">
 			<components:TextInput id="txtMail" editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Orden Compra Almac√©n:"/>
+		<mx:FormItem label="Orden Compra AlmacÈn:"/>
 		<ordenescompraalmacen:Consult id="odcAlmacen" purchaseOrderDetail="purchaseOrderSelectedHandler(event)"
 									  readOnly="true"/>
 		<mx:FormItem label="Orden Compra Maquilado:"/>
@@ -512,7 +523,7 @@
 		<mx:FormItem label="Modelo:">
 			<components:TextInput id="txtModel" editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Descripci√≥n del Servicio:">
+		<mx:FormItem label="DescripciÛn del Servicio:">
 			<components:TextInput id="txtServiceDescription" editable="false"/>
 		</mx:FormItem>
 		<mx:FormItem label="Tipo de Servicio:">
@@ -521,7 +532,7 @@
 		<mx:FormItem label="Costo Unitario:">
 			<components:TextInput id="txtCostSupplier" editable="false" textAlign="right"/>
 		</mx:FormItem>
-		<mx:FormItem label="N√∫mero de Orden de Compra:">
+		<mx:FormItem label="N˙mero de Orden de Compra:">
 			<components:TextInput id="txtPurchaseOrderNumber" editable="false" textAlign="right"/>
 		</mx:FormItem>
 		<mx:FormItem label="Subtotal:">
@@ -536,17 +547,17 @@
 		<mx:FormItem label="Fecha Factura:">
 			<components:DateField id="dtfVendorInvoiceDate"/>
 		</mx:FormItem>
-		<mx:FormItem label="N√∫mero Factura Proveedor:">
+		<mx:FormItem label="N˙mero Factura Proveedor:">
 			<components:TextInput id="txtVendorInvoiceNumber" textAlign="right"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha de Revisi√≥n:">
+		<mx:FormItem label="Fecha de RevisiÛn:">
 			<components:DateField id="dtfReviewDate"/>
 		</mx:FormItem>
 		<mx:FormItem label="Fecha de Pago:">
 			<components:DateField id="dtfPaymentDate"/>
 		</mx:FormItem>
 		<mx:FormItem label="Banco:">
-			<components:TextInput id="txtBank" editable="false" textAlign="right"/>
+			<components:TextInput id="txtBank" editable="false"/>
 		</mx:FormItem>
 		<components:Comments id="comments"/>
 		<mx:FormItem direction="horizontal">

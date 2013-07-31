@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%"
 		 xmlns:components="components.*"
 		 verticalAlign="middle"
@@ -37,5 +37,5 @@
 	<mx:Label text="Bienvenid@" color="white"/>
 	<mx:Label id="lblWholeName" color="white"/>
 	<mx:Spacer width="10"/>
-	<mx:Image id="imgLogOut" source="assets/images/downloads.png" toolTip="Cerrar SesiÃ³n" click="imgLogOut_clickHandler(event)"/>
+	<mx:Image id="imgLogOut" source="assets/images/downloads.png" toolTip="Cerrar Sesión" click="imgLogOut_clickHandler(event)"/>
 </mx:HBox>

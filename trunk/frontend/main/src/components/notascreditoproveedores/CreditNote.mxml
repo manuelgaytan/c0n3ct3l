@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)"
 		 >
@@ -120,12 +120,12 @@
 				}
 				if( !Util.listBaseSelected( this.cmbQualifiedSupplier, "id", true ) && 
 					!Util.listBaseSelected( this.cmbMaquiladoSupplier, "id", true ) ){
-					Alert.show("Debe estar seleccionado un proveedor ya sea Calificado Ã³ Maquilador.","Error");
+					Alert.show("Debe estar seleccionado un proveedor ya sea Calificado ó Maquilador.","Error");
 					return;
 				}
 				if( Util.listBaseSelected( this.cmbQualifiedSupplier, "id", true ) && 
 					Util.listBaseSelected( this.cmbMaquiladoSupplier, "id", true ) ){
-					Alert.show("Debe estar seleccionado un proveedor ya sea Calificado Ã³ Maquilador, no ambos a la vez.","Error");
+					Alert.show("Debe estar seleccionado un proveedor ya sea Calificado ó Maquilador, no ambos a la vez.","Error");
 					return;
 				}
 				if( this.mode == Constants.REGISTER_MODE ){
@@ -234,7 +234,11 @@
 			}
 			
 			private function qualifiedSupplier( item:Object ):String{
-				return Util.extractToText( item, "proveedorSeleccionado.nombreComercial" );
+				return Util.extractToText( item, "proveedorSeleccionado.proveedor.nombreComercial" );
+			}
+			
+			private function maquiladorSupplier( item:Object ):String{
+				return Util.extractToText( item, "proveedor.nombreComercial" );
 			}
 		]]>
 	</mx:Script>
@@ -258,7 +262,7 @@
 		</mx:FormItem>
 		<mx:FormItem label="Proveedor Maquilador:">
 			<mx:ComboBox id="cmbMaquiladoSupplier"
-						 labelField="nombreComercial"/>
+						 labelFunction="maquiladorSupplier"/>
 		</mx:FormItem>
 		<mx:FormItem label="Subtotal:">
 			<components:TextInput id="txtSubtotal"

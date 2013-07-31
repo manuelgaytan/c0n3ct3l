@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
 		 creationComplete="creationCompleteHandler(event)">
@@ -112,27 +112,27 @@
 								   dataField="id"
 								   width="60"
 								   textAlign="right"/>
-				<mx:DataGridColumn id="dtgAuditApply" headerText="{'AplicaciÃ³n\nde\nAuditorÃ­a'}"
+				<mx:DataGridColumn id="dtgAuditApply" headerText="{'Aplicación\nde\nAuditoría'}"
 								   dataField="aplicacionAuditoria"
 								   width="80"
 								   textAlign="center"
 								   itemRenderer="mx.controls.CheckBox"
 								   editable="false"
 								   />
-				<mx:DataGridColumn id="dtgAuditType" headerText="{'Tipo de\nAuditorÃ­a'}"
+				<mx:DataGridColumn id="dtgAuditType" headerText="{'Tipo de\nAuditoría'}"
 								   dataField="tipoAuditoria.tipo"
 								   textAlign="center"
 								   width="80"/>
-				<mx:DataGridColumn id="dtgFormAudit" headerText="{'Forma de\nAuditorÃ­a'}"
+				<mx:DataGridColumn id="dtgFormAudit" headerText="{'Forma de\nAuditoría'}"
 								   dataField="formaAuditoria.forma"
 								   textAlign="center"
 								   width="100"/>
-				<mx:DataGridColumn id="dtgShippingDateAudit" headerText="{'Fecha \nEnvÃ­o'}"
+				<mx:DataGridColumn id="dtgShippingDateAudit" headerText="{'Fecha \nEnvío'}"
 								   labelFunction="{Util.labelFunctionDate}"
 								   dataField="fechaEnvio"
 								   textAlign="center"
 								   width="80"/>
-				<mx:DataGridColumn id="dtgReceiptDate" headerText="{'Fecha \nRecepciÃ³n'}"
+				<mx:DataGridColumn id="dtgReceiptDate" headerText="{'Fecha \nRecepción'}"
 								   labelFunction="{Util.labelFunctionDate}"
 								   dataField="fechaRecepcion"
 								   textAlign="center"

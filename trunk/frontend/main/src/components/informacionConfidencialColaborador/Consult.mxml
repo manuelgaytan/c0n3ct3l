@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
 		 creationComplete="creationCompleteHandler(event)">
@@ -142,11 +142,11 @@
 				<mx:DataGridColumn id="dtgContractStartDate" headerText="{'En Caso de\nAccidente Avisar'}"
 								   dataField="enCasoAccidenteAvisar"
 								   width="100"/>
-				<mx:DataGridColumn id="dtgConfidentialInformationColaboratorType" headerText="{'TelÃ©fono de\nEmergencia'}"
+				<mx:DataGridColumn id="dtgConfidentialInformationColaboratorType" headerText="{'Teléfono de\nEmergencia'}"
 								   dataField="telefonoEmergencia"
 								   width="80"
 								   />
-				<mx:DataGridColumn id="dtgAlergies" headerText="{'AlergÃ­as'}"
+				<mx:DataGridColumn id="dtgAlergies" headerText="{'Alergías'}"
 								   dataField="alergias"
 								   width="80"
 								   />
@@ -154,7 +154,7 @@
 								   dataField="tipoSangre"
 								   width="60"
 								   />
-				<mx:DataGridColumn id="dtgConectelEmail" headerText="{'Correo\nElectrÃ³nico'}"
+				<mx:DataGridColumn id="dtgConectelEmail" headerText="{'Correo\nElectrónico'}"
 								   dataField="correoElectronico"
 								   width="100"
 								   />

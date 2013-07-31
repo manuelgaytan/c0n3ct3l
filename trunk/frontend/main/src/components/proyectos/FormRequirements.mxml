@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
 		 width="100%"
 		 creationComplete="creationCompleteHandler(event)"
@@ -105,5 +105,5 @@
 			
 		]]>
 	</mx:Script>
-	<mx:Button id="btnAddRequirement" label="Agregar RequisiciÃ³n" click="addItem()"/>
+	<mx:Button id="btnAddRequirement" label="Agregar Requisición" click="addItem()"/>
 </mx:VBox>

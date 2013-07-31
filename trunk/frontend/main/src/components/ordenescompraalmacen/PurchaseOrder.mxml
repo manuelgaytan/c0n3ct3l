@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)" xmlns:requisicionescompra="components.requisicionescompra.*"
 		 >
@@ -134,7 +134,7 @@
 				item.cotizacion = new Cotizacion();
 				item.cotizacion.id = Util.stringToNumber( this.txtQuotationID.text );
 				item.fecha = this.dtfDate.selectedDate;
-				item.proveedorCalificado = new ProveedorCalificado();Â 
+				item.proveedorCalificado = new ProveedorCalificado(); 
 				item.proveedorCalificado.id = (Util.validateCombo( this.cmbQualifiedSupplier ) as ProveedorCalificadoCombo).id;
 				item.subtotal = Util.stringToNumber( this.txtSubtotal.text );
 				item.iva = Util.stringToNumber( this.txtIVA.text );
@@ -353,15 +353,15 @@
 			<components:TextInput id="txtProjectID" textAlign="right"/>
 			<!--<mx:Button label="Ver Proyecto" id="btnProjectID"/>-->
 		</mx:FormItem>
-		<mx:FormItem label="ID RequisiciÃ³n:" direction="horizontal">
+		<mx:FormItem label="ID Requisición:" direction="horizontal">
 			<components:TextInput id="txtRequisicionID" textAlign="right"
 								  enter="txtRequisicionID_enterHandler()"
 								  focusOut="txtRequisicionID_focusOutHandler()"/>
-			<!--<mx:Button label="Ver RequisiciÃ³n" id="btnRequisicionID"/>-->
+			<!--<mx:Button label="Ver Requisición" id="btnRequisicionID"/>-->
 		</mx:FormItem>
-		<mx:FormItem label="ID CotizaciÃ³n:" direction="horizontal">
+		<mx:FormItem label="ID Cotización:" direction="horizontal">
 			<components:TextInput id="txtQuotationID" textAlign="right"/>
-			<!--<mx:Button label="Ver CotizaciÃ³n" id="btnQuotationID"/>-->
+			<!--<mx:Button label="Ver Cotización" id="btnQuotationID"/>-->
 		</mx:FormItem>
 		<mx:FormItem label="Fecha:">
 			<components:DateField id="dtfDate" enabled="false" creationComplete="dtfDate.selectedDate=new Date()"/>
@@ -372,25 +372,25 @@
 						 change="cmbQualifiedSupplier_changeHandler(event)"/>
 		</mx:FormItem>
 		<!-- Campos de Seleccion Automatica por el Proveedor Calificado -->
-		<mx:FormItem label="RazÃ³n Social:">
+		<mx:FormItem label="Razón Social:">
 			<components:TextInput id="txtBusinessName" editable="false" width="400"/>
 		</mx:FormItem>
 		<mx:FormItem label="R.F.C:">
 			<components:TextInput id="txtRFC" editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="DirecciÃ³n Fiscal:">
+		<mx:FormItem label="Dirección Fiscal:">
 			<components:TextInput id="txtTaxAddress" editable="false" width="400"/>
 		</mx:FormItem>
-		<mx:FormItem label="TelÃ©fonos:">
+		<mx:FormItem label="Teléfonos:">
 			<components:TextInput id="txtPhones" editable="false" width="300"/>
 		</mx:FormItem>
 		<mx:FormItem label="Contacto:">
 			<components:TextInput id="txtContact" editable="false" width="400"/>
 		</mx:FormItem>
-		<mx:FormItem label="Correo ElectrÃ³nico:">
+		<mx:FormItem label="Correo Electrónico:">
 			<components:TextInput id="txtMail" editable="false" width="300"/>
 		</mx:FormItem>
-		<mx:FormItem label="PÃ¡gina Web:">
+		<mx:FormItem label="Página Web:">
 			<components:TextInput id="txtWebPage" editable="false" width="200"/>
 		</mx:FormItem>
 		<mx:FormItem label="Forma de Pago:">
@@ -402,10 +402,10 @@
 		<mx:FormItem label="Moneda:">
 			<components:TextInput id="txtCurrency" editable="false" width="200"/>
 		</mx:FormItem>
-		<mx:FormItem label="LÃ­mite de CrÃ©dito:">
+		<mx:FormItem label="Límite de Crédito:">
 			<components:TextInput id="txtCreditLimit" editable="false" textAlign="right" width="200"/>
 		</mx:FormItem>
-		<mx:FormItem label="DÃ­as de CrÃ©dito:">
+		<mx:FormItem label="Días de Crédito:">
 			<components:TextInput id="txtCreditDays" editable="false" textAlign="right" width="80"/>
 		</mx:FormItem>
 		<mx:FormItem label="Descuento:">
@@ -426,10 +426,10 @@
 		<mx:FormItem label="I.E.P.S.:">
 			<components:TextInput id="txtIEPS" textAlign="right" width="110"/>
 		</mx:FormItem>
-		<mx:FormItem label="RetenciÃ³n I.S.R.:">
+		<mx:FormItem label="Retención I.S.R.:">
 			<components:TextInput id="txtISRRetention" textAlign="right" width="110"/>
 		</mx:FormItem>
-		<mx:FormItem label="RetenciÃ³n I.V.A.:">
+		<mx:FormItem label="Retención I.V.A.:">
 			<components:TextInput id="txtIVARetention" textAlign="right" width="110"/>
 		</mx:FormItem>
 		<mx:FormItem label="Otros Impuestos:">
@@ -438,7 +438,7 @@
 		<mx:FormItem label="Total:">
 			<components:TextInput id="txtTotal" textAlign="right" width="110"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha de Entrega AlmacÃ©n:">
+		<mx:FormItem label="Fecha de Entrega Almacén:">
 			<components:DateField id="dtfWarehouseDeliveryDate" textAlign="right"/>
 		</mx:FormItem>
 		<mx:FormItem label="Leyenda:">

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
 		 creationComplete="creationCompleteHandler(event)">
@@ -116,10 +116,10 @@
 								   dataField="id"
 								   width="60"
 								   textAlign="right"/>
-				<mx:DataGridColumn id="dtgPerDiemCheckID" headerText="{'Concepto OperaciÃ³n'}"
+				<mx:DataGridColumn id="dtgPerDiemCheckID" headerText="{'Concepto Operación'}"
 								   dataField="conceptoOtraOperacionFinanciera.concepto"
 								   width="130"/>
-				<mx:DataGridColumn id="dtgPerDiemCheckState" headerText="{'RazÃ³n Social'}"
+				<mx:DataGridColumn id="dtgPerDiemCheckState" headerText="{'Razón Social'}"
 								   dataField="razonSocial"
 								   width="170"/>
 				<mx:DataGridColumn id="dtgBank" headerText="{'Banco'}"

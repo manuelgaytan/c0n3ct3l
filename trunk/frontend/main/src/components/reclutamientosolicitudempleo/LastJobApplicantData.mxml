@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:Form xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
-		 width="100%" height="100%" label="Datos del Ãšltimo Ã³ Actual Empleo"
+		 width="100%" height="100%" label="Datos del Último ó Actual Empleo"
 		 creationComplete="creationCompleteHandler(event)">
 	<mx:Script>
 		<![CDATA[
@@ -204,7 +204,7 @@
 	<mx:FormItem label="Domicilio:">
 		<components:TextInput id="txtAddress" width="250"/>
 	</mx:FormItem>
-	<mx:FormItem label="TelÃ©fonos:">
+	<mx:FormItem label="Teléfonos:">
 		<components:TextInput id="txtPhones" width="100"/>
 	</mx:FormItem>
 	<mx:FormItem label="Puesto Inicial:">
@@ -219,13 +219,13 @@
 	<mx:FormItem label="Sueldo Final:">
 		<components:TextInput id="txtLastSalary" textAlign="right" width="80"/>
 	</mx:FormItem>
-	<mx:FormItem label="Motivo SeparaciÃ³n:">
+	<mx:FormItem label="Motivo Separación:">
 		<components:TextInput id="txtReasonLeftJob" width="170"/>
 	</mx:FormItem>
 	<mx:FormItem label="Nombre Jefe Inmediato:">
 		<components:TextInput id="txtNameBossDirectly" width="210"/>
 	</mx:FormItem>
-	<mx:FormItem label="Actividades DesempeÃ±adas:">
+	<mx:FormItem label="Actividades Desempeñadas:">
 		<components:TextInput id="txtJobDone" width="350"/>
 	</mx:FormItem>
 	<mx:FormItem label="Nombre Empresa Anterior:">
@@ -234,7 +234,7 @@
 	<mx:FormItem label="Domicilio Anterior:">
 		<components:TextInput id="txtAddressBefore" width="350"/>
 	</mx:FormItem>
-	<mx:FormItem label="TelÃ©fonos Anterior:">
+	<mx:FormItem label="Teléfonos Anterior:">
 		<components:TextInput id="txtPhonesBefore" width="100"/>
 	</mx:FormItem>
 	<mx:FormItem label="Puesto Inicial Anterior:">
@@ -249,13 +249,13 @@
 	<mx:FormItem label="Sueldo Final Anterior:">
 		<components:TextInput id="txtLastSalaryBefore" textAlign="right" width="80"/>
 	</mx:FormItem>
-	<mx:FormItem label="Motivo SeparaciÃ³n Anterior:">
+	<mx:FormItem label="Motivo Separación Anterior:">
 		<components:TextInput id="txtReasonLeftJobBefore" width="170"/>
 	</mx:FormItem>
 	<mx:FormItem label="Nombre Jefe Inmediato Anterior:">
 		<components:TextInput id="txtNameBossDirectlyBefore" width="210"/>
 	</mx:FormItem>
-	<mx:FormItem label="Actividades DesempeÃ±adas Anterior:">
+	<mx:FormItem label="Actividades Desempeñadas Anterior:">
 		<components:TextInput id="txtJobDoneBefore" width="350"/>
 	</mx:FormItem>
 </mx:Form>

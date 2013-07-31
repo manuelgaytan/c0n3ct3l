@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:Form xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)">
 	<mx:Script>
@@ -127,17 +127,17 @@
 			}
 		]]>
 	</mx:Script>
-	<mx:FormHeading label="ExÃ¡men PsicomÃ©trico"/>
+	<mx:FormHeading label="Exámen Psicométrico"/>
 	<mx:FormItem id="frmID" label="ID:" direction="horizontal">
 		<components:TextInput id="txtID" width="80" textAlign="right" editable="false"/>
 	</mx:FormItem>
-	<mx:FormItem label="Raven Ã³ Army Beta:">
+	<mx:FormItem label="Raven ó Army Beta:">
 		<mx:CheckBox id="chkRavenArmyBeta"/>
 	</mx:FormItem>
 	<mx:FormItem label="Power Point:">
 		<mx:CheckBox id="chkFiguraHumana"/>
 	</mx:FormItem>
-	<mx:FormItem label="Ãrbol:">
+	<mx:FormItem label="Árbol:">
 		<mx:CheckBox id="chkArbol"/>
 	</mx:FormItem>
 	<mx:FormItem label="Casa:">

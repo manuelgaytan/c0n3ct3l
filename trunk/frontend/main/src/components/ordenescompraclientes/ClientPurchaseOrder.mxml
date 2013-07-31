@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*"
 		 >
@@ -313,14 +313,14 @@
 		<mx:FormItem label="Orden de Compra:">
 			<mx:CheckBox id="chbPurchaseOrder"/>
 		</mx:FormItem>
-		<mx:FormItem label="NÃºmero de Orden de Compra:">
+		<mx:FormItem label="Número de Orden de Compra:">
 			<components:TextInput id="txtPurchaseOrderNumber" width="90"
 								  textAlign="right"/>
 		</mx:FormItem>
 		<mx:FormItem label="Fecha de Orden de Compra:">
 			<components:DateField id="dtfPurchaseOrderDate"/>
 		</mx:FormItem>
-		<mx:FormHeading label="ValidaciÃ³n del Costo"/>
+		<mx:FormHeading label="Validación del Costo"/>
 		<mx:FormItem label="Costo de Orden Compra:">
 			<components:TextInput id="txtPurchaseOrderCost" width="100"
 								  textAlign="right"/>
@@ -330,7 +330,7 @@
 								  editable="false"
 								  textAlign="right"/>
 		</mx:FormItem>
-		<mx:FormItem label="ValidaciÃ³n del Costo:">
+		<mx:FormItem label="Validación del Costo:">
 			<mx:ComboBox id="cmbCostValidationStatus" width="200"
 						 labelField="etiqueta"/>
 		</mx:FormItem>
@@ -338,7 +338,7 @@
 			<components:TextArea id="txtLegend" width="600"/>
 		</mx:FormItem>
 		<components:Comments id="commentsCostValidation"/>
-		<mx:FormHeading label="ModificaciÃ³n de Estado de Orden de Compra"/>
+		<mx:FormHeading label="Modificación de Estado de Orden de Compra"/>
 		<mx:FormItem label="Estado de Orden de Compra:">
 			<mx:ComboBox id="cmbPurchaseOrderStatus" width="200"
 						 labelField="etiqueta"/>

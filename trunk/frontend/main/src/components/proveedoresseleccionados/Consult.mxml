@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
 		 horizontalAlign="right"
@@ -108,14 +108,14 @@
 							   width="260"
 							   dataField="proveedor.nombreComercial"
 							   labelFunction="labelFunctionGenerico"/>
-			<mx:DataGridColumn id="dtgRazonSocial" headerText="{'RazÃ³n \nSocial'}"
+			<mx:DataGridColumn id="dtgRazonSocial" headerText="{'Razón \nSocial'}"
 							   dataField="proveedor.razonSocial"
 							   width="260"/>
 			<mx:DataGridColumn id="dtgRFC" headerText="R.F.C."
 							   dataField="proveedor.rfc"
 							   width="120"
 							   />
-			<mx:DataGridColumn id="dtgTelefono" headerText="TelÃ©fonos"
+			<mx:DataGridColumn id="dtgTelefono" headerText="Teléfonos"
 							   dataField="proveedor.telefonos"
 							   width="100"
 							   />

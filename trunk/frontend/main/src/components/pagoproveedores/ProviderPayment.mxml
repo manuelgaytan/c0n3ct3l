@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*" xmlns:notascreditoclientes="components.notascreditoclientes.*" xmlns:informacionfacturas="components.informacionfacturas.*" xmlns:notascreditoproveedores="components.notascreditoproveedores.*" xmlns:facturacionproveedores="components.facturacionproveedores.*"
 		 >
@@ -429,7 +429,7 @@
 						 change="cmbSupplier_changeHandler(event)"
 						 />
 		</mx:FormItem>
-		<mx:FormItem label="FacturaciÃ³n Proveedores:">
+		<mx:FormItem label="Facturación Proveedores:">
 			<facturacionproveedores:Consult id="vendorInvoiceConsult" itemDetail="vendorInvoiceConsult_vendorInvoiceDetailHandler(event)"
 										 readOnly="true"/>
 			<mx:Button id="btnViewVendorInvoice" label="Ver Factura Proveedor" click="btnViewVendorInvoice_clickHandler(event)"/>
@@ -437,10 +437,10 @@
 		<mx:FormItem label="Folio Factura:">
 			<components:TextInput id="txtInvoiceFolio" textAlign="right" width="100"/>
 		</mx:FormItem>
-		<mx:FormItem label="Nota CrÃ©dito Proveedor:">
+		<mx:FormItem label="Nota Crédito Proveedor:">
 			<notascreditoproveedores:Consult id="creditNoteConsult" creditNoteDetail="creditNoteConsult_creditNoteDetailHandler(event)"
 										  readOnly="true"/>
-			<mx:Button id="btnViewCreditNote" label="Ver Nota CrÃ©dito Proveedor" click="btnViewCreditNote_clickHandler(event)"/>
+			<mx:Button id="btnViewCreditNote" label="Ver Nota Crédito Proveedor" click="btnViewCreditNote_clickHandler(event)"/>
 		</mx:FormItem>
 		<mx:FormItem label="Subtotal:">
 			<components:TextInput id="txtSubtotal" textAlign="right" width="100"/>

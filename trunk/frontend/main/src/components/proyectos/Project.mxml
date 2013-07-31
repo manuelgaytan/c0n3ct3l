@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*"
 		 label="Registrar">
@@ -409,7 +409,7 @@
 						 labelField="etiqueta"
 						 change="cmbProjectType_changeHandler(event)"/>
 		</mx:FormItem>
-		<mx:FormItem label="TecnologÃ­a:">
+		<mx:FormItem label="Tecnología:">
 			<mx:ComboBox id="cmbTechnology" width="250"
 						 labelField="etiqueta"
 						 change="cmbTechnology_changeHandler(event)"/>
@@ -429,7 +429,7 @@
 						 labelField="etiqueta"
 						 change="cmbModel_changeHandler(event)"/>
 		</mx:FormItem>
-		<mx:FormItem label="DescripciÃ³n del Servicio:">
+		<mx:FormItem label="Descripción del Servicio:">
 			<mx:ComboBox id="cmbServiceDescription" width="500"
 						 labelField="etiqueta"
 						 change="cmbServiceDescription_changeHandler(event)"/>

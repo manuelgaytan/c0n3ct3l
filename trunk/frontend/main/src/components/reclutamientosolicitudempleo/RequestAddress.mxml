@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:Form xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)">
 	<mx:Script>
@@ -138,16 +138,16 @@
 	<mx:FormItem id="frmID" label="ID:" direction="horizontal">
 		<components:TextInput id="txtID" width="80" textAlign="right" editable="false"/>
 	</mx:FormItem>
-	<mx:FormItem label="Calle y NÃºmero:">
+	<mx:FormItem label="Calle y Número:">
 		<components:TextInput id="txtStreetNumber" width="300"/>
 	</mx:FormItem>
 	<mx:FormItem label="Colonia:">
 		<components:TextInput id="txtNeighborhood" width="220"/>
 	</mx:FormItem>
-	<mx:FormItem label="CÃ³digo Postal:">
+	<mx:FormItem label="Código Postal:">
 		<components:TextInput id="txtZipCode" textAlign="right" width="50"/>
 	</mx:FormItem>
-	<mx:FormItem label="DelegaciÃ³n o Municipio:">
+	<mx:FormItem label="Delegación o Municipio:">
 		<components:TextInput id="txtMunicipally" width="220"/>
 	</mx:FormItem>
 	<mx:FormItem label="Entidad Federativa:">

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
 		 creationComplete="creationCompleteHandler(event)">
@@ -135,18 +135,18 @@
 				<mx:DataGridColumn id="dtgPosition" headerText="{'Puesto'}"
 								   dataField="contratacion.reclutamientoSolicitudEmpleo.datosPrincipalesSolicitante.puestoSolicitado"
 								   width="120"/>
-				<mx:DataGridColumn id="dtgPerception" headerText="{'PercepciÃ³n'}"
+				<mx:DataGridColumn id="dtgPerception" headerText="{'Percepción'}"
 								   dataField="percepcion.percepcion"
 								   width="100"/>
-				<mx:DataGridColumn id="dtgContributionAmount" headerText="{'Monto\nAportaciÃ³n'}"
+				<mx:DataGridColumn id="dtgContributionAmount" headerText="{'Monto\nAportación'}"
 								   dataField="montoAportacion"
 								   textAlign="right"
 								   width="70"/>
-				<mx:DataGridColumn id="dtgVariation" headerText="{'VariaciÃ³n'}"
+				<mx:DataGridColumn id="dtgVariation" headerText="{'Variación'}"
 								   dataField="variacion.tipo"
 								   width="70"
 								   />
-				<mx:DataGridColumn id="dtgCorrespondDays" headerText="{'DÃ­as\nCorrespondientes'}"
+				<mx:DataGridColumn id="dtgCorrespondDays" headerText="{'Días\nCorrespondientes'}"
 								   dataField="diasCorrespondientes"
 								   textAlign="right"
 								   width="80"

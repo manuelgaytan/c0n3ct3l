@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:Form xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)">
 	<mx:Script>
@@ -149,16 +149,16 @@
 	<mx:FormItem label="Sociable:">
 		<mx:NumericStepper id="nstSociable" minimum="1" maximum="3"/>
 	</mx:FormItem>
-	<mx:FormItem label="MÃ©todos y Procedimientos:">
+	<mx:FormItem label="Métodos y Procedimientos:">
 		<mx:NumericStepper id="nstMethodsProcedures" minimum="1" maximum="3"/>
 	</mx:FormItem>
-	<mx:FormItem label="Aspectos FÃ­sico:">
+	<mx:FormItem label="Aspectos Físico:">
 		<mx:NumericStepper id="nstPhysicalAspect" minimum="1" maximum="3"/>
 	</mx:FormItem>
 	<mx:FormItem label="Desenvolvimiento:">
 		<mx:NumericStepper id="nstDevelopment" minimum="1" maximum="3"/>
 	</mx:FormItem>
-	<mx:FormItem label="ConcentraciÃ³n:">
+	<mx:FormItem label="Concentración:">
 		<mx:NumericStepper id="nstConcentrate" minimum="1" maximum="3"/>
 	</mx:FormItem>
 	<mx:FormItem label="Entusiasmo:">

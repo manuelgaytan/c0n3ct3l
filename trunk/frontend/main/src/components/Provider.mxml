@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:Form xmlns:mx="http://www.adobe.com/2006/mxml"
 		 xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)">
@@ -229,22 +229,22 @@
 	<mx:FormItem label="Nombre Comercial:">
 		<components:TextInput id="txtNombreComercial" width="400"/>
 	</mx:FormItem>
-	<mx:FormItem label="RazÃ³n Social:">
+	<mx:FormItem label="Razón Social:">
 		<components:TextInput id="txtRazonSocial" width="400"/>
 	</mx:FormItem>
 	<mx:FormItem label="R.F.C.:">
 		<components:TextInput id="txtRFC" width="120"
 							  />
 	</mx:FormItem>
-	<mx:FormItem label="DirecciÃ³n FÃ­sica:">
+	<mx:FormItem label="Dirección Física:">
 		<components:TextInput id="txtDireccionFisica"
 							  width="500"/>
 	</mx:FormItem>
-	<mx:FormItem label="DirecciÃ³n Fiscal:">
+	<mx:FormItem label="Dirección Fiscal:">
 		<components:TextInput id="txtDireccionFiscal"
 							  width="500"/>
 	</mx:FormItem>
-	<mx:FormItem label="TelÃ©fonos:">
+	<mx:FormItem label="Teléfonos:">
 		<components:TextInput id="txtTelefonos"
 							  width="240"/>
 	</mx:FormItem>
@@ -256,7 +256,7 @@
 		<components:TextInput id="txtCorreo" upperCase="false"
 							  width="300"/>
 	</mx:FormItem>
-	<mx:FormItem id="frmItmWebPage" label="PÃ¡gina Web:">
+	<mx:FormItem id="frmItmWebPage" label="Página Web:">
 		<components:TextInput id="txtPaginaWeb" upperCase="false"
 							  width="300"/>
 	</mx:FormItem>

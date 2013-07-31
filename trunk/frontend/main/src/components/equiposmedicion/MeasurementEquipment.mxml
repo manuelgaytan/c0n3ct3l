@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)"
 		 >
@@ -305,14 +305,14 @@
 		[Event(name="measurementEquipmentUpdated", type="flash.events.Event")]
 	</mx:Metadata>
 	<mx:Form id="form">
-		<mx:FormItem label="C贸digo:">
+		<mx:FormItem label="C骴igo:">
 			<components:TextInput id="txtCode"/>
 		</mx:FormItem>
 		<mx:FormItem label="Grupo o Familia:">
 			<components:TextInput id="txtFamily"
 								  />
 		</mx:FormItem>
-		<mx:FormItem label="Descripci贸n:">
+		<mx:FormItem label="Descripci髇:">
 			<components:TextInput id="txtDescription" width="400"/>
 		</mx:FormItem>
 		<mx:FormItem label="No. de Serie:">
@@ -325,13 +325,13 @@
 		<mx:FormItem label="Modelo:">
 			<components:TextInput id="txtModel"/>
 		</mx:FormItem>
-		<mx:FormItem label="Poliza de Garant铆a:">
+		<mx:FormItem label="Poliza de Garant韆:">
 			<components:FlatDeliver id="dlvWarranty"/>
 		</mx:FormItem>
 		<mx:FormItem label="Poliza de Seguro:">
 			<components:FlatDeliver id="dlvInsurance"/>
 		</mx:FormItem>
-		<mx:FormItem label="Ubicaci贸n:">
+		<mx:FormItem label="Ubicaci髇:">
 			<mx:ComboBox id="cmbLocation"
 						 labelField="etiqueta"
 						 />
@@ -349,13 +349,13 @@
 		<mx:FormItem label="No. de Certificado:">
 			<components:TextInput id="txtCertificateNumber"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha de Calibraci贸n:">
+		<mx:FormItem label="Fecha de Calibraci髇:">
 			<components:DateField id="dtfCalibration"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha Pr贸xima Calibraci贸n:">
+		<mx:FormItem label="Fecha Pr髕ima Calibraci髇:">
 			<components:DateField id="dtfNextCalibration"/>
 		</mx:FormItem>
-		<mx:FormItem label="Certificado de Calibraci贸n:">
+		<mx:FormItem label="Certificado de Calibraci髇:">
 			<components:FlatDeliver id="dlvCalibrationCertificate"/>
 		</mx:FormItem>
 		<mx:FormItem label="Mantenimiento o Servicio:">

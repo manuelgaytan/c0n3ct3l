@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)" xmlns:ordenescompraserviciosmaquilado="components.ordenescompraserviciosmaquilado.*" xmlns:solicitudesserviciomaquilado="components.solicitudesserviciomaquilado.*"
 		 >
@@ -116,7 +116,7 @@
 				item.solicitudServicioMaquilado = new SolicitudServicioMaquilado();
 				item.solicitudServicioMaquilado.id = Util.stringToNumber( this.txtRequisicionID.text );
 				item.fecha = this.dtfDate.selectedDate;
-				item.proveedorMaquilador = new ProveedorMaquilador();Â 
+				item.proveedorMaquilador = new ProveedorMaquilador(); 
 				item.proveedorMaquilador.id = (Util.validateCombo( this.cmbMaquiladoSupplier ) as ProveedorMaquilador).id;
 				item.claveValidacion = Util.validateEmpty( this.txtValidationKey.text );
 				item.leyenda = Util.validateEmpty( this.txtLegend.text );
@@ -296,7 +296,7 @@
 		<mx:FormItem label="ID:" id="frmID">
 			<components:TextInput id="txtID" textAlign="right" editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="ID RequisiciÃ³n:" direction="horizontal">
+		<mx:FormItem label="ID Requisición:" direction="horizontal">
 			<components:TextInput id="txtRequisicionID" textAlign="right"
 								  enter="txtRequisicionID_enterHandler()"
 								  focusOut="txtRequisicionID_focusOutHandler()"/>
@@ -310,19 +310,19 @@
 						 labelFunction="labelFunctionProveedor"/>
 		</mx:FormItem>
 		<!-- Campos de Seleccion Automatica por el Proveedor Calificado -->
-		<mx:FormItem label="RazÃ³n Social:">
+		<mx:FormItem label="Razón Social:">
 			<components:TextInput id="txtBusinessName" editable="false" width="400"/>
 		</mx:FormItem>
 		<mx:FormItem label="R.F.C:">
 			<components:TextInput id="txtRFC" editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="DirecciÃ³n Fiscal:">
+		<mx:FormItem label="Dirección Fiscal:">
 			<components:TextInput id="txtTaxAddress" editable="false" width="400"/>
 		</mx:FormItem>
-		<mx:FormItem label="TelÃ©fonos:">
+		<mx:FormItem label="Teléfonos:">
 			<components:TextInput id="txtPhones" editable="false" width="300"/>
 		</mx:FormItem>
-		<mx:FormItem label="Correo ElectrÃ³nico:">
+		<mx:FormItem label="Correo Electrónico:">
 			<components:TextInput id="txtMail" editable="false" width="300"/>
 		</mx:FormItem>
 		<mx:FormItem label="Tipo Contrato:">
@@ -333,7 +333,7 @@
 		</mx:FormItem>
 		<!-- Fin Campos de Seleccion Automatica por el Proveedor Calificado -->
 		<ordenescompraserviciosmaquilado:ItemsManagement id="itemsManagement"/>
-		<mx:FormItem label="Clave de ValidaciÃ³n:">
+		<mx:FormItem label="Clave de Validación:">
 			<components:TextInput id="txtValidationKey" width="200"/>
 		</mx:FormItem>
 		<mx:FormItem label="Leyenda:">

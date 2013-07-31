@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:Form xmlns:mx="http://www.adobe.com/2006/mxml"
 		 width="100%" label="{resourceManager.getString('labels','addressData')}"
 		 creationComplete="creationCompleteHandler(event)" xmlns:components="components.*"
@@ -81,7 +81,7 @@
 	<mx:Metadata>
 		[Event(name="removeRequirement", type="flash.events.Event")]
 	</mx:Metadata>
-	<mx:FormItem label="RequisiciÃ³n:"
+	<mx:FormItem label="Requisición:"
 				 required="false"
 				 direction="horizontal">
 		<components:TextInput id="txtRequirement"

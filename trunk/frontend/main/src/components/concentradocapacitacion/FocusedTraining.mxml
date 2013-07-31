@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*" xmlns:notascreditoclientes="components.notascreditoclientes.*" xmlns:informacionfacturas="components.informacionfacturas.*" xmlns:notascreditoproveedores="components.notascreditoproveedores.*" xmlns:facturacionproveedores="components.facturacionproveedores.*" xmlns:comprobacionesviaticos="components.comprobacionesviaticos.*" xmlns:seleccion="components.seleccion.*"
 		 initialize="initializeHandler(event)" xmlns:reclutamientosolicitudempleo="components.reclutamientosolicitudempleo.*" xmlns:concentradoCapacitacion="components.concentradoCapacitacion.*" xmlns:contratacion="components.contratacion.*"
@@ -331,30 +331,30 @@
 			<components:TextInput id="txtPosition" textAlign="right"
 								  editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Tipo de Informaci贸n:">
+		<mx:FormItem label="Tipo de Informaci髇:">
 			<mx:ComboBox id="cmbFormationType" width="200"
 						 labelField="tipo"/>
 		</mx:FormItem>
-		<mx:FormItem label="Tipo de Capacitaci贸n:">
+		<mx:FormItem label="Tipo de Capacitaci髇:">
 			<mx:ComboBox id="cmbTrainingType" width="200"
 						 labelField="tipo"/>
 		</mx:FormItem>
-		<mx:FormItem label="Nombre de la Capacitaci贸n:">
+		<mx:FormItem label="Nombre de la Capacitaci髇:">
 			<components:TextInput id="txtTrainingName" width="300"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha de Inicio de Capacitaci贸n/Evaluaci贸n:">
+		<mx:FormItem label="Fecha de Inicio de Capacitaci髇/Evaluaci髇:">
 			<components:DateField id="dtfDateTrainingStart"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha de T茅rmino de Capacitaci贸n/Evaluaci贸n:">
+		<mx:FormItem label="Fecha de T閞mino de Capacitaci髇/Evaluaci髇:">
 			<components:DateField id="dtfDateTrainingEnd"/>
 		</mx:FormItem>
-		<mx:FormItem label="Lugar de Capacitaci贸n/Evaluaci贸n:">
+		<mx:FormItem label="Lugar de Capacitaci髇/Evaluaci髇:">
 			<components:TextInput id="txtTrainingPlace" width="300"/>
 		</mx:FormItem>
 		<mx:FormItem label="Nombre del Instructor/Evaluador:">
 			<components:TextInput id="txtTrainerName" width="300"/>
 		</mx:FormItem>
-		<mx:FormItem label="Calificaci贸n de Capacitaci贸n/Evaluaci贸n:">
+		<mx:FormItem label="Calificaci髇 de Capacitaci髇/Evaluaci髇:">
 			<components:TextInput id="txtTrainingGrade" width="300"/>
 		</mx:FormItem>
 		<mx:FormItem label="Constancia/Evidencia:">

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
 		 horizontalAlign="right"
@@ -111,18 +111,18 @@
 							   dataField="id"
 							   width="80"
 							   textAlign="right"/>
-			<mx:DataGridColumn id="dtgOperationalValidationStatus" headerText="{'Estado\nValidaciÃ³n\nAdministrativa'}"
+			<mx:DataGridColumn id="dtgOperationalValidationStatus" headerText="{'Estado\nValidación\nAdministrativa'}"
 							   width="150"
 							   dataField="estadoValidacionAdministrativa.etiqueta"
 							   />
-			<mx:DataGridColumn id="dtgTypeValidationAdministrative" headerText="{'Tipo\nValidaciÃ³n\nAdministrativa'}"
+			<mx:DataGridColumn id="dtgTypeValidationAdministrative" headerText="{'Tipo\nValidación\nAdministrativa'}"
 							   dataField="tipoValidacionAdministrativa.etiqueta"
 							   width="150"/>
 			<mx:DataGridColumn id="dtgTotalPorcentageRecovery" headerText="{'Porcentaje\nTotal\nCobro'}"
 							   dataField="porcentajeTotalCobro"
 							   width="95"
 							   textAlign="right"/>
-			<mx:DataGridColumn id="dtgFinalValidationStatus" headerText="{'Estado\nFinal\nValidaciÃ³n'}"
+			<mx:DataGridColumn id="dtgFinalValidationStatus" headerText="{'Estado\nFinal\nValidación'}"
 							   dataField="etadoValidacionFinal.etiqueta"
 							   width="150"
 							   textAlign="right"

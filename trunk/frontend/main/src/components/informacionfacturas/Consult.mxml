@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
 		 horizontalAlign="right"
@@ -127,12 +127,12 @@
 							   dataField="id"
 							   width="80"
 							   textAlign="right"/>
-			<mx:DataGridColumn id="dtgAdministrativeValidationID" headerText="{'ID\nValidaciÃ³n\nAdministrativa'}"
+			<mx:DataGridColumn id="dtgAdministrativeValidationID" headerText="{'ID\nValidación\nAdministrativa'}"
 							   width="80"
 							   dataField="validacionAdministrativa.id"
 							   textAlign="right"
 							   />
-			<mx:DataGridColumn id="dtgTotalPorcentageInvoice" headerText="{'Pago\nTotal de\nFacturaciÃ³n'}"
+			<mx:DataGridColumn id="dtgTotalPorcentageInvoice" headerText="{'Pago\nTotal de\nFacturación'}"
 							   labelFunction="labelFunctionTotalPorcentageInvoice"
 							   width="95"
 							   textAlign="right"/>

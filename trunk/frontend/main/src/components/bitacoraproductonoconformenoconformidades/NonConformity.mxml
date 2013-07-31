@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)"
 		 initialize="initializeHandler(event)"
@@ -254,40 +254,40 @@
 			<components:TextInput id="txtID" width="80" textAlign="right"
 								  editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Ãrea que Levanta la No Conformidad:">
+		<mx:FormItem label="Área que Levanta la No Conformidad:">
 			<mx:ComboBox id="cmbAreaRaisesNonConformity" width="400"
 						 labelField="area"
 						 />
 		</mx:FormItem>
-		<mx:FormItem label="Nombre de quiÃ©n Levanta la No Conformidad:">
+		<mx:FormItem label="Nombre de quién Levanta la No Conformidad:">
 			<components:TextInput id="txtName" width="350" editable="false"
 								  text="{Model.getInstance().user.nombreCompleto}"/>
 		</mx:FormItem>
 		<mx:FormItem label="Fecha del Suceso:">
 			<components:DateField id="dtfEventDate"/>
 		</mx:FormItem>
-		<mx:FormItem label="Ãrea a quiÃ©n se Levanta la No Conformidad:">
+		<mx:FormItem label="Área a quién se Levanta la No Conformidad:">
 			<components:TextInput id="txtAreaWhoRaisedNonConformity" width="250"/>
 		</mx:FormItem>
 		<mx:FormItem label="Suceso/Evento:">
 			<components:TextArea id="txtEvent" width="520"/>
 		</mx:FormItem>
-		<mx:FormItem label="Â¿DÃ³nde OcurriÃ³ el Evento?:">
+		<mx:FormItem label="¿Dónde Ocurrió el Evento?:">
 			<components:TextInput id="txtPlaceEvent" width="520"/>
 		</mx:FormItem>
-		<mx:FormItem label="Â¿CuÃ¡nto Afecto?:">
+		<mx:FormItem label="¿Cuánto Afecto?:">
 			<components:TextInput id="txtAffectation" width="400"/>
 		</mx:FormItem>
 		<mx:FormItem label="Causas de la Ocurrencia:">
 			<components:TextArea id="txtCauses" width="520"/>
 		</mx:FormItem>
-		<mx:FormItem label="CorrecciÃ³n Establecida:">
+		<mx:FormItem label="Corrección Establecida:">
 			<components:TextArea id="txtEstablished" width="520"/>
 		</mx:FormItem>
 		<mx:FormItem label="Observaciones:">
 			<components:TextArea id="txtObservations" width="520"/>
 		</mx:FormItem>
-		<mx:FormItem label="Requiere AcciÃ³n Correctiva:">
+		<mx:FormItem label="Requiere Acción Correctiva:">
 			<mx:CheckBox id="chkCorrectiveAction"/>
 		</mx:FormItem>
 		<mx:FormItem direction="horizontal">

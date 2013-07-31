@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
 		 horizontalAlign="right"
@@ -102,7 +102,7 @@
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 				 allowMultipleSelection="true">
 		<mx:columns>
-			<mx:DataGridColumn id="dtgCode" headerText="CÃ³digo"
+			<mx:DataGridColumn id="dtgCode" headerText="Código"
 							   dataField="id"
 							   width="100"/>
 			<mx:DataGridColumn id="dtgApplicationDate" headerText="{'Fecha\nSolicitud'}"
@@ -116,11 +116,11 @@
 							   width="120"
 							   dataField="prioridad.etiqueta"
 							   labelFunction="labelFunctionGenerico"/>
-			<mx:DataGridColumn id="dtgApplicantArea" headerText="{'Ãrea\nSolicitante'}"
+			<mx:DataGridColumn id="dtgApplicantArea" headerText="{'Área\nSolicitante'}"
 							   width="120"
 							   dataField="areaSolicitante.etiqueta"
 							   labelFunction="labelFunctionGenerico"/>
-			<mx:DataGridColumn id="dtgAllocationDate" headerText="{'Fecha\nAsignaciÃ³n'}"
+			<mx:DataGridColumn id="dtgAllocationDate" headerText="{'Fecha\nAsignación'}"
 							   dataField="fechaSolicitud"
 							   labelFunction="labelFunctionDate"
 							   width="120"/>

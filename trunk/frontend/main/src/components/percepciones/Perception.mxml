@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*" xmlns:notascreditoclientes="components.notascreditoclientes.*" xmlns:informacionfacturas="components.informacionfacturas.*" xmlns:notascreditoproveedores="components.notascreditoproveedores.*" xmlns:facturacionproveedores="components.facturacionproveedores.*" xmlns:comprobacionesviaticos="components.comprobacionesviaticos.*" xmlns:seleccion="components.seleccion.*"
 		 initialize="initializeHandler(event)" xmlns:reclutamientosolicitudempleo="components.reclutamientosolicitudempleo.*" xmlns:registroPercepcion="components.registroPercepcion.*" xmlns:contratacion="components.contratacion.*"
@@ -252,13 +252,13 @@
 			<components:TextInput id="txtID" width="80" textAlign="right"
 								  editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="ContrataciÃ³n:"/>
+		<mx:FormItem label="Contratación:"/>
 		<contratacion:Consult id="recruitmentConsult" readMode="true"/>
-		<mx:FormItem label="PercepciÃ³n:">
+		<mx:FormItem label="Percepción:">
 			<mx:ComboBox id="cmbPerception" width="200"
 						 labelField="percepcion"/>
 		</mx:FormItem>
-		<mx:FormItem label="Monto AportaciÃ³n:">
+		<mx:FormItem label="Monto Aportación:">
 			<components:TextInput id="txtContributionAmount" width="150"
 								  textAlign="right"/>
 		</mx:FormItem>
@@ -266,7 +266,7 @@
 			<mx:ComboBox id="cmbVariation" width="200"
 						 labelField="tipo"/>
 		</mx:FormItem>
-		<mx:FormItem label="DÃ­as Correspondientes:">
+		<mx:FormItem label="Días Correspondientes:">
 			<components:TextInput id="txtCorrespondDays" width="100" textAlign="right"/>
 		</mx:FormItem>
 		<mx:FormItem label="Fecha Inicio Contrato:">

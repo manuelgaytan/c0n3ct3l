@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)"
 		 >
@@ -319,7 +319,7 @@
 		[Event(name="transportEquipmentUpdated", type="flash.events.Event")]
 	</mx:Metadata>
 	<mx:Form id="form">
-		<mx:FormItem label="C贸digo:">
+		<mx:FormItem label="C骴igo:">
 			<components:TextInput id="txtCode"/>
 		</mx:FormItem>
 		<mx:FormItem label="Grupo o Familia:">
@@ -327,7 +327,7 @@
 						 labelField="etiqueta"
 						 />
 		</mx:FormItem>
-		<mx:FormItem label="Descripci贸n:">
+		<mx:FormItem label="Descripci髇:">
 			<components:TextInput id="txtDescription" width="400"/>
 		</mx:FormItem>
 		<mx:FormItem label="No. de Serie:">
@@ -344,19 +344,19 @@
 		<mx:FormItem label="No. de Placas:">
 			<components:TextInput id="txtPlaces"/>
 		</mx:FormItem>
-		<mx:FormItem label="No. de Tarjeta de Circulaci贸n:">
+		<mx:FormItem label="No. de Tarjeta de Circulaci髇:">
 			<components:TextInput id="txtCirculationCard"/>
 		</mx:FormItem>
-		<mx:FormItem label="Tarjeta de Circulaci贸n:">
+		<mx:FormItem label="Tarjeta de Circulaci髇:">
 			<components:FlatDeliver id="dlvCirculationCard"/>
 		</mx:FormItem>
-		<mx:FormItem label="Poliza de Garant铆a:">
+		<mx:FormItem label="Poliza de Garant韆:">
 			<components:FlatDeliver id="dlvWarranty"/>
 		</mx:FormItem>
 		<mx:FormItem label="Poliza de Seguro:">
 			<components:FlatDeliver id="dlvInsurance"/>
 		</mx:FormItem>
-		<mx:FormItem label="Ubicaci贸n:">
+		<mx:FormItem label="Ubicaci髇:">
 			<mx:ComboBox id="cmbLocation"
 						 labelField="etiqueta"
 						 />

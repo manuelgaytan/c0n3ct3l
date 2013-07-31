@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
 				xmlns:components="components.*"
 				currentState="login"
@@ -587,7 +587,7 @@
 	<mx:HBox id="body" width="100%" height="100%"
 			 verticalAlign="middle" horizontalAlign="center">
 		<mx:HBox verticalAlign="top">
-			<mx:Panel title="MenÃº Principal">
+			<mx:Panel title="Menú Principal">
 				<components:Menu id="menu" menuItemClick="menuItemClickHandler(event)"/>
 			</mx:Panel>
 			<components:WorkSpace id="workSpace"/>

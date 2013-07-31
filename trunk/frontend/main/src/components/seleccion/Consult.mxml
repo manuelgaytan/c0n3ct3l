@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
 		 creationComplete="creationCompleteHandler(event)">
@@ -141,7 +141,7 @@
 				<mx:DataGridColumn id="dtgBank" headerText="{'Tipo Candidato'}"
 								   dataField="tipoCandidato.tipo"
 								   width="100"/>
-				<mx:DataGridColumn id="dtgDate" headerText="{'Fase ContrataciÃ³n'}"
+				<mx:DataGridColumn id="dtgDate" headerText="{'Fase Contratación'}"
 								   dataField="faseContratacion.fase"
 								   textAlign="center"
 								   width="80"

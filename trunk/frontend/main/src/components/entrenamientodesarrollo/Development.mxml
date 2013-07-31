@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*" xmlns:notascreditoclientes="components.notascreditoclientes.*" xmlns:informacionfacturas="components.informacionfacturas.*" xmlns:notascreditoproveedores="components.notascreditoproveedores.*" xmlns:facturacionproveedores="components.facturacionproveedores.*" xmlns:comprobacionesviaticos="components.comprobacionesviaticos.*" xmlns:seleccion="components.seleccion.*"
 		 initialize="initializeHandler(event)" xmlns:reclutamientosolicitudempleo="components.reclutamientosolicitudempleo.*" xmlns:curso="components.curso.*" xmlns:contratacion="components.contratacion.*"
@@ -242,33 +242,33 @@
 			<components:TextInput id="txtID" width="80" textAlign="right"
 								  editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Contrataci贸n:"/>
+		<mx:FormItem label="Contrataci髇:"/>
 		<contratacion:Consult id="recruitmentConsult" readMode="true"/>
-		<mx:FormItem label="Fecha Evaluaci贸n de Necesidades de Competencia:">
+		<mx:FormItem label="Fecha Evaluaci髇 de Necesidades de Competencia:">
 			<components:DateField id="dtfENCDate"/>
 		</mx:FormItem>
-		<mx:FormItem label="Resultado Evaluaci贸n de Necesidades de Competencia:">
+		<mx:FormItem label="Resultado Evaluaci髇 de Necesidades de Competencia:">
 			<components:TextInput id="txtENCGrade" width="70" textAlign="right"/>
 		</mx:FormItem>
-		<mx:FormItem label="Evaluaci贸n de Necesidades de Competencia:">
+		<mx:FormItem label="Evaluaci髇 de Necesidades de Competencia:">
 			<mx:CheckBox id="chkENC"/>
 		</mx:FormItem>
-		<mx:FormItem label="Curso T茅cnico:">
+		<mx:FormItem label="Curso T閏nico:">
 			<components:TextInput id="txtTechnicalCourse" width="120"/>
 		</mx:FormItem>
-		<mx:FormItem label="Capacitador Interno Curso T茅cnico:">
+		<mx:FormItem label="Capacitador Interno Curso T閏nico:">
 			<components:TextInput id="txtTechnicalCourseInternalCoach" width="150"/>
 		</mx:FormItem>
-		<mx:FormItem label="Capacitador Externo Curso T茅cnico:">
+		<mx:FormItem label="Capacitador Externo Curso T閏nico:">
 			<components:TextInput id="txtTechnicalCourseExternalCoach" width="150"/>
 		</mx:FormItem>
-		<mx:FormItem label="Autorizaci贸n Curso T茅cnico:">
+		<mx:FormItem label="Autorizaci髇 Curso T閏nico:">
 			<mx:CheckBox id="chkApproveTechnicalCourse"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha Curso T茅cnico:">
+		<mx:FormItem label="Fecha Curso T閏nico:">
 			<components:DateField id="dtfTechnicalCourseDate"/>
 		</mx:FormItem>
-		<mx:FormItem label="Resultado Curso T茅cnico:">
+		<mx:FormItem label="Resultado Curso T閏nico:">
 			<components:TextInput id="txtTechnicalCourseGrade" width="70"
 								  textAlign="right"/>
 		</mx:FormItem>
@@ -281,7 +281,7 @@
 		<mx:FormItem label="Capacitador Externo Curso General:">
 			<components:TextInput id="txtGeneralCourseExternalCoach" width="150"/>
 		</mx:FormItem>
-		<mx:FormItem label="Autorizaci贸n Curso General:">
+		<mx:FormItem label="Autorizaci髇 Curso General:">
 			<mx:CheckBox id="chkApproveGeneralCourse"/>
 		</mx:FormItem>
 		<mx:FormItem label="Fecha Curso General:">

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
 		 horizontalAlign="right"
@@ -88,7 +88,7 @@
 			<mx:DataGridColumn id="dtgLedge" headerText="{'Repisa'}"
 							   dataField="repisa"
 							   width="130"/>
-			<mx:DataGridColumn id="dtgVersion" headerText="{'VersiÃ³n/Release'}"
+			<mx:DataGridColumn id="dtgVersion" headerText="{'Versión/Release'}"
 							   dataField="version"
 							   width="130"/>
 			<mx:DataGridColumn id="dtgController" headerText="{'Controladora'}"

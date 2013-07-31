@@ -2,7 +2,7 @@
 
 	DROP DATABASE conectel;
 
-	CREATE DATABASE conectel;
+	CREATE DATABASE conectel DEFAULT CHARACTER SET latin1;
 
 	USE conectel;
 

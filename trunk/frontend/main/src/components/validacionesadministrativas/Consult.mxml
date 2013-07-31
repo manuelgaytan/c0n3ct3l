@@ -21,6 +21,11 @@
 			private var items:ArrayCollection = null;
 			
 			private var validacionAdministrativa:ValidacionAdministrativa;
+			private var _readMode:Boolean = false;
+			
+			public function set readMode(value:Boolean):void{
+				this._readMode = value;
+			}
 			
 			protected function responseGetAll_resultHandler(event:ResultEvent):void
 			{
@@ -129,7 +134,8 @@
 		</mx:columns>
 	</mx:DataGrid>
 	<mx:HBox>
-		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>
+		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"
+				   visible="{!this._readMode}"/>
 	</mx:HBox>
 	<mx:RemoteObject id="validacionAdministrativaService" destination="validacionAdministrativaService" fault="requisicionService_faultHandler(event)"
 					 showBusyCursor="true"/>

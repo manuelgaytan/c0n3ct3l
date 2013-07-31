@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -65,7 +66,7 @@ public class NotaCreditoClienteDO implements Serializable{
 	@JoinColumn(name = "fk_cliente", nullable = false)
 	private ClienteDO cliente;
 	
-	@OneToMany(mappedBy="notaCreditoCliente", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy="notaCreditoCliente", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	private List<ComentarioNotaCreditoClienteDO> comentariosNotaCreditoCliente;
 	
 	public NotaCreditoClienteDO() {

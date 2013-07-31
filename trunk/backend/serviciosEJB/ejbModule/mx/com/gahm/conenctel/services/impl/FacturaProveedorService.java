@@ -11,8 +11,13 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import mx.com.gahm.conenctel.entities.ComentarioConcentradoOrdenCompraClienteDO;
+import mx.com.gahm.conenctel.entities.ComentarioCuentasPagarFacturacionDO;
 import mx.com.gahm.conenctel.entities.ComentarioFacturaProveedorDO;
+import mx.com.gahm.conenctel.entities.ComentarioValidacionAdministrativaDO;
+import mx.com.gahm.conenctel.entities.ConcentradoOrdenCompraClienteDO;
 import mx.com.gahm.conenctel.entities.FacturaProveedorDO;
+import mx.com.gahm.conenctel.entities.PartidaConcentradoOrdenCompraClienteDO;
 import mx.com.gahm.conenctel.services.IFacturaProveedorService;
 
 /**
@@ -53,44 +58,59 @@ public class FacturaProveedorService implements  IFacturaProveedorService{
 
 	@Override
 	public FacturaProveedorDO save(FacturaProveedorDO item) {
-	    try {
-	    	
+		if( item != null ){
 	    	List<ComentarioFacturaProveedorDO> comentariosFacturaProveedor = item.getComentariosFacturaProveedor();
 	    	item.setComentariosFacturaProveedor(null);
 	    	entityManager.persist(item);
-	    	saveComentarios(item,comentariosFacturaProveedor);
-	    	
-		} catch (Exception e) {
-			e.printStackTrace();
+	    	saveComentariosFacturaProveedor(item,comentariosFacturaProveedor);
 		}
-		
-	return item;
+		return item;
 	}
 	
-	private void saveComentarios(FacturaProveedorDO item,List<ComentarioFacturaProveedorDO> comentariosFacturaProveedor) {
-	    try {
-	    	
-	    	for (ComentarioFacturaProveedorDO dato : comentariosFacturaProveedor) {
-	    		dato.setFacturaProveedor(item);
-	    		entityManager.persist(item);
-			}
-	    	
-	    	item.setComentariosFacturaProveedor(comentariosFacturaProveedor);
-	    	
-		} catch (Exception e) {
-			e.printStackTrace();
+	private void saveComentariosFacturaProveedor(FacturaProveedorDO item,List<ComentarioFacturaProveedorDO> comentariosFacturaProveedor) {
+		if( comentariosFacturaProveedor == null ){
+			return;
 		}
-		
+    	for (ComentarioFacturaProveedorDO dato : comentariosFacturaProveedor) {
+    		ComentarioCuentasPagarFacturacionDO comentarioCuentasPagarFacturacion = dato.getComentarioCuentasPagarFacturacion();
+			entityManager.persist( comentarioCuentasPagarFacturacion );
+			dato.setComentarioCuentasPagarFacturacion( comentarioCuentasPagarFacturacion );
+			dato.setFacturaProveedor(item);
+			entityManager.persist(dato);
+		}
 	}
-	
-
-	
 	
 	@Override
 	public FacturaProveedorDO update(FacturaProveedorDO item) {
+		deleteComentariosFacturaProveedor(item);
+		List<ComentarioFacturaProveedorDO> comentariosFacturaProveedor = item.getComentariosFacturaProveedor();
+		item.setComentariosFacturaProveedor(null);
+		this.colocarFacturaProveedor( item );
 		entityManager.merge(item);
-		
+		saveComentariosFacturaProveedor(item, comentariosFacturaProveedor);
+		item.setComentariosFacturaProveedor(comentariosFacturaProveedor);
 		return item;
+	}
+
+	private void colocarFacturaProveedor(FacturaProveedorDO item) {
+		List<ComentarioFacturaProveedorDO> comentarios = item.getComentariosFacturaProveedor();
+		if(comentarios!=null){
+			for (ComentarioFacturaProveedorDO comentario : comentarios) {
+				comentario.setFacturaProveedor( item );
+			}
+		}
+	}
+
+	private void deleteComentariosFacturaProveedor(FacturaProveedorDO itemParam) {
+		FacturaProveedorDO item = entityManager.find(FacturaProveedorDO.class, itemParam.getId());
+		if( item == null || item.getComentariosFacturaProveedor() == null){
+			return;
+		}
+		for (ComentarioFacturaProveedorDO comentario : item.getComentariosFacturaProveedor()) {
+			if(comentario!=null){
+				entityManager.remove(comentario);
+			}
+		}
 	}
 
 	@Override

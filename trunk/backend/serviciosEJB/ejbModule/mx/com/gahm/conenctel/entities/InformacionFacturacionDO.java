@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -138,6 +139,16 @@ public class InformacionFacturacionDO implements Serializable{
 	
 	@Column(name = "estado_pago_3", nullable = false)
 	private String estadoPago3;
+	
+	@Column(name = "estado_factura", nullable = false)
+	private String estadoFactura;
+	
+	@Column(name = "fecha_estado_factura", nullable = false, length = 10)
+	@Temporal(TemporalType.DATE)
+	private Date fechaEstadoFactura;
+	
+	@Column(name = "imputabilidad", nullable = false)
+	private String imputabilidad;
 
 	public InformacionFacturacionDO() {
 		super();
@@ -145,13 +156,13 @@ public class InformacionFacturacionDO implements Serializable{
 	}
 	
 	
-	@OneToMany(mappedBy="informacionFacturacion", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy="informacionFacturacion", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	private List<ComentarioInformacionFacturacion3DO> comentariosInformacionFacturacion3;
 
-	@OneToMany(mappedBy="informacionFacturacion", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy="informacionFacturacion", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	private List<ComentarioInformacionFacturacion2DO> comentariosInformacionFacturacion2;
 
-	@OneToMany(mappedBy="informacionFacturacion", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy="informacionFacturacion", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	private List<ComentarioInformacionFacturacion1DO> comentariosInformacionFacturacion1;
 
 	public InformacionFacturacionDO(Integer id,
@@ -163,7 +174,8 @@ public class InformacionFacturacionDO implements Serializable{
 			Date fechaIngreso2, Double diasCredito2, Date fechaProgramada2,
 			String estadoPago2, String folioFactura3, Double subtotal3,
 			Double iva3, Double total3, Date fechaEmision3, Date fechaIngreso3,
-			Double diasCredito3, Date fechaProgramada3, String estadoPago3) {
+			Double diasCredito3, Date fechaProgramada3, String estadoPago3,
+			String estadoFactura, Date fechaEstadoFactura, String imputabilidad) {
 		super();
 		this.id = id;
 		this.validacionAdministrativa = validacionAdministrativa;
@@ -194,6 +206,9 @@ public class InformacionFacturacionDO implements Serializable{
 		this.diasCredito3 = diasCredito3;
 		this.fechaProgramada3 = fechaProgramada3;
 		this.estadoPago3 = estadoPago3;
+		this.estadoFactura = estadoFactura;
+		this.fechaEstadoFactura = fechaEstadoFactura;
+		this.imputabilidad = imputabilidad;
 	}
 
 	/**
@@ -646,6 +661,30 @@ public class InformacionFacturacionDO implements Serializable{
 	public void setComentariosInformacionFacturacion1(
 			List<ComentarioInformacionFacturacion1DO> comentariosInformacionFacturacion1) {
 		this.comentariosInformacionFacturacion1 = comentariosInformacionFacturacion1;
+	}
+
+	public String getEstadoFactura() {
+		return estadoFactura;
+	}
+
+	public void setEstadoFactura(String estadoFactura) {
+		this.estadoFactura = estadoFactura;
+	}
+
+	public Date getFechaEstadoFactura() {
+		return fechaEstadoFactura;
+	}
+
+	public void setFechaEstadoFactura(Date fechaEstadoFactura) {
+		this.fechaEstadoFactura = fechaEstadoFactura;
+	}
+
+	public String getImputabilidad() {
+		return imputabilidad;
+	}
+
+	public void setImputabilidad(String imputabilidad) {
+		this.imputabilidad = imputabilidad;
 	}
 
 	

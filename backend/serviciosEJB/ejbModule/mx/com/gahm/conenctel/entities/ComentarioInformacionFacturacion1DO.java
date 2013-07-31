@@ -10,6 +10,7 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -34,16 +35,15 @@ public class ComentarioInformacionFacturacion1DO implements Serializable{
 	private static final long serialVersionUID = 1159695000432033367L;
 
 	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "id", unique = true, nullable = false)
-	private Integer id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 	
 	@ManyToOne
-	@JoinColumn(name = "fk_informacion_facturacion", nullable = false)
+	@JoinColumn(name = "fk_informacion_facturacion")
 	private InformacionFacturacionDO informacionFacturacion;
 	
 	@ManyToOne
-	@JoinColumn(name = "fk_comentario_cuentas_pagar_facturacion", nullable = false)
+	@JoinColumn(name = "fk_comentario_cuentas_pagar_facturacion")
 	private ComentarioCuentasPagarFacturacionDO comentarioCuentasPagarFacturacion;
 
 	public ComentarioInformacionFacturacion1DO() {
@@ -52,7 +52,7 @@ public class ComentarioInformacionFacturacion1DO implements Serializable{
 	}
 
 	public ComentarioInformacionFacturacion1DO(
-			Integer id,
+			Long id,
 			InformacionFacturacionDO informacionFacturacion,
 			ComentarioCuentasPagarFacturacionDO comentarioCuentasPagarFacturacion) {
 		super();
@@ -64,14 +64,14 @@ public class ComentarioInformacionFacturacion1DO implements Serializable{
 	/**
 	 * @return the id
 	 */
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
 	/**
 	 * @param id the id to set
 	 */
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

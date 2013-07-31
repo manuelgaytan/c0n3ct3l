@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -82,7 +83,7 @@ public class FacturaProveedorDO implements Serializable{
 	@Temporal(TemporalType.DATE)
 	private Date fechaPago;
 
-	@OneToMany(mappedBy="facturaProveedor", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy="facturaProveedor", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	private List<ComentarioFacturaProveedorDO> comentariosFacturaProveedor;
 	
 	

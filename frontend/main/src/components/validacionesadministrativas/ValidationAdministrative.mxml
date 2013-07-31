@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)" xmlns:concentradoordenescompracliente="components.concentradoordenescompracliente.*"
 		 >
@@ -354,12 +354,12 @@
 			<components:TextInput id="txtID" editable="false"
 								  textAlign="right"/>
 		</mx:FormItem>
-		<mx:FormItem label="Estado Validaci贸n Operativa:">
+		<mx:FormItem label="Estado Validaci髇 Operativa:">
 			<mx:ComboBox id="cmbAdministrativeValidationStatus"
 						 labelField="etiqueta"
 						 />
 		</mx:FormItem>
-		<mx:FormItem label="Tipo Validaci贸n Administrativa:">
+		<mx:FormItem label="Tipo Validaci髇 Administrativa:">
 			<mx:ComboBox id="cmbTypeValidationAdministrative"
 						 labelField="etiqueta"
 						 />
@@ -368,14 +368,14 @@
 			<components:TextInput id="txtPorcentage1"
 								  textAlign="right"/>
 		</mx:FormItem>
-		<mx:FormItem label="Clave Validaci贸n 1:">
+		<mx:FormItem label="Clave Validaci髇 1:">
 			<components:TextInput id="txtKeyValidation1"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha Validaci贸n 1:">
+		<mx:FormItem label="Fecha Validaci髇 1:">
 			<components:DateField id="dtfValidationDate1"
 						 />
 		</mx:FormItem>
-		<mx:FormItem label="Estado Validaci贸n Cobro 1:">
+		<mx:FormItem label="Estado Validaci髇 Cobro 1:">
 			<mx:ComboBox id="cmbValidationRecoveryStatus1"
 						 labelField="etiqueta"
 						 />
@@ -384,14 +384,14 @@
 			<components:TextInput id="txtPorcentage2"
 								  textAlign="right"/>
 		</mx:FormItem>
-		<mx:FormItem label="Clave Validaci贸n 2:">
+		<mx:FormItem label="Clave Validaci髇 2:">
 			<components:TextInput id="txtKeyValidation2"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha Validaci贸n 2:">
+		<mx:FormItem label="Fecha Validaci髇 2:">
 			<components:DateField id="dtfValidationDate2"
 								  />
 		</mx:FormItem>
-		<mx:FormItem label="Estado Validaci贸n Cobro 2:">
+		<mx:FormItem label="Estado Validaci髇 Cobro 2:">
 			<mx:ComboBox id="cmbValidationRecoveryStatus2"
 						 labelField="etiqueta"
 						 />
@@ -400,14 +400,14 @@
 			<components:TextInput id="txtPorcentage3"
 								  textAlign="right"/>
 		</mx:FormItem>
-		<mx:FormItem label="Clave Validaci贸n 3:">
+		<mx:FormItem label="Clave Validaci髇 3:">
 			<components:TextInput id="txtKeyValidation3"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha Validaci贸n 3:">
+		<mx:FormItem label="Fecha Validaci髇 3:">
 			<components:DateField id="dtfValidationDate3"
 								  />
 		</mx:FormItem>
-		<mx:FormItem label="Estado Validaci贸n Cobro 3:">
+		<mx:FormItem label="Estado Validaci髇 Cobro 3:">
 			<mx:ComboBox id="cmbValidationRecoveryStatus3"
 						 labelField="etiqueta"
 						 />
@@ -416,7 +416,7 @@
 			<components:TextInput id="txtTotalPorcentageRecovery"
 								  textAlign="right"/>
 		</mx:FormItem>
-		<mx:FormItem label="Estado Final Validaci贸n:">
+		<mx:FormItem label="Estado Final Validaci髇:">
 			<mx:ComboBox id="cmbFinalValidationStatus"
 						 labelField="etiqueta"
 						 />

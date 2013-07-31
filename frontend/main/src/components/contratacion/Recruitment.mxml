@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*" xmlns:notascreditoclientes="components.notascreditoclientes.*" xmlns:informacionfacturas="components.informacionfacturas.*" xmlns:notascreditoproveedores="components.notascreditoproveedores.*" xmlns:facturacionproveedores="components.facturacionproveedores.*" xmlns:comprobacionesviaticos="components.comprobacionesviaticos.*" xmlns:seleccion="components.seleccion.*"
 		 initialize="initializeHandler(event)" xmlns:reclutamientosolicitudempleo="components.reclutamientosolicitudempleo.*" xmlns:contratacion="components.contratacion.*"
@@ -337,7 +337,7 @@
 		[Event(name="perDiemCheckSelected", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:Form id="form">
-		<mx:FormHeading label="Especificaciones y Tipo de Contrataci贸n"/>
+		<mx:FormHeading label="Especificaciones y Tipo de Contrataci髇"/>
 		<mx:FormItem id="frmID" label="ID:" direction="horizontal">
 			<components:TextInput id="txtID" width="80" textAlign="right"
 								  editable="false"/>
@@ -348,13 +348,13 @@
 			<components:TextInput id="txtInitialSalary" textAlign="right"/>
 		</mx:FormItem>
 		<contratacion:RecruitmentDocuments id="recruitmentDocuments"/>
-		<mx:FormItem label="Fecha de Expedici贸n Certificado M茅dico:">
+		<mx:FormItem label="Fecha de Expedici髇 Certificado M閐ico:">
 			<components:DateField id="dtfDateIssueMedicalCertificate"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha de Vencimiento Certificado M茅dico:">
+		<mx:FormItem label="Fecha de Vencimiento Certificado M閐ico:">
 			<components:DateField id="dtfExpirationDateMedicalCertificate"/>
 		</mx:FormItem>
-		<mx:FormItem label="Tipo de Contrataci贸n:">
+		<mx:FormItem label="Tipo de Contrataci髇:">
 			<mx:ComboBox id="cmbRecruimentType" width="200"
 						 labelField="tipo"/>
 		</mx:FormItem>
@@ -369,25 +369,25 @@
 			<components:DateField id="dtfContractStartDate"/>
 		</mx:FormItem>
 		<contratacion:Benefits id="benefits"/>
-		<mx:FormHeading label="Proceso de T茅rmino de Contrato"/>
-		<mx:FormItem label="Suspensi贸n:">
+		<mx:FormHeading label="Proceso de T閞mino de Contrato"/>
+		<mx:FormItem label="Suspensi髇:">
 			<mx:ComboBox id="cmbSuspension" width="200"
 						 labelField="suspension"/>
 		</mx:FormItem>
-		<mx:FormItem label="Motivo de la Suspensi贸n:">
+		<mx:FormItem label="Motivo de la Suspensi髇:">
 			<components:TextInput id="txtReasonSuspension" width="300"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha de T茅rmino de Contrato:">
+		<mx:FormItem label="Fecha de T閞mino de Contrato:">
 			<components:DateField id="dtfContractEndDate"/>
 		</mx:FormItem>
-		<mx:FormItem label="Motivo de T茅rmino de Contrato:">
+		<mx:FormItem label="Motivo de T閞mino de Contrato:">
 			<mx:ComboBox id="cmbReasonTerminationContract" width="200"
 						 labelField="motivo"/>
 		</mx:FormItem>
 		<mx:FormItem label="Finiquito:">
 			<mx:CheckBox id="chkSettlement"/>
 		</mx:FormItem>
-		<mx:FormItem label="Indemnizaci贸n:">
+		<mx:FormItem label="Indemnizaci髇:">
 			<mx:CheckBox id="chkCompensation"/>
 		</mx:FormItem>
 		<mx:FormItem direction="horizontal">

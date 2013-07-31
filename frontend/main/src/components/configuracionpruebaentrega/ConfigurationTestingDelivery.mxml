@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*"
 		 >
@@ -337,7 +337,7 @@
 				}
 				if(	proyecto.tipoAuditoria != null &&
 					Util.validateEmpty( this.txtAuditKey.text ) == null ){
-					Util.showErrorMessage( "Requiere la Clave de Auditor铆a para dar por terminado el proyecto." );
+					Util.showErrorMessage( "Requiere la Clave de Auditor韆 para dar por terminado el proyecto." );
 					return;
 				}			
 				if( this.mode == Constants.UPDATE_MODE ){
@@ -453,7 +453,7 @@
 		<mx:FormItem label="Puertos Entregados:">
 			<components:TextInput id="txtPortsDelivered" width="200" textAlign="right"/>
 		</mx:FormItem>
-		<mx:FormItem label="Alineaci贸n:">
+		<mx:FormItem label="Alineaci髇:">
 			<components:TextInput id="txtAlign" width="400"/>
 		</mx:FormItem>
 		<mx:FormItem label="Slot Entregado:">
@@ -462,10 +462,10 @@
 		<mx:FormItem label="Tarjetas Entregadas:">
 			<components:TextInput id="txtCardDelivered" width="300"/>
 		</mx:FormItem>
-		<mx:FormItem label="Clave de Aceptaci贸n:">
+		<mx:FormItem label="Clave de Aceptaci髇:">
 			<components:TextInput id="txtAcceptationKey" width="300"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha de Entrega Responsablede Implementaci贸n:">
+		<mx:FormItem label="Fecha de Entrega Responsablede Implementaci髇:">
 			<components:DateField id="dtfDeliveryDate"/>
 		</mx:FormItem>
 		<mx:FormItem label="Site Survey:">
@@ -474,7 +474,7 @@
 		<mx:FormItem label="Planos:">
 			<components:DeliverWithStatus id="dlvPlanes" deliveryType="{TipoEntregable.PLANOS}"/>
 		</mx:FormItem>
-		<mx:FormItem label="Ingenier铆a:">
+		<mx:FormItem label="Ingenier韆:">
 			<components:DeliverWithStatus id="dlvEngineering" deliveryType="{TipoEntregable.INGENIERIA}"/>
 		</mx:FormItem>
 		<mx:FormItem label="Visita de Factibilidad:">
@@ -492,10 +492,10 @@
 		<mx:FormItem label="Cliente Satisfecho:">
 			<components:DeliverWithStatus id="dlvSatisfyCustomer" deliveryType="{TipoEntregable.CLIENTE_SATISFECHO}"/>
 		</mx:FormItem>
-		<mx:FormItem label="Checklist de Inspecci贸n:">
+		<mx:FormItem label="Checklist de Inspecci髇:">
 			<components:DeliverWithStatus id="dlvInspectionChecklist" deliveryType="{TipoEntregable.CHECKLIST_INSPECCION}"/>
 		</mx:FormItem>
-		<mx:FormItem label="Checklist Fotogr谩fico:">
+		<mx:FormItem label="Checklist Fotogr醘ico:">
 			<components:DeliverWithStatus id="dlvPhotographChecklist" deliveryType="{TipoEntregable.CHECKLIST_FOTOGRAFICO}"/>
 		</mx:FormItem>
 		<mx:FormItem label="ASBuild:">
@@ -510,14 +510,14 @@
 		<mx:FormItem label="Entregables Completos:">
 			<mx:CheckBox id="chbWholeDeliveries"/>
 		</mx:FormItem>
-		<mx:FormItem label="Estatus de Validaci贸n Operativa:">
+		<mx:FormItem label="Estatus de Validaci髇 Operativa:">
 			<mx:ComboBox id="cmbOperationalValidationStatus" labelField="etiqueta"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha de Validaci贸n Operativa:">
+		<mx:FormItem label="Fecha de Validaci髇 Operativa:">
 			<components:DateField id="dtfOperationalValidationDate"/>
 		</mx:FormItem>
 		<components:Observations id="observations" fase="{Estado.createEstado(Estado.ID_CONFIGURACION_PRUEBA_Y_ENTREGA, Estado.CONFIGURACION_PRUEBA_Y_ENTREGA)}"/>
-		<mx:FormItem label="Clave Auditor铆a:">
+		<mx:FormItem label="Clave Auditor韆:">
 			<components:TextInput id="txtAuditKey" width="300"/>
 		</mx:FormItem>
 		<mx:FormItem direction="horizontal">

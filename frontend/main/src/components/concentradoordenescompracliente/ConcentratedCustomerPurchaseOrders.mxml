@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)" xmlns:concentradoordenescompracliente="components.concentradoordenescompracliente.*"
 		 >
@@ -296,20 +296,20 @@
 		<mx:FormItem label="Fecha de Orden de Compra:">
 			<components:DateField id="dtfPurchaseOrderDate" creationComplete="dtfPurchaseOrderDate.selectedDate = new Date()"/>
 		</mx:FormItem>
-		<mx:FormItem label="NÃºmero de RequisiciÃ³n:">
+		<mx:FormItem label="Número de Requisición:">
 			<components:TextInput id="txtRequisitionNumber"
 								  />
 		</mx:FormItem>
-		<mx:FormItem label="Ãtem:">
+		<mx:FormItem label="Ítem:">
 			<components:TextInput id="txtItem"
 								  width="60"
 								  textAlign="right"/>
 		</mx:FormItem>
-		<mx:FormItem label="CÃ³digo:">
+		<mx:FormItem label="Código:">
 			<components:TextInput id="txtCode"
 								  />
 		</mx:FormItem>
-		<mx:FormItem label="DescripciÃ³n:">
+		<mx:FormItem label="Descripción:">
 			<components:TextInput id="txtDescription"
 								  width="400"
 								  />
@@ -331,7 +331,7 @@
 			<components:TextInput id="txtSiteID"
 								  />
 		</mx:FormItem>
-		<mx:FormItem label="Local/ForÃ¡neo:">
+		<mx:FormItem label="Local/Foráneo:">
 			<components:TextInput id="txtServiceType"
 								  width="120"
 								  />

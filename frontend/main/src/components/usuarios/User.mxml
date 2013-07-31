@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)"
 		 >
@@ -166,7 +166,7 @@
 			{
 				var value:Boolean = this.passwordMatch();
 				if( !value ){
-					Util.showErrorMessage("La contraseÃ±a no corresponde con la verificaciÃ³n de la misma");
+					Util.showErrorMessage("La contraseña no corresponde con la verificación de la misma");
 				}
 				return value;
 			}
@@ -219,11 +219,11 @@
 		<mx:FormItem label="Usuario:">
 			<components:TextInput id="txtUser" width="200"/>
 		</mx:FormItem>
-		<mx:FormItem label="ContraseÃ±a:">
+		<mx:FormItem label="Contraseña:">
 			<components:TextInput id="txtPasword" width="150"
 								  displayAsPassword="true"/>
 		</mx:FormItem>
-		<mx:FormItem label="Confirmar ContraseÃ±a:">
+		<mx:FormItem label="Confirmar Contraseña:">
 			<components:TextInput id="txtVerifyPassword" width="150"
 								  displayAsPassword="true"
 								  />

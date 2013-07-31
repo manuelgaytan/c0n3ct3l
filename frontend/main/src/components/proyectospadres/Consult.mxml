@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
 		 horizontalAlign="right"
@@ -129,16 +129,16 @@
 							   dataField="id"
 							   width="80"
 							   textAlign="right"/>
-			<mx:DataGridColumn id="dtgDescription" headerText="DescripciÃ³n"
+			<mx:DataGridColumn id="dtgDescription" headerText="Descripción"
 							   width="360"
 							   dataField="descripcion"
 							   />
-			<mx:DataGridColumn id="dtgProjectsAssociatedNumber" headerText="{'NÃºmero de\nProyectos \nAsociados'}"
+			<mx:DataGridColumn id="dtgProjectsAssociatedNumber" headerText="{'Número de\nProyectos \nAsociados'}"
 							   width="100"
 							   labelFunction="labelFunctionProjectsAssociatedNumber"
 							   textAlign="center"
 							   />
-			<mx:DataGridColumn id="dtgDate" headerText="{'Fecha\nCreaciÃ³n'}"
+			<mx:DataGridColumn id="dtgDate" headerText="{'Fecha\nCreación'}"
 							   width="100"
 							   dataField="fechaCreacion"
 							   labelFunction="{Util.labelFunctionDate}"

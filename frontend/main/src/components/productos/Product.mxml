@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)">
 	<mx:Script>
@@ -280,7 +280,7 @@
 			<components:TextInput id="txtProjectType" width="300"
 								  editable="{!this._preciarios}"/>
 		</mx:FormItem>
-		<mx:FormItem label="TecnologÃ­a:">
+		<mx:FormItem label="Tecnología:">
 			<components:TextInput id="txtTechnology" width="250"
 								  editable="{!this._preciarios}"/>
 		</mx:FormItem>
@@ -296,7 +296,7 @@
 			<components:TextInput id="txtModel" width="450"
 								  editable="{!this._preciarios}"/>
 		</mx:FormItem>
-		<mx:FormItem label="DescripciÃ³n del Servicio:">
+		<mx:FormItem label="Descripción del Servicio:">
 			<components:TextInput id="txtServiceDescription" width="600"
 								  editable="{!this._preciarios}"/>
 		</mx:FormItem>
@@ -328,7 +328,7 @@
 			<components:TextInput id="txtForaneoCostSupplier" width="150" textAlign="right"
 								  editable="{!this._preciarios}"/>
 		</mx:FormItem>
-		<mx:FormItem label="DÃ­as de ImplementaciÃ³n:">
+		<mx:FormItem label="Días de Implementación:">
 			<components:TextInput id="txtImplementationDays" width="150" textAlign="right"
 								  editable="{!this._preciarios}"/>
 		</mx:FormItem>

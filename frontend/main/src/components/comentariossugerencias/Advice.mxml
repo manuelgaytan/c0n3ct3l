@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*" xmlns:notascreditoclientes="components.notascreditoclientes.*" xmlns:informacionfacturas="components.informacionfacturas.*" xmlns:notascreditoproveedores="components.notascreditoproveedores.*" xmlns:facturacionproveedores="components.facturacionproveedores.*" xmlns:comprobacionesviaticos="components.comprobacionesviaticos.*" xmlns:seleccion="components.seleccion.*"
 		 initialize="initializeHandler(event)" xmlns:reclutamientosolicitudempleo="components.reclutamientosolicitudempleo.*" xmlns:registroSugerencia="components.registroSugerencia.*" xmlns:contratacion="components.contratacion.*"
@@ -279,7 +279,7 @@
 		<mx:FormItem label="Fecha:">
 			<components:DateField id="dtfDate"/>
 		</mx:FormItem>
-		<mx:FormItem label="N贸mina Conectel:">
+		<mx:FormItem label="N髆ina Conectel:">
 			<mx:ComboBox id="cmbConectelPayroll" width="400"
 						 labelField="nombreCompleto"
 						 change="cmbConectelPayroll_changeHandler(event)"/>
@@ -287,33 +287,33 @@
 		<mx:FormItem label="Nombre:">
 			<components:TextInput id="txtName" width="350"/>
 		</mx:FormItem>
-		<mx:FormItem label="Correo Electr贸nico:">
+		<mx:FormItem label="Correo Electr髇ico:">
 			<components:TextInput id="txtEmail" width="250" upperCase="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Tel茅fono:">
+		<mx:FormItem label="Tel閒ono:">
 			<components:TextInput id="txtPhone" width="100"/>
 		</mx:FormItem>
-		<mx:FormItem label="Descripci贸n del Comentario y/o Sugerencia:">
+		<mx:FormItem label="Descripci髇 del Comentario y/o Sugerencia:">
 			<components:TextArea id="txtAdvice" width="520"/>
 		</mx:FormItem>
-		<mx:FormItem label="Requiere Acci贸n Inmediata:">
+		<mx:FormItem label="Requiere Acci髇 Inmediata:">
 			<mx:CheckBox id="chkInmediatlyAction"/>
 		</mx:FormItem>
-		<mx:FormItem label="Acci贸n Inmediata:">
+		<mx:FormItem label="Acci髇 Inmediata:">
 			<components:TextInput id="txtInmediatlyAction" width="520"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha de Implementaci贸n:">
+		<mx:FormItem label="Fecha de Implementaci髇:">
 			<components:DateField id="dtfImplementationDate"/>
 		</mx:FormItem>
-		<mx:FormItem label="Responsable de Implementaci贸n:">
+		<mx:FormItem label="Responsable de Implementaci髇:">
 			<components:TextInput id="txtImplementationResponsible" width="350"/>
 		</mx:FormItem>
-		<mx:FormItem label="Resultado Implementaci贸n:">
+		<mx:FormItem label="Resultado Implementaci髇:">
 			<mx:ComboBox id="cmbImplementationResult" width="400"
 						 labelField="resultado"
 						 />
 		</mx:FormItem>
-		<mx:FormItem label="Requiere Acci贸n Correctiva:">
+		<mx:FormItem label="Requiere Acci髇 Correctiva:">
 			<mx:CheckBox id="chkCorrectiveAction"/>
 		</mx:FormItem>
 		<mx:FormItem direction="horizontal">

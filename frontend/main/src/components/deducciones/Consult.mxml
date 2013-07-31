@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
 		 creationComplete="creationCompleteHandler(event)">
@@ -135,7 +135,7 @@
 				<mx:DataGridColumn id="dtgPosition" headerText="{'Puesto'}"
 								   dataField="contratacion.reclutamientoSolicitudEmpleo.datosPrincipalesSolicitante.puestoSolicitado"
 								   width="120"/>
-				<mx:DataGridColumn id="dtgDeduction" headerText="{'DeducciÃ³n'}"
+				<mx:DataGridColumn id="dtgDeduction" headerText="{'Deducción'}"
 								   dataField="deduccion.deduccion"
 								   width="100"/>
 				<mx:DataGridColumn id="dtgContractStartDate" headerText="{'Retardos'}"
@@ -147,7 +147,7 @@
 								   textAlign="right"
 								   width="60"
 								   />
-				<mx:DataGridColumn id="dtgSantionClass" headerText="{'Tipo de\nSanciÃ³n'}"
+				<mx:DataGridColumn id="dtgSantionClass" headerText="{'Tipo de\nSanción'}"
 								   dataField="tipoSancion.tipo"
 								   width="80"
 								   />

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:Form xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*" xmlns:reclutamientosolicitudempleo="components.reclutamientosolicitudempleo.*"
 		 width="100%" height="100%" label="Datos Generales"
 		 initialize="initializeHandler(event)"
@@ -406,11 +406,11 @@
 		<mx:ComboBox id="cmbNationality" width="200"
 					 labelField="nacionalidad"/>
 	</mx:FormItem>
-	<mx:FormItem label="Identificaci贸n:">
+	<mx:FormItem label="Identificaci髇:">
 		<mx:ComboBox id="cmbID" width="200"
 					 labelField="identificacion"/>
 	</mx:FormItem>
-	<mx:FormItem label="Documentaci贸n Extranjeros:">
+	<mx:FormItem label="Documentaci髇 Extranjeros:">
 		<mx:ComboBox id="cmbForeignDocumentation" width="200"
 					 labelField="documento"/>
 	</mx:FormItem>
@@ -423,13 +423,13 @@
 					 labelField="sexo"/>
 	</mx:FormItem>
 	<reclutamientosolicitudempleo:RequestAddress id="requestAddress"/>
-	<mx:FormItem label="Tel茅fono:">
+	<mx:FormItem label="Tel閒ono:">
 		<components:TextInput id="txtPhone" width="150"/>
 	</mx:FormItem>
 	<mx:FormItem label="Celular:">
 		<components:TextInput id="txtMobile" width="100"/>
 	</mx:FormItem>
-	<mx:FormItem label="Correo Electr贸nico:">
+	<mx:FormItem label="Correo Electr髇ico:">
 		<components:TextInput id="txtEmail" width="150" upperCase="false"/>
 	</mx:FormItem>
 	<mx:FormItem label="R.F.C.:">
@@ -450,7 +450,7 @@
 		<mx:ComboBox id="cmbHealthState" width="200"
 					 labelField="estado"/>
 	</mx:FormItem>
-	<mx:FormItem label="Enfermedad Cr贸nica:">
+	<mx:FormItem label="Enfermedad Cr髇ica:">
 		<components:TextInput id="txtChronicDisease" width="255"/>
 	</mx:FormItem>
 	<mx:FormItem label="Actividad Tiempo Libre:">

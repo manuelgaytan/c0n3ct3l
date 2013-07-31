@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:Accordion xmlns:mx="http://www.adobe.com/2006/mxml" 
 			  width="300" height="470"
 			  creationComplete="creationCompleteHandler(event)"
@@ -17,7 +17,7 @@
 			private var titlesChanging:Array = [{id:"Proyectos",newTitle:"Alta de servicios"},
 												{id:"DatosGenerales",newTitle:"Datos Generales del Proyecto"},
 												{id:"DesarrolloProyectoAB",newTitle:"Desarrollo del Proyecto A y B"},
-												{id:"ConfiguracionPruebaEntrega",newTitle:"Configuraci贸n Prueba y Entrega"}];
+												{id:"ConfiguracionPruebaEntrega",newTitle:"Configuraci髇 Prueba y Entrega"}];
 			protected function clickMenuHandler(event:MouseEvent):void
 			{
 				var linkButton:LinkButton = event.currentTarget as LinkButton;
@@ -66,7 +66,7 @@
 	<mx:Metadata>
 		[Event(name="menuItemClick", type="events.GenericEvent")]
 	</mx:Metadata>
-	<mx:VBox label="Cat谩logos" width="100%" height="100%">
+	<mx:VBox label="Cat醠ogos" width="100%" height="100%">
 		<mx:LinkButton label="Clientes" id="Clientes" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/clientes.png')"/>
 		<mx:LinkButton label="Productos y Servicios" id="Productos" click="clickMenuHandler(event)"
@@ -74,22 +74,22 @@
 		<mx:LinkButton label="Usuarios" id="Usuarios" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/usuarios.png')"/>
 	</mx:VBox>
-	<mx:VBox label="Operaci贸n" width="100%" height="100%">
+	<mx:VBox label="Operaci髇" width="100%" height="100%">
 		<mx:LinkButton label="Proyectos Padre" id="ProyectosPadres" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/proyectospadre.png')"/>
 		<mx:LinkButton label="Proyectos" id="Proyectos" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/altaservicios.png')"/>
-		<mx:LinkButton label="Planeaci贸n del Proyecto" id="DatosGenerales" click="clickMenuHandler(event)"
+		<mx:LinkButton label="Planeaci髇 del Proyecto" id="DatosGenerales" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/datosgeneralesproyecto.png')"/>
-		<mx:LinkButton label="Ejecuci贸n del Proyecto" id="DesarrolloProyectoAB" click="clickMenuHandler(event)"
+		<mx:LinkButton label="Ejecuci髇 del Proyecto" id="DesarrolloProyectoAB" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/desarrolloproyecto.png')"/>
-		<mx:LinkButton label="Entrega y Revisi贸n" id="ConfiguracionPruebaEntrega" click="clickMenuHandler(event)"
+		<mx:LinkButton label="Entrega y Revisi髇" id="ConfiguracionPruebaEntrega" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/configuracionpruebaentrega.png')"/>
 	</mx:VBox>
-	<mx:VBox label="Almac茅n" width="100%" height="100%">
-		<mx:LinkButton label="Manejo Almac茅n" id="Almacen" click="clickMenuHandler(event)"
+	<mx:VBox label="Almac閚" width="100%" height="100%">
+		<mx:LinkButton label="Manejo Almac閚" id="Almacen" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/manejoalmacen.png')"/>
-		<mx:LinkButton label="Solicitud Almac茅n" id="SolicitudAlmacenModule" click="clickMenuHandler(event)"
+		<mx:LinkButton label="Solicitud Almac閚" id="SolicitudAlmacenModule" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/solicitudalmacen.png')"/>
 	</mx:VBox>
 	<mx:VBox label="Compras" width="100%" height="100%">
@@ -109,49 +109,49 @@
 					   icon="@Embed(source='assets/images/ordenescompramaterial.png')"/>
 		<mx:LinkButton label="Ordenes de Compra Servicio Maquilado" id="OrdenesCompraServicioMaquilado" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/ordencompraserviciomaquilado.png')"/>
-		<mx:LinkButton label="Programacio虂n de Pagos de Compras" id="FacturacionCompra" click="clickMenuHandler(event)"
+		<mx:LinkButton label="Programaci髞n de Pagos de Compras" id="FacturacionCompra" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/programacionpagos.png')"/>
 		<mx:LinkButton label="Preciarios Maquiladores" id="PreciariosMaquiladores" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/preciariosmaquiladores.png')"/>
 	</mx:VBox>
-	<mx:VBox label="Validaci贸n Administrativa" width="100%" height="100%">
-		<mx:LinkButton label="Validaci贸n del Proyecto" id="ValidacionesProyectos" click="clickMenuHandler(event)"
+	<mx:VBox label="Validaci髇 Administrativa" width="100%" height="100%">
+		<mx:LinkButton label="Validaci髇 del Proyecto" id="ValidacionesProyectos" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/validacionproyecto.png')"/>
 		<mx:LinkButton label="Ordenes de Compra Clientes" id="OrdenesCompraClientes" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/ordenescompra.png')"/>
-		<mx:LinkButton label="Validaci贸n Adminsitrativa" id="ValidacionesAdministrativas" click="clickMenuHandler(event)"
+		<mx:LinkButton label="Validaci髇 Adminsitrativa" id="ValidacionesAdministrativas" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/validacionadministrativa.png')"/>
 		<mx:LinkButton label="Concentrado Ordenes de Compra" id="ConcentradoOrdenesCompra" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/concentradoordenescompra.png')"/>
 	</mx:VBox>
 	<mx:VBox label="Cuentas por Pagar" width="100%" height="100%">
-		<mx:LinkButton label="Facturaci贸n Proveedor" id="FacturacionProveedores" click="clickMenuHandler(event)"
+		<mx:LinkButton label="Facturaci髇 Proveedor" id="FacturacionProveedores" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/facturacionproveedor.png')"/>
-		<mx:LinkButton label="Nota de Cr茅dito" id="NotasCreditoProveedores" click="clickMenuHandler(event)"
+		<mx:LinkButton label="Nota de Cr閐ito" id="NotasCreditoProveedores" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/notacredito.png')"/>
 	</mx:VBox>
-	<mx:VBox label="Facturaci贸n" width="100%" height="100%">
-		<mx:LinkButton label="Informaci贸n Facturaci贸n" id="InformacionFacturas" click="clickMenuHandler(event)"
+	<mx:VBox label="Facturaci髇" width="100%" height="100%">
+		<mx:LinkButton label="Informaci髇 Facturaci髇" id="InformacionFacturas" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/informacionfacturacion.png')"/>
-		<mx:LinkButton label="Nota de Cr茅dito" id="NotasCreditoClientes" click="clickMenuHandler(event)"
+		<mx:LinkButton label="Nota de Cr閐ito" id="NotasCreditoClientes" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/notacreditofacturacion.png')"/>
 	</mx:VBox>
 	<mx:VBox label="Contabilidad" width="100%" height="100%">
-		<mx:LinkButton label="Solicitud de Vi谩ticos" id="SolicitudesViaticos" click="clickMenuHandler(event)"
+		<mx:LinkButton label="Solicitud de Vi醫icos" id="SolicitudesViaticos" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/solicitudviaticos.png')"/>
-		<mx:LinkButton label="Comprobaci贸n de Vi谩ticos" id="ComprobacionesViaticos" click="clickMenuHandler(event)"
+		<mx:LinkButton label="Comprobaci髇 de Vi醫icos" id="ComprobacionesViaticos" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/comprobacionviaticos.png')"/>
 		<mx:LinkButton label="Fondo Fijo de Caja Chica" id="FondosFijosCajaChica" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/fondocajachica.png')"/>
 		<mx:LinkButton label="Pagos Contables y Servicios" id="PagosContablesServicios" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/pagoscontables.png')"/>
 	</mx:VBox>
-	<mx:VBox label="Tesorer铆a" width="100%" height="100%">
+	<mx:VBox label="Tesorer憝a" width="100%" height="100%">
 		<mx:LinkButton label="Cobranza" id="Cobranza" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/cobranza.png')"/>
 		<mx:LinkButton label="Pago a Proveedores" id="PagoProveedores" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/pagoproveedores.png')"/>
-		<mx:LinkButton label="Pago a Vi谩ticos" id="PagoViaticos" click="clickMenuHandler(event)"
+		<mx:LinkButton label="Pago a Vi醫icos" id="PagoViaticos" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/pagoviaticos.png')"/>
 		<mx:LinkButton label="Pagos Contables y Servicios" id="PagoPagosContablesServicios" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/pagoservicios.png')"/>
@@ -161,13 +161,13 @@
 	<mx:VBox label="Recursos Humanos" width="100%" height="100%">
 		<mx:LinkButton label="Reclutamiento Solicitud Empleo" id="ReclutamientoSolicitudEmpleo" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/reclutamiento.png')"/>
-		<mx:LinkButton label="Selecci贸n" id="Seleccion" click="clickMenuHandler(event)"
+		<mx:LinkButton label="Selecci髇" id="Seleccion" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/seleccion.png')"/>
-		<mx:LinkButton label="Contrataci贸n" id="Contratacion" click="clickMenuHandler(event)"
+		<mx:LinkButton label="Contrataci髇" id="Contratacion" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/contratacion.png')"/>
-		<mx:LinkButton label="Administaci贸n del Colaborador" id="AdministracionColaborador" click="clickMenuHandler(event)"
+		<mx:LinkButton label="Administaci髇 del Colaborador" id="AdministracionColaborador" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/administracioncolaborador.png')"/>
-		<mx:LinkButton label="Pren贸mina" id="Prenomina" click="clickMenuHandler(event)"
+		<mx:LinkButton label="Pren髆ina" id="Prenomina" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/prenomina.png')"/>
 		<mx:LinkButton label="Deducciones" id="Deducciones" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/deducciones.png')"/>
@@ -176,20 +176,20 @@
 		<mx:LinkButton label="Entrenamiento y Desarrollo" id="EntrenamientoDesarrollo" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/entrenamiento.png')"/>
 	</mx:VBox>
-	<mx:VBox label="Sistemas de Gesti贸n" width="100%" height="100%">
+	<mx:VBox label="Sistemas de Gesti髇" width="100%" height="100%">
 		<mx:LinkButton label="Comentarios y/o Sugerencias" id="ComentariosSugerencias" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/comentarios.png')"/>
-		<mx:LinkButton label="Bit谩cora de Producto No Conforme o No Conformidades" id="BitacoraProductoNoConformeNoConformidades" click="clickMenuHandler(event)"
+		<mx:LinkButton label="Bit醕ora de Producto No Conforme o No Conformidades" id="BitacoraProductoNoConformeNoConformidades" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/noconforme.png')"/>
-		<mx:LinkButton label="Acci贸n Preventiva-Correctiva" id="AccionPreventivaCorrectiva" click="clickMenuHandler(event)"
+		<mx:LinkButton label="Acci髇 Preventiva-Correctiva" id="AccionPreventivaCorrectiva" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/accionpreventiva.png')"/>
-		<mx:LinkButton label="Concentrado de Capacitaci贸n" id="ConcentradoCapacitacion" click="clickMenuHandler(event)"
+		<mx:LinkButton label="Concentrado de Capacitaci髇" id="ConcentradoCapacitacion" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/capacitacion.png')"/>
-		<mx:LinkButton label="Sistemas de Gesti贸n" id="SistemasGestion" click="clickMenuHandler(event)"
+		<mx:LinkButton label="Sistemas de Gesti髇" id="SistemasGestion" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/sistemasgestion.png')"/>
-		<mx:LinkButton label="Minuta de Reuni贸n" id="MinutaReunion" click="clickMenuHandler(event)"
+		<mx:LinkButton label="Minuta de Reuni髇" id="MinutaReunion" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/minutareunion.png')"/>
-		<mx:LinkButton label="Gr谩fica de Evaluaci贸n de Facturaci贸n de Proyectos de Conectel" id="GraficaEvaluacionFacturacionProyectosConectel" click="clickMenuHandler(event)"
+		<mx:LinkButton label="Gr醘ica de Evaluaci髇 de Facturaci髇 de Proyectos de Conectel" id="GraficaEvaluacionFacturacionProyectosConectel" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/graficas.png')"/>
 	</mx:VBox>
 	<mx:VBox id="empty">

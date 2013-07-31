@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
 		 horizontalAlign="right"
@@ -52,7 +52,7 @@
 					Util.showErrorMessage("Debe seleccionar elementos de la tabla.");
 					return;
 				}
-				Alert.show("Desea modificar la notificaci贸n.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
+				Alert.show("Desea modificar la notificaci髇.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
 			}
 			
 			private function updateItem(event:CloseEvent):void
@@ -68,7 +68,7 @@
 			
 			protected function responseUpdateNotification_resultHandler(event:ResultEvent):void
 			{
-				Util.showInfoMessage("La notificaci贸n ha sido actualizada.");
+				Util.showInfoMessage("La notificaci髇 ha sido actualizada.");
 				this.executeQuery();
 			}
 			
@@ -79,14 +79,14 @@
 			<mx:DataGridColumn id="dtgCreationDate" headerText="Fecha" width="100"
 							   dataField="fechaHoraCreacion"
 							   labelFunction="{Util.labelFunctionDate}"/>
-			<mx:DataGridColumn id="dtgUserOriginated" headerText="{'Usuario\nCreaci贸n'}" width="100"
+			<mx:DataGridColumn id="dtgUserOriginated" headerText="{'Usuario\nCreaci髇'}" width="100"
 							   dataField="usuarioCreacion.usuario"/>
-			<mx:DataGridColumn id="dtgAction" headerText="Notificaci贸n" width="270"
+			<mx:DataGridColumn id="dtgAction" headerText="Notificaci髇" width="270"
 							   dataField="notificacion"
 							   wordWrap="true"/>
 			<mx:DataGridColumn id="dtgPerfil" headerText="{'Dirigido a'}" width="120"
 							   dataField="perfil.etiqueta"/>
-			<mx:DataGridColumn id="dtgUserUpdated" headerText="{'Usuario\nModificaci贸n'}" width="100"
+			<mx:DataGridColumn id="dtgUserUpdated" headerText="{'Usuario\nModificaci髇'}" width="100"
 							   dataField="usuarioModificacion.usuario"/>
 			<mx:DataGridColumn id="dtgUpdatedDate" headerText="{'Estado'}" width="100"
 							   dataField="estado.estado"/>

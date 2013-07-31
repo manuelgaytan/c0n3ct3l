@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical" 
 		   width="650" height="600" 
 		   xmlns:components="components.*" 
@@ -64,7 +64,7 @@
 			{
 				var user:Usuario = event.result as Usuario;
 				if( user == null ){
-					Util.showErrorMessage("Usuario Ã³ ContraseÃ±a invÃ¡lidos");
+					Util.showErrorMessage("Usuario ó Contraseña inválidos");
 					return;
 				}
 				var modelApp:Model = Model.getInstance();
@@ -79,19 +79,19 @@
 		[Event(name="validUser", type="events.GenericEvent")]
 	</mx:Metadata>
 	<!--<mx:SWFLoader source="assets/blimp_ticker_flash9.swf"/>-->
-	<mx:Panel title="AutenticaciÃ³n" styleName="panelStyle"
+	<mx:Panel title="Autenticación" styleName="panelStyle"
 			  paddingBottom="2" paddingTop="2">
 		<mx:Form borderStyle="none" width="100%" height="100%" 
 				 backgroundImage="assets/images/candado.jpeg"
 				 backgroundAlpha="0.5">
 			<mx:FormItem required="true" label="Usuario:">
 				<components:TextInput id="txtUser"
-									  text=""/>
+									  text="DIRECTOR"/>
 			</mx:FormItem>
-			<mx:FormItem required="true" label="ContraseÃ±a:">
+			<mx:FormItem required="true" label="Contraseña:">
 				<components:TextInput id="txtPassword" displayAsPassword="true"
 									  enter="enterButton_clickHandler(event)"
-									  text=""/>
+									  text="NOTIENE"/>
 			</mx:FormItem>
 			<mx:FormItem>
 				<mx:Button label="Entrar" id="enterButton" click="enterButton_clickHandler(event)"/>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)"
 		 >
@@ -302,7 +302,7 @@
 		[Event(name="pettyCashFundFixedUpdated", type="flash.events.Event")]
 	</mx:Metadata>
 	<mx:Form id="form">
-		<mx:FormItem label="NumeraciÃ³n:" id="frmID">
+		<mx:FormItem label="Numeración:" id="frmID">
 			<components:TextInput id="txtID" textAlign="right" editable="false"/>
 		</mx:FormItem>
 		<mx:FormItem id="frmOpeningBalance" label="Saldo Inicial:" direction="horizontal">
@@ -312,12 +312,12 @@
 		<mx:FormItem label="Fecha:">
 			<components:DateField id="dtfDate" creationComplete="this.dtfDate.selectedDate = new Date()"/>
 		</mx:FormItem>
-		<mx:FormItem label="Tipo OperaciÃ³n:">
+		<mx:FormItem label="Tipo Operación:">
 			<mx:ComboBox id="cmbOperationType"
 						 labelField="etiqueta"
 								  width="150"/>
 		</mx:FormItem>
-		<mx:FormItem label="DescripciÃ³n:">
+		<mx:FormItem label="Descripción:">
 			<mx:ComboBox id="cmbDescription"
 						 labelField="descripcion"
 						 width="150"/>

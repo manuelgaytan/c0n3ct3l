@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
 		 horizontalAlign="right" creationComplete="creationCompleteHandler(event)">
@@ -122,7 +122,7 @@
 							   dataField="producto.tipoProyecto"
 							   labelFunction="labelFunctionGenerico"
 							   width="150"/>
-			<mx:DataGridColumn id="dtgTechnology" headerText="TecnologÃ­a"
+			<mx:DataGridColumn id="dtgTechnology" headerText="Tecnología"
 							   dataField="producto.teconologia"
 							   labelFunction="labelFunctionGenerico"
 							   width="150"/>
@@ -138,7 +138,7 @@
 							   dataField="producto.modelo"
 							   labelFunction="labelFunctionGenerico"
 							   width="150"/>
-			<mx:DataGridColumn id="dtgServiceDescription" headerText="{'DescripciÃ³n\ndel Servicio'}"
+			<mx:DataGridColumn id="dtgServiceDescription" headerText="{'Descripción\ndel Servicio'}"
 							   dataField="producto.descripcionServicio"
 							   labelFunction="labelFunctionGenerico"
 							   width="205"/>

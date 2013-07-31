@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical" width="1000" height="560" 
 		   xmlns:proyectos="components.proyectos.*">
 	<mx:Script>

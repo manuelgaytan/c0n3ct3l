@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*" xmlns:notascreditoclientes="components.notascreditoclientes.*" xmlns:informacionfacturas="components.informacionfacturas.*" xmlns:notascreditoproveedores="components.notascreditoproveedores.*" xmlns:facturacionproveedores="components.facturacionproveedores.*" xmlns:comprobacionesviaticos="components.comprobacionesviaticos.*" xmlns:seleccion="components.seleccion.*"
 		 initialize="initializeHandler(event)" xmlns:reclutamientosolicitudempleo="components.reclutamientosolicitudempleo.*"
@@ -265,10 +265,10 @@
 		</mx:FormItem>
 		<seleccion:PsycometricQuiz id="psycometricQuiz"/>
 		<seleccion:ScalaProfile id="scalaProfile"/>
-		<mx:FormItem label="ExÃ¡men TÃ©cnico:">
+		<mx:FormItem label="Exámen Técnico:">
 			<mx:NumericStepper id="nstTechnicalQuiz" minimum="0" maximum="10"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fase de ContrataciÃ³n:">
+		<mx:FormItem label="Fase de Contratación:">
 			<mx:ComboBox id="cmbContractPhase" width="200"
 						 labelField="fase"/>
 		</mx:FormItem>

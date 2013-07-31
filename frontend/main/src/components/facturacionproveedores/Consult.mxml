@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
 		 creationComplete="creationCompleteHandler(event)">
@@ -100,15 +100,15 @@
 								   dataField="fechaFactura"
 								   labelFunction="{Util.labelFunctionDate}"
 								   textAlign="center"/>
-				<mx:DataGridColumn id="dtgQualityResearchStatus" headerText="{'Estado\nInvestigaciÃ³n\nCalidad'}"
+				<mx:DataGridColumn id="dtgQualityResearchStatus" headerText="{'Estado\nInvestigación\nCalidad'}"
 								   dataField="estadoInvestigacionCalidad.etiqueta"
 								   textAlign="center"
 								   />
-				<mx:DataGridColumn id="dtgTreasuryStatus" headerText="{'Estado\nTesorerÃ­a'}"
+				<mx:DataGridColumn id="dtgTreasuryStatus" headerText="{'Estado\nTesorería'}"
 								   dataField="estadoTesoreria.etiqueta"
 								   textAlign="center"
 								   />
-				<mx:DataGridColumn id="dtgVendorInvoiceNumber" headerText="{'NÃºmero\nFactura'}"
+				<mx:DataGridColumn id="dtgVendorInvoiceNumber" headerText="{'Número\nFactura'}"
 								   dataField="numeroFactura"
 								   textAlign="center"
 								   />

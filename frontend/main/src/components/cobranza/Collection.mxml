@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*" xmlns:notascreditoclientes="components.notascreditoclientes.*" xmlns:informacionfacturas="components.informacionfacturas.*"
 		 >
@@ -378,23 +378,23 @@
 						 labelField="nombreComercial"
 						 change="cmbClient_changeHandler(event)"/>
 		</mx:FormItem>
-		<mx:FormItem label="Informaci贸n Facturaci贸n:">
+		<mx:FormItem label="Informaci髇 Facturaci髇:">
 			<informacionfacturas:Consult id="informationBillingConsult" informationBillingDetail="informationBillingConsult_informationBillingDetailHandler(event)"
 										 readOnly="true"/>
 			<mx:HBox>
 				<mx:ComboBox id="cmbInformationBilling"
-							 dataProvider="{['','Informaci贸n Factura 1','Informaci贸n Factura 2','Informaci贸n Factura 3']}"
+							 dataProvider="{['','Informaci髇 Factura 1','Informaci髇 Factura 2','Informaci髇 Factura 3']}"
 							 change="cmbInformationBilling_changeHandler(event)"/>
-				<mx:Button id="btnViewInformationBilling" label="Ver Informaci贸n Facturaci贸n" click="btnViewInformationBilling_clickHandler(event)"/>
+				<mx:Button id="btnViewInformationBilling" label="Ver Informaci髇 Facturaci髇" click="btnViewInformationBilling_clickHandler(event)"/>
 			</mx:HBox>
 		</mx:FormItem>
 		<mx:FormItem label="Folio Factura:">
 			<components:TextInput id="txtInvoiceFolio" textAlign="right" width="100"/>
 		</mx:FormItem>
-		<mx:FormItem label="Nota Cr茅dito Cliente:">
+		<mx:FormItem label="Nota Cr閐ito Cliente:">
 			<notascreditoclientes:Consult id="creditNoteConsult" creditNoteDetail="creditNoteConsult_creditNoteDetailHandler(event)"
 										  readOnly="true"/>
-			<mx:Button id="btnViewCreditNote" label="Ver Nota Cr茅dito Cliente" click="btnViewCreditNote_clickHandler(event)"/>
+			<mx:Button id="btnViewCreditNote" label="Ver Nota Cr閐ito Cliente" click="btnViewCreditNote_clickHandler(event)"/>
 		</mx:FormItem>
 		<mx:FormItem label="Subtotal:">
 			<components:TextInput id="txtSubtotal" textAlign="right" width="100"/>

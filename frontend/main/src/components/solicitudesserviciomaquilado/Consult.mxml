@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
 		 horizontalAlign="right"
@@ -124,7 +124,7 @@
 							   dataField="proyecto.id"
 							   labelFunction="labelFunctionIDProyecto"
 							   width="130"/>
-			<mx:DataGridColumn id="dtgProjectState" headerText="{'ValidaciÃ³n\nProyecto'}"
+			<mx:DataGridColumn id="dtgProjectState" headerText="{'Validación\nProyecto'}"
 							   dataField="proyecto.estado.etiqueta"/>
 			<mx:DataGridColumn id="dtgCategoria" headerText="Categoria"
 							   dataField="proyecto.categoria.etiqueta"
@@ -135,7 +135,7 @@
 			<mx:DataGridColumn id="dtgProjectType" headerText="{'Tipo de\nProyecto'}"
 							   dataField="proyecto.producto.tipoProyecto"
 							   />
-			<mx:DataGridColumn id="dtgTechnology" headerText="TecnologÃ­a"
+			<mx:DataGridColumn id="dtgTechnology" headerText="Tecnología"
 							   dataField="proyecto.producto.teconologia"
 							   />
 			<mx:DataGridColumn id="dtgEquipment" headerText="Equipo"
@@ -147,7 +147,7 @@
 			<mx:DataGridColumn id="dtgModel" headerText="Modelo"
 							   dataField="proyecto.producto.modelo"
 							   />
-			<mx:DataGridColumn id="dtgServiceDescription" headerText="{'DescripciÃ³n\ndel Servicio'}"
+			<mx:DataGridColumn id="dtgServiceDescription" headerText="{'Descripción\ndel Servicio'}"
 							   dataField="proyecto.producto.descripcionServicio"
 							   width="80"/>
 			<mx:DataGridColumn id="dtgServiceType" headerText="{'Tipo de\nServicio'}"

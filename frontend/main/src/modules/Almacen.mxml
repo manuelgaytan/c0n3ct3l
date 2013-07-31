@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
 		   width="1000" height="500" creationComplete="creationCompleteHandler(event)">
 	<mx:Script>
@@ -19,9 +19,9 @@
 			protected function creationCompleteHandler(event:FlexEvent):void
 			{
 				/*
-				stockTypes = new ArrayCollection(['','Herramienta','Equipo de MediciÃ³n',
-					'Equipo de Transporte','Materiales','Consumibles','Hardware','Software','TelefonÃ­a MÃ³vil',
-					'Solicitudes al AlmacÃ©n']);
+				stockTypes = new ArrayCollection(['','Herramienta','Equipo de Medición',
+					'Equipo de Transporte','Materiales','Consumibles','Hardware','Software','Telefonía Móvil',
+					'Solicitudes al Almacén']);
 				*/
 				this.fillCombos();
 			}

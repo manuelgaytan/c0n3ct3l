@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)"
 		 >
@@ -34,7 +34,7 @@
 			
 			private static const ID_ODC_ALMACEN:int = 1;
 			private static const ID_ODC_SERVICIO:int = 2;
-			private static const ODC_ALMACEN:String = "Orden de Compra Ãlmacen";
+			private static const ODC_ALMACEN:String = "Orden de Compra Álmacen";
 			private static const ODC_SERVICIO:String = "Orden de Compra Servicio Maquilado";
 			
 			private static function getDataProviderODC():ArrayCollection{
@@ -403,7 +403,7 @@
 								   width="80"
 								   labelFunction="projectLabelFunction"
 								   textAlign="right"/>
-				<mx:DataGridColumn id="dtgRequisicionID" headerText="{'ID \nRequisiciÃ³n/\nSolicitud'}"
+				<mx:DataGridColumn id="dtgRequisicionID" headerText="{'ID \nRequisición/\nSolicitud'}"
 								   width="90"
 								   labelFunction="requisitionLabelFunction"
 								   textAlign="right"/>
@@ -421,7 +421,7 @@
 		<mx:FormItem label="Proveedor:">
 			<mx:Label id="lblSupplier"/>
 		</mx:FormItem>
-		<mx:FormItem label="NÃºmero de Folio Ã³ Factura:">
+		<mx:FormItem label="Número de Folio ó Factura:">
 			<components:TextInput id="txtFolio" width="150"/>
 		</mx:FormItem>
 		<mx:FormItem label="Fecha:">
@@ -436,10 +436,10 @@
 		<mx:FormItem label="I.E.P.S.:">
 			<mx:Label id="lblIEPS" textAlign="right" width="200"/>
 		</mx:FormItem>
-		<mx:FormItem label="RetenciÃ³n I.S.R.:">
+		<mx:FormItem label="Retención I.S.R.:">
 			<mx:Label id="lblISRRetention" textAlign="right" width="200"/>
 		</mx:FormItem>
-		<mx:FormItem label="RetenciÃ³n I.V.A.:">
+		<mx:FormItem label="Retención I.V.A.:">
 			<mx:Label id="lblIVARetention" textAlign="right" width="200"/>
 		</mx:FormItem>
 		<mx:FormItem label="Otros Impuestos:">

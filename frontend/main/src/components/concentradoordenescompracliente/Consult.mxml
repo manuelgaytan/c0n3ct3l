@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
 		 horizontalAlign="right"
@@ -110,7 +110,7 @@
 							   width="95"
 							   textAlign="center"
 							   labelFunction="{Util.labelFunctionDate}"/>
-			<mx:DataGridColumn id="dtgRequisitionNumber" headerText="{'NÃºmero de\nRequisiciÃ³n'}"
+			<mx:DataGridColumn id="dtgRequisitionNumber" headerText="{'Número de\nRequisición'}"
 							   dataField="numRequisicion"
 							   width="100"
 							   textAlign="right"
@@ -119,7 +119,7 @@
 							   dataField="centralSitio"
 							   width="100"
 							   />
-			<mx:DataGridColumn id="dtgStatus" headerText="{'Local/\nForÃ¡neo'}"
+			<mx:DataGridColumn id="dtgStatus" headerText="{'Local/\nForáneo'}"
 							   dataField="localForaneo"
 							   width="80"
 							   textAlign="center"/>

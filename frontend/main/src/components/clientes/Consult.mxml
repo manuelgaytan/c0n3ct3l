@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
 		 horizontalAlign="right"
@@ -95,7 +95,7 @@
 		<mx:columns>
 			<mx:DataGridColumn id="dtgComercialName" headerText="Nombre Comercial"
 							   dataField="nombreComercial" width="270"/>
-			<mx:DataGridColumn id="dtgLegalName" headerText="RazÃ³n Social"
+			<mx:DataGridColumn id="dtgLegalName" headerText="Razón Social"
 							   dataField="razonSocial" width="270"/>
 			<mx:DataGridColumn id="dtgRFC" headerText="R.F.C."
 							   dataField="rfc" width="120"/>

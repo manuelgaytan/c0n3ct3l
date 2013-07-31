@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
 		 horizontalAlign="right"
@@ -111,12 +111,12 @@
 			<mx:DataGridColumn id="dtgExistence" headerText="Moneda"
 							   dataField="moneda"
 							   width="80"/>
-			<mx:DataGridColumn id="dtgUnit" headerText="{'LÃ­mite de\nCrÃ©dito'}"
+			<mx:DataGridColumn id="dtgUnit" headerText="{'Límite de\nCrédito'}"
 							   dataField="limiteCredito"
 							   textAlign="right"
 							   width="80"
 							   labelFunction="labelFunctionGenerico"/>
-			<mx:DataGridColumn id="dtgStatus" headerText="{'DÃ­as de\nCrÃ©dito'}"
+			<mx:DataGridColumn id="dtgStatus" headerText="{'Días de\nCrédito'}"
 							   dataField="diasCredito"
 							   labelFunction="labelFunctionGenerico"
 							   textAlign="right"

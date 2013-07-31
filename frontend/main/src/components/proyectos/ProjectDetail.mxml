@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*"
 		 label="Detalle">
@@ -113,7 +113,7 @@
 			<components:TextInput id="txtConectelID" width="150" textAlign="right"
 								  editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="CategorÃ­a:">
+		<mx:FormItem label="Categoría:">
 			<components:TextInput id="txtCategory" width="400"
 								  editable="false"/>
 		</mx:FormItem>
@@ -125,7 +125,7 @@
 			<components:TextInput id="txtProjectType" width="300"
 								  editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="TecnologÃ­a:">
+		<mx:FormItem label="Tecnología:">
 			<components:TextInput id="txtTechnology" width="250"
 								  editable="false"/>
 		</mx:FormItem>
@@ -141,7 +141,7 @@
 			<components:TextInput id="txtModel" width="250"
 								  editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="DescripciÃ³n del Servicio:">
+		<mx:FormItem label="Descripción del Servicio:">
 			<components:TextInput id="txtServiceDescription" width="500"
 								  editable="false"/>
 		</mx:FormItem>
@@ -161,7 +161,7 @@
 			<components:TextInput id="txtParentProject" width="450"
 								  editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="AuditorÃ­a:" direction="horizontal">
+		<mx:FormItem label="Auditoría:" direction="horizontal">
 			<components:TextInput id="txtAuditType" width="150"
 								  editable="false"/>
 			<components:TextInput id="txtAuditKey" width="300"

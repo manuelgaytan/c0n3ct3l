@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*"
 		 >
@@ -314,25 +314,25 @@
 		</mx:FormItem>
 		<mx:FormItem label="Proyectos:" direction="horizontal"/>
 		<proyectos:Consult id="projectsConsult" projectSelected="projectsConsult_projectSelectedHandler(event)"/>
-		<mx:FormItem label="Responsable ViÃ¡tico:">
+		<mx:FormItem label="Responsable Viático:">
 			<mx:ComboBox id="cmbResponsibleViaticum" width="300"
 						 labelField="nombreCompleto"
 						 change="cmbResponsibleViaticum_changeHandler(event)"/>
 		</mx:FormItem>
-		<mx:FormItem label="NÃºmero de Tarjeta:">
+		<mx:FormItem label="Número de Tarjeta:">
 			<components:TextInput id="txtCardNumber" editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Correo ElectrÃ³nico:">
+		<mx:FormItem label="Correo Electrónico:">
 			<components:TextInput id="txtMail" editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="TelÃ©fono:">
+		<mx:FormItem label="Teléfono:">
 			<components:TextInput id="txtPhone" editable="false"/>
 		</mx:FormItem>
 		<mx:FormItem label="Medio de Transporte:">
 			<mx:ComboBox id="cmbConveyance" width="200"
 						 labelField="etiqueta"/>
 		</mx:FormItem>
-		<mx:FormItem label="NÃºmero de VehÃ­culo:">
+		<mx:FormItem label="Número de Vehículo:">
 			<components:TextInput id="txtNumberOfVehicle"/>
 		</mx:FormItem>
 		<mx:FormItem label="Kilometraje Inicial:">

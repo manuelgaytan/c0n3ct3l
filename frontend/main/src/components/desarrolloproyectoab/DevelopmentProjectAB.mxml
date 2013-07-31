@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*"
 		 >
@@ -561,7 +561,7 @@
 		<mx:FormItem label="Repisa:">
 			<components:TextInput id="txtLedge" width="200" textAlign="right"/>
 		</mx:FormItem>
-		<mx:FormItem label="Versi贸n/Release:">
+		<mx:FormItem label="Versi髇/Release:">
 			<components:TextInput id="txtVersion" width="400"/>
 		</mx:FormItem>
 		<mx:FormItem label="Controladora:">
@@ -612,7 +612,7 @@
 		<mx:FormItem label="Aterrizaje:">
 			<components:TextInput id="txtLanding" width="400"/>
 		</mx:FormItem>
-		<mx:FormItem label="Alimentaci贸n:">
+		<mx:FormItem label="Alimentaci髇:">
 			<components:TextInput id="txtFeeding" width="400"/>
 		</mx:FormItem>
 		<mx:FormItem label="Pares de FO Instalados:">
@@ -621,7 +621,7 @@
 		<mx:FormItem label="Cableado RCDT:">
 			<components:TextInput id="txtRCDTWiring" width="400"/>
 		</mx:FormItem>
-		<mx:FormItem label="R贸tulo/Etiquetado:">
+		<mx:FormItem label="R髏ulo/Etiquetado:">
 			<components:TextInput id="txtLabeled" width="400"/>
 		</mx:FormItem>
 		<mx:FormItem label="Soportes:">
@@ -644,7 +644,7 @@
 			<mx:ComboBox id="cmbLanding" width="250"
 						 labelField="etiqueta"/>
 		</mx:FormItem>
-		<mx:FormItem label="Alimentaci贸n:">
+		<mx:FormItem label="Alimentaci髇:">
 			<mx:ComboBox id="cmbFeeding" width="250"
 						 labelField="etiqueta"/>
 		</mx:FormItem>
@@ -657,7 +657,7 @@
 						 labelField="etiqueta"/>
 		</mx:FormItem>
 		<components:Observations id="observations" fase="{Estado.createEstado(Estado.ID_DESARROLLO_PROYECTO_A_Y_B, Estado.DESARROLLO_PROYECTO_A_Y_B)}"/>
-		<mx:FormItem label="Tipo de Auditor铆a:">
+		<mx:FormItem label="Tipo de Auditor韆:">
 			<mx:ComboBox id="cmbAuditType" width="150"
 						 labelField="tipo"
 						 />

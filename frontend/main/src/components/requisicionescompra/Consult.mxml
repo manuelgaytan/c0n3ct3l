@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
 		 horizontalAlign="right"
@@ -114,7 +114,7 @@
 							   dataField="prioridad.etiqueta"
 							   width="80"
 							   textAlign="center"/>
-			<mx:DataGridColumn id="dtgApplicationArea" headerText="{'Ãrea \nSolicitante'}"
+			<mx:DataGridColumn id="dtgApplicationArea" headerText="{'Área \nSolicitante'}"
 							   dataField="areaSolicitante.etiqueta"
 							   width="100"
 							   />

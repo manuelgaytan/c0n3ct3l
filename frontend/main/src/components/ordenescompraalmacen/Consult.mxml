@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
 		 horizontalAlign="right"
@@ -139,12 +139,12 @@
 							   dataField="proyecto.id"
 							   labelFunction="labelFunctionGenerico"
 							   textAlign="right"/>
-			<mx:DataGridColumn id="dtgRequisicionID" headerText="{'ID \nRequisiciÃ³n'}"
+			<mx:DataGridColumn id="dtgRequisicionID" headerText="{'ID \nRequisición'}"
 							   width="90"
 							   dataField="requisicionCompra.id"
 							   labelFunction="labelFunctionGenerico"
 							   textAlign="right"/>
-			<mx:DataGridColumn id="dtgQuotationID" headerText="{'ID \nCotizaciÃ³n'}"
+			<mx:DataGridColumn id="dtgQuotationID" headerText="{'ID \nCotización'}"
 							   width="80"
 							   dataField="cotizacion.id"
 							   labelFunction="labelFunctionGenerico"

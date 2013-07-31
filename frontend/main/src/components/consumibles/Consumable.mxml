@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)"
 		 >
@@ -289,7 +289,7 @@
 		[Event(name="consumableUpdated", type="flash.events.Event")]
 	</mx:Metadata>
 	<mx:Form id="form">
-		<mx:FormItem label="CÃ³digo:">
+		<mx:FormItem label="Código:">
 			<components:TextInput id="txtCode"/>
 		</mx:FormItem>
 		<mx:FormItem label="Grupo o Familia:">
@@ -297,7 +297,7 @@
 						 labelField="etiqueta"
 						 />
 		</mx:FormItem>
-		<mx:FormItem label="DescripciÃ³n:">
+		<mx:FormItem label="Descripción:">
 			<components:TextInput id="txtDescription" width="400"/>
 		</mx:FormItem>
 		<mx:FormItem label="Existencia:">
@@ -309,7 +309,7 @@
 						 labelField="etiqueta"
 						 />
 		</mx:FormItem>
-		<mx:FormItem label="UbicaciÃ³n:">
+		<mx:FormItem label="Ubicación:">
 			<mx:ComboBox id="cmbLocation"
 						 labelField="etiqueta"
 						 />

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*"
 		 >
@@ -503,7 +503,7 @@
 		-->
 		<mx:FormHeading label="Proyectos"/>
 		<proyectos:Consult id="projectsConsult" projectSelected="projectsConsult_projectSelectedHandler(event)"/>
-		<mx:FormItem label="Divis贸n o Regi贸n:">
+		<mx:FormItem label="Divis髇 o Regi髇:">
 			<components:TextInput id="txtDivision" width="200"/>
 		</mx:FormItem>
 		<mx:FormItem label="Area/GOA:">
@@ -533,7 +533,7 @@
 		<mx:FormItem label="Semana:">
 			<components:TextInput id="txtWeek" width="300"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha Asignaci贸n Cliente:">
+		<mx:FormItem label="Fecha Asignaci髇 Cliente:">
 			<components:DateField id="dtfAsignDateClient"/>
 		</mx:FormItem>
 		<mx:FormItem label="Fecha Inicio Programada:">
@@ -546,7 +546,7 @@
 			<mx:ComboBox id="cmbConectelResponsable" width="400"
 						 labelField="nombreCompleto"/>
 		</mx:FormItem>
-		<mx:FormItem label="Responsable Implementaci贸n:"
+		<mx:FormItem label="Responsable Implementaci髇:"
 					 direction="horizontal">
 			<mx:ComboBox id="cmbColaboratorType" width="200"
 						 labelField="tipo"
@@ -570,20 +570,20 @@
 			<mx:ComboBox id="cmbVehicle" width="300"
 						 labelField="etiqueta"/>
 		</mx:FormItem>
-		<mx:FormItem label="Vi谩ticos:">
+		<mx:FormItem label="Vi醫icos:">
 			<mx:ComboBox id="cmbPerDiem" width="300"
 						 labelField="etiqueta"/>
 		</mx:FormItem>
 		<mx:FormItem label="Fecha Inicio Real:">
 			<components:DateField id="dtfStartDateReal"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha T茅rmino Real:">
+		<mx:FormItem label="Fecha T閞mino Real:">
 			<components:DateField id="dtfEndDateReal"/>
 		</mx:FormItem>
 		<mx:FormItem label="Site Survey:">
 			<components:TextInput id="txtSite" width="350"/>
 		</mx:FormItem>
-		<mx:FormItem label="Entregable Ingenier铆a:">
+		<mx:FormItem label="Entregable Ingenier韆:">
 			<components:Deliver id="dlvEngineeringDeliverable" deliveryType="{TipoEntregable.ENTREGABLE_INGENIERIA}"/>
 		</mx:FormItem>
 		<components:Observations id="observations" fase="{Estado.createEstado(Estado.ID_DATOS_GENERALES, Estado.DATOS_GENERALES)}"/>

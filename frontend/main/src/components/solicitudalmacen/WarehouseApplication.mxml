@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)" xmlns:solicitudalmacen="components.solicitudalmacen.*"
 		 width="100%"
@@ -525,7 +525,7 @@
 			protected function btnBought_clickHandler(event:MouseEvent):void
 			{
 				if( this.mode == Constants.UPDATE_MODE ){
-					Alert.show("Confirme si desea enviar notificaci贸n de Comprado.","Advertencia",Alert.YES+Alert.NO,this, boughtNotification);
+					Alert.show("Confirme si desea enviar notificaci髇 de Comprado.","Advertencia",Alert.YES+Alert.NO,this, boughtNotification);
 				}
 			}
 			
@@ -554,7 +554,7 @@
 			
 			protected function responseSaveNotificacion_resultHandler(event:ResultEvent):void
 			{
-				Util.showInfoMessage("Se ha notificado al 谩rea de 脕lmacen." );
+				Util.showInfoMessage("Se ha notificado al 醨ea de 羖macen." );
 			}
 			
 		]]>
@@ -578,7 +578,7 @@
 						 labelField="etiqueta"
 						 />
 		</mx:FormItem>
-		<mx:FormItem label="脕rea Solicitante:">
+		<mx:FormItem label="羠ea Solicitante:">
 			<mx:ComboBox id="cmbApplicantArea"
 						 labelField="etiqueta"
 						 />
@@ -601,13 +601,13 @@
 					 doubleClickEnabled="true"
 					 doubleClick="dtgProducts_doubleClickHandler(event)">
 			<mx:columns>
-				<mx:DataGridColumn id="dtgCode" headerText="C贸digo"
+				<mx:DataGridColumn id="dtgCode" headerText="C骴igo"
 								   dataField="codigo"
 								   width="80"/>
 				<mx:DataGridColumn id="dtgFamily" headerText="{'Grupo o\nFamilia'}"
 								   width="100"
 								   labelFunction="labelFunctionGrupoFamilia"/>
-				<mx:DataGridColumn id="dtgDescription" headerText="Descripci贸n"
+				<mx:DataGridColumn id="dtgDescription" headerText="Descripci髇"
 								   dataField="descripcion"
 								   width="160"/>
 				<mx:DataGridColumn id="dtgExistence" headerText="Existencia"
@@ -620,7 +620,7 @@
 								   labelFunction="labelFunctionUnidad"/>
 			</mx:columns>
 		</mx:DataGrid>
-		<mx:FormItem label="Tipo Almac茅n:">
+		<mx:FormItem label="Tipo Almac閚:">
 			<mx:ComboBox id="cmbStockType"
 						 labelField="etiqueta"/>
 		</mx:FormItem>
@@ -630,7 +630,7 @@
 								  width="70"
 								  textAlign="right"/>
 		</mx:FormItem>
-		<mx:FormItem label="C贸digo:">
+		<mx:FormItem label="C骴igo:">
 			<components:TextInput id="txtCode"
 								  editable="false"/>
 		</mx:FormItem>
@@ -639,7 +639,7 @@
 								  editable="false"
 								  />
 		</mx:FormItem>
-		<mx:FormItem label="Descripci贸n:">
+		<mx:FormItem label="Descripci髇:">
 			<components:TextInput id="txtDescription"
 								  width="400"
 								  editable="false"/>
@@ -655,10 +655,10 @@
 								  width="200"
 								  editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Regreso al Almac茅n:">
+		<mx:FormItem label="Regreso al Almac閚:">
 			<mx:CheckBox id="chkStockReturn"/>
 		</mx:FormItem>
-		<mx:FormItem label="Observaci贸n:">
+		<mx:FormItem label="Observaci髇:">
 			<components:TextInput id="txtObservation"
 								  width="400"
 								  />
@@ -679,7 +679,7 @@
 						 labelField="nombreCompleto"
 						 />
 		</mx:FormItem>
-		<mx:FormItem label="Coordinador de 脕rea:" id="frmAreaCordinator">
+		<mx:FormItem label="Coordinador de 羠ea:" id="frmAreaCordinator">
 			<mx:ComboBox id="cmbAreaCordinator"
 						 labelField="nombreCompleto"
 						 />

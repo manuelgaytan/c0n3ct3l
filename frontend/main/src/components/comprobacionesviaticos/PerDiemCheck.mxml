@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*" 
 		 xmlns:solicitudesviaticos="components.solicitudesviaticos.*"
@@ -276,7 +276,7 @@
 			
 			protected function descargarFormato_clickHandler(event:MouseEvent):void
 			{
-				Util.showErrorMessage("En construcciÃ³n... (falta el formato)");
+				Util.showErrorMessage("En construcción... (falta el formato)");
 			}
 			
 			protected function diemRequest_itemDetailHandler(event:GenericEvent):void
@@ -303,7 +303,7 @@
 			<components:TextInput id="txtID" width="80" textAlign="right"
 								  editable="false"/>
 		</mx:FormItem>
-		<mx:FormHeading label="Solicitud de ViÃ¡ticos"/>
+		<mx:FormHeading label="Solicitud de Viáticos"/>
 		<solicitudesviaticos:Consult id="diemRequest" readMode="true"
 									 itemDetail="diemRequest_itemDetailHandler(event)"/>
 		<mx:FormItem label="Fecha:">
@@ -312,22 +312,22 @@
 		<mx:FormItem label="Proyectos:" direction="horizontal"/>
 		<proyectos:Consult id="projectsConsult"
 						   height="68"/>
-		<mx:FormItem label="Responsable ViÃ¡tico:">
+		<mx:FormItem label="Responsable Viático:">
 			<components:TextInput id="txtResponsibleViaticum" width="300" editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="NÃºmero de Tarjeta:">
+		<mx:FormItem label="Número de Tarjeta:">
 			<components:TextInput id="txtCardNumber" editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Correo ElectrÃ³nico:">
+		<mx:FormItem label="Correo Electrónico:">
 			<components:TextInput id="txtMail" editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="TelÃ©fono:">
+		<mx:FormItem label="Teléfono:">
 			<components:TextInput id="txtPhone" editable="false"/>
 		</mx:FormItem>
 		<mx:FormItem label="Medio de Transporte:">
 			<components:TextInput id="txtConveyance" width="200" editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="NÃºmero de VehÃ­culo:">
+		<mx:FormItem label="Número de Vehículo:">
 			<components:TextInput id="txtNumberOfVehicle" editable="false"/>
 		</mx:FormItem>
 		<mx:FormItem label="Combustible:">
@@ -354,7 +354,7 @@
 		<mx:FormItem label="Total Solicitado:">
 			<components:TextInput id="txtTotalRequested" textAlign="right" width="170" editable="false"/>
 		</mx:FormItem>
-		<mx:FormHeading label="Datos ComprobaciÃ³n ViÃ¡ticos"/>
+		<mx:FormHeading label="Datos Comprobación Viáticos"/>
 		<mx:FormItem label="Total Autorizado:">
 			<components:TextInput id="txtTotalAuthorized" textAlign="right" width="170"/>
 		</mx:FormItem>

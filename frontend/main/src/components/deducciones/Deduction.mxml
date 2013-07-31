@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*" xmlns:notascreditoclientes="components.notascreditoclientes.*" xmlns:informacionfacturas="components.informacionfacturas.*" xmlns:notascreditoproveedores="components.notascreditoproveedores.*" xmlns:facturacionproveedores="components.facturacionproveedores.*" xmlns:comprobacionesviaticos="components.comprobacionesviaticos.*" xmlns:seleccion="components.seleccion.*"
 		 initialize="initializeHandler(event)" xmlns:reclutamientosolicitudempleo="components.reclutamientosolicitudempleo.*" xmlns:registroDeduccion="components.registroDeduccion.*" xmlns:contratacion="components.contratacion.*"
@@ -328,9 +328,9 @@
 			<components:TextInput id="txtID" width="80" textAlign="right"
 								  editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Contrataci贸n:"/>
+		<mx:FormItem label="Contrataci髇:"/>
 		<contratacion:Consult id="recruitmentConsult" readMode="true"/>
-		<mx:FormItem label="Deducci贸n:">
+		<mx:FormItem label="Deducci髇:">
 			<mx:ComboBox id="cmbDeduction" width="200"
 						 labelField="deduccion"/>
 		</mx:FormItem>
@@ -343,21 +343,21 @@
 		<mx:FormItem label="Faltas:">
 			<components:TextInput id="txtFaults" width="100" textAlign="right"/>
 		</mx:FormItem>
-		<mx:FormItem label="Clasificaci贸n Faltas:">
+		<mx:FormItem label="Clasificaci髇 Faltas:">
 			<mx:ComboBox id="cmbFaultClass" width="200"
 						 labelField="tipo"/>
 		</mx:FormItem>
 		<mx:FormItem label="Fecha de Faltas:">
 			<components:DateField id="dtfFaultsDate"/>
 		</mx:FormItem>
-		<mx:FormItem label="Clasificaci贸n de Permisos:">
+		<mx:FormItem label="Clasificaci髇 de Permisos:">
 			<mx:ComboBox id="cmbAllowsClass" width="200"
 						 labelField="tipo"/>
 		</mx:FormItem>
 		<mx:FormItem label="Fecha de Permisos:">
 			<components:DateField id="dtfAllowsDate"/>
 		</mx:FormItem>
-		<mx:FormItem label="Tipo de Sanci贸n:">
+		<mx:FormItem label="Tipo de Sanci髇:">
 			<mx:ComboBox id="cmbSantionClass" width="200"
 						 labelField="tipo"/>
 		</mx:FormItem>

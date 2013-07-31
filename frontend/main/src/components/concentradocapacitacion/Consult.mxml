@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
 		 creationComplete="creationCompleteHandler(event)">
@@ -131,17 +131,17 @@
 				<mx:DataGridColumn id="dtgColaboratorName" headerText="{'Nombre Colaborador'}"
 								   labelFunction="labelFunctionNombre"
 								   width="120"/>
-				<mx:DataGridColumn id="dtgFormationType" headerText="{'Tipo\nInformaci贸n'}"
+				<mx:DataGridColumn id="dtgFormationType" headerText="{'Tipo\nInformaci髇'}"
 								   dataField="tipoFormacion.tipo"
 								   width="100"/>
-				<mx:DataGridColumn id="dtgTrainingType" headerText="{'Tipo\nCapacitaci贸n'}"
+				<mx:DataGridColumn id="dtgTrainingType" headerText="{'Tipo\nCapacitaci髇'}"
 								   dataField="tipoCapacitacion.tipo"
 								   width="100"/>
-				<mx:DataGridColumn id="dtgTrainingName" headerText="{'Nombre\nCapacitaci贸n'}"
+				<mx:DataGridColumn id="dtgTrainingName" headerText="{'Nombre\nCapacitaci髇'}"
 								   dataField="nombreCapacitacion"
 								   width="110"
 								   />
-				<mx:DataGridColumn id="dtgTrainingGrade" headerText="{'Calificaci贸n de\nCapacitaci贸n/\nEvaluaci贸n'}"
+				<mx:DataGridColumn id="dtgTrainingGrade" headerText="{'Calificaci髇 de\nCapacitaci髇/\nEvaluaci髇'}"
 								   dataField="calificacion"
 								   textAlign="right"
 								   width="100"

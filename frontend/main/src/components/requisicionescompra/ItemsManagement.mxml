@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:DataGrid xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="250"
 			 dataProvider="{new ArrayCollection()}"
 			 editable="{this._purchaseOrderMode}"
@@ -135,7 +135,7 @@
 						   dataField="partida"
 						   width="60"
 						   textAlign="center"/>-->
-		<mx:DataGridColumn id="dtgCode" headerText="CÃ³digo"
+		<mx:DataGridColumn id="dtgCode" headerText="Código"
 						   dataField="codigo"
 						   width="100"
 						   editable="false"/>
@@ -143,7 +143,7 @@
 						   dataField="grupoFamilia"
 						   width="100"
 						   editable="false"/>
-		<mx:DataGridColumn id="dtgDescription" headerText="DescripciÃ³n"
+		<mx:DataGridColumn id="dtgDescription" headerText="Descripción"
 						   dataField="descripcion" wordWrap="true"
 						   width="160"
 						   editable="false"/>
@@ -157,7 +157,7 @@
 						   width="60"
 						   textAlign="right"
 						   editable="false"/>
-		<mx:DataGridColumn id="dtgValidation" headerText="ValidaciÃ³n"
+		<mx:DataGridColumn id="dtgValidation" headerText="Validación"
 						   dataField="validacion"
 						   width="120"
 						   visible="{!this._purchaseOrderMode}"

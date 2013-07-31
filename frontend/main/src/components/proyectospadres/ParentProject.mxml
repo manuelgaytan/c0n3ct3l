@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*"
 		 >
@@ -183,10 +183,10 @@
 								  textAlign="right"
 								  editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="DescripciÃ³n:">
+		<mx:FormItem label="Descripción:">
 			<components:TextInput id="txtDescription" width="400"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha CreaciÃ³n:" id="frmCreationDate">
+		<mx:FormItem label="Fecha Creación:" id="frmCreationDate">
 			<components:TextInput id="txtCreationDate" width="80" editable="false"/>
 		</mx:FormItem>
 		<mx:FormItem label="Proyectos Asociados:" id="frmProjectsAssociated">

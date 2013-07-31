@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)">
 	<mx:Script>
@@ -231,7 +231,7 @@
 		<mx:FormItem label="Nombre Comercial:">
 			<components:TextInput id="txtComercialName" width="500"/>
 		</mx:FormItem>
-		<mx:FormItem label="RazÃ³n Social:">
+		<mx:FormItem label="Razón Social:">
 			<components:TextInput id="txtLegalName" width="500"/>
 		</mx:FormItem>
 		<mx:FormItem label="R.F.C.:">
@@ -244,13 +244,13 @@
 		<mx:FormItem label="Nombre Completo:">
 			<components:TextInput id="txtWholeName" width="400"/>
 		</mx:FormItem>
-		<mx:FormItem label="Correo ElectrÃ³nico:">
+		<mx:FormItem label="Correo Electrónico:">
 			<components:TextInput id="txtEmail" width="300" upperCase="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="TelÃ©fono:">
+		<mx:FormItem label="Teléfono:">
 			<components:TextInput id="txtPhone" width="120"/>
 		</mx:FormItem>
-		<mx:FormItem label="PÃ¡gina Web:">
+		<mx:FormItem label="Página Web:">
 			<components:TextInput id="txtWebPage" width="300" upperCase="false"/>
 		</mx:FormItem>
 		<mx:FormItem label="Localidad:">

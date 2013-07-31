@@ -96,41 +96,42 @@
 				if( this._item == null ){
 					return;
 				}
-				this.txtID.text = this._item.id;
+				this.txtID.text = Util.extractToText(this._item,"id");
 				this.validacionesAdministrativas.datagrid.dataProvider = Util.asArrayCollection( this._item.validacionAdministrativa );
-				this.txtFolio1.text = this._item.folioFactura1;
-				this.txtSubtotal1.text = this._item.subtotal1.toString();
-				this.txtIVA1.text = this._item.iva1.toString();
-				this.txtTotal1.text = this._item.total1.toString();
-				this.dtfIssued1.selectedDate = this._item.fechaEmision1;
-				this.dtfAdmissionDate1.selectedDate = this._item.fechaIngreso1;
-				this.txtCreditDays1.text = this._item.diasCredito1.toString();
-				this.dtfScheduled1.selectedDate = this._item.fechaProgramada1;
-				this.txtPaymentState1.text = this._item.estadoPago1;
+				this.validacionesAdministrativas.datagrid.selectedIndex = 0;
+				this.txtFolio1.text = Util.extractToText(this._item,"folioFactura1");
+				this.txtSubtotal1.text = Util.extractToText(this._item,"subtotal1");
+				this.txtIVA1.text = Util.extractToText(this._item,"iva1");
+				this.txtTotal1.text = Util.extractToText(this._item,"total1");
+				this.dtfIssued1.selectedDate = Util.extractObject(this._item,"fechaEmision1") as Date;
+				this.dtfAdmissionDate1.selectedDate = Util.extractObject(this._item,"fechaIngreso1") as Date;
+				this.txtCreditDays1.text = Util.extractToText(this._item,"diasCredito1");
+				this.dtfScheduled1.selectedDate = Util.extractObject(this._item,"fechaProgramada1") as Date;
+				this.txtPaymentState1.text = Util.extractToText(this._item,"estadoPago1");
 				this.comments1.setCommentsIn( this._item.comentariosInformacionFacturacion1, "comentarioCuentasPagarFacturacion");
-				this.txtFolio2.text = this._item.folioFactura2;
-				this.txtSubtotal2.text = this._item.subtotal2.toString();
-				this.txtIVA2.text = this._item.iva2.toString();
-				this.txtTotal2.text = this._item.total2.toString();
-				this.dtfIssued2.selectedDate = this._item.fechaEmision2;
-				this.dtfAdmissionDate2.selectedDate = this._item.fechaIngreso2;
-				this.txtCreditDays2.text = this._item.diasCredito2.toString();
-				this.dtfScheduled2.selectedDate = this._item.fechaProgramada2;
-				this.txtPaymentState2.text = this._item.estadoPago2;
+				this.txtFolio2.text = Util.extractToText(this._item,"folioFactura2");
+				this.txtSubtotal2.text = Util.extractToText(this._item,"subtotal2");
+				this.txtIVA2.text = Util.extractToText(this._item,"iva2");
+				this.txtTotal2.text = Util.extractToText(this._item,"total2");
+				this.dtfIssued2.selectedDate = Util.extractObject(this._item,"fechaEmision2") as Date;
+				this.dtfAdmissionDate2.selectedDate = Util.extractObject(this._item,"fechaIngreso2") as Date;
+				this.txtCreditDays2.text = Util.extractToText(this._item,"diasCredito2");
+				this.dtfScheduled2.selectedDate = Util.extractObject(this._item,"fechaProgramada2") as Date;
+				this.txtPaymentState2.text = Util.extractToText(this._item,"estadoPago2");
 				this.comments2.setCommentsIn( this._item.comentariosInformacionFacturacion2, "comentarioCuentasPagarFacturacion");
-				this.txtFolio3.text = this._item.folioFactura3;
-				this.txtSubtotal3.text = this._item.subtotal3.toString();
-				this.txtIVA3.text = this._item.iva3.toString();
-				this.txtTotal3.text = this._item.total3.toString();
-				this.dtfIssued3.selectedDate = this._item.fechaEmision3;
-				this.dtfAdmissionDate3.selectedDate = this._item.fechaIngreso3;
-				this.txtCreditDays3.text = this._item.diasCredito3.toString();
-				this.dtfScheduled3.selectedDate = this._item.fechaProgramada3;
-				this.txtPaymentState3.text = this._item.estadoPago3;
+				this.txtFolio3.text = Util.extractToText(this._item,"folioFactura3");
+				this.txtSubtotal3.text = Util.extractToText(this._item,"subtotal3");
+				this.txtIVA3.text = Util.extractToText(this._item,"iva3");
+				this.txtTotal3.text = Util.extractToText(this._item,"total3");
+				this.dtfIssued3.selectedDate = Util.extractObject(this._item,"fechaEmision3") as Date;
+				this.dtfAdmissionDate3.selectedDate = Util.extractObject(this._item,"fechaIngreso3") as Date;
+				this.txtCreditDays3.text = Util.extractToText(this._item,"diasCredito3");
+				this.dtfScheduled3.selectedDate = Util.extractObject(this._item,"fechaProgramada3") as Date;
+				this.txtPaymentState3.text = Util.extractToText(this._item,"estadoPago3");
 				this.comments3.setCommentsIn( this._item.comentariosInformacionFacturacion3, "comentarioCuentasPagarFacturacion");
-				this.txtInvoiceState.text = this._item.estadoFactura;
-				this.dtfInvoiceStateDate.selectedDate = this._item.fechaEstadoFactura;
-				this.txtAccountability.text = this._item.imputabilidad;
+				this.txtInvoiceState.text = Util.extractToText(this._item,"estadoFactura");
+				this.dtfInvoiceStateDate.selectedDate = Util.extractObject(this._item,"fechaEstadoFactura") as Date;
+				this.txtAccountability.text = Util.extractToText(this._item,"imputabilidad");
 			}
 			
 			private function getConcentratedCustomerPurchaseOrders():InformacionFacturacion{
@@ -173,7 +174,7 @@
 				item.comentariosInformacionFacturacion3 = this.comments3.getCommentsAsInWith("model.ComentarioCuentasPagarFacturacion","model.ComentarioInformacionFacturacion3","comentarioCuentasPagarFacturacion");
 				item.estadoFactura = Util.validateEmpty( this.txtInvoiceState.text );
 				item.fechaEstadoFactura = this.dtfInvoiceStateDate.selectedDate;
-				item.imputabilidad = Util.stringToNumber(this.txtAccountability.text);
+				item.imputabilidad = Util.validateEmpty(this.txtAccountability.text);
 				return item;
 			}
 			
@@ -214,7 +215,9 @@
 			private function validations():Boolean
 			{
 				var value:Boolean = true;
+				value &&= this.validacionesAdministrativas.datagrid.selectedItem != null;
 				value &&= this.validators.validarFormulario();
+				value &&= this.dtfInvoiceStateDate.selectedDate != null;
 				return value;
 			}
 			
@@ -238,6 +241,8 @@
 				validators.setRestrictor(txtFolio1, "generic");
 				validators.setRestrictor(txtFolio2, "generic");
 				validators.setRestrictor(txtFolio3, "generic");
+				validators.setRestrictor(txtInvoiceState, "generic");
+				validators.setRestrictor(txtAccountability, "generic");
 				validators.crearValidadorRestrictor("genericDecimal",ValidadorDecimal.nombre, 9, 2);
 				validators.setRestrictor(txtSubtotal1, "genericDecimal");
 				validators.setRestrictor(txtSubtotal2, "genericDecimal");
@@ -262,6 +267,7 @@
 			
 			private function cleanForm():void
 			{
+				Util.upScroll( this );
 				this.txtID.reset();
 				this.validacionesAdministrativas.datagrid.selectedItem = null;
 				this.txtFolio1.reset();

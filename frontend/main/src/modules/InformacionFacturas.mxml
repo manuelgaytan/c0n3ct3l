@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
-		   width="690" height="500"
+		   width="880" height="500"
 		   xmlns:informacionfacturas="components.informacionfacturas.*"
 		   creationComplete="creationCompleteHandler(event)">
 	<mx:Script>

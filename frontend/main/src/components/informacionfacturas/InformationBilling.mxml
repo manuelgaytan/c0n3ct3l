@@ -13,6 +13,8 @@
 			import components.solicitudalmacen.Consult;
 			import components.telefoniamovil.Consult;
 			
+			import events.GenericEvent;
+			
 			import model.AreaSolicitante;
 			import model.Catalogo;
 			import model.Cliente;
@@ -303,6 +305,12 @@
 				this.dispatchEvent( eventinformationBillingUpdated );
 				this.cleanForm();
 			}
+			
+			protected function validacionesAdministrativas_doubleClickHandler(event:GenericEvent):void
+			{
+				
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -315,7 +323,8 @@
 								  textAlign="right"/>
 		</mx:FormItem>
 		<mx:FormItem label="Validación Administrativa:"/>
-		<validacionesadministrativas:Consult id="validacionesAdministrativas"/>
+		<validacionesadministrativas:Consult id="validacionesAdministrativas" readMode="true"
+											 validationAdministrativeDetail="validacionesAdministrativas_doubleClickHandler(event)"/>
 		<mx:FormHeading label="Información Factura 1"/>
 		<mx:FormItem label="Folio Factura 1:">
 			<components:TextInput id="txtFolio1"

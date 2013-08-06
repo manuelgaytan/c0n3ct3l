@@ -11,6 +11,7 @@
 			import model.Colaborador;
 			import model.ComprobacionViaticos;
 			import model.Constants;
+			import model.DocumentoComprobacionViaticos;
 			import model.Estado;
 			import model.EstadoComprobacionViaticos;
 			import model.EstadoOrdenCompra;
@@ -90,10 +91,11 @@
 				}
 				this.txtID.text = this._item.id.toString();
 				this.diemRequest.datagrid.dataProvider = Util.asArrayCollection( this._item.solicitudViaticos );
+				this.diemRequest.datagrid.selectedIndex = 0;
 				this.setDiemRequest( this._item.solicitudViaticos );
 				this.txtTotalAuthorized.text = this._item.totalAutorizado.toString();
 				this.fltDlvUpFormat.delivers = Util.asArrayCollection( this._item.documentoFormato );
-				this.fltDlvUpDocuments.delivers = this._item.documentosComprobacionViaticos;
+				this.fltDlvUpDocuments.delivers = this.convertDocumentToList( this._item.documentosComprobacionViaticos );
 				this.dtfDateUploadedDocuments.selectedDate = this._item.fechaSubidaDocumentos;
 				if( Util.isFill( this.cmbStatus ) && this._item.estadoComprobacionViaticos != null ){
 					this.cmbStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbStatus.dataProvider as ArrayCollection, 
@@ -101,8 +103,41 @@
 				}
 			}
 			
+			private function convertListToDocuments(documentos:ArrayCollection):ArrayCollection
+			{
+				if( documentos == null ||
+					documentos.length == 0 ){
+					return null;
+				}
+				var documentsConverted:ArrayCollection = new ArrayCollection();
+				var document:DocumentoComprobacionViaticos;
+				for each (var documento:String in documentos) 
+				{
+					document = new DocumentoComprobacionViaticos();
+					document.documento = documento;
+					documentsConverted.addItem( document );
+				}				
+				return documentsConverted;
+			}
+			
+			private function convertDocumentToList(documentos:ArrayCollection):ArrayCollection
+			{
+				if( documentos == null ||
+					documentos.length == 0 ){
+					return null;
+				}
+				var documentsConverted:ArrayCollection = new ArrayCollection();
+				var document:String;
+				for each (var documento:DocumentoComprobacionViaticos in documentos) 
+				{
+					document = documento.documento;
+					documentsConverted.addItem( document );
+				}				
+				return documentsConverted;
+			}
+			
 			private function setDiemRequest(diemRequest:SolicitudViaticos):void{
-				this.txtDate.text = Util.formatDateTimeToString( diemRequest.fecha );
+				this.txtDate.text = Util.formatDateToString( diemRequest.fecha );
 				this.projectsConsult.datagrid.dataProvider = Util.asArrayCollection( diemRequest.proyecto );
 				this.txtResponsibleViaticum.text = diemRequest.colaborador.nombreCompleto;
 				this.setResponsibleData( diemRequest.colaborador );
@@ -129,7 +164,7 @@
 				perDiemCheck.solicitudViaticos = this.diemRequest.datagrid.selectedItem as SolicitudViaticos;
 				perDiemCheck.totalAutorizado = Util.stringToNumber( this.txtTotalAuthorized.text );
 				perDiemCheck.documentoFormato = this.fltDlvUpFormat.firstDeliver.toString();
-				perDiemCheck.documentosComprobacionViaticos = this.fltDlvUpDocuments.delivers;
+				perDiemCheck.documentosComprobacionViaticos = this.convertListToDocuments( this.fltDlvUpDocuments.delivers );
 				perDiemCheck.fechaSubidaDocumentos = this.dtfDateUploadedDocuments.selectedDate;
 				perDiemCheck.estadoComprobacionViaticos = Util.validateCombo( this.cmbStatus ) as EstadoComprobacionViaticos;
 				return perDiemCheck;
@@ -307,7 +342,7 @@
 		<solicitudesviaticos:Consult id="diemRequest" readMode="true"
 									 itemDetail="diemRequest_itemDetailHandler(event)"/>
 		<mx:FormItem label="Fecha:">
-			<components:TextInput id="txtDate" editable="false"/>
+			<components:TextInput id="txtDate" editable="false" width="85"/>
 		</mx:FormItem>
 		<mx:FormItem label="Proyectos:" direction="horizontal"/>
 		<proyectos:Consult id="projectsConsult"
@@ -359,7 +394,7 @@
 			<components:TextInput id="txtTotalAuthorized" textAlign="right" width="170"/>
 		</mx:FormItem>
 		<mx:FormItem label="Subir Formato:" direction="horizontal">
-			<components:FlatDeliver id="fltDlvUpFormat"/>
+			<components:FlatDeliver id="fltDlvUpFormat" limitedTo="1"/>
 			<mx:LinkButton id="descargarFormato" label="Descargar Formato" click="descargarFormato_clickHandler(event)"/>
 		</mx:FormItem>
 		<mx:FormItem label="Subir Archivos de Comprobacion:">

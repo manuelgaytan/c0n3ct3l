@@ -9,6 +9,7 @@
 			import model.Catalogo;
 			import model.Colaborador;
 			import model.Constants;
+			import model.Contratacion;
 			import model.Estado;
 			import model.EstadoOrdenCompra;
 			import model.EstadoValidacionCosto;
@@ -255,8 +256,8 @@
 					&& this._item.colaborador != null ){
 					this.cmbResponsibleViaticum.selectedIndex = Util.selectedIndexFromCombo( this.cmbResponsibleViaticum.dataProvider as ArrayCollection, 
 						this._item.colaborador.id);
-					this.cmbResponsibleViaticum.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
 				}
+				this.cmbResponsibleViaticum.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
 			}
 			
 			private function executeProjectQuery():void
@@ -290,11 +291,28 @@
 			
 			protected function cmbResponsibleViaticum_changeHandler(event:ListEvent):void
 			{
-				// TODO Llenar los campos: Numero de Tarjeta, Telefono y Correo Electronico
 				var colaborator:Colaborador = Util.validateCombo( this.cmbResponsibleViaticum ) as Colaborador;
-				this.txtCardNumber.text = colaborator.numeroTarjeta;
-				this.txtMail.text = colaborator.correoElectronico;
-				this.txtPhone.text = colaborator.telefono;
+				if( colaborator == null ){
+					return;
+				}
+				this.contratacionService.getContratacionByIdColaborador( colaborator.id );
+			}
+			
+			private function responseGetContratacionByIdColaborador_resultHandler(event:ResultEvent):void{
+				if( event == null ){
+					return;
+				}
+				var contrataciones:ArrayCollection = event.result as ArrayCollection;
+				if( contrataciones == null || 
+					contrataciones.length == 0 ||
+					contrataciones.getItemAt(0) == null || 
+					!(contrataciones.getItemAt(0) is Contratacion) ){
+					return;
+				}
+				var contratacion:Contratacion = contrataciones.getItemAt( 0 ) as Contratacion;
+				this.txtCardNumber.text = contratacion.colaborador.numeroTarjeta;
+				this.txtMail.text = contratacion.colaborador.correoElectronico;
+				this.txtPhone.text = contratacion.colaborador.telefono;
 			}
 			
 		]]>
@@ -378,4 +396,7 @@
 	<mx:RemoteObject id="proyectoService" destination="proyectoService" fault="solicitudViaticosService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetAllByFiltro" result="responseGetAll_resultHandler(event)"/>
+	<mx:RemoteObject id="contratacionService" destination="contratacionService" fault="solicitudViaticosService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetContratacionByIdColaborador" result="responseGetContratacionByIdColaborador_resultHandler(event)"/>
 </mx:VBox>

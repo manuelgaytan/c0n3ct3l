@@ -70,7 +70,7 @@ public class ContratacionService implements IContratacionService{
 	}
 	
 	@Override
-	public List<ContratacionDO> getContratacionByIdColaborador(long idColaborador ){
+	public List<ContratacionDO> getContratacionByIdColaborador(Integer idColaborador ){
 	
 		List<ContratacionDO> datos= null;
 		TypedQuery<ContratacionDO>  query =null;

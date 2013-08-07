@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import mx.com.gahm.conenctel.entities.ComentarioInformacionFacturacion1DO;
 import mx.com.gahm.conenctel.entities.ComprobacionViaticosDO;
 import mx.com.gahm.conenctel.entities.DocumentoComprobacionViaticosDO;
 import mx.com.gahm.conenctel.services.IComprobacionViaticosService;
@@ -47,13 +48,9 @@ public class ComprobacionViaticosService implements IComprobacionViaticosService
 		try {
 
 			List<DocumentoComprobacionViaticosDO> documentos =item.getDocumentosComprobacionViaticos();
-			if(documentos!=null)
-			for (DocumentoComprobacionViaticosDO doc : documentos) {
-				doc.setComprobacionViatico(item);
-			}
-			
+			item.setDocumentosComprobacionViaticos(null);
 			entityManager.persist(item);
-
+			this.saveDocumentos(item, documentos);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -62,18 +59,39 @@ public class ComprobacionViaticosService implements IComprobacionViaticosService
 	}
 
 
+	private void saveDocumentos(ComprobacionViaticosDO item,
+			List<DocumentoComprobacionViaticosDO> documentos) {
+		if(documentos != null){
+			for (DocumentoComprobacionViaticosDO doc : documentos) {
+				doc.setComprobacionViatico(item);
+				entityManager.persist( doc );
+			}
+			item.setDocumentosComprobacionViaticos(documentos);
+		}
+	}
+
 	@Override
 	public ComprobacionViaticosDO update(ComprobacionViaticosDO item) {
+		deleteDocumentos(item);
 		List<DocumentoComprobacionViaticosDO> documentos =item.getDocumentosComprobacionViaticos();
-		if(documentos!=null)
-		for (DocumentoComprobacionViaticosDO doc : documentos) {
-			doc.setComprobacionViatico(item);
-		}
+		item.setDocumentosComprobacionViaticos(null);
 		entityManager.merge(item);
-
+		saveDocumentos(item, documentos);
 		return item;
 	}
 
+
+	private void deleteDocumentos(ComprobacionViaticosDO itemParam) {
+		ComprobacionViaticosDO item = entityManager.find(ComprobacionViaticosDO.class, itemParam.getId());
+		if( item == null || item.getDocumentosComprobacionViaticos() == null){
+			return;
+		}
+		for ( DocumentoComprobacionViaticosDO documento: item.getDocumentosComprobacionViaticos() ) {
+			if(documento!=null){
+				entityManager.remove(documento);
+			}
+		}
+	}
 
 	@Override
 	public ComprobacionViaticosDO getItem(Integer id) {

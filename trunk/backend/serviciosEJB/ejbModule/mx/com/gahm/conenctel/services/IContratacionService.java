@@ -21,5 +21,5 @@ public interface IContratacionService {
 	ContratacionDO save( ContratacionDO item );
 	ContratacionDO update( ContratacionDO item );
 	ContratacionDO getItem( Integer id );	
-	public List<ContratacionDO> getContratacionByIdColaborador(long idColaborador );
+	public List<ContratacionDO> getContratacionByIdColaborador(Integer idColaborador );
 }

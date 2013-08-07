@@ -30,7 +30,7 @@ import javax.persistence.TemporalType;
 @Table(name = "Contratacion")
 @NamedQueries({
 	@NamedQuery(name = "ContratacionDO.findAll", query = "select rc from ContratacionDO rc"),
-	@NamedQuery(name = "ContratacionDO.getContratacionByIdColaborador", query = "select rc from ContratacionDO rc where rc.colaborador=:idColaborador")
+	@NamedQuery(name = "ContratacionDO.getContratacionByIdColaborador", query = "select rc from ContratacionDO rc where rc.colaborador.id=:idColaborador")
 	})
 public class ContratacionDO implements Serializable{
 

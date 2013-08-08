@@ -113,7 +113,7 @@
 							   labelFunction="labelFunctionDate"/>
 			<mx:DataGridColumn id="dtgDescription" headerText="Descripción"
 							   width="90"
-							   dataField="descripcion.descripcion"
+							   dataField="descripcionFondoFijoCajaChica.descripcion"
 							   />
 			<mx:DataGridColumn id="dtgIncomes" headerText="Ingreso"
 							   dataField="ingreso"

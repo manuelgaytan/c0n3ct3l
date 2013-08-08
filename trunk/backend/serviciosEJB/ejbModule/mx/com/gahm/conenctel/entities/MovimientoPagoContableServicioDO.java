@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -96,7 +97,7 @@ public class MovimientoPagoContableServicioDO implements Serializable{
 	@Column(name = "fecha_limite_pago", nullable = false, length = 10)
 	private Date fechaLimitePago;
 	
-	@OneToMany(mappedBy="movimientoPagoContableServicio", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy="movimientoPagoContableServicio", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	private List<ComentarioMovimientoPagoContableServicioDO> comentarios; 
 
 	public MovimientoPagoContableServicioDO() {

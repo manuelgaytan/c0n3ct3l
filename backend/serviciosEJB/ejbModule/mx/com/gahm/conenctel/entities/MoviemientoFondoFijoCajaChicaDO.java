@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -57,7 +58,7 @@ public class MoviemientoFondoFijoCajaChicaDO implements Serializable{
 	@Column(name = "egreso", nullable = false)
 	private Double egreso;
 
-	@OneToMany(mappedBy="moviemientoFondoFijoCajaChica", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy="moviemientoFondoFijoCajaChica", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	private List<ComentarioMoviemientoFondoFijoCajaChicaDO> comentariosMoviemientoFondoFijoCajaChica;
 	
 	

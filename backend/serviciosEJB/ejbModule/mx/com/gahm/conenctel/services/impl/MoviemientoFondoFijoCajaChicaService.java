@@ -46,7 +46,6 @@ public class MoviemientoFondoFijoCajaChicaService implements IMoviemientoFondoFi
 				entityManager.remove(MoviemientoFondoFijoCajaChicaDO);
 			}
 		}
-
 	}
 
 	@Override
@@ -59,41 +58,37 @@ public class MoviemientoFondoFijoCajaChicaService implements IMoviemientoFondoFi
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 		return item;
 	}
 	
 	private void saveComentarios(MoviemientoFondoFijoCajaChicaDO item,List<ComentarioMoviemientoFondoFijoCajaChicaDO> comentarios){
-		
-		for (ComentarioMoviemientoFondoFijoCajaChicaDO comentario : comentarios) {
-			comentario.setMoviemientoFondoFijoCajaChica(item);
-			entityManager.persist(comentario.getComentarioContabilidad());
-			entityManager.persist(comentario);
+		if( comentarios != null ){
+			for (ComentarioMoviemientoFondoFijoCajaChicaDO comentario : comentarios) {
+				comentario.setMoviemientoFondoFijoCajaChica(item);
+				entityManager.persist(comentario.getComentarioContabilidad());
+				entityManager.persist(comentario);
+			}
 		}
-		
 		item.setComentariosMoviemientoFondoFijoCajaChica(comentarios);
 	}
-
 
 	@Override
 	public MoviemientoFondoFijoCajaChicaDO update(MoviemientoFondoFijoCajaChicaDO item) {
 		deleteComentarios(item.getId());
-		saveComentarios(item, item.getComentariosMoviemientoFondoFijoCajaChica());
+		List<ComentarioMoviemientoFondoFijoCajaChicaDO> comentarios = item.getComentariosMoviemientoFondoFijoCajaChica();
+		item.setComentariosMoviemientoFondoFijoCajaChica(null);
 		entityManager.merge(item);
-
+		saveComentarios(item, comentarios);
 		return item;
 	}
-
 	
 	private void deleteComentarios(Integer id){
-		
-		MoviemientoFondoFijoCajaChicaDO item=	getItem(id);
+		MoviemientoFondoFijoCajaChicaDO item = getItem(id);
 		List<ComentarioMoviemientoFondoFijoCajaChicaDO> comentarios=item.getComentariosMoviemientoFondoFijoCajaChica();
-		
-		for (ComentarioMoviemientoFondoFijoCajaChicaDO comentario : comentarios) {
-			entityManager.remove(comentario);
-			entityManager.remove(comentario.getComentarioContabilidad());
-			
+		if( comentarios != null ){
+			for (ComentarioMoviemientoFondoFijoCajaChicaDO comentario : comentarios) {
+				entityManager.remove(comentario);
+			}
 		}
 	}
 
@@ -106,8 +101,6 @@ public class MoviemientoFondoFijoCajaChicaService implements IMoviemientoFondoFi
 		} catch (Exception e) {
 			MoviemientoFondoFijoCajaChicaDO = null;
 		}
-
 		return MoviemientoFondoFijoCajaChicaDO;
 	}
-
 }

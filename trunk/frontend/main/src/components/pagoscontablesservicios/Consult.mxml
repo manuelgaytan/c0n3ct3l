@@ -120,11 +120,11 @@
 							   textAlign="right"/>
 			<mx:DataGridColumn id="dtgQualifiedSupplier" headerText="{'Proveedor\nCalificado'}"
 							   width="120"
-							   dataField="proveedorCalificado.proveedorSeleccionado.nombreComercial"
+							   dataField="proveedorCalificado.proveedorSeleccionado.proveedor.nombreComercial"
 							   />
 			<mx:DataGridColumn id="dtgMaquiladoSupplier" headerText="{'Proveedor\nMaquilador'}"
 							   width="120"
-							   dataField="proveedorMaquilador.nombreComercial"
+							   dataField="proveedorMaquilador.proveedor.nombreComercial"
 							   />
 			<mx:DataGridColumn id="dtgDescription" headerText="Descripción"
 							   width="90"

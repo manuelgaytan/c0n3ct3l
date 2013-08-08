@@ -246,7 +246,9 @@
 			protected function responseGetAll_resultHandler(event:ResultEvent):void
 			{
 				this.calculateOpeningBalance(event);
-				this.calculateClosingBalance();
+				if( this.mode != Constants.UPDATE_MODE ){
+					this.calculateClosingBalance();
+				}
 			}
 			
 			private function calculateOpeningBalance(event:ResultEvent){
@@ -270,8 +272,10 @@
 				var closingBalance:Number = 0;
 				if( operacion == TipoOperacion.ID_INGRESOS ){
 					 closingBalance = Util.stringToNumber( this.txtOpeningBalance.text ) + Util.stringToNumber( this.txtImport.text );
+					 closingBalance = isNaN(closingBalance) ? 0 : closingBalance; 
 				}else{
 					closingBalance = Util.stringToNumber( this.txtOpeningBalance.text ) - Util.stringToNumber( this.txtImport.text );
+					closingBalance = isNaN(closingBalance) ? 0 : closingBalance;
 				}
 				this.txtClosingBalance.text = closingBalance.toString(); 
 			}

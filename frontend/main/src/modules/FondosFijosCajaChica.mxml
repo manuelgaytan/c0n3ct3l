@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
-		   width="700" height="500"
+		   width="700" height="600"
 		   xmlns:moviemientofondosfijocajachica="components.fondosfijoscajachica.*"
 		   creationComplete="creationCompleteHandler(event)">
 	<mx:Script>
 		<![CDATA[
 			import events.GenericEvent;
-			
 			import model.MovimientoFondoFijoCajaChica;
-			
 			import mx.events.FlexEvent;
 			
 			protected function creationCompleteHandler(event:FlexEvent):void

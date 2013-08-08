@@ -52,7 +52,6 @@ public class MovimientoPagoContableServicioService implements IMovimientoPagoCon
 	@Override
 	public MovimientoPagoContableServicioDO save(MovimientoPagoContableServicioDO item) {
 		try {
-
 			List<ComentarioMovimientoPagoContableServicioDO> comentarios =item.getComentarios();
 			item.setComentarios(null);
 			entityManager.persist(item);
@@ -60,30 +59,28 @@ public class MovimientoPagoContableServicioService implements IMovimientoPagoCon
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 		return item;
 	}
 
 	
 	private void saveComentarios(MovimientoPagoContableServicioDO item,List<ComentarioMovimientoPagoContableServicioDO> comentarios){
-		
-		for (ComentarioMovimientoPagoContableServicioDO comentario : comentarios) {
-			
-			entityManager.persist(comentario.getComentarioContabilidad());
-			comentario.setMovimientoPagoContableServicio(item);
-			entityManager.persist(comentario);
-			
+		if( comentarios != null ){
+			for (ComentarioMovimientoPagoContableServicioDO comentario : comentarios) {
+				entityManager.persist(comentario.getComentarioContabilidad());
+				comentario.setMovimientoPagoContableServicio(item);
+				entityManager.persist(comentario);
+			}
 		}
 		item.setComentarios(comentarios);
 	}
 	
 	@Override
 	public MovimientoPagoContableServicioDO update(MovimientoPagoContableServicioDO item) {
-		
 		deleteComentarios(item.getId());
+		List<ComentarioMovimientoPagoContableServicioDO> comentarios =item.getComentarios();
+		item.setComentarios(null);
 		entityManager.merge(item);
-		saveComentarios(item, item.getComentarios());
-		
+		saveComentarios(item, comentarios);
 		return item;
 	}
 
@@ -91,14 +88,11 @@ public class MovimientoPagoContableServicioService implements IMovimientoPagoCon
 	private void deleteComentarios(Integer id){
 		MovimientoPagoContableServicioDO item = getItem(id);
 		List<ComentarioMovimientoPagoContableServicioDO> comentarios = item.getComentarios();
-		
-		for (ComentarioMovimientoPagoContableServicioDO comentario : comentarios) {
-			entityManager.remove(comentario);
-			entityManager.remove(comentario.getComentarioContabilidad());
+		if( comentarios != null ){
+			for (ComentarioMovimientoPagoContableServicioDO comentario : comentarios) {
+				entityManager.remove(comentario);
+			}
 		}
-		
-		
-		
 	}
 	
 	@Override
@@ -110,7 +104,6 @@ public class MovimientoPagoContableServicioService implements IMovimientoPagoCon
 		} catch (Exception e) {
 			MovimientoPagoContableServicioDO = null;
 		}
-
 		return MovimientoPagoContableServicioDO;
 	}
 }

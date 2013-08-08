@@ -336,7 +336,11 @@
 			}
 			
 			private function qualifiedSupplier( item:Object ):String{
-				return Util.extractToText( item, "proveedorSeleccionado.nombreComercial" );
+				return Util.extractToText( item, "proveedorSeleccionado.proveedor.nombreComercial" );
+			}
+			
+			private function maquiladorSupplier( item:Object ):String{
+				return Util.extractToText( item, "proveedor.nombreComercial" );
 			}
 			
 			protected function cmbSupplierType_changeHandler(event:ListEvent):void
@@ -350,8 +354,8 @@
 					this.cmbSupplier.labelFunction = qualifiedSupplier;
 					this.responseGetAllProveedorCalificado.token = this.proveedorCalificadoService.getProveedoresCalificados();
 				}else{	//Maquiladores
-					this.cmbSupplier.labelField = "nombreComercial";
-					this.cmbSupplier.labelFunction = null;
+					this.cmbSupplier.labelField = null;
+					this.cmbSupplier.labelFunction = maquiladorSupplier;
 					this.responseGetAllProveedorMaquilador.token = this.proveedorMaquiladorService.getProveedoresMaquiladores();
 				}
 			}

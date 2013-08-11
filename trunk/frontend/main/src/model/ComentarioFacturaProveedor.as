@@ -4,7 +4,7 @@ package model
 	public class ComentarioFacturaProveedor
 	{
 		public var id:*;
-		public var ordenCompraCliente:OrdenCompraCliente;
+		public var facturaProveedor:FacturaProveedor;
 		public var comentarioCuentasPagarFacturacion:ComentarioCuentasPagarFacturacion;
 		
 		public function ComentarioFacturaProveedor()

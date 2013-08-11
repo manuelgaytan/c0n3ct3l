@@ -95,8 +95,10 @@
 						idClient);
 				}
 				this.informationBillingConsult.datagrid.dataProvider = Util.asArrayCollection( this._item.informacionFacturacion );
+				this.informationBillingConsult.datagrid.selectedIndex = 0;
 				this.txtInvoiceFolio.text = this._item.folioFactura;
 				this.creditNoteConsult.datagrid.dataProvider = Util.asArrayCollection( this._item.notaCreditoCliente );
+				this.creditNoteConsult.datagrid.selectedIndex = 0;
 				this.txtSubtotal.text = this._item.subtotal.toString();
 				this.txtIVA.text = this._item.iva.toString();
 				this.txtTotal.text = this._item.total.toString();
@@ -174,7 +176,7 @@
 				value &&= Util.listBaseSelected( this.cmbClient );
 				value &&= this.validators.validarFormulario();
 				value &&= this.informationBillingConsult.datagrid.selectedItem != null;
-				value &&= this.creditNoteConsult.datagrid.selectedItem != null;
+				//value &&= this.creditNoteConsult.datagrid.selectedItem != null;
 				value &&= Util.listBaseSelected( this.cmbConectelBank );
 				return value;
 			}
@@ -211,6 +213,7 @@
 			
 			private function cleanForm():void
 			{
+				Util.upScroll( this );
 				this.txtID.reset();
 				this.cmbClient.selectedIndex = 0;
 				Util.removeItems(this.informationBillingConsult.datagrid.dataProvider);
@@ -278,8 +281,8 @@
 			{
 				var client:Cliente = Util.validateCombo( this.cmbClient ) as Cliente;
 				if( !(client == null) ){
-					this.informacionFacturacionService.getAllByFiltro( client.id );
-					this.notaCreditoClienteService.getAllByFiltro( client.id );
+					this.responseGetAllByFiltro.token = this.informacionFacturacionService.getAll();//getAllByFiltro( client.id );
+					this.responseCreditNoteGetAllByFiltro.token = this.notaCreditoClienteService.getAll();//ByFiltro( client.id );
 				}
 			}
 			
@@ -309,6 +312,7 @@
 			
 			protected function responseGetAllByFiltro_resultHandler(event:ResultEvent):void
 			{
+				Util.showProperties( event.result );
 				informationBillingConsult.setDataGridData( event.result as ArrayCollection );
 			}
 			
@@ -345,7 +349,11 @@
 			
 			protected function cmbInformationBilling_changeHandler(event:ListEvent):void
 			{
-				var informationBilling:InformacionFacturacion = this.creditNoteConsult.datagrid.selectedItem as InformacionFacturacion;
+				if( this.informationBillingConsult.datagrid.selectedItem == null ){
+					this.setMontos( 0, 0, 0);
+					return;
+				}
+				var informationBilling:InformacionFacturacion = this.informationBillingConsult.datagrid.selectedItem as InformacionFacturacion;
 				if( informationBilling == null ){
 					Util.showErrorMessage("Primero debe seleccionar un elemento.");
 					return;
@@ -355,10 +363,21 @@
 					this.setMontos( 0, 0, 0);
 					return;
 				}
-				this.setMontos( informationBilling["subtotal"+informationBilling],
-								informationBilling["iva"+informationBilling],
-								informationBilling["total"+informationBilling] );
+				this.setMontos( informationBilling["subtotal"+idInformationBilling],
+								informationBilling["iva"+idInformationBilling],
+								informationBilling["total"+idInformationBilling] );
 			}
+			
+			protected function txtSubtotal_focusOutHandler(event:FocusEvent):void
+			{
+				var subtotal:Number = Number(this.txtSubtotal.text);
+				if( isNaN( subtotal ) ){
+					return;
+				}
+				this.txtIVA.text = (subtotal*Constants.IVA).toString();
+				this.txtTotal.text = (subtotal*Constants.IVA+subtotal).toString();
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -380,7 +399,7 @@
 		</mx:FormItem>
 		<mx:FormItem label="Información Facturación:">
 			<informacionfacturas:Consult id="informationBillingConsult" informationBillingDetail="informationBillingConsult_informationBillingDetailHandler(event)"
-										 readOnly="true"/>
+										 readOnly="true" noExecuteQuery="true"/>
 			<mx:HBox>
 				<mx:ComboBox id="cmbInformationBilling"
 							 dataProvider="{['','Información Factura 1','Información Factura 2','Información Factura 3']}"
@@ -397,7 +416,8 @@
 			<mx:Button id="btnViewCreditNote" label="Ver Nota Crédito Cliente" click="btnViewCreditNote_clickHandler(event)"/>
 		</mx:FormItem>
 		<mx:FormItem label="Subtotal:">
-			<components:TextInput id="txtSubtotal" textAlign="right" width="100"/>
+			<components:TextInput id="txtSubtotal" textAlign="right" width="100"
+								  focusOut="txtSubtotal_focusOutHandler(event)"/>
 		</mx:FormItem>
 		<mx:FormItem label="I.V.A.:">
 			<components:TextInput id="txtIVA" textAlign="right" width="100"/>

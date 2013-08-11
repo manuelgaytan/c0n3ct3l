@@ -19,6 +19,8 @@ package model
 		
 		public var datoBancario:DatoBancario;
 		
+		public var pago:TipoPago;
+		
 		public var tipoContrato:TipoContrato;
 		
 		public var nss:String;

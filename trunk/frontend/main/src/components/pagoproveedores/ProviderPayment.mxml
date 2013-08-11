@@ -91,10 +91,8 @@
 				}else{
 					this.cmbSupplierType.selectedIndex = Util.selectedIndexFromCombo( this.cmbSupplierType.dataProvider as ArrayCollection, 2);
 				}
-				this.cmbSupplier.dispatchEvent( new ListEvent(ListEvent.CHANGE) );
-				this.vendorInvoiceConsult.datagrid.dataProvider = Util.asArrayCollection( this._item.facturaProveedor );
+				this.cmbSupplierType.dispatchEvent( new ListEvent(ListEvent.CHANGE) );
 				this.txtInvoiceFolio.text = this._item.folioFactura;
-				this.creditNoteConsult.datagrid.dataProvider = Util.asArrayCollection( this._item.notaCreditoProveedor );
 				this.txtSubtotal.text = this._item.subtotal.toString();
 				this.txtIVA.text = this._item.iva.toString();
 				this.txtTotal.text = this._item.total.toString();
@@ -171,7 +169,7 @@
 				value &&= Util.listBaseSelected( this.cmbSupplier );
 				value &&= this.validators.validarFormulario();
 				value &&= this.vendorInvoiceConsult.datagrid.selectedItem != null;
-				value &&= this.creditNoteConsult.datagrid.selectedItem != null;
+				//value &&= this.creditNoteConsult.datagrid.selectedItem != null;
 				value &&= Util.listBaseSelected( this.cmbConectelBank );
 				return value;
 			}
@@ -208,6 +206,7 @@
 			
 			private function cleanForm():void
 			{
+				Util.upScroll( this );
 				this.txtID.reset();
 				this.cmbSupplierType.selectedIndex = 0;
 				this.cmbSupplierType.dispatchEvent( new ListEvent(ListEvent.CHANGE) );
@@ -293,11 +292,19 @@
 			protected function responseCreditNoteGetAllByFiltro_resultHandler(event:ResultEvent):void
 			{
 				creditNoteConsult.setDataGridData( event.result as ArrayCollection );
+				if( !(this._item == null) && !(this._item.notaCreditoProveedor == null) ){
+					this.creditNoteConsult.datagrid.dataProvider = Util.asArrayCollection( this._item.notaCreditoProveedor );
+					this.creditNoteConsult.datagrid.selectedIndex = 0;
+				}
 			}
 			
 			protected function responseGetAllByFiltro_resultHandler(event:ResultEvent):void
 			{
 				vendorInvoiceConsult.setDataGridData( event.result as ArrayCollection );
+				if( !(this._item == null) && !(this._item.facturaProveedor == null) ){
+					this.vendorInvoiceConsult.datagrid.dataProvider = Util.asArrayCollection( this._item.facturaProveedor );
+					this.vendorInvoiceConsult.datagrid.selectedIndex = 0;
+				}
 			}
 			
 			protected function btnViewCreditNote_clickHandler(event:MouseEvent):void
@@ -356,17 +363,17 @@
 				if( !Util.listBaseSelected( this.cmbSupplier, "id", true ) ){
 					return;
 				}
-				var supplier:Proveedor = null; 
+				var idSupplier:Number = null; 
 				if( Util.selectedId( this.cmbSupplierType ) == 1 ){
 					var proveedorCalificado:ProveedorCalificado = Util.validateCombo( this.cmbSupplier ) as ProveedorCalificado;
-					supplier = proveedorCalificado.proveedorSeleccionado.proveedor;
-					this.responseGetAllByFiltro.token = this.facturaProveedorService.getAll();//AlmacenByFiltro( supplier.id );
-					this.responseCreditNoteGetAllByFiltro.token = this.notaCreditoProveedorService.getAll();//AlmacenByFiltro( supplier.id );
+					idSupplier = proveedorCalificado.id;
+					this.responseGetAllByFiltro.token = this.facturaProveedorService.getAllByIdCalificado( idSupplier );
+					this.responseCreditNoteGetAllByFiltro.token = this.notaCreditoProveedorService.getAllByIdCalificado( idSupplier );
 				}else{
 					var proveedorMaquilador:ProveedorMaquilador = Util.validateCombo( this.cmbSupplier ) as ProveedorMaquilador;
-					supplier = proveedorMaquilador.proveedor;
-					this.responseGetAllByFiltro.token = this.facturaProveedorService.getAll();//MaquiladoFiltro( supplier.id );
-					this.responseCreditNoteGetAllByFiltro.token = this.notaCreditoProveedorService.getAll();//MaquiladoByFiltro( supplier.id );
+					idSupplier = proveedorMaquilador.id;
+					this.responseGetAllByFiltro.token = this.facturaProveedorService.getAllByIdMaquilador( idSupplier );
+					this.responseCreditNoteGetAllByFiltro.token = this.notaCreditoProveedorService.getAllByIdMaquilador( idSupplier );
 				}
 			}
 			
@@ -381,14 +388,18 @@
 					this.cmbSupplier.labelFunction = qualifiedSupplier;
 					this.responseGetAllProveedorCalificado.token = this.proveedorCalificadoService.getProveedoresCalificados();
 				}else{	//Maquiladores
-					this.cmbSupplier.labelField = "nombreComercial";
-					this.cmbSupplier.labelFunction = null;
+					this.cmbSupplier.labelField = null;
+					this.cmbSupplier.labelFunction = maquiladorSupplier;
 					this.responseGetAllProveedorMaquilador.token = this.proveedorMaquiladorService.getProveedoresMaquiladores();
 				}
 			}
 			
 			private function qualifiedSupplier( item:Object ):String{
-				return Util.extractToText( item, "proveedorSeleccionado.nombreComercial" );
+				return Util.extractToText( item, "proveedorSeleccionado.proveedor.nombreComercial" );
+			}
+			
+			private function maquiladorSupplier( item:Object ):String{
+				return Util.extractToText( item, "proveedor.nombreComercial" );
 			}
 			
 			private function getSupplierTypes():ArrayCollection{
@@ -431,7 +442,7 @@
 		</mx:FormItem>
 		<mx:FormItem label="Facturación Proveedores:">
 			<facturacionproveedores:Consult id="vendorInvoiceConsult" itemDetail="vendorInvoiceConsult_vendorInvoiceDetailHandler(event)"
-										 readOnly="true"/>
+										 readOnly="true" noExecuteQuery="true"/>
 			<mx:Button id="btnViewVendorInvoice" label="Ver Factura Proveedor" click="btnViewVendorInvoice_clickHandler(event)"/>
 		</mx:FormItem>
 		<mx:FormItem label="Folio Factura:">
@@ -439,7 +450,8 @@
 		</mx:FormItem>
 		<mx:FormItem label="Nota Crédito Proveedor:">
 			<notascreditoproveedores:Consult id="creditNoteConsult" creditNoteDetail="creditNoteConsult_creditNoteDetailHandler(event)"
-										  readOnly="true"/>
+										  readOnly="true" noExecuteQuery="true" 
+										  width="650"/>
 			<mx:Button id="btnViewCreditNote" label="Ver Nota Crédito Proveedor" click="btnViewCreditNote_clickHandler(event)"/>
 		</mx:FormItem>
 		<mx:FormItem label="Subtotal:">

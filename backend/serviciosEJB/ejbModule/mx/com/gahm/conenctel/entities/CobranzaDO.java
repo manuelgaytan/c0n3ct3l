@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -78,7 +79,7 @@ public class CobranzaDO implements Serializable{
 	@Column(name = "referencia_abono", nullable = false)
 	private Integer referenciaAbono;
 	
-	@OneToMany(mappedBy="cobranza", fetch = FetchType.EAGER)	
+	@OneToMany(mappedBy="cobranza", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)	
 	private List<ComentarioCobranzaDO> comentariosCobranza;
 	
 

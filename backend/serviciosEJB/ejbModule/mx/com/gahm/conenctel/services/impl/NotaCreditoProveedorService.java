@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import mx.com.gahm.conenctel.entities.FacturaProveedorDO;
 import mx.com.gahm.conenctel.entities.NotaCreditoProveedorDO;
 import mx.com.gahm.conenctel.services.INotaCreditoProveedorService;
 
@@ -75,5 +76,23 @@ public class NotaCreditoProveedorService implements INotaCreditoProveedorService
 		}
 		
 		return NotaCreditoProveedorDO;
+	}
+	
+	public List<NotaCreditoProveedorDO> getAllByIdMaquilador(long idMaquilador) {
+		List<NotaCreditoProveedorDO> datos= null;
+		Query query =null;
+		query = entityManager.createNamedQuery("NotaCreditoProveedorDO.getNotaCreditoByIdMaquilador");
+		query.setParameter("idMaquilador", idMaquilador);
+		datos = query.getResultList();
+		return datos;
+	}
+	
+	public List<NotaCreditoProveedorDO> getAllByIdCalificado(long idCalificado) {
+		List<NotaCreditoProveedorDO> datos= null;
+		Query query =null;
+		query = entityManager.createNamedQuery("NotaCreditoProveedorDO.getNotaCreditoByIdCalificado");
+		query.setParameter("idCalificado", idCalificado);
+		datos = query.getResultList();
+		return datos;
 	}
 }

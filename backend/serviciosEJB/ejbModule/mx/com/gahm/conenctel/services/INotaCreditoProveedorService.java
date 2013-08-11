@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.ejb.Remote;
 
+import mx.com.gahm.conenctel.entities.FacturaProveedorDO;
 import mx.com.gahm.conenctel.entities.NotaCreditoProveedorDO;
 
 /**
@@ -15,11 +16,11 @@ import mx.com.gahm.conenctel.entities.NotaCreditoProveedorDO;
  */
 @Remote
 public interface INotaCreditoProveedorService {
-
 	List<NotaCreditoProveedorDO> getAll();
 	void deleteItems( List<Integer> idsItems);
 	NotaCreditoProveedorDO save( NotaCreditoProveedorDO item );
 	NotaCreditoProveedorDO update( NotaCreditoProveedorDO item );
 	NotaCreditoProveedorDO getItem( Integer id );
-
+	List<NotaCreditoProveedorDO> getAllByIdMaquilador( long id );
+	List<NotaCreditoProveedorDO> getAllByIdCalificado( long id );
 }

@@ -54,7 +54,7 @@ public class ComprobacionViaticosDO implements Serializable {
 	@JoinColumn(name = "fk_estado_comprobacion_viaticos", nullable = false)
 	private EstadoComprobacionViaticosDO estadoComprobacionViaticos;
 	
-	@OneToMany(mappedBy="comprobacionViatico", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy="comprobacionViaticos", fetch = FetchType.EAGER)
     private List<DocumentoComprobacionViaticosDO> documentosComprobacionViaticos;
 
 

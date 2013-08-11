@@ -55,38 +55,34 @@ public class PagoViaticosService implements IPagoViaticosService{
 	}
 	
 	private void saveComentarios(PagoViaticosDO item,List<ComentarioPagoViaticosDO> comentarios){
-		
-		for (ComentarioPagoViaticosDO comentario : comentarios) {
-			
-			entityManager.persist(comentario.getComentarioTesoreria());
-			comentario.setPagoViaticos(item);
-			entityManager.persist(comentario);
-			
+		if( comentarios != null ){
+			for (ComentarioPagoViaticosDO comentario : comentarios) {
+				entityManager.persist(comentario.getComentarioTesoreria());
+				comentario.setPagoViaticos(item);
+				entityManager.persist(comentario);
+			}
 		}
 		item.setComentariosPagoViaticos(comentarios);
 	}
 
 	@Override
 	public PagoViaticosDO update(PagoViaticosDO item) {
-		
-		
 		deleteComentarios(item.getId());
-		
+		List<ComentarioPagoViaticosDO> comentarios =item.getComentariosPagoViaticos();
+		item.setComentariosPagoViaticos(null);
 		entityManager.merge(item);
-		if(item.getComentariosPagoViaticos()!=null)
-		saveComentarios(item, item.getComentariosPagoViaticos());
+		saveComentarios(item, comentarios);
 		return item;
 	}
 	
 	private void deleteComentarios(Integer id){
 		PagoViaticosDO item = getItem(id);
 		List<ComentarioPagoViaticosDO> comentarios = item.getComentariosPagoViaticos();
-		
-		for (ComentarioPagoViaticosDO comentario : comentarios) {
-			entityManager.remove(comentario);
-			entityManager.remove(comentario.getComentarioTesoreria());
+		if( comentarios != null ){
+			for (ComentarioPagoViaticosDO comentario : comentarios) {
+				entityManager.remove(comentario);
+			}
 		}
-		
 	}
 
 	@Override

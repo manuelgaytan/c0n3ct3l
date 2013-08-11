@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -79,8 +80,8 @@ public class PagoProveedorDO  implements Serializable{
 	@Column(name = "referencia_abono", nullable = false)
 	private Integer referenciaAbono;
 	
-	@OneToMany(mappedBy="pagoProveedor", fetch = FetchType.EAGER)	
-	private List<ComentarioPagoProveedorDO> comentarioPagoProveedor;
+	@OneToMany(mappedBy="pagoProveedor", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)	
+	private List<ComentarioPagoProveedorDO> comentariosPagoProveedor;
 
 	public PagoProveedorDO() {
 		super();
@@ -194,13 +195,13 @@ public class PagoProveedorDO  implements Serializable{
 		this.referenciaAbono = referenciaAbono;
 	}
 
-	public List<ComentarioPagoProveedorDO> getComentarioPagoProveedor() {
-		return comentarioPagoProveedor;
+	public List<ComentarioPagoProveedorDO> getComentariosPagoProveedor() {
+		return comentariosPagoProveedor;
 	}
 
-	public void setComentarioPagoProveedor(
-			List<ComentarioPagoProveedorDO> comentarioPagoProveedor) {
-		this.comentarioPagoProveedor = comentarioPagoProveedor;
+	public void setComentariosPagoProveedor(
+			List<ComentarioPagoProveedorDO> comentariosPagoProveedor) {
+		this.comentariosPagoProveedor = comentariosPagoProveedor;
 	}
 		
 }

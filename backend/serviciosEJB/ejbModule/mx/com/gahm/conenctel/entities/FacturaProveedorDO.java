@@ -26,7 +26,7 @@ import javax.persistence.TemporalType;
 @NamedQueries({
 	@NamedQuery(name = "FacturaProveedorDO.findAll", query = "select rc from FacturaProveedorDO rc"),
 	@NamedQuery(name = "FacturaProveedorDO.getFacturacionByIdMaquilador", query = "select rc from FacturaProveedorDO rc where rc.proveedorMaquilador.id=:idMaquilador"),
-	@NamedQuery(name = "FacturaProveedorDO.getFacturacionByIdCalificado", query = "select rc from FacturaProveedorDO rc where rc.proveedorCalificado.id=:idMaquilador")
+	@NamedQuery(name = "FacturaProveedorDO.getFacturacionByIdCalificado", query = "select rc from FacturaProveedorDO rc where rc.proveedorCalificado.id=:idCalificado")
 	})
 public class FacturaProveedorDO implements Serializable{
 	

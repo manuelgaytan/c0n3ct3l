@@ -12,12 +12,12 @@
 			import model.Catalogo;
 			import model.Cliente;
 			import model.Colaborador;
+			import model.ComprobacionViaticos;
 			import model.Constants;
 			import model.Estado;
 			import model.EstadoOrdenCompra;
 			import model.EstadoValidacionCosto;
 			import model.EstadoValidacionOperativa;
-			import model.ComprobacionViaticos;
 			import model.FiltroProyecto;
 			import model.MedioTransporte;
 			import model.NotaCreditoCliente;
@@ -87,6 +87,7 @@
 				}
 				this.txtID.text = this._item.id.toString();
 				this.perDiemCheckConsult.datagrid.dataProvider = Util.asArrayCollection( this._item.comprobacionViaticos );
+				this.perDiemCheckConsult.datagrid.selectedIndex = 0;
 				if( Util.isFill( this.cmbConectelBank ) && this._item.bancoConectel != null ){
 					this.cmbConectelBank.selectedIndex = Util.selectedIndexFromCombo( this.cmbConectelBank.dataProvider as ArrayCollection, 
 						this._item.bancoConectel.id);
@@ -116,6 +117,7 @@
 			private function fillCombos():void
 			{
 				this.responseGetBancoConectel.token = this.bancoConectelService.getAll();
+				this.responseGetAll.token = comprobacionViaticosService.getAll();
 			}
 			
 			
@@ -185,6 +187,7 @@
 			
 			private function cleanForm():void
 			{
+				Util.upScroll( this );
 				this.txtID.reset();
 				this.perDiemCheckConsult.datagrid.selectedItem = null;
 				this.cmbConectelBank.selectedIndex = 0;
@@ -228,6 +231,10 @@
 			protected function responseGetAll_resultHandler(event:ResultEvent):void
 			{
 				perDiemCheckConsult.setDataGridData( event.result as ArrayCollection );
+				if( !(this._item == null) && !(this._item.comprobacionViaticos == null) ){  
+					this.perDiemCheckConsult.datagrid.dataProvider = Util.asArrayCollection( this._item.comprobacionViaticos );
+					this.perDiemCheckConsult.datagrid.selectedIndex = 0;
+				}
 			}
 			
 			protected function btnViewPerDiemCheck_clickHandler(event:MouseEvent):void
@@ -257,7 +264,7 @@
 		</mx:FormItem>
 		<mx:FormItem label="Comprobación de Viáticos:">
 			<comprobacionesviaticos:Consult id="perDiemCheckConsult" itemDetail="perDiemCheckConsult_perDiemCheckDetailHandler(event)"
-										 readOnly="true"/>
+										 readOnly="true" noExecuteQuery="true"/>
 			<mx:Button id="btnViewPerDiemCheck" label="Ver Comprobante Viáticos" click="btnViewPerDiemCheck_clickHandler(event)"/>
 		</mx:FormItem>
 		<mx:FormItem label="Banco Conectel:">
@@ -286,7 +293,7 @@
 	<mx:RemoteObject id="bancoConectelService" destination="bancoConectelService" fault="pagoViaticosService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetBancoConectel" result="responseGetBancoConectel_resultHandler(event)"/>
-	<mx:RemoteObject id="comprobanteViaticosService" destination="comprobanteViaticosService" fault="pagoViaticosService_faultHandler(event)"
+	<mx:RemoteObject id="comprobacionViaticosService" destination="comprobacionViaticosService" fault="pagoViaticosService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetAll" result="responseGetAll_resultHandler(event)"/>
 </mx:VBox>

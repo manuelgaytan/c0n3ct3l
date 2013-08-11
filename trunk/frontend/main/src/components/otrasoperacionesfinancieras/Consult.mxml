@@ -117,7 +117,7 @@
 								   width="60"
 								   textAlign="right"/>
 				<mx:DataGridColumn id="dtgPerDiemCheckID" headerText="{'Concepto Operación'}"
-								   dataField="conceptoOtraOperacionFinanciera.concepto"
+								   dataField="conceptoOtraOperacionFinanciera.etiqueta"
 								   width="130"/>
 				<mx:DataGridColumn id="dtgPerDiemCheckState" headerText="{'Razón Social'}"
 								   dataField="razonSocial"

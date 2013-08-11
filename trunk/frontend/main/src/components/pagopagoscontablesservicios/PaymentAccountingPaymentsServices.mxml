@@ -17,9 +17,9 @@
 			import model.EstadoOrdenCompra;
 			import model.EstadoValidacionCosto;
 			import model.EstadoValidacionOperativa;
-			import model.MovimientoPagoContableServicio;
 			import model.FiltroProyecto;
 			import model.MedioTransporte;
+			import model.MovimientoPagoContableServicio;
 			import model.NotaCreditoCliente;
 			import model.NotaCreditoProveedor;
 			import model.PagoMovimientoPagoContableServicio;
@@ -87,6 +87,7 @@
 				}
 				this.txtID.text = this._item.id.toString();
 				this.accountingPaymentsServicesConsult.datagrid.dataProvider = Util.asArrayCollection( this._item.movimientoPagoContableServicio );
+				this.accountingPaymentsServicesConsult.datagrid.selectedIndex = 0;
 				if( Util.isFill( this.cmbConectelBank ) && this._item.bancoConectel != null ){
 					this.cmbConectelBank.selectedIndex = Util.selectedIndexFromCombo( this.cmbConectelBank.dataProvider as ArrayCollection, 
 						this._item.bancoConectel.id);
@@ -185,6 +186,7 @@
 			
 			private function cleanForm():void
 			{
+				Util.upScroll( this );
 				this.txtID.reset();
 				this.accountingPaymentsServicesConsult.datagrid.selectedItem = null;
 				this.cmbConectelBank.selectedIndex = 0;

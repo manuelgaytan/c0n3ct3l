@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
-		   width="850" height="525"
+		   width="950" height="525"
 		   xmlns:pagopagoscontablesservicios="components.pagopagoscontablesservicios.*"
 		   creationComplete="creationCompleteHandler(event)" xmlns:informacionfacturas="components.informacionfacturas.*" xmlns:notascreditoclientes="components.notascreditoclientes.*" xmlns:facturacionproveedores="components.facturacionproveedores.*" xmlns:notascreditoproveedores="components.notascreditoproveedores.*" xmlns:comprobacionesviaticos="components.comprobacionesviaticos.*" xmlns:pagoscontablesservicios="components.pagoscontablesservicios.*">
 	<mx:Script>
@@ -53,7 +53,7 @@
 			}
 		]]>
 	</mx:Script>
-	<mx:TabNavigator id="navigator" width="850" height="100%" creationPolicy="all">
+	<mx:TabNavigator id="navigator" width="950" height="100%" creationPolicy="all">
 		<pagopagoscontablesservicios:Consult id="consult" itemDetail="consult_providerPaymentDetailHandler(event)"/>
 		<pagopagoscontablesservicios:PaymentAccountingPaymentsServices id="detail" update="true" providerPaymentUpdated="detail_providerPaymentUpdatedHandler(event)"
 							 accountingPaymentsServicesSelected="detail_accountingPaymentsServicesSelectedHandler(event)"

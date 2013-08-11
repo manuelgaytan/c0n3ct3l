@@ -202,6 +202,7 @@
 			
 			private function cleanForm():void
 			{
+				Util.upScroll( this );
 				this.txtID.reset();
 				this.cmbAnotherFinancialOperationConcept.selectedIndex = 0;
 				this.txtCorporateName.reset();
@@ -265,7 +266,7 @@
 		</mx:FormItem>
 		<mx:FormItem label="Concepto Otra Opeación Financiera:">
 			<mx:ComboBox id="cmbAnotherFinancialOperationConcept" width="200"
-						 labelField="banco"/>
+						 labelField="etiqueta"/>
 		</mx:FormItem>
 		<mx:FormItem label="Razón Social:">
 			<components:TextInput id="txtCorporateName" width="270"/>

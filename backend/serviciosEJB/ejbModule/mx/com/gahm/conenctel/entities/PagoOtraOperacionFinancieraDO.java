@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -65,7 +66,7 @@ public class PagoOtraOperacionFinancieraDO implements Serializable {
 	@Column(name = "referencia_abono", nullable = false)
 	private Integer referenciaAbono;
 
-	@OneToMany(mappedBy="pagoOtraOperacionFinanciera", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy="pagoOtraOperacionFinanciera", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<ComentarioPagoOtraOperacionFinancieraDO> comentariosPagoOtraOperacionFinanciera;
 	
 	

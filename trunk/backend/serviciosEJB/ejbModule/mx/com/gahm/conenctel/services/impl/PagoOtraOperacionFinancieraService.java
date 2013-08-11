@@ -32,7 +32,6 @@ public class PagoOtraOperacionFinancieraService implements IPagoOtraOperacionFin
 		TypedQuery<PagoOtraOperacionFinancieraDO>  query =null;
 		query = entityManager.createNamedQuery("PagoOtraOperacionFinancieraDO.findAll",PagoOtraOperacionFinancieraDO.class);
 		datos = query.getResultList();
-		
 		return datos;
 	}
 
@@ -43,7 +42,6 @@ public class PagoOtraOperacionFinancieraService implements IPagoOtraOperacionFin
 			cotizacion =getItem(id);
 			entityManager.remove(cotizacion);
 		}
-		
 	}
 
 	@Override
@@ -51,34 +49,38 @@ public class PagoOtraOperacionFinancieraService implements IPagoOtraOperacionFin
 		List<ComentarioPagoOtraOperacionFinancieraDO> comentarios = item.getComentariosPagoOtraOperacionFinanciera();
 		item.setComentariosPagoOtraOperacionFinanciera(null);
 		entityManager.persist(item);
-		
-		if(comentarios!=null && comentarios.size()>0.)
-			saveComentarios(item,comentarios);
-		
+		saveComentarios(item,comentarios);
 		return item;
 	}
 
 	private void saveComentarios(PagoOtraOperacionFinancieraDO item,List<ComentarioPagoOtraOperacionFinancieraDO> comentarios) {
-	    try {
-	    	
+    	if( !(comentarios == null) ){ 
 	    	for (ComentarioPagoOtraOperacionFinancieraDO dato : comentarios) {
-	    		dato.setPagoOtraOperacionFinanciera(item);
 	    		entityManager.persist(dato.getComentarioTesoreria());
-	    		entityManager.persist(item);
+	    		dato.setPagoOtraOperacionFinanciera(item);
+	    		entityManager.persist(dato);
 			}
-	    	
-	    	item.setComentariosPagoOtraOperacionFinanciera(comentarios);
-	    	
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
+    	}
+    	item.setComentariosPagoOtraOperacionFinanciera(comentarios);
 	}
 	
 	@Override
 	public PagoOtraOperacionFinancieraDO update(PagoOtraOperacionFinancieraDO item) {
+		this.deleteComentarios( item );
+		List<ComentarioPagoOtraOperacionFinancieraDO> comentarios = item.getComentariosPagoOtraOperacionFinanciera();
+		item.setComentariosPagoOtraOperacionFinanciera(null);
 		entityManager.merge(item);
+		saveComentarios(item,comentarios);
 		return item;
+	}
+
+	private void deleteComentarios(PagoOtraOperacionFinancieraDO itemParam) {
+		PagoOtraOperacionFinancieraDO item = entityManager.find(PagoOtraOperacionFinancieraDO.class, itemParam.getId());
+		if( item.getComentariosPagoOtraOperacionFinanciera() != null ){
+			for (ComentarioPagoOtraOperacionFinancieraDO comentario : item.getComentariosPagoOtraOperacionFinanciera()) {
+				entityManager.remove( comentario );
+			}
+		}
 	}
 
 	@Override
@@ -86,5 +88,4 @@ public class PagoOtraOperacionFinancieraService implements IPagoOtraOperacionFin
 		PagoOtraOperacionFinancieraDO cotizacion = entityManager.find(PagoOtraOperacionFinancieraDO.class,id);
 		return cotizacion;
 	}
-
 }

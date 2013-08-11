@@ -45,54 +45,46 @@ public class PagoMovimientoPagoContableServicioService implements IPagoMovimient
 
 	@Override
 	public PagoMovimientoPagoContableServicioDO save(PagoMovimientoPagoContableServicioDO item) {
-		List<ComentarioPagoMovimientoPagoContableServicioDO> comentarios =item.getComentarioPagoMovimientoPagoContableServicio();
-		item.setComentarioPagoMovimientoPagoContableServicio(null);
+		List<ComentarioPagoMovimientoPagoContableServicioDO> comentarios =item.getComentariosPagoMovimientoPagoContableServicio();
+		item.setComentariosPagoMovimientoPagoContableServicio(null);
 		entityManager.persist(item);
-		if(comentarios!=null)
 		saveComentarios(item,comentarios);
-		
 		return item;
 	}
 	
 	private void saveComentarios(PagoMovimientoPagoContableServicioDO item,List<ComentarioPagoMovimientoPagoContableServicioDO> comentarios){
-		
-		for (ComentarioPagoMovimientoPagoContableServicioDO dato : comentarios) {
-			entityManager.persist(dato.getComentarioTesoreria());
-			dato.setPagoMovimientoPagoContableServicio(item);
-			entityManager.persist(item);
+		if( !(comentarios == null ) ){
+			for (ComentarioPagoMovimientoPagoContableServicioDO dato : comentarios) {
+				entityManager.persist(dato.getComentarioTesoreria());
+				dato.setPagoMovimientoPagoContableServicio(item);
+				entityManager.persist(dato);
+			}
 		}
-		
-		item.setComentarioPagoMovimientoPagoContableServicio(comentarios);
+		item.setComentariosPagoMovimientoPagoContableServicio(comentarios);
 	}
 
 	@Override
 	public PagoMovimientoPagoContableServicioDO update(PagoMovimientoPagoContableServicioDO item) {
 		deleteComentarios(item.getId());
-		List<ComentarioPagoMovimientoPagoContableServicioDO> comentarios =item.getComentarioPagoMovimientoPagoContableServicio();
-		item.setComentarioPagoMovimientoPagoContableServicio(null);
+		List<ComentarioPagoMovimientoPagoContableServicioDO> comentarios =item.getComentariosPagoMovimientoPagoContableServicio();
+		item.setComentariosPagoMovimientoPagoContableServicio(null);
 		entityManager.merge(item);
-		if(comentarios!=null)
-			saveComentarios(item,comentarios);
+		saveComentarios(item,comentarios);
 		return item;
 	}
 	
 	private void deleteComentarios(Integer idPago){
-		
 		PagoMovimientoPagoContableServicioDO pago=getItem(idPago);
-		
-		for (ComentarioPagoMovimientoPagoContableServicioDO dato :pago.getComentarioPagoMovimientoPagoContableServicio()) {
-			entityManager.remove(dato);
-			entityManager.remove(dato.getComentarioTesoreria());
+		if( pago.getComentariosPagoMovimientoPagoContableServicio() != null ){
+			for (ComentarioPagoMovimientoPagoContableServicioDO dato :pago.getComentariosPagoMovimientoPagoContableServicio()) {
+				entityManager.remove(dato);
+			}
 		}
-		
 	}
-	
 
 	@Override
 	public PagoMovimientoPagoContableServicioDO getItem(Integer id) {
 		PagoMovimientoPagoContableServicioDO cotizacion = entityManager.find(PagoMovimientoPagoContableServicioDO.class,id);
 		return cotizacion;
 	}
-
-
 }

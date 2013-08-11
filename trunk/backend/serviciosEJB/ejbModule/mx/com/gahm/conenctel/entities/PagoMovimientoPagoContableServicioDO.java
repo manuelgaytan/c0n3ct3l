@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -63,8 +64,8 @@ public class PagoMovimientoPagoContableServicioDO implements Serializable{
 	@Column(name = "referencia_abono", nullable = false)
 	private Integer referenciaAbono;
 	
-	@OneToMany(mappedBy="pagoMovimientoPagoContableServicio", fetch = FetchType.EAGER)
-	private List<ComentarioPagoMovimientoPagoContableServicioDO> comentarioPagoMovimientoPagoContableServicio;
+	@OneToMany(mappedBy="pagoMovimientoPagoContableServicio", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+	private List<ComentarioPagoMovimientoPagoContableServicioDO> comentariosPagoMovimientoPagoContableServicio;
 	
 	public PagoMovimientoPagoContableServicioDO() {
 		super();
@@ -133,18 +134,12 @@ public class PagoMovimientoPagoContableServicioDO implements Serializable{
 		this.referenciaAbono = referenciaAbono;
 	}
 
-	public List<ComentarioPagoMovimientoPagoContableServicioDO> getComentarioPagoMovimientoPagoContableServicio() {
-		return comentarioPagoMovimientoPagoContableServicio;
+	public List<ComentarioPagoMovimientoPagoContableServicioDO> getComentariosPagoMovimientoPagoContableServicio() {
+		return comentariosPagoMovimientoPagoContableServicio;
 	}
 
-	public void setComentarioPagoMovimientoPagoContableServicio(
+	public void setComentariosPagoMovimientoPagoContableServicio(
 			List<ComentarioPagoMovimientoPagoContableServicioDO> comentarioPagoMovimientoPagoContableServicio) {
-		this.comentarioPagoMovimientoPagoContableServicio = comentarioPagoMovimientoPagoContableServicio;
+		this.comentariosPagoMovimientoPagoContableServicio = comentarioPagoMovimientoPagoContableServicio;
 	}
-	
-	
-	
-	
-	
-	
 }

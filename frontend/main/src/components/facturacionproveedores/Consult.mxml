@@ -25,9 +25,15 @@
 			
 			[Bindable]
 			private var _readOnly:Boolean = false;
+			[Bindable]
+			private var _noExecuteQuery:Boolean = false;
 			
 			public function set readOnly(value:Boolean):void{
 				this._readOnly = value;
+			}
+			
+			public function set noExecuteQuery(value:Boolean):void{
+				this._noExecuteQuery = value;
 			}
 			
 			protected function responseGetAll_resultHandler(event:ResultEvent):void
@@ -42,7 +48,7 @@
 			
 			protected function creationCompleteHandler(event:FlexEvent):void
 			{
-				if( !this._readOnly ){
+				if( !this._noExecuteQuery ){
 					this.executeQuery();
 				}
 			}

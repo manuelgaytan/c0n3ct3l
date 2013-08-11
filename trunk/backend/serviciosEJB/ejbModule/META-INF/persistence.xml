@@ -178,7 +178,6 @@
 		<class>mx.com.gahm.conenctel.entities.VariacionDO</class>
 		<class>mx.com.gahm.conenctel.entities.RegistroPercepcionDO</class>
 		<class>mx.com.gahm.conenctel.entities.CursoDO</class>
-		<class>mx.com.gahm.conenctel.entities.ComprobacionViaticoaDO</class>
 		<class>mx.com.gahm.conenctel.entities.ComentarioPagoViaticosDO</class>
 		<class>mx.com.gahm.conenctel.entities.RegistroDeduccionDO</class>
 		<class>mx.com.gahm.conenctel.entities.ContratacionDO</class>

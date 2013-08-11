@@ -63,7 +63,7 @@ public class ComprobacionViaticosService implements IComprobacionViaticosService
 			List<DocumentoComprobacionViaticosDO> documentos) {
 		if(documentos != null){
 			for (DocumentoComprobacionViaticosDO doc : documentos) {
-				doc.setComprobacionViatico(item);
+				doc.setComprobacionViaticos(item);
 				entityManager.persist( doc );
 			}
 			item.setDocumentosComprobacionViaticos(documentos);

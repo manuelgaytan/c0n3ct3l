@@ -20,7 +20,9 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name = "NotaCreditoProveedor")
 @NamedQueries({
-	@NamedQuery(name = "NotaCreditoProveedorDO.findAll", query = "select rc from NotaCreditoProveedorDO rc")
+	@NamedQuery(name = "NotaCreditoProveedorDO.findAll", query = "select rc from NotaCreditoProveedorDO rc"),
+	@NamedQuery(name = "NotaCreditoProveedorDO.getNotaCreditoByIdMaquilador", query = "select rc from NotaCreditoProveedorDO rc where rc.proveedorMaquilador.id=:idMaquilador"),
+	@NamedQuery(name = "NotaCreditoProveedorDO.getNotaCreditoByIdCalificado", query = "select rc from NotaCreditoProveedorDO rc where rc.proveedorCalificado.id=:idCalificado")
 	})
 public class NotaCreditoProveedorDO implements Serializable {
 

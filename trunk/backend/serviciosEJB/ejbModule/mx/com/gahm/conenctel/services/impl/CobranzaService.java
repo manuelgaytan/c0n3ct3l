@@ -48,31 +48,41 @@ public class CobranzaService implements ICobranzaService{
 	@Override
 	public CobranzaDO save(CobranzaDO item) {
 		List<ComentarioCobranzaDO> comentarios = item.getComentariosCobranza();
+		item.setComentariosCobranza( null ); 
 		entityManager.persist(item);
-		if(item.getComentariosCobranza()!=null)
 		saveComentarios(item,comentarios);
 		return item;
 	}
 	
 	private void saveComentarios(CobranzaDO item,List<ComentarioCobranzaDO> comentarios){
-		
+		if( comentarios == null ){
+			return;
+		}
 		for (ComentarioCobranzaDO dato : comentarios) {
-			
 			entityManager.persist(dato.getComentarioTesoreria());
 			dato.setCobranza(item);
 			entityManager.persist(dato);
 		}
-		
 		item.setComentariosCobranza(comentarios);
 	}
 	
-	
-	
-	
 	@Override
 	public CobranzaDO update(CobranzaDO item) {
+		deleteComentarios(item);
+		List<ComentarioCobranzaDO> comentarios = item.getComentariosCobranza();
+		item.setComentariosCobranza(null);
 		entityManager.merge(item);
+		saveComentarios(item,comentarios);
 		return item;
+	}
+
+	private void deleteComentarios(CobranzaDO itemParam) {
+		CobranzaDO cobranzaDO = entityManager.find(CobranzaDO.class, itemParam.getId());
+		if( cobranzaDO.getComentariosCobranza() != null ){
+			for (ComentarioCobranzaDO comentario : cobranzaDO.getComentariosCobranza()) {
+				entityManager.remove( comentario );
+			}
+		}
 	}
 
 	@Override

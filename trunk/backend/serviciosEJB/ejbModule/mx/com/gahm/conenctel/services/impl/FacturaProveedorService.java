@@ -124,4 +124,22 @@ public class FacturaProveedorService implements  IFacturaProveedorService{
 		
 		return FacturaProveedorDO;
 	}
+	
+	public List<FacturaProveedorDO> getAllByIdMaquilador(long idMaquilador) {
+		List<FacturaProveedorDO> datos= null;
+		Query query =null;
+		query = entityManager.createNamedQuery("FacturaProveedorDO.getFacturacionByIdMaquilador");
+		query.setParameter("idMaquilador", idMaquilador);
+		datos = query.getResultList();
+		return datos;
+	}
+	
+	public List<FacturaProveedorDO> getAllByIdCalificado(long idCalificado) {
+		List<FacturaProveedorDO> datos= null;
+		Query query =null;
+		query = entityManager.createNamedQuery("FacturaProveedorDO.getFacturacionByIdCalificado");
+		query.setParameter("idCalificado", idCalificado);
+		datos = query.getResultList();
+		return datos;
+	}
 }

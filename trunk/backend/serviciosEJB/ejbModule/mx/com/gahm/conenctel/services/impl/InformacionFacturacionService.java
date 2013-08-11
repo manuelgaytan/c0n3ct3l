@@ -173,7 +173,7 @@ private void saveComentarios1(InformacionFacturacionDO item,List<ComentarioInfor
 	public List<InformacionFacturacionDO> getAllByFiltro(Integer idCliente){
 		List<InformacionFacturacionDO> datos = null;
 		TypedQuery<InformacionFacturacionDO>  query =null;
-		query = entityManager.createNamedQuery("InformacionFacturacionDO.NotasCrediByCliente",InformacionFacturacionDO.class);
+		query = entityManager.createNamedQuery("InformacionFacturacionDO.findBycliente",InformacionFacturacionDO.class);
 		query.setParameter("idCliente", idCliente);
 		datos = query.getResultList();
 

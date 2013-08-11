@@ -42,7 +42,7 @@ public class ComentarioTesoreriaDO implements Serializable {
 
 	@Temporal(TemporalType.DATE)
 	@Column(name = "fecha")
-	private Date fecha;
+	private Date fechaCaptura;
 
 	@ManyToOne
 	@JoinColumn(name = "fk_usuario")
@@ -56,11 +56,11 @@ public class ComentarioTesoreriaDO implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public ComentarioTesoreriaDO(Integer id, Date fecha, UsuarioDO usuario,
+	public ComentarioTesoreriaDO(Integer id, Date fechaCaptura, UsuarioDO usuario,
 			String comentario) {
 		super();
 		this.id = id;
-		this.fecha = fecha;
+		this.fechaCaptura = fechaCaptura;
 		this.usuario = usuario;
 		this.comentario = comentario;
 	}
@@ -81,18 +81,18 @@ public class ComentarioTesoreriaDO implements Serializable {
 	}
 
 	/**
-	 * @return the fecha
+	 * @return the fechaCaptura
 	 */
-	public Date getFecha() {
-		return fecha;
+	public Date getFechaCaptura() {
+		return fechaCaptura;
 	}
 
 	/**
-	 * @param fecha
-	 *            the fecha to set
+	 * @param fechaCaptura
+	 *            the fechaCaptura to set
 	 */
-	public void setFecha(Date fecha) {
-		this.fecha = fecha;
+	public void setFechaCaptura(Date fechaCaptura) {
+		this.fechaCaptura = fechaCaptura;
 	}
 
 	/**

@@ -10,7 +10,9 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
+import mx.com.gahm.conenctel.entities.ComentarioCuentasPagarFacturacionDO;
 import mx.com.gahm.conenctel.entities.ComentarioPagoProveedorDO;
+import mx.com.gahm.conenctel.entities.ComentarioTesoreriaDO;
 import mx.com.gahm.conenctel.entities.FacturaProveedorDO;
 import mx.com.gahm.conenctel.entities.PagoProveedorDO;
 import mx.com.gahm.conenctel.services.IPagoProveedorService;
@@ -42,50 +44,52 @@ public class PagoProveedorService implements IPagoProveedorService{
 			cotizacion =getItem(id);
 			entityManager.remove(cotizacion);
 		}
-		
 	}
 
 	@Override
 	public PagoProveedorDO save(PagoProveedorDO item) {
-		List<ComentarioPagoProveedorDO> comentarios =item.getComentarioPagoProveedor();
-		item.setComentarioPagoProveedor(null);
+		List<ComentarioPagoProveedorDO> comentarios = item.getComentariosPagoProveedor();
+		item.setComentariosPagoProveedor(null);
 		entityManager.persist(item);
-		if(comentarios!=null)
-		saveComentarios(item,comentarios);
+		if(comentarios != null){
+			saveComentarios(item,comentarios);
+		}
 		return item;
 	}
 	
 	private void saveComentarios(PagoProveedorDO item,List<ComentarioPagoProveedorDO> comentarios){
-		
-		for (ComentarioPagoProveedorDO dato : comentarios) {
-			entityManager.persist(dato.getComentarioTesoreria());
-			dato.setPagoProveedor(item);
-			entityManager.persist(item);
+		if( comentarios == null ){
+			return;
 		}
-		
-		item.setComentarioPagoProveedor(comentarios);
+		for (ComentarioPagoProveedorDO dato : comentarios) {
+			ComentarioTesoreriaDO comentarioTesoreria = dato.getComentarioTesoreria();
+			entityManager.persist( comentarioTesoreria );
+			dato.setComentarioTesoreria( comentarioTesoreria );
+			dato.setPagoProveedor( item );
+			entityManager.persist( dato );
+		}
+		item.setComentariosPagoProveedor(comentarios);
 	}
 
 	@Override
 	public PagoProveedorDO update(PagoProveedorDO item) {
 		deleteComentarios(item.getId());
-		List<ComentarioPagoProveedorDO> comentarios =item.getComentarioPagoProveedor();
-		item.setComentarioPagoProveedor(null);
+		List<ComentarioPagoProveedorDO> comentarios =item.getComentariosPagoProveedor();
+		item.setComentariosPagoProveedor(null);
 		entityManager.merge(item);
-		if(comentarios!=null)
+		if( comentarios!=null ){
 			saveComentarios(item,comentarios);
+		}
 		return item;
 	}
 	
 	private void deleteComentarios(Integer idPago){
-		
 		PagoProveedorDO pago=getItem(idPago);
-		
-		for (ComentarioPagoProveedorDO dato :pago.getComentarioPagoProveedor()) {
-			entityManager.remove(dato);
-			entityManager.remove(dato.getComentarioTesoreria());
+		if( pago.getComentariosPagoProveedor() != null ){
+			for (ComentarioPagoProveedorDO dato :pago.getComentariosPagoProveedor()) {
+				entityManager.remove(dato);
+			}
 		}
-		
 	}
 
 	@Override

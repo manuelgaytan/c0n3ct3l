@@ -14,5 +14,6 @@ public interface IFacturaProveedorService {
 	FacturaProveedorDO save( FacturaProveedorDO item );
 	FacturaProveedorDO update( FacturaProveedorDO item );
 	FacturaProveedorDO getItem( Integer id );
-
+	List<FacturaProveedorDO> getAllByIdMaquilador( long id );
+	List<FacturaProveedorDO> getAllByIdCalificado( long id );
 }

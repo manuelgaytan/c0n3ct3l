@@ -39,7 +39,7 @@ public class DocumentoComprobacionViaticosDO implements Serializable {
 	
 	@ManyToOne
 	@JoinColumn(name = "fk_comprobacion_viaticos", nullable = false)
-	private ComprobacionViaticosDO comprobacionViatico;
+	private ComprobacionViaticosDO comprobacionViaticos;
 	
 	@Column(name = "documento", nullable = false)
 	private String documento;
@@ -50,10 +50,10 @@ public class DocumentoComprobacionViaticosDO implements Serializable {
 	}
 
 	public DocumentoComprobacionViaticosDO(long id,
-			ComprobacionViaticosDO comprobacionViatico, String documento) {
+			ComprobacionViaticosDO comprobacionViaticos, String documento) {
 		super();
 		this.id = id;
-		this.comprobacionViatico = comprobacionViatico;
+		this.comprobacionViaticos = comprobacionViaticos;
 		this.documento = documento;
 	}
 
@@ -65,12 +65,12 @@ public class DocumentoComprobacionViaticosDO implements Serializable {
 		this.id = id;
 	}
 
-	public ComprobacionViaticosDO getComprobacionViatico() {
-		return comprobacionViatico;
+	public ComprobacionViaticosDO getComprobacionViaticos() {
+		return comprobacionViaticos;
 	}
 
-	public void setComprobacionViatico(ComprobacionViaticosDO comprobacionViatico) {
-		this.comprobacionViatico = comprobacionViatico;
+	public void setComprobacionViaticos(ComprobacionViaticosDO comprobacionViaticos) {
+		this.comprobacionViaticos = comprobacionViaticos;
 	}
 
 	public String getDocumento() {

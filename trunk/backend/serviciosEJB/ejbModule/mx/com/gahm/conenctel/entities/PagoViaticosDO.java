@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -46,7 +47,7 @@ public class PagoViaticosDO implements Serializable{
 	
 	@ManyToOne
 	@JoinColumn(name = "fk_comprobacion_viaticos", nullable = false)
-	private ComprobacionViaticoaDO comprobacionViaticos;
+	private ComprobacionViaticosDO comprobacionViaticos;
 	
 	@ManyToOne
 	@JoinColumn(name = "fk_banco_conectel", nullable = false)
@@ -62,7 +63,7 @@ public class PagoViaticosDO implements Serializable{
 	@Column(name = "referencia_abono", nullable = false)
 	private Integer referenciaAbono;
 
-	@OneToMany(mappedBy="pagoViaticos", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy="pagoViaticos", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	private List<ComentarioPagoViaticosDO> comentariosPagoViaticos; 
 	
 	public PagoViaticosDO() {
@@ -71,7 +72,7 @@ public class PagoViaticosDO implements Serializable{
 	}
 
 	public PagoViaticosDO(Integer id,
-			ComprobacionViaticoaDO comprobacionViaticos,
+			ComprobacionViaticosDO comprobacionViaticos,
 			BancoConectelDO bancoConectel, Date fechaAbono, Double monto,
 			Integer referenciaAbono) {
 		super();
@@ -91,11 +92,11 @@ public class PagoViaticosDO implements Serializable{
 		this.id = id;
 	}
 
-	public ComprobacionViaticoaDO getComprobacionViaticos() {
+	public ComprobacionViaticosDO getComprobacionViaticos() {
 		return comprobacionViaticos;
 	}
 
-	public void setComprobacionViaticos(ComprobacionViaticoaDO comprobacionViaticos) {
+	public void setComprobacionViaticos(ComprobacionViaticosDO comprobacionViaticos) {
 		this.comprobacionViaticos = comprobacionViaticos;
 	}
 

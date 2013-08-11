@@ -33,11 +33,11 @@ public class ComentarioCobranzaDO implements Serializable{
 	private Integer id;
 	
 	@ManyToOne
-	@JoinColumn(name = "fk_validacion_administrativa", nullable = false)
+	@JoinColumn(name = "fk_cobranza", nullable = false)
 	private CobranzaDO cobranza;
 	
 	@OneToOne
-	@JoinColumn(name = "fk_proyecto")
+	@JoinColumn(name = "fk_comentario_tesoreria")
 	private ComentarioTesoreriaDO comentarioTesoreria;
 
 	public ComentarioCobranzaDO() {

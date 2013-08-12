@@ -78,6 +78,14 @@ public class DatosGeneralesSolicitanteDO implements Serializable{
 	@JoinColumn(name = "fk_documentacion_extranjeros", nullable = false)
 	private DocumentacionExtranjerosDO documentacionExtranjeros;
 	
+	@ManyToOne
+	@JoinColumn(name = "fk_estado_civil", nullable = false)
+	private EstadoCivilDO estadoCivil;
+	
+	@ManyToOne
+	@JoinColumn(name = "fk_sexo", nullable = false)
+	private SexoDO sexo;
+	
 	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name = "fk_direccion_solicitante", nullable = false )
 	private DireccionSolicitanteDO direccionSolicitante;
@@ -118,7 +126,7 @@ public class DatosGeneralesSolicitanteDO implements Serializable{
 	
 	@ManyToOne
 	@JoinColumn(name = "fk_tiempo_libre", nullable = false)
-	private TiempoLibreDO tiempoLibre;
+	private ActividadTiempoLibreDO actividadTiempoLibre;
 
 	public DatosGeneralesSolicitanteDO() {
 		super();
@@ -136,7 +144,7 @@ public class DatosGeneralesSolicitanteDO implements Serializable{
 			String curp, LicenciaDO licencia,
 			CartaAntecedentesPenalesDO cartaAntecedentesPenales,
 			EstadoSaludDO estadoSalud, String enfermedadCronica,
-			TiempoLibreDO tiempoLibre) {
+			ActividadTiempoLibreDO tiempoLibre) {
 		super();
 		this.id = id;
 		this.reclutamientoSolicitudEmpleo = reclutamientoSolicitudEmpleo;
@@ -160,7 +168,7 @@ public class DatosGeneralesSolicitanteDO implements Serializable{
 		this.cartaAntecedentesPenales = cartaAntecedentesPenales;
 		this.estadoSalud = estadoSalud;
 		this.enfermedadCronica = enfermedadCronica;
-		this.tiempoLibre = tiempoLibre;
+		this.actividadTiempoLibre = tiempoLibre;
 	}
 
 	/**
@@ -477,17 +485,42 @@ public class DatosGeneralesSolicitanteDO implements Serializable{
 	/**
 	 * @return the tiempoLibre
 	 */
-	public TiempoLibreDO getTiempoLibre() {
-		return tiempoLibre;
+	public ActividadTiempoLibreDO getActividadTiempoLibre() {
+		return actividadTiempoLibre;
 	}
 
 	/**
 	 * @param tiempoLibre the tiempoLibre to set
 	 */
-	public void setTiempoLibre(TiempoLibreDO tiempoLibre) {
-		this.tiempoLibre = tiempoLibre;
+	public void setActividadTiempoLibre(ActividadTiempoLibreDO tiempoLibre) {
+		this.actividadTiempoLibre = tiempoLibre;
 	}
 	
+	/**
+	 * @return the estadoCivil
+	 */
+	public EstadoCivilDO getEstadoCivil() {
+		return estadoCivil;
+	}
+
+	/**
+	 * @param estadoCivil the tiempoLibre to set
+	 */
+	public void setEstadoCivil(EstadoCivilDO estadoCivil) {
+		this.estadoCivil = estadoCivil;
+	}
 	
-	
+	/**
+	 * @return the sexo
+	 */
+	public SexoDO getSexo() {
+		return sexo;
+	}
+
+	/**
+	 * @param sexo the tiempoLibre to set
+	 */
+	public void setSexo(SexoDO sexo) {
+		this.sexo = sexo;
+	}
 }

@@ -32,7 +32,8 @@ public class PaqueteriaDO implements Serializable{
 	private static final long serialVersionUID = -3085560628152938712L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "id", unique = true, nullable = false)
 	private long id;
 	
 	@OneToOne

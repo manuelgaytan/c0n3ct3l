@@ -18,6 +18,8 @@ package model
 		public var respectoAutoridad:Number;
 		public var orden:Number;
 		
+		public var seleccionReclutamiento:SeleccionReclutamiento;
+		
 		public function PerfilEscala()
 		{
 		}

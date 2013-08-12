@@ -7,6 +7,8 @@ package model
 		public var viveCon:ViveCon;
 		public var dependientes:Dependientes;
 		
+		public var reclutamientoSolicitudEmpleo:ReclutamientoSolicitudEmpleo;
+		
 		public function DatosFamiliaresSolicitante()
 		{
 		}

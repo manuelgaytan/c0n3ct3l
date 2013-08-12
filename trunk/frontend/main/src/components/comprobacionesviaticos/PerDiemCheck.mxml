@@ -7,6 +7,8 @@
 		<![CDATA[
 			import events.GenericEvent;
 			
+			import flash.net.navigateToURL;
+			
 			import model.Catalogo;
 			import model.Colaborador;
 			import model.ComprobacionViaticos;
@@ -311,7 +313,8 @@
 			
 			protected function descargarFormato_clickHandler(event:MouseEvent):void
 			{
-				Util.showErrorMessage("En construcción... (falta el formato)");
+				var url:URLRequest = new URLRequest("../formats/SOLICITUD_DE_VIATICOS.xlsx");
+				navigateToURL( url, "_blank" );
 			}
 			
 			protected function diemRequest_itemDetailHandler(event:GenericEvent):void

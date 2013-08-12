@@ -10,6 +10,8 @@ package model
 		public var fechaPresentarse:Date;
 		public var faseSeleccion:FaseSeleccion;
 		
+		public var reclutamientoSolicitudEmpleo:ReclutamientoSolicitudEmpleo;
+		
 		public function DatosSobreConectelSolicitante()
 		{
 		}

@@ -25,6 +25,8 @@ package model
 		public var nombreJefeInmediatoAnterior:String;
 		public var actividadesDesempenadasAnterior:String;
 		
+		public var reclutamientoSolicitudEmpleo:ReclutamientoSolicitudEmpleo;
+		
 		public function DatosUltimoEmpleoSolicitante()
 		{
 		}

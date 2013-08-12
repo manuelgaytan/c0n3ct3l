@@ -531,11 +531,11 @@ package model
 		}
 		
 		public static function labelFunctionDate(object:Object, column:DataGridColumn):String{
-			return Util.formatDateToString( object[column.dataField] );
+			return Util.formatDateToString( Util.extractObject(object,column.dataField) as Date );
 		}
 		
 		public static function labelFunctionDateHour(object:Object, column:DataGridColumn):String{
-			return Util.formatDateTimeToString( object[column.dataField] );
+			return Util.formatDateTimeToString( Util.extractObject(object,column.dataField) as Date );
 		}
 		
 		public static function asArrayCollection(object:Object){

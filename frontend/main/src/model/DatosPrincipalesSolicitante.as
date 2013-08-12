@@ -9,6 +9,8 @@ package model
 		public var sueldoSolicitado:Number;
 		public var objetivoLaboral:String;
 		
+		public var reclutamientoSolicitudEmpleo:ReclutamientoSolicitudEmpleo;
+		
 		public function DatosPrincipalesSolicitante()
 		{
 		}

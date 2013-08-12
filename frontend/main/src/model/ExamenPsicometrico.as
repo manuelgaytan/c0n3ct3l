@@ -14,6 +14,8 @@ package model
 		public var therman:Boolean;
 		public var dominos:Boolean;
 		
+		public var seleccionReclutamiento:SeleccionReclutamiento;
+		
 		public function ExamenPsicometrico()
 		{
 		}

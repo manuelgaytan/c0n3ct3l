@@ -12,6 +12,8 @@ package model
 		public var equipoOficinaDomina:EquipoOficinaDomina;
 		public var paqueteria:Paqueteria;
 		
+		public var reclutamientoSolicitudEmpleo:ReclutamientoSolicitudEmpleo;
+		
 		public function DatosEscolaresHabilidades()
 		{
 		}

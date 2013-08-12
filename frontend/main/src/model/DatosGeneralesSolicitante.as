@@ -28,6 +28,8 @@ package model
 		public var enfermedadCronica:String;
 		public var actividadTiempoLibre:ActividadTiempoLibre;
 		
+		public var reclutamientoSolicitudEmpleo:ReclutamientoSolicitudEmpleo;
+		
 		public function DatosGeneralesSolicitante()
 		{
 		}

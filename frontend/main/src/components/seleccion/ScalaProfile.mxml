@@ -62,7 +62,7 @@
 				this.nstIntelligence.value = this._item.inteligencia;
 				this.nstSociable.value = this._item.sociable;
 				this.nstMethodsProcedures.value = this._item.metodosProcedimientos;
-				this.nstPhysicalAspect.value = this._item.metodosProcedimientos;
+				this.nstPhysicalAspect.value = this._item.aspectoFisico;
 				this.nstDevelopment.value = this._item.desenvolvimiento;
 				this.nstConcentrate.value = this._item.concentracion;
 				this.nstEthusiasm.value = this._item.entusiasmo;

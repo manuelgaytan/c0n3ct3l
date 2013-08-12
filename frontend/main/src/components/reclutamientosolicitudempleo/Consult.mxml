@@ -6,10 +6,10 @@
 		<![CDATA[
 			import events.GenericEvent;
 			
-			import model.ReclutamientoSolicitudEmpleo;
 			import model.ConfiguracionPruebaEntrega;
 			import model.FiltroProyecto;
 			import model.Proyecto;
+			import model.ReclutamientoSolicitudEmpleo;
 			import model.Util;
 			
 			import mx.collections.ArrayCollection;
@@ -116,28 +116,28 @@
 								   dataField="id"
 								   width="60"
 								   textAlign="right"/>
-				<mx:DataGridColumn id="dtgPerDiemCheckID" headerText="{'Fecha\nSolicitud'}"
+				<mx:DataGridColumn id="dtgApplicationDate" headerText="{'Fecha\nSolicitud'}"
 								   dataField="datosPrincipalesSolicitante.fechaSolicitud"
-								   width="130"/>
-				<mx:DataGridColumn id="dtgPerDiemCheckState" headerText="{'Puesto\nSolicitado'}"
+								   labelFunction="{Util.labelFunctionDate}"
+								   width="130"
+								   textAlign="center"/>
+				<mx:DataGridColumn id="dtgPositionRequested" headerText="{'Puesto\nSolicitado'}"
 								   dataField="datosPrincipalesSolicitante.puestoSolicitado"
 								   width="170"/>
-				<mx:DataGridColumn id="dtgBank" headerText="{'Sueldo\nSolicitado'}"
+				<mx:DataGridColumn id="dtgSalaryRequested" headerText="{'Sueldo\nSolicitado'}"
 								   dataField="datosPrincipalesSolicitante.sueldoSolicitado"
-								   width="100"/>
-				<mx:DataGridColumn id="dtgDate" headerText="{'Apellido\nPaterno'}"
+								   width="100"
+								   textAlign="right"/>
+				<mx:DataGridColumn id="dtgLastName" headerText="{'Apellido\nPaterno'}"
 								   dataField="datosGeneralesSolicitante.apellidoPaterno"
-								   textAlign="center"
 								   width="100"
 								   />
-				<mx:DataGridColumn id="dtgAmount" headerText="{'Apellido\nMaterno'}"
+				<mx:DataGridColumn id="dtgMotherLastName" headerText="{'Apellido\nMaterno'}"
 								   dataField="datosGeneralesSolicitante.apellidoMaterno"
-								   textAlign="right"
 								   width="100"
 								   />
-				<mx:DataGridColumn id="dtgPaymentReference" headerText="{'Nombre'}"
+				<mx:DataGridColumn id="dtgName" headerText="{'Nombre'}"
 								   dataField="datosGeneralesSolicitante.nombres"
-								   textAlign="right"
 								   width="120"
 								   />
 			</mx:columns>

@@ -24,12 +24,12 @@
 			import model.MedioTransporte;
 			import model.NotaCreditoCliente;
 			import model.NotaCreditoProveedor;
-			import model.ReclutamientoSolicitudEmpleo;
 			import model.Producto;
 			import model.Proveedor;
 			import model.ProveedorCalificado;
 			import model.ProveedorMaquilador;
 			import model.Proyecto;
+			import model.ReclutamientoSolicitudEmpleo;
 			import model.TipoColaborador;
 			import model.TipoEntregable;
 			import model.Util;
@@ -180,6 +180,7 @@
 			
 			private function cleanForm():void
 			{
+				Util.upScroll( this );
 				this.mainData.cleanForm();
 				this.generalInformation.cleanForm();
 				this.familyFacts.cleanForm();

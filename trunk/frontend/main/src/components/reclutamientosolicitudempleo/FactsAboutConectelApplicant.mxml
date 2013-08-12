@@ -82,7 +82,7 @@
 				}else{
 					factsAboutConectelApplicant = this._item;
 				}
-				factsAboutConectelApplicant.fuenteReclutamiento = Util.validateCombo( this.cmbSelectionPhase ) as FuenteReclutamiento;
+				factsAboutConectelApplicant.fuenteReclutamiento = Util.validateCombo( this.cmbRecruitmentSource ) as FuenteReclutamiento;
 				factsAboutConectelApplicant.conocidosConectel = this.chkConectelKnown.selected;
 				factsAboutConectelApplicant.puedeViajar = this.chkTripAvailable.selected;
 				factsAboutConectelApplicant.fechaPresentarse = this.dtfDateWork.selectedDate;
@@ -119,6 +119,7 @@
 			
 			public function cleanForm():void
 			{
+				Util.upScroll( this );
 				this.txtID.reset();
 				this.cmbRecruitmentSource.selectedIndex = 0;
 				this.chkConectelKnown.selected = false;

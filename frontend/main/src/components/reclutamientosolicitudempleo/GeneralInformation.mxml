@@ -226,6 +226,7 @@
 			
 			public function cleanForm():void
 			{
+				Util.upScroll( this );
 				this.txtID.reset();
 				this.txtLastName.reset();
 				this.txtMothersLastName.reset();

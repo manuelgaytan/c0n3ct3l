@@ -171,6 +171,7 @@
 			
 			public function cleanForm():void
 			{
+				Util.upScroll( this );
 				this.txtID.reset();
 				this.txtCorporateName.reset();
 				this.txtAddress.reset();

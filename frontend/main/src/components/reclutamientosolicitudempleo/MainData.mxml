@@ -122,6 +122,7 @@
 			
 			public function cleanForm():void
 			{
+				Util.upScroll( this );
 				this.txtID.reset();
 				this.dtfRequestDate.selectedIndex = 0;
 				this.txtPositionRequested.reset();

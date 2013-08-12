@@ -136,6 +136,7 @@
 
 			public function cleanForm():void
 			{
+				Util.upScroll( this );
 				this.txtID.reset();
 				this.cmbMostRecentStudies.selectedIndex = 0;
 				this.txtSchoolNameOrigin.reset();

@@ -50,7 +50,7 @@ public class DatosEscolaresHabilidadesDO implements Serializable{
 	private UltimoGradoEstudiosDO ultimoGradoEstudios;
 	
 	@Column(name = "escuela_procedencia", nullable = false)
-	private String escuela_procedencia;
+	private String escuelaProcedencia;
 
 	@ManyToOne
 	@JoinColumn(name = "fk_estado_academico", nullable = false)
@@ -61,10 +61,10 @@ public class DatosEscolaresHabilidadesDO implements Serializable{
 	
 	@Column(name = "porcentaje_idiomas", nullable = false)
 	private String porcentajeIdiomas;
-	/*
+	
 	@OneToOne(mappedBy="datosEscolaresHabilidades",cascade=CascadeType.ALL)  
 	private EquipoOficinaDominaDO equipoOficinaDomina;
-	*/
+	
 	@OneToOne(mappedBy="datosEscolaresHabilidades",cascade=CascadeType.ALL)
 	private PaqueteriaDO paqueteria;
 	
@@ -79,13 +79,13 @@ public class DatosEscolaresHabilidadesDO implements Serializable{
 	public DatosEscolaresHabilidadesDO(Integer id,
 			ReclutamientoSolicitudEmpleoDO reclutamientoSolicitudEmpleo,
 			UltimoGradoEstudiosDO ultimoGradoEstudios,
-			String escuela_procedencia, EstadoAcademicoDO estadoAcademico,
+			String escuelaProcedencia, EstadoAcademicoDO estadoAcademico,
 			String idiomas, String porcentajeIdiomas) {
 		super();
 		this.id = id;
 		this.reclutamientoSolicitudEmpleo = reclutamientoSolicitudEmpleo;
 		this.ultimoGradoEstudios = ultimoGradoEstudios;
-		this.escuela_procedencia = escuela_procedencia;
+		this.escuelaProcedencia = escuelaProcedencia;
 		this.estadoAcademico = estadoAcademico;
 		this.idiomas = idiomas;
 		this.porcentajeIdiomas = porcentajeIdiomas;
@@ -137,15 +137,15 @@ public class DatosEscolaresHabilidadesDO implements Serializable{
 	/**
 	 * @return the escuela_procedencia
 	 */
-	public String getEscuela_procedencia() {
-		return escuela_procedencia;
+	public String getEscuelaProcedencia() {
+		return escuelaProcedencia;
 	}
 
 	/**
 	 * @param escuela_procedencia the escuela_procedencia to set
 	 */
-	public void setEscuela_procedencia(String escuela_procedencia) {
-		this.escuela_procedencia = escuela_procedencia;
+	public void setEscuelaProcedencia(String escuelaProcedencia) {
+		this.escuelaProcedencia = escuelaProcedencia;
 	}
 
 	/**
@@ -189,9 +189,20 @@ public class DatosEscolaresHabilidadesDO implements Serializable{
 	public void setPorcentajeIdiomas(String porcentajeIdiomas) {
 		this.porcentajeIdiomas = porcentajeIdiomas;
 	}
-	
-	
-	
-	
-	
+
+	public EquipoOficinaDominaDO getEquipoOficinaDomina() {
+		return equipoOficinaDomina;
+	}
+
+	public void setEquipoOficinaDomina(EquipoOficinaDominaDO equipoOficinaDomina) {
+		this.equipoOficinaDomina = equipoOficinaDomina;
+	}
+
+	public PaqueteriaDO getPaqueteria() {
+		return paqueteria;
+	}
+
+	public void setPaqueteria(PaqueteriaDO paqueteria) {
+		this.paqueteria = paqueteria;
+	}
 }

@@ -95,6 +95,9 @@ public class DatosUltimoEmpleoSolicitanteDO implements Serializable{
 	@Column(name = "motivo_separacion_anterior", nullable = false)
 	private String motivoSeparacionAnterior;
 	
+	@Column(name = "nombre_jefe_inmediato", nullable = false)
+	private String nombreJefeInmediato;
+	
 	@Column(name = "nombre_jefe_inmediato_anterior", nullable = false)
 	private String nombreJefeInmediatoAnterior;
 	
@@ -116,6 +119,7 @@ public class DatosUltimoEmpleoSolicitanteDO implements Serializable{
 			String puestoInicialAnterior, String puestoFinalAnterior,
 			Double sueldoInicialAnterior, Double sueldoFinalAnterior,
 			String motivoSeparacionAnterior,
+			String nombreJefeInmediato,
 			String nombreJefeInmediatoAnterior,
 			String actividadesDesempenadasAnterior) {
 		super();
@@ -138,6 +142,7 @@ public class DatosUltimoEmpleoSolicitanteDO implements Serializable{
 		this.sueldoInicialAnterior = sueldoInicialAnterior;
 		this.sueldoFinalAnterior = sueldoFinalAnterior;
 		this.motivoSeparacionAnterior = motivoSeparacionAnterior;
+		this.nombreJefeInmediato = nombreJefeInmediato;
 		this.nombreJefeInmediatoAnterior = nombreJefeInmediatoAnterior;
 		this.actividadesDesempenadasAnterior = actividadesDesempenadasAnterior;
 	}
@@ -409,6 +414,20 @@ public class DatosUltimoEmpleoSolicitanteDO implements Serializable{
 		this.motivoSeparacionAnterior = motivoSeparacionAnterior;
 	}
 
+	/**
+	 * @return the nombreJefeInmediato
+	 */
+	public String getNombreJefeInmediato() {
+		return nombreJefeInmediato;
+	}
+
+	/**
+	 * @param nombreJefeInmediato the nombreJefeInmediato to set
+	 */
+	public void setNombreJefeInmediato(String nombreJefeInmediato) {
+		this.nombreJefeInmediato = nombreJefeInmediato;
+	}
+	
 	/**
 	 * @return the nombreJefeInmediatoAnterior
 	 */

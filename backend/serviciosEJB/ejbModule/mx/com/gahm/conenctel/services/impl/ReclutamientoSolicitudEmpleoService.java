@@ -44,7 +44,7 @@ public class ReclutamientoSolicitudEmpleoService implements IReclutamientoSolici
 			entityManager.remove(item.getDatosEscolaresHabilidades());
 			entityManager.remove(item.getDatosUltimoEmpleoSolicitante());
 			entityManager.remove(item.getDatosSobreConectelSolicitante());
-			entityManager.remove(item.getSeleccionReclutamiento());
+			//entityManager.remove(item.getSeleccionReclutamiento());
 			
 			entityManager.remove(item);
 		}
@@ -67,6 +67,9 @@ public class ReclutamientoSolicitudEmpleoService implements IReclutamientoSolici
 		item.getDatosFamiliaresSolicitante().setReclutamientoSolicitudEmpleo(item);
 		entityManager.persist(item.getDatosFamiliaresSolicitante());
 		
+		item.getDatosEscolaresHabilidades().getEquipoOficinaDomina().setDatosEscolaresHabilidades(item.getDatosEscolaresHabilidades());
+		item.getDatosEscolaresHabilidades().getPaqueteria().setDatosEscolaresHabilidades(item.getDatosEscolaresHabilidades());
+		
 		item.getDatosEscolaresHabilidades().setReclutamientoSolicitudEmpleo(item);
 		entityManager.persist(item.getDatosEscolaresHabilidades());
 		
@@ -76,8 +79,8 @@ public class ReclutamientoSolicitudEmpleoService implements IReclutamientoSolici
 		item.getDatosSobreConectelSolicitante().setReclutamientoSolicitudEmpleo(item);
 		entityManager.persist(item.getDatosSobreConectelSolicitante());
 		
-		item.getSeleccionReclutamiento().setReclutamientoSolicitudEmpleo(item);
-		entityManager.persist(item.getSeleccionReclutamiento());
+		//item.getSeleccionReclutamiento().setReclutamientoSolicitudEmpleo(item);
+		//entityManager.persist(item.getSeleccionReclutamiento());
 		return item;
 	}
 
@@ -90,18 +93,22 @@ public class ReclutamientoSolicitudEmpleoService implements IReclutamientoSolici
 		item.getDatosPrincipalesSolicitante().setReclutamientoSolicitudEmpleo(item);
 		item.getDatosGeneralesSolicitante().setReclutamientoSolicitudEmpleo(item);
 		item.getDatosFamiliaresSolicitante().setReclutamientoSolicitudEmpleo(item);
+		item.getDatosEscolaresHabilidades().getEquipoOficinaDomina().setDatosEscolaresHabilidades(item.getDatosEscolaresHabilidades());
+		item.getDatosEscolaresHabilidades().getPaqueteria().setDatosEscolaresHabilidades(item.getDatosEscolaresHabilidades());
 		item.getDatosEscolaresHabilidades().setReclutamientoSolicitudEmpleo(item);
 		item.getDatosUltimoEmpleoSolicitante().setReclutamientoSolicitudEmpleo(item);
 		item.getDatosSobreConectelSolicitante().setReclutamientoSolicitudEmpleo(item);
-		item.getSeleccionReclutamiento().setReclutamientoSolicitudEmpleo(item);
+		//item.getSeleccionReclutamiento().setReclutamientoSolicitudEmpleo(item);
 		
 		entityManager.merge(item.getDatosPrincipalesSolicitante());
 		entityManager.merge(item.getDatosGeneralesSolicitante());
 		entityManager.merge(item.getDatosFamiliaresSolicitante());
+		entityManager.merge(item.getDatosEscolaresHabilidades().getEquipoOficinaDomina());
+		entityManager.merge(item.getDatosEscolaresHabilidades().getPaqueteria());
 		entityManager.merge(item.getDatosEscolaresHabilidades());
 		entityManager.merge(item.getDatosUltimoEmpleoSolicitante());
 		entityManager.merge(item.getDatosSobreConectelSolicitante());
-		entityManager.merge(item.getSeleccionReclutamiento());
+		//entityManager.merge(item.getSeleccionReclutamiento());
 		return item;
 	}
 

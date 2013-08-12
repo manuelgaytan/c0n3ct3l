@@ -47,7 +47,7 @@ public class DatosFamiliaresSolicitanteDO implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name = "fk_dependientes", nullable = false)
-	private ViveConDO dependientes;
+	private DependientesDO dependientes;
 
 	public DatosFamiliaresSolicitanteDO() {
 		super();
@@ -56,7 +56,7 @@ public class DatosFamiliaresSolicitanteDO implements Serializable {
 
 	public DatosFamiliaresSolicitanteDO(Integer id,
 			ReclutamientoSolicitudEmpleoDO reclutamientoSolicitudEmpleo,
-			ViveConDO viveCon, ViveConDO dependientes) {
+			ViveConDO viveCon, DependientesDO dependientes) {
 		super();
 		this.id = id;
 		this.reclutamientoSolicitudEmpleo = reclutamientoSolicitudEmpleo;
@@ -113,7 +113,7 @@ public class DatosFamiliaresSolicitanteDO implements Serializable {
 	/**
 	 * @return the dependientes
 	 */
-	public ViveConDO getDependientes() {
+	public DependientesDO getDependientes() {
 		return dependientes;
 	}
 
@@ -121,7 +121,7 @@ public class DatosFamiliaresSolicitanteDO implements Serializable {
 	 * @param dependientes
 	 *            the dependientes to set
 	 */
-	public void setDependientes(ViveConDO dependientes) {
+	public void setDependientes(DependientesDO dependientes) {
 		this.dependientes = dependientes;
 	}
 

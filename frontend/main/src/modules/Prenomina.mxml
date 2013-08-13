@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
-		   width="800" height="525"
+		   width="960" height="525"
 		   xmlns:prenomina="components.prenomina.*"
 		   creationComplete="creationCompleteHandler(event)" xmlns:informacionfacturas="components.informacionfacturas.*" xmlns:notascreditoclientes="components.notascreditoclientes.*" xmlns:facturacionproveedores="components.facturacionproveedores.*" xmlns:notascreditoproveedores="components.notascreditoproveedores.*" xmlns:comprobacionesviaticos="components.comprobacionesviaticos.*">
 	<mx:Script>
@@ -36,7 +36,7 @@
 			}
 		]]>
 	</mx:Script>
-	<mx:TabNavigator id="navigator" width="800" height="100%" creationPolicy="all">
+	<mx:TabNavigator id="navigator" width="960" height="100%" creationPolicy="all">
 		<prenomina:Consult id="consult" itemDetail="consult_prenominaDetailHandler(event)"/>
 		<prenomina:PrenominaView id="detail" update="true" prenominaUpdated="detail_prenominaUpdatedHandler(event)"
 							 />

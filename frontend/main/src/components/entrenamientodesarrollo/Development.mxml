@@ -13,10 +13,10 @@
 			import model.ClasificacionPermiso;
 			import model.Constants;
 			import model.Contratacion;
+			import model.Curso;
 			import model.Deduccion;
 			import model.FormaPagoPrenomina;
 			import model.Percepcion;
-			import model.Curso;
 			import model.TipoSancion;
 			import model.Util;
 			import model.Variacion;
@@ -197,6 +197,7 @@
 			
 			private function cleanForm():void
 			{
+				Util.upScroll( this );
 				this.txtID.reset();
 				this.recruitmentConsult.datagrid.selectedItem = false;
 				this.dtfENCDate.reset();

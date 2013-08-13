@@ -200,6 +200,7 @@
 			
 			private function cleanForm():void
 			{
+				Util.upScroll( this );
 				this.txtID.reset();
 				this.cmbAreaRaisesNonConformity.selectedIndex = 0;
 				this.txtName.reset();

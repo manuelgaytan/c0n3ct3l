@@ -240,6 +240,7 @@
 			
 			private function cleanForm():void
 			{
+				Util.upScroll( this );
 				this.txtID.reset();
 				this.recruitmentJobApplication.datagrid.selectedItem = false;
 				this.txtInitialSalary.reset();

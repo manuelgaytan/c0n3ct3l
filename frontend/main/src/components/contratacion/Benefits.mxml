@@ -75,13 +75,13 @@
 				}else{
 					benefits = this._item;
 				}
-				benefits.seguroSocial = this.chkSocialSecurity.selected = false;
-				benefits.vacaciones = this.chkVacation.selected = false;
-				benefits.aguinaldo = this.chkChristmasBox.selected = false;
-				benefits.utilidades = this.chkUtilities.selected = false;
-				benefits.fonacot = this.chkFonacot.selected = false;
-				benefits.infonavit = this.chkInfonavit.selected = false;
-				benefits.primaVacacional = this.chkVacationPay.selected = false;
+				benefits.seguroSocial = this.chkSocialSecurity.selected;
+				benefits.vacaciones = this.chkVacation.selected;
+				benefits.aguinaldo = this.chkChristmasBox.selected;
+				benefits.utilidades = this.chkUtilities.selected;
+				benefits.fonacot = this.chkFonacot.selected;
+				benefits.infonavit = this.chkInfonavit.selected;
+				benefits.primaVacacional = this.chkVacationPay.selected;
 				return benefits;
 			}
 			

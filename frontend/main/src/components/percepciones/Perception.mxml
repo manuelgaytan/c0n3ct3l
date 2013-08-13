@@ -186,6 +186,7 @@
 			
 			private function cleanForm():void
 			{
+				Util.upScroll( this );
 				this.txtID.reset();
 				this.recruitmentConsult.datagrid.selectedItem = false;
 				this.cmbPerception.selectedIndex = 0;
@@ -240,6 +241,16 @@
 				if( this.mode == Constants.UPDATE_MODE ){
 				}
 			}
+			
+			protected function recruitmentConsult_itemDetailHandler(event:GenericEvent):void
+			{
+				if( event == null || event.information ){
+					return;
+				}
+				var item:Contratacion = event.information as Contratacion;
+				this.dtfStartContractDate.selectedDate = item.fechaInicioContrato;
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -253,7 +264,7 @@
 								  editable="false"/>
 		</mx:FormItem>
 		<mx:FormItem label="Contratación:"/>
-		<contratacion:Consult id="recruitmentConsult" readMode="true"/>
+		<contratacion:Consult id="recruitmentConsult" readMode="true" itemDetail="recruitmentConsult_itemDetailHandler(event)"/>
 		<mx:FormItem label="Percepción:">
 			<mx:ComboBox id="cmbPerception" width="200"
 						 labelField="percepcion"/>

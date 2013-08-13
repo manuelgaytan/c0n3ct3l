@@ -61,8 +61,8 @@
 				this.txtID.text = this._item.id.toString();
 				this.chkIFE.selected = this._item.ife;
 				this.chkBirthCertificate.selected = this._item.actaNacimiento;
-				this.chkProofHome.selected = this._item.actaNacimiento;
-				this.chkCURP.selected = this._item.actaNacimiento;
+				this.chkProofHome.selected = this._item.comprobanteDomicilio;
+				this.chkCURP.selected = this._item.curp;
 				this.chkRFC.selected = this._item.rfc;
 				this.chkNSS.selected = this._item.nss;
 				this.chkProofCertificateStudies.selected = this._item.comprobanteEstudiosCertificacion;
@@ -83,21 +83,21 @@
 				}else{
 					recruitmentDocuments = this._item;
 				}
-				recruitmentDocuments.ife = this.chkIFE.selected = false;
-				recruitmentDocuments.actaNacimiento = this.chkBirthCertificate.selected = false;
-				recruitmentDocuments.comprobanteDomicilio = this.chkProofHome.selected = false;
-				recruitmentDocuments.curp = this.chkCURP.selected = false;
-				recruitmentDocuments.rfc = this.chkRFC.selected = false;
-				recruitmentDocuments.nss = this.chkNSS.selected = false;
-				recruitmentDocuments.comprobanteEstudiosCertificacion = this.chkProofCertificateStudies.selected = false;
-				recruitmentDocuments.cartaMilitar = this.chkMilitaryLetter.selected = false;
-				recruitmentDocuments.licencia = this.chkDriverLicense.selected = false;
-				recruitmentDocuments.cartaAntecedentesNoPenales = this.chkLetterCriminal.selected = false;
-				recruitmentDocuments.certificadoMedico = this.chkMedicalCertificate.selected = false;
-				recruitmentDocuments.cartasRecomendacion = this.chkLettersRecommendation.selected = false;
-				recruitmentDocuments.curriculum = this.chkCV.selected = false;
-				recruitmentDocuments.fm2Fm3 = this.chkFM2FM3.selected = false;
-				recruitmentDocuments.fotografia = this.chkPicture.selected = false;
+				recruitmentDocuments.ife = this.chkIFE.selected;
+				recruitmentDocuments.actaNacimiento = this.chkBirthCertificate.selected;
+				recruitmentDocuments.comprobanteDomicilio = this.chkProofHome.selected;
+				recruitmentDocuments.curp = this.chkCURP.selected;
+				recruitmentDocuments.rfc = this.chkRFC.selected;
+				recruitmentDocuments.nss = this.chkNSS.selected;
+				recruitmentDocuments.comprobanteEstudiosCertificacion = this.chkProofCertificateStudies.selected;
+				recruitmentDocuments.cartaMilitar = this.chkMilitaryLetter.selected;
+				recruitmentDocuments.licencia = this.chkDriverLicense.selected;
+				recruitmentDocuments.cartaAntecedentesNoPenales = this.chkLetterCriminal.selected;
+				recruitmentDocuments.certificadoMedico = this.chkMedicalCertificate.selected;
+				recruitmentDocuments.cartasRecomendacion = this.chkLettersRecommendation.selected;
+				recruitmentDocuments.curriculum = this.chkCV.selected;
+				recruitmentDocuments.fm2Fm3 = this.chkFM2FM3.selected;
+				recruitmentDocuments.fotografia = this.chkPicture.selected;
 				return recruitmentDocuments;
 			}
 			

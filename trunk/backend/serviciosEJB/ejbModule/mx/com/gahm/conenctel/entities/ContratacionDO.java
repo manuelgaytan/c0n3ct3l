@@ -111,6 +111,8 @@ public class ContratacionDO implements Serializable{
 	@OneToOne(mappedBy="contratacion",cascade=CascadeType.ALL)
 	private DocumentosContratacionDO documentosContratacion;
 	
+	@OneToOne(mappedBy="contratacion",cascade=CascadeType.ALL)
+	private PrestacionesDO prestaciones;
 
 	public ContratacionDO() {
 		super();
@@ -373,6 +375,14 @@ public class ContratacionDO implements Serializable{
 	 */
 	public void setIndemnizacion(Boolean indemnizacion) {
 		this.indemnizacion = indemnizacion;
+	}
+
+	public PrestacionesDO getPrestaciones() {
+		return prestaciones;
+	}
+
+	public void setPrestaciones(PrestacionesDO prestaciones) {
+		this.prestaciones = prestaciones;
 	}
 	
 	

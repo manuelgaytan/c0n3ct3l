@@ -68,6 +68,10 @@ public class RegistroDeduccionDO implements Serializable{
 	@JoinColumn(name = "fk_clasificacion_falta", nullable = false)
 	private ClasificacionFaltaDO clasificacionFalta;
 	
+	@Temporal(TemporalType.DATE)
+	@Column(name="fecha_permiso")
+	private Date fechaPermiso;
+	
 	@ManyToOne
 	@JoinColumn(name = "fk_clasificacion_permiso", nullable = false)
 	private ClasificacionPermisoDO clasificacionPermiso;
@@ -333,6 +337,14 @@ public class RegistroDeduccionDO implements Serializable{
 	 */
 	public void setFechaTermino(Date fechaTermino) {
 		this.fechaTermino = fechaTermino;
+	}
+
+	public Date getFechaPermiso() {
+		return fechaPermiso;
+	}
+
+	public void setFechaPermiso(Date fechaPermiso) {
+		this.fechaPermiso = fechaPermiso;
 	}
 	
 	

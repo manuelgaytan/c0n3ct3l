@@ -43,40 +43,40 @@ public class PerfilEscalaDO implements Serializable {
 	private SeleccionReclutamientoDO seleccionReclutamiento;
 
 	@Column(name = "inteligencia", nullable = false)
-	private Boolean inteligencia;
+	private Integer inteligencia;
 	
 	@Column(name = "sociable", nullable = false)
-	private Boolean sociable;
+	private Integer sociable;
 	
 	@Column(name = "metodos_procedimientos", nullable = false)
-	private Boolean metodosprocedimientos;
+	private Integer metodosProcedimientos;
 	
 	@Column(name = "aspecto_fisico", nullable = false)
-	private Boolean aspectofisico;
+	private Integer aspectoFisico;
 	
 	@Column(name = "desenvolvimiento", nullable = false)
-	private Boolean desenvolvimiento;
+	private Integer desenvolvimiento;
 	
 	@Column(name = "concentracion", nullable = false)
-	private Boolean concentracion;
+	private Integer concentracion;
 	
 	@Column(name = "entusiasmo", nullable = false)
-	private Boolean entusiasmo;
+	private Integer entusiasmo;
 	
 	@Column(name = "amabilidad", nullable = false)
-	private Boolean amabilidad;
+	private Integer amabilidad;
 	
 	@Column(name = "agresivo", nullable = false)
-	private Boolean agresivo;
+	private Integer agresivo;
 	
 	@Column(name = "audaz", nullable = false)
-	private Boolean lenguaje;
+	private Integer lenguaje;
 	
 	@Column(name = "respecto_autoridad", nullable = false)
-	private Boolean respectoAutoridad;
+	private Integer respectoAutoridad;
 	
 	@Column(name = "orden", nullable = false)
-	private Boolean orden;
+	private Integer orden;
 
 	public PerfilEscalaDO() {
 		super();
@@ -85,18 +85,18 @@ public class PerfilEscalaDO implements Serializable {
 
 	public PerfilEscalaDO(Integer id,
 			SeleccionReclutamientoDO seleccionReclutamiento,
-			Boolean inteligencia, Boolean sociable,
-			Boolean metodosprocedimientos, Boolean aspectofisico,
-			Boolean desenvolvimiento, Boolean concentracion,
-			Boolean entusiasmo, Boolean amabilidad, Boolean agresivo,
-			Boolean lenguaje, Boolean respectoAutoridad, Boolean orden) {
+			Integer inteligencia, Integer sociable,
+			Integer metodosProcedimientos, Integer aspectofisico,
+			Integer desenvolvimiento, Integer concentracion,
+			Integer entusiasmo, Integer amabilidad, Integer agresivo,
+			Integer lenguaje, Integer respectoAutoridad, Integer orden) {
 		super();
 		this.id = id;
 		this.seleccionReclutamiento = seleccionReclutamiento;
 		this.inteligencia = inteligencia;
 		this.sociable = sociable;
-		this.metodosprocedimientos = metodosprocedimientos;
-		this.aspectofisico = aspectofisico;
+		this.metodosProcedimientos = metodosProcedimientos;
+		this.aspectoFisico = aspectofisico;
 		this.desenvolvimiento = desenvolvimiento;
 		this.concentracion = concentracion;
 		this.entusiasmo = entusiasmo;
@@ -124,99 +124,99 @@ public class PerfilEscalaDO implements Serializable {
 		this.seleccionReclutamiento = seleccionReclutamiento;
 	}
 
-	public Boolean getInteligencia() {
+	public Integer getInteligencia() {
 		return inteligencia;
 	}
 
-	public void setInteligencia(Boolean inteligencia) {
+	public void setInteligencia(Integer inteligencia) {
 		this.inteligencia = inteligencia;
 	}
 
-	public Boolean getSociable() {
+	public Integer getSociable() {
 		return sociable;
 	}
 
-	public void setSociable(Boolean sociable) {
+	public void setSociable(Integer sociable) {
 		this.sociable = sociable;
 	}
 
-	public Boolean getMetodosprocedimientos() {
-		return metodosprocedimientos;
+	public Integer getMetodosProcedimientos() {
+		return metodosProcedimientos;
 	}
 
-	public void setMetodosprocedimientos(Boolean metodosprocedimientos) {
-		this.metodosprocedimientos = metodosprocedimientos;
+	public void setMetodosProcedimientos(Integer metodosProcedimientos) {
+		this.metodosProcedimientos = metodosProcedimientos;
 	}
 
-	public Boolean getAspectofisico() {
-		return aspectofisico;
+	public Integer getAspectoFisico() {
+		return aspectoFisico;
 	}
 
-	public void setAspectofisico(Boolean aspectofisico) {
-		this.aspectofisico = aspectofisico;
+	public void setAspectoFisico(Integer aspectofisico) {
+		this.aspectoFisico = aspectofisico;
 	}
 
-	public Boolean getDesenvolvimiento() {
+	public Integer getDesenvolvimiento() {
 		return desenvolvimiento;
 	}
 
-	public void setDesenvolvimiento(Boolean desenvolvimiento) {
+	public void setDesenvolvimiento(Integer desenvolvimiento) {
 		this.desenvolvimiento = desenvolvimiento;
 	}
 
-	public Boolean getConcentracion() {
+	public Integer getConcentracion() {
 		return concentracion;
 	}
 
-	public void setConcentracion(Boolean concentracion) {
+	public void setConcentracion(Integer concentracion) {
 		this.concentracion = concentracion;
 	}
 
-	public Boolean getEntusiasmo() {
+	public Integer getEntusiasmo() {
 		return entusiasmo;
 	}
 
-	public void setEntusiasmo(Boolean entusiasmo) {
+	public void setEntusiasmo(Integer entusiasmo) {
 		this.entusiasmo = entusiasmo;
 	}
 
-	public Boolean getAmabilidad() {
+	public Integer getAmabilidad() {
 		return amabilidad;
 	}
 
-	public void setAmabilidad(Boolean amabilidad) {
+	public void setAmabilidad(Integer amabilidad) {
 		this.amabilidad = amabilidad;
 	}
 
-	public Boolean getAgresivo() {
+	public Integer getAgresivo() {
 		return agresivo;
 	}
 
-	public void setAgresivo(Boolean agresivo) {
+	public void setAgresivo(Integer agresivo) {
 		this.agresivo = agresivo;
 	}
 
-	public Boolean getLenguaje() {
+	public Integer getLenguaje() {
 		return lenguaje;
 	}
 
-	public void setLenguaje(Boolean lenguaje) {
+	public void setLenguaje(Integer lenguaje) {
 		this.lenguaje = lenguaje;
 	}
 
-	public Boolean getRespectoAutoridad() {
+	public Integer getRespectoAutoridad() {
 		return respectoAutoridad;
 	}
 
-	public void setRespectoAutoridad(Boolean respectoAutoridad) {
+	public void setRespectoAutoridad(Integer respectoAutoridad) {
 		this.respectoAutoridad = respectoAutoridad;
 	}
 
-	public Boolean getOrden() {
+	public Integer getOrden() {
 		return orden;
 	}
 
-	public void setOrden(Boolean orden) {
+	public void setOrden(Integer orden) {
 		this.orden = orden;
 	}
 

@@ -216,6 +216,7 @@
 		<class>mx.com.gahm.conenctel.entities.TipoDesarrolloProyectoDO</class>
 		<class>mx.com.gahm.conenctel.entities.EstadoNotificacionDO</class>
 		<class>mx.com.gahm.conenctel.entities.NotificacionDO</class>
+		<class>mx.com.gahm.conenctel.entities.PrestacionesDO</class>
 		<properties>
 			<property name="eclipselink.logging.level" value="FINE"/> 
 			<property name="eclipselink.logging.parameters" value="true"/>

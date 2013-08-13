@@ -47,17 +47,16 @@ public class ContratacionService implements IContratacionService{
 
 	@Override
 	public ContratacionDO save(ContratacionDO item) {
-		
 		item.getDocumentosContratacion().setContratacion(item);
-		
-			
-		
+		item.getPrestaciones().setContratacion(item);
 		entityManager.persist(item);
 		return item;
 	}
 
 	@Override
 	public ContratacionDO update(ContratacionDO item) {
+		item.getDocumentosContratacion().setContratacion(item);
+		item.getPrestaciones().setContratacion(item);
 		entityManager.merge(item.getColaborador());
 		entityManager.merge(item);
 		return item;

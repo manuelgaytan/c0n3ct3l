@@ -49,7 +49,7 @@ public class DocumentosContratacionDO implements Serializable{
 	private Boolean actaNacimiento;
 	
 	@Column(name = "comprobante_domicilio", nullable = false)
-	private Boolean comprobante_domicilio;
+	private Boolean comprobanteDomicilio;
 	
 	@Column(name = "curp", nullable = false)
 	private Boolean curp;
@@ -96,7 +96,7 @@ public class DocumentosContratacionDO implements Serializable{
 
 
 	public DocumentosContratacionDO(Integer id, ContratacionDO contratacion,
-			Boolean ife, Boolean actaNacimiento, Boolean comprobante_domicilio,
+			Boolean ife, Boolean actaNacimiento, Boolean comprobanteDomicilio,
 			Boolean curp, Boolean rfc, Boolean nss,
 			Boolean comprobanteEstudiosCertificacion, Boolean cartaMilitar,
 			Boolean licencia, Boolean cartaAntecedentesNoPenales,
@@ -107,7 +107,7 @@ public class DocumentosContratacionDO implements Serializable{
 		this.contratacion = contratacion;
 		this.ife = ife;
 		this.actaNacimiento = actaNacimiento;
-		this.comprobante_domicilio = comprobante_domicilio;
+		this.comprobanteDomicilio = comprobanteDomicilio;
 		this.curp = curp;
 		this.rfc = rfc;
 		this.nss = nss;
@@ -163,13 +163,13 @@ public class DocumentosContratacionDO implements Serializable{
 	}
 
 
-	public Boolean getComprobante_domicilio() {
-		return comprobante_domicilio;
+	public Boolean getComprobanteDomicilio() {
+		return comprobanteDomicilio;
 	}
 
 
-	public void setComprobante_domicilio(Boolean comprobante_domicilio) {
-		this.comprobante_domicilio = comprobante_domicilio;
+	public void setComprobanteDomicilio(Boolean comprobanteDomicilio) {
+		this.comprobanteDomicilio = comprobanteDomicilio;
 	}
 
 

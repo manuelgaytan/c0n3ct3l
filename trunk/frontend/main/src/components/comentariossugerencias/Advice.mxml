@@ -196,6 +196,7 @@
 			
 			private function cleanForm():void
 			{
+				Util.upScroll( this );
 				this.txtID.reset();
 				this.dtfDate.reset();
 				this.cmbConectelPayroll.selectedIndex = 0;

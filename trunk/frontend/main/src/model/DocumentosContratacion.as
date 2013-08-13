@@ -20,6 +20,8 @@ package model
 		public var fm2Fm3:Boolean;
 		public var fotografia:Boolean;
 		
+		public var contratacion:Contratacion;
+		
 		public function DocumentosContratacion()
 		{
 		}

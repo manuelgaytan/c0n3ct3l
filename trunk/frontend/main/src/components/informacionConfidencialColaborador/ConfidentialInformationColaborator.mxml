@@ -218,6 +218,7 @@
 			
 			private function cleanForm():void
 			{
+				Util.upScroll( this );
 				this.txtID.reset();
 				this.recruitmentConsult.datagrid.selectedItem = false;
 				this.fltDlvPhoto.reset();
@@ -280,7 +281,7 @@
 		<mx:FormItem label="Contratación:"/>
 		<contratacion:Consult id="recruitmentConsult" readMode="true"/>
 		<mx:FormItem label="Foto:">
-			<components:FlatDeliver id="fltDlvPhoto"/>
+			<components:FlatDeliver id="fltDlvPhoto" limitedTo="1"/>
 		</mx:FormItem>
 		<mx:FormItem label="Sueldo:">
 			<components:TextInput id="txtSalary" textAlign="right"/>

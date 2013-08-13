@@ -194,6 +194,7 @@
 			
 			private function cleanForm():void
 			{
+				Util.upScroll( this );
 				this.txtID.reset();
 				this.cmbColaboratorType.selectedIndex = 0;
 				this.cmbColaboratorName.selectedIndex = 0;

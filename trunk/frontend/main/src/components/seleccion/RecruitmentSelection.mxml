@@ -100,6 +100,7 @@
 				}
 				this.psycometricQuiz.psycometricQuiz = this._item.examenPsicometrico;
 				this.scalaProfile.scalaProfile = this._item.perfilEscala;
+				this.nstTechnicalQuiz.value = this._item.examenTecnico;
 				if( Util.isFill( this.cmbContractPhase ) && this._item 
 					&& this._item.faseContratacion != null ){
 					this.cmbContractPhase.selectedIndex = Util.selectedIndexFromCombo( this.cmbContractPhase.dataProvider as ArrayCollection, 
@@ -118,6 +119,7 @@
 				recruitmentSelection.tipoCandidato = Util.validateCombo( this.cmbCandidateType ) as TipoCandidato;
 				recruitmentSelection.examenPsicometrico = psycometricQuiz.getPsycometricQuiz();
 				recruitmentSelection.perfilEscala = scalaProfile.getScalaProfile();
+				recruitmentSelection.examenTecnico = this.nstTechnicalQuiz.value;
 				recruitmentSelection.faseContratacion = Util.validateCombo( this.cmbContractPhase ) as FaseContratacion;
 				return recruitmentSelection;
 			}
@@ -190,6 +192,7 @@
 			
 			private function cleanForm():void
 			{
+				Util.upScroll( this );
 				this.txtID.reset();
 				this.recruitmentJobApplication.datagrid.selectedItem = false;
 				this.cmbCandidateType.selectedIndex = 0;

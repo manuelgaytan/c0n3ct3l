@@ -254,6 +254,7 @@
 			
 			private function cleanForm():void
 			{
+				Util.upScroll( this );
 				this.txtID.reset();
 				//Util.removeItems(this.diemRequest.datagrid.dataProvider);
 				this.txtDate.reset();

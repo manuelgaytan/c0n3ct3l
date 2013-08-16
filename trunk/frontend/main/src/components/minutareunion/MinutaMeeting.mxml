@@ -104,6 +104,7 @@
 					minutaMeeting = this._item;
 				}
 				minutaMeeting.fechaHora = this.dtfDate.selectedDate;
+				this.cmbAMPM.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
 				minutaMeeting.fechaHora.hours = this.cmbAMPM.selectedItem.id == 2 ? this.nstHour.value + 12 : this.nstHour.value;
 				minutaMeeting.fechaHora.minutes = this.nstMinutes.value;
 				minutaMeeting.lugar = Util.validateEmpty( this.txtPlace.text );
@@ -180,10 +181,16 @@
 			
 			private function cleanForm():void
 			{
+				Util.upScroll( this );
 				this.txtID.reset();
 				this.dtfDate.reset();
+				this.nstHour.value = 1;
+				this.nstMinutes.value = 0;
+				this.cmbAMPM.selectedIndex = 0;
 				this.txtPlace.reset();
 				this.txtSubject.reset();
+				this.participantForm.reset();
+				this.agreementForm.reset();
 			}
 			
 			protected function responseUpdate_resultHandler(event:ResultEvent):void
@@ -209,7 +216,7 @@
 				item.etiqueta = "AM";
 				data.addItem( item );
 				item = new Catalogo();
-				item.id = 1;
+				item.id = 2;
 				item.etiqueta = "PM";
 				data.addItem( item );
 				return data;
@@ -235,7 +242,7 @@
 			<mx:ComboBox id="cmbAMPM" dataProvider="{this.getAMPM()}"
 						 labelField="etiqueta"/>
 		</mx:FormItem>
-		<mx:FormItem label="Nombre:">
+		<mx:FormItem label="Lugar:">
 			<components:TextInput id="txtPlace" width="350"/>
 		</mx:FormItem>
 		<mx:FormItem label="Asunto:">

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
+		   width="700" height="500"
+		   xmlns:graficaevaluacionfacturacionproyectosconectel="components.graficaevaluacionfacturacionproyectosconectel.*"
+		   creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import events.GenericEvent;
+			
+			import model.Minuta;
+			import model.Usuario;
+			
+			import mx.events.FlexEvent;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				
+			}
+		]]>
+	</mx:Script>
+	<mx:TabNavigator id="navigator" width="700" height="100%">
+		<graficaevaluacionfacturacionproyectosconectel:ProjectsColumnChart id="projectsColumnChart"/>
+		<graficaevaluacionfacturacionproyectosconectel:ProjectsStateCharts id="projectsStateChart"/>
+	</mx:TabNavigator>
+</mx:Module>

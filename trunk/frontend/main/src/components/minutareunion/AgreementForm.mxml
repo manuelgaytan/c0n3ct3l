@@ -35,7 +35,8 @@
 				if( data == null ){
 					return;
 				}
-				this.cmbResponsible.dataProvider = Util.addEmptyCatalgo(data,"responsable");
+				this.cmbResponsible.dataProvider = data; //Util.addEmptyCatalgo(data,"responsable");
+				this.cmbResponsible.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
 			}
 			
 			protected function agreementForm_faultHandler(event:FaultEvent):void
@@ -103,31 +104,40 @@
 			}
 			
 			public function get agreements():ArrayCollection{
-				return this.itemsManagement.dataProvider as ArrayCollection;
+				return this.itemsManagement.items;
 			}
 			
 			public function set agreements(value:ArrayCollection):void{
-				this.itemsManagement.dataProvider = value;
+				this.itemsManagement.items = value;
+			}
+			
+			public function reset():void{
+				this.cmbResponsible.selectedIndex = 0;
+				this.txtResponsible.reset();
+				this.txtAgreement.reset();
+				this.dtfDate.reset();
+				this.txtResponsibleElaboration.reset();
+				this.itemsManagement.reset();
 			}
 		]]>
 	</mx:Script>
-	<mx:FormItem label="Tipo de Colaborador:"
+	<mx:FormItem label="Responsable:"
 				 direction="horizontal">
 		<mx:ComboBox id="cmbResponsible" width="130"
 					 labelField="responsable"
 					 />
 	</mx:FormItem>
-	<mx:FormItem label="Nombre:">
+	<mx:FormItem label="Nombre Responsable:">
 		<components:TextInput id="txtResponsible" width="380"/>
 	</mx:FormItem>
-	<mx:FormItem label="Empresa:">
+	<mx:FormItem label="Acuerdo:">
 		<components:TextInput id="txtAgreement"
 							  width="350"/>
 	</mx:FormItem>
 	<mx:FormItem label="Fecha Compromiso:">
 		<components:DateField id="dtfDate"/>
 	</mx:FormItem>
-	<mx:FormItem label="Puesto:">
+	<mx:FormItem label="Responsable Elaboración:">
 		<components:TextInput id="txtResponsibleElaboration"
 							  width="280"
 							  />

@@ -74,6 +74,7 @@
 				}
 				this.txtID.text = this._item.id.toString();
 				this.consultGeneralProjectData.datagrid.dataProvider = Util.asArrayCollection( this._item.datosGeneralesProyecto );
+				this.consultGeneralProjectData.datagrid.selectedIndex = 0;
 				this.chkAuditApply.selected = this._item.aplicacionAuditoria;
 				if( Util.isFill( this.cmbAuditType ) && this._item 
 					&& this._item.tipoAuditoria != null ){
@@ -126,6 +127,7 @@
 				this.responseGetTipoAuditoria.token = this.catalogoService.getTipoAuditoria();
 				this.responseGetFormaAuditoria.token = this.catalogoService.getFormaAuditoria();
 				this.responseGetEstadoSistemaGestion.token = this.catalogoService.getEstadoSistemaGestion();
+				this.responseGetAllAll.token = this.datosGeneralesService.getAllAll();
 			}
 			
 			protected function sistemaGestionService_faultHandler(event:FaultEvent):void
@@ -192,6 +194,7 @@
 			
 			private function cleanForm():void
 			{
+				Util.upScroll( this );
 				this.txtID.reset();
 				this.consultGeneralProjectData.datagrid.selectedItem = false;
 				this.chkAuditApply.selected = false;
@@ -276,6 +279,14 @@
 				}
 			}
 			
+			protected function responseGetAllAll_resultHandler(event:ResultEvent):void
+			{
+				this.consultGeneralProjectData.datagrid.dataProvider = event.result as ArrayCollection;
+				if( this._item != null ){
+					this.consultGeneralProjectData.datagrid.dataProvider = Util.asArrayCollection( this._item.datosGeneralesProyecto );
+					this.consultGeneralProjectData.datagrid.selectedIndex = 0;
+				}
+			}
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -290,7 +301,7 @@
 								  editable="false"/>
 		</mx:FormItem>
 		<mx:FormItem label="Proyectos:"/>
-		<datosgenerales:Consult id="consultGeneralProjectData"/>
+		<datosgenerales:Consult id="consultGeneralProjectData" noExecuteQuery="true"/>
 		<mx:Button label="Ver Datos Generales Proyecto" click="btnViewPerDiemCheck_clickHandler(event)"/>
 		<mx:FormItem label="Aplicación de Auditoría:">
 			<mx:CheckBox id="chkAuditApply"/>
@@ -312,7 +323,7 @@
 			<components:DateField id="dtfReceiptDate"/>
 		</mx:FormItem>
 		<mx:FormItem label="Formato de Auditoría:">
-			<components:FlatDeliver id="fltDlvAuditFormat"/>
+			<components:FlatDeliver id="fltDlvAuditFormat" limitedTo="1"/>
 		</mx:FormItem>
 		<mx:FormItem label="Nombre del Auditor:">
 			<components:TextInput id="txtNameAuditor" width="350"/>
@@ -326,7 +337,7 @@
 						 />
 		</mx:FormItem>
 		<mx:FormItem label="Correcciones:">
-			<components:FlatDeliver id="fltDlvCorrections"/>
+			<components:FlatDeliver id="fltDlvCorrections" limitedTo="1"/>
 		</mx:FormItem>
 		<mx:FormItem label="Observaciones:">
 			<components:TextArea id="txtObservations" width="520"/>
@@ -344,4 +355,7 @@
 	<mx:CallResponder id="responseGetTipoAuditoria" result="responseGetTipoAuditoria_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetFormaAuditoria" result="responseGetFormaAuditoria_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetEstadoSistemaGestion" result="responseGetEstadoSistemaGestion_resultHandler(event)"/>
+	<mx:RemoteObject id="datosGeneralesService" destination="datosGeneralesService" fault="sistemaGestionService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetAllAll" result="responseGetAllAll_resultHandler(event)"/>
 </mx:VBox>

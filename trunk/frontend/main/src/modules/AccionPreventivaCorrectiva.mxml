@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
-		   width="950" height="545"
+		   width="1010" height="545"
 		   xmlns:accionpreventivacorrectiva="components.accionpreventivacorrectiva.*"
 		   creationComplete="creationCompleteHandler(event)" xmlns:bitacoraproductonoconformenoconformidades="components.bitacoraproductonoconformenoconformidades.*">
 	<mx:Script>
@@ -50,7 +50,7 @@
 			}
 		]]>
 	</mx:Script>
-	<mx:TabNavigator id="navigator" width="950" height="100%" creationPolicy="all">
+	<mx:TabNavigator id="navigator" width="1010" height="100%" creationPolicy="all">
 		<accionpreventivacorrectiva:Consult id="consult" itemDetail="consult_correctivePreventiveActionDetailHandler(event)"/>
 		<accionpreventivacorrectiva:CorrectivePreventiveAction id="detail" update="true" correctivePreventiveActionUpdated="detail_correctivePreventiveActionUpdatedHandler(event)"
 							 									nonConformitySelected="detail_nonConformitySelectedHandler(event)"/>

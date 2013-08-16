@@ -53,7 +53,8 @@
 				if( data == null ){
 					return;
 				}
-				this.cmbColaboratorType.dataProvider = Util.addEmptyCatalgo(data,"tipo");
+				this.cmbColaboratorType.dataProvider = data;//Util.addEmptyCatalgo(data,"tipo");
+				this.cmbColaboratorType.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
 			}
 			
 			protected function participantForm_faultHandler(event:FaultEvent):void
@@ -119,11 +120,20 @@
 			}
 			
 			public function get participants():ArrayCollection{
-				return this.itemsManagement.dataProvider as ArrayCollection;
+				return this.itemsManagement.items;
 			}
 			
 			public function set participants(value:ArrayCollection):void{
-				this.itemsManagement.dataProvider = value;
+				this.itemsManagement.items = value;
+			}
+			
+			public function reset():void{
+				this.cmbColaboratorType.selectedIndex = 0;
+				this.cmbColaboratorType.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
+				this.txtName.reset();
+				this.txtCompany.reset();
+				this.txtPosition.reset();
+				this.itemsManagement.reset();
 			}
 		]]>
 	</mx:Script>
@@ -136,7 +146,7 @@
 					 labelField="nombreCompleto"
 					 change="cmbColaboratorName_changeHandler(event)"/>
 	</mx:FormItem>
-	<mx:FormItem label="Nombre:">
+	<mx:FormItem label="Nombre Participante:">
 		<components:TextInput id="txtName" width="380"/>
 	</mx:FormItem>
 	<mx:FormItem label="Empresa:">

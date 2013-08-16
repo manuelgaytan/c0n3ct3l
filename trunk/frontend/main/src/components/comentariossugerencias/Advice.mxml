@@ -258,7 +258,7 @@
 			protected function cmbConectelPayroll_changeHandler(event:ListEvent):void
 			{
 				var colaborator:Colaborador = this.cmbConectelPayroll.selectedItem as Colaborador;
-				if( colaborator ){
+				if( colaborator == null ){
 					this.txtName.text = "";
 					return;
 				}

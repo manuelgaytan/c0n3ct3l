@@ -9,6 +9,8 @@ package model
 		public var empresa:String;
 		public var puesto:String;
 		
+		public var minuta:Minuta;
+		
 		public function ParticipanteMinuta()
 		{
 		}

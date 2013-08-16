@@ -57,9 +57,9 @@ public class SugerenciaDO implements Serializable {
 	@Column(name = "sugerencia", nullable = false)
 	private String sugerencia;
 	@Column(name = "requiere_accion_inmediata", nullable = false)
-	private String requiereAccionInmediata;
+	private Boolean requiereAccionInmediata;
 	@Column(name = "requiere_accion_correctiva", nullable = false)
-	private String requiereAccionCorrectiva;
+	private Boolean requiereAccionCorrectiva;
 	@Column(name = "accion_inmediata", nullable = false)
 	private String accionInmediata;
 	
@@ -81,8 +81,8 @@ public class SugerenciaDO implements Serializable {
 
 	public SugerenciaDO(Integer id, Date fecha, ColaboradorDO colaborador,
 			String nombre, String correoElectronico, String telefono,
-			String sugerencia, String requiereAccionInmediata,
-			String requiereAccionCorrectiva, String accionInmediata,
+			String sugerencia, Boolean requiereAccionInmediata,
+			Boolean requiereAccionCorrectiva, String accionInmediata,
 			Date fechaImplementacion, String responsableImplementacion,
 			ResultadoImplementacionDO resultadoImplementacion) {
 		super();
@@ -157,19 +157,19 @@ public class SugerenciaDO implements Serializable {
 		this.sugerencia = sugerencia;
 	}
 
-	public String getRequiereAccionInmediata() {
+	public Boolean getRequiereAccionInmediata() {
 		return requiereAccionInmediata;
 	}
 
-	public void setRequiereAccionInmediata(String requiereAccionInmediata) {
+	public void setRequiereAccionInmediata(Boolean requiereAccionInmediata) {
 		this.requiereAccionInmediata = requiereAccionInmediata;
 	}
 
-	public String getRequiereAccionCorrectiva() {
+	public Boolean getRequiereAccionCorrectiva() {
 		return requiereAccionCorrectiva;
 	}
 
-	public void setRequiereAccionCorrectiva(String requiereAccionCorrectiva) {
+	public void setRequiereAccionCorrectiva(Boolean requiereAccionCorrectiva) {
 		this.requiereAccionCorrectiva = requiereAccionCorrectiva;
 	}
 

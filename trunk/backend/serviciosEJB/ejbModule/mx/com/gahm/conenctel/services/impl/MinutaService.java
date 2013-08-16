@@ -66,6 +66,7 @@ public class MinutaService  implements IMinutaService{
 
 	@Override
 	public MinutaDO update(MinutaDO item) {
+		this.asignarMinuta(item);
 		entityManager.merge(item);
 		return item;
 	}

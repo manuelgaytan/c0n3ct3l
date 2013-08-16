@@ -43,8 +43,8 @@ public class MinutaDO implements Serializable{
 	@Column(name = "id", unique = true, nullable = false)
 	private Integer id;
 	
-	@Temporal(TemporalType.DATE)
-	@Column(name = "fecha_hora", nullable = false, length = 10)
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "fecha_hora", nullable = false)
 	private Date fechaHora;
 	
 	@Column(name = "lugar", nullable = false)
@@ -133,7 +133,7 @@ public class MinutaDO implements Serializable{
 	}
 
 	public void setParticipanteMinuta(List<ParticipanteMinutaDO> participanteMinuta) {
-		participanteMinuta = participanteMinuta;
+		this.participanteMinuta = participanteMinuta;
 	}
 
 	public List<AcuerdoMinutaDO> getAcuerdoMinuta() {

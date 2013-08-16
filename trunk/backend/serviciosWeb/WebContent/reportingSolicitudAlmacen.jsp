@@ -63,6 +63,7 @@
 		JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(list);
 		
 		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("contexto",this.getServletContext().getRealPath("/"));
 		parameters.put("title", "Solicitud Almacén");
 	    parameters.put("confidence", "Esta información es confidencial y exclusiva para el uso de Conectel.");
 	    JasperReport report = JasperCompileManager.compileReport(

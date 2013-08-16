@@ -56,6 +56,20 @@ public class DatosGeneralesService implements IDatosGeneralesService {
 		}*/
 		return dataProjectList;
 	}
+	
+	//TODO Devuelve los datos generales de proyectos
+		@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+		public List<DatosGrlsProyectoDO> getAllAll() throws ConectelException {
+			TypedQuery<DatosGrlsProyectoDO> query = entityManager.createNamedQuery(
+					"DatosGrlsProyectoDO.findAllAll", DatosGrlsProyectoDO.class);
+			List<DatosGrlsProyectoDO> dataProjectList;
+			try {
+				dataProjectList = query.getResultList();
+			} catch(NoResultException e) {
+				throw new ConectelException("No existen Datos Generales registrados.");
+			}
+			return dataProjectList;
+		}
 
 	//TODO Solo Cambia su estado, si consideras mejor solo tener un servicio en Proyecto Service y te mando la fase por mi esta bien
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)

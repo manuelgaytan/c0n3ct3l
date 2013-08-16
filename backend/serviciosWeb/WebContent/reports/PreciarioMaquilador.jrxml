@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PreciarioMaquilador" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0a99f18f-48d8-429d-93ad-51869a41c8cf">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="125"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -40,6 +40,7 @@
 	<parameter name="area" class="java.lang.String"/>
 	<parameter name="phonesContact" class="java.lang.String"/>
 	<parameter name="fecha" class="java.util.Date"/>
+	<parameter name="contexto" class="java.lang.String"/>
 	<field name="id" class="java.lang.Long"/>
 	<field name="cliente.nombreComercial" class="java.lang.String"/>
 	<field name="tipoProyecto" class="java.lang.String"/>
@@ -67,7 +68,7 @@
 			</textField>
 			<image>
 				<reportElement uuid="c67279b1-bd96-4bf0-bce1-a5beb9196598" x="4" y="4" width="120" height="47"/>
-				<imageExpression><![CDATA["/Users/manuel/Projects/c0n3ct3l/backend/serviciosWeb/WebContent/reports/images/logoconectel.png"]]></imageExpression>
+				<imageExpression><![CDATA[$P{contexto}.toString()+"reports/images/logoconectel.png"]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement uuid="d67a65eb-6985-4427-9d26-da64aa599f65" x="7" y="78" width="34" height="20"/>

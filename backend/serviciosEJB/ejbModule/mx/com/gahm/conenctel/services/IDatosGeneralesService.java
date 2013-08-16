@@ -10,6 +10,8 @@ import mx.com.gahm.conenctel.exceptions.ConectelException;
 @Remote
 public interface IDatosGeneralesService {
 	public List<DatosGrlsProyectoDO> getAll() throws ConectelException;
+	
+	public List<DatosGrlsProyectoDO> getAllAll() throws ConectelException;
 
 	public void hechoFase(long idProject) throws ConectelException;
 

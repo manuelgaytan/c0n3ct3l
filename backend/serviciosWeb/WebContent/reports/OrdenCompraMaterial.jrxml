@@ -27,7 +27,7 @@
 	<parameter name="title" class="java.lang.String"/>
 	<parameter name="confidence" class="java.lang.String"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["/Users/manuel/Projects/c0n3ct3l/backend/serviciosWeb/WebContent/reports/"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[$P{contexto}.toString()+"reports/"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="legalName" class="java.lang.String"/>
 	<parameter name="rfc" class="java.lang.String"/>
@@ -39,6 +39,7 @@
 	<parameter name="website" class="java.lang.String"/>
 	<parameter name="area" class="java.lang.String"/>
 	<parameter name="phonesContact" class="java.lang.String"/>
+	<parameter name="contexto" class="java.lang.String"/>
 	<field name="id" class="java.lang.Long"/>
 	<field name="proveedorCalificado.proveedorSeleccionado.proveedor.razonSocial" class="java.lang.String"/>
 	<field name="proveedorCalificado.proveedorSeleccionado.proveedor.rfc" class="java.lang.String"/>
@@ -71,7 +72,7 @@
 			</textField>
 			<image>
 				<reportElement uuid="c67279b1-bd96-4bf0-bce1-a5beb9196598" x="4" y="4" width="120" height="47"/>
-				<imageExpression><![CDATA["/Users/manuel/Projects/c0n3ct3l/backend/serviciosWeb/WebContent/reports/images/logoconectel.png"]]></imageExpression>
+				<imageExpression><![CDATA[$P{contexto}.toString()+"reports/images/logoconectel.png"]]></imageExpression>
 			</image>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
 				<reportElement uuid="fa32305c-3d4b-4540-8f3d-0e56df8c9846" x="480" y="124" width="89" height="20"/>
@@ -248,8 +249,50 @@
 		<band height="241" splitType="Stretch">
 			<subreport>
 				<reportElement uuid="21903da1-aee3-43c4-9a98-2aafdb9f0ba7" x="7" y="3" width="558" height="228"/>
+				<subreportParameter name="legalName">
+					<subreportParameterExpression><![CDATA[$P{legalName}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="phonesContact">
+					<subreportParameterExpression><![CDATA[$P{phonesContact}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="website">
+					<subreportParameterExpression><![CDATA[$P{website}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="maker">
+					<subreportParameterExpression><![CDATA[$P{maker}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="address1">
+					<subreportParameterExpression><![CDATA[$P{address1}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="address2">
+					<subreportParameterExpression><![CDATA[$P{address2}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="confidence">
+					<subreportParameterExpression><![CDATA[$P{confidence}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="rfc">
+					<subreportParameterExpression><![CDATA[$P{rfc}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="phones">
+					<subreportParameterExpression><![CDATA[$P{phones}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="authorizer">
+					<subreportParameterExpression><![CDATA[$P{authorizer}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="title">
+					<subreportParameterExpression><![CDATA[$P{title}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="area">
+					<subreportParameterExpression><![CDATA[$P{area}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="contexto">
+					<subreportParameterExpression><![CDATA[$P{contexto}]]></subreportParameterExpression>
+				</subreportParameter>
 				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{requisicionCompra.partidasRequisicionCompra})]]></dataSourceExpression>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "OrdenCompraAlmacen_Items.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{contexto}.toString()+"reports/OrdenCompraAlmacen_Items.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 	</detail>

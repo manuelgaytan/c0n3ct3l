@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SolicitudAlmacen" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0a99f18f-48d8-429d-93ad-51869a41c8cf">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="313"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -27,8 +27,9 @@
 	<parameter name="title" class="java.lang.String"/>
 	<parameter name="confidence" class="java.lang.String"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["/Users/manuel/Projects/c0n3ct3l/backend/serviciosWeb/WebContent/reports/"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[$P{contexto}.toString()+"reports/"]]></defaultValueExpression>
 	</parameter>
+	<parameter name="contexto" class="java.lang.String"/>
 	<field name="id" class="java.lang.Long"/>
 	<field name="motivo" class="java.lang.String"/>
 	<field name="areaSolicitante.etiqueta" class="java.lang.String"/>
@@ -63,7 +64,7 @@
 			</staticText>
 			<image>
 				<reportElement uuid="c67279b1-bd96-4bf0-bce1-a5beb9196598" x="4" y="4" width="120" height="47"/>
-				<imageExpression><![CDATA["/Users/manuel/Projects/c0n3ct3l/backend/serviciosWeb/WebContent/reports/images/logoconectel.png"]]></imageExpression>
+				<imageExpression><![CDATA[$P{contexto}.toString()+"reports/images/logoconectel.png"]]></imageExpression>
 			</image>
 			<textField>
 				<reportElement uuid="c2b79e0c-e41e-4071-8b71-ff5cd39c301f" x="127" y="4" width="442" height="47"/>
@@ -148,8 +149,11 @@
 		<band height="304" splitType="Stretch">
 			<subreport>
 				<reportElement uuid="12ce6a5a-d7a8-4786-b411-17ae8298e953" x="7" y="7" width="565" height="286"/>
+				<subreportParameter name="contextoSubreporte">
+					<subreportParameterExpression><![CDATA[$P{contexto}]]></subreportParameterExpression>
+				</subreportParameter>
 				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{listaPlana})]]></dataSourceExpression>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "SolicitudAlmacen_Items.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{contexto}.toString()+"reports/SolicitudAlmacen_Items.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 	</detail>

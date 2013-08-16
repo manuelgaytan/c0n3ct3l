@@ -3,6 +3,7 @@
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
+	<parameter name="contextoSubreporte" class="java.lang.String"/>
 	<field name="tipoAlmacen" class="java.lang.String"/>
 	<field name="codigo" class="java.lang.String"/>
 	<field name="grupoFamilia" class="java.lang.String"/>
@@ -93,9 +94,7 @@ Almacén]]></text>
 			</textField>
 			<image>
 				<reportElement uuid="38b6c015-3b30-459c-ba8b-5cbe389acd4d" x="513" y="2" width="10" height="10"/>
-				<imageExpression><![CDATA[($F{regresoAlmacen}.booleanValue() == true ? "/Users/manuel/Projects/c0n3ct3l/backend/serviciosWeb/WebContent/reports/images/checked.jpg" : "/Users/manuel/Projects/c0n3ct3l/backend/serviciosWeb/WebContent/reports/images/unchecked.jpg")
-
-]]></imageExpression>
+				<imageExpression><![CDATA[($F{regresoAlmacen}.booleanValue() == true ? $P{contextoSubreporte}.toString()+"reports/images/checked.jpg" : $P{contextoSubreporte}.toString()+"reports/images/unchecked.jpg")]]></imageExpression>
 			</image>
 		</band>
 	</detail>

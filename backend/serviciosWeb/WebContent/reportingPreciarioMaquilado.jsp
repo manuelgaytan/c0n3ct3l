@@ -75,6 +75,7 @@
 		System.out.println("----------------------------------------------\n\n\n");
 		JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(list);
 		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("contexto",this.getServletContext().getRealPath("/"));
 		parameters.put("title", "Preciario Maquilador");
 	    parameters.put("confidence", "Esta información es confidencial y exclusiva para el uso de Conectel.");
 	    parameters.put("legalName", "CONECTIVIDAD EN EQUIPOS DE TELECOMUNICACIONES S.A. DE C.V.");

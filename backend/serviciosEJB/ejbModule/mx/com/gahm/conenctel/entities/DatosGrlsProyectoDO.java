@@ -14,7 +14,8 @@ import java.util.List;
  */
 @Entity
 @NamedQueries({
-	@NamedQuery(name = "DatosGrlsProyectoDO.findAll", query = "select d from DatosGrlsProyectoDO d where d.proyecto.estado.id=1") })
+	@NamedQuery(name = "DatosGrlsProyectoDO.findAll", query = "select d from DatosGrlsProyectoDO d where d.proyecto.estado.id=1"),
+	@NamedQuery(name = "DatosGrlsProyectoDO.findAllAll", query = "select d from DatosGrlsProyectoDO d") })
 @Table(name="datosgeneralesproyecto")
 public class DatosGrlsProyectoDO implements Serializable {
 	private static final long serialVersionUID = 1L;

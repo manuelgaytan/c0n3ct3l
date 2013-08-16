@@ -11,11 +11,20 @@
 			[Bindable]
 			private var _items:ArrayCollection = new ArrayCollection();
 			
+			public function set items(value:ArrayCollection):void{
+				this._items = value;
+			}
+			
+			public function get items():ArrayCollection{
+				return this._items;
+			}
+			
 			public function addItem(entry:ParticipanteMinuta):void{
 				if( entry == null ){
 					return;
 				}
 				this._items.addItem( entry );
+				this._items.refresh();
 			}
 			
 			public function reset():void

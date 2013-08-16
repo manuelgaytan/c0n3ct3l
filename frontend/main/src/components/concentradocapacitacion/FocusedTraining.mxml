@@ -359,7 +359,7 @@
 			<components:TextInput id="txtTrainingGrade" width="300"/>
 		</mx:FormItem>
 		<mx:FormItem label="Constancia/Evidencia:">
-			<components:FlatDeliver id="fltDlvEvidence"/>
+			<components:FlatDeliver id="fltDlvEvidence" limitedTo="1"/>
 		</mx:FormItem>
 		<mx:FormItem direction="horizontal">
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>

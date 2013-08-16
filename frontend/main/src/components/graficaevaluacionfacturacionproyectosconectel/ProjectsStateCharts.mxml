@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+		 label="Consulta Fases Proyectos"
+		 horizontalAlign="right"
+		 creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.events.FlexEvent;
+			
+			private var dataProject:ArrayCollection = new ArrayCollection([  {Fase:"Alta", Cantidad:12},
+																			 {Fase:"Datos Generales", Cantidad:8},
+																			 {Fase:"Desarrollo", Cantidad:29},
+																			 {Fase:"Prueba y Entrega", Cantidad:17}] ); 
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				projectsColumnChart.dataProvider = dataProject;
+			}
+			
+			protected function btnRefresh_clickHandler(event:MouseEvent):void
+			{
+				projectsColumnChart.visible = false;
+				projectsColumnChart.visible = true;
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:Panel title="Gráfico de Pastel, que expone la Relación entre las fasese de los Proyectos"
+			  width="100%" height="100%">
+		<mx:PieChart id="projectsColumnChart" showDataTips="true"
+						width="100%" height="100%"
+						creationCompleteEffect="{fadeEffect}"
+						showEffect="{zoomEffect}">
+			<mx:series>
+				<mx:PieSeries field="Cantidad" nameField="Fase"
+							  displayName="Cantidad de Proyectos" labelPosition="callout">
+					<mx:fills>
+						<mx:SolidColor color="0xCC66FF" alpha=".8"/>
+						<mx:SolidColor color="0x9966CC" alpha=".8"/>
+						<mx:SolidColor color="0x9999CC" alpha=".8"/>
+						<mx:SolidColor color="0x6699CC" alpha=".8"/>
+						<mx:SolidColor color="0x669999" alpha=".8"/>
+						<mx:SolidColor color="0x99CC99" alpha=".8"/>
+					</mx:fills>
+				</mx:PieSeries>
+			</mx:series>
+		</mx:PieChart>
+		<mx:Legend dataProvider="{projectsColumnChart}"/>
+		<mx:ControlBar>
+			<mx:Button id="btnRefresh" label="Refrescar" click="btnRefresh_clickHandler(event)"/>
+		</mx:ControlBar>
+	</mx:Panel>
+	<mx:Fade id="fadeEffect" duration="3000" alphaFrom="0" alphaTo="1"/>
+	<mx:Blur id="zoomEffect" duration="4000" blurXFrom="0" blurXTo="2" blurYFrom="0" blurYTo="2"/>
+</mx:VBox>

@@ -7,6 +7,15 @@
 		<![CDATA[
 			import mx.collections.ArrayCollection;
 			import mx.events.FlexEvent;
+			import mx.graphics.SolidColor;
+			
+			[Bindable]
+			private var warmColorsArray:Array = new Array(
+				new SolidColor(0x143AFF, .5), 
+				new SolidColor(0x09FF27, .5), 
+				new SolidColor(0xFFEA0F, .5),
+				new SolidColor(0xFF0000, .5)
+			);
 			
 			private var dataProject:ArrayCollection = new ArrayCollection([  {Tipo:"Facturados", Cantidad:83},
 																			 {Tipo:"Cobrados", Cantidad:54},
@@ -33,29 +42,8 @@
 						creationCompleteEffect="{fadeEffect}"
 						showEffect="{zoomEffect}">
 			<mx:series>
-				<mx:ColumnSeries yField="Cantidad" displayName="Cantidad de Proyectos">
-					<mx:fill>
-						<mx:LinearGradient angle="90">
-							<mx:entries>
-								<mx:GradientEntry 
-									color="0xAA0000" 
-									ratio="0"
-									alpha="1"
-									/>
-								<mx:GradientEntry 
-									color="0xCC0000" 
-									ratio=".33"
-									alpha="1"
-									/>
-								<mx:GradientEntry 
-									color="0xFF0000"  
-									ratio=".66" 
-									alpha=".2"
-									/>
-							</mx:entries>
-						</mx:LinearGradient>
-					</mx:fill>
-				</mx:ColumnSeries>
+				<mx:ColumnSeries yField="Cantidad" displayName="Cantidad de Proyectos"
+								 fills="{warmColorsArray}"/>				
 			</mx:series>
 			<mx:horizontalAxis>
 				<mx:CategoryAxis categoryField="Tipo"/>

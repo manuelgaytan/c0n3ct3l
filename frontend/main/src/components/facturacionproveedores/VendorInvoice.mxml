@@ -452,12 +452,19 @@
 					return;
 				}
 				var supplier:Proveedor = null; 
+				this.txtBank.text = "";
 				if( Util.selectedId( this.cmbSupplierType ) == 1 ){
 					var proveedorCalificado:ProveedorCalificado = Util.validateCombo( this.cmbSupplier ) as ProveedorCalificado;
+					if( proveedorCalificado == null ){
+						return;
+					}
 					supplier = proveedorCalificado.proveedorSeleccionado.proveedor;
 					this.txtBank.text = proveedorCalificado.datoBancario.banco;
 				}else{
 					var proveedorMaquilador:ProveedorMaquilador = Util.validateCombo( this.cmbSupplier ) as ProveedorMaquilador;
+					if( proveedorCalificado == null ){
+						return;
+					}
 					supplier = proveedorMaquilador.proveedor;
 					this.txtBank.text = proveedorMaquilador.datoBancario.banco;
 				}

@@ -345,8 +345,8 @@
 					return;
 				}
 				this.txtPhones.text = supplier.telefonos;
-				this.txtContact.text = supplier.telefonos;
-				this.txtMail.text = supplier.telefonos;
+				this.txtContact.text = supplier.contacto;
+				this.txtMail.text = supplier.correo;
 			}
 			
 			protected function responseGetTreasury_resultHandler(event:ResultEvent):void
@@ -462,7 +462,7 @@
 					this.txtBank.text = proveedorCalificado.datoBancario.banco;
 				}else{
 					var proveedorMaquilador:ProveedorMaquilador = Util.validateCombo( this.cmbSupplier ) as ProveedorMaquilador;
-					if( proveedorCalificado == null ){
+					if( proveedorMaquilador == null ){
 						return;
 					}
 					supplier = proveedorMaquilador.proveedor;

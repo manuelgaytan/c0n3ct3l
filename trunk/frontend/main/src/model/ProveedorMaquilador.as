@@ -23,6 +23,8 @@ package model
 		
 		public var tipoContrato:TipoContrato;
 		
+		public var vigenciaContrato:String;
+		
 		public var nss:String;
 		
 		public var documentosLiderProveedorMaquilador:ArrayCollection; 

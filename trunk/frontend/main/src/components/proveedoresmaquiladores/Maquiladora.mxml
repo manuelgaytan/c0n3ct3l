@@ -81,6 +81,7 @@
 					this.cmbTipoContrato.selectedIndex = Util.selectedIndexFromCombo( this.cmbTipoContrato.dataProvider as ArrayCollection, 
 						this._item.tipoContrato.id);
 				}
+				this.txtValidityContract.text = this._item.vigenciaContrato;
 				this.dtfFechaContrato.selectedDate = this._item.fechaContrato;
 				this.fltDlvLeaderDocuments.delivers = this.convertDocumentLeaderToList( this._item.documentosLiderProveedorMaquilador );				
 			}
@@ -101,6 +102,7 @@
 				item.datoBancario.cuentaBancaria= Util.validateEmpty(txtCuenta.text);
 				item.nss=Util.validateEmpty(txtNSS.text);
 				item.curp=Util.validateEmpty(txtCURP.text);
+				item.vigenciaContrato = Util.validateEmpty( txtValidityContract.text );
 				item.tipoContrato= new TipoContrato;
 				item.tipoContrato.id = ((this.cmbTipoContrato.selectedItem as TipoContrato).id); 
 				item.fechaContrato= this.dtfFechaContrato.selectedDate;
@@ -176,6 +178,9 @@
 			{
 				this.validators = new InicializaValidadoresEtiquetas();
 				validators.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
+				validators.setValidador( this.txtValidityContract, "generic" );
+				validators.setValidador( this.txtCURP, "generic" );
+				validators.setValidador( this.txtNSS, "generic" );
 				validators.crearValidadorRestrictor("number",ValidadorDecimal.nombre, 10, 4);
 			}
 			
@@ -196,6 +201,7 @@
 				this.txtNSS.reset();
 				this.txtCURP.reset();
 				this.cmbTipoContrato.selectedIndex = 0;
+				this.txtValidityContract.reset();
 				this.dtfFechaContrato.reset();
 				this.fltDlvLeaderDocuments.reset();
 			}
@@ -328,6 +334,9 @@
 			<mx:ComboBox id="cmbTipoContrato"
 						 labelField="tipo"
 						 />
+		</mx:FormItem>
+		<mx:FormItem label="Vigencia Contrato:">
+			<components:TextInput id="txtValidityContract" />
 		</mx:FormItem>
 		<mx:FormItem label="Fecha de Contrato:">
 			<components:DateField id="dtfFechaContrato" />

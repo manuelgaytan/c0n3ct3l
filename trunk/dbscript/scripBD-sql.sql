@@ -774,6 +774,7 @@
 	curp VARCHAR(255) NOT NULL,
 	fk_categoria_proyecto INT(11) UNSIGNED,
 	fk_tipo_contrato INT(11) UNSIGNED,
+	vigencia_contrato VARCHAR(255) NOT NULL,
 	fecha_contrato DATE,
 	PRIMARY KEY (id)
 	);

@@ -48,7 +48,10 @@ public class ProveedorMaquiladorDO  implements Serializable{
 
 	@JoinColumn(name="fk_tipo_contrato")
 	private TipoContratoDO tipoContrato;
-
+	
+	@Column(name="vigencia_contrato")
+	private String vigenciaContrato;
+	
 	@Column(name="nss")
 	private String nss;
 	
@@ -188,6 +191,16 @@ public class ProveedorMaquiladorDO  implements Serializable{
 	 */
 	public void setProveedor(ProveedorDO proveedor) {
 		this.proveedor = proveedor;
+	}
+
+
+	public String getVigenciaContrato() {
+		return vigenciaContrato;
+	}
+
+
+	public void setVigenciaContrato(String vigenciaContrato) {
+		this.vigenciaContrato = vigenciaContrato;
 	}
 
 

@@ -11,10 +11,15 @@ import javax.persistence.Query;
 import mx.com.gahm.conenctel.entities.ComentarioComprasDO;
 import mx.com.gahm.conenctel.entities.ComentarioRequisicionDO;
 import mx.com.gahm.conenctel.entities.DocumentoLiderProveedorMaquiladorDO;
+import mx.com.gahm.conenctel.entities.EstadoNotificacionDO;
+import mx.com.gahm.conenctel.entities.NotificacionDO;
 import mx.com.gahm.conenctel.entities.PartidaRequisicionCompraDO;
+import mx.com.gahm.conenctel.entities.PerfilDO;
 import mx.com.gahm.conenctel.entities.ProveedorMaquiladorDO;
+import mx.com.gahm.conenctel.entities.ProyectoDO;
 import mx.com.gahm.conenctel.entities.RequisicionCompraDO;
 import mx.com.gahm.conenctel.entities.SolicitanteRequisicionDO;
+import mx.com.gahm.conenctel.entities.UsuarioDO;
 import mx.com.gahm.conenctel.services.IRequisicionCompraService;
 
 @Stateless(mappedName = "ejb/RequisicionCompraService")
@@ -55,14 +60,37 @@ public class RequisicionCompraService  implements IRequisicionCompraService{
 
 		item.setFechaSolicitud(new Date());
 		entityManager.persist(item);
-		
 		savePartidas(item,partidasRequisicionCompra);
 		saveComentariosRequisicion(item, comentariosRequisicion);
 		saveSolicitantesRequisicion(item, solicitantesRequisicion);
 		item.setSolicitantesRequisicion(solicitantesRequisicion);
 		item.setPartidasRequisicionCompra(partidasRequisicionCompra);
 		item.setComentariosRequisicion(comentariosRequisicion);
+		
+		this.validarEnvioNotificaciones(item);
 		return item;
+	}
+	
+	private void validarEnvioNotificaciones(RequisicionCompraDO item) {
+		if( item == null ){
+			return;
+		}
+		String mensaje = null;
+		mensaje = NotificacionDO.REQUISICION_COMPRA_CREACION + item.getId();
+		this.enviarNotificacion(PerfilDO.ID_COMPRAS, mensaje);
+	}
+	
+	private void enviarNotificacion(int idPerfil, String mensaje) {
+		PerfilDO perfil = entityManager.find(PerfilDO.class, idPerfil);
+		UsuarioDO usuario = entityManager.find(UsuarioDO.class, UsuarioDO.ID_AUTOMATICO);
+		EstadoNotificacionDO estado = entityManager.find(EstadoNotificacionDO.class, EstadoNotificacionDO.ID_PENDIENTE);
+		NotificacionDO notificacion = new NotificacionDO();
+		notificacion.setPerfil(perfil);
+		notificacion.setNotificacion(mensaje);
+		notificacion.setUsuarioCreacion(usuario);
+		notificacion.setFechaHoraCreacion(new Date());
+		notificacion.setEstado(estado);
+		entityManager.persist(notificacion);
 	}
 
 	@Override

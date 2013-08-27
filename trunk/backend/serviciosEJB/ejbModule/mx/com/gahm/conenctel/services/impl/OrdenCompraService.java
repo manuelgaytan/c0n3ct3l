@@ -10,9 +10,13 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import mx.com.gahm.conenctel.entities.EstadoNotificacionDO;
+import mx.com.gahm.conenctel.entities.NotificacionDO;
 import mx.com.gahm.conenctel.entities.OrdenCompraDO;
 import mx.com.gahm.conenctel.entities.PartidaRequisicionCompraDO;
+import mx.com.gahm.conenctel.entities.PerfilDO;
 import mx.com.gahm.conenctel.entities.RequisicionCompraDO;
+import mx.com.gahm.conenctel.entities.UsuarioDO;
 import mx.com.gahm.conenctel.services.IOrdenCompraService;
 
 @Stateless(mappedName = "ejb/OrdenCompraService")
@@ -61,8 +65,30 @@ public class OrdenCompraService  implements IOrdenCompraService{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-	return item;
+	    this.validarEnvioNotificaciones(item);
+	    return item;
+	}
+	
+	private void validarEnvioNotificaciones(OrdenCompraDO item) {
+		if( item == null ){
+			return;
+		}
+		String mensaje = null;
+		mensaje = NotificacionDO.ORDEN_COMPRA_ALMACEN_CREACION + item.getId();
+		this.enviarNotificacion(PerfilDO.ID_ALMACEN, mensaje);
+	}
+	
+	private void enviarNotificacion(int idPerfil, String mensaje) {
+		PerfilDO perfil = entityManager.find(PerfilDO.class, idPerfil);
+		UsuarioDO usuario = entityManager.find(UsuarioDO.class, UsuarioDO.ID_AUTOMATICO);
+		EstadoNotificacionDO estado = entityManager.find(EstadoNotificacionDO.class, EstadoNotificacionDO.ID_PENDIENTE);
+		NotificacionDO notificacion = new NotificacionDO();
+		notificacion.setPerfil(perfil);
+		notificacion.setNotificacion(mensaje);
+		notificacion.setUsuarioCreacion(usuario);
+		notificacion.setFechaHoraCreacion(new Date());
+		notificacion.setEstado(estado);
+		entityManager.persist(notificacion);
 	}
 	
 	private void deletePartidasRequisicionCompra( RequisicionCompraDO item ){

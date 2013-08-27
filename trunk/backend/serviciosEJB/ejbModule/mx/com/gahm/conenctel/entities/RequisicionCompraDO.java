@@ -61,13 +61,14 @@ public class RequisicionCompraDO implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public RequisicionCompraDO(Date fechaSolicitud, String motivo,
+	public RequisicionCompraDO(Integer id, Date fechaSolicitud, String motivo,
 			PrioridadDO prioridad, AreaSolicitanteDO areaSolicitante,
 			String centralSitio,
 			EstatusRequisicionCompraDO estatusRequisicionCompra,
 			List<SolicitanteRequisicionDO> solicitantesRequisicion,
 			List<PartidaRequisicionCompraDO> partidasRequisicionCompra
 			) {
+		this.id = id;
 		this.fechaSolicitud = fechaSolicitud;
 		this.motivo = motivo;
 		this.prioridad = prioridad;

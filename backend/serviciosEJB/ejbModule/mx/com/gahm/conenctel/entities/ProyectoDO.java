@@ -25,8 +25,9 @@ import java.util.List;
 			
 			@NamedQuery(name = "ProyectoDO.getProyectosByProducto", query = "select c from ProyectoDO c where c.producto.id=:idProducto"),
 			@NamedQuery(name = "ProyectoDO.getProyectosNoAsociados", query = "select c from ProyectoDO c where c.id NOT IN(select dp.proyecto.id from DesarrolloProyectoABDO dp)"),
-			@NamedQuery(name = "ProyectoDO.getProyectosByEstado", query = "select c from ProyectoDO c where c.estado.id=:idEstado")
-	
+			@NamedQuery(name = "ProyectoDO.getProyectosByEstado", query = "select c from ProyectoDO c where c.estado.id=:idEstado"),
+			@NamedQuery(name = "ProyectoDO.getCantidadEstatusProyectos", query = "select new mx.com.gahm.conenctel.model.ItemEstatusProyecto( p.id, ep.etiqueta, count(p.id) ) from ProyectoDO p, EstadoDO ep where p.estado.id = ep.id group by ep.etiqueta"),
+			@NamedQuery(name = "ProyectoDO.getCantidadProyectosByEstado", query = "select new mx.com.gahm.conenctel.model.ItemEstatusProyecto( p.id, ep.etiqueta, count(p.id) ) from ProyectoDO p, EstadoDO ep where p.estado.id = ep.id and ep.id = :idEstadoProyecto group by ep.etiqueta")
 })
 @Table(name = "proyecto")
 public class ProyectoDO implements Serializable {

@@ -26,10 +26,10 @@ import javax.persistence.TemporalType;
 @NamedQueries({
 	@NamedQuery(name = "InformacionFacturacionDO.findAll", 
 			query = "select rc from InformacionFacturacionDO rc"),
-			@NamedQuery(name = "InformacionFacturacionDO.findBycliente", 
+	@NamedQuery(name = "InformacionFacturacionDO.findBycliente", 
 			query = "select rc from InformacionFacturacionDO rc " +
 					"where rc.validacionAdministrativa.proyectoPadre.id in (select DISTINCT p.proyectoPadre.id from ProyectoPadreHijoDO p where p.proyecto.producto.cliente.id=:idCliente) or " +
-					" rc.validacionAdministrativa.proyecto.producto.cliente.id=:idCliente" )		
+					" rc.validacionAdministrativa.proyecto.producto.cliente.id=:idCliente" )
 	})
 public class InformacionFacturacionDO implements Serializable{
 
@@ -44,7 +44,7 @@ public class InformacionFacturacionDO implements Serializable{
 	private Integer id;
 	
 	@ManyToOne
-	@JoinColumn(name = "fk_validacion_administrativa", nullable = false)
+	@JoinColumn(name = "fk_validacion_administrativa",  nullable = false)
 	private ValidacionAdministrativaDO validacionAdministrativa;
 	
 	@Column(name = "folio_factura_1", nullable = false)

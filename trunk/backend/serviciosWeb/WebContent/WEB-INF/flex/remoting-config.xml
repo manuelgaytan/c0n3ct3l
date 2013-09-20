@@ -506,4 +506,12 @@
 			<scope>session</scope>
 		</properties>
 	</destination>
+	
+	<destination id="graficoService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/GraficoService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
 </service>

@@ -16,6 +16,7 @@ package model
 	import mx.collections.ArrayCollection;
 	import mx.collections.Sort;
 	import mx.collections.SortField;
+	import mx.com.gahm.componentes.validadores.Constantes;
 	import mx.controls.Alert;
 	import mx.controls.ComboBox;
 	import mx.controls.DataGrid;
@@ -361,6 +362,9 @@ package model
 		
 		public static function showErrorMessage(mensaje:String):void
 		{
+			if( mensaje == Constants.TRANSACTION_ABORTED ){
+				mensaje = Constants.TRANSACTION_ABORTED_MESSAGE;
+			}
 			Alert.show(mensaje, Constants.ERROR);
 		}
 		

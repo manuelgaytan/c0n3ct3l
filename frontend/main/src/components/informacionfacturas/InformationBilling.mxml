@@ -241,7 +241,7 @@
 				validators.setRestrictor(txtFolio1, "generic");
 				validators.setRestrictor(txtFolio2, "generic");
 				validators.setRestrictor(txtFolio3, "generic");
-				validators.setRestrictor(txtInvoiceState, "generic");
+				validators.setValidador(txtInvoiceState, "generic");
 				validators.setRestrictor(txtAccountability, "generic");
 				validators.crearValidadorRestrictor("genericDecimal",ValidadorDecimal.nombre, 9, 2);
 				validators.setRestrictor(txtSubtotal1, "genericDecimal");

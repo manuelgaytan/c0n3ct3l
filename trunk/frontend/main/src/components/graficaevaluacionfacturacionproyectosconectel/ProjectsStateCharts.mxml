@@ -5,35 +5,56 @@
 		 creationComplete="creationCompleteHandler(event)">
 	<mx:Script>
 		<![CDATA[
+			import model.Util;
+			
 			import mx.collections.ArrayCollection;
 			import mx.events.FlexEvent;
-			
-			private var dataProject:ArrayCollection = new ArrayCollection([  {Fase:"Alta", Cantidad:12},
-																			 {Fase:"Datos Generales", Cantidad:8},
-																			 {Fase:"Desarrollo", Cantidad:29},
-																			 {Fase:"Prueba y Entrega", Cantidad:17}] ); 
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
 			
 			protected function creationCompleteHandler(event:FlexEvent):void
 			{
-				projectsColumnChart.dataProvider = dataProject;
+				this.executeQuery();
+			}
+				
+			private function executeQuery():void{
+				this.responseGetAll.token = this.graficoService.getEstatusProyectos();
 			}
 			
 			protected function btnRefresh_clickHandler(event:MouseEvent):void
 			{
+				this.executeQuery();
 				projectsColumnChart.visible = false;
+			}
+			
+			protected function responseGetAll_resultHandler(event:ResultEvent):void
+			{
+				if( event == null ||
+					event.result == null ||
+					!(event.result is ArrayCollection) ){
+					return;
+				}
+				var dataProject:ArrayCollection = event.result as ArrayCollection;
+				projectsColumnChart.dataProvider = dataProject;
 				projectsColumnChart.visible = true;
 			}
 			
+			protected function graficoService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			
 		]]>
 	</mx:Script>
-	<mx:Panel title="Gráfico de Pastel, que expone la Relación entre las fasese de los Proyectos"
+	<mx:Panel title="Gráfico de Pastel, que expone la Relación entre las fases de los Proyectos"
 			  width="100%" height="100%">
-		<mx:PieChart id="projectsColumnChart" showDataTips="true"
+		<mx:PieChart id="projectsColumnChart" showDataTips="true"					 
 						width="100%" height="100%"
 						creationCompleteEffect="{fadeEffect}"
 						showEffect="{zoomEffect}">
 			<mx:series>
-				<mx:PieSeries field="Cantidad" nameField="Fase"
+				<mx:PieSeries field="cantidad" nameField="tipo"
 							  displayName="Cantidad de Proyectos" labelPosition="callout">
 					<mx:fills>
 						<mx:SolidColor color="0xCC66FF" alpha=".8"/>
@@ -53,4 +74,8 @@
 	</mx:Panel>
 	<mx:Fade id="fadeEffect" duration="3000" alphaFrom="0" alphaTo="1"/>
 	<mx:Blur id="zoomEffect" duration="4000" blurXFrom="0" blurXTo="2" blurYFrom="0" blurYTo="2"/>
+	
+	<mx:RemoteObject id="graficoService" destination="graficoService" fault="graficoService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetAll" result="responseGetAll_resultHandler(event)"/>
 </mx:VBox>

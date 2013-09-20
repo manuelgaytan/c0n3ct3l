@@ -151,6 +151,7 @@
 			import model.InformacionConfidencialColaborador;
 			import model.InformacionFacturacion;
 			import model.InformacionPrenomina;
+			import model.ItemEstatusProyecto;
 			import model.Licencia;
 			import model.Material;
 			import model.MaterialSolicitudAlmacen;
@@ -529,6 +530,7 @@
 			private var reportes:Reportes;
 			private var comentarioProveedor:ComentarioProveedor;
 			private var concentradoOrdenCompraCliente:ConcentradoOrdenCompraCliente;
+			private var itemEstatusProyecto:ItemEstatusProyecto;
 						
 			protected function login_readyHandler(event:ModuleEvent):void
 			{

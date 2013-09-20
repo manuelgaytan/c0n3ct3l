@@ -29,5 +29,8 @@ package model
 		public static const OC_SITE:String = "SITIO";
 		public static const OC_ADVANCE:String = "ANTICIPO";
 		public static const OC_SETTLEMENT:String = "FINIQUITO";
+		
+		public static const TRANSACTION_ABORTED:String = " Transaction aborted";
+		public static const TRANSACTION_ABORTED_MESSAGE:String = "Existen elementos asociados, por tanto, no se puede Eliminar.";
 	}
 }

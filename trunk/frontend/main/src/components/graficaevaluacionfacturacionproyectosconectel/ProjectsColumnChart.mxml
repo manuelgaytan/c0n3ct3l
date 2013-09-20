@@ -5,9 +5,13 @@
 		 creationComplete="creationCompleteHandler(event)">
 	<mx:Script>
 		<![CDATA[
+			import model.Util;
+			
 			import mx.collections.ArrayCollection;
 			import mx.events.FlexEvent;
 			import mx.graphics.SolidColor;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
 			
 			[Bindable]
 			private var warmColorsArray:Array = new Array(
@@ -17,22 +21,37 @@
 				new SolidColor(0xFF0000, .5)
 			);
 			
-			private var dataProject:ArrayCollection = new ArrayCollection([  {Tipo:"Facturados", Cantidad:83},
-																			 {Tipo:"Cobrados", Cantidad:54},
-																			 {Tipo:"No Cobrados", Cantidad:29},
-																			 {Tipo:"Cancelados", Cantidad:9}] ); 
-			
 			protected function creationCompleteHandler(event:FlexEvent):void
 			{
-				projectsColumnChart.dataProvider = dataProject;
+				this.executeQuery();
+			}
+			
+			private function executeQuery():void{
+				this.responseGetAll.token = this.graficoService.getFasesProyectos();
 			}
 			
 			protected function btnRefresh_clickHandler(event:MouseEvent):void
 			{
+				this.executeQuery();
 				projectsColumnChart.visible = false;
+			}
+			
+			protected function responseGetAll_resultHandler(event:ResultEvent):void
+			{
+				if( event == null ||
+					event.result == null ||
+					!(event.result is ArrayCollection) ){
+					return;
+				}
+				var dataProject:ArrayCollection = event.result as ArrayCollection;
+				projectsColumnChart.dataProvider = dataProject;
 				projectsColumnChart.visible = true;
 			}
 			
+			protected function graficoService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
 		]]>
 	</mx:Script>
 	<mx:Panel title="Gráfico de Columnas, que expone la Relación entre Proyectos Facturados - Cobrados"
@@ -42,11 +61,11 @@
 						creationCompleteEffect="{fadeEffect}"
 						showEffect="{zoomEffect}">
 			<mx:series>
-				<mx:ColumnSeries yField="Cantidad" displayName="Cantidad de Proyectos"
+				<mx:ColumnSeries yField="cantidad" displayName="Cantidad de Proyectos"
 								 fills="{warmColorsArray}"/>				
 			</mx:series>
 			<mx:horizontalAxis>
-				<mx:CategoryAxis categoryField="Tipo"/>
+				<mx:CategoryAxis categoryField="tipo"/>
 			</mx:horizontalAxis>
 		</mx:ColumnChart>
 		<mx:Legend dataProvider="{projectsColumnChart}"/>
@@ -57,4 +76,7 @@
 	<mx:Fade id="fadeEffect" duration="3000" alphaFrom="0" alphaTo="1"/>
 	<mx:Zoom id="zoomEffect" duration="3000" zoomHeightFrom="0" zoomHeightTo="1"
 			 								 />
+	<mx:RemoteObject id="graficoService" destination="graficoService" fault="graficoService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetAll" result="responseGetAll_resultHandler(event)"/>
 </mx:VBox>

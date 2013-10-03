@@ -30,8 +30,8 @@
 			
 			import mx.collections.ArrayCollection;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
-			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
-			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
+			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
 			import mx.com.gahm.componentes.validadores.ValidadorEntero;
 			import mx.controls.Alert;
@@ -193,7 +193,7 @@
 			private function initializeValidators():void
 			{
 				this.validators = new InicializaValidadoresEtiquetas();
-				this.validators.crearValidadorRestrictor("genericString", ValidadorAlfabetico.nombre, 0, 100, true);
+				this.validators.crearValidadorRestrictor("genericString", ValidadorCadenaCualquierCaracter.nombre, 0, 100);
 				validators.setValidador(txtVendorInvoiceNumber, "genericString");
 				this.validators.crearValidadorRestrictor("genericDecimal", ValidadorDecimal.nombre, 7,2);
 				validators.setRestrictor(txtWeek, "genericString");

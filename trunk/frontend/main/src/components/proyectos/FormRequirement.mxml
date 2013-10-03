@@ -12,8 +12,8 @@
 			
 			import mx.collections.ArrayCollection;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
-			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
-			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
+			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorEntero;
 			import mx.controls.Alert;
 			import mx.events.FlexEvent;
@@ -61,7 +61,7 @@
 			protected function initializeValidators():void
 			{
 				this.validators = new InicializaValidadoresEtiquetas();
-				validators.crearValidadorRestrictor("requirement",ValidadorAlfanumerico.nombre, 0, 50);
+				validators.crearValidadorRestrictor("requirement",ValidadorCadenaCualquierCaracter.nombre, 0, 50);
 				validators.setRestrictor(txtRequirement, "requirement");
 			}
 			

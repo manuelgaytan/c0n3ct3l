@@ -30,8 +30,8 @@
 			import mx.collections.ArrayCollection;
 			import mx.com.gahm.componentes.validadores.Constantes;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
-			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
-			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
+			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
 			import mx.com.gahm.componentes.validadores.ValidadorEmail;
 			import mx.com.gahm.componentes.validadores.ValidadorEntero;
@@ -187,12 +187,12 @@
 			private function initializeValidators():void
 			{
 				this.validators = new InicializaValidadoresEtiquetas();
-				validators.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
+				validators.crearValidadorRestrictor("generic",ValidadorCadenaCualquierCaracter.nombre, 0, 255);
 				this.validators.setValidador( this.txtSpecify, "generic" );
 				this.validators.setValidador( this.txtFromAnalysis, "generic" );
 				this.validators.setValidador( this.txtDeterminationCauses, "generic" );
 				this.validators.setValidador( this.txtFollowUpActions, "generic" );
-				validators.crearValidadorRestrictor("generic150",ValidadorAlfanumerico.nombre, 0, 150, true);
+				validators.crearValidadorRestrictor("generic150",ValidadorCadenaCualquierCaracter.nombre, 0, 150);
 				this.validators.setValidador( this.txtResponsibleFollowUp, "generic150" );
 			}
 			

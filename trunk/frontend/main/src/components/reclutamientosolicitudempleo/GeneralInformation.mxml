@@ -19,7 +19,7 @@
 			
 			import mx.collections.ArrayCollection;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
-			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorCombo;
 			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
 			import mx.com.gahm.componentes.validadores.ValidadorEmail;
@@ -199,7 +199,7 @@
 			private function initializeValidators():void
 			{
 				this.validators = new InicializaValidadoresEtiquetas();
-				this.validators.crearValidadorRestrictor("genericAlfanumeric", ValidadorAlfanumerico.nombre, 0, 255, true);
+				this.validators.crearValidadorRestrictor("genericAlfanumeric", ValidadorCadenaCualquierCaracter.nombre, 0, 255);
 				this.validators.setValidador( this.txtLastName, "genericAlfanumeric");
 				this.validators.setValidador( this.txtMothersLastName, "genericAlfanumeric");
 				this.validators.setValidador( this.txtName, "genericAlfanumeric");

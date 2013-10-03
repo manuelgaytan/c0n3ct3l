@@ -31,8 +31,7 @@
 			import mx.charts.chartClasses.DualStyleObject;
 			import mx.collections.ArrayCollection;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
-			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
-			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
 			import mx.com.gahm.componentes.validadores.ValidadorEntero;
 			import mx.controls.Alert;
@@ -193,7 +192,7 @@
 			private function initializeValidators():void
 			{
 				this.validators = new InicializaValidadoresEtiquetas();
-				this.validators.crearValidadorRestrictor("genericAlfanumeric", ValidadorAlfanumerico.nombre, 0, 255, true);
+				this.validators.crearValidadorRestrictor("genericAlfanumeric", ValidadorCadenaCualquierCaracter.nombre, 0, 255);
 				this.validators.setRestrictor( this.txtInvoiceFolio, "genericAlfanumeric");
 				this.validators.crearValidadorRestrictor("genericDecimal", ValidadorDecimal.nombre, 9, 2);
 				this.validators.setRestrictor( this.txtSubtotal, "genericDecimal" );
@@ -275,6 +274,9 @@
 			
 			protected function informationBillingConsult_informationBillingDetailHandler(event:GenericEvent):void
 			{
+				this.cmbInformationBilling.selectedIndex = 0;
+				this.setInvoice();
+				this.setMontos(0, 0, 0);
 			}
 			
 			protected function cmbClient_changeHandler(event:ListEvent):void
@@ -350,6 +352,7 @@
 			protected function cmbInformationBilling_changeHandler(event:ListEvent):void
 			{
 				if( this.informationBillingConsult.datagrid.selectedItem == null ){
+					this.setInvoice();
 					this.setMontos( 0, 0, 0);
 					return;
 				}
@@ -360,9 +363,11 @@
 				}
 				var idInformationBilling:Number = this.cmbInformationBilling.selectedIndex;
 				if( idInformationBilling == 0 ){
+					this.setInvoice();
 					this.setMontos( 0, 0, 0);
 					return;
 				}
+				this.setInvoice( informationBilling["folioFactura"+idInformationBilling] );
 				this.setMontos( informationBilling["subtotal"+idInformationBilling],
 								informationBilling["iva"+idInformationBilling],
 								informationBilling["total"+idInformationBilling] );
@@ -376,6 +381,11 @@
 				}
 				this.txtIVA.text = (subtotal*Constants.IVA).toString();
 				this.txtTotal.text = (subtotal*Constants.IVA+subtotal).toString();
+			}
+			
+			private function setInvoice(value:String = ""):void
+			{
+				this.txtInvoiceFolio.text = value;
 			}
 			
 		]]>

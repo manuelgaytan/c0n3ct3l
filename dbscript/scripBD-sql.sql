@@ -2422,6 +2422,34 @@
 	PRIMARY KEY (id)
 	);
 
+	CREATE VIEW NumeroFoliosFactura
+	AS
+	SELECT DISTINCT folio_factura_1 AS 'numero_folios_factura'
+	FROM InformacionFacturacion
+	WHERE folio_factura_1 IS NOT NULL
+	UNION
+	SELECT DISTINCT folio_factura_2 AS 'numero_folios_factura'
+	FROM InformacionFacturacion
+	WHERE folio_factura_2 IS NOT NULL
+	UNION
+	SELECT DISTINCT folio_factura_3 AS 'numero_folios_factura'
+	FROM InformacionFacturacion
+	WHERE folio_factura_3 IS NOT NULL;
+
+	CREATE VIEW NumeroFoliosFacturaFacturados
+	AS
+	SELECT 1 AS 'ID', 'Facturados' AS 'Tipo', count(*) AS 'Cantidad' FROM NumeroFoliosFactura;
+
+	CREATE VIEW NumeroInformacionFacturacionEnCobranza
+	AS
+	SELECT fk_informacion_facturacion 
+	FROM Cobranza 
+	GROUP BY fk_informacion_facturacion;
+
+	CREATE VIEW NumeroProyectosCobrados
+	AS
+	SELECT 1 AS 'ID', 'Cobrados' AS 'Tipo', count(*) AS 'Cantidad' FROM NumeroInformacionFacturacionEnCobranza;
+
 	ALTER TABLE Cliente ADD FOREIGN KEY id_contacto_idxfk (id_contacto) REFERENCES Contacto (id);
 
 	ALTER TABLE Proyecto ADD FOREIGN KEY id_categoria_proyecto_idxfk (id_categoria_proyecto) REFERENCES CategoriaProyecto (id);

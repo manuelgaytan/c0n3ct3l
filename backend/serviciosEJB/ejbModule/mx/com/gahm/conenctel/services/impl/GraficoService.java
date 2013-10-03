@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 import mx.com.gahm.conenctel.entities.EstadoDO;
+import mx.com.gahm.conenctel.entities.InformacionFacturacionDO;
 import mx.com.gahm.conenctel.entities.ProyectoDO;
 import mx.com.gahm.conenctel.exceptions.ConectelException;
 import mx.com.gahm.conenctel.model.ItemEstatusProyecto;
@@ -35,15 +36,36 @@ public class GraficoService implements IGraficosService {
 	
 	@Override
 	public List<ItemEstatusProyecto> getFasesProyectos() throws ConectelException {
-		List<ItemEstatusProyecto> datos= null;
+		List<ItemEstatusProyecto> datos = null;
 		TypedQuery<ItemEstatusProyecto>  query =null;
+		
 		query = entityManager.createNamedQuery("NumeroFoliosFacturaFacturadosDO.getProyectosFacturados",ItemEstatusProyecto.class);
 		datos = query.getResultList();
+		query = entityManager.createNamedQuery("NumeroProyectosCobradosDO.getProyectosCobrados",ItemEstatusProyecto.class);
+		datos.addAll( query.getResultList() );
+		datos.add( this.obtenerNoCobrados( ((ItemEstatusProyecto)query.getResultList().get(0)).getCantidad() ) );
 		query = entityManager.createNamedQuery("ProyectoDO.getCantidadProyectosByEstado",ItemEstatusProyecto.class);
 		query.setParameter("idEstadoProyecto", EstadoDO.ID_CANCELADO);
-		datos.add( query.getResultList().get( 0 ) );
+		List<ItemEstatusProyecto> datosProyectosCancelados = query.getResultList();
+		if( datosProyectosCancelados != null &&
+				datosProyectosCancelados.size() > 0 ){
+			datos.add( datosProyectosCancelados.get( 0 ) );
+		}
 		
-		System.out.println("\n\nTipo: " + ((ItemEstatusProyecto)datos.get(0)).getTipo() + ", cantidad: " + ((ItemEstatusProyecto)datos.get(0)).getCantidad() + "\n\n");
+		
+		
 		return datos;
+	}
+	
+	private ItemEstatusProyecto obtenerNoCobrados(long cantidadCobrados){
+		List<InformacionFacturacionDO> datos = null;
+		TypedQuery<InformacionFacturacionDO>  query =null;
+		query = entityManager.createNamedQuery("InformacionFacturacionDO.findAll",InformacionFacturacionDO.class);
+		datos = query.getResultList();
+		ItemEstatusProyecto itemEstatusProyecto = new ItemEstatusProyecto(1,"No Cobrados", "0");
+		if( datos != null){
+			itemEstatusProyecto.setCantidad( datos.size() - cantidadCobrados );
+		}
+		return itemEstatusProyecto;
 	}
 }

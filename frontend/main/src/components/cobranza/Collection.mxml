@@ -177,6 +177,7 @@
 				value &&= this.informationBillingConsult.datagrid.selectedItem != null;
 				//value &&= this.creditNoteConsult.datagrid.selectedItem != null;
 				value &&= Util.listBaseSelected( this.cmbConectelBank );
+				value &&= this.dtfPaymentDate.selectedDate != null;
 				return value;
 			}
 			
@@ -195,9 +196,9 @@
 				this.validators.crearValidadorRestrictor("genericAlfanumeric", ValidadorCadenaCualquierCaracter.nombre, 0, 255);
 				this.validators.setRestrictor( this.txtInvoiceFolio, "genericAlfanumeric");
 				this.validators.crearValidadorRestrictor("genericDecimal", ValidadorDecimal.nombre, 9, 2);
-				this.validators.setRestrictor( this.txtSubtotal, "genericDecimal" );
-				this.validators.setRestrictor( this.txtIVA, "genericDecimal" );
-				this.validators.setRestrictor( this.txtTotal, "genericDecimal" );
+				this.validators.setValidador( this.txtSubtotal, "genericDecimal" );
+				this.validators.setValidador( this.txtIVA, "genericDecimal" );
+				this.validators.setValidador( this.txtTotal, "genericDecimal" );
 				this.validators.setValidador( this.txtAmount, "genericDecimal" );
 				this.validators.crearValidadorRestrictor("genericInteger", ValidadorEntero.nombre, 14);
 				this.validators.setRestrictor( this.txtPaymentReference, "genericInteger" );

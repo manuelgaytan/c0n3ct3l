@@ -25,8 +25,8 @@
 			import mx.collections.ArrayCollection;
 			import mx.com.gahm.componentes.validadores.Constantes;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
-			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
-			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
+			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
 			import mx.com.gahm.componentes.validadores.ValidadorEmail;
 			import mx.com.gahm.componentes.validadores.ValidadorEntero;
@@ -176,12 +176,12 @@
 			private function initializeValidators():void
 			{
 				this.validators = new InicializaValidadoresEtiquetas();
-				validators.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
+				validators.crearValidadorRestrictor("generic",ValidadorCadenaCualquierCaracter.nombre, 0, 255);
 				this.validators.setRestrictor( this.txtName, "generic" );
 				this.validators.setValidador( this.txtAdvice, "generic" );
 				this.validators.setRestrictor( this.txtInmediatlyAction, "generic" );
 				this.validators.setValidador( this.txtImplementationResponsible, "generic" );
-				validators.crearValidadorRestrictor("generic50",ValidadorAlfanumerico.nombre, 0, 50, true);
+				validators.crearValidadorRestrictor("generic50",ValidadorCadenaCualquierCaracter.nombre, 0, 50);
 				this.validators.setRestrictor( this.txtPhone, "generic50" );
 				validators.crearValidadorRestrictor("genericEmail",ValidadorEmail.nombre);
 				this.validators.setRestrictor( this.txtEmail, "genericEmail" );

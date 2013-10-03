@@ -19,8 +19,8 @@
 			
 			import mx.collections.ArrayCollection;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
-			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
-			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
+			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorEntero;
 			import mx.com.gahm.componentes.validadores.ValidadorNumerico;
 			import mx.controls.Alert;
@@ -327,7 +327,7 @@
 				this.validators = new InicializaValidadoresEtiquetas();
 				validators.crearValidadorRestrictor("numerico11",ValidadorEntero.nombre, 11);
 				//validators.setValidador(txtConectelID, "numerico11");
-				validators.crearValidadorRestrictor("alfanumerico100",ValidadorAlfanumerico.nombre, 0, 100, true);
+				validators.crearValidadorRestrictor("alfanumerico100",ValidadorCadenaCualquierCaracter.nombre, 0, 100);
 				validators.setRestrictor(txtDivision, "alfanumerico100");
 				validators.setRestrictor(txtArea, "alfanumerico100");
 				validators.setRestrictor(txtFinalClient, "alfanumerico100");

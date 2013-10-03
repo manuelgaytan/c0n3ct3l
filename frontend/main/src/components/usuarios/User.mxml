@@ -12,7 +12,7 @@
 			
 			import mx.collections.ArrayCollection;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
-			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
+			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.controls.Alert;
 			import mx.events.CloseEvent;
 			import mx.events.FlexEvent;
@@ -154,9 +154,9 @@
 			private function initializeValidators():void
 			{
 				this.validators = new InicializaValidadoresEtiquetas();
-				validators.crearValidadorRestrictor("wholeName",ValidadorAlfabetico.nombre, 0, 100, true);
+				validators.crearValidadorRestrictor("wholeName",ValidadorCadenaCualquierCaracter.nombre, 0, 100);
 				validators.setValidador(txtWholeName, "wholeName");
-				validators.crearValidadorRestrictor("user",ValidadorAlfabetico.nombre, 0, 40, true);
+				validators.crearValidadorRestrictor("user",ValidadorCadenaCualquierCaracter.nombre, 0, 40);
 				validators.setValidador(txtUser, "user");
 				validators.setValidador(txtPasword, "user");
 				validators.setValidador(txtVerifyPassword, "user");

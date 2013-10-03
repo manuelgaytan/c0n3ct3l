@@ -12,7 +12,7 @@
 			
 			import mx.collections.ArrayCollection;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
-			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
+			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
 			import mx.com.gahm.componentes.validadores.ValidadorEntero;
 			import mx.controls.Alert;
@@ -181,12 +181,12 @@
 			private function initializeValidators():void
 			{
 				this.validators = new InicializaValidadoresEtiquetas();
-				validators.crearValidadorRestrictor("a200",ValidadorAlfabetico.nombre, 0, 200, true);
+				validators.crearValidadorRestrictor("a200",ValidadorCadenaCualquierCaracter.nombre, 0, 200);
 				validators.setValidador(txtProjectType, "a200");
 				validators.setValidador(txtTechnology, "a200");
 				validators.setValidador(txtEquipment, "a200");
 				validators.setValidador(txtModel, "a200");
-				validators.crearValidadorRestrictor("a255",ValidadorAlfabetico.nombre, 0, 255, true);
+				validators.crearValidadorRestrictor("a255",ValidadorCadenaCualquierCaracter.nombre, 0, 255);
 				validators.setValidador(txtActivity, "a255");
 				validators.setValidador(txtServiceDescription, "a255");
 				validators.setValidador(txtScope, "a255");

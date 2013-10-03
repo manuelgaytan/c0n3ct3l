@@ -18,8 +18,8 @@
 			
 			import mx.collections.ArrayCollection;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
-			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
-			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
+			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
 			import mx.com.gahm.componentes.validadores.ValidadorEmail;
 			import mx.events.FlexEvent;
@@ -37,7 +37,7 @@
 			private function initializeValidators():void
 			{
 				this.validators = new InicializaValidadoresEtiquetas();
-				validators.crearValidadorRestrictor("generic",ValidadorAlfanumerico.nombre, 0, 255, true);
+				validators.crearValidadorRestrictor("generic",ValidadorCadenaCualquierCaracter.nombre, 0, 255);
 				validators.setValidador(txtNombreComercial, "generic");
 				validators.setValidador(txtRazonSocial, "generic");
 				validators.setValidador(txtRFC, "generic");
@@ -47,7 +47,7 @@
 				validators.setRestrictor(txtContacto, "generic");
 				validators.crearValidadorRestrictor("email",ValidadorEmail.nombre);
 				validators.setRestrictor(txtCorreo, "email");
-				validators.crearValidadorRestrictor("webpage",ValidadorAlfabetico.nombre, 0, 50);
+				validators.crearValidadorRestrictor("webpage",ValidadorCadenaCualquierCaracter.nombre, 0, 50);
 				validators.setRestrictor(txtPaginaWeb, "webpage");
 			}
 			

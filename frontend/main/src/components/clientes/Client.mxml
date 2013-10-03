@@ -11,7 +11,7 @@
 			
 			import mx.collections.ArrayCollection;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
-			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
+			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorEmail;
 			import mx.controls.Alert;
 			import mx.events.CloseEvent;
@@ -168,24 +168,24 @@
 			private function initializeValidators():void
 			{
 				this.validators = new InicializaValidadoresEtiquetas();
-				validators.crearValidadorRestrictor("wholeName",ValidadorAlfabetico.nombre, 0, 100, true);
+				validators.crearValidadorRestrictor("wholeName",ValidadorCadenaCualquierCaracter.nombre, 0, 100);
 				validators.setValidador(txtComercialName, "wholeName");
 				validators.setRestrictor(txtLegalName, "wholeName");
 				validators.setValidador(txtWholeName, "wholeName");
 				validators.setRestrictor(txtAccountExecutive, "wholeName");
-				validators.crearValidadorRestrictor("rfc",ValidadorAlfabetico.nombre, 0, 15, true);
+				validators.crearValidadorRestrictor("rfc",ValidadorCadenaCualquierCaracter.nombre, 0, 15);
 				validators.setRestrictor(txtRFC, "rfc");
-				validators.crearValidadorRestrictor("a255",ValidadorAlfabetico.nombre, 0, 255, true);
+				validators.crearValidadorRestrictor("a255",ValidadorCadenaCualquierCaracter.nombre, 0, 255);
 				validators.setRestrictor(txtFiscalAddress, "a255");
 				validators.setRestrictor(txtLocality, "a255");
 				validators.setRestrictor(txtState, "a255");
 				validators.setRestrictor(txtComercialConditions, "a255");
 				validators.crearValidadorRestrictor("email",ValidadorEmail.nombre);
 				validators.setRestrictor(txtEmail, "email");
-				validators.crearValidadorRestrictor("a50",ValidadorAlfabetico.nombre, 0, 50, true);
+				validators.crearValidadorRestrictor("a50",ValidadorCadenaCualquierCaracter.nombre, 0, 50);
 				validators.setRestrictor(txtPhone, "a50");
 				validators.setRestrictor(txtVendorNumber, "a50");
-				validators.crearValidadorRestrictor("webpage",ValidadorAlfabetico.nombre, 0, 50);
+				validators.crearValidadorRestrictor("webpage",ValidadorCadenaCualquierCaracter.nombre, 0, 50);
 				validators.setRestrictor(txtWebPage, "webpage");
 			}
 			

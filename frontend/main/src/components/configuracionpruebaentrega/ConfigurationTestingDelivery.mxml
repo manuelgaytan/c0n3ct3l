@@ -18,8 +18,8 @@
 			
 			import mx.collections.ArrayCollection;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
-			import mx.com.gahm.componentes.validadores.ValidadorAlfabetico;
-			import mx.com.gahm.componentes.validadores.ValidadorAlfanumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
+			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorEntero;
 			import mx.controls.Alert;
 			import mx.events.CloseEvent;
@@ -258,16 +258,16 @@
 				this.validators = new InicializaValidadoresEtiquetas();
 				validators.crearValidadorRestrictor("numerico11",ValidadorEntero.nombre, 11);
 				//validators.setValidador(txtConectelID, "numerico11");
-				validators.crearValidadorRestrictor("alfanumerico100",ValidadorAlfanumerico.nombre, 0, 100, true);
+				validators.crearValidadorRestrictor("alfanumerico100",ValidadorCadenaCualquierCaracter.nombre, 0, 100);
 				validators.setRestrictor(txtCommissioner, "alfanumerico100");
 				validators.setRestrictor(txtPortsDelivered, "alfanumerico100");
-				validators.crearValidadorRestrictor("alfanumerico200",ValidadorAlfanumerico.nombre, 0, 200, true);
+				validators.crearValidadorRestrictor("alfanumerico200",ValidadorCadenaCualquierCaracter.nombre, 0, 200);
 				validators.setRestrictor(txtAlign, "alfanumerico200");
 				validators.setRestrictor(txtSlotDelivered, "alfanumerico200");
-				validators.crearValidadorRestrictor("alfanumerico150",ValidadorAlfanumerico.nombre, 0, 150, true);
+				validators.crearValidadorRestrictor("alfanumerico150",ValidadorCadenaCualquierCaracter.nombre, 0, 150);
 				validators.setRestrictor(txtCardDelivered, "alfanumerico150");
 				validators.setRestrictor(txtAcceptationKey, "alfanumerico150");
-				validators.crearValidadorRestrictor("alfanumerico255",ValidadorAlfanumerico.nombre, 0, 255, true);
+				validators.crearValidadorRestrictor("alfanumerico255",ValidadorCadenaCualquierCaracter.nombre, 0, 255);
 				validators.setRestrictor(txtAuditKey, "alfanumerico255");
 			}
 			

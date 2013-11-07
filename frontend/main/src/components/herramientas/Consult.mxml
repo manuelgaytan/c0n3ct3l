@@ -89,12 +89,19 @@
 			private function labelFunctionGenerico(item:Object, column:DataGridColumn):String{
 				return Util.extractToText( item, column.dataField );
 			}
+			
+			protected function btnExport_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
 		]]>
 	</mx:Script>
 	<mx:Metadata>
 		[Event(name="toolDetail", type="events.GenericEvent")]
 	</mx:Metadata>
-	<mx:DataGrid id="datagrid" width="100%" height="100%" dataProvider="{items}"
+	<mx:HBox width="{Util.getGreatGrandParentWidthLess(this)}" height="100%">
+	<mx:DataGrid id="datagrid" width="2000" height="100%" dataProvider="{items}"
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 				 allowMultipleSelection="true">
 		<mx:columns>
@@ -107,7 +114,10 @@
 							   labelFunction="labelFunctionGenerico"/>
 			<mx:DataGridColumn id="dtgDescription" headerText="Descripción"
 							   dataField="descripcion"
-							   width="120"/>
+							   width="200"/>
+			<mx:DataGridColumn headerText="{'No. de Serie'}"
+							   dataField="noSerie"
+							   width="200"/>
 			<mx:DataGridColumn id="dtgTrade" headerText="Marca"
 							   dataField="marca"
 							   width="120"/>
@@ -120,15 +130,48 @@
 							   textAlign="right"/>
 			<mx:DataGridColumn id="dtgUnit" headerText="Unidad"
 							   dataField="unidadA.etiqueta"
-							   width="50"
+							   width="60"
 							   labelFunction="labelFunctionGenerico"/>
+			<mx:DataGridColumn headerText="Ubicación"
+							   dataField="ubicacionA.etiqueta"
+							   width="160"/>
+			<mx:DataGridColumn headerText="{'Responsable'}"
+							   dataField="responsable.nombreCompleto"
+							   width="200"/>
 			<mx:DataGridColumn id="dtgStatus" headerText="Estatus"
 							   dataField="estatusA.etiqueta"
 							   labelFunction="labelFunctionGenerico"
 							   width="120"/>
+			<mx:DataGridColumn headerText="{'No. de\nCertificado'}"
+							   dataField="noCertificado"
+							   width="120"/>
+			<mx:DataGridColumn headerText="{'Fecha de\nCalibración'}"
+							   dataField="fechaCalibracion"
+							   labelFunction="{Util.labelFunctionDate}"
+							   width="120"
+							   textAlign="center"/>
+			<mx:DataGridColumn headerText="{'Fecha\nPróxima\nCalibración'}"
+							   dataField="fechaProximaCalibracion"
+							   labelFunction="{Util.labelFunctionDate}"
+							   width="120"
+							   textAlign="center"/>
+			<mx:DataGridColumn headerText="{'Mantenimiento\no Servicio'}"
+							   dataField="tipoMantenimiento.etiqueta"
+							   width="120"/>
+			<mx:DataGridColumn headerText="{'Fecha de\nMantenimiento\no Servicio'}"
+							   dataField="fechaMantenimiento"
+							   labelFunction="{Util.labelFunctionDate}"
+							   width="120"
+							   textAlign="center"/>
+			<mx:DataGridColumn headerText="Costo"
+							   dataField="costo"
+							   width="120"
+							   textAlign="right"/>
 		</mx:columns>
 	</mx:DataGrid>
+	</mx:HBox>
 	<mx:HBox>
+		<mx:Button id="btnExport" label="Exportar" click="btnExport_clickHandler(event)"/>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>
 	</mx:HBox>
 	<mx:RemoteObject id="herramientaService" destination="herramientaService" fault="herramientaService_faultHandler(event)"

@@ -183,7 +183,7 @@
 								  textAlign="right"
 								  editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Descripción:">
+		<mx:FormItem label="Nombre de Proyecto:">
 			<components:TextInput id="txtDescription" width="400"/>
 		</mx:FormItem>
 		<mx:FormItem label="Fecha Creación:" id="frmCreationDate">

@@ -89,7 +89,8 @@
 	<mx:Metadata>
 		[Event(name="clientDetail", type="events.GenericEvent")]
 	</mx:Metadata>
-	<mx:DataGrid id="datagrid" width="100%" height="100%" dataProvider="{clients}"
+	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
+	<mx:DataGrid id="datagrid" width="2000" height="100%" dataProvider="{clients}"
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 				 allowMultipleSelection="true">
 		<mx:columns>
@@ -100,9 +101,38 @@
 			<mx:DataGridColumn id="dtgRFC" headerText="R.F.C."
 							   dataField="rfc" width="120"/>
 			<mx:DataGridColumn id="dtgFiscalAddress" headerText="Domicilio Fiscal"
-							   dataField="domicilioFiscal"/>
+							   dataField="domicilioFiscal"
+							   width="250"/>
+			<mx:DataGridColumn headerText="Nombre Completo"
+							   dataField="contacto.nombreCompleto"
+							   width="200"/>
+			<mx:DataGridColumn headerText="Correo Electrónico"
+							   dataField="contacto.correoElectronico"
+							   width="150"/>
+			<mx:DataGridColumn headerText="Teléfono"
+							   dataField="contacto.telefono"
+							   width="100"/>
+			<mx:DataGridColumn headerText="Página Web"
+							   dataField="contacto.paginaWeb"
+							   width="100"/>
+			<mx:DataGridColumn headerText="Localidad"
+							   dataField="contacto.localidad"
+							   width="100"/>
+			<mx:DataGridColumn headerText="Estado"
+							   dataField="contacto.estado"
+							   width="100"/>
+			<mx:DataGridColumn headerText="Condiciones Comerciales"
+							   dataField="datosComerciales.condicionesComerciales"
+							   width="250"/>
+			<mx:DataGridColumn headerText="No. de Vendor"
+							   dataField="datosComerciales.noVendedor"
+							   width="110"/>
+			<mx:DataGridColumn headerText="Ejecutivo de Cuenta"
+							   dataField="datosComerciales.ejecutivoCuenta"
+							   width="200"/>
 		</mx:columns>
 	</mx:DataGrid>
+	</mx:HBox>
 	<mx:HBox>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>
 	</mx:HBox>

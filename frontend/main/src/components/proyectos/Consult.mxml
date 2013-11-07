@@ -89,6 +89,13 @@
 			private function labelFunctionIDProyecto(item:Object, column:DataGridColumn):String{
 				return Util.getIDConectelFormat( Util.extractObject(item, column.dataField) );
 			}
+			
+			protected function btnExport_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -161,8 +168,7 @@
 		</mx:columns>
 	</mx:DataGrid>
 	<mx:HBox>
-		<!--<mx:Button label="Exportar"/>
-		<mx:Button label="Importar"/>-->
+		<mx:Button id="btnExport" label="Exportar" click="btnExport_clickHandler(event)"/>
 	</mx:HBox>
 	<mx:RemoteObject id="proyectoService" destination="proyectoService" fault="proyectoService_faultHandler(event)"
 					 showBusyCursor="true"/>

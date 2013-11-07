@@ -89,6 +89,13 @@
 			private function labelFunctionGenerico(item:Object, column:DataGridColumn):String{
 				return Util.extractToText( item, column.dataField );
 			}
+			
+			protected function btnExport_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -130,6 +137,7 @@
 		</mx:columns>
 	</mx:DataGrid>
 	<mx:HBox>
+		<mx:Button id="btnExport" label="Exportar" click="btnExport_clickHandler(event)"/>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>
 	</mx:HBox>
 	<mx:RemoteObject id="requisicionService" destination="requisicionCompraService" fault="requisicionService_faultHandler(event)"

@@ -89,12 +89,20 @@
 			private function labelFunctionGenerico(item:Object, column:DataGridColumn):String{
 				return Util.extractToText( item, column.dataField );
 			}
+			
+			protected function btnExport_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:Metadata>
 		[Event(name="proveedorDetail", type="events.GenericEvent")]
 	</mx:Metadata>
-	<mx:DataGrid id="datagrid" width="100%" height="100%" dataProvider="{items}"
+	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
+	<mx:DataGrid id="datagrid" width="1030" height="100%" dataProvider="{items}"
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 				 allowMultipleSelection="true">
 		<mx:columns>
@@ -121,13 +129,24 @@
 							   labelFunction="labelFunctionGenerico"
 							   textAlign="right"
 							   width="70"/>
-			<mx:DataGridColumn id="dtgStatus2" headerText="Banco"
+			<mx:DataGridColumn headerText="Descuentos"
+							   dataField="descuentos"
+							   textAlign="right"
+							   width="120"/>
+			<mx:DataGridColumn headerText="Cuenta Bancaria"
+							   dataField="datoBancario.cuentaBancaria"
+							   width="120"/>
+			<mx:DataGridColumn headerText="Banco"
 							   dataField="datoBancario.banco"
-							   labelFunction="labelFunctionGenerico"
+							   width="120"/>
+			<mx:DataGridColumn headerText="{'CLABE\nInterbancaria'}"
+							   dataField="datoBancario.clabeInterbancaria"
 							   width="120"/>
 		</mx:columns>
 	</mx:DataGrid>
+	</mx:HBox>
 	<mx:HBox>
+		<mx:Button id="btnExport" label="Exportar" click="btnExport_clickHandler(event)"/>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>
 	</mx:HBox>
 	

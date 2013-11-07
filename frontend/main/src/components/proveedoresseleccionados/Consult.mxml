@@ -91,30 +91,43 @@
 			private function labelFunctionGenerico(item:Object, column:DataGridColumn):String{
 				return Util.extractToText( item, column.dataField );
 			}
+			
+			protected function btnExport_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:Metadata>
 		[Event(name="proveedorSeleccionadoDetail", type="events.GenericEvent")]
 	</mx:Metadata>
-	<mx:HBox width="1095" height="100%">
-	<mx:DataGrid id="datagrid" width="1200" height="100%" dataProvider="{items}"
+	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
+	<mx:DataGrid id="datagrid" width="2060" height="100%" dataProvider="{items}"
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 				 allowMultipleSelection="true">
 		<mx:columns>
-			<mx:DataGridColumn id="dtgCode" headerText="{'Tipo \nPersona'}"
+			<mx:DataGridColumn headerText="{'Tipo Persona'}"
 							   dataField="proveedor.tipoPersona.tipo"
 							   width="100"/>
-			<mx:DataGridColumn id="dtgNombreComercial" headerText="{'Nombre \nComercial'}"
+			<mx:DataGridColumn id="dtgNombreComercial" headerText="{'Nombre Comercial'}"
 							   width="260"
 							   dataField="proveedor.nombreComercial"
 							   labelFunction="labelFunctionGenerico"/>
-			<mx:DataGridColumn id="dtgRazonSocial" headerText="{'Razón \nSocial'}"
+			<mx:DataGridColumn id="dtgRazonSocial" headerText="{'Razón Social'}"
 							   dataField="proveedor.razonSocial"
 							   width="260"/>
 			<mx:DataGridColumn id="dtgRFC" headerText="R.F.C."
 							   dataField="proveedor.rfc"
 							   width="120"
 							   />
+			<mx:DataGridColumn headerText="{'Dirección Física'}"
+							   dataField="proveedor.direccionFisica"
+							   width="360"/>
+			<mx:DataGridColumn headerText="{'Dirección Fiscal'}"
+							   dataField="proveedor.direccionFiscal"
+							   width="360"/>
 			<mx:DataGridColumn id="dtgTelefono" headerText="Teléfonos"
 							   dataField="proveedor.telefonos"
 							   width="100"
@@ -127,7 +140,6 @@
 							   dataField="proveedor.correo"
 							   width="150"
 							   />
-			
 			<mx:DataGridColumn id="dtgPaginaWeb" headerText="Pagina Web"
 							   dataField="proveedor.paginaWeb"
 							   width="150"
@@ -136,6 +148,7 @@
 	</mx:DataGrid>
 	</mx:HBox>
 	<mx:HBox>
+		<mx:Button id="btnExport" label="Exportar" click="btnExport_clickHandler(event)"/>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>
 	</mx:HBox>
 	<mx:RemoteObject id="proveedorRO" destination="proveedorService" fault="consumibleService_faultHandler(event)"

@@ -93,22 +93,26 @@
 			private function labelFunctionDate(object:Object, column:DataGridColumn):String{
 				return Util.formatDateToString( object[column.dataField] );
 			}
+			
+			protected function btnExport_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:Metadata>
 		[Event(name="warehouseApplicationDetail", type="events.GenericEvent")]
 	</mx:Metadata>
-	<mx:DataGrid id="datagrid" width="100%" height="100%" dataProvider="{items}"
+	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
+	<mx:DataGrid id="datagrid" width="1820" height="100%" dataProvider="{items}"
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 				 allowMultipleSelection="true">
 		<mx:columns>
 			<mx:DataGridColumn id="dtgCode" headerText="Código"
 							   dataField="id"
 							   width="100"/>
-			<mx:DataGridColumn id="dtgApplicationDate" headerText="{'Fecha\nSolicitud'}"
-							   dataField="fechaSolicitud"
-							   labelFunction="labelFunctionDate"
-							   width="120"/>
 			<mx:DataGridColumn id="dtgMotive" headerText="Motivo"
 							   dataField="motivo"
 							   width="120"/>
@@ -120,17 +124,37 @@
 							   width="120"
 							   dataField="areaSolicitante.etiqueta"
 							   labelFunction="labelFunctionGenerico"/>
-			<mx:DataGridColumn id="dtgAllocationDate" headerText="{'Fecha\nAsignación'}"
+			<mx:DataGridColumn id="dtgApplicationDate" headerText="{'Fecha\nSolicitud'}"
 							   dataField="fechaSolicitud"
 							   labelFunction="labelFunctionDate"
+							   width="120"
+							   textAlign="center"/>
+			<mx:DataGridColumn headerText="{'Central\no Sitio'}"
+							   dataField="centralSitio"
 							   width="120"/>
-			<mx:DataGridColumn id="dtgReturnDate" headerText="{'Fecha\nRetorno'}"
-							   dataField="fechaSolicitud"
-							   labelFunction="labelFunctionDate"
+			<mx:DataGridColumn headerText="{'Estado de\nla Solicitud'}"
+							   dataField="estadoSolicitudAlmacen.etiqueta"
 							   width="120"/>
+			<mx:DataGridColumn headerText="{'Nombre del\nSolicitante'}"
+							   dataField="nombreSolicitante"
+							   width="200"/>
+			<mx:DataGridColumn headerText="{'Autorizado por'}"
+							   dataField="autoriza.nombreCompleto"
+							   width="200"/>
+			<mx:DataGridColumn headerText="{'Coordinador de Área'}"
+							   dataField="autorizaFinal.nombreCompleto"
+							   width="200"/>
+			<mx:DataGridColumn headerText="{'Entrega'}"
+							   dataField="entrega.nombreCompleto"
+							   width="200"/>
+			<mx:DataGridColumn headerText="{'Recibe'}"
+							   dataField="recibe"
+							   width="200"/>
 		</mx:columns>
 	</mx:DataGrid>
+	</mx:HBox>
 	<mx:HBox>
+		<mx:Button id="btnExport" label="Exportar" click="btnExport_clickHandler(event)"/>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>
 	</mx:HBox>
 	<mx:RemoteObject id="solicitudAlmacenService" destination="solicitudAlmacenService" fault="solicitudAlmacenService_faultHandler(event)"

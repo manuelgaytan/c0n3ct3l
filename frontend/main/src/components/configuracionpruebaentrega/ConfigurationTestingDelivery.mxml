@@ -19,7 +19,6 @@
 			import mx.collections.ArrayCollection;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
 			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
-			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorEntero;
 			import mx.controls.Alert;
 			import mx.events.CloseEvent;
@@ -144,7 +143,7 @@
 					this.dlvYDelivery.delivers = this._configurationTestingDelivery.entregableY;
 				}
 				this.chbWholeDeliveries.selected = this._configurationTestingDelivery.entregablesCompletos;
-				if( Util.isFill( this.cmbOperationalValidationStatus ) ){
+				if( Util.isFill( this.cmbOperationalValidationStatus ) && this._configurationTestingDelivery.estadoValidacionOperativa != null ){
 					this.cmbOperationalValidationStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbOperationalValidationStatus.dataProvider as ArrayCollection, 
 						this._configurationTestingDelivery.estadoValidacionOperativa.id);
 				}
@@ -235,7 +234,7 @@
 			{
 				var value:Boolean = true;
 				value &&= this.validators.validarFormulario();
-				value &&= this.dtfDeliveryDate.selectedDate;
+				// value &&= this.dtfDeliveryDate.selectedDate;
 				/* value &&= this.dlvEngineeringDeliverable.existElements(); */
 				value &&= this.projectsConsult.datagrid.selectedItem != null;
 				return value;
@@ -367,8 +366,8 @@
 				if( data == null ){
 					return;
 				}
-				this.cmbOperationalValidationStatus.dataProvider = data;
-				if( this._configurationTestingDelivery != null ){
+				this.cmbOperationalValidationStatus.dataProvider = Util.addEmptyCatalgo( data );
+				if( this._configurationTestingDelivery != null && this._configurationTestingDelivery.estadoValidacionOperativa != null){
 					this.cmbOperationalValidationStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbOperationalValidationStatus.dataProvider as ArrayCollection, 
 						this._configurationTestingDelivery.estadoValidacionOperativa.id);
 				}

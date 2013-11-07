@@ -95,12 +95,20 @@
 			}
 			
 			//Util.formatDateToString
+			
+			protected function btnExport_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:Metadata>
 		[Event(name="proveedorDetail", type="events.GenericEvent")]
 	</mx:Metadata>
-	<mx:DataGrid id="datagrid" width="100%" height="100%" dataProvider="{items}"
+	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
+	<mx:DataGrid id="datagrid" width="2350" height="100%" dataProvider="{items}"
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 				 allowMultipleSelection="true">
 		<mx:columns>
@@ -114,18 +122,56 @@
 			<mx:DataGridColumn id="dtgDescription" headerText="{'Razón \nSocial'}"
 							   dataField="proveedor.razonSocial"
 							   width="120"/>
+			<mx:DataGridColumn id="dtgRFC" headerText="R.F.C."
+							   dataField="proveedor.rfc"
+							   width="120"
+							   />
+			<mx:DataGridColumn headerText="{'Dirección Física'}"
+							   dataField="proveedor.direccionFisica"
+							   width="360"/>
+			<mx:DataGridColumn headerText="{'Dirección Fiscal'}"
+							   dataField="proveedor.direccionFiscal"
+							   width="360"/>
+			<mx:DataGridColumn id="dtgTelefono" headerText="Teléfonos"
+							   dataField="proveedor.telefonos"
+							   width="100"
+							   />
+			<mx:DataGridColumn id="dtgCorreo" headerText="Correo"
+							   dataField="proveedor.correo"
+							   width="150"
+							   />
+			<mx:DataGridColumn headerText="Cuenta Bancaria"
+							   dataField="datoBancario.cuentaBancaria"
+							   width="120"/>
+			<mx:DataGridColumn headerText="Banco"
+							   dataField="datoBancario.banco"
+							   width="120"/>
+			<mx:DataGridColumn headerText="{'CLABE\nInterbancaria'}"
+							   dataField="datoBancario.clabeInterbancaria"
+							   width="120"/>
+			<mx:DataGridColumn headerText="NSS"
+							   dataField="nss"
+							   width="120"/>
+			<mx:DataGridColumn headerText="C.U.R.P."
+							   dataField="curp"
+							   width="120"/>
 			<mx:DataGridColumn id="dtgFamily3" headerText="{'Tipo de\nContrato'}"
 							   width="80"
 							   dataField="tipoContrato.tipo"
 							   labelFunction="labelFunctionGenerico"/>
+			<mx:DataGridColumn headerText="{'Vigencia Contrato'}"
+							   dataField="vigenciaContrato"
+							   width="130"/>
 			<mx:DataGridColumn id="dtgFamily4" headerText="{'Fecha de\nContrato'}"
-							   width="100"
+							   width="130"
 							   dataField="fechaContrato"
 							   textAlign="center"
 							   labelFunction="labelFunctionDate"/>
 		</mx:columns>
 	</mx:DataGrid>
+	</mx:HBox>
 	<mx:HBox>
+		<mx:Button id="btnExport" label="Exportar" click="btnExport_clickHandler(event)"/>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>
 	</mx:HBox>
 	<mx:RemoteObject id="proveedorMaquiladorRO" destination="proveedorMaquiladorService" fault="proveedorService_faultHandler(event)"

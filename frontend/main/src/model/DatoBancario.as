@@ -6,7 +6,7 @@ package model
 		public var id:*;
 		
 		
-		public var  banco:String;
+		public var banco:String;
 		
 		public var clabeInterbancaria:String;
 		

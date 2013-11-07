@@ -83,12 +83,20 @@
 			private function labelFunctionGenerico(item:Object, column:DataGridColumn):String{
 				return Util.extractToText( item, column.dataField );
 			}
+			
+			protected function btnExport_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:Metadata>
 		[Event(name="generalDataProjectDetail", type="events.GenericEvent")]
 	</mx:Metadata>
-	<mx:DataGrid id="datagrid" width="100%" height="100%" dataProvider="{generalDataProjects}"
+	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
+	<mx:DataGrid id="datagrid" width="2900" height="100%" dataProvider="{generalDataProjects}"
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 				 allowMultipleSelection="true">
 		<mx:columns>
@@ -104,7 +112,43 @@
 							   width="120"/>
 			<mx:DataGridColumn id="dtgFinalClient" headerText="{'Cliente Final'}"
 							   dataField="clienteFinal"
+							   width="200"/>
+			<mx:DataGridColumn headerText="{'ID Ciente'}"
+							   dataField="clienteId"
 							   width="110"/>
+			<mx:DataGridColumn headerText="{'ID Nodo'}"
+							   dataField="nodoId"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Grafo'}"
+							   dataField="grafo"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Pedido Cliente'}"
+							   dataField="pedidoCliente"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Elemento PEP'}"
+							   dataField="elementoPep"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Responsable Cliente'}"
+							   dataField="responsableCliente"
+							   width="200"/>
+			<mx:DataGridColumn headerText="{'Semana'}"
+							   dataField="semana"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Fecha\nAsignación\nCliente'}"
+							   dataField="fechaAsignacionCliente"
+							   labelFunction="labelFunctionDate"
+							   textAlign="center"
+							   width="100"/>
+			<mx:DataGridColumn id="dtgStartDateProgramming" headerText="{'Fecha\nInicio\nProgramada'}"
+							   dataField="fechaInicioProgramada"
+							   labelFunction="labelFunctionDate"
+							   textAlign="center"
+							   width="100"/>
+			<mx:DataGridColumn headerText="{'Fecha\nFin\nProgramada'}"
+							   dataField="fechaTerminoProgramada"
+							   labelFunction="labelFunctionDate"
+							   textAlign="center"
+							   width="100"/>
 			<mx:DataGridColumn id="dtgConectelResponsable" headerText="{'Responsable\nConectel'}"
 							   dataField="reponsableConectel.nombreCompleto"
 							   labelFunction="labelFunctionGenerico"
@@ -113,10 +157,21 @@
 							   dataField="responsableImpl.nombreCompleto"
 							   labelFunction="labelFunctionGenerico"
 							   width="105"/>
-			<mx:DataGridColumn id="dtgStartDateProgramming" headerText="{'Fecha\nInicio\nProgramada'}"
-							   dataField="fechaInicioProgramada"
-							   labelFunction="labelFunctionDate"
-							   width="100"/>
+			<mx:DataGridColumn headerText="{'Material'}"
+							   dataField="material.etiqueta"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Herramienta'}"
+							   dataField="herramienta.etiqueta"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Equipo'}"
+							   dataField="equipo.etiqueta"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Unidad'}"
+							   dataField="unidad.etiqueta"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Viáticos'}"
+							   dataField="viaticos.etiqueta"
+							   width="110"/>
 			<mx:DataGridColumn id="dtgStartDateReal" headerText="{'Fecha\nInicio\nReal'}"
 							   dataField="fechaInicioReal"
 							   labelFunction="labelFunctionDate"
@@ -126,11 +181,15 @@
 							   dataField="fechaTerminoReal"
 							   labelFunction="labelFunctionDate"
 							   textAlign="center"
-							   width="100"/>		
+							   width="100"/>
+			<mx:DataGridColumn headerText="{'Site\nSurvey'}"
+							   dataField="siteSurvey"
+							   width="110"/>
 		</mx:columns>
 	</mx:DataGrid>
+	</mx:HBox>
 	<mx:HBox>
-		<!--<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>-->
+		<mx:Button id="btnExport" label="Exportar" click="btnExport_clickHandler(event)"/>
 	</mx:HBox>
 	<mx:RemoteObject id="datosGeneralesService" destination="datosGeneralesService" fault="datosGeneralesProyectoService_faultHandler(event)"
 					 showBusyCursor="true"/>

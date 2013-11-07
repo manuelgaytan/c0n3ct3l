@@ -73,12 +73,20 @@
 			private function labelFunctionIDProyecto(item:Object, column:DataGridColumn):String{
 				return Util.getIDConectelFormat( Util.extractObject(item, column.dataField) );
 			}
+			
+			protected function btnExport_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:Metadata>
 		[Event(name="generalDataProjectDetail", type="events.GenericEvent")]
 	</mx:Metadata>
-	<mx:DataGrid id="datagrid" width="100%" height="100%" dataProvider="{generalDataProjects}"
+	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
+	<mx:DataGrid id="datagrid" width="1200" height="100%" dataProvider="{generalDataProjects}"
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 				 allowMultipleSelection="true">
 		<mx:columns>
@@ -108,10 +116,27 @@
 							   dataField="fechaEntrega"
 							   labelFunction="labelFunctionDate"
 							   width="130"/>
+			<mx:DataGridColumn headerText="{'Entregables\nCompletos'}" editable="false" textAlign="center"
+							   dataField="entregablesCompletos">
+				<mx:itemRenderer>
+					<mx:Component>
+						<mx:CheckBox selected="{data.entregablesCompletos}" enabled="false"/>
+					</mx:Component>
+				</mx:itemRenderer>
+			</mx:DataGridColumn>
+			<mx:DataGridColumn headerText="{'Estatus de\nValidación\nOperativa'}"
+							   dataField="estadoValidacionOperativa.etiqueta"
+							   width="130"/>
+			<mx:DataGridColumn headerText="{'Fecha de\nValidación\nOperativa'}"
+							   dataField="fechaValidacionOperativa"
+							   labelFunction="labelFunctionDate"
+							   textAlign="center"
+							   width="100"/>
 		</mx:columns>
 	</mx:DataGrid>
+	</mx:HBox>
 	<mx:HBox>
-		<!--<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>-->
+		<mx:Button id="btnExport" label="Exportar" click="btnExport_clickHandler(event)"/>
 	</mx:HBox>
 	<mx:RemoteObject id="configuracionPruebaEntregaService" destination="configuracionPruebaEntregaService" fault="datosGeneralesProyectoService_faultHandler(event)"
 					 showBusyCursor="true"/>

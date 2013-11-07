@@ -14,10 +14,7 @@
 			import mx.controls.LinkButton;
 			import mx.events.FlexEvent;
 			
-			private var titlesChanging:Array = [{id:"Proyectos",newTitle:"Alta de servicios"},
-												{id:"DatosGenerales",newTitle:"Datos Generales del Proyecto"},
-												{id:"DesarrolloProyectoAB",newTitle:"Desarrollo del Proyecto A y B"},
-												{id:"ConfiguracionPruebaEntrega",newTitle:"Configuración Prueba y Entrega"}];
+			private var titlesChanging:Array = [];
 			protected function clickMenuHandler(event:MouseEvent):void
 			{
 				var linkButton:LinkButton = event.currentTarget as LinkButton;
@@ -75,15 +72,15 @@
 					   icon="@Embed(source='assets/images/usuarios.png')"/>
 	</mx:VBox>
 	<mx:VBox label="Operación" width="100%" height="100%">
-		<mx:LinkButton label="Proyectos Padre" id="ProyectosPadres" click="clickMenuHandler(event)"
+		<mx:LinkButton label="Registro del Proyecto" id="ProyectosPadres" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/proyectospadre.png')"/>
-		<mx:LinkButton label="Proyectos" id="Proyectos" click="clickMenuHandler(event)"
+		<mx:LinkButton label="Registro de Servicios" id="Proyectos" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/altaservicios.png')"/>
-		<mx:LinkButton label="Planeación del Proyecto" id="DatosGenerales" click="clickMenuHandler(event)"
+		<mx:LinkButton label="Planeación y Datos del Proyecto" id="DatosGenerales" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/datosgeneralesproyecto.png')"/>
-		<mx:LinkButton label="Ejecución del Proyecto" id="DesarrolloProyectoAB" click="clickMenuHandler(event)"
+		<mx:LinkButton label="Ejecución del Proyecto A y B" id="DesarrolloProyectoAB" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/desarrolloproyecto.png')"/>
-		<mx:LinkButton label="Entrega y Revisión" id="ConfiguracionPruebaEntrega" click="clickMenuHandler(event)"
+		<mx:LinkButton label="Entrega, Revisión y Validación Operativa" id="ConfiguracionPruebaEntrega" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/configuracionpruebaentrega.png')"/>
 	</mx:VBox>
 	<mx:VBox label="Almacén" width="100%" height="100%">

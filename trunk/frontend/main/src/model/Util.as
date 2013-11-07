@@ -661,5 +661,24 @@ package model
 			}
 			return value;
 		}
+		
+		public static function getGrandParentWidthLess(container:Container, pixels:Number=5):Number{
+			if( container == null ||
+				container.parent == null ||
+				container.parent.parent == null ){
+				return 0;
+			}
+			return container.parent.parent.width - pixels;
+		}
+		
+		public static function getGreatGrandParentWidthLess(container:Container, pixels:Number=5):Number{
+			if( container == null ||
+				container.parent == null ||
+				container.parent.parent == null ||
+				container.parent.parent.parent == null ){
+				return 0;
+			}
+			return container.parent.parent.parent.width - pixels;
+		}
 	}
 }

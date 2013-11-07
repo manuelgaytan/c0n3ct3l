@@ -87,6 +87,12 @@
 				this.executeQuery();
 			}
 			
+			protected function btnExport_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -96,6 +102,9 @@
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 				 allowMultipleSelection="true">
 		<mx:columns>
+			<mx:DataGridColumn id="dtgID" headerText="{'ID'}"
+							   dataField="id"
+							   width="100"/>
 			<mx:DataGridColumn id="dtgWholeName" headerText="Nombre Completo"
 							   dataField="nombreCompleto"
 							   width="250"/>
@@ -116,6 +125,7 @@
 		</mx:columns>
 	</mx:DataGrid>
 	<mx:HBox>
+		<mx:Button id="btnExport" label="Exportar" click="btnExport_clickHandler(event)"/>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>
 	</mx:HBox>
 	<mx:RemoteObject id="usuarioService" destination="usuarioService" fault="usuarioService_faultHandler(event)"

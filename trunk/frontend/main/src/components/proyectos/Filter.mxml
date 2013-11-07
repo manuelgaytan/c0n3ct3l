@@ -292,6 +292,10 @@
 		[Event(name="filterCommand", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:Form>
+		<mx:FormItem label="Proyecto Padre:">
+			<components:TextInput id="txtParentProject" width="250"/>
+		</mx:FormItem>
+		<mx:HRule width="100%"/>
 		<mx:FormItem label="ID Conectel:" direction="horizontal">
 			<mx:Label text="CON"/>
 			<components:TextInput id="txtConectelID" width="150" textAlign="right"/>
@@ -340,10 +344,6 @@
 			<mx:ComboBox id="cmbServiceType" width="250"
 						 change="cmbServiceType_changeHandler(event)"
 						 labelField="etiqueta"/>
-		</mx:FormItem>
-		<mx:HRule width="100%"/>
-		<mx:FormItem label="Proyecto Padre:">
-			<components:TextInput id="txtParentProject" width="250"/>
 		</mx:FormItem>
 		<mx:FormItem>
 			<mx:Button id="btnFilter" label="Filtrar" click="btnFilter_clickHandler(event)"/>

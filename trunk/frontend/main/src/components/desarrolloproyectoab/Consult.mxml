@@ -66,12 +66,20 @@
 			private function labelFunctionIDProyecto(item:Object, column:DataGridColumn):String{
 				return Util.getIDConectelFormat( Util.extractObject(item, column.dataField) );
 			}
+			
+			protected function btnExport_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:Metadata>
 		[Event(name="developmentProjectABDetail", type="events.GenericEvent")]
 	</mx:Metadata>
-	<mx:DataGrid id="datagrid" width="100%" height="100%" dataProvider="{generalDataProjects}"
+	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
+	<mx:DataGrid id="datagrid" width="3880" height="100%" dataProvider="{generalDataProjects}"
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 				 allowMultipleSelection="true">
 		<mx:columns>
@@ -94,10 +102,95 @@
 			<mx:DataGridColumn id="dtgController" headerText="{'Controladora'}"
 							   dataField="controladora"
 							   width="130"/>
+			<mx:DataGridColumn headerText="{'Tarjeta 1'}"
+							   dataField="tarjeta1"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Tarjeta 2'}"
+							   dataField="tarjeta2"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Tarjeta 3'}"
+							   dataField="tarjeta3"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Tarjeta 4'}"
+							   dataField="tarjeta4"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Tarjeta 5'}"
+							   dataField="tarjeta5"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Tarjeta 6'}"
+							   dataField="tarjeta6"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Puertos\nen OT'}"
+							   dataField="puertosOt"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'No. Cables/\nributarias'}"
+							   dataField="noCables"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'No. Pares\nInstalados'}"
+							   dataField="noPares"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'No. Puertos\nInstalados'}"
+							   dataField="noPuertos"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Slots de Cables\nInstalados'}"
+							   dataField="slotsCables"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Long. de\nCable Multipar'}"
+							   dataField="longitudCable"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Champeado/\nRapinado'}"
+							   dataField="champeado"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Timbrado del\nCableado'}"
+							   dataField="timbrado"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Aterrizaje'}"
+							   dataField="aterrizaje"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Alimentación'}"
+							   dataField="alimentacion"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Pares de FO\nInstalados'}"
+							   dataField="paresFo"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Cableado RCDT'}"
+							   dataField="cableado"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Rótulo/\nEtiquetado'}"
+							   dataField="rotulo"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Soportes'}"
+							   dataField="soportes.etiqueta"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Antena'}"
+							   dataField="antena.etiqueta"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Radio'}"
+							   dataField="radio.etiqueta"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Radio Cable'}"
+							   dataField="radioCable.etiqueta"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Aterrizaje'}"
+							   dataField="aterrizajeSeguimiento.etiqueta"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Alimentación'}"
+							   dataField="alimentacionSeguimiento.etiqueta"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Fibra\nCliente Final'}"
+							   dataField="fibraClienteFinal.etiqueta"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Plancha\no Base'}"
+							   dataField="planchaBase.etiqueta"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Tipo de\nAuditoría'}"
+							   dataField="proyecto.tipoAuditoria.tipo"
+							   width="110"/>
 		</mx:columns>
 	</mx:DataGrid>
+	</mx:HBox>
 	<mx:HBox>
-		<!--<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>-->
+		<mx:Button id="btnExport" label="Exportar" click="btnExport_clickHandler(event)"/>
 	</mx:HBox>
 	<mx:RemoteObject id="desarrolloProyectoABService" destination="desarrolloProyectoABService" fault="desarrolloProyectoABService_faultHandler(event)"
 					 showBusyCursor="true"/>

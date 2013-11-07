@@ -193,7 +193,7 @@
 		[Event(name="productDetail", type="events.GenericEvent")]
 		[Event(name="productsDeleted", type="events.GenericEvent")]
 	</mx:Metadata>
-	<mx:HBox width="1195" height="100%">
+	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
 	<mx:DataGrid id="datagrid" width="1800" height="100%" dataProvider="{products}"
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 				 allowMultipleSelection="true">
@@ -242,6 +242,10 @@
 							   width="96"/>
 			<mx:DataGridColumn id="dtgImplementationDays" headerText="{'Días de\nImplementación'}" textAlign="right"
 							   dataField="diasImplementacion"
+							   width="110"
+							   />
+			<mx:DataGridColumn headerText="{'Alcances'}"
+							   dataField="alcances"
 							   width="110"
 							   />
 		</mx:columns>

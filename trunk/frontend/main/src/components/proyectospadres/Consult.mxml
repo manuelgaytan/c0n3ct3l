@@ -116,6 +116,13 @@
 				}
 				return projectsAssociatedNumber.toString();
 			}
+			
+			protected function btnExport_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -129,7 +136,7 @@
 							   dataField="id"
 							   width="80"
 							   textAlign="right"/>
-			<mx:DataGridColumn id="dtgDescription" headerText="Descripción"
+			<mx:DataGridColumn id="dtgDescription" headerText="{'Nombre de Proyecto'}"
 							   width="360"
 							   dataField="descripcion"
 							   />
@@ -146,6 +153,7 @@
 		</mx:columns>
 	</mx:DataGrid>
 	<mx:HBox>
+		<mx:Button id="btnExport" label="Exportar" click="btnExport_clickHandler(event)"/>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"
 				   visible="{!this._consultOnly}"/>
 	</mx:HBox>

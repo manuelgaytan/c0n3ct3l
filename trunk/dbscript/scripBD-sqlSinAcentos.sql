@@ -204,7 +204,7 @@
 	clave_aceptacion VARCHAR(255),
 	fecha_entrega DATE,
 	entregables_completos BOOLEAN,
-	fk_estatus_validacion_operativa INT(11) UNSIGNED NOT NULL,
+	fk_estatus_validacion_operativa INT(11) UNSIGNED,
 	fecha_validacion_operativa DATE,
 	PRIMARY KEY (id)
 	);
@@ -4245,7 +4245,7 @@
 	VALUES (3, 'N/A');
 
 	INSERT INTO MotivoTerminoContrato
-	VALUES (1, 'Recision');
+	VALUES (1, 'Rescision');
 	INSERT INTO MotivoTerminoContrato
 	VALUES (2, 'Renuncia Voluntaria');
 	INSERT INTO MotivoTerminoContrato

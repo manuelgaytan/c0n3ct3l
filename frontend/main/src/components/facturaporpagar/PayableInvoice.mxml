@@ -34,8 +34,8 @@
 			
 			private static const ID_ODC_ALMACEN:int = 1;
 			private static const ID_ODC_SERVICIO:int = 2;
-			private static const ODC_ALMACEN:String = "Orden de Compra Álmacen";
-			private static const ODC_SERVICIO:String = "Orden de Compra Servicio Maquilado";
+			private static const ODC_ALMACEN:String = "Órdenes de Compra de Bienes y Servicios";
+			private static const ODC_SERVICIO:String = "Órdenes de Compra de Servicios de Telecomunicaciones";
 			
 			private static function getDataProviderODC():ArrayCollection{
 				var catalago:Catalogo = null;

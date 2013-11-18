@@ -27,6 +27,8 @@
 			import model.AreaLevantaNoConformidad;
 			import model.AreaSolicitante;
 			import model.BancoConectel;
+			import model.Calibracion;
+			import model.Pago;
 			import model.CartaAntecedentesPenales;
 			import model.Catalogo;
 			import model.Categoria;
@@ -153,6 +155,7 @@
 			import model.InformacionPrenomina;
 			import model.ItemEstatusProyecto;
 			import model.Licencia;
+			import model.MantenimientoServicio;
 			import model.Material;
 			import model.MaterialSolicitudAlmacen;
 			import model.MedioTransporte;
@@ -531,6 +534,9 @@
 			private var comentarioProveedor:ComentarioProveedor;
 			private var concentradoOrdenCompraCliente:ConcentradoOrdenCompraCliente;
 			private var itemEstatusProyecto:ItemEstatusProyecto;
+			private var calibracion:Calibracion;
+			private var mantenimientoServicio:MantenimientoServicio;
+			private var pago:Pago;
 						
 			protected function login_readyHandler(event:ModuleEvent):void
 			{

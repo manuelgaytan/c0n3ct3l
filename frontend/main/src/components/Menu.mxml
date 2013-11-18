@@ -92,23 +92,23 @@
 	<mx:VBox label="Compras" width="100%" height="100%">
 		<mx:LinkButton label="Proveedores Seleccionados" id="ProveedoresSeleccionados" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/proveedoresseleccionados.png')"/>
-		<mx:LinkButton label="Proveedores Calificados" id="ProveedoresCalificados" click="clickMenuHandler(event)"
+		<mx:LinkButton label="Proveedores de Bienes y Servicios" id="ProveedoresCalificados" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/proveedorescalificados.png')"/>
-		<mx:LinkButton label="Proveedores Maquiladores" id="ProveedoresMaquiladores" click="clickMenuHandler(event)"
+		<mx:LinkButton label="Proveedores de Servicios de Implementación" id="ProveedoresMaquiladores" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/proveedoresmaquiladores.png')"/>
 		<mx:LinkButton label="Requisiciones de Compra" id="RequisicionesCompra" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/requisicionescompra.png')"/>
-		<mx:LinkButton label="Solicitudes Servicio Maquilado" id="SolicitudServicioMaquilado" click="clickMenuHandler(event)"
+		<mx:LinkButton label="Requisiciones de Servicios de Telecomunicaciones" id="SolicitudServicioMaquilado" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/solicitudesserviciomaquilado.png')"/>
-		<mx:LinkButton label="Cotizaciones" id="Cotizaciones" click="clickMenuHandler(event)"
+		<mx:LinkButton label="Cotizaciones de Bienes y Servicios" id="Cotizaciones" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/cotizaciones.png')"/>
-		<mx:LinkButton label="Orden de Compra de Material, Mantenimiento y Servicio" id="OrdenesCompraAlmacen" click="clickMenuHandler(event)"
+		<mx:LinkButton label="Órdenes de Compra de Bienes y Servicios" id="OrdenesCompraAlmacen" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/ordenescompramaterial.png')"/>
-		<mx:LinkButton label="Ordenes de Compra Servicio Maquilado" id="OrdenesCompraServicioMaquilado" click="clickMenuHandler(event)"
+		<mx:LinkButton label="Órdenes de Compra de Servicios de Telecomunicaciones" id="OrdenesCompraServicioMaquilado" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/ordencompraserviciomaquilado.png')"/>
-		<mx:LinkButton label="Programación de Pagos de Compras" id="FacturacionCompra" click="clickMenuHandler(event)"
+		<mx:LinkButton label="Programación de Pagos de Bienes y Servicios" id="FacturacionCompra" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/programacionpagos.png')"/>
-		<mx:LinkButton label="Preciarios Maquiladores" id="PreciariosMaquiladores" click="clickMenuHandler(event)"
+		<mx:LinkButton label="Preciario de Servicios de Telecomunicaciones" id="PreciariosMaquiladores" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/preciariosmaquiladores.png')"/>
 	</mx:VBox>
 	<mx:VBox label="Validación Administrativa" width="100%" height="100%">

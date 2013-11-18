@@ -19,7 +19,7 @@ package model
 		
 		public var datoBancario:DatoBancario;
 		
-		public var pago:TipoPago;
+		public var pago:Pago;
 		
 		public var tipoContrato:TipoContrato;
 		

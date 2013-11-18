@@ -23,6 +23,7 @@
 			import model.Prioridad;
 			import model.RequisicionCompra;
 			import model.TipoAlmacen;
+			import model.TipoColaborador;
 			import model.TipoMantenimiento;
 			import model.Util;
 			
@@ -30,7 +31,6 @@
 			
 			import mx.collections.ArrayCollection;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
-			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
 			import mx.com.gahm.componentes.validadores.ValidadorNumerico;
@@ -99,6 +99,7 @@
 					this.cmbStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbStatus.dataProvider as ArrayCollection, 
 						this._item.estatusRequisicionCompra.id);
 				}		
+				this.dtfStatusDate.selectedDate = this._item.fechaEstatusRequisicion;
 				this.comments.setCommentsIn( this._item.comentariosRequisicion, "comentarioCompras");
 			}
 			
@@ -115,6 +116,7 @@
 				item.areaSolicitante = Util.validateCombo( this.cmbApplicantArea ) as AreaSolicitante;
 				item.centralSitio = Util.validateEmpty( this.txtSite.text );
 				item.estatusRequisicionCompra = Util.validateCombo( this.cmbStatus ) as EstatusRequisicionCompra;
+				item.fechaEstatusRequisicion = this.dtfStatusDate.selectedDate;
 				item.solicitantesRequisicion = this.cmbApplicantsNames.getListsAsInWith("model.Colaborador","model.SolicitanteRequisicion","colaborador");
 				item.partidasRequisicionCompra = this.itemsManagement.dataProvider as ArrayCollection;
 				item.comentariosRequisicion = this.comments.getCommentsAsInWith("model.ComentarioCompras","model.ComentarioRequisicion","comentarioCompras");
@@ -128,6 +130,7 @@
 				this.responseGetAreaSolicitante.token = this.catalogoService.getAreaSolicitante();
 				this.responseGetAlmacen.token = this.catalogoService.getTipoAlmacen();
 				this.responseGetEstatusRequisicionCompra.token = this.catalogoService.getEstadoRequiscionCompra();
+				this.responseGetColaboradorByTipoColaborador.token = this.catalogoService.getColaboradorByTipoColaborador( TipoColaborador.ID_NOMINA );
 				
 			}
 			
@@ -185,6 +188,7 @@
 			{
 				if( this.mode == Constants.REGISTER_MODE ){
 					form.removeChild( this.frmID );
+					this.dtfStatusDate.selectedDate = new Date();
 				}
 			}
 			
@@ -199,7 +203,6 @@
 				validatorsEntry.setValidador(txtDescription, "generic");
 				validatorsEntry.setValidador(txtQuantity, "generic");
 				validatorsEntry.setRestrictor(txtUnit, "generic");
-				validatorsEntry.setRestrictor(txtValidation, "generic");
 			}
 			
 			protected function responseSave_resultHandler(event:ResultEvent):void
@@ -228,10 +231,11 @@
 				this.txtDescription.reset();
 				this.txtQuantity.reset();
 				this.txtUnit.reset();
-				this.txtValidation.reset();
+				this.cmbValidation.selectedIndex = 0;
 				this.txtCost.reset();
 				this.itemsManagement.reset();
 				this.cmbStatus.selectedIndex = 0;
+				this.dtfStatusDate.reset();
 				this.comments.reset();
 			}
 			
@@ -428,7 +432,7 @@
 				entry.descripcion = Util.validateEmpty( this.txtDescription.text );
 				entry.cantidad = Util.validateEmpty( this.txtQuantity.text );
 				entry.unidad = Util.validateEmpty( this.txtUnit.text );
-				entry.validacion = Util.validateEmpty( this.txtValidation.text );
+				entry.validacion = Util.validateCombo( this.cmbValidation ) as Colaborador;
 				entry.costo = Util.validateEmpty( this.txtCost.text );
 				return entry;
 			}
@@ -447,10 +451,18 @@
 				this.txtDescription.reset();
 				this.txtQuantity.reset();
 				this.txtUnit.reset();
-				this.txtValidation.reset();
+				this.cmbValidation.selectedIndex = 0;
 				this.txtCost.reset();
 			}
 			
+			protected function responseGetColaboradorByTipoColaborador_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbValidation.dataProvider = Util.addEmptyCatalgo( data, "nombreCompleto" );
+			}
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -543,9 +555,9 @@
 								  />
 		</mx:FormItem>
 		<mx:FormItem label="Validación:">
-			<components:TextInput id="txtValidation"
-								  width="200"
-								  />
+			<mx:ComboBox id="cmbValidation"
+						 labelField="nombreCompleto"
+						 />
 		</mx:FormItem>
 		<mx:FormItem label="Costo:" includeInLayout="false" direction="vertical">
 			<components:TextInput id="txtCost"
@@ -561,6 +573,9 @@
 			<mx:ComboBox id="cmbStatus"
 						 labelField="estatus"
 						 />
+		</mx:FormItem>
+		<mx:FormItem label="Fecha del Estatus de Requisición:">
+			<components:DateField id="dtfStatusDate" enabled="false"/>
 		</mx:FormItem>
 		<components:Comments id="comments"/>
 		<mx:FormItem>
@@ -578,6 +593,7 @@
 	<mx:CallResponder id="responseGetAreaSolicitante" result="responseGetAreaSolicitante_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetAlmacen" result="responseGetAlmacen_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetEstatusRequisicionCompra" result="responseGetEstatusRequisicionCompra_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetColaboradorByTipoColaborador" result="responseGetColaboradorByTipoColaborador_resultHandler(event)"/>
 	<mx:RemoteObject id="telefoniaMovilService" destination="telefoniaMovilService" fault="requisicionService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:RemoteObject id="solicitudAlmacenService" destination="solicitudAlmacenService" fault="requisicionService_faultHandler(event)"

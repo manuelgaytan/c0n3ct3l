@@ -375,7 +375,7 @@
 						 labelField="etiqueta"
 						 />
 		</mx:FormItem>
-		<mx:FormItem label="Tipo de Mantenimiento:">
+		<mx:FormItem label="Responsable Mantenimiento o Servicio:">
 			<mx:ComboBox id="cmbService"
 						 labelField="etiqueta"
 						 />

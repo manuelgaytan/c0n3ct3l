@@ -134,6 +134,11 @@
 							   labelFunction="labelFunctionGenerico"
 							   width="80"
 							   textAlign="center"/>
+			<mx:DataGridColumn headerText="{'Fecha del\nEstatus de\nRequisición'}"
+							   width="80"
+							   dataField="fechaEstatusRequisicion"
+							   labelFunction="{Util.labelFunctionDate}"
+							   textAlign="center"/>
 		</mx:columns>
 	</mx:DataGrid>
 	<mx:HBox>

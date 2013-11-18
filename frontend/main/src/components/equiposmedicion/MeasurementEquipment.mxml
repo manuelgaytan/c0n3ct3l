@@ -4,12 +4,14 @@
 		 >
 	<mx:Script>
 		<![CDATA[
+			import model.Calibracion;
 			import model.Catalogo;
 			import model.Colaborador;
 			import model.Constants;
 			import model.EquipoMedicion;
 			import model.EstatusA;
 			import model.GrupoFamiliaA;
+			import model.MantenimientoServicio;
 			import model.Perfil;
 			import model.TipoAlmacen;
 			import model.TipoDocumentoAlmacen;
@@ -21,7 +23,6 @@
 			
 			import mx.collections.ArrayCollection;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
-			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
 			import mx.com.gahm.componentes.validadores.ValidadorNumerico;
@@ -102,6 +103,14 @@
 				this.dtfServiceDate.selectedDate = this._item.fechaMantenimiento;
 				this.dlvServiceOrder.delivers = Util.setDocumentosAlmacen( this._item.ordenMantenimiento );
 				this.comments.comments = this._item.comentarios;
+				if( Util.isFill( this.cmbCalibration ) && this._item.calibracion != null ){
+					this.cmbCalibration.selectedIndex = Util.selectedIndexFromCombo( this.cmbCalibration.dataProvider as ArrayCollection, 
+						this._item.calibracion.id);
+				}
+				if( Util.isFill( this.cmbMaintanceService ) && this._item.mantenimientoServicio != null ){
+					this.cmbMaintanceService.selectedIndex = Util.selectedIndexFromCombo( this.cmbMaintanceService.dataProvider as ArrayCollection, 
+						this._item.mantenimientoServicio.id);
+				}
 			}
 			
 			private function getMeasurementEquipment():EquipoMedicion{
@@ -137,6 +146,8 @@
 				item.fechaMantenimiento = this.dtfServiceDate.selectedDate;
 				item.ordenMantenimiento = Util.getDocumentosAlmacen( this.dlvServiceOrder.delivers, TipoAlmacen.getEquipoMedicion(), TipoDocumentoAlmacen.getOrdenMantenimientoServicio() );
 				item.comentarios = Util.getComentariosTipoAlmacen( this.comments.comments, TipoAlmacen.getEquipoMedicion() );
+				item.calibracion = Util.validateCombo( this.cmbCalibration ) as Calibracion;
+				item.mantenimientoServicio = Util.validateCombo( this.cmbMaintanceService ) as MantenimientoServicio;
 				return item;
 			}
 			
@@ -146,6 +157,8 @@
 				this.responseGetColaborador.token = this.catalogoService.getColaborador();
 				this.responseGetEstatusA.token = this.catalogoService.getEstatusA();
 				this.responseGetTipoMantenimiento.token = this.catalogoService.getTipoMantenimiento();
+				this.responseGetCalibracion.token = this.catalogoService.getCalibracion();
+				this.responseGetMantenimientoServicio.token = this.catalogoService.getMantenimientoServicio();
 			}
 			
 			protected function equipoMedicionService_faultHandler(event:FaultEvent):void
@@ -232,6 +245,8 @@
 				this.dtfServiceDate.reset();
 				this.dlvServiceOrder.reset();
 				this.comments.reset();
+				this.cmbCalibration.selectedIndex = 0;
+				this.cmbMaintanceService.selectedIndex = 0;
 			}
 			
 			protected function responseUpdate_resultHandler(event:ResultEvent):void
@@ -298,6 +313,32 @@
 				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
 			}
 			
+			protected function responseGetCalibracion_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbCalibration.dataProvider = Util.addEmptyCatalgo( data );
+				if( this._item != null && this._item.calibracion != null ){
+					this.cmbCalibration.selectedIndex = Util.selectedIndexFromCombo( this.cmbCalibration.dataProvider as ArrayCollection, 
+						this._item.calibracion.id);
+				}
+			}
+			
+			protected function responseGetMantenimientoServicio_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbMaintanceService.dataProvider = Util.addEmptyCatalgo( data );
+				if( this._item != null && this._item.mantenimientoServicio != null ){
+					this.cmbMaintanceService.selectedIndex = Util.selectedIndexFromCombo( this.cmbMaintanceService.dataProvider as ArrayCollection, 
+						this._item.mantenimientoServicio.id);
+				}
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -346,6 +387,11 @@
 						 labelField="etiqueta"
 						 />
 		</mx:FormItem>
+		<mx:FormItem label="Calibración:">
+			<mx:ComboBox id="cmbCalibration"
+						 labelField="etiqueta"
+						 />
+		</mx:FormItem>
 		<mx:FormItem label="No. de Certificado:">
 			<components:TextInput id="txtCertificateNumber"/>
 		</mx:FormItem>
@@ -359,6 +405,11 @@
 			<components:FlatDeliver id="dlvCalibrationCertificate"/>
 		</mx:FormItem>
 		<mx:FormItem label="Mantenimiento o Servicio:">
+			<mx:ComboBox id="cmbMaintanceService"
+						 labelField="etiqueta"
+						 />
+		</mx:FormItem>
+		<mx:FormItem label="Tipo de Mantenimiento:">
 			<mx:ComboBox id="cmbService"
 						 labelField="etiqueta"
 						 />
@@ -388,4 +439,6 @@
 	<mx:CallResponder id="responseGetColaborador" result="responseGetColaborador_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetEstatusA" result="responseGetEstatusA_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetTipoMantenimiento" result="responseGetTipoMantenimiento_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetCalibracion" result="responseGetCalibracion_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetMantenimientoServicio" result="responseGetMantenimientoServicio_resultHandler(event)"/>
 </mx:VBox>

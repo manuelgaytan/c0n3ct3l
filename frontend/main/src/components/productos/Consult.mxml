@@ -14,6 +14,7 @@
 			import model.FiltroProducto;
 			import model.Model;
 			import model.Producto;
+			import model.Reportes;
 			import model.Util;
 			
 			import mx.collections.ArrayCollection;
@@ -128,7 +129,7 @@
 				this.loadFile.show(event);
 			}
 			
-			protected function btnExport_clickHandler(event:MouseEvent):void
+			protected function btnExportComaFormat_clickHandler(event:MouseEvent):void
 			{
 				var filePath:String = Model.getInstance().repositoryPath + "/" + this.getExportFileName();
 				trace("filePath: " + filePath);
@@ -187,6 +188,24 @@
 			public function set preciarios(value:Boolean):void{
 				this._preciarios = value;
 			}
+			
+			protected function btnPrint_clickHandler(event:MouseEvent):void
+			{
+				if( this.products == null ||
+					this.products.length == 0 ){
+					Util.showErrorMessage("Debe haber elementos en la tabla.");
+					return;
+				}
+				var params:Array = [{key:"id", value:Reportes.IMPRIMIR_TODOS}];
+				Util.launchReport( Reportes.PRECIARIO_MAQUILADOR, params );
+			}
+			
+			protected function btnExport_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -251,13 +270,21 @@
 		</mx:columns>
 	</mx:DataGrid>
 	</mx:HBox>
-	<mx:HBox includeInLayout="{!this._preciarios}">
+	<mx:HBox>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"
+				   includeInLayout="{!this._preciarios}"
+				   visible="{!this._preciarios}"/>
+		<mx:Button label="Exportar formato comas" id="btnExportComaFormat" click="btnExportComaFormat_clickHandler(event)"
+				   includeInLayout="{!this._preciarios}"
 				   visible="{!this._preciarios}"/>
 		<mx:Button label="Exportar" id="btnExport" click="btnExport_clickHandler(event)"
-				   visible="{!this._preciarios}"/>
+				   />
 		<mx:Button label="Importar" id="btnImport" click="btnImport_clickHandler(event)"
+				   includeInLayout="{!this._preciarios}"
 				   visible="{!this._preciarios}"/>
+		<mx:Button label="Imprimir Todo" id="btnPrint" click="btnPrint_clickHandler(event)"
+				   includeInLayout="{this._preciarios}"
+				   visible="{this._preciarios}"/>
 	</mx:HBox>
 	<mx:RemoteObject id="productoService" destination="productoService" fault="productoService_faultHandler(event)"
 					 showBusyCursor="true"/>

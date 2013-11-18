@@ -173,6 +173,9 @@
 							   dataField="total"
 							   labelFunction="{Util.labelFunctionCurrency}"
 							   textAlign="right"/>
+			<mx:DataGridColumn headerText="Importe con Letra"
+							   width="500"
+							   dataField="importeLetra"/>
 		</mx:columns>
 	</mx:DataGrid>
 	<mx:HBox>

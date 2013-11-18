@@ -542,7 +542,7 @@
 		<mx:FormItem label="Fecha Fin Programada:">
 			<components:DateField id="dtfEndDateProgramming"/>
 		</mx:FormItem>
-		<mx:FormItem label="Responsable Conectel:">
+		<mx:FormItem label="Responsable Coordinación:">
 			<mx:ComboBox id="cmbConectelResponsable" width="400"
 						 labelField="nombreCompleto"/>
 		</mx:FormItem>

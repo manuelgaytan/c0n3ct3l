@@ -142,6 +142,7 @@
 				}else{
 					this.dlvYDelivery.delivers = this._configurationTestingDelivery.entregableY;
 				}
+				this.dtfCloseDate.selectedDate = this._configurationTestingDelivery.cierreCoordinacion;
 				this.chbWholeDeliveries.selected = this._configurationTestingDelivery.entregablesCompletos;
 				if( Util.isFill( this.cmbOperationalValidationStatus ) && this._configurationTestingDelivery.estadoValidacionOperativa != null ){
 					this.cmbOperationalValidationStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbOperationalValidationStatus.dataProvider as ArrayCollection, 
@@ -187,6 +188,7 @@
 				configurationTestingDelivery.asBuild = this.dlvASBuild.delivers;
 				configurationTestingDelivery.entregableX = this.dlvXDelivery.delivers;
 				configurationTestingDelivery.entregableY = this.dlvYDelivery.delivers;
+				configurationTestingDelivery.cierreCoordinacion = this.dtfCloseDate.selectedDate;
 				configurationTestingDelivery.entregablesCompletos = this.chbWholeDeliveries.selected;
 				configurationTestingDelivery.estadoValidacionOperativa = Util.validateCombo( this.cmbOperationalValidationStatus ) as EstadoValidacionOperativa;
 				configurationTestingDelivery.fechaValidacionOperativa = this.dtfOperationalValidationDate.selectedDate;
@@ -306,6 +308,7 @@
 				this.dlvASBuild.reset();
 				this.dlvXDelivery.reset();
 				this.dlvYDelivery.reset();
+				this.dtfCloseDate.reset();
 				this.chbWholeDeliveries.selected = false;
 				this.cmbOperationalValidationStatus.selectedIndex = 0;
 				this.dtfOperationalValidationDate.reset();
@@ -446,7 +449,7 @@
 		-->
 		<mx:FormHeading label="Proyectos"/>
 		<proyectos:Consult id="projectsConsult" projectSelected="projectsConsult_projectSelectedHandler(event)"/>
-		<mx:FormItem label="Comisionado:">
+		<mx:FormItem label="Comisionamiento:">
 			<components:TextInput id="txtCommissioner" width="200" textAlign="right"/>
 		</mx:FormItem>
 		<mx:FormItem label="Puertos Entregados:">
@@ -505,6 +508,9 @@
 		</mx:FormItem>
 		<mx:FormItem label="Entregable Y:">
 			<components:DeliverWithStatus id="dlvYDelivery" deliveryType="{TipoEntregable.ENTREGABLE_Y}"/>
+		</mx:FormItem>
+		<mx:FormItem label="Cierre Coordinación:">
+			<components:DateField id="dtfCloseDate"/>
 		</mx:FormItem>
 		<mx:FormItem label="Entregables Completos:">
 			<mx:CheckBox id="chbWholeDeliveries"/>

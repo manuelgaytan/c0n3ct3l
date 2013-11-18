@@ -79,8 +79,8 @@
 	    parameters.put("address1", "Calle Laurel No. 62 Col. AgrÌÅcola Pantitl·Ån");
 	    parameters.put("address2", "Del. Iztacalco, MÈÅxico D.F. C.P. 08100");
 	    parameters.put("phones", "TelÈfonos: (55) 58-51-93-42/43 (55) 57-01-99-97");
-	    parameters.put("maker", "CLAUDIA E. ROMO PALMERÕN");
-	    parameters.put("authorizer","GABRIELA FLORES CASTILLO");
+	    parameters.put("maker", "");
+	    parameters.put("authorizer","");
 	    parameters.put("website","www.conectel.com.mx");
 	    parameters.put("area","COMPRAS");
 	    parameters.put("phonesContact","58 51 93 42 , 58 51 93 43 EXT 115");

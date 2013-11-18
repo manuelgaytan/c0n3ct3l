@@ -58,9 +58,11 @@ public class OrdenCompraService  implements IOrdenCompraService{
 	    try {
 	    	item.setFecha( new Date() );
 	    	entityManager.persist(item);
-	    	RequisicionCompraDO requisicionCompra = entityManager.find(RequisicionCompraDO.class, item.getRequisicionCompra().getId());
-	    	this.deletePartidasRequisicionCompra( requisicionCompra );
-	    	this.savePartidasRequisicionCompra( item.getRequisicionCompra() );
+	    	if( !(item.getRequisicionCompra() == null) ){
+	    		RequisicionCompraDO requisicionCompra = entityManager.find(RequisicionCompraDO.class, item.getRequisicionCompra().getId());
+	    		this.deletePartidasRequisicionCompra( requisicionCompra );
+	    		this.savePartidasRequisicionCompra( item.getRequisicionCompra() );
+	    	}
 	    	entityManager.flush();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -115,9 +117,11 @@ public class OrdenCompraService  implements IOrdenCompraService{
 	@Override
 	public OrdenCompraDO update(OrdenCompraDO item) {
 		entityManager.merge(item);
-		RequisicionCompraDO requisicionCompra = entityManager.find(RequisicionCompraDO.class, item.getRequisicionCompra().getId());
-    	this.deletePartidasRequisicionCompra( requisicionCompra );
-    	this.savePartidasRequisicionCompra( item.getRequisicionCompra() );
+		if( !(item.getRequisicionCompra() == null) ){
+			RequisicionCompraDO requisicionCompra = entityManager.find(RequisicionCompraDO.class, item.getRequisicionCompra().getId());
+			this.deletePartidasRequisicionCompra( requisicionCompra );
+			this.savePartidasRequisicionCompra( item.getRequisicionCompra() );
+		}
 		return item;
 	}
 

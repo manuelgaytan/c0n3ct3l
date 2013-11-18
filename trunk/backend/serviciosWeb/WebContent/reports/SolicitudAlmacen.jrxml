@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SolicitudAlmacen" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0a99f18f-48d8-429d-93ad-51869a41c8cf">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="441"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -43,6 +43,8 @@
 	<field name="entrega.nombreCompleto" class="java.lang.String"/>
 	<field name="recibe" class="java.lang.String"/>
 	<field name="listaPlana" class="java.util.List"/>
+	<field name="leyenda" class="java.lang.String"/>
+	<field name="fechaRetorno" class="java.util.Date"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -146,9 +148,9 @@
 		</band>
 	</title>
 	<detail>
-		<band height="304" splitType="Stretch">
+		<band height="250" splitType="Stretch">
 			<subreport>
-				<reportElement uuid="12ce6a5a-d7a8-4786-b411-17ae8298e953" x="7" y="7" width="565" height="286"/>
+				<reportElement uuid="12ce6a5a-d7a8-4786-b411-17ae8298e953" x="7" y="7" width="565" height="240"/>
 				<subreportParameter name="contextoSubreporte">
 					<subreportParameterExpression><![CDATA[$P{contexto}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -184,26 +186,26 @@
 		</band>
 	</pageFooter>
 	<summary>
-		<band height="210">
+		<band height="277">
 			<line>
-				<reportElement uuid="59503505-c4ae-4a41-8e2c-6b4bb8d1395d" x="342" y="186" width="176" height="1"/>
+				<reportElement uuid="59503505-c4ae-4a41-8e2c-6b4bb8d1395d" x="333" y="254" width="176" height="1"/>
 			</line>
 			<staticText>
-				<reportElement uuid="636a47c2-3e61-43a9-b848-429289fa3cf9" x="347" y="190" width="171" height="16"/>
+				<reportElement uuid="636a47c2-3e61-43a9-b848-429289fa3cf9" x="338" y="258" width="171" height="16"/>
 				<textElement textAlignment="Center">
 					<font size="12"/>
 				</textElement>
 				<text><![CDATA[Firma de quien Recibe]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="bd161a04-c753-4959-89d0-c0160e27b517" x="65" y="190" width="171" height="16"/>
+				<reportElement uuid="bd161a04-c753-4959-89d0-c0160e27b517" x="56" y="258" width="171" height="16"/>
 				<textElement textAlignment="Center">
 					<font size="12"/>
 				</textElement>
 				<text><![CDATA[Firma de quien Entrega]]></text>
 			</staticText>
 			<line>
-				<reportElement uuid="d4d031f0-50d4-482e-a5a2-b890be21d6c4" x="65" y="186" width="176" height="1"/>
+				<reportElement uuid="d4d031f0-50d4-482e-a5a2-b890be21d6c4" x="56" y="254" width="176" height="1"/>
 			</line>
 			<staticText>
 				<reportElement uuid="d6a9c744-40d8-4cdc-86c0-df023ba6d63e" x="0" y="64" width="171" height="16"/>
@@ -288,6 +290,27 @@
 					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{autorizaFinal.nombreCompleto}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="28520e25-490f-49f7-b17d-dfd512912aa4" x="4" y="148" width="565" height="56"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{leyenda}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="841de41a-f172-4002-a7dd-cbd416e0f2c2" x="0" y="127" width="171" height="16"/>
+				<textElement textAlignment="Right">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Fecha de Retorno:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement uuid="890f5eff-effb-4319-9e7f-12c8a7d4596b" x="181" y="127" width="381" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fechaRetorno}]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>

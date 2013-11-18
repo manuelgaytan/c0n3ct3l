@@ -37,8 +37,9 @@ public class PartidaRequisicionCompraDO implements java.io.Serializable {
 	private String cantidad;
 	@Column( nullable = true)
 	private String unidad;
-	@Column( nullable = true)
-	private String validacion;
+	@ManyToOne
+	@JoinColumn(name="fk_validacion")
+	private ColaboradorDO validacion;
 	@Column(name = "fk_estatus", nullable = false)
 	private Integer fkEstatus;
 	@Column(name = "costo", nullable = true)
@@ -50,7 +51,7 @@ public class PartidaRequisicionCompraDO implements java.io.Serializable {
 	}
 
 	public PartidaRequisicionCompraDO(String descripcion, String cantidad,
-			String unidad, String validacion, Integer fkEstatus) {
+			String unidad, ColaboradorDO validacion, Integer fkEstatus) {
 		this.descripcion = descripcion;
 		this.cantidad = cantidad;
 		this.unidad = unidad;
@@ -60,7 +61,7 @@ public class PartidaRequisicionCompraDO implements java.io.Serializable {
 	
 	public PartidaRequisicionCompraDO(RequisicionCompraDO requisicionCompra,
 			String codigo, String grupoFamilia, String descripcion,
-			String cantidad, String unidad, String validacion, Integer fkEstatus, Double costo, Double importe) {
+			String cantidad, String unidad, ColaboradorDO validacion, Integer fkEstatus, Double costo, Double importe) {
 		this.requisicionCompra = requisicionCompra;
 		this.codigo = codigo;
 		this.grupoFamilia = grupoFamilia;
@@ -129,11 +130,11 @@ public class PartidaRequisicionCompraDO implements java.io.Serializable {
 		this.unidad = unidad;
 	}
 
-	public String getValidacion() {
+	public ColaboradorDO getValidacion() {
 		return validacion;
 	}
 
-	public void setValidacion(String validacion) {
+	public void setValidacion(ColaboradorDO validacion) {
 		this.validacion = validacion;
 	}
 

@@ -15,7 +15,7 @@ import java.util.List;
 
 @Entity
 @NamedQueries({
-	@NamedQuery(name = "ProveedorMaquiladorDO.findAll", query = "select p from ProveedorMaquiladorDO p ") })
+	@NamedQuery(name = "ProveedorMaquiladorDO.findAll", query = "select p from ProveedorMaquiladorDO p") })
 @Table(name="proveedormaquilador")
 public class ProveedorMaquiladorDO  implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -40,7 +40,7 @@ public class ProveedorMaquiladorDO  implements Serializable{
 	private DatoBancarioDO datoBancario;
 
 	@JoinColumn(name="fk_pago")
-	private TipoPagoDO pago;
+	private PagoDO pago;
 
 	@OneToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name = "fk_proveedor", nullable = false)
@@ -119,14 +119,14 @@ public class ProveedorMaquiladorDO  implements Serializable{
 	/**
 	 * @return the pago
 	 */
-	public TipoPagoDO getPago() {
+	public PagoDO getPago() {
 		return pago;
 	}
 
 	/**
 	 * @param pago the pago to set
 	 */
-	public void setPago(TipoPagoDO pago) {
+	public void setPago(PagoDO pago) {
 		this.pago = pago;
 	}
 

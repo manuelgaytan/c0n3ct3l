@@ -15,6 +15,7 @@ import mx.com.gahm.conenctel.entities.AplicaDO;
 import mx.com.gahm.conenctel.entities.AreaLevantaNoConformidadDO;
 import mx.com.gahm.conenctel.entities.AreaSolicitanteDO;
 import mx.com.gahm.conenctel.entities.BancoConectelDO;
+import mx.com.gahm.conenctel.entities.CalibracionDO;
 import mx.com.gahm.conenctel.entities.CartaAntecedentesPenalesDO;
 import mx.com.gahm.conenctel.entities.ClaseIncidenciaDO;
 import mx.com.gahm.conenctel.entities.ClasificacionFaltaDO;
@@ -63,9 +64,11 @@ import mx.com.gahm.conenctel.entities.GrupoFamiliaEDO;
 import mx.com.gahm.conenctel.entities.GrupoFamiliaFDO;
 import mx.com.gahm.conenctel.entities.IdentificacionDO;
 import mx.com.gahm.conenctel.entities.ImputableDO;
+import mx.com.gahm.conenctel.entities.MantenimientoServicioDO;
 import mx.com.gahm.conenctel.entities.MedioTransporteDO;
 import mx.com.gahm.conenctel.entities.MotivoTerminoContratoDO;
 import mx.com.gahm.conenctel.entities.NacionalidadDO;
+import mx.com.gahm.conenctel.entities.PagoDO;
 import mx.com.gahm.conenctel.entities.PercepcionDO;
 import mx.com.gahm.conenctel.entities.PrioridadDO;
 import mx.com.gahm.conenctel.entities.ProveedorDO;
@@ -1467,6 +1470,49 @@ public class CatalogoService implements ICatalogoService {
 		return list;
 	}
 	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<CalibracionDO> getCalibracion() throws ConectelException {
+		TypedQuery<CalibracionDO> query = entityManager.createNamedQuery(
+				"CalibracionDO.findAll", CalibracionDO.class);
+		
+		List<CalibracionDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
 	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<MantenimientoServicioDO> getMantenimientoServicio() throws ConectelException {
+		TypedQuery<MantenimientoServicioDO> query = entityManager.createNamedQuery(
+				"MantenimientoServicioDO.findAll", MantenimientoServicioDO.class);
+		
+		List<MantenimientoServicioDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
 	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<PagoDO> getPago()
+			throws ConectelException {
+
+		List<PagoDO> datos = null;
+
+		TypedQuery<PagoDO> query = entityManager
+				.createNamedQuery("PagoDO.findAll",
+						PagoDO.class);
+
+		try {
+			datos = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen informaci—n para mostrar.");
+		}
+		return datos;
+	}
 }

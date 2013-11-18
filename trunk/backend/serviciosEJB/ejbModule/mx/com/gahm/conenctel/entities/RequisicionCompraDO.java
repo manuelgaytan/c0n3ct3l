@@ -56,7 +56,10 @@ public class RequisicionCompraDO implements java.io.Serializable {
     private List<PartidaRequisicionCompraDO> partidasRequisicionCompra;
 	@OneToMany(mappedBy="requisicionCompra", fetch = FetchType.EAGER)
     private List<ComentarioRequisicionDO> comentariosRequisicion;
-    
+	@Column(name = "fecha_estatus_requisicion", nullable = false, length = 10)
+	@Temporal(javax.persistence.TemporalType.DATE)
+	private Date fechaEstatusRequisicion;
+
 	public RequisicionCompraDO() {
 	}
 
@@ -174,5 +177,13 @@ public class RequisicionCompraDO implements java.io.Serializable {
 	public void setComentariosRequisicion(
 			List<ComentarioRequisicionDO> comentariosRequisicion) {
 		this.comentariosRequisicion = comentariosRequisicion;
+	}
+
+	public Date getFechaEstatusRequisicion() {
+		return fechaEstatusRequisicion;
+	}
+
+	public void setFechaEstatusRequisicion(Date fechaEstatusRequisicion) {
+		this.fechaEstatusRequisicion = fechaEstatusRequisicion;
 	}
 }

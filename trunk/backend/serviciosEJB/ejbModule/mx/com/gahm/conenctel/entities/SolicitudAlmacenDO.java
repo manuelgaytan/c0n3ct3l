@@ -83,6 +83,13 @@ public class SolicitudAlmacenDO implements Serializable {
 	@Column(name="recibe")
 	private String recibe;
 	
+	@Column(name="leyenda")
+	private String leyenda;
+	
+	@Temporal(TemporalType.DATE)
+	@Column(name="fecha_retorno")
+	private Date fechaRetorno;
+	
 	@OneToMany(mappedBy="solicitudAlmacen", fetch = FetchType.EAGER,cascade=CascadeType.ALL)
 	private List<HerramientaSolicitudAlmacenDO> herramientasSolicitudAlmacen;
 
@@ -119,7 +126,8 @@ public class SolicitudAlmacenDO implements Serializable {
 			EstadoSolicitudAlmacenDO estadoSolicitudAlmacen,
 			String nombreSolicitante, ColaboradorDO autoriza,
 			ColaboradorDO autorizaFinal,
-			ColaboradorDO entrega, String recibe) {
+			ColaboradorDO entrega, String recibe, String leyenda,
+			Date fechaRetorno) {
 		super();
 		this.id = id;
 		this.usuario = usuario;
@@ -134,6 +142,8 @@ public class SolicitudAlmacenDO implements Serializable {
 		this.autorizaFinal = autorizaFinal;
 		this.entrega = entrega;
 		this.recibe = recibe;
+		this.leyenda = leyenda;
+		this.fechaRetorno = fechaRetorno;
 	}
 
 	public List<PartidaSolicitudAlmacen> getListaPlana(){
@@ -384,6 +394,22 @@ public class SolicitudAlmacenDO implements Serializable {
 
 	public void setRecibe(String recibe) {
 		this.recibe = recibe;
+	}
+	
+	public String getLeyenda() {
+		return leyenda;
+	}
+
+	public void setLeyenda(String leyenda) {
+		this.leyenda = leyenda;
+	}
+	
+	public Date getFechaRetorno() {
+		return fechaRetorno;
+	}
+
+	public void setFechaRetorno(Date fechaRetorno) {
+		this.fechaRetorno = fechaRetorno;
 	}
 
 	public List<HerramientaSolicitudAlmacenDO> getHerramientasSolicitudAlmacen() {

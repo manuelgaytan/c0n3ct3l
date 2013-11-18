@@ -74,6 +74,14 @@ public class EquipoMedicionDO implements Serializable {
 	@JoinColumn(name="fk_estatus_a")
 	private EstatusADO estatusa;
 	
+	@ManyToOne
+	@JoinColumn(name="fk_calibracion")
+	private CalibracionDO calibracion;
+	
+	@ManyToOne
+	@JoinColumn(name="fk_mantenimiento_servicio")
+	private MantenimientoServicioDO mantenimientoServicio;
+	
 	private Double costo;
 	
 	@Transient
@@ -213,6 +221,22 @@ public class EquipoMedicionDO implements Serializable {
 
 	public void setEstatusa(EstatusADO estatusa) {
 		this.estatusa = estatusa;
+	}
+	
+	public CalibracionDO getCalibracion() {
+		return this.calibracion;
+	}
+
+	public void setCalibracion(CalibracionDO calibracion) {
+		this.calibracion = calibracion;
+	}
+	
+	public MantenimientoServicioDO getMantenimientoServicio() {
+		return this.mantenimientoServicio;
+	}
+
+	public void setMantenimientoServicio(MantenimientoServicioDO mantenimientoServicio) {
+		this.mantenimientoServicio = mantenimientoServicio;
 	}
 
 	public List<DocumentoAlmacenDO> getPolizaGarantia() {

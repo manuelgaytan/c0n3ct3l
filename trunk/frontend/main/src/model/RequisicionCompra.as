@@ -15,6 +15,7 @@ package model
 		public var solicitantesRequisicion:ArrayCollection;
 		public var partidasRequisicionCompra:ArrayCollection;
 		public var comentariosRequisicion:ArrayCollection;
+		public var fechaEstatusRequisicion:Date;
 		
 		public function RequisicionCompra()
 		{

@@ -12,7 +12,7 @@ package model
 		public var descripcion:String;
 		public var cantidad:String;
 		public var unidad:String;
-		public var validacion:String;
+		public var validacion:Colaborador;
 		public var fkEstatus:Number = EstatusRequisicionCompra.ID_PENDIENTE;
 		public var costo:*;
 		public var importe:*;

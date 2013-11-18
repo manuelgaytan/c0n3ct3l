@@ -106,7 +106,7 @@
 		[Event(name="warehouseApplicationDetail", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
-	<mx:DataGrid id="datagrid" width="1820" height="100%" dataProvider="{items}"
+	<mx:DataGrid id="datagrid" width="2340" height="100%" dataProvider="{items}"
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 				 allowMultipleSelection="true">
 		<mx:columns>
@@ -150,6 +150,14 @@
 			<mx:DataGridColumn headerText="{'Recibe'}"
 							   dataField="recibe"
 							   width="200"/>
+			<mx:DataGridColumn id="dtgReturnDate" headerText="{'Fecha de\nRetorno'}"
+							   dataField="fechaRetorno"
+							   labelFunction="labelFunctionDate"
+							   width="120"
+							   textAlign="center"/>
+			<mx:DataGridColumn headerText="{'Leyenda'}"
+							   dataField="leyenda"
+							   width="400"/>
 		</mx:columns>
 	</mx:DataGrid>
 	</mx:HBox>

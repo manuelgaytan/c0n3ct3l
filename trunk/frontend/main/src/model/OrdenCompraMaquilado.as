@@ -13,6 +13,14 @@ package model
 		public var proveedorMaquilador:ProveedorMaquilador;
 		public var claveValidacion:String;
 		public var leyenda:String;
+		public var subtotal:Number;
+		public var iva:Number;
+		public var ieps:*;
+		public var retencionIsr:*;
+		public var retencionIva:*;
+		public var otrosImpuestos:*;
+		public var total:Number;
+		public var importeLetra:String;
 		
 		public static const OC_QUANTITY:Number = 0.5;
 		public static const OC_UNIT:String = "PROYECTO";

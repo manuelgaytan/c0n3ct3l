@@ -149,7 +149,7 @@
 							   labelFunction="labelFunctionDate"
 							   textAlign="center"
 							   width="100"/>
-			<mx:DataGridColumn id="dtgConectelResponsable" headerText="{'Responsable\nConectel'}"
+			<mx:DataGridColumn id="dtgConectelResponsable" headerText="{'Responsable\nCoordinación'}"
 							   dataField="reponsableConectel.nombreCompleto"
 							   labelFunction="labelFunctionGenerico"
 							   width="105"/>

@@ -115,6 +115,8 @@
 						this._item.entrega.id);
 				}
 				this.txtReceives.text = this._item.recibe;
+				this.dtfReturnDate.selectedDate = this._item.fechaRetorno;
+				this.txtLegend.text = this._item.leyenda;
 			}
 			
 			private function getWarehouseApplication():SolicitudAlmacen{
@@ -135,6 +137,8 @@
 				item.autorizaFinal = Util.validateCombo( this.cmbAreaCordinator ) as Colaborador;
 				item.entrega = Util.validateCombo( this.cmbDeliver ) as Colaborador;
 				item.recibe = Util.validateEmpty( this.txtReceives.text );
+				item.fechaRetorno = this.dtfReturnDate.selectedDate;
+				item.leyenda = Util.validateEmpty( this.txtLegend.text );
 				item.usuario = Model.getInstance().user;
 				itemsManagement.getEntries( item );
 				return item;
@@ -211,7 +215,7 @@
 				validators.setRestrictor(txtSite, "generic");
 				validators.setValidador(txtApplicantName, "generic");
 				validators.setValidador(txtReceives, "generic");
-				
+				validators.setRestrictor(txtLegend, "generic");
 				this.validatorsEntry = new InicializaValidadoresEtiquetas();
 				validatorsEntry.crearValidadorRestrictor("generic",ValidadorCadenaCualquierCaracter.nombre, 0, 255);
 				//validatorsEntry.setRestrictor(txtStockType, "generic");
@@ -250,6 +254,8 @@
 				this.cmbAreaCordinator.selectedIndex = 0;
 				this.cmbDeliver.selectedIndex = 0;
 				this.txtReceives.reset();
+				this.dtfReturnDate.reset();
+				this.txtLegend.reset();
 			}
 			
 			protected function responseUpdate_resultHandler(event:ResultEvent):void
@@ -690,6 +696,12 @@
 		</mx:FormItem>
 		<mx:FormItem label="Recibe:">
 			<components:TextInput id="txtReceives" width="400"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha de Retorno:">
+			<components:DateField id="dtfReturnDate"/>
+		</mx:FormItem>
+		<mx:FormItem label="Leyenda:">
+			<components:TextArea id="txtLegend" width="750"/>
 		</mx:FormItem>
 		<mx:FormItem direction="horizontal">
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>

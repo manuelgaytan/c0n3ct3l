@@ -34,6 +34,8 @@ package model
 		public var responsable:Colaborador;
 		public var estatusa:EstatusA;
 		public var tipomantenimiento:TipoMantenimiento;
+		public var calibracion:Calibracion;
+		public var mantenimientoServicio:MantenimientoServicio;
 		
 		public function EquipoMedicion()
 		{

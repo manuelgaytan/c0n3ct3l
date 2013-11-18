@@ -28,8 +28,8 @@
 			import mx.com.gahm.componentes.validadores.Constantes;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
 			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
-			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.com.gahm.componentes.validadores.ValidadorEntero;
 			import mx.com.gahm.componentes.validadores.ValidadorNumerico;
 			import mx.controls.Alert;
 			import mx.controls.List;
@@ -80,9 +80,13 @@
 				}
 				this.txtID.text = Util.numberToString( this._item.id );
 				this.txtProjectID.text = Util.numberToString( this._item.proyecto.id );
-				this.txtRequisicionID.text = Util.numberToString( this._item.requisicionCompra.id );
-				this.txtRequisicionID.dispatchEvent( new FocusEvent(FocusEvent.FOCUS_OUT) );
-				this.txtQuotationID.text = Util.numberToString( this._item.cotizacion.id );
+				if( !(this._item.requisicionCompra == null) ){
+					this.txtRequisicionID.text = Util.numberToString( this._item.requisicionCompra.id );
+					this.txtRequisicionID.dispatchEvent( new FocusEvent(FocusEvent.FOCUS_OUT) );
+				}
+				if( !(this._item.cotizacion == null) ){
+					this.txtQuotationID.text = Util.numberToString( this._item.cotizacion.id );
+				}
 				this.dtfDate.selectedDate = this._item.fecha;
 				if( Util.isFill( this.cmbQualifiedSupplier ) && this._item.proveedorCalificado != null ){
 					this.cmbQualifiedSupplier.selectedIndex = Util.selectedIndexFromCombo( this.cmbQualifiedSupplier.dataProvider as ArrayCollection, 
@@ -98,6 +102,7 @@
 				this.txtTotal.text = Util.numberToString( this._item.total );
 				this.dtfWarehouseDeliveryDate.selectedDate = this._item.fechaEntregaAlmacen;
 				this.txtLegend.text = this._item.leyenda;
+				this.txtAmountWithLetter.text = this._item.importeLetra;
 			}
 			
 			private function setQualifiedSupplier( supplier:ProveedorCalificado ):void{
@@ -128,11 +133,19 @@
 				}
 				item.proyecto = new Proyecto();
 				item.proyecto.id = Util.stringToNumber( this.txtProjectID.text );
-				item.requisicionCompra = new RequisicionCompra();
-				item.requisicionCompra.id = Util.stringToNumber( this.txtRequisicionID.text );
-				item.requisicionCompra.partidasRequisicionCompra = this.itemsManagement.dataProvider as ArrayCollection;
-				item.cotizacion = new Cotizacion();
-				item.cotizacion.id = Util.stringToNumber( this.txtQuotationID.text );
+				if( !(Util.validateEmpty( this.txtRequisicionID.text ) == null) ){ 
+					item.requisicionCompra = new RequisicionCompra();
+					item.requisicionCompra.id = Util.stringToNumber( this.txtRequisicionID.text );
+					item.requisicionCompra.partidasRequisicionCompra = this.itemsManagement.dataProvider as ArrayCollection;
+				}else{
+					item.requisicionCompra = null;
+				}
+				if( !(Util.validateEmpty( this.txtQuotationID.text ) == null) ){
+					item.cotizacion = new Cotizacion();
+					item.cotizacion.id = Util.stringToNumber( this.txtQuotationID.text );
+				}else{
+					item.cotizacion = null;
+				}
 				item.fecha = this.dtfDate.selectedDate;
 				item.proveedorCalificado = new ProveedorCalificado(); 
 				item.proveedorCalificado.id = (Util.validateCombo( this.cmbQualifiedSupplier ) as ProveedorCalificadoCombo).id;
@@ -145,6 +158,7 @@
 				item.total = Util.stringToNumber( this.txtTotal.text );
 				item.fechaEntregaAlmacen = this.dtfDate.selectedDate;
 				item.leyenda = Util.validateEmpty( this.txtLegend.text );
+				item.importeLetra = Util.validateEmpty( this.txtAmountWithLetter.text );
 				return item;
 			}
 			
@@ -202,13 +216,25 @@
 				this.validators = new InicializaValidadoresEtiquetas();
 				this.validators.crearValidadorRestrictor("generic",ValidadorCadenaCualquierCaracter.nombre, 0, 255);
 				this.validators.setRestrictor( this.txtLegend, "generic");
+				this.validators.setRestrictor( this.txtAmountWithLetter, "generic");
 				/*
 				validators.crearValidadorRestrictor("generic",ValidadorCadenaCualquierCaracter.nombre, 0, 255);
 				validators.setRestrictor(txtCode, "generic");
 				validators.setRestrictor(txtDescription, "generic");
-				validators.crearValidadorRestrictor("number",ValidadorDecimal.nombre, 10, 4);
-				validators.setRestrictor(txtExistence, "number");
 				*/
+				validators.crearValidadorRestrictor("number",ValidadorDecimal.nombre, 9, 2);
+				validators.setValidador(txtSubtotal, "number");
+				validators.setValidador(txtIVA, "number");
+				validators.setRestrictor(txtIEPS, "number");
+				validators.setRestrictor(txtISRRetention, "number");
+				validators.setRestrictor(txtIVARetention, "number");
+				validators.setRestrictor(txtOtherTaxes, "number");
+				validators.setValidador(txtTotal, "number");
+				
+				validators.crearValidadorRestrictor("id",ValidadorEntero.nombre, 11);
+				validators.setValidador(txtProjectID, "id");
+				validators.setRestrictor(txtRequisicionID, "id");
+				validators.setRestrictor(txtQuotationID, "id");
 			}
 			
 			protected function responseSave_resultHandler(event:ResultEvent):void
@@ -236,6 +262,7 @@
 				this.txtTotal.reset();
 				this.dtfWarehouseDeliveryDate.reset();
 				this.txtLegend.reset();
+				this.txtAmountWithLetter.reset();
 				this.cleanFormQualifiedSupplier();
 			}
 			
@@ -303,6 +330,7 @@
 			
 			protected function txtRequisicionID_enterHandler():void
 			{
+				this.itemsManagement.reset();
 				var idRequisicion:* = Util.stringToNumber(this.txtRequisicionID.text);
 				if( idRequisicion == undefined ){
 					return;
@@ -437,6 +465,9 @@
 		</mx:FormItem>
 		<mx:FormItem label="Total:">
 			<components:TextInput id="txtTotal" textAlign="right" width="110"/>
+		</mx:FormItem>
+		<mx:FormItem label="Importe con Letra:">
+			<components:TextArea id="txtAmountWithLetter" width="450"/>
 		</mx:FormItem>
 		<mx:FormItem label="Fecha de Entrega Almacén:">
 			<components:DateField id="dtfWarehouseDeliveryDate" textAlign="right"/>

@@ -162,6 +162,9 @@
 							   width="100"
 							   dataField="claveValidacion"
 							   labelFunction="labelFunctionGenerico"/>
+			<mx:DataGridColumn headerText="Importe con Letra"
+							   width="500"
+							   dataField="importeLetra"/>
 		</mx:columns>
 	</mx:DataGrid>
 	<mx:HBox>

@@ -31,6 +31,7 @@ package model
 		public var asBuild:ArrayCollection;
 		public var entregableX:ArrayCollection;
 		public var entregableY:ArrayCollection;
+		public var cierreCoordinacion:Date;
 		
 		public function ConfiguracionPruebaEntrega()
 		{

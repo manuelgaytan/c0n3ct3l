@@ -4,6 +4,7 @@ package model
 	{
 		private static const REPORTING:String = "/serviciosWeb/reporting";
 		private static const JSP:String = ".jsp";
+		public static const IMPRIMIR_TODOS:Number = -1;
 		public static const SOLICITUD_ALMANCEN:String = loadURL( "SolicitudAlmacen" );
 		public static const ORDEN_COMPRA_ALMANCEN:String = loadURL( "OrdenCompraAlmacen" );
 		public static const ORDEN_COMPRA_MAQUILADO:String = loadURL( "OrdenCompraMaquilado" );

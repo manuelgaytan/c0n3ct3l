@@ -158,8 +158,8 @@
 						   textAlign="right"
 						   editable="false"/>
 		<mx:DataGridColumn id="dtgValidation" headerText="Validación"
-						   dataField="validacion"
-						   width="120"
+						   dataField="validacion.nombreCompleto"
+						   width="220"
 						   visible="{!this._purchaseOrderMode}"
 						   editable="false"/>
 		<mx:DataGridColumn id="dtgCost" headerText="{'Precio\nUnitario'}"

@@ -5,12 +5,14 @@
 	<mx:Script>
 		<![CDATA[
 			import model.Catalogo;
+			import model.Categoria;
 			import model.Colaborador;
 			import model.Constants;
 			import model.DatoBancario;
 			import model.DocumentoLiderProveedorMaquilador;
 			import model.EstatusC;
 			import model.GrupoFamiliaD;
+			import model.Pago;
 			import model.Perfil;
 			import model.ProveedorMaquilador;
 			import model.TipoAlmacen;
@@ -23,12 +25,12 @@
 			import mx.collections.ArrayCollection;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
 			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
-			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
 			import mx.com.gahm.componentes.validadores.ValidadorNumerico;
 			import mx.controls.Alert;
 			import mx.events.CloseEvent;
 			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
 			import mx.rpc.events.FaultEvent;
 			import mx.rpc.events.ResultEvent;
 			import mx.utils.object_proxy;
@@ -83,7 +85,15 @@
 				}
 				this.txtValidityContract.text = this._item.vigenciaContrato;
 				this.dtfFechaContrato.selectedDate = this._item.fechaContrato;
-				this.fltDlvLeaderDocuments.delivers = this.convertDocumentLeaderToList( this._item.documentosLiderProveedorMaquilador );				
+				this.fltDlvLeaderDocuments.delivers = this.convertDocumentLeaderToList( this._item.documentosLiderProveedorMaquilador );
+				if( Util.isFill( this.cmbTecnologia ) && this._item.categoriaProyecto != null ){
+					this.cmbTecnologia.selectedIndex = Util.selectedIndexFromCombo( this.cmbTecnologia.dataProvider as ArrayCollection, 
+						this._item.categoriaProyecto.id);
+				}
+				if( Util.isFill( this.cmbPaymentType ) && this._item.pago != null ){
+					this.cmbPaymentType.selectedIndex = Util.selectedIndexFromCombo( this.cmbPaymentType.dataProvider as ArrayCollection, 
+						this._item.pago.id);
+				}
 			}
 			
 			private function getProveedor():ProveedorMaquilador{
@@ -107,6 +117,8 @@
 				item.tipoContrato.id = ((this.cmbTipoContrato.selectedItem as TipoContrato).id); 
 				item.fechaContrato= this.dtfFechaContrato.selectedDate;
 				item.documentosLiderProveedorMaquilador = this.convertDocumentLeader( this.fltDlvLeaderDocuments.delivers );
+				item.categoriaProyecto = Util.validateCombo( this.cmbTecnologia ) as Categoria;
+				item.pago = Util.validateCombo( this.cmbPaymentType ) as Pago;
 				return item;
 			}
 			
@@ -117,6 +129,8 @@
 				this.responseGetUnidadB.token = this.catalogoService.getUnidadB();
 				this.responseGetUbicacionC.token = this.catalogoService.getUbicacionC();
 				this.responseGetTipoContrato.token = this.catalogoService.getTipoContrato();
+				this.responseGetPago.token = this.catalogoService.getPago();
+				this.responseGetCategorias.token  = this.proyectoService.getCategorias(); 
 			}
 			
 			protected function responseGetGrupoFamiliaD_resultHandler(event:ResultEvent):void
@@ -178,7 +192,7 @@
 			{
 				this.validators = new InicializaValidadoresEtiquetas();
 				validators.crearValidadorRestrictor("generic",ValidadorCadenaCualquierCaracter.nombre, 0, 255);
-				validators.setValidador( this.txtValidityContract, "generic" );
+				validators.setRestrictor( this.txtValidityContract, "generic" );
 				validators.setValidador( this.txtCURP, "generic" );
 				validators.setValidador( this.txtNSS, "generic" );
 				validators.crearValidadorRestrictor("number",ValidadorDecimal.nombre, 10, 4);
@@ -204,6 +218,8 @@
 				this.txtValidityContract.reset();
 				this.dtfFechaContrato.reset();
 				this.fltDlvLeaderDocuments.reset();
+				this.cmbTecnologia.selectedIndex = 0;
+				this.cmbPaymentType.selectedIndex = 0;
 			}
 			
 			protected function responseUpdate_resultHandler(event:ResultEvent):void
@@ -261,7 +277,6 @@
 					this.cmbTipoContrato.selectedIndex = Util.selectedIndexFromCombo( this.cmbTipoContrato.dataProvider as ArrayCollection, 
 						this._item.tipoContrato.id);
 				} 
-				
 			}
 			
 			private function convertDocumentLeader(documentosLiderProveedorMaquilador:ArrayCollection):ArrayCollection
@@ -297,6 +312,46 @@
 				return documentsConverted;
 			}
 			
+			protected function cmbTipoContrato_changeHandler(event:ListEvent):void
+			{
+				var contractType:TipoContrato = Util.validateCombo( this.cmbTipoContrato ) as TipoContrato;
+				if( contractType == null ){
+					return;
+				}
+				var editable:Boolean = true;
+				if( contractType.id != TipoContrato.ID_EVENTUAL ){
+					editable = false;
+					this.txtValidityContract.text = "";
+				}
+				this.txtValidityContract.editable = editable;
+			}
+			
+			protected function responseGetCategorias_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbTecnologia.dataProvider = Util.addEmptyCatalgo( data );
+				if( this._item != null && this._item.categoriaProyecto != null ){
+					this.cmbTecnologia.selectedIndex = Util.selectedIndexFromCombo( this.cmbTecnologia.dataProvider as ArrayCollection, 
+						this._item.categoriaProyecto.id);
+				}
+			}
+			
+			protected function responseGetPago_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbPaymentType.dataProvider = Util.addEmptyCatalgo( data, "pago");
+				if( this._item != null && this._item.pago != null ){
+					this.cmbPaymentType.selectedIndex = Util.selectedIndexFromCombo( this.cmbPaymentType.dataProvider as ArrayCollection, 
+						this._item.pago.id);
+				}
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -305,6 +360,11 @@
 	</mx:Metadata>
 	<mx:Form id="form">
 		<components:Provider limitedInformation="false" creationComplete="provider_creationCompleteHandler(event)" id="provider"/>
+		<mx:FormItem label="Forma de Pago:">
+			<mx:ComboBox id="cmbPaymentType"
+						 labelField="pago"
+						 />
+		</mx:FormItem>
 		<mx:FormItem label="Cuenta Bancaria:">
 			<components:TextInput id="txtCuenta"
 								  />
@@ -325,15 +385,15 @@
 			<components:TextInput id="txtCURP"
 								  />
 		</mx:FormItem>
-		<!--<mx:FormItem label="Tecnología:">
+		<mx:FormItem label="Tecnología:">
 			<mx:ComboBox id="cmbTecnologia"
 						 labelField="etiqueta"
 						 />
-		</mx:FormItem>-->
+		</mx:FormItem>
 		<mx:FormItem label="Tipo de Contrato:">
 			<mx:ComboBox id="cmbTipoContrato"
 						 labelField="tipo"
-						 />
+						 change="cmbTipoContrato_changeHandler(event)"/>
 		</mx:FormItem>
 		<mx:FormItem label="Vigencia Contrato:">
 			<components:TextInput id="txtValidityContract" />
@@ -341,7 +401,7 @@
 		<mx:FormItem label="Fecha de Contrato:">
 			<components:DateField id="dtfFechaContrato" />
 		</mx:FormItem>
-		<mx:FormItem label="Documentos de Líder:">
+		<mx:FormItem label="Documentos del Proveedor:">
 			<components:FlatDeliver id="fltDlvLeaderDocuments"/>
 		</mx:FormItem>
 		<mx:FormItem>
@@ -358,4 +418,8 @@
 	<mx:CallResponder id="responseGetUnidadB" result="responseGetUnidadB_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetUbicacionC" result="responseGetUbicacionC_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetTipoContrato" result="responseGetTipoContrato_resultHandler(event)" />
+	<mx:CallResponder id="responseGetPago" result="responseGetPago_resultHandler(event)" />
+	<mx:RemoteObject id="proyectoService" destination="proyectoService" fault="catalogoService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetCategorias" result="responseGetCategorias_resultHandler(event)"/>
 </mx:VBox>

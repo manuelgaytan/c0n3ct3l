@@ -23,6 +23,7 @@ package model
 		public var proyecto:Proyecto;
 		public var requisicionCompra:RequisicionCompra;
 		public var leyenda:String;
+		public var importeLetra:String;
 		
 		public function OrdenCompraAlmacen()
 		{

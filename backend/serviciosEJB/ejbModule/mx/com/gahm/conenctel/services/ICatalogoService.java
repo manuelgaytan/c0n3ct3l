@@ -10,6 +10,7 @@ import mx.com.gahm.conenctel.entities.AplicaDO;
 import mx.com.gahm.conenctel.entities.AreaLevantaNoConformidadDO;
 import mx.com.gahm.conenctel.entities.AreaSolicitanteDO;
 import mx.com.gahm.conenctel.entities.BancoConectelDO;
+import mx.com.gahm.conenctel.entities.CalibracionDO;
 import mx.com.gahm.conenctel.entities.CartaAntecedentesPenalesDO;
 import mx.com.gahm.conenctel.entities.ClaseIncidenciaDO;
 import mx.com.gahm.conenctel.entities.ClasificacionFaltaDO;
@@ -58,9 +59,11 @@ import mx.com.gahm.conenctel.entities.GrupoFamiliaEDO;
 import mx.com.gahm.conenctel.entities.GrupoFamiliaFDO;
 import mx.com.gahm.conenctel.entities.IdentificacionDO;
 import mx.com.gahm.conenctel.entities.ImputableDO;
+import mx.com.gahm.conenctel.entities.MantenimientoServicioDO;
 import mx.com.gahm.conenctel.entities.MedioTransporteDO;
 import mx.com.gahm.conenctel.entities.MotivoTerminoContratoDO;
 import mx.com.gahm.conenctel.entities.NacionalidadDO;
+import mx.com.gahm.conenctel.entities.PagoDO;
 import mx.com.gahm.conenctel.entities.PercepcionDO;
 import mx.com.gahm.conenctel.entities.PrioridadDO;
 import mx.com.gahm.conenctel.entities.ProveedorDO;
@@ -252,4 +255,7 @@ public interface ICatalogoService extends Serializable {
 	public List<AreaLevantaNoConformidadDO> getAreaLevantaNoConformidad() throws ConectelException;
 	public List<ResponsableMinutaDO> getResponsableMinuta() throws ConectelException;
 	public List<TipoDesarrolloProyectoDO> getTipoDesarrolloProyecto() throws ConectelException;
+	public List<CalibracionDO> getCalibracion() throws ConectelException;
+	public List<MantenimientoServicioDO> getMantenimientoServicio() throws ConectelException;
+	public List<PagoDO> getPago() throws ConectelException;
 }

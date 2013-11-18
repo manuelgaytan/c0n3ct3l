@@ -51,14 +51,15 @@ public class RequisicionCompraService  implements IRequisicionCompraService{
 
 	@Override
 	public RequisicionCompraDO save(RequisicionCompraDO item) {
+		Date fechaActual = new Date();
 		List<SolicitanteRequisicionDO> solicitantesRequisicion = item.getSolicitantesRequisicion();
 		List<PartidaRequisicionCompraDO> partidasRequisicionCompra = item.getPartidasRequisicionCompra();
 		List<ComentarioRequisicionDO> comentariosRequisicion = item.getComentariosRequisicion();
 		item.setSolicitantesRequisicion(null);
 		item.setPartidasRequisicionCompra(null);
 		item.setComentariosRequisicion(null);
-
-		item.setFechaSolicitud(new Date());
+		item.setFechaSolicitud( fechaActual );
+		item.setFechaEstatusRequisicion( fechaActual );
 		entityManager.persist(item);
 		savePartidas(item,partidasRequisicionCompra);
 		saveComentariosRequisicion(item, comentariosRequisicion);
@@ -95,6 +96,7 @@ public class RequisicionCompraService  implements IRequisicionCompraService{
 
 	@Override
 	public RequisicionCompraDO update(RequisicionCompraDO item) {
+		item.setFechaEstatusRequisicion(new Date());
 		deleteSolicitantesRequisicion(item);
 		deletePartidas(item);
 		deleteComentariosRequisicion(item);

@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="OrdenCompraMaquilado" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0a99f18f-48d8-429d-93ad-51869a41c8cf">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="436"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -55,6 +55,11 @@
 	<field name="leyenda" class="java.lang.String"/>
 	<field name="proveedorMaquilador.proveedor.contacto" class="java.lang.String"/>
 	<field name="claveValidacion" class="java.lang.String"/>
+	<field name="importeLetra" class="java.lang.String"/>
+	<field name="ieps" class="java.lang.Double"/>
+	<field name="retencionIva" class="java.lang.Double"/>
+	<field name="retencionIsr" class="java.lang.Double"/>
+	<field name="otrosImpuestos" class="java.lang.Double"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -243,9 +248,9 @@
 		</band>
 	</title>
 	<detail>
-		<band height="241" splitType="Stretch">
+		<band height="211" splitType="Stretch">
 			<subreport>
-				<reportElement uuid="21903da1-aee3-43c4-9a98-2aafdb9f0ba7" x="7" y="3" width="558" height="228"/>
+				<reportElement uuid="21903da1-aee3-43c4-9a98-2aafdb9f0ba7" x="7" y="3" width="555" height="198"/>
 				<subreportParameter name="legalName">
 					<subreportParameterExpression><![CDATA[$P{legalName}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -337,7 +342,7 @@
 		</band>
 	</pageFooter>
 	<summary>
-		<band height="151">
+		<band height="185">
 			<line>
 				<reportElement uuid="59503505-c4ae-4a41-8e2c-6b4bb8d1395d" x="167" y="126" width="163" height="1"/>
 			</line>
@@ -345,14 +350,16 @@
 				<reportElement uuid="d4d031f0-50d4-482e-a5a2-b890be21d6c4" x="0" y="126" width="163" height="1"/>
 			</line>
 			<staticText>
-				<reportElement uuid="4758f7d3-1633-473e-9c4d-9852a4cfbffe" x="330" y="21" width="107" height="16"/>
+				<reportElement uuid="4758f7d3-1633-473e-9c4d-9852a4cfbffe" x="330" y="21" width="107" height="16">
+					<printWhenExpression><![CDATA[$F{iva} != null]]></printWhenExpression>
+				</reportElement>
 				<textElement textAlignment="Right">
 					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[I.V.A.:]]></text>
 			</staticText>
 			<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
-				<reportElement uuid="d7c3b7dd-7771-4f5f-8ef6-85135aed994d" x="442" y="42" width="120" height="20"/>
+				<reportElement uuid="d7c3b7dd-7771-4f5f-8ef6-85135aed994d" x="442" y="129" width="120" height="20"/>
 				<textElement textAlignment="Right">
 					<font size="10"/>
 				</textElement>
@@ -366,7 +373,7 @@
 				<text><![CDATA[Subtotal:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="b11f2f57-c196-4485-9ebb-e33416e3e56f" x="330" y="42" width="107" height="16"/>
+				<reportElement uuid="b11f2f57-c196-4485-9ebb-e33416e3e56f" x="330" y="129" width="107" height="16"/>
 				<textElement textAlignment="Right">
 					<font size="10" isBold="true"/>
 				</textElement>
@@ -387,7 +394,7 @@
 				<textFieldExpression><![CDATA[$F{subtotal}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="19c2d2e5-7b85-43a3-98d2-b8a23af65449" x="7" y="9" width="318" height="55"/>
+				<reportElement uuid="19c2d2e5-7b85-43a3-98d2-b8a23af65449" x="1" y="1" width="360" height="39"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{leyenda}]]></textFieldExpression>
 			</textField>
@@ -420,15 +427,84 @@
 				<textFieldExpression><![CDATA[$P{authorizer}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="b57fe5da-84fd-43c5-8342-58b4f1dae605" x="330" y="106" width="232" height="20"/>
+				<reportElement uuid="b57fe5da-84fd-43c5-8342-58b4f1dae605" x="330" y="163" width="242" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{claveValidacion}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="2868725a-3e48-4955-9fc9-947604c3cfa9" x="330" y="85" width="100" height="20"/>
+				<reportElement uuid="2868725a-3e48-4955-9fc9-947604c3cfa9" x="330" y="145" width="100" height="20"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Clave de Validación:]]></text>
 			</staticText>
+			<textField>
+				<reportElement uuid="4f3194c5-bebd-47d6-874a-d7507e01e5ba" x="1" y="42" width="360" height="26"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["Importe con Letra: "+($F{importeLetra}==null?"":$F{importeLetra})]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="fd37ec2e-7cef-4da6-a78a-7d5b58afa9d8" x="442" y="42" width="120" height="20"/>
+				<textElement textAlignment="Right">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ieps}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="ec5786a7-4e74-45aa-b44f-d4e8319211c3" x="330" y="85" width="107" height="16">
+					<printWhenExpression><![CDATA[$F{retencionIva} != null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Retención I.V.A.:]]></text>
+			</staticText>
+			<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="9d573a89-4a81-4e05-9ab8-d005615e03dd" x="442" y="85" width="120" height="20"/>
+				<textElement textAlignment="Right">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{retencionIva}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="02c74a0a-059f-4e1c-a52e-685381496660" x="330" y="64" width="107" height="16">
+					<printWhenExpression><![CDATA[$F{retencionIsr} != null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Retención I.S.R.:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="3ddcaf8f-124b-4afb-b916-848e48933150" x="361" y="42" width="76" height="16">
+					<printWhenExpression><![CDATA[$F{ieps} != null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[I.E.P.S.:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5a478506-1508-4d32-84a4-5569ae43325c" x="330" y="106" width="107" height="16">
+					<printWhenExpression><![CDATA[$F{otrosImpuestos} != null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Otros Impuestos:]]></text>
+			</staticText>
+			<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="a3df6ab2-7c2d-40a3-8a02-63facc439044" x="442" y="64" width="120" height="20"/>
+				<textElement textAlignment="Right">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{retencionIsr}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="c67074a5-3b0d-4864-b800-4137c4d51881" x="442" y="106" width="120" height="20"/>
+				<textElement textAlignment="Right">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{otrosImpuestos}]]></textFieldExpression>
+			</textField>
 		</band>
 	</summary>
 </jasperReport>

@@ -65,15 +65,15 @@
 		JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(list);
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("contexto",this.getServletContext().getRealPath("/"));
-		parameters.put("title", "Orden de Compra AlmacÈn");
+		parameters.put("title", "Orden de Compra");
 	    parameters.put("confidence", "Esta informaciÛn es confidencial y exclusiva para el uso de Conectel.");
 	    parameters.put("legalName", "CONECTIVIDAD EN EQUIPOS DE TELECOMUNICACIONES S.A. DE C.V.");
 	    parameters.put("rfc", "CET0506085AA");
 	    parameters.put("address1", "Calle Laurel No. 62 Col. AgrÌÅcola Pantitl·Ån");
 	    parameters.put("address2", "Del. Iztacalco, MÈÅxico D.F. C.P. 08100");
 	    parameters.put("phones", "TelÈfonos: (55) 58-51-93-42/43 (55) 57-01-99-97");
-	    parameters.put("maker", "CLAUDIA E. ROMO PALMERÕN");
-	    parameters.put("authorizer","GABRIELA FLORES CASTILLO");
+	    parameters.put("maker", "");
+	    parameters.put("authorizer","");
 	    parameters.put("website","www.conectel.com.mx");
 	    parameters.put("area","COMPRAS");
 	    parameters.put("phonesContact","58 51 93 42 , 58 51 93 43 EXT 115");

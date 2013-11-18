@@ -57,6 +57,10 @@ public class ConfigPruebaEntregaDO implements Serializable {
 	@Column(name="fecha_validacion_operativa")
 	@Temporal(javax.persistence.TemporalType.DATE)
 	private Date fechaValidacionOperativa;
+	
+	@Column(name="cierre_coordinacion")
+	@Temporal(javax.persistence.TemporalType.DATE)
+	private Date cierreCoordinacion;
 
 	@Transient
 	public List<ProyectoEntregableDO> siteSurvey;
@@ -292,4 +296,11 @@ public class ConfigPruebaEntregaDO implements Serializable {
 		this.fechaValidacionOperativa = fechaValidacionOperativa;
 	}
 
+	public Date getCierreCoordinacion() {
+		return cierreCoordinacion;
+	}
+
+	public void setCierreCoordinacion(Date cierreCoordinacion) {
+		this.cierreCoordinacion = cierreCoordinacion;
+	}
 }

@@ -219,6 +219,9 @@
 		<class>mx.com.gahm.conenctel.entities.PrestacionesDO</class>
 		<class>mx.com.gahm.conenctel.entities.NumeroFoliosFacturaFacturadosDO</class>
 		<class>mx.com.gahm.conenctel.entities.NumeroProyectosCobradosDO</class>
+		<class>mx.com.gahm.conenctel.entities.CalibracionDO</class>
+		<class>mx.com.gahm.conenctel.entities.MantenimientoServicioDO</class>
+		<class>mx.com.gahm.conenctel.entities.PagoDO</class>
 		<properties>
 			<property name="eclipselink.logging.level" value="FINE"/> 
 			<property name="eclipselink.logging.parameters" value="true"/>

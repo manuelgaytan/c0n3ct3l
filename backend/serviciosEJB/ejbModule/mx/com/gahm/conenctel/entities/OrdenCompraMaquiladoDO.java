@@ -31,12 +31,38 @@ public class OrdenCompraMaquiladoDO implements java.io.Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -2659817735727555176L;
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "id", unique = true, nullable = false)
 	private Integer id;
+	@ManyToOne
+   	@JoinColumn(name="fk_solicitud_servicio_maquilado", nullable = false)
 	private SolicitudServicioMaquiladoDO solicitudServicioMaquilado;
+	@Column(name = "fecha", nullable = false, length = 10)
+	@Temporal(javax.persistence.TemporalType.DATE)
 	private Date fecha;
+	@ManyToOne
+   	@JoinColumn(name="fk_proveedor_maquilador", nullable = false)
 	private ProveedorMaquiladorDO proveedorMaquilador;
+	@Column(name="subtotal", nullable=false, precision=10, scale=0)
+	private Double subtotal;
+	@Column(name="iva", nullable=false, precision=10, scale=0)
+	private Double iva;
+	@Column(name="ieps", precision=10, scale=0)
+	private Double ieps;
+	@Column(name="retencion_isr", precision=10, scale=0)
+	private Double retencionIsr;
+	@Column(name="retencion_iva", precision=10, scale=0)
+	private Double retencionIva;
+	@Column(name="otros_impuestos", precision=10, scale=0)
+	private Double otrosImpuestos;
+	@Column(name="total", nullable=false, precision=10, scale=0)
+	private Double total;
+	@Column(name="clave_validacion")
 	private String claveValidacion;
 	private String leyenda;
+	@Column(name="importe_letra")
+	private String importeLetra;
 	
 	public static Double OC_QUANTITY = 0.5;
 	public static String OC_UNIT = "PROYECTO";
@@ -49,12 +75,15 @@ public class OrdenCompraMaquiladoDO implements java.io.Serializable {
 	}
 
 	public OrdenCompraMaquiladoDO(SolicitudServicioMaquiladoDO solicitudServicioMaquilado,
-			Date fecha, ProveedorMaquiladorDO proveedorMaquilador) {
+			Double subtotal, Double iva, Double total, Date fecha, ProveedorMaquiladorDO proveedorMaquilador) {
 		this.solicitudServicioMaquilado = solicitudServicioMaquilado;
+		this.subtotal = subtotal;
+		this.iva = iva;
+		this.total = total;
 		this.fecha = fecha;
 		this.proveedorMaquilador = proveedorMaquilador;
 	}
-
+	/*
 	public Double getSubtotal(){
 		Double subtotal = 0d;
 		for (PartidaOrdenCompraSolicitudServicioMaquilado item : this.getPartidas()) {
@@ -72,7 +101,7 @@ public class OrdenCompraMaquiladoDO implements java.io.Serializable {
 		Double total = this.getSubtotal() + this.getIva();
 		return total;
 	}
-	
+	*/
 	public List<PartidaOrdenCompraSolicitudServicioMaquilado> getPartidas(){
 		List<PartidaOrdenCompraSolicitudServicioMaquilado> partidasOrdenCompraMaquilado = new ArrayList<PartidaOrdenCompraSolicitudServicioMaquilado>();
 		Integer i = 1;
@@ -125,9 +154,6 @@ public class OrdenCompraMaquiladoDO implements java.io.Serializable {
 		partidasOrdenCompraMaquilado.add( entry );
 	}
 	
-	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "id", unique = true, nullable = false)
 	public Integer getId() {
 		return this.id;
 	}
@@ -136,8 +162,6 @@ public class OrdenCompraMaquiladoDO implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@ManyToOne
-   	@JoinColumn(name="fk_solicitud_servicio_maquilado", nullable = false)
 	public SolicitudServicioMaquiladoDO getSolicitudServicioMaquilado() {
 		return this.solicitudServicioMaquilado;
 	}
@@ -147,8 +171,6 @@ public class OrdenCompraMaquiladoDO implements java.io.Serializable {
 		this.solicitudServicioMaquilado = solicitudServicioMaquilado;
 	}
 
-	@Temporal(TemporalType.DATE)
-	@Column(name = "fecha", nullable = false, length = 10)
 	public Date getFecha() {
 		return this.fecha;
 	}
@@ -157,8 +179,6 @@ public class OrdenCompraMaquiladoDO implements java.io.Serializable {
 		this.fecha = fecha;
 	}
 
-	@ManyToOne
-   	@JoinColumn(name="fk_proveedor_maquilador", nullable = false)
 	public ProveedorMaquiladorDO getProveedorMaquilador() {
 		return this.proveedorMaquilador;
 	}
@@ -167,7 +187,6 @@ public class OrdenCompraMaquiladoDO implements java.io.Serializable {
 		this.proveedorMaquilador = proveedorMaquilador;
 	}
 
-	@Column(name="clave_validacion")
 	public String getClaveValidacion() {
 		return claveValidacion;
 	}
@@ -182,6 +201,70 @@ public class OrdenCompraMaquiladoDO implements java.io.Serializable {
 
 	public void setLeyenda(String leyenda) {
 		this.leyenda = leyenda;
+	}
+
+	public Double getSubtotal() {
+        return this.subtotal;
+    }
+    
+    public void setSubtotal(Double subtotal) {
+        this.subtotal = subtotal;
+    }
+    
+    public Double getIva() {
+        return this.iva;
+    }
+    
+    public void setIva(Double iva) {
+        this.iva = iva;
+    }
+    
+    public Double getIeps() {
+        return this.ieps;
+    }
+    
+    public void setIeps(Double ieps) {
+        this.ieps = ieps;
+    }
+    
+    public Double getRetencionIsr() {
+        return this.retencionIsr;
+    }
+    
+    public void setRetencionIsr(Double retencionIsr) {
+        this.retencionIsr = retencionIsr;
+    }
+    
+    public Double getRetencionIva() {
+        return this.retencionIva;
+    }
+    
+    public void setRetencionIva(Double retencionIva) {
+        this.retencionIva = retencionIva;
+    }
+    
+    public Double getOtrosImpuestos() {
+        return this.otrosImpuestos;
+    }
+    
+    public void setOtrosImpuestos(Double otrosImpuestos) {
+        this.otrosImpuestos = otrosImpuestos;
+    }
+    
+    public Double getTotal() {
+        return this.total;
+    }
+    
+    public void setTotal(Double total) {
+        this.total = total;
+    }
+    
+	public String getImporteLetra() {
+		return importeLetra;
+	}
+
+	public void setImporteLetra(String importeLetra) {
+		this.importeLetra = importeLetra;
 	}
 
 }

@@ -68,9 +68,10 @@ public class ProveedorMaquiladorService implements IProveedorMaquiladorService {
 		// TODO Auto-generated method stub
 		List<DocumentoLiderProveedorMaquiladorDO> documentos = proveedor.getDocumentosLiderProveedorMaquilador();
 		
-		for (DocumentoLiderProveedorMaquiladorDO documento : documentos) {
-			documento.setProveedorMaquilador(proveedor);
-
+		if( documentos != null ){
+			for (DocumentoLiderProveedorMaquiladorDO documento : documentos) {
+				documento.setProveedorMaquilador(proveedor);
+			}
 		}
 		
 		entityManager.persist(proveedor);

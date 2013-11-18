@@ -36,25 +36,44 @@ public class OrdenCompraDO  implements java.io.Serializable {
 
    
 	private static final long serialVersionUID = 2266679066287264065L;
-	
-	 private Integer id;
-     private Date fecha;
-     private ProyectoDO proyecto;
-     private Double subtotal;
-     private Double iva;
-     private Double ieps;
-     private Double retencionIsr;
-     private Double retencionIva;
-     private Double otrosImpuestos;
-     private Double total;
-     private Date fechaEntregaAlmacen;
-     private String leyenda;
-     
-     private ProveedorCalificadoDO proveedorCalificado;
-     private CotizacionDO cotizacion;
-     private RequisicionCompraDO requisicionCompra;
-     
-     	
+	@Id 
+    @GeneratedValue(strategy=IDENTITY)
+	private Integer id;
+	@Temporal(TemporalType.DATE)
+    @Column(name="fecha", nullable=false, length=10)
+	private Date fecha;
+	@ManyToOne
+	@JoinColumn(name="fk_proyecto")
+	private ProyectoDO proyecto;
+	@Column(name="subtotal", nullable=false, precision=10, scale=0)
+	private Double subtotal;
+	@Column(name="iva", nullable=false, precision=10, scale=0)
+	private Double iva;
+	@Column(name="ieps", precision=10, scale=0)
+	private Double ieps;
+	@Column(name="retencion_isr", precision=10, scale=0)
+	private Double retencionIsr;
+	@Column(name="retencion_iva", precision=10, scale=0)
+	private Double retencionIva;
+	@Column(name="otros_impuestos", precision=10, scale=0)
+	private Double otrosImpuestos;
+	@Column(name="total", nullable=false, precision=10, scale=0)
+	private Double total;
+	@Temporal(TemporalType.DATE)
+    @Column(name="fecha_entrega_almacen", nullable=false, length=10)
+	private Date fechaEntregaAlmacen;
+	private String leyenda;
+	@Column(name="importe_letra")
+	private String importeLetra;
+	@OneToOne  
+    @JoinColumn(name = "fk_proveedor_calificado") 
+	private ProveedorCalificadoDO proveedorCalificado;
+	@ManyToOne
+	@JoinColumn(name="fk_cotizacion")
+	private CotizacionDO cotizacion;
+	@ManyToOne
+	@JoinColumn(name="fk_requisicion_compra")
+	private RequisicionCompraDO requisicionCompra;
 
     public OrdenCompraDO() {
     }
@@ -86,9 +105,6 @@ public class OrdenCompraDO  implements java.io.Serializable {
         this.fechaEntregaAlmacen = fechaEntregaAlmacen;
     }
 
-   
-    @Id 
-    @GeneratedValue(strategy=IDENTITY)
     public Integer getId() {
         return this.id;
     }
@@ -97,8 +113,6 @@ public class OrdenCompraDO  implements java.io.Serializable {
         this.id = id;
     }
     
-    @ManyToOne
-	@JoinColumn(name="fk_cotizacion")
     public CotizacionDO getCotizacion() {
         return this.cotizacion;
     }
@@ -107,8 +121,6 @@ public class OrdenCompraDO  implements java.io.Serializable {
         this.cotizacion = cotizacion;
     }
     
-    @Temporal(TemporalType.DATE)
-    @Column(name="fecha", nullable=false, length=10)
     public Date getFecha() {
         return this.fecha;
     }
@@ -117,10 +129,7 @@ public class OrdenCompraDO  implements java.io.Serializable {
         this.fecha = fecha;
     }
     
-    
-    @OneToOne  
-    @JoinColumn(name = "fk_proveedor_calificado")  
-       public ProveedorCalificadoDO getProveedorCalificado() {
+	public ProveedorCalificadoDO getProveedorCalificado() {
         return this.proveedorCalificado;
     }
     
@@ -128,8 +137,6 @@ public class OrdenCompraDO  implements java.io.Serializable {
         this.proveedorCalificado = proveedorCalificado;
     }
     
-    @ManyToOne
-	@JoinColumn(name="fk_proyecto")
     public ProyectoDO getProyecto() {
         return this.proyecto;
     }
@@ -138,8 +145,6 @@ public class OrdenCompraDO  implements java.io.Serializable {
         this.proyecto = proyecto;
     }
     
-    @ManyToOne
-	@JoinColumn(name="fk_requisicion_compra")
     public RequisicionCompraDO getRequisicionCompra() {
         return this.requisicionCompra;
     }
@@ -148,9 +153,6 @@ public class OrdenCompraDO  implements java.io.Serializable {
         this.requisicionCompra = requisicionCompra;
     }
     
-    
-    @Column(name="subtotal", nullable=false, precision=10, scale=0)
-
     public Double getSubtotal() {
         return this.subtotal;
     }
@@ -159,8 +161,6 @@ public class OrdenCompraDO  implements java.io.Serializable {
         this.subtotal = subtotal;
     }
     
-    @Column(name="iva", nullable=false, precision=10, scale=0)
-
     public Double getIva() {
         return this.iva;
     }
@@ -169,8 +169,6 @@ public class OrdenCompraDO  implements java.io.Serializable {
         this.iva = iva;
     }
     
-    @Column(name="ieps", precision=10, scale=0)
-
     public Double getIeps() {
         return this.ieps;
     }
@@ -179,8 +177,6 @@ public class OrdenCompraDO  implements java.io.Serializable {
         this.ieps = ieps;
     }
     
-    @Column(name="retencion_isr", precision=10, scale=0)
-
     public Double getRetencionIsr() {
         return this.retencionIsr;
     }
@@ -189,8 +185,6 @@ public class OrdenCompraDO  implements java.io.Serializable {
         this.retencionIsr = retencionIsr;
     }
     
-    @Column(name="retencion_iva", precision=10, scale=0)
-
     public Double getRetencionIva() {
         return this.retencionIva;
     }
@@ -199,8 +193,6 @@ public class OrdenCompraDO  implements java.io.Serializable {
         this.retencionIva = retencionIva;
     }
     
-    @Column(name="otros_impuestos", precision=10, scale=0)
-
     public Double getOtrosImpuestos() {
         return this.otrosImpuestos;
     }
@@ -209,8 +201,6 @@ public class OrdenCompraDO  implements java.io.Serializable {
         this.otrosImpuestos = otrosImpuestos;
     }
     
-    @Column(name="total", nullable=false, precision=10, scale=0)
-
     public Double getTotal() {
         return this.total;
     }
@@ -218,8 +208,6 @@ public class OrdenCompraDO  implements java.io.Serializable {
     public void setTotal(Double total) {
         this.total = total;
     }
-    @Temporal(TemporalType.DATE)
-    @Column(name="fecha_entrega_almacen", nullable=false, length=10)
 
     public Date getFechaEntregaAlmacen() {
         return this.fechaEntregaAlmacen;
@@ -236,13 +224,12 @@ public class OrdenCompraDO  implements java.io.Serializable {
 	public void setLeyenda(String leyenda) {
 		this.leyenda = leyenda;
 	}
-   
 
+	public String getImporteLetra() {
+		return importeLetra;
+	}
 
-
-
-
-
-
-
+	public void setImporteLetra(String importeLetra) {
+		this.importeLetra = importeLetra;
+	}
 }

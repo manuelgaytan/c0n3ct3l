@@ -1,3 +1,4 @@
+<%@page import="mx.com.gahm.conenctel.model.FiltroProducto"%>
 <%@page import="mx.com.gahm.conenctel.entities.ProductoDO"%>
 <%@page import="mx.com.gahm.conenctel.services.IProductoService"%>
 <%@page import="mx.com.gahm.conenctel.services.IOrdenCompraMaquiladoService"%>
@@ -67,16 +68,24 @@
 		System.out.println("\n\n\n----------------------------------------------");
 		System.out.println("idLong: " + idLong );
 		System.out.println("----------------------------------------------\n\n\n");
-		ProductoDO producto = service.getProducto( idLong );
-		List<ProductoDO> list = new ArrayList<ProductoDO>();
-		list.add( producto );
-		System.out.println("\n\n\n----------------------------------------------");
-		System.out.println("Nombre Comercial: " + producto.getCliente().getNombreComercial() );
-		System.out.println("----------------------------------------------\n\n\n");
+		List<ProductoDO> list = null;
+		if( id == -1 ){
+			list = service.getAllByFiltro(new FiltroProducto());
+			System.out.println("\n\n\n----------------------------------------------");
+			System.out.println("Se imprimen: " + list.size() );
+			System.out.println("----------------------------------------------\n\n\n");
+		}else{
+			ProductoDO producto = service.getProducto( idLong );
+			list = new ArrayList<ProductoDO>();
+			list.add( producto );
+			System.out.println("\n\n\n----------------------------------------------");
+			System.out.println("Nombre Comercial: " + producto.getCliente().getNombreComercial() );
+			System.out.println("----------------------------------------------\n\n\n");
+		}
 		JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(list);
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("contexto",this.getServletContext().getRealPath("/"));
-		parameters.put("title", "Preciario Maquilador");
+		parameters.put("title", "Preciario de Servicios de Telecomunicaciones");
 	    parameters.put("confidence", "Esta información es confidencial y exclusiva para el uso de Conectel.");
 	    parameters.put("legalName", "CONECTIVIDAD EN EQUIPOS DE TELECOMUNICACIONES S.A. DE C.V.");
 	    parameters.put("rfc", "CET0506085AA");

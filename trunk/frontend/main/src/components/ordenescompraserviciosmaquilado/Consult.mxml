@@ -134,6 +134,10 @@
 							   dataField="id"
 							   width="70"
 							   textAlign="right"/>
+			<mx:DataGridColumn headerText="{'ID Requisición\nServicios\nTELECOM'}"
+							   dataField="solicitudServicioMaquilado.id"
+							   width="90"
+							   textAlign="right"/>
 			<mx:DataGridColumn id="dtgProjectID" headerText="{'ID \nProyecto'}"
 							   width="70"
 							   dataField="solicitudServicioMaquilado.proyecto.id"

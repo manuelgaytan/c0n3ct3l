@@ -46,6 +46,10 @@
 			private var mode:String = null;
 			private var _item:OrdenCompraMaquilado;
 			private var validators:InicializaValidadoresEtiquetas;
+			private var maquiladoraServiceRequest:SolicitudServicioMaquilado;
+			
+			private var ADVANCE:Number = 0.5;
+			private var SETTLEMENT:Number = 0.5;
 			
 			public function set registrer(value:Boolean):void{
 				mode = Constants.REGISTER_MODE;
@@ -65,6 +69,12 @@
 				this.modeValidation();
 				this.initializeValidators();
 				this.fillCombos();
+				this.initializeConstants();
+			}
+			
+			private function initializeConstants():void{
+				this.txtAdvance.text = ADVANCE.toString();
+				this.txtSettlement.text = SETTLEMENT.toString();
 			}
 			
 			public function set purchaseOrderMaquilado(value:OrdenCompraMaquilado):void{
@@ -90,6 +100,8 @@
 						this._item.proveedorMaquilador.id);
 					this.cmbMaquiladoSupplier.dispatchEvent( new ListEvent(ListEvent.CHANGE) );
 				}
+				this.txtAdvance.text = Util.numberToString( this._item.anticipo );
+				this.txtSettlement.text = Util.numberToString( this._item.finiquito );
 				this.txtSubtotal.text = Util.numberToString( this._item.subtotal );
 				this.txtIVA.text = Util.numberToString( this._item.iva );
 				this.txtIEPS.text = Util.numberToString( this._item.ieps );
@@ -111,8 +123,8 @@
 				this.txtTaxAddress.text = supplier.proveedor.direccionFiscal;
 				this.txtPhones.text = supplier.proveedor.telefonos;
 				this.txtMail.text = supplier.proveedor.correo;
-				this.txtContractType.text = supplier.tipoContrato.tipo;
-				this.txtNSS.text = supplier.nss;
+				//this.txtContractType.text = supplier.tipoContrato.tipo;
+				//this.txtNSS.text = supplier.nss;
 			}
 			
 			private function getPurchaseOrder():OrdenCompraMaquilado{
@@ -127,6 +139,8 @@
 				item.fecha = this.dtfDate.selectedDate;
 				item.proveedorMaquilador = new ProveedorMaquilador(); 
 				item.proveedorMaquilador.id = (Util.validateCombo( this.cmbMaquiladoSupplier ) as ProveedorMaquilador).id;
+				item.anticipo = Util.stringToNumber( this.txtAdvance.text );
+				item.finiquito = Util.stringToNumber( this.txtSettlement.text );
 				item.subtotal = Util.stringToNumber( this.txtSubtotal.text );
 				item.iva = Util.stringToNumber( this.txtIVA.text );
 				item.ieps = Util.stringToNumber( this.txtIEPS.text );
@@ -199,6 +213,8 @@
 				this.validators.setRestrictor( this.txtAmountWithLetter, "generic");
 				
 				validators.crearValidadorRestrictor("number",ValidadorDecimal.nombre, 9, 2);
+				validators.setRestrictor(txtAdvance, "number");
+				validators.setRestrictor(txtSettlement, "number");
 				validators.setValidador(txtSubtotal, "number");
 				validators.setValidador(txtIVA, "number");
 				validators.setRestrictor(txtIEPS, "number");
@@ -226,6 +242,8 @@
 				this.cmbMaquiladoSupplier.selectedIndex = 0; 
 				this.cleanFormQualifiedSupplier();
 				this.itemsManagement.reset();
+				this.txtAdvance.reset();
+				this.txtSettlement.reset();
 				this.txtSubtotal.reset();
 				this.txtIVA.reset();
 				this.txtIEPS.reset();
@@ -244,8 +262,8 @@
 				this.txtTaxAddress.reset();
 				this.txtPhones.reset();
 				this.txtMail.reset();
-				this.txtContractType.reset();
-				this.txtNSS.reset();
+				//this.txtContractType.reset();
+				//this.txtNSS.reset();
 			}
 			
 			protected function responseUpdate_resultHandler(event:ResultEvent):void
@@ -314,7 +332,19 @@
 			{
 				if( event != null &&
 					event.result != null ){
-					itemsManagement.maquiladoraServiceRequest = event.result as SolicitudServicioMaquilado;
+					this.maquiladoraServiceRequest = event.result as SolicitudServicioMaquilado;
+					this.setMaquiladoraServiceRequest();
+				}
+			}
+			
+			private function setMaquiladoraServiceRequest():void{
+				var advance:Number = Number( this.txtAdvance.text );
+				advance = isNaN( advance ) ? ADVANCE : advance;
+				var settlement:Number = Number( this.txtSettlement.text );
+				settlement = isNaN( settlement ) ? SETTLEMENT : settlement;
+				if( !(this.maquiladoraServiceRequest == null) ){
+					itemsManagement.setMaquiladoraServiceRequest( this.maquiladoraServiceRequest,
+																  advance, settlement);
 				}
 			}
 			
@@ -352,7 +382,7 @@
 		<mx:FormItem label="ID:" id="frmID">
 			<components:TextInput id="txtID" textAlign="right" editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="ID Requisición:" direction="horizontal">
+		<mx:FormItem label="ID Requisición Servicios TELECOM:" direction="horizontal">
 			<components:TextInput id="txtRequisicionID" textAlign="right"
 								  enter="txtRequisicionID_enterHandler()"
 								  focusOut="txtRequisicionID_focusOutHandler()"/>
@@ -381,12 +411,23 @@
 		<mx:FormItem label="Correo Electrónico:">
 			<components:TextInput id="txtMail" editable="false" width="300"/>
 		</mx:FormItem>
+		<mx:FormItem label="Anticipo:" direction="horizontal">
+			<components:TextInput id="txtAdvance" text="" width="100" textAlign="right"
+								  focusOut="setMaquiladoraServiceRequest()"
+								  enter="setMaquiladoraServiceRequest()"/>
+			<mx:Label text="Finiquito:"/>
+			<components:TextInput id="txtSettlement" width="100" textAlign="right"
+								  focusOut="setMaquiladoraServiceRequest()"
+								  enter="setMaquiladoraServiceRequest()"/>
+		</mx:FormItem>
+		<!--
 		<mx:FormItem label="Tipo Contrato:">
 			<components:TextInput id="txtContractType" editable="false" width="200"/>
 		</mx:FormItem>
 		<mx:FormItem label="N.S.S.:">
 			<components:TextInput id="txtNSS" editable="false" width="200"/>
 		</mx:FormItem>
+		-->
 		<!-- Fin Campos de Seleccion Automatica por el Proveedor Calificado -->
 		<mx:VBox>
 			<ordenescompraserviciosmaquilado:ItemsManagement id="itemsManagement"/>

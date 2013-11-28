@@ -17,6 +17,10 @@
 			import mx.collections.ArrayCollection;
 			import mx.com.gahm.componentes.validadores.Constantes;
 			private var _purchaseOrderMode:Boolean = false;
+			private var purchaseOrdenServiceMaquila:SolicitudServicioMaquilado;
+			
+			private var advance:Number;
+			private var settlement:Number;
 			
 			public function addItem(entry:PartidaOrdenCompraSolicitudServicioMaquilado):void{
 				if( entry == null ){
@@ -43,11 +47,14 @@
 				return returnValue;
 			}
 			
-			public function set maquiladoraServiceRequest(value:SolicitudServicioMaquilado):void{
+			public function setMaquiladoraServiceRequest(value:SolicitudServicioMaquilado, advance:Number, settlement:Number):void{
 				if( value == null ){
 					return;
 				}
 				this.reset();
+				this.purchaseOrdenServiceMaquila = value;
+				this.advance = advance;
+				this.settlement = settlement;
 				var i:Number = 1;
 				if( value.proyectoPadre == null ){
 					this.divideProject(i, value.proyecto);
@@ -68,7 +75,7 @@
 				var entry:PartidaOrdenCompraSolicitudServicioMaquilado = null;
 				entry = new PartidaOrdenCompraSolicitudServicioMaquilado();
 				entry.partida = i;
-				entry.cantidad = Constants.OC_QUANTITY;
+				entry.cantidad = this.advance;
 				entry.unidad = Constants.OC_UNIT;
 				entry.descripcion = Constants.OC_ADVANCE + " " + proyecto.producto.modelo + 
 									"\n" + proyecto.producto.actividadRealizar + ", " + proyecto.producto.equipo + 
@@ -84,7 +91,7 @@
 				i++;
 				entry = new PartidaOrdenCompraSolicitudServicioMaquilado();
 				entry.partida = i;
-				entry.cantidad = Constants.OC_QUANTITY;
+				entry.cantidad = this.settlement;
 				entry.unidad = Constants.OC_UNIT;
 				entry.descripcion = Constants.OC_SETTLEMENT + " " + proyecto.producto.modelo + 
 					"\n" + proyecto.producto.actividadRealizar + ", " + proyecto.producto.equipo + 

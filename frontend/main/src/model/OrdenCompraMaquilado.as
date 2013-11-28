@@ -21,6 +21,8 @@ package model
 		public var otrosImpuestos:*;
 		public var total:Number;
 		public var importeLetra:String;
+		public var anticipo:*;
+		public var finiquito:*;
 		
 		public static const OC_QUANTITY:Number = 0.5;
 		public static const OC_UNIT:String = "PROYECTO";

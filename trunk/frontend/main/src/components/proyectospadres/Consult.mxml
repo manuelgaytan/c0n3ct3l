@@ -153,7 +153,8 @@
 		</mx:columns>
 	</mx:DataGrid>
 	<mx:HBox>
-		<mx:Button id="btnExport" label="Exportar" click="btnExport_clickHandler(event)"/>
+		<mx:Button id="btnExport" label="Exportar" click="btnExport_clickHandler(event)"
+				   visible="{!this._consultOnly}"/>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"
 				   visible="{!this._consultOnly}"/>
 	</mx:HBox>

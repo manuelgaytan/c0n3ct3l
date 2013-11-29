@@ -111,7 +111,7 @@
 							   dataField="id"
 							   width="80"
 							   textAlign="right"/>
-			<mx:DataGridColumn id="dtgOperationalValidationStatus" headerText="{'Estado\nValidación\nAdministrativa'}"
+			<mx:DataGridColumn id="dtgOperationalValidationStatus" headerText="{'Revisión y\nValidación\nAdministrativa'}"
 							   width="150"
 							   dataField="estadoValidacionAdministrativa.etiqueta"
 							   />

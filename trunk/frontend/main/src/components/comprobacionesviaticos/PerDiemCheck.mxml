@@ -141,6 +141,7 @@
 			private function setDiemRequest(diemRequest:SolicitudViaticos):void{
 				this.txtDate.text = Util.formatDateToString( diemRequest.fecha );
 				this.projectsConsult.datagrid.dataProvider = Util.asArrayCollection( diemRequest.proyecto );
+				this.projectsConsult.datagrid.selectedIndex = 0;
 				this.txtResponsibleViaticum.text = diemRequest.colaborador.nombreCompleto;
 				this.setResponsibleData( diemRequest.colaborador );
 				this.txtConveyance.text = diemRequest.medioTransporte.etiqueta;

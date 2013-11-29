@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
-		 creationComplete="creationCompleteHandler(event)" xmlns:concentradoordenescompracliente="components.concentradoordenescompracliente.*"
+		 creationComplete="creationCompleteHandler(event)" xmlns:concentradoordenescompracliente="components.concentradoordenescompracliente.*" xmlns:proyectospadres="components.proyectospadres.*" xmlns:proyectos="components.proyectos.*"
 		 >
 	<mx:Script>
 		<![CDATA[
@@ -22,6 +22,7 @@
 			import model.EstadoValidacionAdministrativa;
 			import model.EstadoValidacionCobro;
 			import model.EstadoValidacionOperativa;
+			import model.FiltroProyecto;
 			import model.Imputable;
 			import model.Perfil;
 			import model.Prioridad;
@@ -35,7 +36,6 @@
 			
 			import mx.collections.ArrayCollection;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
-			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
 			import mx.com.gahm.componentes.validadores.ValidadorEntero;
@@ -88,6 +88,10 @@
 					return;
 				}
 				this.txtID.text = this._item.id;
+				this.parentProjectsConsult.setDataGridData( Util.asArrayCollection(this._item.proyectoPadre) );
+				this.parentProjectsConsult.datagrid.selectedIndex = 0;
+				this.projectsConsult.setDataGridData( Util.asArrayCollection(this._item.proyecto) );
+				this.projectsConsult.datagrid.selectedIndex = 0;
 				if( Util.isFill( this.cmbAdministrativeValidationStatus ) && this._item.estadoValidacionAdministrativa != null ){
 					this.cmbAdministrativeValidationStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbAdministrativeValidationStatus.dataProvider as ArrayCollection, 
 						this._item.estadoValidacionAdministrativa.id);
@@ -136,6 +140,8 @@
 				}else{
 					item = this._item;
 				}
+				item.proyectoPadre = this.parentProjectsConsult.selectedParentProyect();
+				item.proyecto = this.projectsConsult.selectedProyect();
 				item.estadoValidacionAdministrativa = Util.validateCombo( this.cmbAdministrativeValidationStatus ) as EstadoValidacionAdministrativa;
 				item.tipoValidacionAdministrativa = Util.validateCombo( this.cmbTypeValidationAdministrative ) as TipoValidacionAdministrativa;
 				item.porcentaje1 = Util.stringToNumber(this.txtPorcentage1.text);
@@ -159,6 +165,7 @@
 			
 			private function fillCombos():void
 			{
+				this.executeProjectQuery();
 				this.responseGetEstadoValidacionAdministrativa.token = this.catalogoService.getEstadoValidacionAdministrativa();
 				this.responseGetTipoValidacionAdministrativa.token = this.catalogoService.getTipoValidacionAdministrativa();
 				this.responseGetEstadoValidacionCobro.token = this.catalogoService.getEstadoValidacionCobro();
@@ -199,6 +206,8 @@
 			private function validations():Boolean
 			{
 				var value:Boolean = true;
+				value &&= ( !(this.parentProjectsConsult.selectedParentProyect() == null) ||
+							!(this.projectsConsult.selectedProyect() == null) );
 				value &&= this.validators.validarFormulario();
 				return value;
 			}
@@ -235,6 +244,8 @@
 			{
 				Util.upScroll( this );
 				this.txtID.reset();
+				this.parentProjectsConsult.datagrid.selectedItem = null;
+				this.projectsConsult.datagrid.selectedItem = null;
 				this.cmbAdministrativeValidationStatus.selectedIndex = 0;
 				this.cmbTypeValidationAdministrative.selectedIndex = 0;
 				this.txtPorcentage1.reset();
@@ -343,6 +354,26 @@
 				}
 			}
 			
+			private function executeProjectQuery():void
+			{
+				var filter:FiltroProyecto = new FiltroProyecto();
+				filter.idConectel = null;
+				filter.idCategoria = undefined;
+				filter.idCliente = undefined;
+				filter.tipoProyecto = undefined;
+				filter.tecnologia = undefined;
+				filter.equipo = undefined;
+				filter.actividadRealizar = undefined;
+				filter.modelo = undefined;
+				filter.descripcionServicio = undefined;
+				filter.tipoServicio = undefined;
+				this.responseGetAllByFiltro.token = this.proyectoService.getAllByFiltro(filter);
+			}
+			
+			protected function responseGetAll_resultHandler(event:ResultEvent):void
+			{
+				projectsConsult.setDataGridData( event.result as ArrayCollection );
+			}
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -354,7 +385,13 @@
 			<components:TextInput id="txtID" editable="false"
 								  textAlign="right"/>
 		</mx:FormItem>
-		<mx:FormItem label="Estado Validación Operativa:">
+		<mx:FormItem label="Proyectos Padre:">
+			<proyectospadres:Consult id="parentProjectsConsult" width="500" consultOnly="true"/>
+		</mx:FormItem>
+		<mx:FormItem label="Proyectos:">
+			<proyectos:Consult id="projectsConsult"/>
+		</mx:FormItem>
+		<mx:FormItem label="Revisión y Validación Administrativa:">
 			<mx:ComboBox id="cmbAdministrativeValidationStatus"
 						 labelField="etiqueta"
 						 />
@@ -375,7 +412,7 @@
 			<components:DateField id="dtfValidationDate1"
 						 />
 		</mx:FormItem>
-		<mx:FormItem label="Estado Validación Cobro 1:">
+		<mx:FormItem label="Estatus de Cobro 1:">
 			<mx:ComboBox id="cmbValidationRecoveryStatus1"
 						 labelField="etiqueta"
 						 />
@@ -391,7 +428,7 @@
 			<components:DateField id="dtfValidationDate2"
 								  />
 		</mx:FormItem>
-		<mx:FormItem label="Estado Validación Cobro 2:">
+		<mx:FormItem label="Estatus de Cobro 2:">
 			<mx:ComboBox id="cmbValidationRecoveryStatus2"
 						 labelField="etiqueta"
 						 />
@@ -407,7 +444,7 @@
 			<components:DateField id="dtfValidationDate3"
 								  />
 		</mx:FormItem>
-		<mx:FormItem label="Estado Validación Cobro 3:">
+		<mx:FormItem label="Estatus de Cobro 3:">
 			<mx:ComboBox id="cmbValidationRecoveryStatus3"
 						 labelField="etiqueta"
 						 />
@@ -442,4 +479,7 @@
 	<mx:CallResponder id="responseGetEstadoValidacionCobro" result="responseGetEstadoValidacionCobro_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetEstadoFinalValidacion" result="responseGetEstadoFinalValidacion_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetImputable" result="responseGetImputable_resultHandler(event)"/>
+	<mx:RemoteObject id="proyectoService" destination="proyectoService" fault="requisicionService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetAllByFiltro" result="responseGetAll_resultHandler(event)"/>
 </mx:VBox>

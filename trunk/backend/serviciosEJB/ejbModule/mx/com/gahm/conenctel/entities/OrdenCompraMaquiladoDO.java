@@ -63,6 +63,10 @@ public class OrdenCompraMaquiladoDO implements java.io.Serializable {
 	private String leyenda;
 	@Column(name="importe_letra")
 	private String importeLetra;
+	@Column(name="anticipo", precision=10, scale=0)
+	private Double anticipo;
+	@Column(name="finiquito", precision=10, scale=0)
+	private Double finiquito;
 	
 	public static Double OC_QUANTITY = 0.5;
 	public static String OC_UNIT = "PROYECTO";
@@ -267,4 +271,19 @@ public class OrdenCompraMaquiladoDO implements java.io.Serializable {
 		this.importeLetra = importeLetra;
 	}
 
+	public Double getAnticipo() {
+        return this.anticipo;
+    }
+    
+    public void setAnticipo(Double anticipo) {
+        this.anticipo = anticipo;
+    }
+    
+    public Double getFiniquito() {
+        return this.finiquito;
+    }
+    
+    public void setFiniquito(Double finiquito) {
+        this.finiquito = finiquito;
+    }
 }

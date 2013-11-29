@@ -64,7 +64,9 @@
 				this.txtID.text = String(this._item.id);
 				this.dtfDate.selectedDate = this._item.fecha;
 				this.parentProjectsConsult.setDataGridData( Util.asArrayCollection(this._item.proyectoPadre) );
+				this.parentProjectsConsult.datagrid.selectedIndex = 0;
 				this.projectsConsult.setDataGridData( Util.asArrayCollection(this._item.proyecto) );
+				this.projectsConsult.datagrid.selectedIndex = 0;
 				this.comments.comments = this._item.comentariosSolicitudServicioMaquilado;
 			}
 			

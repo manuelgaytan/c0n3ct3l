@@ -23,6 +23,13 @@
 			private var proyecto:Proyecto;
 			private var _filter:FiltroProyecto;
 			
+			[Bindable]
+			private var _consultOnly:Boolean = true;
+			
+			public function set consultOnly(value:Boolean):void{
+				this._consultOnly = value;
+			}
+			
 			public function selectedProyect():Proyecto
 			{
 				var project:Proyecto = this.datagrid.selectedItem as Proyecto;
@@ -168,7 +175,8 @@
 		</mx:columns>
 	</mx:DataGrid>
 	<mx:HBox>
-		<mx:Button id="btnExport" label="Exportar" click="btnExport_clickHandler(event)"/>
+		<mx:Button id="btnExport" label="Exportar" click="btnExport_clickHandler(event)"
+				   visible="{!this._consultOnly}"/>
 	</mx:HBox>
 	<mx:RemoteObject id="proyectoService" destination="proyectoService" fault="proyectoService_faultHandler(event)"
 					 showBusyCursor="true"/>

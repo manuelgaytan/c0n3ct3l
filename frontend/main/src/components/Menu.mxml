@@ -116,7 +116,7 @@
 					   icon="@Embed(source='assets/images/validacionproyecto.png')"/>
 		<mx:LinkButton label="Ordenes de Compra Clientes" id="OrdenesCompraClientes" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/ordenescompra.png')"/>
-		<mx:LinkButton label="Validación Adminsitrativa" id="ValidacionesAdministrativas" click="clickMenuHandler(event)"
+		<mx:LinkButton label="Validación Adminsitrativa para Facturación" id="ValidacionesAdministrativas" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/validacionadministrativa.png')"/>
 		<mx:LinkButton label="Concentrado Ordenes de Compra" id="ConcentradoOrdenesCompra" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/concentradoordenescompra.png')"/>

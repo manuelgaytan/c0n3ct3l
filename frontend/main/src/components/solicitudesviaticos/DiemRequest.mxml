@@ -27,7 +27,6 @@
 			import mx.collections.ArrayCollection;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
 			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
-			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
 			import mx.com.gahm.componentes.validadores.ValidadorEntero;
 			import mx.controls.Alert;
@@ -172,10 +171,11 @@
 			private function modeValidation():void
 			{
 				if( this.mode == Constants.REGISTER_MODE ){
-					form.removeChild( this.frmID );
+				//	form.removeChild( this.frmID );
 					this.executeProjectQuery();
 				}
 				if( this.mode == Constants.UPDATE_MODE ){
+					this.btnNewID.visible = false;
 				}
 			}
 			
@@ -315,6 +315,22 @@
 				this.txtPhone.text = contratacion.colaborador.telefono;
 			}
 			
+			protected function responseGetSiguienteId_resultHandler(event:ResultEvent):void
+			{
+				Util.showProperties( event );
+				if( event == null ||
+					event.result == null ||
+					!(event.result is Number) ){
+					return;
+				}
+				this.txtID.text = Util.numberToString( event.result as Number );
+			}
+			
+			protected function btnNewID_clickHandler(event:MouseEvent):void
+			{
+				this.responseGetSiguienteId.token = this.solicitudViaticosService.getSiguienteId();
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -326,6 +342,7 @@
 		<mx:FormItem id="frmID" label="ID:" direction="horizontal">
 			<components:TextInput id="txtID" width="80" textAlign="right"
 								  editable="false"/>
+			<mx:Button id="btnNewID" label="Nuevo ID" click="btnNewID_clickHandler(event)"/>
 		</mx:FormItem>
 		<mx:FormItem label="Fecha:">
 			<components:DateField id="dtfDate"
@@ -393,6 +410,7 @@
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetMedioTransporte" result="responseGetMedioTransporte_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetColaborador" result="responseGetColaborador_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetSiguienteId" result="responseGetSiguienteId_resultHandler(event)"/>
 	<mx:RemoteObject id="proyectoService" destination="proyectoService" fault="solicitudViaticosService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetAllByFiltro" result="responseGetAll_resultHandler(event)"/>

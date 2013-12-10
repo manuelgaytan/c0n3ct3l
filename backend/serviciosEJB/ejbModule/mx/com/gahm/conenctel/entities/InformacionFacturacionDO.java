@@ -147,8 +147,9 @@ public class InformacionFacturacionDO implements Serializable{
 	@Temporal(TemporalType.DATE)
 	private Date fechaEstadoFactura;
 	
-	@Column(name = "imputabilidad", nullable = false)
-	private String imputabilidad;
+	@ManyToOne
+	@JoinColumn(name = "fk_imputable")
+	private ImputableDO imputable;
 
 	public InformacionFacturacionDO() {
 		super();
@@ -175,7 +176,7 @@ public class InformacionFacturacionDO implements Serializable{
 			String estadoPago2, String folioFactura3, Double subtotal3,
 			Double iva3, Double total3, Date fechaEmision3, Date fechaIngreso3,
 			Double diasCredito3, Date fechaProgramada3, String estadoPago3,
-			String estadoFactura, Date fechaEstadoFactura, String imputabilidad) {
+			String estadoFactura, Date fechaEstadoFactura, ImputableDO imputable) {
 		super();
 		this.id = id;
 		this.validacionAdministrativa = validacionAdministrativa;
@@ -208,7 +209,7 @@ public class InformacionFacturacionDO implements Serializable{
 		this.estadoPago3 = estadoPago3;
 		this.estadoFactura = estadoFactura;
 		this.fechaEstadoFactura = fechaEstadoFactura;
-		this.imputabilidad = imputabilidad;
+		this.imputable = imputable;
 	}
 
 	/**
@@ -679,16 +680,11 @@ public class InformacionFacturacionDO implements Serializable{
 		this.fechaEstadoFactura = fechaEstadoFactura;
 	}
 
-	public String getImputabilidad() {
-		return imputabilidad;
+	public ImputableDO getImputable() {
+		return imputable;
 	}
 
-	public void setImputabilidad(String imputabilidad) {
-		this.imputabilidad = imputabilidad;
+	public void setImputable(ImputableDO imputable) {
+		this.imputable = imputable;
 	}
-
-	
-	
-	
-	
 }

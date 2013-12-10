@@ -45,8 +45,9 @@ public class MoviemientoFondoFijoCajaChicaDO implements Serializable{
 	@JoinColumn(name = "fk_descripcion_fondo_fijo_caja_chica", nullable = false)
 	private DescripcionFondoFijoCajaChicaDO descripcionFondoFijoCajaChica;
 	
-	@Column(name = "entrega", nullable = false)
-	private String entrega;
+	@ManyToOne
+	@JoinColumn(name = "fk_entrega", nullable = false)
+	private ColaboradorDO entrega;
 	
 	@ManyToOne
 	@JoinColumn(name = "fk_colaborador", nullable = false)
@@ -69,7 +70,7 @@ public class MoviemientoFondoFijoCajaChicaDO implements Serializable{
 
 	public MoviemientoFondoFijoCajaChicaDO(Integer id, Date fecha,
 			DescripcionFondoFijoCajaChicaDO descripcionFondoFijoCajaChica,
-			String entrega, ColaboradorDO colaborador, Double ingreso,
+			ColaboradorDO entrega, ColaboradorDO colaborador, Double ingreso,
 			Double egreso) {
 		super();
 		this.id = id;
@@ -127,14 +128,14 @@ public class MoviemientoFondoFijoCajaChicaDO implements Serializable{
 	/**
 	 * @return the entrega
 	 */
-	public String getEntrega() {
+	public ColaboradorDO getEntrega() {
 		return entrega;
 	}
 
 	/**
 	 * @param entrega the entrega to set
 	 */
-	public void setEntrega(String entrega) {
+	public void setEntrega(ColaboradorDO entrega) {
 		this.entrega = entrega;
 	}
 

@@ -222,6 +222,7 @@
 		<class>mx.com.gahm.conenctel.entities.CalibracionDO</class>
 		<class>mx.com.gahm.conenctel.entities.MantenimientoServicioDO</class>
 		<class>mx.com.gahm.conenctel.entities.PagoDO</class>
+		<class>mx.com.gahm.conenctel.entities.SolicitanteSolicitudViaticosDO</class>
 		<properties>
 			<property name="eclipselink.logging.level" value="FINE"/> 
 			<property name="eclipselink.logging.parameters" value="true"/>

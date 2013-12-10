@@ -3,6 +3,7 @@
  */
 package mx.com.gahm.conenctel.services.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -53,6 +54,7 @@ public class MoviemientoFondoFijoCajaChicaService implements IMoviemientoFondoFi
 		try {
 			List<ComentarioMoviemientoFondoFijoCajaChicaDO> comentarios=item.getComentariosMoviemientoFondoFijoCajaChica();
 			item.setComentariosMoviemientoFondoFijoCajaChica(null);
+			item.setFecha(new Date());
 			entityManager.persist(item);
 			saveComentarios(item,comentarios);
 		} catch (Exception e) {

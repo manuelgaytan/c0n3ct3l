@@ -62,7 +62,7 @@ public class PagoMovimientoPagoContableServicioDO implements Serializable{
 	private Double monto;
 	
 	@Column(name = "referencia_abono", nullable = false)
-	private Integer referenciaAbono;
+	private String referenciaAbono;
 	
 	@OneToMany(mappedBy="pagoMovimientoPagoContableServicio", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	private List<ComentarioPagoMovimientoPagoContableServicioDO> comentariosPagoMovimientoPagoContableServicio;
@@ -75,7 +75,7 @@ public class PagoMovimientoPagoContableServicioDO implements Serializable{
 	public PagoMovimientoPagoContableServicioDO(Integer id,
 			MovimientoPagoContableServicioDO movimientoPagoContableServicio,
 			BancoConectelDO bancoConectel, Date fechaAbono, Double monto,
-			Integer referenciaAbono) {
+			String referenciaAbono) {
 		super();
 		this.id = id;
 		this.movimientoPagoContableServicio = movimientoPagoContableServicio;
@@ -126,11 +126,11 @@ public class PagoMovimientoPagoContableServicioDO implements Serializable{
 		this.monto = monto;
 	}
 
-	public Integer getReferenciaAbono() {
+	public String getReferenciaAbono() {
 		return referenciaAbono;
 	}
 
-	public void setReferenciaAbono(Integer referenciaAbono) {
+	public void setReferenciaAbono(String referenciaAbono) {
 		this.referenciaAbono = referenciaAbono;
 	}
 

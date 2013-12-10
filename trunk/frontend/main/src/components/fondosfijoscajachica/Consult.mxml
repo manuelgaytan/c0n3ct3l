@@ -131,7 +131,7 @@
 							   />
 			<mx:DataGridColumn id="dtgDeliver" headerText="Entrega"
 							   width="140"
-							   dataField="entrega"
+							   dataField="entrega.nombreCompleto"
 							   />
 		</mx:columns>
 	</mx:DataGrid>

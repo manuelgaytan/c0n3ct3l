@@ -380,8 +380,8 @@
 				if( isNaN( subtotal ) ){
 					return;
 				}
-				this.txtIVA.text = (subtotal*Constants.IVA).toString();
-				this.txtTotal.text = (subtotal*Constants.IVA+subtotal).toString();
+				this.txtIVA.text = Util.truncate(subtotal*Constants.IVA).toString();
+				this.txtTotal.text = Util.truncate(subtotal*Constants.IVA+subtotal).toString();
 			}
 			
 			private function setInvoice(value:String = ""):void

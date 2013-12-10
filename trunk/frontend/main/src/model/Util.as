@@ -126,10 +126,14 @@ package model
 			return number.toString();
 		}
 		
-		public static function stringToNumber(text:String):*
+		public static function stringToNumber(text:String, returnZero:Boolean = false):*
 		{
 			if( StringUtil.trim( text ) == "" ){
-				return undefined;
+				if( returnZero ){
+					return 0;
+				}else{
+					return undefined;
+				}
 			}
 			return Number(text.replace(",",""));
 		}
@@ -312,6 +316,9 @@ package model
 		
 		public static function removeItems(dataProvider:Object):void
 		{
+			if( dataProvider == null ){
+				return;
+			}
 			if( dataProvider is Array ){
 				var length:Number = (dataProvider as Array).length;
 				for(var i:int=0; i<length; i++) 
@@ -375,7 +382,7 @@ package model
 		
 		public static function showProperties(object:Object):void
 		{
-			//Alert.show( ObjectUtil.toString( object ), "Show Properties" );
+			 Alert.show( ObjectUtil.toString( object ), "Show Properties" );
 		}
 		
 		public static function isFill(cmbProfile:ComboBox):Boolean
@@ -542,7 +549,7 @@ package model
 			return Util.formatDateTimeToString( Util.extractObject(object,column.dataField) as Date );
 		}
 		
-		public static function asArrayCollection(object:Object){
+		public static function asArrayCollection(object:Object):ArrayCollection{
 			if( object == null ){
 				return null;
 			}
@@ -679,6 +686,12 @@ package model
 				return 0;
 			}
 			return container.parent.parent.parent.width - pixels;
+		}
+		
+		public static function truncate(numberVal:Number, precision:int = 2):Number
+		{
+			var decimalPlaces:Number = Math.pow(10, precision);
+			return int(decimalPlaces * numberVal) / decimalPlaces;
 		}
 	}
 }

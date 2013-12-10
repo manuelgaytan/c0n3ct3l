@@ -8,7 +8,7 @@ package model
 		public var id:*;
 		public var fecha:Date;
 		public var descripcionFondoFijoCajaChica:DescripcionFondoFijoCajaChica;
-		public var entrega:String;
+		public var entrega:Colaborador;
 		public var colaborador:Colaborador;
 		public var ingreso:*;
 		public var egreso:*;

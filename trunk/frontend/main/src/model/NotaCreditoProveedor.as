@@ -7,6 +7,7 @@ package model
 	{
 		public var id:*;
 		public var folio:String;
+		public var factura:String;
 		public var fecha:Date;
 		public var subtotal:Number;
 		public var iva:*;

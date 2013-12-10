@@ -122,6 +122,9 @@
 						this._item.etadoValidacionCobro3.id);
 				}
 				this.txtTotalPorcentageRecovery.text = Util.extractToText(this._item,"porcentajeTotalCobro");
+				if( this.txtTotalPorcentageRecovery.text == "" ){
+					this.updateGlobalPercentage();
+				}
 				if( Util.isFill( this.cmbFinalValidationStatus ) && this._item.etadoValidacionFinal != null ){
 					this.cmbFinalValidationStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbFinalValidationStatus.dataProvider as ArrayCollection, 
 						this._item.etadoValidacionFinal.id);
@@ -374,6 +377,17 @@
 			{
 				projectsConsult.setDataGridData( event.result as ArrayCollection );
 			}
+			
+			private function updateGlobalPercentage():void{
+				var value:* = undefined;
+				value = Util.stringToNumber( this.txtPorcentage1.text );
+				var percentage1:Number = value == undefined ? 0 : value;
+				value = Util.stringToNumber( this.txtPorcentage2.text );
+				var percentage2:Number = value == undefined ? 0 : value;
+				value = Util.stringToNumber( this.txtPorcentage3.text );
+				var percentage3:Number = value == undefined ? 0 : value;
+				this.txtTotalPorcentageRecovery.text = Util.numberToString( percentage1 + percentage2 + percentage3 );
+			}
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -403,7 +417,9 @@
 		</mx:FormItem>
 		<mx:FormItem label="Porcentaje 1:">
 			<components:TextInput id="txtPorcentage1"
-								  textAlign="right"/>
+								  textAlign="right"
+								  focusOut="updateGlobalPercentage()"
+								  enter="updateGlobalPercentage()"/>
 		</mx:FormItem>
 		<mx:FormItem label="Clave Validación 1:">
 			<components:TextInput id="txtKeyValidation1"/>
@@ -419,7 +435,9 @@
 		</mx:FormItem>
 		<mx:FormItem label="Porcentaje 2:">
 			<components:TextInput id="txtPorcentage2"
-								  textAlign="right"/>
+								  textAlign="right"
+								  focusOut="updateGlobalPercentage()"
+								  enter="updateGlobalPercentage()"/>
 		</mx:FormItem>
 		<mx:FormItem label="Clave Validación 2:">
 			<components:TextInput id="txtKeyValidation2"/>
@@ -435,7 +453,9 @@
 		</mx:FormItem>
 		<mx:FormItem label="Porcentaje 3:">
 			<components:TextInput id="txtPorcentage3"
-								  textAlign="right"/>
+								  textAlign="right"
+								  focusOut="updateGlobalPercentage()"
+								  enter="updateGlobalPercentage()"/>
 		</mx:FormItem>
 		<mx:FormItem label="Clave Validación 3:">
 			<components:TextInput id="txtKeyValidation3"/>

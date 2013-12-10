@@ -25,6 +25,7 @@
 			import mx.com.gahm.componentes.validadores.ValidadorEmail;
 			import mx.com.gahm.componentes.validadores.ValidadorEntero;
 			import mx.controls.Alert;
+			import mx.events.CalendarLayoutChangeEvent;
 			import mx.events.CloseEvent;
 			import mx.events.FlexEvent;
 			import mx.rpc.events.FaultEvent;
@@ -380,6 +381,20 @@
 				if( this.mode == Constants.UPDATE_MODE ){
 				}
 			}
+			
+			protected function dtfBirthdayDate_changeHandler(event:CalendarLayoutChangeEvent):void
+			{
+				var selectedDate:Date = this.dtfBirthdayDate.selectedDate;
+				if( selectedDate == null ){
+					this.txtAge.reset();
+					return;
+				}
+				var birthdayDateYear:Number = selectedDate.fullYear;
+				var currentYear:Number = (new Date()).fullYear;
+				var years:Number = currentYear - birthdayDateYear;
+				this.txtAge.text = years.toString();
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:FormItem id="frmID" label="ID:" direction="horizontal">
@@ -395,7 +410,8 @@
 		<components:TextInput id="txtName" width="270"/>
 	</mx:FormItem>
 	<mx:FormItem label="Fecha de Nacimiento:">
-		<components:DateField id="dtfBirthdayDate"/>
+		<components:DateField id="dtfBirthdayDate"
+							  change="dtfBirthdayDate_changeHandler(event)"/>
 	</mx:FormItem>
 	<mx:FormItem label="Lugar de Nacimiento:">
 		<components:TextInput id="txtBirthdayPlace" width="200"/>

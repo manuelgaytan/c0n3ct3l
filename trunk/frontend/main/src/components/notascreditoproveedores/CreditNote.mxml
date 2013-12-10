@@ -70,6 +70,7 @@
 				}
 				this.txtID.text = String(this._item.id);
 				this.txtFolio.text = this._item.folio;
+				this.txtInvoice.text = this._item.factura;
 				this.dtfDate.selectedDate = this._item.fecha;
 				this.txtSubtotal.text = this._item.subtotal.toString();
 				this.txtIVA.text = this._item.iva.toString();
@@ -92,6 +93,7 @@
 					item = this._item;
 				}
 				item.folio = Util.validateEmpty( this.txtFolio.text );
+				item.factura = Util.validateEmpty( this.txtInvoice.text );
 				item.fecha = this.dtfDate.selectedDate;
 				item.subtotal = Util.stringToNumber( this.txtSubtotal.text );
 				item.iva = Util.stringToNumber( this.txtIVA.text );
@@ -167,6 +169,7 @@
 				this.validators = new InicializaValidadoresEtiquetas();
 				validators.crearValidadorRestrictor("generic",ValidadorCadenaCualquierCaracter.nombre, 0, 255);
 				validators.setValidador(txtFolio, "generic");
+				validators.setRestrictor(txtInvoice, "generic");
 				validators.crearValidadorRestrictor("decimalGeneric",ValidadorDecimal.nombre, 7,2);
 				validators.setValidador(txtSubtotal, "decimalGeneric");
 				validators.setRestrictor(txtIVA, "decimalGeneric");
@@ -184,6 +187,7 @@
 			{
 				this.txtID.reset();
 				this.txtFolio.reset();
+				this.txtInvoice.reset();
 				this.dtfDate.reset();
 				this.txtSubtotal.reset();
 				this.txtIVA.reset();
@@ -252,6 +256,9 @@
 		</mx:FormItem>
 		<mx:FormItem label="Folio:">
 			<components:TextInput id="txtFolio" textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Aplicable a Factura:">
+			<components:TextInput id="txtInvoice" textAlign="right"/>
 		</mx:FormItem>
 		<mx:FormItem label="Fecha:">
 			<components:DateField id="dtfDate"/>

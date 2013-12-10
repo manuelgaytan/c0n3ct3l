@@ -155,7 +155,7 @@
 							   textAlign="center"
 							   width="100"/>
 			<mx:DataGridColumn id="dtgAttributable" headerText="{'Imputable'}"
-							   dataField="imputabilidad"
+							   dataField="imputable.etiqueta"
 							   width="120"
 							   />
 		</mx:columns>

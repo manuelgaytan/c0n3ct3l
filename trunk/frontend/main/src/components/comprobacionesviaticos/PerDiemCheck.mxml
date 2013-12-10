@@ -35,7 +35,6 @@
 			import mx.collections.ArrayCollection;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
 			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
-			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
 			import mx.com.gahm.componentes.validadores.ValidadorEntero;
 			import mx.controls.Alert;
@@ -142,8 +141,7 @@
 				this.txtDate.text = Util.formatDateToString( diemRequest.fecha );
 				this.projectsConsult.datagrid.dataProvider = Util.asArrayCollection( diemRequest.proyecto );
 				this.projectsConsult.datagrid.selectedIndex = 0;
-				this.txtResponsibleViaticum.text = diemRequest.colaborador.nombreCompleto;
-				this.setResponsibleData( diemRequest.colaborador );
+				this.lstApplicantsNames.dataProvider = diemRequest.solicitantes;
 				this.txtConveyance.text = diemRequest.medioTransporte.etiqueta;
 				this.txtNumberOfVehicle.text = diemRequest.numeroVehiculo;
 				//this.txtInitialMileage.text = diemRequest.kilometrajeInicial;
@@ -260,7 +258,7 @@
 				//Util.removeItems(this.diemRequest.datagrid.dataProvider);
 				this.txtDate.reset();
 				Util.removeItems(this.projectsConsult.datagrid.dataProvider);
-				this.txtResponsibleViaticum.reset();
+				Util.removeItems( this.lstApplicantsNames.dataProvider );
 				this.txtCardNumber.reset();
 				this.txtMail.reset();
 				this.txtPhone.reset();
@@ -331,6 +329,15 @@
 				this.setDiemRequest( diemRequest );
 			}
 			
+			protected function lstApplicantsNames_changeHandler(event:ListEvent):void
+			{
+				var colaborator:Colaborador = this.lstApplicantsNames.selectedItem as Colaborador;
+				this.setResponsibleData( colaborator );
+			}
+			
+			private function labelFunctionSolicitante( item:Object ):String{
+				return Util.extractToText( item, "colaborador.nombreCompleto");
+			}
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -351,9 +358,10 @@
 		</mx:FormItem>
 		<mx:FormItem label="Proyectos:" direction="horizontal"/>
 		<proyectos:Consult id="projectsConsult"
-						   height="68"/>
+						   height="90"/>
 		<mx:FormItem label="Responsable Viático:">
-			<components:TextInput id="txtResponsibleViaticum" width="300" editable="false"/>
+			<mx:List id="lstApplicantsNames" labelFunction="labelFunctionSolicitante" 
+					 width="300" change="lstApplicantsNames_changeHandler(event)"/>
 		</mx:FormItem>
 		<mx:FormItem label="Número de Tarjeta:">
 			<components:TextInput id="txtCardNumber" editable="false"/>
@@ -398,11 +406,11 @@
 		<mx:FormItem label="Total Autorizado:">
 			<components:TextInput id="txtTotalAuthorized" textAlign="right" width="170"/>
 		</mx:FormItem>
-		<mx:FormItem label="Subir Formato:" direction="horizontal">
+		<mx:FormItem label="Subir Formato de Comprobación:" direction="horizontal">
 			<components:FlatDeliver id="fltDlvUpFormat" limitedTo="1"/>
 			<mx:LinkButton id="descargarFormato" label="Descargar Formato" click="descargarFormato_clickHandler(event)"/>
 		</mx:FormItem>
-		<mx:FormItem label="Subir Archivos de Comprobacion:">
+		<mx:FormItem label="Archivos de Comprobación Revisada:">
 			<components:FlatDeliver id="fltDlvUpDocuments"/>
 		</mx:FormItem>
 		<mx:FormItem label="Fecha de Subida de Documentos:">

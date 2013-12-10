@@ -101,7 +101,7 @@
 								   labelFunction="{Util.labelFunctionDate}"
 								   textAlign="center"
 								   width="130"/>
-				<mx:DataGridColumn id="dtgPurchaseOrderCost" headerText="{'Costo\nOrden de\nCompra'}"
+				<mx:DataGridColumn id="dtgPurchaseOrderCost" headerText="{'Costo\nOC\nCliente'}"
 								   dataField="costoOrdenCompra"
 								   textAlign="right"
 								   width="130"

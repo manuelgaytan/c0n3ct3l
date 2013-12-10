@@ -124,7 +124,7 @@
 	<mx:VBox label="Cuentas por Pagar" width="100%" height="100%">
 		<mx:LinkButton label="Facturación Proveedor" id="FacturacionProveedores" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/facturacionproveedor.png')"/>
-		<mx:LinkButton label="Nota de Crédito" id="NotasCreditoProveedores" click="clickMenuHandler(event)"
+		<mx:LinkButton label="Nota de Crédito Proveedores" id="NotasCreditoProveedores" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/notacredito.png')"/>
 	</mx:VBox>
 	<mx:VBox label="Facturación" width="100%" height="100%">
@@ -150,7 +150,7 @@
 					   icon="@Embed(source='assets/images/pagoproveedores.png')"/>
 		<mx:LinkButton label="Pago a Viáticos" id="PagoViaticos" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/pagoviaticos.png')"/>
-		<mx:LinkButton label="Pagos Contables y Servicios" id="PagoPagosContablesServicios" click="clickMenuHandler(event)"
+		<mx:LinkButton label="Programación de Pagos Contables y Servicios" id="PagoPagosContablesServicios" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/pagoservicios.png')"/>
 		<mx:LinkButton label="Otras Operaciones Financieras" id="OtrasOperacionesFinancieras" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/otrasoperacionesfinancieras.png')"/>

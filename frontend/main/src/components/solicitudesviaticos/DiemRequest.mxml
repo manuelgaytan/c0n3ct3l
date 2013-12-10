@@ -78,11 +78,7 @@
 				this.dtfDate.selectedDate = this._item.fecha;
 				this.projectsConsult.datagrid.dataProvider = Util.asArrayCollection( this._item.proyecto );
 				this.projectsConsult.datagrid.selectedIndex = 0;
-				if( Util.isFill( this.cmbResponsibleViaticum ) && this._item.colaborador != null ){
-					this.cmbResponsibleViaticum.selectedIndex = Util.selectedIndexFromCombo( this.cmbResponsibleViaticum.dataProvider as ArrayCollection, 
-						this._item.colaborador.id);
-					this.cmbResponsibleViaticum.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
-				}
+				this.cmbApplicantsNames.setListIn( this._item.solicitantes, "colaborador" );
 				if( Util.isFill( this.cmbConveyance ) && this._item.medioTransporte != null ){
 					this.cmbConveyance.selectedIndex = Util.selectedIndexFromCombo( this.cmbConveyance.dataProvider as ArrayCollection, 
 						this._item.medioTransporte.id);
@@ -108,7 +104,7 @@
 				}
 				diemRequest.fecha = this.dtfDate.selectedDate;
 				diemRequest.proyecto = this.projectsConsult.datagrid.selectedItem as Proyecto;
-				diemRequest.colaborador = Util.validateCombo( this.cmbResponsibleViaticum ) as Colaborador;
+				diemRequest.solicitantes = this.cmbApplicantsNames.getListsAsInWith("model.Colaborador","model.SolicitanteSolicitudViaticos","colaborador");
 				diemRequest.medioTransporte = Util.validateCombo( this.cmbConveyance ) as MedioTransporte;
 				diemRequest.numeroVehiculo = Util.validateEmpty( this.txtNumberOfVehicle.text );
 				diemRequest.kilometrajeInicial = Util.validateEmpty( this.txtInitialMileage.text );
@@ -171,11 +167,10 @@
 			private function modeValidation():void
 			{
 				if( this.mode == Constants.REGISTER_MODE ){
-				//	form.removeChild( this.frmID );
+					form.removeChild( this.frmID );
 					this.executeProjectQuery();
 				}
 				if( this.mode == Constants.UPDATE_MODE ){
-					this.btnNewID.visible = false;
 				}
 			}
 			
@@ -200,6 +195,12 @@
 			
 			protected function responseSave_resultHandler(event:ResultEvent):void
 			{
+				if( !(event == null ) &&
+					!(event.result == null ) &&
+					(event.result is SolicitudViaticos ) ){
+					var diemRequest:SolicitudViaticos = event.result as SolicitudViaticos;
+					Util.showInfoMessage("Sú solicitud de viáticos se ha generado con el Folio: " + diemRequest.id );
+				}
 				var eventGeneralDataProjectNew:Event = new Event("diemRequestNew");
 				this.dispatchEvent( eventGeneralDataProjectNew );
 				this.cleanForm();
@@ -210,7 +211,7 @@
 				this.txtID.reset();
 				this.dtfDate.reset();
 				Util.removeItems(this.projectsConsult.datagrid.dataProvider);
-				this.cmbResponsibleViaticum.selectedIndex = 0;
+				this.cmbApplicantsNames.reset();
 				this.cmbConveyance.selectedIndex = 0;
 				this.txtNumberOfVehicle.reset();
 				this.txtInitialMileage.reset();
@@ -251,13 +252,7 @@
 				if( data == null ){
 					return;
 				}
-				this.cmbResponsibleViaticum.dataProvider = data;
-				if( Util.isFill( this.cmbResponsibleViaticum ) && this._item 
-					&& this._item.colaborador != null ){
-					this.cmbResponsibleViaticum.selectedIndex = Util.selectedIndexFromCombo( this.cmbResponsibleViaticum.dataProvider as ArrayCollection, 
-						this._item.colaborador.id);
-				}
-				this.cmbResponsibleViaticum.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
+				this.cmbApplicantsNames.comboList = Util.addEmptyCatalgo( data, "nombreCompleto" );
 			}
 			
 			private function executeProjectQuery():void
@@ -289,9 +284,9 @@
 				}
 			}
 			
-			protected function cmbResponsibleViaticum_changeHandler(event:ListEvent):void
+			protected function cmbResponsibleViaticum_changeHandler(event:Event):void
 			{
-				var colaborator:Colaborador = Util.validateCombo( this.cmbResponsibleViaticum ) as Colaborador;
+				var colaborator:Colaborador = this.cmbApplicantsNames.selectedItem as Colaborador;
 				if( colaborator == null ){
 					return;
 				}
@@ -315,22 +310,17 @@
 				this.txtPhone.text = contratacion.colaborador.telefono;
 			}
 			
-			protected function responseGetSiguienteId_resultHandler(event:ResultEvent):void
-			{
-				Util.showProperties( event );
-				if( event == null ||
-					event.result == null ||
-					!(event.result is Number) ){
-					return;
-				}
-				this.txtID.text = Util.numberToString( event.result as Number );
+			private function sum():void{
+				var total:Number = 0;
+				total += Util.stringToNumber( this.txtGAS.text, true );
+				total += Util.stringToNumber( this.txtTollBooths.text, true );
+				total += Util.stringToNumber( this.txtPassages.text, true );
+				total += Util.stringToNumber( this.txtLodging.text, true );
+				total += Util.stringToNumber( this.txtFood.text, true );
+				total += Util.stringToNumber( this.txtMaterialsAndOrTool.text, true );
+				total += Util.stringToNumber( this.txtOthers.text, true );
+				this.txtTotalRequested.text = total.toString();
 			}
-			
-			protected function btnNewID_clickHandler(event:MouseEvent):void
-			{
-				this.responseGetSiguienteId.token = this.solicitudViaticosService.getSiguienteId();
-			}
-			
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -342,7 +332,6 @@
 		<mx:FormItem id="frmID" label="ID:" direction="horizontal">
 			<components:TextInput id="txtID" width="80" textAlign="right"
 								  editable="false"/>
-			<mx:Button id="btnNewID" label="Nuevo ID" click="btnNewID_clickHandler(event)"/>
 		</mx:FormItem>
 		<mx:FormItem label="Fecha:">
 			<components:DateField id="dtfDate"
@@ -350,10 +339,9 @@
 		</mx:FormItem>
 		<mx:FormItem label="Proyectos:" direction="horizontal"/>
 		<proyectos:Consult id="projectsConsult" projectSelected="projectsConsult_projectSelectedHandler(event)"/>
-		<mx:FormItem label="Responsable Viático:">
-			<mx:ComboBox id="cmbResponsibleViaticum" width="300"
-						 labelField="nombreCompleto"
-						 change="cmbResponsibleViaticum_changeHandler(event)"/>
+		<mx:FormItem label="Responsable Viáticos:">
+			<components:ComboList id="cmbApplicantsNames" labelField="nombreCompleto"
+								  listChanged="cmbResponsibleViaticum_changeHandler(event)"/>
 		</mx:FormItem>
 		<mx:FormItem label="Número de Tarjeta:">
 			<components:TextInput id="txtCardNumber" editable="false"/>
@@ -375,25 +363,32 @@
 			<components:TextInput id="txtInitialMileage" textAlign="right" width="120"/>
 		</mx:FormItem>
 		<mx:FormItem label="Combustible:">
-			<components:TextInput id="txtGAS" textAlign="right" width="160"/>
+			<components:TextInput id="txtGAS" textAlign="right" width="160"
+								  focusOut="this.sum()" enter="this.sum()"/>
 		</mx:FormItem>
 		<mx:FormItem label="Casetas:">
-			<components:TextInput id="txtTollBooths" textAlign="right" width="160"/>
+			<components:TextInput id="txtTollBooths" textAlign="right" width="160"
+								  focusOut="this.sum()" enter="this.sum()"/>
 		</mx:FormItem>
 		<mx:FormItem label="Pasajes:">
-			<components:TextInput id="txtPassages" textAlign="right" width="160"/>
+			<components:TextInput id="txtPassages" textAlign="right" width="160"
+								  focusOut="this.sum()" enter="this.sum()"/>
 		</mx:FormItem>
 		<mx:FormItem label="Hospedaje:">
-			<components:TextInput id="txtLodging" textAlign="right" width="160"/>
+			<components:TextInput id="txtLodging" textAlign="right" width="160"
+								  focusOut="this.sum()" enter="this.sum()"/>
 		</mx:FormItem>
 		<mx:FormItem label="Alimentos:">
-			<components:TextInput id="txtFood" textAlign="right" width="160"/>
+			<components:TextInput id="txtFood" textAlign="right" width="160"
+								  focusOut="this.sum()" enter="this.sum()"/>
 		</mx:FormItem>
 		<mx:FormItem label="Materiales y/o Herramienta:">
-			<components:TextInput id="txtMaterialsAndOrTool" textAlign="right" width="160"/>
+			<components:TextInput id="txtMaterialsAndOrTool" textAlign="right" width="160"
+								  focusOut="this.sum()" enter="this.sum()"/>
 		</mx:FormItem>
 		<mx:FormItem label="Otros:">
-			<components:TextInput id="txtOthers" textAlign="right" width="160"/>
+			<components:TextInput id="txtOthers" textAlign="right" width="160"
+								  focusOut="this.sum()" enter="this.sum()"/>
 		</mx:FormItem>
 		<mx:FormItem label="Total Solicitado:">
 			<components:TextInput id="txtTotalRequested" textAlign="right" width="170"/>
@@ -410,7 +405,6 @@
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetMedioTransporte" result="responseGetMedioTransporte_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetColaborador" result="responseGetColaborador_resultHandler(event)"/>
-	<mx:CallResponder id="responseGetSiguienteId" result="responseGetSiguienteId_resultHandler(event)"/>
 	<mx:RemoteObject id="proyectoService" destination="proyectoService" fault="solicitudViaticosService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetAllByFiltro" result="responseGetAll_resultHandler(event)"/>

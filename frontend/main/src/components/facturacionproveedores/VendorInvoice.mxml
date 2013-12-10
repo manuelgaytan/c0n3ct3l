@@ -31,7 +31,6 @@
 			import mx.collections.ArrayCollection;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
 			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
-			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
 			import mx.com.gahm.componentes.validadores.ValidadorEntero;
 			import mx.controls.Alert;
@@ -104,6 +103,7 @@
 					this.cmbSupplierType.selectedIndex = Util.selectedIndexFromCombo( this.cmbSupplierType.dataProvider as ArrayCollection, 2);
 				}
 				this.cmbSupplierType.dispatchEvent( new ListEvent(ListEvent.CHANGE) );
+				this.txtQuantity.text = this._item.cantidad.toString();
 				this.txtVendorInvoiceNumber.text = this._item.numeroFactura;
 				this.dtfReviewDate.selectedDate = this._item.fechaRevision;
 				this.dtfPaymentDate.selectedDate = this._item.fechaPago;
@@ -128,6 +128,7 @@
 					vendorInvoice.proveedorMaquilador = Util.validateCombo( this.cmbSupplier ) as ProveedorMaquilador;
 					vendorInvoice.ordenCompraMaquilado = this.odcMaquilado.datagrid.selectedItem as OrdenCompraMaquilado;
 				}
+				vendorInvoice.cantidad = Util.stringToNumber( this.txtQuantity.text );
 				vendorInvoice.numeroFactura = Util.validateEmpty( this.txtVendorInvoiceNumber.text );
 				vendorInvoice.fechaRevision = this.dtfReviewDate.selectedDate;
 				vendorInvoice.fechaPago = this.dtfPaymentDate.selectedDate;
@@ -197,6 +198,8 @@
 				validators.setValidador(txtVendorInvoiceNumber, "genericString");
 				this.validators.crearValidadorRestrictor("genericDecimal", ValidadorDecimal.nombre, 7,2);
 				validators.setRestrictor(txtWeek, "genericString");
+				this.validators.crearValidadorRestrictor("number",ValidadorDecimal.nombre, 9, 2);
+				validators.setValidador(txtQuantity, "number");
 			}
 			
 			protected function responseSave_resultHandler(event:ResultEvent):void
@@ -215,6 +218,7 @@
 				this.txtWeek.reset();
 				this.cleanSuppplierForm();
 				this.dtfVendorInvoiceDate.reset();
+				this.txtQuantity.reset();
 				this.txtVendorInvoiceNumber.reset();
 				this.dtfReviewDate.reset();
 				this.dtfPaymentDate.reset();
@@ -550,6 +554,9 @@
 		</mx:FormItem>
 		<mx:FormItem label="Total:">
 			<components:TextInput id="txtTotal" editable="false" textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="Cantidad:">
+			<components:TextInput id="txtQuantity" textAlign="right"/>
 		</mx:FormItem>
 		<mx:FormItem label="Fecha Factura:">
 			<components:DateField id="dtfVendorInvoiceDate"/>

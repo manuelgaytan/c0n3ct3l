@@ -37,7 +37,6 @@
 			import mx.com.gahm.componentes.validadores.Constantes;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
 			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
-			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
 			import mx.com.gahm.componentes.validadores.ValidadorEntero;
 			import mx.controls.Alert;
@@ -259,13 +258,13 @@
 					iva = vendorInvoice.ordenCompra.iva;
 					total = vendorInvoice.ordenCompra.total;
 				}else if(vendorInvoice.ordenCompraMaquilado.solicitudServicioMaquilado.proyecto.producto.tipoServicio == Producto.TIPO_SERVICIO_LOCAL ){
-					subtotal = vendorInvoice.ordenCompraMaquilado.solicitudServicioMaquilado.proyecto.producto.costoLocalProveedor;
-					iva = vendorInvoice.ordenCompraMaquilado.solicitudServicioMaquilado.proyecto.producto.costoLocalProveedor * Constants.IVA;
-					total = subtotal + iva;
+					subtotal = Util.truncate(vendorInvoice.ordenCompraMaquilado.solicitudServicioMaquilado.proyecto.producto.costoLocalProveedor);
+					iva = Util.truncate(vendorInvoice.ordenCompraMaquilado.solicitudServicioMaquilado.proyecto.producto.costoLocalProveedor * Constants.IVA);
+					total = Util.truncate(subtotal + iva);
 				}else if(vendorInvoice.ordenCompraMaquilado.solicitudServicioMaquilado.proyecto.producto.tipoServicio == Producto.TIPO_SERVICIO_FORANEO ){
-					subtotal = vendorInvoice.ordenCompraMaquilado.solicitudServicioMaquilado.proyecto.producto.costoForaneoProveedor;
-					iva = vendorInvoice.ordenCompraMaquilado.solicitudServicioMaquilado.proyecto.producto.costoForaneoProveedor * Constants.IVA;
-					total = subtotal + iva;
+					subtotal = Util.truncate(vendorInvoice.ordenCompraMaquilado.solicitudServicioMaquilado.proyecto.producto.costoForaneoProveedor);
+					iva = Util.truncate(vendorInvoice.ordenCompraMaquilado.solicitudServicioMaquilado.proyecto.producto.costoForaneoProveedor * Constants.IVA);
+					total = Util.truncate(subtotal + iva);
 				}
 				this.setMontos( subtotal, iva, total);
 			}

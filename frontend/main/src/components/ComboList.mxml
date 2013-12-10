@@ -9,6 +9,7 @@
 			import mx.controls.Alert;
 			import mx.events.CloseEvent;
 			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
 
 			[Bindable]
 			private var _items:ArrayCollection;
@@ -123,8 +124,20 @@
 				this._items = new ArrayCollection();
 			}
 			
+			protected function lstDelivers_changeHandler(event:ListEvent):void
+			{
+				this.dispatchEvent(new Event("listChanged") );
+			}
+			
+			
+			public function get selectedItem():Object{
+				return this.lstDelivers.selectedItem;
+			}
 		]]>
 	</mx:Script>
+	<mx:Metadata>
+		[Event(name="listChanged")]
+	</mx:Metadata>
 	<mx:HBox>
 		<mx:ComboBox id="cmbCombo" width="160"
 					 labelField="{this.labelField}"
@@ -135,5 +148,6 @@
 			 labelField="{this.labelField}"
 			 dataProvider="{_items}"
 			 doubleClickEnabled="true" 
-			 doubleClick="lstDelivers_doubleClickHandler(event)"/>
+			 doubleClick="lstDelivers_doubleClickHandler(event)"
+			 change="lstDelivers_changeHandler(event)"/>
 </mx:VBox>

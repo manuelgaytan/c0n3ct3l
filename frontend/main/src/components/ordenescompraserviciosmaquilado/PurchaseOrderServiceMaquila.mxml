@@ -334,6 +334,8 @@
 					event.result != null ){
 					this.maquiladoraServiceRequest = event.result as SolicitudServicioMaquilado;
 					this.setMaquiladoraServiceRequest();
+				}else{
+					itemsManagement.reset();
 				}
 			}
 			
@@ -368,9 +370,9 @@
 						subtotal += i.importe;
 					}
 				}
-				this.txtSubtotal.text = subtotal.toString();
-				this.txtIVA.text = (subtotal*Constants.IVA).toString();
-				this.txtTotal.text = (subtotal*Constants.IVA+subtotal).toString();
+				this.txtSubtotal.text = Util.truncate(subtotal).toString();
+				this.txtIVA.text = Util.truncate(subtotal*Constants.IVA).toString();
+				this.txtTotal.text = Util.truncate(subtotal*Constants.IVA+subtotal).toString();
 			}
 		]]>
 	</mx:Script>

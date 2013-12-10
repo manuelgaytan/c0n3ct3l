@@ -33,7 +33,7 @@
 			{
 				this.navigator.selectedChild = this.consult;
 				this.consult.executeQuery();
-			}
+			} 
 		]]>
 	</mx:Script>
 	<mx:TabNavigator id="navigator" width="100%" height="100%" creationPolicy="all">

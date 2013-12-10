@@ -37,7 +37,6 @@
 			import mx.collections.ArrayCollection;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
 			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
-			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
 			import mx.com.gahm.componentes.validadores.ValidadorEntero;
 			import mx.com.gahm.componentes.validadores.ValidadorNumerico;
@@ -131,7 +130,10 @@
 				this.comments3.setCommentsIn( this._item.comentariosInformacionFacturacion3, "comentarioCuentasPagarFacturacion");
 				this.txtInvoiceState.text = Util.extractToText(this._item,"estadoFactura");
 				this.dtfInvoiceStateDate.selectedDate = Util.extractObject(this._item,"fechaEstadoFactura") as Date;
-				this.txtAccountability.text = Util.extractToText(this._item,"imputabilidad");
+				if( Util.isFill( this.cmbAccountability ) && this._item.imputable != null ){
+					this.cmbAccountability.selectedIndex = Util.selectedIndexFromCombo( this.cmbAccountability.dataProvider as ArrayCollection, 
+						this._item.imputable.id);
+				}
 			}
 			
 			private function getConcentratedCustomerPurchaseOrders():InformacionFacturacion{
@@ -174,12 +176,13 @@
 				item.comentariosInformacionFacturacion3 = this.comments3.getCommentsAsInWith("model.ComentarioCuentasPagarFacturacion","model.ComentarioInformacionFacturacion3","comentarioCuentasPagarFacturacion");
 				item.estadoFactura = Util.validateEmpty( this.txtInvoiceState.text );
 				item.fechaEstadoFactura = this.dtfInvoiceStateDate.selectedDate;
-				item.imputabilidad = Util.validateEmpty(this.txtAccountability.text);
+				item.imputable = Util.validateCombo( this.cmbAccountability ) as Imputable;
 				return item;
 			}
 			
 			private function fillCombos():void
 			{
+				this.responseGetAllImputable.token = this.catalogoService.getImputable();
 			}
 			
 			protected function requisicionService_faultHandler(event:FaultEvent):void
@@ -242,7 +245,6 @@
 				validators.setRestrictor(txtFolio2, "generic");
 				validators.setRestrictor(txtFolio3, "generic");
 				validators.setValidador(txtInvoiceState, "generic");
-				validators.setRestrictor(txtAccountability, "generic");
 				validators.crearValidadorRestrictor("genericDecimal",ValidadorDecimal.nombre, 9, 2);
 				validators.setRestrictor(txtSubtotal1, "genericDecimal");
 				validators.setRestrictor(txtSubtotal2, "genericDecimal");
@@ -302,7 +304,7 @@
 				this.comments3.reset();
 				this.txtInvoiceState.reset();
 				this.dtfInvoiceStateDate.reset();
-				this.txtAccountability.reset();
+				this.cmbAccountability.selectedIndex = 0; 
 			}
 			
 			protected function responseUpdate_resultHandler(event:ResultEvent):void
@@ -315,6 +317,15 @@
 			protected function validacionesAdministrativas_doubleClickHandler(event:GenericEvent):void
 			{
 				
+			}
+			
+			protected function responseGetAllImputable_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbAccountability.dataProvider = Util.addEmptyCatalgo( data );
 			}
 			
 		]]>
@@ -452,7 +463,8 @@
 			<components:DateField id="dtfInvoiceStateDate"/>
 		</mx:FormItem>
 		<mx:FormItem label="Imputabilidad:">
-			<components:TextInput id="txtAccountability"/>
+			<mx:ComboBox id="cmbAccountability"
+						 labelField="etiqueta"/>
 		</mx:FormItem>
 		<mx:FormItem>
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)" visible="{!this._readOnly}"/>
@@ -462,4 +474,7 @@
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
 	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
+	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="requisicionService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetAllImputable" result="responseGetAllImputable_resultHandler(event)"/>
 </mx:VBox>

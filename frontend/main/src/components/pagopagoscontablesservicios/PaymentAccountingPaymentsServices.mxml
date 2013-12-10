@@ -94,7 +94,7 @@
 				}
 				this.dtfPaymentDate.selectedDate = this._item.fechaAbono;
 				this.txtAmount.text = this._item.monto.toString();
-				this.txtPaymentReference.text = this._item.referenciaAbono.toString();
+				this.txtPaymentReference.text = this._item.referenciaAbono;
 				this.comments.setCommentsIn( this._item.comentariosPagoMovimientoPagoContableServicio, "comentarioTesoreria");
 			}
 			
@@ -109,7 +109,7 @@
 				providerPayment.bancoConectel = Util.validateCombo( this.cmbConectelBank ) as BancoConectel;
 				providerPayment.fechaAbono = this.dtfPaymentDate.selectedDate;
 				providerPayment.monto = Util.stringToNumber( this.txtAmount.text );
-				providerPayment.referenciaAbono = Util.stringToNumber( this.txtPaymentReference.text );
+				providerPayment.referenciaAbono = Util.validateEmpty( this.txtPaymentReference.text );
 				providerPayment.comentariosPagoMovimientoPagoContableServicio = this.comments.getCommentsAsInWith("model.ComentarioTesoreria","model.ComentarioPagoMovimientoPagoContableServicio","comentarioTesoreria");
 				return providerPayment;
 			}
@@ -174,7 +174,8 @@
 				this.validators.crearValidadorRestrictor("genericDecimal", ValidadorDecimal.nombre, 9, 2);
 				this.validators.setValidador( this.txtAmount, "genericDecimal" );
 				this.validators.crearValidadorRestrictor("genericInteger", ValidadorEntero.nombre, 14);
-				this.validators.setRestrictor( this.txtPaymentReference, "genericInteger" );
+				this.validators.crearValidadorRestrictor("genericAlfanumeric", ValidadorCadenaCualquierCaracter.nombre, 0, 255);
+				this.validators.setRestrictor( this.txtPaymentReference, "genericAlfanumeric");
 			}
 			
 			protected function responseSave_resultHandler(event:ResultEvent):void

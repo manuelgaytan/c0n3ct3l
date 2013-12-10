@@ -92,8 +92,8 @@
 	<mx:Metadata>
 		[Event(name="itemDetail", type="events.GenericEvent")]
 	</mx:Metadata>
-	<mx:VBox width="845" height="100%">
-		<mx:DataGrid id="datagrid" width="845" height="100%" dataProvider="{items}"
+	<mx:VBox width="1095" height="100%">
+		<mx:DataGrid id="datagrid" width="1095" height="100%" dataProvider="{items}"
 					 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 					 allowMultipleSelection="true"
 					 >
@@ -113,6 +113,10 @@
 				<mx:DataGridColumn id="dtgTreasuryStatus" headerText="{'Estado\nTesorería'}"
 								   dataField="estadoTesoreria.etiqueta"
 								   textAlign="center"
+								   />
+				<mx:DataGridColumn id="dtgQuantity" headerText="{'Cantidad'}"
+								   dataField="cantidad"
+								   textAlign="right"
 								   />
 				<mx:DataGridColumn id="dtgVendorInvoiceNumber" headerText="{'Número\nFactura'}"
 								   dataField="numeroFactura"

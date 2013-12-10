@@ -8,7 +8,7 @@ package model
 		public var id:*;
 		public var fecha:Date;
 		public var proyecto:Proyecto;
-		public var colaborador:Colaborador;
+		public var solicitantes:ArrayCollection;
 		public var medioTransporte:MedioTransporte;
 		public var numeroVehiculo:String;
 		public var kilometrajeInicial:String;

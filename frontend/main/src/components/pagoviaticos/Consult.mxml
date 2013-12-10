@@ -136,7 +136,7 @@
 								   textAlign="center"
 								   width="80"
 								   />
-				<mx:DataGridColumn id="dtgAmount" headerText="{'Monto'}"
+				<mx:DataGridColumn id="dtgAmount" headerText="{'Monto\nAutorizado'}"
 								   dataField="monto"
 								   textAlign="right"
 								   width="100"

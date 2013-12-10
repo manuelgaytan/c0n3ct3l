@@ -18,6 +18,7 @@ package model
 		public var fechaRevision:Date;
 		public var fechaPago:Date;
 		public var comentariosFacturaProveedor:ArrayCollection;
+		public var cantidad:Number;
 		
 		public function FacturaProveedor(){
 			

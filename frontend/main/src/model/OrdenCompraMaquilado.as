@@ -66,7 +66,7 @@ package model
 			return partidasOrdenCompraMaquilado;
 		}
 		
-		private function dividirProyecto(partidasOrdenCompraMaquilado:ArrayCollection, i:Number, proyecto:Proyecto){
+		private function dividirProyecto(partidasOrdenCompraMaquilado:ArrayCollection, i:Number, proyecto:Proyecto):void{
 			if( proyecto == null ){
 				return;
 			}

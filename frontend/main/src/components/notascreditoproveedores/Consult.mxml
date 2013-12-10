@@ -132,6 +132,11 @@
 							   dataField="folio"
 							   textAlign="right"
 							   />
+			<mx:DataGridColumn id="dtgInvoice" headerText="{'Aplicable\na Factura'}"
+							   width="80"
+							   dataField="factura"
+							   textAlign="right"
+							   />
 			<mx:DataGridColumn id="dtgDate" headerText="Fecha"
 							   dataField="fecha"
 							   width="60"

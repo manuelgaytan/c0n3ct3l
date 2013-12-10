@@ -39,7 +39,7 @@ package model
 		public var comentariosInformacionFacturacion3:ArrayCollection;
 		public var estadoFactura:String;
 		public var fechaEstadoFactura:Date;
-		public var imputabilidad:String;
+		public var imputable:Imputable;
 		
 		public function InformacionFacturacion(){
 			

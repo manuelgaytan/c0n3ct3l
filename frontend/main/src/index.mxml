@@ -28,7 +28,6 @@
 			import model.AreaSolicitante;
 			import model.BancoConectel;
 			import model.Calibracion;
-			import model.Pago;
 			import model.CartaAntecedentesPenales;
 			import model.Catalogo;
 			import model.Categoria;
@@ -175,6 +174,7 @@
 			import model.OrdenCompraAlmacen;
 			import model.OrdenCompraCliente;
 			import model.OrdenCompraMaquilado;
+			import model.Pago;
 			import model.PagoMovimientoPagoContableServicio;
 			import model.PagoOtraOperacionFinanciera;
 			import model.PagoProveedor;
@@ -214,6 +214,7 @@
 			import model.Software;
 			import model.SoftwareSolicitudAlmacen;
 			import model.SolicitanteRequisicion;
+			import model.SolicitanteSolicitudViaticos;
 			import model.SolicitudAlmacen;
 			import model.SolicitudServicioMaquilado;
 			import model.SolicitudViaticos;
@@ -537,6 +538,7 @@
 			private var calibracion:Calibracion;
 			private var mantenimientoServicio:MantenimientoServicio;
 			private var pago:Pago;
+			private var solicitanteSolicitudViaticos:SolicitanteSolicitudViaticos;
 						
 			protected function login_readyHandler(event:ModuleEvent):void
 			{

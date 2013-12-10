@@ -10,7 +10,7 @@ package model
 		public var bancoConectel:BancoConectel;
 		public var fechaAbono:Date;
 		public var monto:Number;
-		public var referenciaAbono:*;
+		public var referenciaAbono:String;
 		public var comentariosPagoMovimientoPagoContableServicio:ArrayCollection;
 		
 		public function PagoMovimientoPagoContableServicio(){

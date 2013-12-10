@@ -15,12 +15,12 @@
 			import mx.collections.ArrayCollection;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
 			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
-			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
 			import mx.com.gahm.componentes.validadores.ValidadorNumerico;
 			import mx.controls.Alert;
 			import mx.events.CloseEvent;
 			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
 			import mx.rpc.events.FaultEvent;
 			import mx.rpc.events.ResultEvent;
 			import mx.utils.object_proxy;
@@ -64,7 +64,8 @@
 					return;
 				}
 				this.txtID.text = String(this._item.id);
-				this.dtfDate.selectedDate = this._item.fecha;
+				//this.dtfDate.selectedDate = this._item.fecha;
+				this.txtDate.text = Util.formatDateToString( this._item.fecha );
 				if( Util.isFill( this.cmbOperationType ) && this._item != null ){
 					if( this._item.ingreso == undefined ){//egreso
 						this.cmbOperationType.selectedIndex = Util.selectedIndexFromCombo( this.cmbOperationType.dataProvider as ArrayCollection, 
@@ -80,7 +81,10 @@
 					this.cmbDescription.selectedIndex = Util.selectedIndexFromCombo( this.cmbDescription.dataProvider as ArrayCollection, 
 						this._item.descripcionFondoFijoCajaChica.id);
 				}
-				this.txtDeliver.text = this._item.entrega;
+				if( Util.isFill( this.cmbDeliver ) && this._item.entrega != null ){
+					this.cmbDeliver.selectedIndex = Util.selectedIndexFromCombo( this.cmbDeliver.dataProvider as ArrayCollection, 
+						this._item.entrega.id);
+				}
 				if( Util.isFill( this.cmbReceiver ) && this._item.colaborador != null ){
 					this.cmbReceiver.selectedIndex = Util.selectedIndexFromCombo( this.cmbReceiver.dataProvider as ArrayCollection, 
 						this._item.colaborador.id);
@@ -95,7 +99,7 @@
 				}else{
 					item = this._item;
 				}
-				item.fecha = this.dtfDate.selectedDate;
+				item.fecha = Util.formatStringToDate( this.txtDate.text );
 				var operacion:Number = Util.selectedId( this.cmbOperationType );
 				if( operacion == TipoOperacion.ID_INGRESOS ){
 					item.ingreso = Util.stringToNumber( this.txtImport.text );
@@ -105,7 +109,7 @@
 					item.ingreso = undefined;
 				}
 				item.descripcionFondoFijoCajaChica = Util.validateCombo( this.cmbDescription ) as DescripcionFondoFijoCajaChica;
-				item.entrega = Util.validateEmpty( this.txtDeliver.text );
+				item.entrega = Util.validateCombo( this.cmbDeliver ) as Colaborador;
 				item.colaborador = Util.validateCombo( this.cmbReceiver ) as Colaborador;
 				item.comentariosMoviemientoFondoFijoCajaChica = this.comments.getCommentsAsInWith("model.ComentarioContabilidad","model.ComentarioMovimientoFondoFijoCajaChica","comentarioContabilidad");
 				return item;
@@ -153,7 +157,8 @@
 			{
 				var value:Boolean = true;
 				value &&= this.validators.validarFormulario();
-				value &&= !(this.cmbReceiver.selectedItem == null)
+				value &&= !(this.cmbDeliver.selectedItem == null);
+				value &&= !(this.cmbReceiver.selectedItem == null);
 				return value;
 			}
 			
@@ -170,7 +175,6 @@
 			{
 				this.validators = new InicializaValidadoresEtiquetas();
 				validators.crearValidadorRestrictor("generic",ValidadorCadenaCualquierCaracter.nombre, 0, 255);
-				validators.setValidador(txtDeliver, "generic");
 				this.validators.crearValidadorRestrictor("genericDecimal", ValidadorDecimal.nombre, 9, 2);
 				this.validators.setValidador( this.txtImport, "genericDecimal" );
 			}
@@ -186,10 +190,11 @@
 			{
 				this.txtOpeningBalance.reset();
 				this.txtID.reset();
-				this.dtfDate.reset();
+				//this.dtfDate.reset();
+				this.txtDate.reset();
 				this.cmbOperationType.selectedIndex = 0;
 				this.cmbDescription.selectedIndex = 0;
-				this.txtDeliver.reset();
+				this.cmbDeliver.selectedIndex = 0;
 				this.cmbReceiver.selectedIndex = 0;
 				this.txtImport.reset();
 				this.txtClosingBalance.reset();
@@ -292,11 +297,53 @@
 					this.cmbReceiver.selectedIndex = Util.selectedIndexFromCombo( this.cmbReceiver.dataProvider as ArrayCollection, 
 						this._item.colaborador.id);
 				}
+				this.cmbDeliver.dataProvider = data;
+				if( Util.isFill( this.cmbDeliver ) && this._item 
+					&& this._item.entrega != null ){
+					this.cmbDeliver.selectedIndex = Util.selectedIndexFromCombo( this.cmbDeliver.dataProvider as ArrayCollection, 
+						this._item.entrega.id);
+				}
 			}
 			
 			protected function btnUpdateOpeningBalance_clickHandler(event:MouseEvent):void
 			{
 				this.responseGetAll.token = this.moviemientoFondoFijoCajaChicaService.getAll();
+				this.setCurrentDate();
+			}
+			
+			private function setCurrentDate():void
+			{
+				this.txtDate.text = Util.formatDateToString( new Date() );
+			}
+			
+			protected function cmbOperationType_changeHandler(event:ListEvent):void
+			{
+				return;
+				// para aplicar esto habria que cambiar en la base de dato lo siguiente: 
+				// ALTER TABLE MoviemientoFondoFijoCajaChica ADD FOREIGN KEY fk_descripcion_fondo_fijo_caja_chica_idxfk (fk_descripcion_fondo_fijo_caja_chica) REFERENCES DescripcionFondoFijoCajaChica (id);
+				// a
+				// ALTER TABLE MoviemientoFondoFijoCajaChica ADD FOREIGN KEY fk_descripcion_pago_contable_servicio_idxfk_1 (fk_descripcion_fondo_fijo_caja_chica) REFERENCES DescripcionPagoContableServicio (id);
+				// ademas del Servicio
+				Util.removeItems( this.cmbDescription.dataProvider );
+				var idOperationType:Number = this.cmbOperationType.selectedItem.id;
+				if( isNaN( idOperationType ) ){
+					return;
+				}
+				this.responseGetDescripcionPagoContableServicio.token = this.catalogoService.getDescripcionPagoContableServicio( idOperationType );
+			}
+			
+			protected function responseGetDescripcionPagoContableServicio_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbDescription.dataProvider = data;
+				if( Util.isFill( this.cmbDescription ) && this._item 
+					&& this._item.descripcionFondoFijoCajaChica != null ){
+					this.cmbDescription.selectedIndex = Util.selectedIndexFromCombo( this.cmbDescription.dataProvider as ArrayCollection, 
+						this._item.descripcionFondoFijoCajaChica.id);
+				}
 			}
 			
 		]]>
@@ -314,12 +361,14 @@
 			<mx:Button label="Actualizar" id="btnUpdateOpeningBalance" click="btnUpdateOpeningBalance_clickHandler(event)"/>
 		</mx:FormItem>
 		<mx:FormItem label="Fecha:">
-			<components:DateField id="dtfDate" creationComplete="this.dtfDate.selectedDate = new Date()"/>
+			<!--<components:DateField id="dtfDate" creationComplete="this.dtfDate.selectedDate = new Date()"/>-->
+			<components:TextInput id="txtDate" editable="false" width="85"/>
 		</mx:FormItem>
 		<mx:FormItem label="Tipo Operación:">
 			<mx:ComboBox id="cmbOperationType"
 						 labelField="etiqueta"
-								  width="150"/>
+						 width="150"
+						 change="cmbOperationType_changeHandler(event)"/>
 		</mx:FormItem>
 		<mx:FormItem label="Descripción:">
 			<mx:ComboBox id="cmbDescription"
@@ -327,7 +376,8 @@
 						 width="150"/>
 		</mx:FormItem>
 		<mx:FormItem label="Entrega:">
-			<components:TextInput id="txtDeliver"
+			<mx:ComboBox id="cmbDeliver"
+						 labelField="nombreCompleto"
 						 width="250"/>
 		</mx:FormItem>
 		<mx:FormItem label="Recibe:">
@@ -356,6 +406,7 @@
 	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="moviemientoFondoFijoCajaChicaService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetTipoOperacion" result="responseGetTipoOperacion_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetDescripcionPagoContableServicio" result="responseGetDescripcionPagoContableServicio_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetDescripcionFondoFijoCajaChica" result="responseGetDescripcionFondoFijoCajaChica_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetColaborador" result="responseGetColaborador_resultHandler(event)"/>
 </mx:VBox>

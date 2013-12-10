@@ -321,7 +321,7 @@
 			<components:DateField id="dtfPurchaseOrderDate"/>
 		</mx:FormItem>
 		<mx:FormHeading label="Validación del Costo"/>
-		<mx:FormItem label="Costo de Orden Compra:">
+		<mx:FormItem label="Costo OC Cliente:">
 			<components:TextInput id="txtPurchaseOrderCost" width="100"
 								  textAlign="right"/>
 		</mx:FormItem>

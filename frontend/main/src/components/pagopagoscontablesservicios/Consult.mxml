@@ -143,7 +143,6 @@
 								   />
 				<mx:DataGridColumn id="dtgPaymentReference" headerText="{'Referencia\nAbono'}"
 								   dataField="referenciaAbono"
-								   textAlign="right"
 								   width="120"
 								   />
 			</mx:columns>

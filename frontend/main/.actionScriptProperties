@@ -21,8 +21,11 @@
     <application path="index.mxml"/>
   </applications>
   <modules>
+  <!--
   	<module application="src/index.mxml" destPath="modules/Login.swf" optimize="true" sourcePath="src/modules/Login.mxml"/>
     <module application="src/index.mxml" destPath="modules/Clientes.swf" optimize="true" sourcePath="src/modules/Clientes.mxml"/>
+    -->
+    <!--
     <module application="src/index.mxml" destPath="modules/Productos.swf" optimize="true" sourcePath="src/modules/Productos.mxml"/>
     <module application="src/index.mxml" destPath="modules/Usuarios.swf" optimize="true" sourcePath="src/modules/Usuarios.mxml"/>
   	<module application="src/index.mxml" destPath="modules/ProyectosPadres.swf" optimize="true" sourcePath="src/modules/ProyectosPadres.mxml"/>
@@ -67,7 +70,9 @@
     <module application="src/index.mxml" destPath="modules/PagoViaticos.swf" optimize="true" sourcePath="src/modules/PagoViaticos.mxml"/>
     <module application="src/index.mxml" destPath="modules/PagoPagosContablesServicios.swf" optimize="true" sourcePath="src/modules/PagoPagosContablesServicios.mxml"/>
     <module application="src/index.mxml" destPath="modules/OtrasOperacionesFinancieras.swf" optimize="true" sourcePath="src/modules/OtrasOperacionesFinancieras.mxml"/>
+    -->
   	<module application="src/index.mxml" destPath="modules/ReclutamientoSolicitudEmpleo.swf" optimize="true" sourcePath="src/modules/ReclutamientoSolicitudEmpleo.mxml"/>
+    <!--
     <module application="src/index.mxml" destPath="modules/Seleccion.swf" optimize="true" sourcePath="src/modules/Seleccion.mxml"/>
 	<module application="src/index.mxml" destPath="modules/Contratacion.swf" optimize="true" sourcePath="src/modules/Contratacion.mxml"/>
     <module application="src/index.mxml" destPath="modules/AdministracionColaborador.swf" optimize="true" sourcePath="src/modules/AdministracionColaborador.mxml"/>
@@ -83,6 +88,7 @@
     <module application="src/index.mxml" destPath="modules/SistemasGestion.swf" optimize="true" sourcePath="src/modules/SistemasGestion.mxml"/>
     <module application="src/index.mxml" destPath="modules/GraficaEvaluacionFacturacionProyectosConectel.swf" optimize="true" sourcePath="src/modules/GraficaEvaluacionFacturacionProyectosConectel.mxml"/>
     <module application="src/index.mxml" destPath="modules/Notificaciones.swf" optimize="true" sourcePath="src/modules/Notificaciones.mxml"/>
+    -->
   </modules>
   <buildCSSFiles/>
   <flashCatalyst validateFlashCatalystCompatibility="false"/>

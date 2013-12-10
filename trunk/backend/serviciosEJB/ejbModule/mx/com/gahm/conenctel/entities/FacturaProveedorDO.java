@@ -72,6 +72,9 @@ public class FacturaProveedorDO implements Serializable{
 	@JoinColumn(name = "fk_orden_compra_maquilado", nullable = false)
 	private OrdenCompraMaquiladoDO ordenCompraMaquilado;
 
+	@Column(name = "cantidad", nullable = false)
+	private Double cantidad;
+	
 	@Column(name = "numero_factura", nullable = false)
 	private String numeroFactura;
 	
@@ -98,7 +101,8 @@ public class FacturaProveedorDO implements Serializable{
 			ProveedorCalificadoDO proveedorCalificado,
 			OrdenCompraDO ordenCompra,
 			ProveedorMaquiladorDO proveedorMaquilador,
-			OrdenCompraMaquiladoDO ordenCompraMaquilado, String numeroFactura,
+			OrdenCompraMaquiladoDO ordenCompraMaquilado, 
+			Double cantidad, String numeroFactura,
 			Date fechaRevision, Date fechaPago) {
 		super();
 		this.id = id;
@@ -110,6 +114,7 @@ public class FacturaProveedorDO implements Serializable{
 		this.ordenCompra = ordenCompra;
 		this.proveedorMaquilador = proveedorMaquilador;
 		this.ordenCompraMaquilado = ordenCompraMaquilado;
+		this.cantidad = cantidad;
 		this.numeroFactura = numeroFactura;
 		this.fechaRevision = fechaRevision;
 		this.fechaPago = fechaPago;
@@ -240,6 +245,14 @@ public class FacturaProveedorDO implements Serializable{
 	 */
 	public void setOrdenCompraMaquilado(OrdenCompraMaquiladoDO ordenCompraMaquilado) {
 		this.ordenCompraMaquilado = ordenCompraMaquilado;
+	}
+
+	public Double getCantidad() {
+		return cantidad;
+	}
+
+	public void setCantidad(Double cantidad) {
+		this.cantidad = cantidad;
 	}
 
 	/**

@@ -44,7 +44,9 @@ public class RequisicionCompraService  implements IRequisicionCompraService{
 		RequisicionCompraDO requisicion =null;
 		for (Integer id : idsItems) {
 			requisicion = entityManager.find(RequisicionCompraDO.class, id);
-			//deletePartidas(requisicion.getPartidasRequisicionCompra());
+			this.deleteComentariosRequisicion(requisicion);
+			this.deleteSolicitantesRequisicion(requisicion);
+			this.deletePartidas(requisicion);
 			entityManager.remove(requisicion);
 		}
 	}

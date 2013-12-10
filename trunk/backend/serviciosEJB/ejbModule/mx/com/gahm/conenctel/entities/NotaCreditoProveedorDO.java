@@ -39,6 +39,9 @@ public class NotaCreditoProveedorDO implements Serializable {
 	@Column(name = "folio", nullable = false)
 	private String folio;
 	
+	@Column(name = "factura")
+	private String factura;
+	
 	@Column(name = "fecha", nullable = false, length = 10)
 	@Temporal(TemporalType.DATE)
 	private Date fecha;
@@ -65,13 +68,15 @@ public class NotaCreditoProveedorDO implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public NotaCreditoProveedorDO(Integer id, String folio, Date fecha,
+	public NotaCreditoProveedorDO(Integer id, String folio,
+			String factura, Date fecha,
 			Double subtotal, Double iva, Double total,
 			ProveedorCalificadoDO proveedorCalificado,
 			ProveedorMaquiladorDO proveedorMaquilador) {
 		super();
 		this.id = id;
 		this.folio = folio;
+		this.factura = factura;
 		this.fecha = fecha;
 		this.subtotal = subtotal;
 		this.iva = iva;
@@ -106,6 +111,14 @@ public class NotaCreditoProveedorDO implements Serializable {
 	 */
 	public void setFolio(String folio) {
 		this.folio = folio;
+	}
+
+	public String getFactura() {
+		return factura;
+	}
+
+	public void setFactura(String factura) {
+		this.factura = factura;
 	}
 
 	/**

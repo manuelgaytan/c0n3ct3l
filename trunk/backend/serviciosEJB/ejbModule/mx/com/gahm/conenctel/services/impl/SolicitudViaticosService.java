@@ -1,5 +1,6 @@
 package mx.com.gahm.conenctel.services.impl;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -7,6 +8,11 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import org.eclipse.persistence.sessions.Session;
+
+import mx.com.gahm.conenctel.entities.RequisicionCompraDO;
+import mx.com.gahm.conenctel.entities.SolicitanteRequisicionDO;
+import mx.com.gahm.conenctel.entities.SolicitanteSolicitudViaticosDO;
 import mx.com.gahm.conenctel.entities.SolicitudViaticosDO;
 import mx.com.gahm.conenctel.services.ISolicitudViaticosService;
 
@@ -29,13 +35,14 @@ public class SolicitudViaticosService implements ISolicitudViaticosService{
 
 	@Override
 	public void deleteItems(List<Integer> idsItems) {
-		SolicitudViaticosDO SolicitudViaticosDO = null;
+		SolicitudViaticosDO solicitudViaticosDO = null;
 		for (Integer id : idsItems) {
-			SolicitudViaticosDO = entityManager.find(
+			solicitudViaticosDO = entityManager.find(
 					SolicitudViaticosDO.class, id);
 
-			if (SolicitudViaticosDO != null) {
-				entityManager.remove(SolicitudViaticosDO);
+			if (solicitudViaticosDO != null) {
+				this.deleteSolicitantes(solicitudViaticosDO);
+				entityManager.remove(solicitudViaticosDO);
 			}
 		}
 
@@ -44,9 +51,10 @@ public class SolicitudViaticosService implements ISolicitudViaticosService{
 	@Override
 	public SolicitudViaticosDO save(SolicitudViaticosDO item) {
 		try {
-
+			List<SolicitanteSolicitudViaticosDO> solicitantes = item.getSolicitantes();
+			item.setSolicitantes(null);
 			entityManager.persist(item);
-
+			this.saveSolicitantes(item, solicitantes);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -54,11 +62,36 @@ public class SolicitudViaticosService implements ISolicitudViaticosService{
 		return item;
 	}
 
+	private void saveSolicitantes(SolicitudViaticosDO solicitudViaticos,List<SolicitanteSolicitudViaticosDO> solicitantes){
+		if( solicitantes == null ){
+			return;
+		}
+		for (SolicitanteSolicitudViaticosDO dato : solicitantes) {
+			dato.setSolicitudViaticos(solicitudViaticos);
+			entityManager.persist(dato);
+		}
+		
+	}
+	
+	private void deleteSolicitantes(SolicitudViaticosDO solicitudViaticos ){
+		SolicitudViaticosDO item = entityManager.find(SolicitudViaticosDO.class, solicitudViaticos.getId());
+		if( item == null || item.getSolicitantes() == null){
+			return;
+		}
+		for (SolicitanteSolicitudViaticosDO solicitante : item.getSolicitantes()) {
+			if(solicitante!=null){
+				entityManager.remove(solicitante);
+			}
+		}
+	}
 
 	@Override
 	public SolicitudViaticosDO update(SolicitudViaticosDO item) {
+		this.deleteSolicitantes(item);
+		List<SolicitanteSolicitudViaticosDO> solicitantes = item.getSolicitantes();
+		item.setSolicitantes(null);
 		entityManager.merge(item);
-
+		this.saveSolicitantes(item, solicitantes);
 		return item;
 	}
 
@@ -76,4 +109,22 @@ public class SolicitudViaticosService implements ISolicitudViaticosService{
 		return SolicitudViaticosDO;
 	}
 
+	@Override
+	@Deprecated
+	public long getSiguienteId(){
+		// interesante referencia: http://dev.mysql.com/doc/refman/5.0/en/innodb-locking-reads.html
+		// una opcion
+		// SELECT counter_field FROM child_codes FOR UPDATE;
+		// UPDATE child_codes SET counter_field = counter_field + 1;
+		
+		// UPDATE child_codes SET counter_field = LAST_INSERT_ID(counter_field + 1);
+		// SELECT LAST_INSERT_ID();
+		
+		//Number valor = entityManager.unwrap(Session.class).getNextSequenceNumberValue(SolicitudViaticosDO.class);
+		//return valor.longValue();
+		
+		Query q = entityManager.createNativeQuery("SELECT id FROM SolicitudViaticos FOR UPDATE");
+		Long result=(Long)q.getSingleResult();   
+		return result.longValue() + 1;
+	}
 }

@@ -168,7 +168,7 @@
 					   icon="@Embed(source='assets/images/prenomina.png')"/>
 		<mx:LinkButton label="Deducciones" id="Deducciones" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/deducciones.png')"/>
-		<mx:LinkButton label="Percepciones" id="Percepciones" click="clickMenuHandler(event)"
+		<mx:LinkButton label="Percepciones y Prestaciones" id="Percepciones" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/percepcion.png')"/>
 		<mx:LinkButton label="Entrenamiento y Desarrollo" id="EntrenamientoDesarrollo" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/entrenamiento.png')"/>

@@ -106,11 +106,11 @@
 			private function labelFunctionNombre( item:Object, column:DataGridColumn ):String{
 				var contratacion:Contratacion = item as Contratacion;
 				if( contratacion == null ||
-					contratacion.reclutamientoSolicitudEmpleo == null ||
-					contratacion.reclutamientoSolicitudEmpleo.datosGeneralesSolicitante == null ){
+					contratacion.seleccionSolicitudEmpleo == null ||
+					contratacion.seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosGeneralesSolicitante == null ){
 					return "";
 				}else{
-					var datosGenerales:DatosGeneralesSolicitante = contratacion.reclutamientoSolicitudEmpleo.datosGeneralesSolicitante;
+					var datosGenerales:DatosGeneralesSolicitante = contratacion.seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosGeneralesSolicitante;
 					return datosGenerales.apellidoPaterno + " " + datosGenerales.nombres;
 				}
 			}
@@ -133,7 +133,7 @@
 								   labelFunction="labelFunctionNombre"
 								   width="250"/>
 				<mx:DataGridColumn id="dtgPosition" headerText="{'Puesto'}"
-								   dataField="reclutamientoSolicitudEmpleo.datosPrincipalesSolicitante.puestoSolicitado"
+								   dataField="seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosPrincipalesSolicitante.puestoSolicitado"
 								   width="120"/>
 				<mx:DataGridColumn id="dtgInitialSalary" headerText="{'Sueldo Inicial'}"
 								   dataField="sueldoInicial"

@@ -106,11 +106,13 @@
 			private function labelFunctionNombre( item:Object, column:DataGridColumn ):String{
 				var registroPercepcion:RegistroPercepcion = item as RegistroPercepcion;
 				if( registroPercepcion == null ||
-					registroPercepcion.contratacion.reclutamientoSolicitudEmpleo == null ||
-					registroPercepcion.contratacion.reclutamientoSolicitudEmpleo.datosGeneralesSolicitante == null ){
+					registroPercepcion.contratacion == null ||
+					registroPercepcion.contratacion.seleccionSolicitudEmpleo == null ||
+					registroPercepcion.contratacion.seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo == null ||
+					registroPercepcion.contratacion.seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosGeneralesSolicitante == null ){
 					return "";
 				}else{
-					var datosGenerales:DatosGeneralesSolicitante = registroPercepcion.contratacion.reclutamientoSolicitudEmpleo.datosGeneralesSolicitante;
+					var datosGenerales:DatosGeneralesSolicitante = registroPercepcion.contratacion.seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosGeneralesSolicitante;
 					return datosGenerales.apellidoPaterno + " " + datosGenerales.nombres;
 				}
 			}
@@ -133,7 +135,7 @@
 								   labelFunction="labelFunctionNombre"
 								   width="250"/>
 				<mx:DataGridColumn id="dtgPosition" headerText="{'Puesto'}"
-								   dataField="contratacion.reclutamientoSolicitudEmpleo.datosPrincipalesSolicitante.puestoSolicitado"
+								   dataField="contratacion.seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosPrincipalesSolicitante.puestoSolicitado"
 								   width="120"/>
 				<mx:DataGridColumn id="dtgPerception" headerText="{'Percepción'}"
 								   dataField="percepcion.percepcion"
@@ -142,7 +144,7 @@
 								   dataField="montoAportacion"
 								   textAlign="right"
 								   width="70"/>
-				<mx:DataGridColumn id="dtgVariation" headerText="{'Variación'}"
+				<mx:DataGridColumn id="dtgVariation" headerText="{'Vacaciones'}"
 								   dataField="variacion.tipo"
 								   width="70"
 								   />

@@ -67,7 +67,11 @@
 			
 			public function executeQuery():void
 			{
-				this.responseGetAll.token = this.reclutamientoSolicitudEmpleoService.getAll();
+				if( this._readMode ){
+					this.responseGetAll.token = this.reclutamientoSolicitudEmpleoService.getAllSeleccionFase();
+				}else{
+					this.responseGetAll.token = this.reclutamientoSolicitudEmpleoService.getAll();
+				}
 			}
 			
 			private function labelFunctionDate(object:Object, column:DataGridColumn):String{

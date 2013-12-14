@@ -16,6 +16,7 @@
 			import mx.controls.Alert;
 			import mx.events.CloseEvent;
 			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
 			import mx.rpc.events.FaultEvent;
 			import mx.rpc.events.ResultEvent;
 			
@@ -34,6 +35,12 @@
 			}
 			
 			public function set enabledComponents(value:Boolean):void{
+				if( this.txtID != null ){
+					this.txtID.enabled = value;
+				}
+				this.dtfExpire.enabled = value;
+				this.txtLicenseNumber.enabled = value;
+				this.cmbLicenseType.enabled = value;				
 			}
 			
 			protected function creationCompleteHandler(event:FlexEvent):void
@@ -41,10 +48,18 @@
 				this.modeValidation();
 				this.initializeValidators();
 				this.fillCombos();
+				this.initCmbLicense();
+			}
+			
+			private function initCmbLicense():void{
+				this.cmbLicense.selectedIndex = 0;
+				this.cmbLicense.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
 			}
 			
 			public function set driverLicense(value:Licencia):void{
 				if( value == null ){
+					this.cmbLicense.selectedIndex = 1;
+					this.cmbLicense.dispatchEvent( new ListEvent(ListEvent.CHANGE) );
 					return;
 				}
 				this.cleanForm();
@@ -55,9 +70,13 @@
 			private function setItem():void
 			{
 				if( this._item == null ){
+					this.cmbLicense.selectedIndex = 1;
+					this.cmbLicense.dispatchEvent( new ListEvent(ListEvent.CHANGE) );
 					return;
 				}
 				this.txtID.text = this._item.id.toString();
+				this.cmbLicense.selectedIndex = 0;
+				this.cmbLicense.dispatchEvent( new ListEvent(ListEvent.CHANGE) );
 				this.dtfExpire.selectedDate = this._item.vigencia;
 				this.txtLicenseNumber.text = this._item.numeroLicencia;
 				if( Util.isFill( this.cmbLicenseType ) && this._item != null && this._item.tipoLicencia != null ){
@@ -68,6 +87,9 @@
 			
 			public function getDriverLicense():Licencia{
 				var driverLicense:Licencia = null;
+				if( this.cmbLicense.selectedIndex == 1 ){
+					return driverLicense;
+				}
 				if( this.mode == Constants.REGISTER_MODE ){
 					driverLicense = new Licencia();
 				}else{
@@ -126,17 +148,27 @@
 				if( data == null ){
 					return;
 				}
-				this.cmbLicenseType.dataProvider = data;
+				this.cmbLicenseType.dataProvider = Util.addEmptyCatalgo(data,"tipo");
 				if( Util.isFill( this.cmbLicenseType ) && this._item != null && this._item.tipoLicencia != null ){
 					this.cmbLicenseType.selectedIndex = Util.selectedIndexFromCombo( this.cmbLicenseType.dataProvider as ArrayCollection, 
 						this._item.tipoLicencia.id);
 				}
 			}
+			
+			protected function cmbLicense_changeHandler(event:ListEvent):void
+			{
+				var hasLicense:Boolean = this.cmbLicense.selectedIndex == 0;
+				this.enabledComponents = hasLicense;
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:FormHeading label="Datos Licencia Vehícular"/>
 	<mx:FormItem id="frmID" label="ID:" direction="horizontal">
 		<components:TextInput id="txtID" width="80" textAlign="right" editable="false"/>
+	</mx:FormItem>
+	<mx:FormItem label="Tiene Licencia:">
+		<mx:ComboBox id="cmbLicense" labelField="tipo" dataProvider="{['Sí','No']}" change="cmbLicense_changeHandler(event)"/>
 	</mx:FormItem>
 	<mx:FormItem label="Vigencia:">
 		<components:DateField id="dtfExpire"/>

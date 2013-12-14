@@ -60,8 +60,8 @@
 				this.txtID.text = this._item.id.toString();
 				this.dtfRequestDate.selectedDate = this._item.fechaSolicitud;
 				this.txtPositionRequested.text = this._item.puestoSolicitado;
-				this.txtRequestedSalary.text = this._item.sueldoSolicitado.toString();
-				this.txtEmploymentGoal.text = this._item.objetivoLaboral.toString();
+				this.txtRequestedSalary.text = Util.numberToString( this._item.sueldoSolicitado, true);
+				this.txtEmploymentGoal.text = this._item.objetivoLaboral;
 			}
 			
 			public function getMainData():DatosPrincipalesSolicitante{

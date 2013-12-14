@@ -28,6 +28,7 @@
 			import mx.events.CalendarLayoutChangeEvent;
 			import mx.events.CloseEvent;
 			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
 			import mx.rpc.events.FaultEvent;
 			import mx.rpc.events.ResultEvent;
 			
@@ -81,7 +82,7 @@
 				this.txtName.text = this._item.nombres;
 				this.dtfBirthdayDate.selectedDate = this._item.fechaNacimiento;
 				this.txtBirthdayPlace.text = this._item.lugarNacimiento;
-				this.txtAge.text = this._item.edad.toString();
+				this.txtAge.text = Util.numberToString( this._item.edad, true);
 				if( Util.isFill( this.cmbNationality ) && this._item 
 					&& this._item.nacionalidad != null ){
 					this.cmbNationality.selectedIndex = Util.selectedIndexFromCombo( this.cmbNationality.dataProvider as ArrayCollection, 
@@ -148,7 +149,11 @@
 				generalInformation.edad = Util.stringToNumber( this.txtAge.text );
 				generalInformation.nacionalidad = Util.validateCombo( this.cmbNationality ) as Nacionalidad;
 				generalInformation.identificacion = Util.validateCombo( this.cmbID ) as Identificacion;
-				generalInformation.documentacionExtranjeros = Util.validateCombo( this.cmbForeignDocumentation ) as DocumentacionExtranjeros;
+				if( this.isForeign() ){
+					generalInformation.documentacionExtranjeros = Util.validateCombo( this.cmbForeignDocumentation ) as DocumentacionExtranjeros;
+				}else{
+					generalInformation.documentacionExtranjeros = null;
+				}
 				generalInformation.estadoCivil = Util.validateCombo( this.cmbMaritalStatus ) as EstadoCivil;
 				generalInformation.sexo = Util.validateCombo( this.cmbSex ) as Sexo;
 				generalInformation.direccionSolicitante = this.requestAddress.getRequestAddress();
@@ -184,7 +189,7 @@
 				value &&= this.validators.validarFormulario();
 				value &&= this.dtfBirthdayDate.selectedDate != null;
 				value &&= this.requestAddress.validations();
-				value &&= this.driverLicense.validations();
+				//value &&= this.driverLicense.validations(); Se remueven los campos de licencia para que no sean obligatorios.
 				return value;
 			}
 			
@@ -195,6 +200,11 @@
 				}
 				if( this.mode == Constants.UPDATE_MODE ){
 				}
+				this.disableCmbForeignDocumentation();	
+			}
+			
+			private function disableCmbForeignDocumentation():void{
+				this.cmbForeignDocumentation.enabled = false;
 			}
 			
 			private function initializeValidators():void
@@ -251,6 +261,7 @@
 				this.cmbHealthState.selectedIndex = 0;
 				this.txtChronicDisease.reset();
 				this.cmbHobby.selectedIndex = 0;
+				this.disableCmbForeignDocumentation();
 			}
 			
 			protected function responseUpdate_resultHandler(event:ResultEvent):void
@@ -395,6 +406,29 @@
 				this.txtAge.text = years.toString();
 			}
 			
+			protected function cmbNationality_changeHandler(event:ListEvent):void
+			{
+				if( event == null ){
+					return;
+				}
+				if( this.isForeign() ){
+					this.cmbForeignDocumentation.enabled = true;
+				}else{
+					this.disableCmbForeignDocumentation();
+				}
+			}
+			
+			private function isForeign():Boolean{
+				var value:Boolean = false;
+				var nationalitySelected:Nacionalidad = this.cmbNationality.selectedItem as Nacionalidad;
+				if( nationalitySelected == null ){
+					return value;
+				}
+				if( nationalitySelected.id == Nacionalidad.ID_EXTRANJERO ){
+					value = true;
+				}
+				return value;
+			}
 		]]>
 	</mx:Script>
 	<mx:FormItem id="frmID" label="ID:" direction="horizontal">
@@ -421,7 +455,8 @@
 	</mx:FormItem>
 	<mx:FormItem label="Nacionalidad:">
 		<mx:ComboBox id="cmbNationality" width="200"
-					 labelField="nacionalidad"/>
+					 labelField="nacionalidad"
+					 change="cmbNationality_changeHandler(event)"/>
 	</mx:FormItem>
 	<mx:FormItem label="Identificación:">
 		<mx:ComboBox id="cmbID" width="200"

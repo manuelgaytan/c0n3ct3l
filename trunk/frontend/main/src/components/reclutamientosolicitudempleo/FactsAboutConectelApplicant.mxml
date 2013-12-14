@@ -170,7 +170,7 @@
 	<mx:FormItem label="Puede Viajar:">
 		<mx:CheckBox id="chkTripAvailable"/>
 	</mx:FormItem>
-	<mx:FormItem label="Fecha Abono:">
+	<mx:FormItem label="Fecha en que podría Presentarse:">
 		<components:DateField id="dtfDateWork"
 							  creationComplete="this.dtfDateWork.selectedDate = new Date()"/>
 	</mx:FormItem>

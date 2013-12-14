@@ -118,10 +118,10 @@ package model
 			return value;
 		}
 		
-		public static function numberToString(number:*):String
+		public static function numberToString(number:*, empty:Boolean = false):String
 		{
 			if( number == undefined || number == null || isNaN( number ) ){
-				return null;
+				return empty ? "" : null;
 			}
 			return number.toString();
 		}

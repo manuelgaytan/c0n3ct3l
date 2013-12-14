@@ -33,6 +33,7 @@
 			import model.ProveedorMaquilador;
 			import model.Proyecto;
 			import model.ReclutamientoSolicitudEmpleo;
+			import model.SeleccionReclutamiento;
 			import model.Suspension;
 			import model.TipoCandidato;
 			import model.TipoColaborador;
@@ -44,7 +45,6 @@
 			import mx.collections.ArrayCollection;
 			import mx.com.gahm.componentes.validadores.Constantes;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
-			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
 			import mx.com.gahm.componentes.validadores.ValidadorEntero;
@@ -95,8 +95,8 @@
 					return;
 				}
 				this.txtID.text = this._item.id.toString();
-				this.recruitmentJobApplication.datagrid.dataProvider = Util.asArrayCollection( this._item.reclutamientoSolicitudEmpleo );
-				this.recruitmentJobApplication.datagrid.selectedIndex = 0;
+				this.selectionJobApplication.datagrid.dataProvider = Util.asArrayCollection( this._item.seleccionSolicitudEmpleo );
+				this.selectionJobApplication.datagrid.selectedIndex = 0;
 				this.txtInitialSalary.text = this._item.sueldoInicial.toString();
 				this.recruitmentDocuments.recruitmentDocuments = this._item.documentosContratacion;
 				this.dtfDateIssueMedicalCertificate.selectedDate = this._item.fechaExpedicionCertificadoMedico;
@@ -110,6 +110,7 @@
 					&& this._item.tipoContrato != null ){
 					this.cmbContractType.selectedIndex = Util.selectedIndexFromCombo( this.cmbContractType.dataProvider as ArrayCollection, 
 						this._item.tipoContrato.id);
+					this.cmbContractType.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
 				}
 				this.txtEventuallyContractExpiration.text = this._item.vencimientoContratoEventual;
 				this.dtfContractStartDate.selectedDate = this._item.fechaInicioContrato;
@@ -143,7 +144,7 @@
 				}else{
 					recruitment = this._item;
 				}
-				recruitment.reclutamientoSolicitudEmpleo = this.recruitmentJobApplication.datagrid.selectedItem as ReclutamientoSolicitudEmpleo;
+				recruitment.seleccionSolicitudEmpleo = this.selectionJobApplication.datagrid.selectedItem as SeleccionReclutamiento;
 				recruitment.sueldoInicial = Util.stringToNumber( this.txtInitialSalary.text );
 				recruitment.documentosContratacion = this.recruitmentDocuments.getRecruitmentDocuments();
 				recruitment.fechaExpedicionCertificadoMedico = this.dtfDateIssueMedicalCertificate.selectedDate;
@@ -204,7 +205,7 @@
 			{
 				var value:Boolean = true;
 				value &&= this.validators.validarFormulario();
-				value &&= recruitmentJobApplication.datagrid.selectedItem != null;
+				value &&= selectionJobApplication.datagrid.selectedItem != null;
 				value &&= recruitmentDocuments.validations();
 				value &&= benefits.validations();
 				value &&= dtfDateIssueMedicalCertificate.selectedDate != null;
@@ -226,7 +227,7 @@
 				this.validators = new InicializaValidadoresEtiquetas();
 				validators.crearValidadorRestrictor("generic",ValidadorCadenaCualquierCaracter.nombre, 0, 255);
 				validators.setRestrictor( this.txtReasonSuspension, "generic");
-				validators.setRestrictor( this.txtEventuallyContractExpiration, "generic");
+				validators.setValidador( this.txtEventuallyContractExpiration, "generic");
 				this.validators.crearValidadorRestrictor("genericDecimal", ValidadorDecimal.nombre, 9, 2);
 				this.validators.setValidador( this.txtInitialSalary, "genericDecimal" );
 			}
@@ -242,7 +243,7 @@
 			{
 				Util.upScroll( this );
 				this.txtID.reset();
-				this.recruitmentJobApplication.datagrid.selectedItem = false;
+				this.selectionJobApplication.datagrid.selectedItem = false;
 				this.txtInitialSalary.reset();
 				this.recruitmentDocuments.cleanForm();
 				this.dtfDateIssueMedicalCertificate.reset();
@@ -289,6 +290,7 @@
 					this.cmbContractType.selectedIndex = Util.selectedIndexFromCombo( this.cmbContractType.dataProvider as ArrayCollection, 
 						this._item.tipoContrato.id);
 				}
+				this.cmbContractType.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
 			}
 			
 			protected function responseGetSuspension_resultHandler(event:ResultEvent):void
@@ -328,6 +330,26 @@
 				if( this.mode == Constants.UPDATE_MODE ){
 				}
 			}
+			
+			protected function cmbContractType_changeHandler(event:ListEvent):void
+			{
+				var isEventual:Boolean = this.validateIsEventual();
+				if( isEventual ){
+					
+				}else{
+					this.txtEventuallyContractExpiration.text = "";
+				}
+				this.txtEventuallyContractExpiration.enabled = isEventual;
+			}
+			
+			private function validateIsEventual():Boolean{
+				var contractType:TipoContrato = this.cmbContractType.selectedItem as TipoContrato;
+				if( contractType == null ){
+					return false;
+				}
+				return ( contractType.id == TipoContrato.ID_EVENTUAL );
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -343,8 +365,8 @@
 			<components:TextInput id="txtID" width="80" textAlign="right"
 								  editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Solicitud Empleo:"/>
-		<reclutamientosolicitudempleo:Consult id="recruitmentJobApplication" readMode="true"/>
+		<mx:FormItem label="Selección:"/>
+		<seleccion:Consult id="selectionJobApplication" readMode="true"/>
 		<mx:FormItem label="Sueldo Inicial:">
 			<components:TextInput id="txtInitialSalary" textAlign="right"/>
 		</mx:FormItem>
@@ -361,7 +383,7 @@
 		</mx:FormItem>
 		<mx:FormItem label="Tipo de Contrato:">
 			<mx:ComboBox id="cmbContractType" width="200"
-						 labelField="tipo"/>
+						 labelField="tipo" change="cmbContractType_changeHandler(event)"/>
 		</mx:FormItem>
 		<mx:FormItem label="Vencimiento del Contrato Eventual:">
 			<components:TextInput id="txtEventuallyContractExpiration"/>

@@ -73,7 +73,8 @@
 				this.txtID.text = this._item.id.toString();
 				this.recruitmentConsult.datagrid.dataProvider = Util.asArrayCollection( this._item.contratacion );
 				this.recruitmentConsult.datagrid.selectedIndex = 0;
-				this.dtfIncidenceDate.selectedDate = this._item.fechaIncidencia;
+				this.dtfInitialIncidenceDate.selectedDate = this._item.fechaIncidenciaInicial;
+				this.dtfFinalIncidenceDate.selectedDate = this._item.fechaIncidenciaFinal;
 				if( Util.isFill( this.cmbIncidenceClass ) && this._item 
 					&& this._item.claseIncidencia != null ){
 					this.cmbIncidenceClass.selectedIndex = Util.selectedIndexFromCombo( this.cmbIncidenceClass.dataProvider as ArrayCollection, 
@@ -96,7 +97,8 @@
 					prenomina = this._item;
 				}
 				prenomina.contratacion = this.recruitmentConsult.datagrid.selectedItem as Contratacion;
-				prenomina.fechaIncidencia = this.dtfIncidenceDate.selectedDate;
+				prenomina.fechaIncidenciaInicial = this.dtfInitialIncidenceDate.selectedDate;
+				prenomina.fechaIncidenciaFinal = this.dtfFinalIncidenceDate.selectedDate;
 				prenomina.claseIncidencia = Util.validateCombo( this.cmbIncidenceClass ) as ClaseIncidencia;
 				prenomina.tipoIncapacidad = Util.validateCombo( this.cmbIncapacityType ) as TipoIncapacidad;
 				prenomina.montoImss = Util.stringToNumber( this.txtIMSSAmount.text );
@@ -145,7 +147,8 @@
 				var value:Boolean = true;
 				value &&= this.validators.validarFormulario();
 				value &&= recruitmentConsult.datagrid.selectedItem != null;
-				value &&= dtfIncidenceDate.selectedDate != null;
+				value &&= dtfInitialIncidenceDate.selectedDate != null;
+				value &&= dtfFinalIncidenceDate.selectedDate != null;
 				return value;
 			}
 			
@@ -180,7 +183,8 @@
 				Util.upScroll( this );
 				this.txtID.reset();
 				this.recruitmentConsult.datagrid.selectedItem = false;
-				this.dtfIncidenceDate.reset();
+				this.dtfInitialIncidenceDate.reset();
+				this.dtfFinalIncidenceDate.reset();
 				this.cmbIncidenceClass.selectedIndex = 0;
 				this.cmbIncapacityType.selectedIndex = 0;
 				this.txtIMSSAmount.reset();
@@ -243,11 +247,13 @@
 		</mx:FormItem>
 		<mx:FormItem label="Contratación:"/>
 		<contratacion:Consult id="recruitmentConsult" readMode="true"/>
-		<mx:FormItem label="Fecha de Incidencia:">
-			<components:DateField id="dtfIncidenceDate"/>
+		<mx:FormItem label="Fecha de Incidencia:" direction="horizontal">
+			<components:DateField id="dtfInitialIncidenceDate"/>
+			<mx:Label text="-"/>
+			<components:DateField id="dtfFinalIncidenceDate"/>
 		</mx:FormItem>
 		<mx:FormItem label="Clase de Incidencia:">
-			<mx:ComboBox id="cmbIncidenceClass" width="200"
+			<mx:ComboBox id="cmbIncidenceClass" width="300"
 						 labelField="incidencia"/>
 		</mx:FormItem>
 		<mx:FormItem label="Tipo de Incapacidad:">

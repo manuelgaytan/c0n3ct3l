@@ -5,7 +5,8 @@ package model
 	{
 		public var id:*;
 		public var contratacion:Contratacion;
-		public var fechaIncidencia:Date;
+		public var fechaIncidenciaInicial:Date;
+		public var fechaIncidenciaFinal:Date;
 		public var claseIncidencia:ClaseIncidencia;
 		public var tipoIncapacidad:TipoIncapacidad;
 		public var montoImss:Number;

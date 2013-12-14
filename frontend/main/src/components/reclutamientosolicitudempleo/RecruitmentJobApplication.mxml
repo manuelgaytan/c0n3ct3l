@@ -187,6 +187,7 @@
 				this.schoolFactsSkills.cleanForm();
 				this.lastJobApplicantData.cleanForm();
 				this.factsAboutConectelApplicant.cleanForm();
+				this.accordion.selectedIndex = 0;
 			}
 			
 			protected function responseUpdate_resultHandler(event:ResultEvent):void
@@ -218,7 +219,7 @@
 		[Event(name="creditNoteSelected", type="events.GenericEvent")]
 		[Event(name="perDiemCheckSelected", type="events.GenericEvent")]
 	</mx:Metadata>
-	<mx:Accordion width="100%" height="100%" creationPolicy="all">
+	<mx:Accordion id="accordion" width="100%" height="100%" creationPolicy="all">
 		<reclutamientosolicitudempleo:MainData id="mainData"/>
 		<reclutamientosolicitudempleo:GeneralInformation id="generalInformation"/>
 		<reclutamientosolicitudempleo:FamilyFacts id="familyFacts"/>

@@ -63,8 +63,8 @@
 				this.txtPhones.text = this._item.telefonos;
 				this.txtInitialPosition.text = this._item.puestoInicial;
 				this.txtLastPosition.text = this._item.puestoFinal;
-				this.txtInitialSalary.text = this._item.sueldoInicial.toString();
-				this.txtLastSalary.text = this._item.sueldoFinal.toString();
+				this.txtInitialSalary.text = Util.numberToString( this._item.sueldoInicial, true );
+				this.txtLastSalary.text = Util.numberToString( this._item.sueldoFinal, true );
 				this.txtReasonLeftJob.text = this._item.motivoSeparacion;
 				this.txtNameBossDirectly.text = this._item.nombreJefeInmediato;
 				this.txtJobDone.text = this._item.actividadesDesempenadas;
@@ -73,8 +73,8 @@
 				this.txtPhonesBefore.text = this._item.telefonosAnterior;
 				this.txtInitialPositionBefore.text = this._item.puestoInicialAnterior;
 				this.txtLastPositionBefore.text = this._item.puestoFinalAnterior;
-				this.txtInitialSalaryBefore.text = this._item.sueldoInicialAnterior.toString();
-				this.txtLastSalaryBefore.text = this._item.sueldoFinalAnterior.toString();
+				this.txtInitialSalaryBefore.text = Util.numberToString( this._item.sueldoInicialAnterior, true );
+				this.txtLastSalaryBefore.text = Util.numberToString( this._item.sueldoFinalAnterior, true )
 				this.txtReasonLeftJobBefore.text = this._item.motivoSeparacionAnterior;
 				this.txtNameBossDirectlyBefore.text = this._item.nombreJefeInmediatoAnterior;
 				this.txtJobDoneBefore.text = this._item.actividadesDesempenadasAnterior;
@@ -209,10 +209,10 @@
 		<components:TextInput id="txtPhones" width="100"/>
 	</mx:FormItem>
 	<mx:FormItem label="Puesto Inicial:">
-		<components:TextInput id="txtInitialPosition" width="100"/>
+		<components:TextInput id="txtInitialPosition" width="150"/>
 	</mx:FormItem>
 	<mx:FormItem label="Puesto Final:">
-		<components:TextInput id="txtLastPosition" width="100"/>
+		<components:TextInput id="txtLastPosition" width="150"/>
 	</mx:FormItem>
 	<mx:FormItem label="Sueldo Inicial:">
 		<components:TextInput id="txtInitialSalary" textAlign="right" width="80"/>
@@ -239,10 +239,10 @@
 		<components:TextInput id="txtPhonesBefore" width="100"/>
 	</mx:FormItem>
 	<mx:FormItem label="Puesto Inicial Anterior:">
-		<components:TextInput id="txtInitialPositionBefore" width="100"/>
+		<components:TextInput id="txtInitialPositionBefore" width="150"/>
 	</mx:FormItem>
 	<mx:FormItem label="Puesto Final Anterior:">
-		<components:TextInput id="txtLastPositionBefore" width="100"/>
+		<components:TextInput id="txtLastPositionBefore" width="150"/>
 	</mx:FormItem>
 	<mx:FormItem label="Sueldo Inicial Anterior:">
 		<components:TextInput id="txtInitialSalaryBefore" textAlign="right" width="80"/>

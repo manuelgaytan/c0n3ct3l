@@ -14,6 +14,7 @@
 			import model.Constants;
 			import model.Contratacion;
 			import model.Deduccion;
+			import model.FormaPago;
 			import model.FormaPagoPrenomina;
 			import model.RegistroDeduccion;
 			import model.TipoSancion;
@@ -22,7 +23,6 @@
 			import mx.collections.ArrayCollection;
 			import mx.com.gahm.componentes.validadores.Constantes;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
-			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
 			import mx.com.gahm.componentes.validadores.ValidadorEmail;
@@ -80,10 +80,11 @@
 					&& this._item.deduccion != null ){
 					this.cmbDeduction.selectedIndex = Util.selectedIndexFromCombo( this.cmbDeduction.dataProvider as ArrayCollection, 
 						this._item.deduccion.id);
+					this.cmbDeduction.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
 				}
-				this.txtRetards.text = this._item.retardos.toString();
+				this.txtRetards.text = Util.numberToString( this._item.retardos, true );
 				this.dtfRetardsDate.selectedDate = this._item.fechaRetardo;
-				this.txtFaults.text = this._item.faltas.toString();
+				this.txtFaults.text = Util.numberToString( this._item.faltas, true );
 				if( Util.isFill( this.cmbFaultClass ) && this._item 
 					&& this._item.clasificacionFalta != null ){
 					this.cmbFaultClass.selectedIndex = Util.selectedIndexFromCombo( this.cmbFaultClass.dataProvider as ArrayCollection, 
@@ -106,8 +107,9 @@
 					&& this._item.formaPagoPrenomina != null ){
 					this.cmbPaymentForm.selectedIndex = Util.selectedIndexFromCombo( this.cmbPaymentForm.dataProvider as ArrayCollection, 
 						this._item.formaPagoPrenomina.id);
+					this.cmbPaymentForm.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
 				}
-				this.txtPartialDiscount.text = this._item.descuentoParcial.toString();
+				this.txtPartialDiscount.text = Util.numberToString( this._item.descuentoParcial, true );
 				this.dtfInitialDate.selectedDate = this._item.fechaInicio;
 				this.dtfFinalDate.selectedDate = this._item.fechaTermino;
 			}
@@ -199,10 +201,11 @@
 				//validators.crearValidadorRestrictor("generic",ValidadorCadenaCualquierCaracter.nombre, 0, 255);
 				this.validators.crearValidadorRestrictor("genericDecimal", ValidadorDecimal.nombre, 9, 2);
 				this.validators.setValidador( this.txtTotalAmountDiscount, "genericDecimal" );
-				this.validators.setValidador( this.txtPartialDiscount, "genericDecimal" );
+				this.validators.setRestrictor( this.txtPartialDiscount, "genericDecimal" );
 				validators.crearValidadorRestrictor("genericInteger",ValidadorEntero.nombre, 5);
-				this.validators.setValidador( this.txtRetards, "genericInteger" );
-				this.validators.setValidador( this.txtFaults, "genericInteger" );
+				this.validators.setRestrictor( this.txtPartialDiscount, "genericDecimal" );
+				this.validators.setRestrictor( this.txtRetards, "genericInteger" );
+				this.validators.setRestrictor( this.txtFaults, "genericInteger" );
 			}
 			
 			protected function responseSave_resultHandler(event:ResultEvent):void
@@ -251,6 +254,7 @@
 					this.cmbDeduction.selectedIndex = Util.selectedIndexFromCombo( this.cmbDeduction.dataProvider as ArrayCollection, 
 						this._item.deduccion.id);
 				}
+				this.cmbDeduction.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
 			}
 			
 			protected function responseGetClasificacionFalta_resultHandler(event:ResultEvent):void
@@ -259,7 +263,7 @@
 				if( data == null ){
 					return;
 				}
-				this.cmbFaultClass.dataProvider = data;
+				this.cmbFaultClass.dataProvider = Util.addEmptyCatalgo(data,"tipo");
 				if( Util.isFill( this.cmbFaultClass ) && this._item 
 					&& this._item.clasificacionFalta != null ){
 					this.cmbFaultClass.selectedIndex = Util.selectedIndexFromCombo( this.cmbFaultClass.dataProvider as ArrayCollection, 
@@ -273,7 +277,7 @@
 				if( data == null ){
 					return;
 				}
-				this.cmbAllowsClass.dataProvider = data;
+				this.cmbAllowsClass.dataProvider = Util.addEmptyCatalgo(data,"tipo");
 				if( Util.isFill( this.cmbAllowsClass ) && this._item 
 					&& this._item.clasificacionPermiso != null ){
 					this.cmbAllowsClass.selectedIndex = Util.selectedIndexFromCombo( this.cmbAllowsClass.dataProvider as ArrayCollection, 
@@ -307,6 +311,7 @@
 					this.cmbPaymentForm.selectedIndex = Util.selectedIndexFromCombo( this.cmbPaymentForm.dataProvider as ArrayCollection, 
 						this._item.formaPagoPrenomina.id);
 				}
+				this.cmbPaymentForm.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
 			}
 			
 			protected function initializeHandler(event:FlexEvent):void
@@ -315,6 +320,90 @@
 				}
 				if( this.mode == Constants.UPDATE_MODE ){
 				}
+			}
+			
+			protected function cmbPaymentForm_changeHandler(event:ListEvent):void
+			{
+				var isPartialPayment:Boolean = this.validateIsPartialPayment();
+				if( isPartialPayment ){
+				}else{
+					this.txtPartialDiscount.text = "";
+				}
+				this.txtPartialDiscount.enabled = isPartialPayment;
+			}
+			
+			private function validateIsPartialPayment():Boolean{
+				var paymentForm:FormaPagoPrenomina = this.cmbPaymentForm.selectedItem as FormaPagoPrenomina;
+				if( paymentForm == null ){
+					return false;
+				}
+				return (paymentForm.id == FormaPagoPrenomina.ID_PARCIAL);
+			}
+			
+			private function validateIsRetards():Boolean{
+				var deduction:Deduccion = this.cmbDeduction.selectedItem as Deduccion;
+				if( deduction == null ){
+					return false;
+				}
+				return (deduction.id == Deduccion.ID_RETARDOS);
+			}
+			
+			private function validateIsAbsence():Boolean{
+				var deduction:Deduccion = this.cmbDeduction.selectedItem as Deduccion;
+				if( deduction == null ){
+					return false;
+				}
+				return (deduction.id == Deduccion.ID_FALTA);
+			}
+			
+			private function validateIsPermission():Boolean{
+				var deduction:Deduccion = this.cmbDeduction.selectedItem as Deduccion;
+				if( deduction == null ){
+					return false;
+				}
+				return (deduction.id == Deduccion.ID_PERMISO);
+			}
+			
+			protected function cmbDeduction_changeHandler(event:ListEvent):void
+			{
+				this.manageRetads();
+				this.manageAbsences();
+				this.managePermission();
+			}
+				
+			private function manageRetads():void{
+				var isRetards:Boolean = this.validateIsRetards();
+				if( isRetards ){
+				}else{
+					this.txtRetards.text = "";
+					this.dtfRetardsDate.selectedDate = null;
+				}
+				this.txtRetards.enabled = isRetards;
+				this.dtfRetardsDate.enabled = isRetards;
+			}
+			
+			private function manageAbsences():void{
+				var isAbsence:Boolean = this.validateIsAbsence();
+				if( isAbsence ){
+				}else{
+					this.txtFaults.text = "";
+					this.dtfFaultsDate.selectedDate = null;
+					this.cmbFaultClass.selectedIndex = 0;
+				}
+				this.txtFaults.enabled = isAbsence;
+				this.dtfFaultsDate.enabled = isAbsence;
+				this.cmbFaultClass.enabled = isAbsence;
+			}
+			
+			private function managePermission():void{
+				var isPermission:Boolean = this.validateIsPermission();
+				if( isPermission ){
+				}else{
+					this.dtfAllowsDate.selectedDate = null;
+					this.cmbAllowsClass.selectedIndex = 0;
+				}
+				this.dtfAllowsDate.enabled = isPermission;
+				this.cmbAllowsClass.enabled = isPermission;
 			}
 		]]>
 	</mx:Script>
@@ -332,7 +421,7 @@
 		<contratacion:Consult id="recruitmentConsult" readMode="true"/>
 		<mx:FormItem label="Deducción:">
 			<mx:ComboBox id="cmbDeduction" width="200"
-						 labelField="deduccion"/>
+						 labelField="deduccion" change="cmbDeduction_changeHandler(event)"/>
 		</mx:FormItem>
 		<mx:FormItem label="Retardos:">
 			<components:TextInput id="txtRetards" width="100" textAlign="right"/>
@@ -367,7 +456,7 @@
 		</mx:FormItem>
 		<mx:FormItem label="Forma de Pago:">
 			<mx:ComboBox id="cmbPaymentForm" width="200"
-						 labelField="tipo"/>
+						 labelField="tipo" change="cmbPaymentForm_changeHandler(event)"/>
 		</mx:FormItem>
 		<mx:FormItem label="Descuento Parcial:">
 			<components:TextInput id="txtPartialDiscount" width="150"

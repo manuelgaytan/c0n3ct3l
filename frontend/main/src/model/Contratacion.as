@@ -4,7 +4,7 @@ package model
 	public class Contratacion
 	{
 		public var id:*;
-		public var reclutamientoSolicitudEmpleo:ReclutamientoSolicitudEmpleo;
+		public var seleccionSolicitudEmpleo:SeleccionReclutamiento;
 		public var documentosContratacion:DocumentosContratacion;
 		public var colaborador:Colaborador;
 		public var sueldoInicial:Number;

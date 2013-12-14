@@ -25,7 +25,6 @@
 			import mx.com.gahm.componentes.validadores.Constantes;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
 			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
-			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
 			import mx.com.gahm.componentes.validadores.ValidadorEmail;
 			import mx.com.gahm.componentes.validadores.ValidadorEntero;
@@ -82,6 +81,7 @@
 					&& this._item.percepcion != null ){
 					this.cmbPerception.selectedIndex = Util.selectedIndexFromCombo( this.cmbPerception.dataProvider as ArrayCollection, 
 						this._item.percepcion.id);
+					this.cmbPerception.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
 				}
 				this.txtContributionAmount.text = this._item.montoAportacion.toString();
 				if( Util.isFill( this.cmbVariation ) && this._item 
@@ -218,6 +218,7 @@
 					this.cmbPerception.selectedIndex = Util.selectedIndexFromCombo( this.cmbPerception.dataProvider as ArrayCollection, 
 						this._item.percepcion.id);
 				}
+				this.cmbPerception.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
 			}
 			
 			protected function responseGetVariacion_resultHandler(event:ResultEvent):void
@@ -226,7 +227,7 @@
 				if( data == null ){
 					return;
 				}
-				this.cmbVariation.dataProvider = data;
+				this.cmbVariation.dataProvider = Util.addEmptyCatalgo( data, "tipo" );
 				if( Util.isFill( this.cmbVariation ) && this._item 
 					&& this._item.variacion != null ){
 					this.cmbVariation.selectedIndex = Util.selectedIndexFromCombo( this.cmbVariation.dataProvider as ArrayCollection, 
@@ -250,6 +251,32 @@
 				var item:Contratacion = event.information as Contratacion;
 				this.dtfStartContractDate.selectedDate = item.fechaInicioContrato;
 			}
+						
+			protected function cmbPerception_changeHandler(event:ListEvent):void
+			{
+				var isVacation:Boolean = this.validateIsVacation();
+				if( isVacation ){
+				}else{
+					this.cmbVariation.selectedIndex = 0;
+					this.txtCorrespondDays.text = "";
+					this.dtfInitialDate.selectedDate = null;
+					this.dtfFinalDate.selectedDate = null;
+					this.chkVacationPay.selected = false;
+				}
+				this.cmbVariation.enabled = isVacation;
+				this.txtCorrespondDays.enabled = isVacation;
+				this.dtfInitialDate.enabled = isVacation;
+				this.dtfFinalDate.enabled = isVacation;
+				this.chkVacationPay.enabled = isVacation;
+			}
+			
+			private function validateIsVacation():Boolean{
+				var perception:Percepcion = this.cmbPerception.selectedItem as Percepcion;
+				if( perception == null ){
+					return false;
+				}
+				return (perception.id == Percepcion.ID_VACACIONES);
+			}
 			
 		]]>
 	</mx:Script>
@@ -267,13 +294,13 @@
 		<contratacion:Consult id="recruitmentConsult" readMode="true" itemDetail="recruitmentConsult_itemDetailHandler(event)"/>
 		<mx:FormItem label="Percepción:">
 			<mx:ComboBox id="cmbPerception" width="200"
-						 labelField="percepcion"/>
+						 labelField="percepcion" change="cmbPerception_changeHandler(event)"/>
 		</mx:FormItem>
 		<mx:FormItem label="Monto Aportación:">
 			<components:TextInput id="txtContributionAmount" width="150"
 								  textAlign="right"/>
 		</mx:FormItem>
-		<mx:FormItem label="Variaciones:">
+		<mx:FormItem label="Vacaciones:">
 			<mx:ComboBox id="cmbVariation" width="200"
 						 labelField="tipo"/>
 		</mx:FormItem>

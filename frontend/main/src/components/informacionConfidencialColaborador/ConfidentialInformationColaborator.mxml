@@ -283,7 +283,7 @@
 		<mx:FormItem label="Foto:">
 			<components:FlatDeliver id="fltDlvPhoto" limitedTo="1"/>
 		</mx:FormItem>
-		<mx:FormItem label="Sueldo:">
+		<mx:FormItem label="Sueldo Posterior:">
 			<components:TextInput id="txtSalary" textAlign="right"/>
 		</mx:FormItem>
 		<mx:FormItem label="I.M.S.S.:">

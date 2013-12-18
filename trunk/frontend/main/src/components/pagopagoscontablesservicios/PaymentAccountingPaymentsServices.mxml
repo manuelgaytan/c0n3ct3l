@@ -267,14 +267,14 @@
 			<mx:ComboBox id="cmbConectelBank" width="200"
 						 labelField="banco"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha Abono:">
+		<mx:FormItem label="Fecha:">
 			<components:DateField id="dtfPaymentDate"
 								  creationComplete="this.dtfPaymentDate.selectedDate = new Date()"/>
 		</mx:FormItem>
 		<mx:FormItem label="Monto:">
 			<components:TextInput id="txtAmount" textAlign="right" width="100"/>
 		</mx:FormItem>
-		<mx:FormItem label="Referencia Abono:">
+		<mx:FormItem label="Referencia:">
 			<components:TextInput id="txtPaymentReference" textAlign="right" width="160"/>
 		</mx:FormItem>
 		<components:Comments id="comments"/>

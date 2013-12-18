@@ -5,6 +5,10 @@ package model
 	{
 		public var id:*;
 		public var contratacion:Contratacion;
+		public var induccion1:Boolean;
+		public var induccion2:Boolean;
+		public var induccion3:Boolean;
+		public var induccion4:Boolean;
 		public var fechaEnc:Date;
 		public var resultadoEnc:*;
 		public var enc:Boolean;

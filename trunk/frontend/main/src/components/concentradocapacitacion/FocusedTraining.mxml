@@ -21,7 +21,6 @@
 			import mx.com.gahm.componentes.validadores.Constantes;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
 			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
-			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
 			import mx.com.gahm.componentes.validadores.ValidadorEmail;
 			import mx.com.gahm.componentes.validadores.ValidadorEntero;
@@ -92,8 +91,10 @@
 				this.dtfDateTrainingEnd.selectedDate = this._item.fechaTerminoCapacitacion;
 				this.txtTrainingPlace.text = this._item.lugarCapacitacion;
 				this.txtTrainerName.text = this._item.nombreInstructor;
-				this.txtTrainingGrade.text = this._item.calificacion.toString();
+				this.txtTrainingGrade.text = Util.numberToString( this._item.calificacion, true );
 				this.fltDlvEvidence.delivers = Util.asArrayCollection( this._item.constancia );
+				this.cmbTrainingStatus.selectedIndex = ( this._item.aprobado ) ? 0 : 1;
+				this.txtTraceResult.text = this._item.resultadoSeguimiento;
 			}
 			
 			private function getFocusedTraining():ConcentradoCapacitacion{
@@ -113,6 +114,8 @@
 				focusedTraining.nombreInstructor = Util.validateEmpty( this.txtTrainerName.text );
 				focusedTraining.calificacion = Util.validateEmpty( this.txtTrainingGrade.text );
 				focusedTraining.constancia = this.fltDlvEvidence.firstDeliver as String;
+				focusedTraining.aprobado = (this.cmbTrainingStatus.selectedIndex == 0 );
+				focusedTraining.resultadoSeguimiento = Util.validateEmpty( this.txtTraceResult.text );
 				return focusedTraining;
 			}
 			
@@ -208,6 +211,8 @@
 				this.txtTrainerName.reset();
 				this.txtTrainingGrade.reset();
 				this.fltDlvEvidence.reset();
+				this.cmbTrainingStatus.selectedIndex = 0;
+				this.txtTraceResult.reset();
 			}
 			
 			protected function responseUpdate_resultHandler(event:ResultEvent):void
@@ -307,6 +312,12 @@
 				this.responseGetContratacionByIdColaborador.token = this.contratacionService.getContratacionByIdColaborador(idColaborator);
 			}
 			
+			protected function cmbTrainingStatus_changeHandler(event:ListEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -360,6 +371,12 @@
 		</mx:FormItem>
 		<mx:FormItem label="Constancia/Evidencia:">
 			<components:FlatDeliver id="fltDlvEvidence" limitedTo="1"/>
+		</mx:FormItem>
+		<mx:FormItem label="Estatus de la Capacitación:">
+			<mx:ComboBox id="cmbTrainingStatus" dataProvider="{['Aprobado','No Aprobado']}" change="cmbTrainingStatus_changeHandler(event)"/>
+		</mx:FormItem>
+		<mx:FormItem label="Resultado de Seguimiento:">
+			<components:TextInput id="txtTraceResult" width="300"/>
 		</mx:FormItem>
 		<mx:FormItem direction="horizontal">
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>

@@ -12,13 +12,13 @@ package model
 		public var medioTransporte:MedioTransporte;
 		public var numeroVehiculo:String;
 		public var kilometrajeInicial:String;
-		public var combustible:Number;
-		public var casetas:Number;
-		public var pasajes:Number;
-		public var hospedaje:Number;
-		public var alimentos:Number;
-		public var materialesHerramienta:Number;
-		public var otros:Number;
+		public var combustible:*;
+		public var casetas:*;
+		public var pasajes:*;
+		public var hospedaje:*;
+		public var alimentos:*;
+		public var materialesHerramienta:*;
+		public var otros:*;
 		public var totalSolicitado:Number;
 	}
 }

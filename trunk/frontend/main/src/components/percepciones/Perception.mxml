@@ -83,13 +83,13 @@
 						this._item.percepcion.id);
 					this.cmbPerception.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
 				}
-				this.txtContributionAmount.text = this._item.montoAportacion.toString();
+				this.txtContributionAmount.text = Util.numberToString( this._item.montoAportacion, true);
 				if( Util.isFill( this.cmbVariation ) && this._item 
 					&& this._item.variacion != null ){
 					this.cmbVariation.selectedIndex = Util.selectedIndexFromCombo( this.cmbVariation.dataProvider as ArrayCollection, 
 						this._item.variacion.id);
 				}
-				this.txtCorrespondDays.text = this._item.diasCorrespondientes.toString();
+				this.txtCorrespondDays.text = Util.numberToString( this._item.diasCorrespondientes, true);
 				this.dtfStartContractDate.selectedDate = this._item.contratacion.fechaInicioContrato;
 				this.dtfInitialDate.selectedDate = this._item.fechaInicio;
 				this.dtfFinalDate.selectedDate = this._item.fechaTermino;
@@ -172,7 +172,7 @@
 				this.validators = new InicializaValidadoresEtiquetas();
 				//validators.crearValidadorRestrictor("generic",ValidadorCadenaCualquierCaracter.nombre, 0, 255);
 				this.validators.crearValidadorRestrictor("genericDecimal", ValidadorDecimal.nombre, 9, 2);
-				this.validators.setValidador( this.txtContributionAmount, "genericDecimal" );
+				this.validators.setRestrictor( this.txtContributionAmount, "genericDecimal" );
 				validators.crearValidadorRestrictor("genericInteger",ValidadorEntero.nombre, 5);
 				this.validators.setRestrictor( this.txtCorrespondDays, "genericInteger" );
 			}

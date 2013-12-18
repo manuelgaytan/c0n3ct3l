@@ -3,6 +3,8 @@
 		 creationComplete="creationCompleteHandler(event)">
 	<mx:Script>
 		<![CDATA[
+			import events.GenericEvent;
+			
 			import model.AcuerdoMinuta;
 			import model.Colaborador;
 			import model.ResponsableMinuta;
@@ -70,7 +72,24 @@
 				entry.acuerdo = Util.validateEmpty( this.txtAgreement.text );
 				entry.fechaCompromiso = this.dtfDate.selectedDate;
 				entry.responsableElaboracion = Util.validateEmpty( this.txtResponsibleElaboration.text );
+				entry.fechaCumplimiento = this.dtfAccomplishmentDate.selectedDate;
 				return entry;
+			}
+			
+			private function setItem(item:AcuerdoMinuta):void{
+				if( item == null ){
+					return;
+				}
+				if( Util.isFill( this.cmbResponsible )  && 
+					item != null &&
+					item.responsableMinuta != null ){
+					this.cmbResponsible.selectedIndex = Util.selectedIndexFromCombo( this.cmbResponsible.dataProvider as ArrayCollection, item.responsableMinuta.id);  
+				}
+				this.txtResponsible.text = item.responsable;
+				this.txtAgreement.text = item.acuerdo;
+				this.dtfDate.selectedDate = item.fechaCompromiso;
+				this.txtResponsibleElaboration.text = item.responsableElaboracion;
+				this.dtfAccomplishmentDate.selectedDate = item.fechaCumplimiento;
 			}
 			
 			protected function btnAddItem_clickHandler(event:MouseEvent):void
@@ -92,6 +111,7 @@
 				this.txtAgreement.reset();
 				this.dtfDate.reset();
 				this.txtResponsibleElaboration.reset();
+				this.dtfAccomplishmentDate.reset();
 			}
 			
 			protected function cmbColaboratorName_changeHandler(event:ListEvent):void
@@ -118,7 +138,18 @@
 				this.dtfDate.reset();
 				this.txtResponsibleElaboration.reset();
 				this.itemsManagement.reset();
+				this.dtfAccomplishmentDate.reset();
 			}
+			
+			protected function itemsManagement_itemSelectedHandler(event:GenericEvent):void
+			{
+				var item:AcuerdoMinuta = event.information as AcuerdoMinuta;
+				if( item == null ){
+					return;
+				}
+				this.setItem( item );
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:FormItem label="Responsable:"
@@ -142,10 +173,13 @@
 							  width="280"
 							  />
 	</mx:FormItem>
-	<mx:FormItem>
-		<mx:Button id="btnAddItem" label="Agregar Agreemente" click="btnAddItem_clickHandler(event)"/>
+	<mx:FormItem label="Fecha Cumplimiento:">
+		<components:DateField id="dtfAccomplishmentDate"/>
 	</mx:FormItem>
-	<minutareunion:ItemsManagementAgreement id="itemsManagement"/>
+	<mx:FormItem>
+		<mx:Button id="btnAddItem" label="Agregar Acuerdo" click="btnAddItem_clickHandler(event)"/>
+	</mx:FormItem>
+	<minutareunion:ItemsManagementAgreement id="itemsManagement" itemSelected="itemsManagement_itemSelectedHandler(event)"/>
 	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="agreementForm_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetResponsableMinuta" result="responseGetResponsableMinuta_resultHandler(event)"/>

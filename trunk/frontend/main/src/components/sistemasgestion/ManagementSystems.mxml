@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)"
-		 initialize="initializeHandler(event)" xmlns:bitacoraproductonoconformenoconformidades="components.bitacoraproductonoconformenoconformidades.*" xmlns:datosgenerales="components.datosgenerales.*"
+		 initialize="initializeHandler(event)" xmlns:bitacoraproductonoconformenoconformidades="components.bitacoraproductonoconformenoconformidades.*" xmlns:datosgenerales="components.datosgenerales.*" xmlns:proyectos="components.proyectos.*"
 		 >
 	<mx:Script>
 		<![CDATA[
@@ -12,8 +12,10 @@
 			import model.Constants;
 			import model.DatosGeneralesProyecto;
 			import model.EstadoSistemaGestion;
+			import model.FiltroProyecto;
 			import model.FormaAuditoria;
 			import model.Model;
+			import model.Proyecto;
 			import model.SistemaGestion;
 			import model.TipoAuditoria;
 			import model.Util;
@@ -21,7 +23,6 @@
 			import mx.collections.ArrayCollection;
 			import mx.com.gahm.componentes.validadores.Constantes;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
-			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
 			import mx.com.gahm.componentes.validadores.ValidadorEmail;
@@ -73,23 +74,28 @@
 					return;
 				}
 				this.txtID.text = this._item.id.toString();
-				this.consultGeneralProjectData.datagrid.dataProvider = Util.asArrayCollection( this._item.datosGeneralesProyecto );
-				this.consultGeneralProjectData.datagrid.selectedIndex = 0;
+				this.projectsConsult.datagrid.dataProvider = Util.asArrayCollection( this._item.proyecto );
+				this.projectsConsult.datagrid.selectedIndex = 0;
+				this.projectsConsult.datagrid.dispatchEvent( new ListEvent(ListEvent.CHANGE) );
 				this.chkAuditApply.selected = this._item.aplicacionAuditoria;
 				if( Util.isFill( this.cmbAuditType ) && this._item 
 					&& this._item.tipoAuditoria != null ){
 					this.cmbAuditType.selectedIndex = Util.selectedIndexFromCombo( this.cmbAuditType.dataProvider as ArrayCollection, 
 						this._item.tipoAuditoria.id);
+					this.cmbAuditType.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
 				}
 				if( Util.isFill( this.cmbFormAudit ) && this._item 
 					&& this._item.formaAuditoria != null ){
 					this.cmbFormAudit.selectedIndex = Util.selectedIndexFromCombo( this.cmbFormAudit.dataProvider as ArrayCollection, 
 						this._item.formaAuditoria.id);
 				}
+				this.dtfDateAudit.selectedDate = this._item.fechaAuditoria;
+				this.txtQualityIndicator.text = this._item.indiceCalidad;
 				this.dtfShippingDateAudit.selectedDate = this._item.fechaEnvio;
 				this.dtfReceiptDate.selectedDate = this._item.fechaRecepcion;
 				this.fltDlvAuditFormat.delivers = Util.asArrayCollection( this._item.formatoAuditoria );
 				this.txtNameAuditor.text = this._item.nombreAuditor;
+				this.dtfInternalAuditCorrectionsReceiptDate.selectedDate = this._item.fechaRecepcionCorreccionesAuditoriasInternas;
 				this.dtfCorrectionsShippingDate.selectedDate = this._item.fechaEnvioCorrecciones;
 				if( Util.isFill( this.cmbManagementSystemStatus ) && this._item 
 					&& this._item.estadoSistemaGestion != null ){
@@ -97,6 +103,7 @@
 						this._item.estadoSistemaGestion.id);
 				}
 				this.fltDlvCorrections.delivers = Util.asArrayCollection( this._item.correcciones );
+				this.dtfAuditCloseDate.selectedDate = this._item.fechaCierreAuditoria;
 				this.txtObservations.text = this._item.observaciones;
 			}
 			
@@ -107,17 +114,21 @@
 				}else{
 					managementSystems = this._item;
 				}
-				managementSystems.datosGeneralesProyecto = this.consultGeneralProjectData.datagrid.selectedItem as DatosGeneralesProyecto;
+				managementSystems.proyecto = this.projectsConsult.datagrid.selectedItem as Proyecto;
 				managementSystems.aplicacionAuditoria = this.chkAuditApply.selected;
 				managementSystems.tipoAuditoria = Util.validateCombo( this.cmbAuditType ) as TipoAuditoria;
 				managementSystems.formaAuditoria = Util.validateCombo( this.cmbFormAudit ) as FormaAuditoria;
+				managementSystems.fechaAuditoria = this.dtfDateAudit.selectedDate;
+				managementSystems.indiceCalidad = Util.validateEmpty( this.txtQualityIndicator.text );
 				managementSystems.fechaEnvio = this.dtfShippingDateAudit.selectedDate;
 				managementSystems.fechaRecepcion = this.dtfReceiptDate.selectedDate;
 				managementSystems.formatoAuditoria = this.fltDlvAuditFormat.firstDeliver as String;
 				managementSystems.nombreAuditor = Util.validateEmpty( this.txtNameAuditor.text );
+				managementSystems.fechaRecepcionCorreccionesAuditoriasInternas = this.dtfInternalAuditCorrectionsReceiptDate.selectedDate;
 				managementSystems.fechaEnvioCorrecciones = this.dtfCorrectionsShippingDate.selectedDate;
 				managementSystems.estadoSistemaGestion = Util.validateCombo( this.cmbManagementSystemStatus ) as EstadoSistemaGestion;
 				managementSystems.correcciones = this.fltDlvCorrections.firstDeliver as String;
+				managementSystems.fechaCierreAuditoria = this.dtfAuditCloseDate.selectedDate;
 				managementSystems.observaciones = Util.validateEmpty( this.txtObservations.text );
 				return managementSystems;
 			}
@@ -127,7 +138,6 @@
 				this.responseGetTipoAuditoria.token = this.catalogoService.getTipoAuditoria();
 				this.responseGetFormaAuditoria.token = this.catalogoService.getFormaAuditoria();
 				this.responseGetEstadoSistemaGestion.token = this.catalogoService.getEstadoSistemaGestion();
-				this.responseGetAllAll.token = this.datosGeneralesService.getAllAll();
 			}
 			
 			protected function sistemaGestionService_faultHandler(event:FaultEvent):void
@@ -164,7 +174,7 @@
 			{
 				var value:Boolean = true;
 				value &&= this.validators.validarFormulario();
-				value &&= this.consultGeneralProjectData.datagrid.selectedItem != null;
+				value &&= this.projectsConsult.datagrid.selectedItem != null;
 				return value;
 			}
 			
@@ -172,6 +182,7 @@
 			{
 				if( this.mode == Constants.REGISTER_MODE ){
 					form.removeChild( this.frmID );
+					this.executeProjectQuery();
 				}
 				if( this.mode == Constants.UPDATE_MODE ){
 				}
@@ -181,6 +192,7 @@
 			{
 				this.validators = new InicializaValidadoresEtiquetas();
 				validators.crearValidadorRestrictor("generic",ValidadorCadenaCualquierCaracter.nombre, 0, 255);
+				this.validators.setRestrictor( this.txtQualityIndicator, "generic" );
 				this.validators.setValidador( this.txtNameAuditor, "generic" );
 				this.validators.setValidador( this.txtObservations, "generic" );
 			}
@@ -196,17 +208,25 @@
 			{
 				Util.upScroll( this );
 				this.txtID.reset();
-				this.consultGeneralProjectData.datagrid.selectedItem = false;
+				if( this.mode == Constants.REGISTER_MODE ){
+					this.projectsConsult.datagrid.selectedIndex = -1;
+				}else{
+					Util.cleanList( this.projectsConsult.datagrid );
+				}
 				this.chkAuditApply.selected = false;
 				this.cmbAuditType.selectedIndex = 0;
 				this.cmbFormAudit.selectedIndex = 0;
+				this.dtfDateAudit.reset();
+				this.txtQualityIndicator.reset();
 				this.dtfShippingDateAudit.reset();
 				this.dtfReceiptDate.reset();
 				this.fltDlvAuditFormat.reset();
 				this.txtNameAuditor.reset();
+				this.dtfInternalAuditCorrectionsReceiptDate.reset();
 				this.dtfCorrectionsShippingDate.reset();
 				this.cmbManagementSystemStatus.selectedIndex = 0;
 				this.fltDlvCorrections.reset();
+				this.dtfAuditCloseDate.reset();
 				this.txtObservations.reset();
 			}
 			
@@ -227,7 +247,7 @@
 			
 			protected function btnViewPerDiemCheck_clickHandler(event:MouseEvent):void
 			{
-				var nonConformity:DatosGeneralesProyecto = this.consultGeneralProjectData.datagrid.selectedItem as DatosGeneralesProyecto;
+				var nonConformity:DatosGeneralesProyecto = this.projectsConsult.datagrid.selectedItem as DatosGeneralesProyecto;
 				if( nonConformity == null ){
 					Util.showErrorMessage("Primero debe seleccionar un elemento.");
 					return;
@@ -249,6 +269,7 @@
 					this.cmbAuditType.selectedIndex = Util.selectedIndexFromCombo( this.cmbAuditType.dataProvider as ArrayCollection, 
 						this._item.tipoAuditoria.id);
 				}
+				this.cmbAuditType.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
 			}
 			
 			protected function responseGetFormaAuditoria_resultHandler(event:ResultEvent):void
@@ -279,13 +300,54 @@
 				}
 			}
 			
-			protected function responseGetAllAll_resultHandler(event:ResultEvent):void
+			protected function responseGetAll_resultHandler(event:ResultEvent):void
 			{
-				this.consultGeneralProjectData.datagrid.dataProvider = event.result as ArrayCollection;
-				if( this._item != null ){
-					this.consultGeneralProjectData.datagrid.dataProvider = Util.asArrayCollection( this._item.datosGeneralesProyecto );
-					this.consultGeneralProjectData.datagrid.selectedIndex = 0;
+				projectsConsult.setDataGridData( event.result as ArrayCollection );
+				if( this._item != null && 
+					this._item.proyecto != null ){
+					this.projectsConsult.datagrid.dataProvider = Util.asArrayCollection( this._item.proyecto );
+					this.projectsConsult.datagrid.selectedIndex = 0;
 				}
+			}
+			
+			protected function cmbAuditType_changeHandler(event:ListEvent):void
+			{
+				var isExtern:Boolean = this.validateIsExtern();
+				if( isExtern ){
+				}else{
+					this.dtfReceiptDate.selectedDate = null;
+				}
+				this.dtfReceiptDate.enabled = isExtern;
+			}
+			
+			private function validateIsExtern():Boolean{
+				var auditType:TipoAuditoria = this.cmbAuditType.selectedItem as TipoAuditoria;
+				if( auditType == null ){
+					return false;
+				}
+				return (auditType.id == TipoAuditoria.ID_EXTERNA);
+			}
+			
+			protected function projectsConsult_projectSelectedHandler(event:GenericEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
+			public function executeProjectQuery():void
+			{
+				var filter:FiltroProyecto = new FiltroProyecto();
+				filter.idConectel = null;
+				filter.idCategoria = undefined;
+				filter.idCliente = undefined;
+				filter.tipoProyecto = undefined;
+				filter.tecnologia = undefined;
+				filter.equipo = undefined;
+				filter.actividadRealizar = undefined;
+				filter.modelo = undefined;
+				filter.descripcionServicio = undefined;
+				filter.tipoServicio = undefined;
+				this.responseGetAllByFiltro.token = this.proyectoService.getAllByFiltro( filter );
 			}
 		]]>
 	</mx:Script>
@@ -301,14 +363,14 @@
 								  editable="false"/>
 		</mx:FormItem>
 		<mx:FormItem label="Proyectos:"/>
-		<datosgenerales:Consult id="consultGeneralProjectData" noExecuteQuery="true"/>
-		<mx:Button label="Ver Datos Generales Proyecto" click="btnViewPerDiemCheck_clickHandler(event)"/>
+		<proyectos:Consult id="projectsConsult" projectSelected="projectsConsult_projectSelectedHandler(event)"/>
+		<!--<mx:Button label="Ver Datos Generales Proyecto" click="btnViewPerDiemCheck_clickHandler(event)"/>-->
 		<mx:FormItem label="Aplicación de Auditoría:">
 			<mx:CheckBox id="chkAuditApply"/>
 		</mx:FormItem>
 		<mx:FormItem label="Tipo de Auditoría:">
 			<mx:ComboBox id="cmbAuditType" width="250"
-						 labelField="tipo"
+						 labelField="tipo" change="cmbAuditType_changeHandler(event)"
 						 />
 		</mx:FormItem>
 		<mx:FormItem label="Forma de Auditoría:">
@@ -316,10 +378,16 @@
 						 labelField="forma"
 						 />
 		</mx:FormItem>
+		<mx:FormItem label="Fecha Auditoría:">
+			<components:DateField id="dtfDateAudit"/>
+		</mx:FormItem>
+		<mx:FormItem label="Índice de Calidad:">
+			<components:TextInput id="txtQualityIndicator"/>
+		</mx:FormItem>
 		<mx:FormItem label="Fecha Envío Auditoría:">
 			<components:DateField id="dtfShippingDateAudit"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha de Recepción:">
+		<mx:FormItem label="Fecha de Recepción de Auditoría Interno-Externo:">
 			<components:DateField id="dtfReceiptDate"/>
 		</mx:FormItem>
 		<mx:FormItem label="Formato de Auditoría:">
@@ -328,7 +396,10 @@
 		<mx:FormItem label="Nombre del Auditor:">
 			<components:TextInput id="txtNameAuditor" width="350"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha Envío Correcciones:">
+		<mx:FormItem label="Fecha Recepción Correcciones Auditorias Internas:">
+			<components:DateField id="dtfInternalAuditCorrectionsReceiptDate"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha de Envío Correcciones al Cliente:">
 			<components:DateField id="dtfCorrectionsShippingDate"/>
 		</mx:FormItem>
 		<mx:FormItem label="Estado:">
@@ -338,6 +409,9 @@
 		</mx:FormItem>
 		<mx:FormItem label="Correcciones:">
 			<components:FlatDeliver id="fltDlvCorrections" limitedTo="1"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha Cierre Auditoría:">
+			<components:DateField id="dtfAuditCloseDate"/>
 		</mx:FormItem>
 		<mx:FormItem label="Observaciones:">
 			<components:TextArea id="txtObservations" width="520"/>
@@ -355,7 +429,7 @@
 	<mx:CallResponder id="responseGetTipoAuditoria" result="responseGetTipoAuditoria_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetFormaAuditoria" result="responseGetFormaAuditoria_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetEstadoSistemaGestion" result="responseGetEstadoSistemaGestion_resultHandler(event)"/>
-	<mx:RemoteObject id="datosGeneralesService" destination="datosGeneralesService" fault="sistemaGestionService_faultHandler(event)"
+	<mx:RemoteObject id="proyectoService" destination="proyectoService" fault="sistemaGestionService_faultHandler(event)"
 					 showBusyCursor="true"/>
-	<mx:CallResponder id="responseGetAllAll" result="responseGetAllAll_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetAllByFiltro" result="responseGetAll_resultHandler(event)"/>
 </mx:VBox>

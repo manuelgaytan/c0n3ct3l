@@ -118,7 +118,6 @@
 			private function fillCombos():void
 			{
 				this.responseGetTipoOperacion.token = this.catalogoService.getTipoOperacion();
-				this.responseGetDescripcionFondoFijoCajaChica.token = this.catalogoService.getDescripcionFondoFijoCajaChica();
 				this.responseGetColaborador.token = this.catalogoService.getColaboradorByTipoColaborador(TipoColaborador.ID_NOMINA);
 				
 			}
@@ -232,6 +231,7 @@
 						this.txtImport.text = this._item.ingreso;
 					}
 				}
+				this.cmbOperationType.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
 			}
 			
 			protected function responseGetDescripcionFondoFijoCajaChica_resultHandler(event:ResultEvent):void
@@ -318,34 +318,13 @@
 			
 			protected function cmbOperationType_changeHandler(event:ListEvent):void
 			{
-				return;
-				// para aplicar esto habria que cambiar en la base de dato lo siguiente: 
-				// ALTER TABLE MoviemientoFondoFijoCajaChica ADD FOREIGN KEY fk_descripcion_fondo_fijo_caja_chica_idxfk (fk_descripcion_fondo_fijo_caja_chica) REFERENCES DescripcionFondoFijoCajaChica (id);
-				// a
-				// ALTER TABLE MoviemientoFondoFijoCajaChica ADD FOREIGN KEY fk_descripcion_pago_contable_servicio_idxfk_1 (fk_descripcion_fondo_fijo_caja_chica) REFERENCES DescripcionPagoContableServicio (id);
-				// ademas del Servicio
 				Util.removeItems( this.cmbDescription.dataProvider );
 				var idOperationType:Number = this.cmbOperationType.selectedItem.id;
 				if( isNaN( idOperationType ) ){
 					return;
 				}
-				this.responseGetDescripcionPagoContableServicio.token = this.catalogoService.getDescripcionPagoContableServicio( idOperationType );
+				this.responseGetDescripcionFondoFijoCajaChica.token = this.catalogoService.getDescripcionFondoFijoCajaChica( idOperationType );
 			}
-			
-			protected function responseGetDescripcionPagoContableServicio_resultHandler(event:ResultEvent):void
-			{
-				var data:ArrayCollection = event.result as ArrayCollection;
-				if( data == null ){
-					return;
-				}
-				this.cmbDescription.dataProvider = data;
-				if( Util.isFill( this.cmbDescription ) && this._item 
-					&& this._item.descripcionFondoFijoCajaChica != null ){
-					this.cmbDescription.selectedIndex = Util.selectedIndexFromCombo( this.cmbDescription.dataProvider as ArrayCollection, 
-						this._item.descripcionFondoFijoCajaChica.id);
-				}
-			}
-			
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -373,7 +352,7 @@
 		<mx:FormItem label="Descripción:">
 			<mx:ComboBox id="cmbDescription"
 						 labelField="descripcion"
-						 width="150"/>
+						 width="250"/>
 		</mx:FormItem>
 		<mx:FormItem label="Entrega:">
 			<mx:ComboBox id="cmbDeliver"
@@ -406,7 +385,6 @@
 	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="moviemientoFondoFijoCajaChicaService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetTipoOperacion" result="responseGetTipoOperacion_resultHandler(event)"/>
-	<mx:CallResponder id="responseGetDescripcionPagoContableServicio" result="responseGetDescripcionPagoContableServicio_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetDescripcionFondoFijoCajaChica" result="responseGetDescripcionFondoFijoCajaChica_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetColaborador" result="responseGetColaborador_resultHandler(event)"/>
 </mx:VBox>

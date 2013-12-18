@@ -78,6 +78,10 @@
 				this.txtID.text = this._item.id.toString();
 				this.recruitmentConsult.datagrid.dataProvider = Util.asArrayCollection( this._item.contratacion );
 				this.recruitmentConsult.datagrid.selectedIndex = 0;
+				this.chkInduction1.selected = this._item.induccion1;
+				this.chkInduction2.selected = this._item.induccion2;
+				this.chkInduction3.selected = this._item.induccion3;
+				this.chkInduction4.selected = this._item.induccion4;
 				this.dtfENCDate.selectedDate = this._item.fechaEnc;
 				this.txtENCGrade.text = this._item.resultadoEnc.toString();
 				this.chkENC.selected = this._item.enc;
@@ -103,6 +107,10 @@
 					development = this._item;
 				}
 				development.contratacion = this.recruitmentConsult.datagrid.selectedItem as Contratacion;
+				development.induccion1 = this.chkInduction1.selected;
+				development.induccion2 = this.chkInduction2.selected;
+				development.induccion3 = this.chkInduction3.selected;
+				development.induccion4 = this.chkInduction4.selected;
 				development.fechaEnc = this.dtfENCDate.selectedDate; 
 				development.resultadoEnc = Util.stringToNumber( this.txtENCGrade.text );
 				development.enc = this.chkENC.selected;
@@ -200,6 +208,10 @@
 				Util.upScroll( this );
 				this.txtID.reset();
 				this.recruitmentConsult.datagrid.selectedItem = false;
+				this.chkInduction1.selected = false;
+				this.chkInduction2.selected = false;
+				this.chkInduction3.selected = false;
+				this.chkInduction4.selected = false;
 				this.dtfENCDate.reset();
 				this.txtENCGrade.reset();
 				this.chkENC.selected = false;
@@ -245,10 +257,16 @@
 		</mx:FormItem>
 		<mx:FormItem label="Contratación:"/>
 		<contratacion:Consult id="recruitmentConsult" readMode="true"/>
+		<mx:FormItem label="Inducción:" direction="horizontal">
+			<mx:CheckBox id="chkInduction1" label="Inducción"/>
+			<mx:CheckBox id="chkInduction2" label="ISO 9001-2008"/>
+			<mx:CheckBox id="chkInduction3" label="ISO 14001-2004"/>
+			<mx:CheckBox id="chkInduction4" label="OHSAS 18001-2008"/>
+		</mx:FormItem>
 		<mx:FormItem label="Fecha Evaluación de Necesidades de Competencia:">
 			<components:DateField id="dtfENCDate"/>
 		</mx:FormItem>
-		<mx:FormItem label="Resultado Evaluación de Necesidades de Competencia:">
+		<mx:FormItem label="Resultado de Inducción:">
 			<components:TextInput id="txtENCGrade" width="70" textAlign="right"/>
 		</mx:FormItem>
 		<mx:FormItem label="Evaluación de Necesidades de Competencia:">

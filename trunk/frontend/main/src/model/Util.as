@@ -693,5 +693,15 @@ package model
 			var decimalPlaces:Number = Math.pow(10, precision);
 			return int(decimalPlaces * numberVal) / decimalPlaces;
 		}
+		
+		public static function truncateToString(numberVal:Number, precision:int = 2):String
+		{
+			var result:Number = truncate( numberVal, precision );
+			if( isNaN( result ) ){
+				return "";
+			}else{
+				return result.toString();
+			}
+		}
 	}
 }

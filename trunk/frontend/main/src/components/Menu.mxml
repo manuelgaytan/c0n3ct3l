@@ -180,9 +180,9 @@
 					   icon="@Embed(source='assets/images/noconforme.png')"/>
 		<mx:LinkButton label="Acción Preventiva-Correctiva" id="AccionPreventivaCorrectiva" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/accionpreventiva.png')"/>
-		<mx:LinkButton label="Concentrado de Capacitación" id="ConcentradoCapacitacion" click="clickMenuHandler(event)"
+		<mx:LinkButton label="Registro y Concentrado de Capacitación" id="ConcentradoCapacitacion" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/capacitacion.png')"/>
-		<mx:LinkButton label="Sistemas de Gestión" id="SistemasGestion" click="clickMenuHandler(event)"
+		<mx:LinkButton label="Control de Auditorías" id="SistemasGestion" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/sistemasgestion.png')"/>
 		<mx:LinkButton label="Minuta de Reunión" id="MinutaReunion" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/minutareunion.png')"/>

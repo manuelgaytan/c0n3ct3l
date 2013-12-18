@@ -6,7 +6,7 @@ package model
 	public class PagoViaticos
 	{
 		public var id:*;
-		public var comprobacionViaticos:ComprobacionViaticos;
+		public var solicitudViaticos:SolicitudViaticos;
 		public var bancoConectel:BancoConectel;
 		public var fechaAbono:Date;
 		public var monto:Number;

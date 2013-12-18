@@ -60,6 +60,8 @@
 			import model.ComentarioPantallaValidacionAdministrativa;
 			import model.ComentarioProveedor;
 			import model.ComentarioRequisicion;
+			import model.ComentarioSistemasGestion;
+			import model.ComentarioSugerencia;
 			import model.ComentarioTesoreria;
 			import model.ComentarioValidacionAdministrativa;
 			import model.ComentarioValidacionCostoOrdenCompraCliente;
@@ -253,6 +255,8 @@
 			import model.ValidacionProyecto;
 			import model.Variacion;
 			import model.ViveCon;
+			
+			import modules.ComentariosSugerencias;
 			
 			import mx.containers.Form;
 			import mx.containers.FormItem;
@@ -539,6 +543,8 @@
 			private var mantenimientoServicio:MantenimientoServicio;
 			private var pago:Pago;
 			private var solicitanteSolicitudViaticos:SolicitanteSolicitudViaticos;
+			private var comentarioSugerencia:ComentarioSugerencia;
+			private var comentarioSistemasGestion:ComentarioSistemasGestion;
 						
 			protected function login_readyHandler(event:ModuleEvent):void
 			{

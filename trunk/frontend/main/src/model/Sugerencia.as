@@ -1,5 +1,7 @@
 package model
 {
+	import mx.collections.ArrayCollection;
+
 	[RemoteClass(alias="mx.com.gahm.conenctel.entities.SugerenciaDO")]
 	public class Sugerencia
 	{
@@ -16,6 +18,7 @@ package model
 		public var responsableImplementacion:String;
 		public var resultadoImplementacion:ResultadoImplementacion;
 		public var requiereAccionCorrectiva:Boolean;
+		public var comentariosSugerencia:ArrayCollection;
 		
 		public function Sugerencia()
 		{

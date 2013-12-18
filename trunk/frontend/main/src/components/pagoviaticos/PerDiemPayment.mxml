@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
-		 creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*" xmlns:notascreditoclientes="components.notascreditoclientes.*" xmlns:informacionfacturas="components.informacionfacturas.*" xmlns:notascreditoproveedores="components.notascreditoproveedores.*" xmlns:facturacionproveedores="components.facturacionproveedores.*" xmlns:comprobacionesviaticos="components.comprobacionesviaticos.*"
+		 creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*" xmlns:notascreditoclientes="components.notascreditoclientes.*" xmlns:informacionfacturas="components.informacionfacturas.*" xmlns:notascreditoproveedores="components.notascreditoproveedores.*" xmlns:facturacionproveedores="components.facturacionproveedores.*" xmlns:comprobacionesviaticos="components.comprobacionesviaticos.*" xmlns:solicitudesviaticos="components.solicitudesviaticos.*"
 		 >
 	<mx:Script>
 		<![CDATA[
@@ -28,15 +28,17 @@
 			import model.ProveedorCalificado;
 			import model.ProveedorMaquilador;
 			import model.Proyecto;
+			import model.SolicitudViaticos;
 			import model.TipoColaborador;
 			import model.TipoEntregable;
 			import model.Util;
+			
+			import modules.SolicitudesViaticos;
 			
 			import mx.charts.chartClasses.DualStyleObject;
 			import mx.collections.ArrayCollection;
 			import mx.com.gahm.componentes.validadores.Constantes;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
-			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
 			import mx.com.gahm.componentes.validadores.ValidadorEntero;
@@ -50,6 +52,14 @@
 			private var mode:String = null;
 			private var _item:PagoViaticos;
 			private var validators:InicializaValidadoresEtiquetas;
+			
+			[Bindable]
+			private var _readOnly:Boolean = false;
+			
+			public function set readOnly(value:Boolean):void{
+				this._readOnly = value;
+				this.label = Constants.DETALLE;
+			}
 			
 			public function set registrer(value:Boolean):void{
 				mode = Constants.REGISTER_MODE;
@@ -86,8 +96,9 @@
 					return;
 				}
 				this.txtID.text = this._item.id.toString();
-				this.perDiemCheckConsult.datagrid.dataProvider = Util.asArrayCollection( this._item.comprobacionViaticos );
-				this.perDiemCheckConsult.datagrid.selectedIndex = 0;
+				this.diemRequestConsult.datagrid.dataProvider = Util.asArrayCollection( this._item.solicitudViaticos );
+				this.diemRequestConsult.datagrid.selectedIndex = 0;
+				//this.setDiemRequest( this._item.solicitudViaticos );
 				if( Util.isFill( this.cmbConectelBank ) && this._item.bancoConectel != null ){
 					this.cmbConectelBank.selectedIndex = Util.selectedIndexFromCombo( this.cmbConectelBank.dataProvider as ArrayCollection, 
 						this._item.bancoConectel.id);
@@ -105,7 +116,7 @@
 				}else{
 					providerPayment = this._item;
 				}
-				providerPayment.comprobacionViaticos = this.perDiemCheckConsult.datagrid.selectedItem as ComprobacionViaticos;
+				providerPayment.solicitudViaticos = this.diemRequestConsult.datagrid.selectedItem as SolicitudViaticos;
 				providerPayment.bancoConectel = Util.validateCombo( this.cmbConectelBank ) as BancoConectel;
 				providerPayment.fechaAbono = this.dtfPaymentDate.selectedDate;
 				providerPayment.monto = Util.stringToNumber( this.txtAmount.text );
@@ -117,7 +128,6 @@
 			private function fillCombos():void
 			{
 				this.responseGetBancoConectel.token = this.bancoConectelService.getAll();
-				this.responseGetAll.token = comprobacionViaticosService.getAll();
 			}
 			
 			
@@ -155,7 +165,7 @@
 			{
 				var value:Boolean = true;
 				value &&= this.validators.validarFormulario();
-				value &&= this.perDiemCheckConsult.datagrid.selectedItem != null;
+				value &&= this.diemRequestConsult.datagrid.selectedItem != null;
 				value &&= Util.listBaseSelected( this.cmbConectelBank );
 				return value;
 			}
@@ -189,7 +199,7 @@
 			{
 				Util.upScroll( this );
 				this.txtID.reset();
-				this.perDiemCheckConsult.datagrid.selectedItem = null;
+				//Util.removeItems(this.diemRequest.datagrid.dataProvider);
 				this.cmbConectelBank.selectedIndex = 0;
 				this.dtfPaymentDate.reset();
 				this.txtAmount.reset();
@@ -218,35 +228,46 @@
 				}
 			}
 			
-			protected function perDiemCheckConsult_perDiemCheckDetailHandler(event:GenericEvent):void
+			protected function diemRequestConsult_diemRequestDetailHandler(event:GenericEvent):void
 			{
-				var perDiemCheck:ComprobacionViaticos = this.perDiemCheckConsult.datagrid.selectedItem as ComprobacionViaticos;
-				if( perDiemCheck == null ){
+				var diemRequest:SolicitudViaticos = this.diemRequestConsult.datagrid.selectedItem as SolicitudViaticos;
+				if( diemRequest == null ){
 					Util.showErrorMessage("Primero debe seleccionar un elemento.");
 					return;
 				}
-				this.txtAmount.text = perDiemCheck.totalAutorizado.toString();
+				this.txtAmount.text = diemRequest.totalSolicitado.toString();
 			}
 			
 			protected function responseGetAll_resultHandler(event:ResultEvent):void
 			{
-				perDiemCheckConsult.setDataGridData( event.result as ArrayCollection );
-				if( !(this._item == null) && !(this._item.comprobacionViaticos == null) ){  
-					this.perDiemCheckConsult.datagrid.dataProvider = Util.asArrayCollection( this._item.comprobacionViaticos );
-					this.perDiemCheckConsult.datagrid.selectedIndex = 0;
+				this.diemRequestConsult.setDataGridData( event.result as ArrayCollection );
+				if( !(this._item == null) && !(this._item.solicitudViaticos == null) ){  
+					this.diemRequestConsult.datagrid.dataProvider = Util.asArrayCollection( this._item.solicitudViaticos );
+					this.diemRequestConsult.datagrid.selectedIndex = 0;
 				}
 			}
 			
-			protected function btnViewPerDiemCheck_clickHandler(event:MouseEvent):void
+			protected function btnViewDiemRequest_clickHandler(event:MouseEvent):void
 			{
-				var perDiemCheck:ComprobacionViaticos = this.perDiemCheckConsult.datagrid.selectedItem as ComprobacionViaticos;
-				if( perDiemCheck == null ){
+				var diemRequest:SolicitudViaticos = this.diemRequestConsult.datagrid.selectedItem as SolicitudViaticos;
+				if( diemRequest == null ){
 					Util.showErrorMessage("Primero debe seleccionar un elemento.");
 					return;
 				}
-				var genericEvent:GenericEvent = new GenericEvent("perDiemCheckSelected");
-				genericEvent.information = perDiemCheck;
+				var genericEvent:GenericEvent = new GenericEvent("diemRequestSelected");
+				genericEvent.information = diemRequest;
 				this.dispatchEvent( genericEvent );
+			}
+			
+			protected function diemRequest_itemDetailHandler(event:GenericEvent):void
+			{
+				if( event == null ){
+					return;
+				}
+				var diemRequest:SolicitudViaticos = event.information as SolicitudViaticos;
+				if( diemRequest == null ){
+					return;
+				}
 			}
 		]]>
 	</mx:Script>
@@ -255,35 +276,36 @@
 		[Event(name="providerPaymentUpdated", type="flash.events.Event")]
 		[Event(name="providerPaymentProjectDone", type="flash.events.Event")]
 		[Event(name="creditNoteSelected", type="events.GenericEvent")]
-		[Event(name="perDiemCheckSelected", type="events.GenericEvent")]
+		[Event(name="diemRequestSelected", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:Form id="form">
 		<mx:FormItem id="frmID" label="ID:" direction="horizontal">
 			<components:TextInput id="txtID" width="80" textAlign="right"
 								  editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Comprobación de Viáticos:">
-			<comprobacionesviaticos:Consult id="perDiemCheckConsult" itemDetail="perDiemCheckConsult_perDiemCheckDetailHandler(event)"
-										 readOnly="true" noExecuteQuery="true"/>
-			<mx:Button id="btnViewPerDiemCheck" label="Ver Comprobante Viáticos" click="btnViewPerDiemCheck_clickHandler(event)"/>
+		<mx:FormItem label="Solicitud de Viáticos:">
+			<solicitudesviaticos:Consult id="diemRequestConsult" readMode="true"
+										 itemDetail="diemRequestConsult_diemRequestDetailHandler(event)"/>
+			<mx:Button id="btnViewDiemRequest" label="Ver Solicitud de Viáticos" click="btnViewDiemRequest_clickHandler(event)"/>
 		</mx:FormItem>
 		<mx:FormItem label="Banco Conectel:">
 			<mx:ComboBox id="cmbConectelBank" width="200"
 						 labelField="banco"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha Abono:">
+		<mx:FormItem label="Fecha:">
 			<components:DateField id="dtfPaymentDate"
 								  creationComplete="this.dtfPaymentDate.selectedDate = new Date()"/>
 		</mx:FormItem>
 		<mx:FormItem label="Monto Autorizado:">
 			<components:TextInput id="txtAmount" textAlign="right" width="100"/>
 		</mx:FormItem>
-		<mx:FormItem label="Referencia Abono:">
+		<mx:FormItem label="Referencia:">
 			<components:TextInput id="txtPaymentReference" textAlign="right" width="160"/>
 		</mx:FormItem>
 		<components:Comments id="comments"/>
 		<mx:FormItem direction="horizontal">
-			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
+			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"
+					   visible="{!this._readOnly}"/>
 		</mx:FormItem>
 	</mx:Form>
 	<mx:RemoteObject id="pagoViaticosService" destination="pagoViaticosService" fault="pagoViaticosService_faultHandler(event)"
@@ -293,7 +315,4 @@
 	<mx:RemoteObject id="bancoConectelService" destination="bancoConectelService" fault="pagoViaticosService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetBancoConectel" result="responseGetBancoConectel_resultHandler(event)"/>
-	<mx:RemoteObject id="comprobacionViaticosService" destination="comprobacionViaticosService" fault="pagoViaticosService_faultHandler(event)"
-					 showBusyCursor="true"/>
-	<mx:CallResponder id="responseGetAll" result="responseGetAll_resultHandler(event)"/>
 </mx:VBox>

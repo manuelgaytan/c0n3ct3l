@@ -271,7 +271,7 @@
 			
 			protected function creditNoteConsult_creditNoteDetailHandler(event:GenericEvent):void
 			{
-				var creditNote:NotaCreditoCliente = this.creditNoteConsult.datagrid.selectedItem as NotaCreditoCliente;
+				var creditNote:NotaCreditoProveedor = this.creditNoteConsult.datagrid.selectedItem as NotaCreditoProveedor;
 				if( creditNote == null ){
 					Util.showErrorMessage("Primero debe seleccionar un elemento.");
 					return;
@@ -331,10 +331,10 @@
 			}
 			
 			private function setMontos(subtotal:Number, iva:Number, total:Number):void{
-				this.txtSubtotal.text = subtotal.toString();
-				this.txtIVA.text = iva.toString();
-				this.txtTotal.text = total.toString();
-				this.txtAmount.text = total.toString(); 
+				this.txtSubtotal.text = Util.numberToString(subtotal, true);
+				this.txtIVA.text = Util.numberToString(iva, true);
+				this.txtTotal.text = Util.numberToString(total, true);
+				this.txtAmount.text = Util.numberToString(total, true); 
 			}
 			
 			protected function responseGetProveedores_resultHandler(event:ResultEvent):void
@@ -466,14 +466,14 @@
 			<mx:ComboBox id="cmbConectelBank" width="200"
 						 labelField="banco"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha Abono:">
+		<mx:FormItem label="Fecha:">
 			<components:DateField id="dtfPaymentDate"
 								  creationComplete="this.dtfPaymentDate.selectedDate = new Date()"/>
 		</mx:FormItem>
 		<mx:FormItem label="Monto:">
 			<components:TextInput id="txtAmount" textAlign="right" width="100"/>
 		</mx:FormItem>
-		<mx:FormItem label="Referencia Abono:">
+		<mx:FormItem label="Referencia:">
 			<components:TextInput id="txtPaymentReference" textAlign="right" width="160"/>
 		</mx:FormItem>
 		<components:Comments id="comments"/>

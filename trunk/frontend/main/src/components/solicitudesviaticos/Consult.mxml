@@ -105,6 +105,11 @@
 			{
 				this.executeQuery();
 			}
+			
+			public function setDataGridData(datas:ArrayCollection):void
+			{
+				items = datas;
+			}
 		]]>
 	</mx:Script>
 	<mx:Metadata>

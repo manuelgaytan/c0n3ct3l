@@ -130,7 +130,7 @@
 				<mx:DataGridColumn id="dtgBank" headerText="{'Banco'}"
 								   dataField="bancoConectel.banco"
 								   width="100"/>
-				<mx:DataGridColumn id="dtgDate" headerText="{'Fecha\nAbono'}"
+				<mx:DataGridColumn id="dtgDate" headerText="{'Fecha'}"
 								   dataField="fechaAbono"
 								   labelFunction="{Util.labelFunctionDate}"
 								   textAlign="center"
@@ -141,7 +141,7 @@
 								   textAlign="right"
 								   width="100"
 								   />
-				<mx:DataGridColumn id="dtgPaymentReference" headerText="{'Referencia\nAbono'}"
+				<mx:DataGridColumn id="dtgPaymentReference" headerText="{'Referencia'}"
 								   dataField="referenciaAbono"
 								   width="120"
 								   />

@@ -97,6 +97,7 @@
 						this._item.resultadoImplementacion.id);
 				}
 				this.chkCorrectiveAction.selected = this._item.requiereAccionCorrectiva;
+				this.comments.setCommentsIn( this._item.comentariosSugerencia, "comentarioSistemasGestion");
 			}
 			
 			private function getAdvice():Sugerencia{
@@ -117,7 +118,8 @@
 				advice.fechaImplementacion = this.dtfImplementationDate.selectedDate;
 				advice.responsableImplementacion = Util.validateEmpty( this.txtImplementationResponsible.text );
 				advice.resultadoImplementacion = Util.validateCombo( this.cmbImplementationResult ) as ResultadoImplementacion;
-				advice.requiereAccionCorrectiva = this.chkCorrectiveAction.selected;;
+				advice.requiereAccionCorrectiva = this.chkCorrectiveAction.selected;
+				advice.comentariosSugerencia = this.comments.getCommentsAsInWith("model.ComentarioSistemasGestion","model.ComentarioSugerencia","comentarioSistemasGestion");
 				return advice;
 			}
 			
@@ -210,6 +212,7 @@
 				this.txtImplementationResponsible.reset();
 				this.cmbImplementationResult.selectedIndex = 0;
 				this.chkCorrectiveAction.selected = false;
+				this.comments.reset();
 			}
 			
 			protected function responseUpdate_resultHandler(event:ResultEvent):void
@@ -297,16 +300,16 @@
 		<mx:FormItem label="Descripción del Comentario y/o Sugerencia:">
 			<components:TextArea id="txtAdvice" width="520"/>
 		</mx:FormItem>
-		<mx:FormItem label="Requiere Acción Inmediata:">
+		<mx:FormItem label="Requiere Acción:">
 			<mx:CheckBox id="chkInmediatlyAction"/>
 		</mx:FormItem>
-		<mx:FormItem label="Acción Inmediata:">
+		<mx:FormItem label="Acción:">
 			<components:TextInput id="txtInmediatlyAction" width="520"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha de Implementación:">
+		<mx:FormItem label="Fecha:">
 			<components:DateField id="dtfImplementationDate"/>
 		</mx:FormItem>
-		<mx:FormItem label="Responsable de Implementación:">
+		<mx:FormItem label="Responsable:">
 			<components:TextInput id="txtImplementationResponsible" width="350"/>
 		</mx:FormItem>
 		<mx:FormItem label="Resultado Implementación:">
@@ -314,9 +317,10 @@
 						 labelField="resultado"
 						 />
 		</mx:FormItem>
-		<mx:FormItem label="Requiere Acción Correctiva:">
+		<mx:FormItem label="Requiere Acción Preventiva-Correctiva:">
 			<mx:CheckBox id="chkCorrectiveAction"/>
 		</mx:FormItem>
+		<components:Comments id="comments"/>
 		<mx:FormItem direction="horizontal">
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
 		</mx:FormItem>

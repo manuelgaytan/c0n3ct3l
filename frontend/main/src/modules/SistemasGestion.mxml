@@ -36,6 +36,7 @@
 				this.consult.executeQuery();
 			}
 			
+			/*
 			protected function detail_generalDataSelectedHandler(event:GenericEvent):void
 			{
 				if( event == null ){
@@ -48,14 +49,15 @@
 				generalDataDetail.generalDataProject = generalData;
 				this.navigator.selectedChild = this.generalDataDetail;
 			}
+			*/
 		]]>
 	</mx:Script>
 	<mx:TabNavigator id="navigator" width="950" height="100%" creationPolicy="all">
 		<sistemasgestion:Consult id="consult" itemDetail="consult_managementSystemsDetailHandler(event)"/>
-		<sistemasgestion:ManagementSystems id="detail" update="true" managementSystemsUpdated="detail_managementSystemsUpdatedHandler(event)"
-							 									generalDataSelected="detail_generalDataSelectedHandler(event)"/>
-		<sistemasgestion:ManagementSystems id="register" registrer="true" managementSystemsNew="register_managementSystemsNewHandler(event)"
-															   	generalDataSelected="detail_generalDataSelectedHandler(event)"/>
-		<datosgenerales:GeneralData id="generalDataDetail" readOnly="true"/>
+		<sistemasgestion:ManagementSystems id="detail" update="true" managementSystemsUpdated="detail_managementSystemsUpdatedHandler(event)"/>
+							 									<!--generalDataSelected="detail_generalDataSelectedHandler(event)"/>-->
+		<sistemasgestion:ManagementSystems id="register" registrer="true" managementSystemsNew="register_managementSystemsNewHandler(event)"/>
+															   	<!--generalDataSelected="detail_generalDataSelectedHandler(event)"/>-->
+		<!--<datosgenerales:GeneralData id="generalDataDetail" readOnly="true"/>-->
 	</mx:TabNavigator>
 </mx:Module>

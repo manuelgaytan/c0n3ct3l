@@ -128,9 +128,9 @@
 				<mx:DataGridColumn id="dtgEvent" headerText="{'Suceso/Evento'}"
 								   dataField="sucesoEvento"
 								   width="370"/>
-				<mx:DataGridColumn id="dtgInmediatlyAction" headerText="{'Requiere\nAcción\nCorrectiva'}"
+				<mx:DataGridColumn id="dtgInmediatlyAction" headerText="{'Requiere\nAcción\nPreventiva-\nCorrectiva'}"
 								   dataField="requiereAccionCorrectiva"
-								   width="80"
+								   width="100"
 								   textAlign="center"
 								   itemRenderer="mx.controls.CheckBox"
 								   editable="false"

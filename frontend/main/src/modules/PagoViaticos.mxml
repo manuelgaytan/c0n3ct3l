@@ -2,7 +2,7 @@
 <mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
 		   width="850" height="525"
 		   xmlns:pagoviaticos="components.pagoviaticos.*"
-		   creationComplete="creationCompleteHandler(event)" xmlns:informacionfacturas="components.informacionfacturas.*" xmlns:notascreditoclientes="components.notascreditoclientes.*" xmlns:facturacionproveedores="components.facturacionproveedores.*" xmlns:notascreditoproveedores="components.notascreditoproveedores.*" xmlns:comprobacionesviaticos="components.comprobacionesviaticos.*">
+		   creationComplete="creationCompleteHandler(event)" xmlns:informacionfacturas="components.informacionfacturas.*" xmlns:notascreditoclientes="components.notascreditoclientes.*" xmlns:facturacionproveedores="components.facturacionproveedores.*" xmlns:notascreditoproveedores="components.notascreditoproveedores.*" xmlns:comprobacionesviaticos="components.comprobacionesviaticos.*" xmlns:solicitudesviaticos="components.solicitudesviaticos.*">
 	<mx:Script>
 		<![CDATA[
 			import events.GenericEvent;
@@ -12,6 +12,7 @@
 			import model.NotaCreditoCliente;
 			import model.NotaCreditoProveedor;
 			import model.PagoViaticos;
+			import model.SolicitudViaticos;
 			import model.Usuario;
 			
 			import mx.events.FlexEvent;
@@ -39,28 +40,28 @@
 				this.consult.executeQuery();
 			}
 			
-			protected function detail_perDiemCheckSelectedHandler(event:GenericEvent):void
+			protected function detail_diemRequestSelectedHandler(event:GenericEvent):void
 			{
 				if( event == null ){
 					return;
 				}
-				var perDiemCheck:ComprobacionViaticos = event.information as ComprobacionViaticos;
-				if( perDiemCheck == null ){
+				var diemRequest:SolicitudViaticos = event.information as SolicitudViaticos;
+				if( diemRequest == null ){
 					return;
 				}
-				perDiemCheckDetail.perDiemCheck = perDiemCheck;
-				this.navigator.selectedChild = this.perDiemCheckDetail;
+				diemRequestDetail.diemRequest = diemRequest;
+				this.navigator.selectedChild = this.diemRequestDetail;
 			}
 		]]>
 	</mx:Script>
 	<mx:TabNavigator id="navigator" width="850" height="100%" creationPolicy="all">
 		<pagoviaticos:Consult id="consult" itemDetail="consult_providerPaymentDetailHandler(event)"/>
 		<pagoviaticos:PerDiemPayment id="detail" update="true" providerPaymentUpdated="detail_providerPaymentUpdatedHandler(event)"
-							 perDiemCheckSelected="detail_perDiemCheckSelectedHandler(event)"
+							diemRequestSelected="detail_diemRequestSelectedHandler(event)"
 							 />
 		<pagoviaticos:PerDiemPayment id="register" registrer="true" providerPaymentNew="register_providerPaymentNewHandler(event)"
-							 perDiemCheckSelected="detail_perDiemCheckSelectedHandler(event)"
+							diemRequestSelected="detail_diemRequestSelectedHandler(event)"
 							 />
-		<comprobacionesviaticos:PerDiemCheck id="perDiemCheckDetail" readOnly="true"/>
+		<solicitudesviaticos:DiemRequest id="diemRequestDetail" readOnly="true"/>
 	</mx:TabNavigator>
 </mx:Module>

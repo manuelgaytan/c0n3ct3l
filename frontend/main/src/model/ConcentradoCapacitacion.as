@@ -14,6 +14,8 @@ package model
 		public var nombreInstructor:String;
 		public var calificacion:*;
 		public var constancia:String;
+		public var aprobado:Boolean;
+		public var resultadoSeguimiento:String;
 		
 		public function ConcentradoCapacitacion()
 		{

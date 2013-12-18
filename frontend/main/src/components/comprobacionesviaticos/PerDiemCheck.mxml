@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*" 
-		 xmlns:solicitudesviaticos="components.solicitudesviaticos.*"
+		 xmlns:solicitudesviaticos="components.solicitudesviaticos.*" xmlns:comprobacionesviaticos="components.comprobacionesviaticos.*" xmlns:pagoviaticos="components.pagoviaticos.*"
 		 >
 	<mx:Script>
 		<![CDATA[
@@ -21,6 +21,7 @@
 			import model.EstadoValidacionOperativa;
 			import model.FiltroProyecto;
 			import model.MedioTransporte;
+			import model.PagoViaticos;
 			import model.Producto;
 			import model.Proyecto;
 			import model.SolicitudAlmacen;
@@ -91,9 +92,9 @@
 					return;
 				}
 				this.txtID.text = this._item.id.toString();
-				this.diemRequest.datagrid.dataProvider = Util.asArrayCollection( this._item.solicitudViaticos );
-				this.diemRequest.datagrid.selectedIndex = 0;
-				this.setDiemRequest( this._item.solicitudViaticos );
+				this.perDiemPaymentConsult.datagrid.dataProvider = Util.asArrayCollection( this._item.pagoViaticos );
+				this.perDiemPaymentConsult.datagrid.selectedIndex = 0;
+				this.setDiemRequest( Util.extractObject( this._item, "pagoViaticos.solicitudViaticos" ) as SolicitudViaticos );
 				this.txtTotalAuthorized.text = this._item.totalAutorizado.toString();
 				this.fltDlvUpFormat.delivers = Util.asArrayCollection( this._item.documentoFormato );
 				this.fltDlvUpDocuments.delivers = this.convertDocumentToList( this._item.documentosComprobacionViaticos );
@@ -137,24 +138,6 @@
 				return documentsConverted;
 			}
 			
-			private function setDiemRequest(diemRequest:SolicitudViaticos):void{
-				this.txtDate.text = Util.formatDateToString( diemRequest.fecha );
-				this.projectsConsult.datagrid.dataProvider = Util.asArrayCollection( diemRequest.proyecto );
-				this.projectsConsult.datagrid.selectedIndex = 0;
-				this.lstApplicantsNames.dataProvider = diemRequest.solicitantes;
-				this.txtConveyance.text = diemRequest.medioTransporte.etiqueta;
-				this.txtNumberOfVehicle.text = diemRequest.numeroVehiculo;
-				//this.txtInitialMileage.text = diemRequest.kilometrajeInicial;
-				this.txtGAS.text = diemRequest.combustible.toString();
-				this.txtTollBooths.text = diemRequest.casetas.toString();
-				this.txtPassages.text = diemRequest.pasajes.toString();
-				this.txtLodging.text = diemRequest.hospedaje.toString();
-				this.txtFood.text = diemRequest.alimentos.toString();
-				this.txtMaterialsAndOrTool.text = diemRequest.materialesHerramienta.toString();
-				this.txtOthers.text = diemRequest.otros.toString();
-				this.txtTotalRequested.text = diemRequest.totalSolicitado.toString();
-			}
-			
 			private function getPerDiemCheck():ComprobacionViaticos{
 				var perDiemCheck:ComprobacionViaticos = null;
 				if( this.mode == Constants.REGISTER_MODE ){
@@ -162,9 +145,12 @@
 				}else{
 					perDiemCheck = this._item;
 				}
-				perDiemCheck.solicitudViaticos = this.diemRequest.datagrid.selectedItem as SolicitudViaticos;
+				perDiemCheck.pagoViaticos = this.perDiemPaymentConsult.datagrid.selectedItem as PagoViaticos;
 				perDiemCheck.totalAutorizado = Util.stringToNumber( this.txtTotalAuthorized.text );
-				perDiemCheck.documentoFormato = this.fltDlvUpFormat.firstDeliver.toString();
+				if( this.fltDlvUpFormat != null && 
+					this.fltDlvUpFormat.firstDeliver != null ){
+					perDiemCheck.documentoFormato = this.fltDlvUpFormat.firstDeliver.toString();
+				}
 				perDiemCheck.documentosComprobacionViaticos = this.convertListToDocuments( this.fltDlvUpDocuments.delivers );
 				perDiemCheck.fechaSubidaDocumentos = this.dtfDateUploadedDocuments.selectedDate;
 				perDiemCheck.estadoComprobacionViaticos = Util.validateCombo( this.cmbStatus ) as EstadoComprobacionViaticos;
@@ -211,7 +197,7 @@
 			{
 				var value:Boolean = true;
 				value &&= this.validators.validarFormulario();
-				value &&= this.diemRequest.datagrid.selectedItem != null;
+				value &&= this.perDiemPaymentConsult.datagrid.selectedItem != null;
 				return value;
 			}
 			
@@ -241,7 +227,7 @@
 				this.validators.setRestrictor( this.txtMaterialsAndOrTool, "genericDecimal" );
 				this.validators.setRestrictor( this.txtOthers, "genericDecimal" );
 				this.validators.setRestrictor( this.txtTotalRequested, "genericDecimal" );
-				this.validators.setRestrictor( this.txtTotalAuthorized, "genericDecimal" );
+				this.validators.setValidador( this.txtTotalAuthorized, "genericDecimal" );
 			}
 			
 			protected function responseSave_resultHandler(event:ResultEvent):void
@@ -255,7 +241,7 @@
 			{
 				Util.upScroll( this );
 				this.txtID.reset();
-				//Util.removeItems(this.diemRequest.datagrid.dataProvider);
+				this.perDiemPaymentConsult.datagrid.selectedItem = null;
 				this.txtDate.reset();
 				Util.removeItems(this.projectsConsult.datagrid.dataProvider);
 				Util.removeItems( this.lstApplicantsNames.dataProvider );
@@ -317,18 +303,6 @@
 				navigateToURL( url, "_blank" );
 			}
 			
-			protected function diemRequest_itemDetailHandler(event:GenericEvent):void
-			{
-				if( event == null ){
-					return;
-				}
-				var diemRequest:SolicitudViaticos = event.information as SolicitudViaticos;
-				if( diemRequest == null ){
-					return;
-				}
-				this.setDiemRequest( diemRequest );
-			}
-			
 			protected function lstApplicantsNames_changeHandler(event:ListEvent):void
 			{
 				var colaborator:Colaborador = this.lstApplicantsNames.selectedItem as Colaborador;
@@ -338,21 +312,70 @@
 			private function labelFunctionSolicitante( item:Object ):String{
 				return Util.extractToText( item, "colaborador.nombreCompleto");
 			}
+			
+			private function setDiemRequest(diemRequest:SolicitudViaticos):void{
+				if( diemRequest == null ){
+					return;
+				}
+				this.txtDate.text = Util.formatDateToString( diemRequest.fecha );
+				this.projectsConsult.datagrid.dataProvider = Util.asArrayCollection( diemRequest.proyecto );
+				this.projectsConsult.datagrid.selectedIndex = 0;
+				this.lstApplicantsNames.dataProvider = diemRequest.solicitantes;
+				this.txtConveyance.text = diemRequest.medioTransporte.etiqueta;
+				this.txtNumberOfVehicle.text = diemRequest.numeroVehiculo;
+				//this.txtInitialMileage.text = diemRequest.kilometrajeInicial;
+				this.txtGAS.text = diemRequest.combustible.toString();
+				this.txtTollBooths.text = diemRequest.casetas.toString();
+				this.txtPassages.text = diemRequest.pasajes.toString();
+				this.txtLodging.text = diemRequest.hospedaje.toString();
+				this.txtFood.text = diemRequest.alimentos.toString();
+				this.txtMaterialsAndOrTool.text = diemRequest.materialesHerramienta.toString();
+				this.txtOthers.text = diemRequest.otros.toString();
+				this.txtTotalRequested.text = diemRequest.totalSolicitado.toString();
+			}
+			
+			protected function btnViewPerDiemPayment_clickHandler(event:MouseEvent):void
+			{
+				var perDiemPayment:PagoViaticos = this.perDiemPaymentConsult.datagrid.selectedItem as PagoViaticos;
+				if( perDiemPayment == null ){
+					Util.showErrorMessage("Primero debe seleccionar un elemento.");
+					return;
+				}
+				var genericEvent:GenericEvent = new GenericEvent("perDiemPaymentSelected");
+				genericEvent.information = perDiemPayment;
+				this.dispatchEvent( genericEvent );
+			}
+			
+			protected function perDiemPaymentConsult_perDiemPaymentDetailHandler(event:GenericEvent):void
+			{
+				if( event == null ){
+					return;
+				}
+				var perDiemPayment:PagoViaticos = event.information as PagoViaticos;
+				if( perDiemPayment == null ||
+					perDiemPayment.solicitudViaticos == null ){
+					return;
+				}
+				this.setDiemRequest( perDiemPayment.solicitudViaticos );
+			}
 		]]>
 	</mx:Script>
 	<mx:Metadata>
 		[Event(name="perDiemCheckNew", type="flash.events.Event")]
 		[Event(name="perDiemCheckUpdated", type="flash.events.Event")]
 		[Event(name="perDiemCheckProjectDone", type="flash.events.Event")]
+		[Event(name="perDiemPaymentSelected", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:Form id="form">
 		<mx:FormItem id="frmID" label="ID:" direction="horizontal">
 			<components:TextInput id="txtID" width="80" textAlign="right"
 								  editable="false"/>
 		</mx:FormItem>
-		<mx:FormHeading label="Solicitud de Viáticos"/>
-		<solicitudesviaticos:Consult id="diemRequest" readMode="true"
-									 itemDetail="diemRequest_itemDetailHandler(event)"/>
+		<mx:FormItem label="Pago de Viáticos:">
+			<pagoviaticos:Consult id="perDiemPaymentConsult" itemDetail="perDiemPaymentConsult_perDiemPaymentDetailHandler(event)"
+											readMode="true"/>
+			<mx:Button id="btnViewPerDiemPayment" label="Ver Pago Viáticos" click="btnViewPerDiemPayment_clickHandler(event)"/>
+		</mx:FormItem>
 		<mx:FormItem label="Fecha:">
 			<components:TextInput id="txtDate" editable="false" width="85"/>
 		</mx:FormItem>

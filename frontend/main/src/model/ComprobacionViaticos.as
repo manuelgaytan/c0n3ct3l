@@ -6,7 +6,7 @@ package model
 	public class ComprobacionViaticos
 	{
 		public var id:*;
-		public var solicitudViaticos:SolicitudViaticos;
+		public var pagoViaticos:PagoViaticos;
 		public var totalAutorizado:Number;
 		public var fechaSubidaDocumentos:Date;
 		public var documentoFormato:String;

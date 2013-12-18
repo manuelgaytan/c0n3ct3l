@@ -168,7 +168,7 @@
 		<components:TextInput id="txtID" width="80" textAlign="right" editable="false"/>
 	</mx:FormItem>
 	<mx:FormItem label="Tiene Licencia:">
-		<mx:ComboBox id="cmbLicense" labelField="tipo" dataProvider="{['Sí','No']}" change="cmbLicense_changeHandler(event)"/>
+		<mx:ComboBox id="cmbLicense" dataProvider="{['Sí','No']}" change="cmbLicense_changeHandler(event)"/>
 	</mx:FormItem>
 	<mx:FormItem label="Vigencia:">
 		<components:DateField id="dtfExpire"/>

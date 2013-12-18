@@ -9,6 +9,7 @@ package model
 		public var acuerdo:String;
 		public var fechaCompromiso:Date;
 		public var responsableElaboracion:String;
+		public var fechaCumplimiento:Date;
 		
 		public var minuta:Minuta;
 		

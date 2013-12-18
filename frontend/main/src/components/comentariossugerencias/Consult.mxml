@@ -129,7 +129,7 @@
 				<mx:DataGridColumn id="dtgAdvice" headerText="{'Comentario y/o Sugerencia'}"
 								   dataField="sugerencia"
 								   width="370"/>
-				<mx:DataGridColumn id="dtgInmediatlyAction" headerText="{'Requiere\nAcción\nInmediata'}"
+				<mx:DataGridColumn id="dtgInmediatlyAction" headerText="{'Requiere\nAcción'}"
 								   dataField="requiereAccionInmediata"
 								   width="70"
 								   textAlign="center"

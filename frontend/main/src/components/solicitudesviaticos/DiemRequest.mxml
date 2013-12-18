@@ -40,6 +40,14 @@
 			private var _item:SolicitudViaticos;
 			private var validators:InicializaValidadoresEtiquetas;
 			
+			[Bindable]
+			private var _readOnly:Boolean = false;
+			
+			public function set readOnly(value:Boolean):void{
+				this._readOnly = value;
+				this.label = Constants.DETALLE;
+			}
+			
 			public function set registrer(value:Boolean):void{
 				mode = Constants.REGISTER_MODE;
 				this.label = Constants.REGISTRAR;
@@ -82,16 +90,17 @@
 				if( Util.isFill( this.cmbConveyance ) && this._item.medioTransporte != null ){
 					this.cmbConveyance.selectedIndex = Util.selectedIndexFromCombo( this.cmbConveyance.dataProvider as ArrayCollection, 
 						this._item.medioTransporte.id);
+					this.cmbConveyance.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
 				}
 				this.txtNumberOfVehicle.text = this._item.numeroVehiculo;
 				this.txtInitialMileage.text = this._item.kilometrajeInicial;
-				this.txtGAS.text = this._item.combustible.toString();
-				this.txtTollBooths.text = this._item.casetas.toString();
-				this.txtPassages.text = this._item.pasajes.toString();
-				this.txtLodging.text = this._item.hospedaje.toString();
-				this.txtFood.text = this._item.alimentos.toString();
-				this.txtMaterialsAndOrTool.text = this._item.materialesHerramienta.toString();
-				this.txtOthers.text = this._item.otros.toString();
+				this.txtGAS.text = Util.numberToString( this._item.combustible, true);
+				this.txtTollBooths.text = Util.numberToString( this._item.casetas, true);
+				this.txtPassages.text = Util.numberToString( this._item.pasajes, true);
+				this.txtLodging.text = Util.numberToString( this._item.hospedaje, true);
+				this.txtFood.text = Util.numberToString( this._item.alimentos, true);
+				this.txtMaterialsAndOrTool.text = Util.numberToString( this._item.materialesHerramienta, true);
+				this.txtOthers.text = Util.numberToString( this._item.otros, true);
 				this.txtTotalRequested.text = this._item.totalSolicitado.toString();
 			}
 			
@@ -213,6 +222,7 @@
 				Util.removeItems(this.projectsConsult.datagrid.dataProvider);
 				this.cmbApplicantsNames.reset();
 				this.cmbConveyance.selectedIndex = 0;
+				this.cmbConveyance.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
 				this.txtNumberOfVehicle.reset();
 				this.txtInitialMileage.reset();
 				this.txtGAS.reset();
@@ -244,6 +254,7 @@
 					this.cmbConveyance.selectedIndex = Util.selectedIndexFromCombo( this.cmbConveyance.dataProvider as ArrayCollection, 
 						this._item.medioTransporte.id);
 				}
+				this.cmbConveyance.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
 			}
 			
 			protected function responseGetColaborador_resultHandler(event:ResultEvent):void
@@ -319,7 +330,128 @@
 				total += Util.stringToNumber( this.txtFood.text, true );
 				total += Util.stringToNumber( this.txtMaterialsAndOrTool.text, true );
 				total += Util.stringToNumber( this.txtOthers.text, true );
-				this.txtTotalRequested.text = total.toString();
+				this.txtTotalRequested.text = Util.truncateToString(total);
+			}
+			
+			protected function cmbConveyance_changeHandler(event:ListEvent):void
+			{
+				this.txtTotalRequested.reset();
+				this.managePlane();
+				this.manageBus();
+				this.manageCar();
+				this.manageOther();
+			}
+			
+			private function validateIs(id:Number):Boolean{
+				var item:MedioTransporte = this.cmbConveyance.selectedItem as MedioTransporte;
+				if( item == null ){
+					return false;
+				}
+				return (item.id == id);
+			}
+			
+			private function managePlane():void{
+				var isSelected:Boolean = this.validateIs(MedioTransporte.ID_AEREO);
+				if( isSelected ){
+					this.txtNumberOfVehicle.text = "";
+					this.txtInitialMileage.text = "";
+					this.txtGAS.text = "";
+					this.txtTollBooths.text = "";
+				}else{
+					this.txtPassages.text = "";
+					this.txtLodging.text = "";
+					this.txtFood.text = "";
+					this.txtMaterialsAndOrTool.text = "";
+					this.txtOthers.text = "";
+					return;
+				}
+				this.txtNumberOfVehicle.enabled = !isSelected;
+				this.txtInitialMileage.enabled = !isSelected;
+				this.txtGAS.enabled = !isSelected;
+				this.txtTollBooths.enabled = !isSelected;
+				this.txtPassages.enabled = isSelected;
+				this.txtLodging.enabled = isSelected;
+				this.txtFood.enabled = isSelected;
+				this.txtMaterialsAndOrTool.enabled = isSelected;
+				this.txtOthers.enabled = isSelected;
+			}
+			
+			private function manageBus():void{
+				var isSelected:Boolean = this.validateIs(MedioTransporte.ID_AUTOBUS);
+				if( isSelected ){
+					this.txtNumberOfVehicle.text = "";
+					this.txtInitialMileage.text = "";
+					this.txtGAS.text = "";
+					this.txtTollBooths.text = "";
+				}else{
+					this.txtPassages.text = "";
+					this.txtLodging.text = "";
+					this.txtFood.text = "";
+					this.txtMaterialsAndOrTool.text = "";
+					this.txtOthers.text = "";
+					return;
+				}
+				this.txtNumberOfVehicle.enabled = !isSelected;
+				this.txtInitialMileage.enabled = !isSelected;
+				this.txtGAS.enabled = !isSelected;
+				this.txtTollBooths.enabled = !isSelected;
+				this.txtPassages.enabled = isSelected;
+				this.txtLodging.enabled = isSelected;
+				this.txtFood.enabled = isSelected;
+				this.txtMaterialsAndOrTool.enabled = isSelected;
+				this.txtOthers.enabled = isSelected;
+			}
+			
+			private function manageCar():void{
+				var isSelected:Boolean = this.validateIs(MedioTransporte.ID_VEHICULO);
+				if( isSelected ){
+					this.txtPassages.text = "";
+				}else{
+					this.txtNumberOfVehicle.text = "";
+					this.txtInitialMileage.text = "";
+					this.txtGAS.text = "";
+					this.txtTollBooths.text = "";
+					this.txtLodging.text = "";
+					this.txtFood.text = "";
+					this.txtMaterialsAndOrTool.text = "";
+					this.txtOthers.text = "";
+					return;
+				}
+				this.txtNumberOfVehicle.enabled = isSelected;
+				this.txtInitialMileage.enabled = isSelected;
+				this.txtGAS.enabled = isSelected;
+				this.txtTollBooths.enabled = isSelected;
+				this.txtPassages.enabled = !isSelected;
+				this.txtLodging.enabled = isSelected;
+				this.txtFood.enabled = isSelected;
+				this.txtMaterialsAndOrTool.enabled = isSelected;
+				this.txtOthers.enabled = isSelected;
+			}
+			
+			private function manageOther():void{
+				var isSelected:Boolean = this.validateIs(MedioTransporte.ID_OTRO);
+				if( isSelected ){
+				}else{
+					this.txtNumberOfVehicle.text = "";
+					this.txtInitialMileage.text = "";
+					this.txtGAS.text = "";
+					this.txtTollBooths.text = "";
+					this.txtPassages.text = "";
+					this.txtLodging.text = "";
+					this.txtFood.text = "";
+					this.txtMaterialsAndOrTool.text = "";
+					this.txtOthers.text = "";
+					return;
+				}
+				this.txtNumberOfVehicle.enabled = isSelected;
+				this.txtInitialMileage.enabled = isSelected;
+				this.txtGAS.enabled = isSelected;
+				this.txtTollBooths.enabled = isSelected;
+				this.txtPassages.enabled = isSelected;
+				this.txtLodging.enabled = isSelected;
+				this.txtFood.enabled = isSelected;
+				this.txtMaterialsAndOrTool.enabled = isSelected;
+				this.txtOthers.enabled = isSelected;
 			}
 		]]>
 	</mx:Script>
@@ -335,7 +467,8 @@
 		</mx:FormItem>
 		<mx:FormItem label="Fecha:">
 			<components:DateField id="dtfDate"
-								  creationComplete="this.dtfDate.selectedDate = new Date()"/>
+								  creationComplete="this.dtfDate.selectedDate = new Date()"
+								  enabled="false"/>
 		</mx:FormItem>
 		<mx:FormItem label="Proyectos:" direction="horizontal"/>
 		<proyectos:Consult id="projectsConsult" projectSelected="projectsConsult_projectSelectedHandler(event)"/>
@@ -354,7 +487,7 @@
 		</mx:FormItem>
 		<mx:FormItem label="Medio de Transporte:">
 			<mx:ComboBox id="cmbConveyance" width="200"
-						 labelField="etiqueta"/>
+						 labelField="etiqueta" change="cmbConveyance_changeHandler(event)"/>
 		</mx:FormItem>
 		<mx:FormItem label="Número de Vehículo:">
 			<components:TextInput id="txtNumberOfVehicle"/>
@@ -394,7 +527,8 @@
 			<components:TextInput id="txtTotalRequested" textAlign="right" width="170"/>
 		</mx:FormItem>
 		<mx:FormItem direction="horizontal">
-			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
+			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"
+					   visible="{!this._readOnly}"/>
 		</mx:FormItem>
 	</mx:Form>
 	<mx:RemoteObject id="solicitudViaticosService" destination="solicitudViaticosService" fault="solicitudViaticosService_faultHandler(event)"

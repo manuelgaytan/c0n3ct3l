@@ -2,12 +2,13 @@
 <mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
 		   width="850" height="525"
 		   xmlns:comprobacionesviaticos="components.comprobacionesviaticos.*"
-		   creationComplete="creationCompleteHandler(event)">
+		   creationComplete="creationCompleteHandler(event)" xmlns:pagoviaticos="components.pagoviaticos.*">
 	<mx:Script>
 		<![CDATA[
 			import events.GenericEvent;
 			
 			import model.ComprobacionViaticos;
+			import model.PagoViaticos;
 			import model.Usuario;
 			
 			import mx.events.FlexEvent;
@@ -34,11 +35,28 @@
 				this.navigator.selectedChild = this.consult;
 				this.consult.executeQuery();
 			} 
+			
+			protected function detail_perDiemPaymentSelectedHandler(event:GenericEvent):void
+			{
+				if( event == null ){
+					return;
+				}
+				var perDiemPayment:model.PagoViaticos = event.information as model.PagoViaticos;
+				if( perDiemPayment == null ){
+					return;
+				}
+				this.perDiemPaymentDetail.providerPayment = perDiemPayment;
+				this.navigator.selectedChild = this.perDiemPaymentDetail;
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:TabNavigator id="navigator" width="100%" height="100%" creationPolicy="all">
 		<comprobacionesviaticos:Consult id="consult" itemDetail="consult_perDiemCheckDetailHandler(event)"/>
-		<comprobacionesviaticos:PerDiemCheck id="detail" update="true" perDiemCheckUpdated="detail_perDiemCheckUpdatedHandler(event)"/>
-		<comprobacionesviaticos:PerDiemCheck id="register" registrer="true" perDiemCheckNew="register_perDiemCheckNewHandler(event)"/>
+		<comprobacionesviaticos:PerDiemCheck id="detail" update="true" perDiemCheckUpdated="detail_perDiemCheckUpdatedHandler(event)"
+											 perDiemPaymentSelected="detail_perDiemPaymentSelectedHandler(event)"/>
+		<comprobacionesviaticos:PerDiemCheck id="register" registrer="true" perDiemCheckNew="register_perDiemCheckNewHandler(event)"
+											 perDiemPaymentSelected="detail_perDiemPaymentSelectedHandler(event)"/>
+		<pagoviaticos:PerDiemPayment id="perDiemPaymentDetail" readOnly="true"/>
 	</mx:TabNavigator>
 </mx:Module>

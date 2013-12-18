@@ -132,11 +132,11 @@
 								   dataField="fechaEnvio"
 								   textAlign="center"
 								   width="80"/>
-				<mx:DataGridColumn id="dtgReceiptDate" headerText="{'Fecha \nRecepción'}"
+				<mx:DataGridColumn id="dtgReceiptDate" headerText="{'Fecha de \nRecepción\nde Auditoría\nInterno-Externo'}"
 								   labelFunction="{Util.labelFunctionDate}"
 								   dataField="fechaRecepcion"
 								   textAlign="center"
-								   width="80"/>
+								   width="100"/>
 				<mx:DataGridColumn id="dtgNameAuditor" headerText="{'Nombre\ndel\nAuditor'}"
 								   dataField="nombreAuditor"
 								   width="150"/>

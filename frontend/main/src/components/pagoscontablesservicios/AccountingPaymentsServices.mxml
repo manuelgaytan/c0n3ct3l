@@ -19,7 +19,6 @@
 			import mx.collections.ArrayCollection;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
 			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
-			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
 			import mx.com.gahm.componentes.validadores.ValidadorNumerico;
 			import mx.controls.Alert;
@@ -382,6 +381,18 @@
 						(this._item.proveedorCalificado == null ? this._item.proveedorMaquilador.id : this._item.proveedorCalificado.id));
 				}
 			}
+			
+			private function sum():void{
+				var total:Number = 0;
+				total += Util.stringToNumber( this.txtImport.text, true );
+				total -= Util.stringToNumber( this.txtDiscounts.text, true );
+				total += Util.stringToNumber( this.txtIVA.text, true );
+				total += Util.stringToNumber( this.txtRounding.text, true );
+				total -= Util.stringToNumber( this.txtISRRetention.text, true );
+				total -= Util.stringToNumber( this.txtIVARetention.text, true );
+				total += Util.stringToNumber( this.txtOtherTaxes.text, true );
+				this.txtTotalToPay.text = Util.truncateToString(total);
+			}
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -423,25 +434,32 @@
 						 		  width="80"/>
 		</mx:FormItem>
 		<mx:FormItem label="Importe:">
-			<components:TextInput id="txtImport" width="150" textAlign="right"/>
+			<components:TextInput id="txtImport" width="150" textAlign="right"
+								  focusOut="this.sum()" enter="this.sum()"/>
 		</mx:FormItem>
 		<mx:FormItem label="Descuentos:">
-			<components:TextInput id="txtDiscounts" width="150" textAlign="right"/>
+			<components:TextInput id="txtDiscounts" width="150" textAlign="right"
+								  focusOut="this.sum()" enter="this.sum()"/>
 		</mx:FormItem>
 		<mx:FormItem label="I.V.A.:">
-			<components:TextInput id="txtIVA" width="150" textAlign="right"/>
+			<components:TextInput id="txtIVA" width="150" textAlign="right"
+								  focusOut="this.sum()" enter="this.sum()"/>
 		</mx:FormItem>
 		<mx:FormItem label="Redondeo:">
-			<components:TextInput id="txtRounding" width="150" textAlign="right"/>
+			<components:TextInput id="txtRounding" width="150" textAlign="right"
+								  focusOut="this.sum()" enter="this.sum()"/>
 		</mx:FormItem>
 		<mx:FormItem label="I.S.R. Retención:">
-			<components:TextInput id="txtISRRetention" width="150" textAlign="right"/>
+			<components:TextInput id="txtISRRetention" width="150" textAlign="right"
+								  focusOut="this.sum()" enter="this.sum()"/>
 		</mx:FormItem>
 		<mx:FormItem label="I.V.A. Retención:">
-			<components:TextInput id="txtIVARetention" width="150" textAlign="right"/>
+			<components:TextInput id="txtIVARetention" width="150" textAlign="right"
+								  focusOut="this.sum()" enter="this.sum()"/>
 		</mx:FormItem>
 		<mx:FormItem label="Otros Impuestos:">
-			<components:TextInput id="txtOtherTaxes" width="150" textAlign="right"/>
+			<components:TextInput id="txtOtherTaxes" width="150" textAlign="right"
+								  focusOut="this.sum()" enter="this.sum()"/>
 		</mx:FormItem>
 		<mx:FormItem label="Total a Pagar:">
 			<components:TextInput id="txtTotalToPay" width="150" textAlign="right"/>

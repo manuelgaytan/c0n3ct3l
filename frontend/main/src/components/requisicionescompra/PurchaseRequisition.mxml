@@ -201,8 +201,11 @@
 				this.validatorsEntry = new InicializaValidadoresEtiquetas();
 				validatorsEntry.crearValidadorRestrictor("generic",ValidadorCadenaCualquierCaracter.nombre, 0, 255);
 				validatorsEntry.setValidador(txtDescription, "generic");
-				validatorsEntry.setValidador(txtQuantity, "generic");
 				validatorsEntry.setRestrictor(txtUnit, "generic");
+				validatorsEntry.crearValidadorRestrictor("decimal",ValidadorDecimal.nombre, 12, 5);
+				validatorsEntry.setValidador(txtQuantity, "decimal");
+				validatorsEntry.crearValidadorRestrictor("decimalCosto",ValidadorDecimal.nombre, 9, 2);
+				validatorsEntry.setValidador(txtCost, "decimalCosto");
 			}
 			
 			protected function responseSave_resultHandler(event:ResultEvent):void
@@ -561,7 +564,7 @@
 		</mx:FormItem>
 		<mx:FormItem label="Costo:" includeInLayout="false" direction="vertical">
 			<components:TextInput id="txtCost"
-								  width="200"
+								  width="200" textAlign="right"
 								  />
 		</mx:FormItem>
 		<mx:Spacer height="28"/>

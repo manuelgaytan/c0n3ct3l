@@ -141,7 +141,7 @@
 								   dataField="fechaEnc"
 								   labelFunction="{Util.labelFunctionDate}"
 								   width="80"/>
-				<mx:DataGridColumn id="dtgENCGrade" headerText="{'Resultado\nEvaluación de\nNecesidades\nde\nCompetencia'}"
+				<mx:DataGridColumn id="dtgENCGrade" headerText="{'Resultado\nInducción'}"
 								   dataField="resultadoEnc"
 								   textAlign="right"
 								   width="80"/>

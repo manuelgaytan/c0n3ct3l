@@ -231,6 +231,7 @@
 			
 			private function cleanForm(labels:Boolean = false):void
 			{
+				Util.upScroll( this );
 				if( !labels ){
 				this.txtID.reset();
 				this.cmbPurchaseOrderType.selectedIndex = 0;

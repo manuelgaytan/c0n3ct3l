@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:DataGrid xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="250"
-			 dataProvider="{this._items}">
+			 dataProvider="{this._items}" 
+			 doubleClickEnabled="true" doubleClick="doubleClickHandler(event)">
 	<mx:Script>
 		<![CDATA[
+			import events.GenericEvent;
+			
 			import model.AcuerdoMinuta;
 			import model.Util;
 			
@@ -10,6 +13,8 @@
 			
 			[Bindable]
 			private var _items:ArrayCollection = new ArrayCollection();
+			
+			private var itemWasSelected:Number = -1;
 			
 			public function set items(value:ArrayCollection):void{
 				this._items = value;
@@ -23,6 +28,10 @@
 				if( entry == null ){
 					return;
 				}
+				if( !( this.itemWasSelected == -1 ) ){
+					this._items.removeItemAt( this.itemWasSelected );
+					this.itemWasSelected = -1;
+				}
 				this._items.addItem( entry );
 				this._items.refresh();
 			}
@@ -31,8 +40,24 @@
 			{
 				Util.removeItems( this._items );
 			}
+			
+			protected function doubleClickHandler(event:MouseEvent):void
+			{
+				var item:AcuerdoMinuta = this.selectedItem as AcuerdoMinuta;
+				if( item == null ){
+					return;
+				}
+				var genericEvent:GenericEvent = new GenericEvent("itemSelected");
+				genericEvent.information = item;
+				this.dispatchEvent( genericEvent );
+				this.itemWasSelected = this.selectedIndex;
+			}
+			
 		]]>
 	</mx:Script>
+	<mx:Metadata>
+		[Event(name="itemSelected", type="events.GenericEvent")]
+	</mx:Metadata>
 	<mx:columns>
 		<mx:DataGridColumn id="dtgResponsible" headerText="{'Responsable'}"
 						   width="140"
@@ -50,5 +75,9 @@
 		<mx:DataGridColumn id="dtgElaborationResponsible" headerText="{'Responsable\nElaboración'}"
 						   width="130"
 						   dataField="responsableElaboracion"/>
+		<mx:DataGridColumn id="dtgAccomplishmentDate" headerText="{'Fecha\nCumplimiento'}"
+						   width="95"
+						   labelFunction="{Util.labelFunctionDate}"
+						   dataField="fechaCumplimiento"/>
 	</mx:columns>
 </mx:DataGrid>	

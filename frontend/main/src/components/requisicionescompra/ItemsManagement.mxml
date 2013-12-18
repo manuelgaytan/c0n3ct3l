@@ -51,7 +51,7 @@
 				}
 				return returnValue;
 			}
-			
+			/*
 			public function set maquiladoraServiceRequest(value:SolicitudServicioMaquilado):void{
 				if( value == null ){
 					return;
@@ -107,7 +107,7 @@
 				entry.importe = Number(entry.cantidad) * entry.costo;
 				this.addItem( entry );
 			}
-			
+			*/
 			protected function doubleClickHandler(event:MouseEvent):void
 			{
 				if( this._purchaseOrderMode ){
@@ -125,6 +125,12 @@
 			{
 				if( event.detail == Alert.NO ){
 					return;
+				}
+				if( this.dataProvider == null || 
+					!(this.dataProvider is ArrayCollection) ||
+					(this.dataProvider as ArrayCollection) == null || 
+					(this.dataProvider as ArrayCollection).length == 0 ){
+					return;					
 				}
 				(this.dataProvider as ArrayCollection).removeItemAt( this.selectedIndex );
 			}

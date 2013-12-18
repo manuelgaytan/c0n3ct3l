@@ -6,7 +6,7 @@ package model
 		public var id:*;
 		public var contratacion:Contratacion;
 		public var percepcion:Percepcion;
-		public var montoAportacion:Number;
+		public var montoAportacion:*;
 		public var variacion:Variacion;
 		public var diasCorrespondientes:*;
 		public var fechaInicio:Date;

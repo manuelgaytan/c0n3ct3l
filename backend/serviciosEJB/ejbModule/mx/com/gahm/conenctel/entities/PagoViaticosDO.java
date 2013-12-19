@@ -46,8 +46,8 @@ public class PagoViaticosDO implements Serializable{
 	private Integer id;
 	
 	@ManyToOne
-	@JoinColumn(name = "fk_comprobacion_viaticos", nullable = false)
-	private ComprobacionViaticosDO comprobacionViaticos;
+	@JoinColumn(name = "fk_solicitud_viaticos", nullable = false)
+	private SolicitudViaticosDO solicitudViaticos;
 	
 	@ManyToOne
 	@JoinColumn(name = "fk_banco_conectel", nullable = false)
@@ -72,12 +72,12 @@ public class PagoViaticosDO implements Serializable{
 	}
 
 	public PagoViaticosDO(Integer id,
-			ComprobacionViaticosDO comprobacionViaticos,
+			SolicitudViaticosDO solicitudViaticos,
 			BancoConectelDO bancoConectel, Date fechaAbono, Double monto,
 			Integer referenciaAbono) {
 		super();
 		this.id = id;
-		this.comprobacionViaticos = comprobacionViaticos;
+		this.solicitudViaticos = solicitudViaticos;
 		this.bancoConectel = bancoConectel;
 		this.fechaAbono = fechaAbono;
 		this.monto = monto;
@@ -92,12 +92,12 @@ public class PagoViaticosDO implements Serializable{
 		this.id = id;
 	}
 
-	public ComprobacionViaticosDO getComprobacionViaticos() {
-		return comprobacionViaticos;
+	public SolicitudViaticosDO getSolicitudViaticos() {
+		return solicitudViaticos;
 	}
 
-	public void setComprobacionViaticos(ComprobacionViaticosDO comprobacionViaticos) {
-		this.comprobacionViaticos = comprobacionViaticos;
+	public void setSolicitudViaticos(SolicitudViaticosDO solicitudViaticos) {
+		this.solicitudViaticos = solicitudViaticos;
 	}
 
 	public BancoConectelDO getBancoConectel() {

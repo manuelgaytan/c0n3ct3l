@@ -17,6 +17,7 @@ import mx.com.gahm.conenctel.entities.SeleccionReclutamientoDO;
 public interface ISeleccionReclutamientoService {
 
 	List<SeleccionReclutamientoDO> getAll();
+	List<SeleccionReclutamientoDO> getAllContratacionFase();
 	void deleteItems( List<Integer> idsItems);
 	SeleccionReclutamientoDO save( SeleccionReclutamientoDO item );
 	SeleccionReclutamientoDO update( SeleccionReclutamientoDO item );

@@ -64,6 +64,10 @@ public class AcuerdoMinutaDO implements Serializable{
 	@Column(name = "responsable_elaboracion", nullable = false)
 	private String responsableElaboracion;
 
+	@Temporal(TemporalType.DATE)
+	@Column(name = "fecha_cumplimiento", nullable = false, length = 10)
+	private Date fechaCumplimiento;
+	
 	public AcuerdoMinutaDO() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -71,7 +75,8 @@ public class AcuerdoMinutaDO implements Serializable{
 
 	public AcuerdoMinutaDO(Integer id, MinutaDO minuta,
 			ResponsableMinutaDO responsableMinuta, String responsable,
-			String acuerdo, Date fechaCompromiso, String responsableElaboracion) {
+			String acuerdo, Date fechaCompromiso, String responsableElaboracion,
+			Date fechaCumplimiento) {
 		super();
 		this.id = id;
 		this.minuta = minuta;
@@ -80,6 +85,7 @@ public class AcuerdoMinutaDO implements Serializable{
 		this.acuerdo = acuerdo;
 		this.fechaCompromiso = fechaCompromiso;
 		this.responsableElaboracion = responsableElaboracion;
+		this.fechaCumplimiento = fechaCumplimiento;
 	}
 
 	public Integer getId() {
@@ -136,6 +142,14 @@ public class AcuerdoMinutaDO implements Serializable{
 
 	public void setResponsableElaboracion(String responsableElaboracion) {
 		this.responsableElaboracion = responsableElaboracion;
+	}
+
+	public Date getFechaCumplimiento() {
+		return fechaCumplimiento;
+	}
+
+	public void setFechaCumplimiento(Date fechaCumplimiento) {
+		this.fechaCumplimiento = fechaCumplimiento;
 	}
 	
 	

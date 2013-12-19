@@ -20,6 +20,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "InformacionFacturacion")
@@ -150,6 +151,9 @@ public class InformacionFacturacionDO implements Serializable{
 	@ManyToOne
 	@JoinColumn(name = "fk_imputable")
 	private ImputableDO imputable;
+	
+	@Transient
+	private Date fechaMayor;
 
 	public InformacionFacturacionDO() {
 		super();
@@ -686,5 +690,13 @@ public class InformacionFacturacionDO implements Serializable{
 
 	public void setImputable(ImputableDO imputable) {
 		this.imputable = imputable;
+	}
+
+	public Date getFechaMayor() {
+		return fechaMayor;
+	}
+
+	public void setFechaMayor(Date fechaMayor) {
+		this.fechaMayor = fechaMayor;
 	}
 }

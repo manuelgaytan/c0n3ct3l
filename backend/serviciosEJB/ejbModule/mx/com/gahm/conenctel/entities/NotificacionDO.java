@@ -43,7 +43,8 @@ public class NotificacionDO implements Serializable{
 	public static final String REQUISICION_COMPRA_CREACION = "Se ha creado una Requisici—n de Compra con id: ";
 	public static final String SOLICITUD_SERVICIO_MAQUILADO_CREACION = "Se ha creado una Solicitud Servicio Maquilado con id: ";
 	public static final String ORDEN_COMPRA_ALMACEN_CREACION = "Se ha creado una Orden de Compra con id: ";
-
+	public static final String AUDITORIA_PROYECTO_APLICAR = "Se aplicar‡ Auditor’a al Proyecto con id: ";
+	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id", unique = true, nullable = false)

@@ -44,6 +44,18 @@ public class CursoDO implements Serializable{
 	@JoinColumn(name = "fk_contratacion", nullable = false)
 	private ContratacionDO contratacion;
 	
+	@Column(name = "induccion1", nullable = false)
+	private Boolean induccion1;
+	
+	@Column(name = "induccion2", nullable = false)
+	private Boolean induccion2;
+	
+	@Column(name = "induccion3", nullable = false)
+	private Boolean induccion3;
+	
+	@Column(name = "induccion4", nullable = false)
+	private Boolean induccion4;
+	
 	@Temporal(TemporalType.DATE)
 	@Column(name="fecha_enc")
 	private Date fechaEnc;
@@ -151,6 +163,38 @@ public class CursoDO implements Serializable{
 	 */
 	public void setContratacion(ContratacionDO contratacion) {
 		this.contratacion = contratacion;
+	}
+
+	public Boolean getInduccion1() {
+		return induccion1;
+	}
+
+	public void setInduccion1(Boolean induccion1) {
+		this.induccion1 = induccion1;
+	}
+
+	public Boolean getInduccion2() {
+		return induccion2;
+	}
+
+	public void setInduccion2(Boolean induccion2) {
+		this.induccion2 = induccion2;
+	}
+
+	public Boolean getInduccion3() {
+		return induccion3;
+	}
+
+	public void setInduccion3(Boolean induccion3) {
+		this.induccion3 = induccion3;
+	}
+
+	public Boolean getInduccion4() {
+		return induccion4;
+	}
+
+	public void setInduccion4(Boolean induccion4) {
+		this.induccion4 = induccion4;
 	}
 
 	/**

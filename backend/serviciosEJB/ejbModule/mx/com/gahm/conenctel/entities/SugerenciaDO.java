@@ -7,15 +7,19 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -73,7 +77,10 @@ public class SugerenciaDO implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "fk_resultado_implementacion", nullable = false)
 	private ResultadoImplementacionDO ResultadoImplementacion;
-
+	
+	@OneToMany(mappedBy="sugerencia", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+	private List<ComentarioSugerenciaDO> comentariosSugerencia; 
+	
 	public SugerenciaDO() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -204,6 +211,15 @@ public class SugerenciaDO implements Serializable {
 	public void setResultadoImplementacion(
 			ResultadoImplementacionDO resultadoImplementacion) {
 		ResultadoImplementacion = resultadoImplementacion;
+	}
+
+	public List<ComentarioSugerenciaDO> getComentariosSugerencia() {
+		return comentariosSugerencia;
+	}
+
+	public void setComentariosSugerencia(
+			List<ComentarioSugerenciaDO> comentariosSugerencia) {
+		this.comentariosSugerencia = comentariosSugerencia;
 	}
 	
 	

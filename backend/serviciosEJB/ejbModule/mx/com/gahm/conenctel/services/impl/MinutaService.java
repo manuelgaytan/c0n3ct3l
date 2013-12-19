@@ -11,6 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 import mx.com.gahm.conenctel.entities.AcuerdoMinutaDO;
+import mx.com.gahm.conenctel.entities.ComentarioPagoViaticosDO;
 import mx.com.gahm.conenctel.entities.MinutaDO;
 import mx.com.gahm.conenctel.entities.ParticipanteMinutaDO;
 import mx.com.gahm.conenctel.services.IMinutaService;
@@ -66,9 +67,32 @@ public class MinutaService  implements IMinutaService{
 
 	@Override
 	public MinutaDO update(MinutaDO item) {
+		this.deleteAcuerdosAnteriores(item);
+		List<AcuerdoMinutaDO> acuerdos = item.getAcuerdoMinuta();
+		item.setAcuerdoMinuta(null);
 		this.asignarMinuta(item);
 		entityManager.merge(item);
+		this.saveAcuerdos(item, acuerdos);
 		return item;
+	}
+
+	private void saveAcuerdos(MinutaDO item, List<AcuerdoMinutaDO> acuerdos) {
+		if( acuerdos != null ){
+			for (AcuerdoMinutaDO comentario : acuerdos) {
+				comentario.setMinuta( item );
+				entityManager.persist(comentario);
+			}
+		}
+		item.setAcuerdoMinuta(acuerdos);
+	}
+
+	private void deleteAcuerdosAnteriores(MinutaDO item) {
+		List<AcuerdoMinutaDO> acuerdos = this.getItem( item.getId() ).getAcuerdoMinuta();
+		if( acuerdos != null ){
+			for (AcuerdoMinutaDO acuerdoMinutaDO : acuerdos ) {
+				entityManager.remove( acuerdoMinutaDO );
+			}
+		}
 	}
 
 	@Override

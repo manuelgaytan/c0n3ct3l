@@ -16,6 +16,7 @@ import mx.com.gahm.conenctel.entities.InformacionFacturacionDO;
 @Remote
 public interface IInformacionFacturacionService {
 	List<InformacionFacturacionDO> getAll();
+	List<InformacionFacturacionDO> getAllByFechaCobranza();
 	void deleteItems(List<Integer> idsItems);
 	InformacionFacturacionDO save(InformacionFacturacionDO item);
 	InformacionFacturacionDO update(InformacionFacturacionDO item);

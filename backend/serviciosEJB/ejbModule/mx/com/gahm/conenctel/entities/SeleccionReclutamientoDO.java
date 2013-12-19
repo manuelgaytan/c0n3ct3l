@@ -26,7 +26,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "SeleccionReclutamiento")
 @NamedQueries({
-	@NamedQuery(name = "SeleccionReclutamientoDO.findAll", query = "select rc from SeleccionReclutamientoDO rc")
+	@NamedQuery(name = "SeleccionReclutamientoDO.findAll", query = "select rc from SeleccionReclutamientoDO rc"),
+	@NamedQuery(name = "SeleccionReclutamientoDO.findAllContratacionFase", query = "select rc from SeleccionReclutamientoDO rc where rc.faseContratacion.id = 1")
 	})
 public class SeleccionReclutamientoDO implements Serializable{
 

@@ -31,6 +31,16 @@ public class ReclutamientoSolicitudEmpleoService implements IReclutamientoSolici
 		
 		return datos;
 	}
+	
+	@Override
+	public List<ReclutamientoSolicitudEmpleoDO> getAllSeleccionFase() {
+		List<ReclutamientoSolicitudEmpleoDO> datos= null;
+		TypedQuery<ReclutamientoSolicitudEmpleoDO>  query =null;
+		query = entityManager.createNamedQuery("ReclutamientoSolicitudEmpleoDO.findAllSeleccionFase",ReclutamientoSolicitudEmpleoDO.class);
+		datos = query.getResultList();
+		
+		return datos;
+	}
 
 	@Override
 	public void deleteItems(List<Integer> idsItems) {

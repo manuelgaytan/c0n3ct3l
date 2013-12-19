@@ -204,7 +204,7 @@ public interface ICatalogoService extends Serializable {
 	
 	List<TipoOperacionDO> getTipoOperacion() throws ConectelException;
 		
-	List<DescripcionFondoFijoCajaChicaDO> getDescripcionFondoFijoCajaChica() throws ConectelException;
+	List<DescripcionFondoFijoCajaChicaDO> getDescripcionFondoFijoCajaChica(Long idTipoOperacion) throws ConectelException;
 	
 	List<MedioTransporteDO> getMedioTransporte() throws ConectelException;
 	

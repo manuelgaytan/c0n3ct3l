@@ -45,8 +45,8 @@ public class ContratacionDO implements Serializable{
 	private Integer id;
 	
 	@OneToOne
-	@JoinColumn(name = "fk_reclutamiento_solicitud_empleo", nullable = false)
-	private ReclutamientoSolicitudEmpleoDO reclutamientoSolicitudEmpleo;
+	@JoinColumn(name = "fk_seleccion_solicitud_empleo", nullable = false)
+	private SeleccionReclutamientoDO seleccionSolicitudEmpleo;
 	
 	@OneToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name = "fk_colaborador", nullable = false)
@@ -120,7 +120,7 @@ public class ContratacionDO implements Serializable{
 	}
 
 	public ContratacionDO(Integer id,
-			ReclutamientoSolicitudEmpleoDO reclutamientoSolicitudEmpleo,
+			SeleccionReclutamientoDO seleccionSolicitudEmpleo,
 			ColaboradorDO colaborador, Double sueldoInicial,
 			Date fechaExpedicionCertificadoMedico,
 			Date fechaVencimientoCertificadoMedico,
@@ -132,7 +132,7 @@ public class ContratacionDO implements Serializable{
 			Boolean indemnizacion) {
 		super();
 		this.id = id;
-		this.reclutamientoSolicitudEmpleo = reclutamientoSolicitudEmpleo;
+		this.seleccionSolicitudEmpleo = seleccionSolicitudEmpleo;
 		this.colaborador = colaborador;
 		this.sueldoInicial = sueldoInicial;
 		this.fechaExpedicionCertificadoMedico = fechaExpedicionCertificadoMedico;
@@ -166,16 +166,16 @@ public class ContratacionDO implements Serializable{
 	/**
 	 * @return the reclutamientoSolicitudEmpleo
 	 */
-	public ReclutamientoSolicitudEmpleoDO getReclutamientoSolicitudEmpleo() {
-		return reclutamientoSolicitudEmpleo;
+	public SeleccionReclutamientoDO getSeleccionSolicitudEmpleo() {
+		return seleccionSolicitudEmpleo;
 	}
 
 	/**
 	 * @param reclutamientoSolicitudEmpleo the reclutamientoSolicitudEmpleo to set
 	 */
-	public void setReclutamientoSolicitudEmpleo(
-			ReclutamientoSolicitudEmpleoDO reclutamientoSolicitudEmpleo) {
-		this.reclutamientoSolicitudEmpleo = reclutamientoSolicitudEmpleo;
+	public void setSeleccionSolicitudEmpleo(
+			SeleccionReclutamientoDO seleccionSolicitudEmpleo) {
+		this.seleccionSolicitudEmpleo = seleccionSolicitudEmpleo;
 	}
 
 	/**

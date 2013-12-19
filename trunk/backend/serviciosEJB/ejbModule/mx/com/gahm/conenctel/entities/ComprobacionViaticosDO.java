@@ -37,8 +37,8 @@ public class ComprobacionViaticosDO implements Serializable {
 	private long id;
 	
 	@ManyToOne
-	@JoinColumn(name = "fk_solicitud_viaticos", nullable = false)
-	private SolicitudViaticosDO solicitudViaticos;
+	@JoinColumn(name = "fk_pago_viaticos", nullable = false)
+	private PagoViaticosDO pagoViaticos;
 	
 	@Column(name = "total_autorizado", nullable = false)
 	private Double totalAutorizado;
@@ -64,12 +64,12 @@ public class ComprobacionViaticosDO implements Serializable {
 	}
 
 	public ComprobacionViaticosDO(long id,
-			SolicitudViaticosDO solicitudViaticos, Double totalAutorizado,
+			PagoViaticosDO pagoViaticos, Double totalAutorizado,
 			Date fechaSubidaDocumentos, String documentoFormato,
 			EstadoComprobacionViaticosDO estadoComprobacionViaticos) {
 		super();
 		this.id = id;
-		this.solicitudViaticos = solicitudViaticos;
+		this.pagoViaticos = pagoViaticos;
 		this.totalAutorizado = totalAutorizado;
 		this.fechaSubidaDocumentos = fechaSubidaDocumentos;
 		this.documentoFormato = documentoFormato;
@@ -90,18 +90,12 @@ public class ComprobacionViaticosDO implements Serializable {
 		this.id = id;
 	}
 
-	/**
-	 * @return the solicitudViaticos
-	 */
-	public SolicitudViaticosDO getSolicitudViaticos() {
-		return solicitudViaticos;
+	public PagoViaticosDO getPagoViaticos() {
+		return pagoViaticos;
 	}
 
-	/**
-	 * @param solicitudViaticos the solicitudViaticos to set
-	 */
-	public void setSolicitudViaticos(SolicitudViaticosDO solicitudViaticos) {
-		this.solicitudViaticos = solicitudViaticos;
+	public void setPagoViaticos(PagoViaticosDO pagoViaticos) {
+		this.pagoViaticos = pagoViaticos;
 	}
 
 	/**

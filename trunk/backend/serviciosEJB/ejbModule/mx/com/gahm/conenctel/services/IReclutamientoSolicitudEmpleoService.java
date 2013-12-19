@@ -17,6 +17,7 @@ import mx.com.gahm.conenctel.entities.ReclutamientoSolicitudEmpleoDO;
 public interface IReclutamientoSolicitudEmpleoService{
 
 	List<ReclutamientoSolicitudEmpleoDO> getAll();
+	List<ReclutamientoSolicitudEmpleoDO> getAllSeleccionFase();
 	void deleteItems( List<Integer> idsItems);
 	ReclutamientoSolicitudEmpleoDO save( ReclutamientoSolicitudEmpleoDO item );
 	ReclutamientoSolicitudEmpleoDO update( ReclutamientoSolicitudEmpleoDO item );

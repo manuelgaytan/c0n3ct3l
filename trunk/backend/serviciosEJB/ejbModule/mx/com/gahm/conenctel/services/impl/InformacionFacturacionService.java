@@ -1,5 +1,7 @@
 package mx.com.gahm.conenctel.services.impl;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -29,6 +31,39 @@ public class InformacionFacturacionService implements IInformacionFacturacionSer
 		datos = query.getResultList();
 		
 		return datos;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<InformacionFacturacionDO> getAllByFechaCobranza() {
+		List<InformacionFacturacionDO> datos= null;
+		Query query =null;
+		query = entityManager.createNamedQuery("InformacionFacturacionDO.findAll");
+		datos = query.getResultList();
+		if( !(datos == null) ){
+			for (InformacionFacturacionDO informacionFacturacionDO : datos) {
+				setFechaMayor(informacionFacturacionDO);
+			}
+			Collections.sort(datos, new Comparator<InformacionFacturacionDO>() {
+			    public int compare(InformacionFacturacionDO object1, InformacionFacturacionDO object2) {
+			    	return ( object1.getFechaMayor().before( object2.getFechaMayor() ) ) ? -1 : 1;
+			    }
+			});
+		}
+		return datos;
+	}
+
+	private void setFechaMayor(InformacionFacturacionDO informacionFacturacionDO) {
+		if(  	  informacionFacturacionDO.getFechaProgramada1().before( informacionFacturacionDO.getFechaProgramada2() ) &&
+				  informacionFacturacionDO.getFechaProgramada1().before( informacionFacturacionDO.getFechaProgramada3() ) ){
+				  informacionFacturacionDO.setFechaMayor( informacionFacturacionDO.getFechaProgramada1() );
+		}else if( informacionFacturacionDO.getFechaProgramada2().before( informacionFacturacionDO.getFechaProgramada1() ) &&
+				  informacionFacturacionDO.getFechaProgramada2().before( informacionFacturacionDO.getFechaProgramada3() ) ){
+				  informacionFacturacionDO.setFechaMayor( informacionFacturacionDO.getFechaProgramada2() );
+		}else if( informacionFacturacionDO.getFechaProgramada3().before( informacionFacturacionDO.getFechaProgramada1() ) &&
+				  informacionFacturacionDO.getFechaProgramada3().before( informacionFacturacionDO.getFechaProgramada2() ) ){
+				  informacionFacturacionDO.setFechaMayor( informacionFacturacionDO.getFechaProgramada3() );
+		}
 	}
 
 	@Override

@@ -48,8 +48,12 @@ public class InformacionPrenominaDO implements Serializable{
 	private ContratacionDO contratacion;
 	
 	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_incidencia")
-	private Date fechaIncidencia;
+	@Column(name="fecha_incidencia_inicial")
+	private Date fechaIncidenciaInicial;
+	
+	@Temporal(TemporalType.DATE)
+	@Column(name="fecha_incidencia_final")
+	private Date fechaIncidenciaFinal;
 	
 	@ManyToOne
 	@JoinColumn(name = "fk_clase_incidencia", nullable = false)
@@ -168,12 +172,20 @@ public class InformacionPrenominaDO implements Serializable{
 		this.montoConectel = montoConectel;
 	}
 
-	public Date getFechaIncidencia() {
-		return fechaIncidencia;
+	public Date getFechaIncidenciaInicial() {
+		return fechaIncidenciaInicial;
 	}
 
-	public void setFechaIncidencia(Date fechaIncidencia) {
-		this.fechaIncidencia = fechaIncidencia;
+	public void setFechaIncidenciaInicial(Date fechaIncidenciaInicial) {
+		this.fechaIncidenciaInicial = fechaIncidenciaInicial;
+	}
+
+	public Date getFechaIncidenciaFinal() {
+		return fechaIncidenciaFinal;
+	}
+
+	public void setFechaIncidenciaFinal(Date fechaIncidenciaFinal) {
+		this.fechaIncidenciaFinal = fechaIncidenciaFinal;
 	}
 	
 	

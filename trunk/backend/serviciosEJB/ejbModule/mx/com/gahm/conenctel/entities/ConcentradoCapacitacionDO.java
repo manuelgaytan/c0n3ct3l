@@ -75,6 +75,12 @@ public class ConcentradoCapacitacionDO implements Serializable {
 
 	@Column(name = "constancia", nullable = false)
 	private String constancia;
+	
+	@Column(name = "aprobado", nullable = false)
+	private Boolean aprobado;
+	
+	@Column(name = "resultado_seguimiento", nullable = false)
+	private String resultadoSeguimiento;
 
 	public ConcentradoCapacitacionDO() {
 		super();
@@ -186,6 +192,22 @@ public class ConcentradoCapacitacionDO implements Serializable {
 
 	public void setConstancia(String constancia) {
 		this.constancia = constancia;
+	}
+
+	public Boolean getAprobado() {
+		return aprobado;
+	}
+
+	public void setAprobado(Boolean aprobado) {
+		this.aprobado = aprobado;
+	}
+
+	public String getResultadoSeguimiento() {
+		return resultadoSeguimiento;
+	}
+
+	public void setResultadoSeguimiento(String resultadoSeguimiento) {
+		this.resultadoSeguimiento = resultadoSeguimiento;
 	}
 
 }

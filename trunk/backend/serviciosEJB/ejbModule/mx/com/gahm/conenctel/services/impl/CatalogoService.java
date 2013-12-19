@@ -798,10 +798,10 @@ public class CatalogoService implements ICatalogoService {
 	}
 	
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
-	public List<DescripcionFondoFijoCajaChicaDO> getDescripcionFondoFijoCajaChica() throws ConectelException {
+	public List<DescripcionFondoFijoCajaChicaDO> getDescripcionFondoFijoCajaChica( Long idTipoOperacion) throws ConectelException {
 		TypedQuery<DescripcionFondoFijoCajaChicaDO> query = entityManager.createNamedQuery(
-				"DescripcionFondoFijoCajaChicaDO.findAll", DescripcionFondoFijoCajaChicaDO.class);
-		
+				"DescripcionFondoFijoCajaChicaDO.getByTipoOperacion", DescripcionFondoFijoCajaChicaDO.class);
+		query.setParameter("idTipoOperacion", idTipoOperacion);
 		List<DescripcionFondoFijoCajaChicaDO> list;
 		try {
 			list = query.getResultList();

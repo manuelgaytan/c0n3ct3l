@@ -3,6 +3,7 @@
  */
 package mx.com.gahm.conenctel.services.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -10,7 +11,12 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
+import mx.com.gahm.conenctel.entities.EstadoNotificacionDO;
+import mx.com.gahm.conenctel.entities.NotificacionDO;
+import mx.com.gahm.conenctel.entities.PerfilDO;
+import mx.com.gahm.conenctel.entities.ProyectoDO;
 import mx.com.gahm.conenctel.entities.SistemaGestionDO;
+import mx.com.gahm.conenctel.entities.UsuarioDO;
 import mx.com.gahm.conenctel.services.ISistemaGestionService;
 
 /**
@@ -45,7 +51,31 @@ public class SistemaGestionService implements ISistemaGestionService{
 	@Override
 	public SistemaGestionDO save(SistemaGestionDO item) {
 		entityManager.persist(item);
+		this.validarEnvioNotificaciones(item);
 		return item;
+	}
+	
+	private void validarEnvioNotificaciones(SistemaGestionDO sistemaGestion) {
+		if( sistemaGestion == null ||
+			!sistemaGestion.getAplicacionAuditoria() ){
+			return;
+		}
+		String mensaje = null;
+		mensaje = NotificacionDO.AUDITORIA_PROYECTO_APLICAR + sistemaGestion.getProyecto().getId();
+		this.enviarNotificacion(PerfilDO.ID_GERENTE_OPERATIVO, mensaje);
+	}
+	
+	private void enviarNotificacion(int idPerfil, String mensaje) {
+		PerfilDO perfil = entityManager.find(PerfilDO.class, idPerfil);
+		UsuarioDO usuario = entityManager.find(UsuarioDO.class, UsuarioDO.ID_AUTOMATICO);
+		EstadoNotificacionDO estado = entityManager.find(EstadoNotificacionDO.class, EstadoNotificacionDO.ID_PENDIENTE);
+		NotificacionDO notificacion = new NotificacionDO();
+		notificacion.setPerfil(perfil);
+		notificacion.setNotificacion(mensaje);
+		notificacion.setUsuarioCreacion(usuario);
+		notificacion.setFechaHoraCreacion(new Date());
+		notificacion.setEstado(estado);
+		entityManager.persist(notificacion);
 	}
 
 	@Override

@@ -10,6 +10,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
+import mx.com.gahm.conenctel.entities.ComentarioSugerenciaDO;
 import mx.com.gahm.conenctel.entities.SugerenciaDO;
 import mx.com.gahm.conenctel.services.ISugerenciaService;
 
@@ -44,13 +45,41 @@ public class SugerenciaService implements ISugerenciaService{
 
 	@Override
 	public SugerenciaDO save(SugerenciaDO item) {
+		List<ComentarioSugerenciaDO> comentarios =item.getComentariosSugerencia();
+		item.setComentariosSugerencia(null);
 		entityManager.persist(item);
+		saveComentarios(item,comentarios);
 		return item;
+	}
+	
+	private void deleteComentarios(Integer id){
+		SugerenciaDO item = getItem(id);
+		List<ComentarioSugerenciaDO> comentarios = item.getComentariosSugerencia();
+		if( comentarios != null ){
+			for (ComentarioSugerenciaDO comentario : comentarios) {
+				entityManager.remove(comentario);
+			}
+		}
+	}
+	
+	private void saveComentarios(SugerenciaDO item,List<ComentarioSugerenciaDO> comentarios){
+		if( comentarios != null ){
+			for (ComentarioSugerenciaDO comentario : comentarios) {
+				entityManager.persist(comentario.getComentarioSistemasGestion());
+				comentario.setSugerencia(item);
+				entityManager.persist(comentario);
+			}
+		}
+		item.setComentariosSugerencia(comentarios);
 	}
 
 	@Override
 	public SugerenciaDO update(SugerenciaDO item) {
+		deleteComentarios(item.getId());
+		List<ComentarioSugerenciaDO> comentarios =item.getComentariosSugerencia();
+		item.setComentariosSugerencia(null);
 		entityManager.merge(item);
+		saveComentarios(item, comentarios);
 		return item;
 	}
 

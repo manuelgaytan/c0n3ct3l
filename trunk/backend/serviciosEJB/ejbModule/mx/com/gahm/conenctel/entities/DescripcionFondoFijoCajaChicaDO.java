@@ -10,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -21,7 +23,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name="DescripcionFondoFijoCajaChica")
 @NamedQueries({
-	@NamedQuery(name = "DescripcionFondoFijoCajaChicaDO.findAll", query = "select rc from DescripcionFondoFijoCajaChicaDO rc")
+	@NamedQuery(name = "DescripcionFondoFijoCajaChicaDO.findAll", query = "select rc from DescripcionFondoFijoCajaChicaDO rc"),
+	@NamedQuery(name = "DescripcionFondoFijoCajaChicaDO.getByTipoOperacion", query = "select c from DescripcionFondoFijoCajaChicaDO c where c.tipoOperacion.id=:idTipoOperacion")
 	})
 public class DescripcionFondoFijoCajaChicaDO implements Serializable{
 
@@ -36,6 +39,10 @@ public class DescripcionFondoFijoCajaChicaDO implements Serializable{
 
 	@Column(name="descripcion")
 	private String descripcion;
+	
+	@ManyToOne
+	@JoinColumn(name = "fk_tipo_operacion", nullable = false)
+	private TipoOperacionDO tipoOperacion;
 
 	public DescripcionFondoFijoCajaChicaDO() {
 		super();
@@ -74,6 +81,14 @@ public class DescripcionFondoFijoCajaChicaDO implements Serializable{
 	 */
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
+	}
+
+	public TipoOperacionDO getTipoOperacion() {
+		return tipoOperacion;
+	}
+
+	public void setTipoOperacion(TipoOperacionDO tipoOperacion) {
+		this.tipoOperacion = tipoOperacion;
 	}
 
 	

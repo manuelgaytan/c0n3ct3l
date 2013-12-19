@@ -44,8 +44,8 @@ public class SistemaGestionDO implements Serializable{
 	private Integer id;
 	
 	@ManyToOne
-	@JoinColumn(name = "fk_datos_generales_proyecto", nullable = false)
-	private DatosGrlsProyectoDO datosGeneralesProyecto;
+	@JoinColumn(name = "fk_proyecto", nullable = false)
+	private ProyectoDO proyecto;
 	
 	@Column(name = "aplicacion_auditoria")
 	private Boolean aplicacionAuditoria;
@@ -57,6 +57,13 @@ public class SistemaGestionDO implements Serializable{
 	@ManyToOne
 	@JoinColumn(name = "fk_forma_auditoria", nullable = false)
 	private FormaAuditoriaDO formaAuditoria;
+	
+	@Temporal(TemporalType.DATE)
+	@Column(name = "fecha_auditoria", nullable = false, length = 10)
+	private Date fechaAuditoria;
+	
+	@Column(name = "indice_calidad", nullable = false)
+	private String indiceCalidad;
 	
 	@Temporal(TemporalType.DATE)
 	@Column(name = "fecha_envio", nullable = false, length = 10)
@@ -73,6 +80,10 @@ public class SistemaGestionDO implements Serializable{
 	private String nombreAuditor;
 	
 	@Temporal(TemporalType.DATE)
+	@Column(name = "fecha_recepcion_correcciones_auditorias_internas", nullable = false, length = 10)
+	private Date fechaRecepcionCorreccionesAuditoriasInternas;
+	
+	@Temporal(TemporalType.DATE)
 	@Column(name = "fecha_envio_correcciones", nullable = false, length = 10)
 	private Date fechaEnvioCorrecciones;
 	
@@ -83,6 +94,10 @@ public class SistemaGestionDO implements Serializable{
 	@Column(name = "correcciones", nullable = false)
 	private String correcciones;
 	
+	@Temporal(TemporalType.DATE)
+	@Column(name = "fecha_cierre_auditoria", nullable = false, length = 10)
+	private Date fechaCierreAuditoria;
+	
 	@Column(name = "observaciones", nullable = false)
 	private String observaciones;
 
@@ -92,7 +107,7 @@ public class SistemaGestionDO implements Serializable{
 	}
 
 	public SistemaGestionDO(Integer id,
-			DatosGrlsProyectoDO datosGeneralesProyecto,
+			ProyectoDO proyecto,
 			Boolean aplicacionAuditoria, TipoAuditoriaDO tipoAuditoria,
 			FormaAuditoriaDO formaAuditoria, Date fechaEnvio,
 			Date fechaRecepcion, String formatoAuditoria, String nombreAuditor,
@@ -101,7 +116,7 @@ public class SistemaGestionDO implements Serializable{
 			String observaciones) {
 		super();
 		this.id = id;
-		this.datosGeneralesProyecto = datosGeneralesProyecto;
+		this.proyecto = proyecto;
 		this.aplicacionAuditoria = aplicacionAuditoria;
 		this.tipoAuditoria = tipoAuditoria;
 		this.formaAuditoria = formaAuditoria;
@@ -123,13 +138,13 @@ public class SistemaGestionDO implements Serializable{
 		this.id = id;
 	}
 
-	public DatosGrlsProyectoDO getDatosGeneralesProyecto() {
-		return datosGeneralesProyecto;
+	public ProyectoDO getProyecto() {
+		return proyecto;
 	}
 
-	public void setDatosGeneralesProyecto(
-			DatosGrlsProyectoDO datosGeneralesProyecto) {
-		this.datosGeneralesProyecto = datosGeneralesProyecto;
+	public void setProyecto(
+			ProyectoDO proyecto) {
+		this.proyecto = proyecto;
 	}
 
 	public Boolean getAplicacionAuditoria() {
@@ -154,6 +169,22 @@ public class SistemaGestionDO implements Serializable{
 
 	public void setFormaAuditoria(FormaAuditoriaDO formaAuditoria) {
 		this.formaAuditoria = formaAuditoria;
+	}
+
+	public Date getFechaAuditoria() {
+		return fechaAuditoria;
+	}
+
+	public void setFechaAuditoria(Date fechaAuditoria) {
+		this.fechaAuditoria = fechaAuditoria;
+	}
+
+	public String getIndiceCalidad() {
+		return indiceCalidad;
+	}
+
+	public void setIndiceCalidad(String indiceCalidad) {
+		this.indiceCalidad = indiceCalidad;
 	}
 
 	public Date getFechaEnvio() {
@@ -188,6 +219,15 @@ public class SistemaGestionDO implements Serializable{
 		this.nombreAuditor = nombreAuditor;
 	}
 
+	public Date getFechaRecepcionCorreccionesAuditoriasInternas() {
+		return fechaRecepcionCorreccionesAuditoriasInternas;
+	}
+
+	public void setFechaRecepcionCorreccionesAuditoriasInternas(
+			Date fechaRecepcionCorreccionesAuditoriasInternas) {
+		this.fechaRecepcionCorreccionesAuditoriasInternas = fechaRecepcionCorreccionesAuditoriasInternas;
+	}
+
 	public Date getFechaEnvioCorrecciones() {
 		return fechaEnvioCorrecciones;
 	}
@@ -210,6 +250,14 @@ public class SistemaGestionDO implements Serializable{
 
 	public void setCorrecciones(String correcciones) {
 		this.correcciones = correcciones;
+	}
+
+	public Date getFechaCierreAuditoria() {
+		return fechaCierreAuditoria;
+	}
+
+	public void setFechaCierreAuditoria(Date fechaCierreAuditoria) {
+		this.fechaCierreAuditoria = fechaCierreAuditoria;
 	}
 
 	public String getObservaciones() {

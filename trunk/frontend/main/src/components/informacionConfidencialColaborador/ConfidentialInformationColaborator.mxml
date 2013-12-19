@@ -34,6 +34,7 @@
 			import model.ProveedorMaquilador;
 			import model.Proyecto;
 			import model.ReclutamientoSolicitudEmpleo;
+			import model.SeleccionReclutamiento;
 			import model.Suspension;
 			import model.TipoCandidato;
 			import model.TipoColaborador;
@@ -44,7 +45,6 @@
 			import mx.collections.ArrayCollection;
 			import mx.com.gahm.componentes.validadores.Constantes;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
-			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
 			import mx.com.gahm.componentes.validadores.ValidadorEmail;
@@ -101,6 +101,7 @@
 				this.fltDlvPhoto.delivers = Util.asArrayCollection( this._item.foto );
 				this.txtSalary.text = this._item.sueldo.toString();
 				this.chkIMSS.selected = this._item.tieneImss;
+				this.chkIMSS.dispatchEvent( new Event( Event.CHANGE ) );
 				this.dtfDateIssueIMSS.selectedDate = this._item.altaImss;
 				this.dtfExpirationDateIMSS.selectedDate = this._item.bajaImss;
 				this.dtfUpdateDateIMSS.selectedDate = this._item.modificacionImss;
@@ -192,6 +193,7 @@
 			{
 				if( this.mode == Constants.REGISTER_MODE ){
 					form.removeChild( this.frmID );
+					this.chkIMSS.dispatchEvent( new Event( Event.CHANGE ) );
 				}
 				if( this.mode == Constants.UPDATE_MODE ){
 				}
@@ -224,6 +226,7 @@
 				this.fltDlvPhoto.reset();
 				this.txtSalary.reset();
 				this.chkIMSS.selected = false;
+				this.chkIMSS.dispatchEvent( new Event( Event.CHANGE ) );
 				this.dtfDateIssueIMSS.reset();
 				this.dtfExpirationDateIMSS.reset();
 				this.dtfUpdateDateIMSS.reset();
@@ -266,6 +269,25 @@
 				if( this.mode == Constants.UPDATE_MODE ){
 				}
 			}
+			
+			protected function chkIMSS_changeHandler(event:Event):void
+			{
+				var isIMSSSelected:Boolean = this.isIMSSSelected();
+				if( isIMSSSelected ){
+					var recruitment:Contratacion = this.recruitmentConsult.datagrid.selectedItem as Contratacion;
+					if( !(recruitment == null) ){
+						this.txtNSS.text = Util.extractToText( recruitment, "seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosGeneralesSolicitante.nss" );
+					}
+				}else{
+					this.txtNSS.reset();
+				}
+				this.txtNSS.enabled = isIMSSSelected;
+			}
+			
+			private function isIMSSSelected():Boolean{
+				return this.chkIMSS.selected;
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -287,7 +309,10 @@
 			<components:TextInput id="txtSalary" textAlign="right"/>
 		</mx:FormItem>
 		<mx:FormItem label="I.M.S.S.:">
-			<mx:CheckBox id="chkIMSS"/>
+			<mx:CheckBox id="chkIMSS" change="chkIMSS_changeHandler(event)"/>
+		</mx:FormItem>
+		<mx:FormItem label="N.S.S.:">
+			<components:TextInput id="txtNSS" editable="false"/>
 		</mx:FormItem>
 		<mx:FormItem label="Alta I.M.S.S.:">
 			<components:DateField id="dtfDateIssueIMSS"/>

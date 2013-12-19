@@ -149,19 +149,19 @@
 						   dataField="grupoFamilia"
 						   width="100"
 						   editable="false"/>
-		<mx:DataGridColumn id="dtgDescription" headerText="Descripción"
-						   dataField="descripcion" wordWrap="true"
-						   width="160"
+		<mx:DataGridColumn id="dtgQuantity" headerText="Cantidad"
+						   dataField="cantidad"
+						   width="60"
+						   textAlign="right"
 						   editable="false"/>
 		<mx:DataGridColumn id="dtgUnit" headerText="Unidad"
 						   dataField="unidad"
 						   width="80"
 						   textAlign="right"
 						   editable="false"/>
-		<mx:DataGridColumn id="dtgQuantity" headerText="Cantidad"
-						   dataField="cantidad"
-						   width="60"
-						   textAlign="right"
+		<mx:DataGridColumn id="dtgDescription" headerText="Descripción"
+						   dataField="descripcion" wordWrap="true"
+						   width="160"
 						   editable="false"/>
 		<mx:DataGridColumn id="dtgValidation" headerText="Validación"
 						   dataField="validacion.nombreCompleto"

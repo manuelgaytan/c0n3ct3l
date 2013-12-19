@@ -132,13 +132,14 @@
 			}
 			
 			private function getRecruitment():Contratacion{
+				var seleccionSolicitudEmpleo:SeleccionReclutamiento = this.selectionJobApplication.datagrid.selectedItem as SeleccionReclutamiento;
 				var recruitment:Contratacion = null;
 				if( this.mode == Constants.REGISTER_MODE ){
 					recruitment = new Contratacion();
 					recruitment.colaborador = new Colaborador();
-					recruitment.colaborador.nombreCompleto = Util.extractToText( recruitment, "reclutamientoSolicitudEmpleo.datosGeneralesSolicitante.nombres" ) + " " +
-															 Util.extractToText( recruitment, ".reclutamientoSolicitudEmpleo.datosGeneralesSolicitante.apellidoPaterno" ) + " " +
-															 Util.extractToText( recruitment, ".reclutamientoSolicitudEmpleo.datosGeneralesSolicitante.apellidoMaterno" );
+					recruitment.colaborador.nombreCompleto = Util.extractToText( seleccionSolicitudEmpleo, "reclutamientoSolicitudEmpleo.datosGeneralesSolicitante.nombres" ) + " " +
+															 Util.extractToText( seleccionSolicitudEmpleo, "reclutamientoSolicitudEmpleo.datosGeneralesSolicitante.apellidoPaterno" ) + " " +
+															 Util.extractToText( recruitment, "seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosGeneralesSolicitante.apellidoMaterno" );
 					recruitment.colaborador.tipoColaborador = new TipoColaborador();
 					recruitment.colaborador.tipoColaborador.id = TipoColaborador.ID_NOMINA;
 				}else{
@@ -210,6 +211,7 @@
 				value &&= benefits.validations();
 				value &&= dtfDateIssueMedicalCertificate.selectedDate != null;
 				value &&= dtfExpirationDateMedicalCertificate.selectedDate != null;
+				value &&= dtfContractStartDate.selectedDate != null;
 				return value;
 			}
 			
@@ -227,7 +229,7 @@
 				this.validators = new InicializaValidadoresEtiquetas();
 				validators.crearValidadorRestrictor("generic",ValidadorCadenaCualquierCaracter.nombre, 0, 255);
 				validators.setRestrictor( this.txtReasonSuspension, "generic");
-				validators.setValidador( this.txtEventuallyContractExpiration, "generic");
+				validators.setRestrictor( this.txtEventuallyContractExpiration, "generic");
 				this.validators.crearValidadorRestrictor("genericDecimal", ValidadorDecimal.nombre, 9, 2);
 				this.validators.setValidador( this.txtInitialSalary, "genericDecimal" );
 			}

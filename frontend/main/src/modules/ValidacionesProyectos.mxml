@@ -19,7 +19,7 @@
 			
 			protected function consult_projectValidationDetailHandler(event:GenericEvent):void
 			{
-				this.detail.projectValidation = event.information as model.Proyecto;
+				this.detail.projectValidation = event.information as model.DatosGeneralesProyecto;
 				this.navigator.selectedChild = this.detail;
 			}
 			

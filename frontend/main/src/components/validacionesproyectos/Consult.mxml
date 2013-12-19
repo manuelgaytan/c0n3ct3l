@@ -6,9 +6,7 @@
 		<![CDATA[
 			import events.GenericEvent;
 			
-			import model.ConfiguracionPruebaEntrega;
-			import model.FiltroProyecto;
-			import model.Proyecto;
+			import model.DatosGeneralesProyecto;
 			import model.Util;
 			
 			import mx.collections.ArrayCollection;
@@ -20,8 +18,6 @@
 			
 			[Bindable]
 			private var items:ArrayCollection = null;
-			
-			private var configuracionPruebaEntrega:ConfiguracionPruebaEntrega;
 			
 			protected function responseGetAll_resultHandler(event:ResultEvent):void
 			{
@@ -47,13 +43,13 @@
 				if( event.currentTarget.selectedItem == null ){
 					return;
 				}
-				var item:Proyecto = this.datagrid.selectedItem as Proyecto;
-				this.responseGetProyecto.token = this.proyectoService.getProyecto( item.id );
+				var item:DatosGeneralesProyecto = this.datagrid.selectedItem as DatosGeneralesProyecto;
+				this.responseGetDatosGeneralesProyecto.token = this.datosGeneralesService.getDatosGrlsProyecto( item.id );
 			}
 			
 			protected function responseGetItem_resultHandler(event:ResultEvent):void
 			{
-				var item:Proyecto = event.result as Proyecto;
+				var item:DatosGeneralesProyecto = event.result as DatosGeneralesProyecto;
 				if( item == null ){
 					return;
 				}
@@ -64,18 +60,7 @@
 			
 			public function executeQuery():void
 			{
-				var filter:FiltroProyecto = new FiltroProyecto();
-				filter.idConectel = null;
-				filter.idCategoria = undefined;
-				filter.idCliente = undefined;
-				filter.tipoProyecto = undefined;
-				filter.tecnologia = undefined;
-				filter.equipo = undefined;
-				filter.actividadRealizar = undefined;
-				filter.modelo = undefined;
-				filter.descripcionServicio = undefined;
-				filter.tipoServicio = undefined;
-				this.responseGetAllByFiltro.token = this.proyectoService.getAllByFiltro(filter);
+				this.responseGetAllAll.token = this.datosGeneralesService.getAllAll();
 			}
 			
 			private function labelFunctionDate(object:Object, column:DataGridColumn):String{
@@ -97,37 +82,37 @@
 				 >
 		<mx:columns>
 			<mx:DataGridColumn id="dtgProjectID" headerText="{'ID\nProyecto'}"
-							   dataField="id"
+							   dataField="proyecto.id"
 							   labelFunction="labelFunctionIDProyecto"
 							   width="130"/>
 			<mx:DataGridColumn id="dtgProjectState" headerText="{'Validación\nProyecto'}"
-							   dataField="estado.etiqueta"/>
+							   dataField="proyecto.estado.etiqueta"/>
 			<mx:DataGridColumn id="dtgCategoria" headerText="Categoria"
-							   dataField="categoria.etiqueta"
+							   dataField="proyecto.categoria.etiqueta"
 							   />
 			<mx:DataGridColumn id="dtgClient" headerText="Cliente"
-							   dataField="producto.cliente.nombreComercial"
+							   dataField="proyecto.producto.cliente.nombreComercial"
 							   />
 			<mx:DataGridColumn id="dtgProjectType" headerText="{'Tipo de\nProyecto'}"
-							   dataField="producto.tipoProyecto"
+							   dataField="proyecto.producto.tipoProyecto"
 							   />
 			<mx:DataGridColumn id="dtgTechnology" headerText="Tecnología"
-							   dataField="producto.teconologia"
+							   dataField="proyecto.producto.teconologia"
 							   />
 			<mx:DataGridColumn id="dtgEquipment" headerText="Equipo"
-							   dataField="producto.equipo"
+							   dataField="proyecto.producto.equipo"
 							   />
 			<mx:DataGridColumn id="dtgActivity" headerText="{'Actividad\na Realizar'}" width="180"
-							   dataField="producto.actividadRealizar"
+							   dataField="proyecto.producto.actividadRealizar"
 							   />
 			<mx:DataGridColumn id="dtgModel" headerText="Modelo"
-							   dataField="producto.modelo"
+							   dataField="proyecto.producto.modelo"
 							   />
 			<mx:DataGridColumn id="dtgServiceDescription" headerText="{'Descripción\ndel Servicio'}"
-							   dataField="producto.descripcionServicio"
+							   dataField="proyecto.producto.descripcionServicio"
 							   width="80"/>
 			<mx:DataGridColumn id="dtgServiceType" headerText="{'Tipo de\nServicio'}"
-							   dataField="producto.tipoServicio"
+							   dataField="proyecto.producto.tipoServicio"
 							   />	
 		</mx:columns>
 	</mx:DataGrid>
@@ -135,8 +120,8 @@
 	<mx:HBox>
 		<!--<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>-->
 	</mx:HBox>
-	<mx:RemoteObject id="proyectoService" destination="proyectoService" fault="datosGeneralesProyectoService_faultHandler(event)"
+	<mx:RemoteObject id="datosGeneralesService" destination="datosGeneralesService" fault="datosGeneralesProyectoService_faultHandler(event)"
 					 showBusyCursor="true"/>
-	<mx:CallResponder id="responseGetAllByFiltro" result="responseGetAll_resultHandler(event)"/>
-	<mx:CallResponder id="responseGetProyecto" result="responseGetItem_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetAllAll" result="responseGetAll_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetDatosGeneralesProyecto" result="responseGetItem_resultHandler(event)"/>
 </mx:VBox>

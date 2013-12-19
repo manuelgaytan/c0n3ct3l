@@ -577,7 +577,7 @@
 		<mx:FormItem label="Fecha Inicio Real:">
 			<components:DateField id="dtfStartDateReal"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha Término Real:">
+		<mx:FormItem label="Fecha Termino Real:">
 			<components:DateField id="dtfEndDateReal"/>
 		</mx:FormItem>
 		<mx:FormItem label="Site Survey:">

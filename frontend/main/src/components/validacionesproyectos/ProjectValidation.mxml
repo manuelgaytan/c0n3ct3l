@@ -6,17 +6,16 @@
 		<![CDATA[
 			import model.Catalogo;
 			import model.Constants;
+			import model.DatosGeneralesProyecto;
 			import model.Estado;
 			import model.EstadoValidacionOperativa;
 			import model.Producto;
-			import model.Proyecto;
 			import model.TipoEntregable;
 			import model.Util;
 			import model.ValidacionProyecto;
 			
 			import mx.collections.ArrayCollection;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
-			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorEntero;
 			import mx.controls.Alert;
@@ -26,7 +25,7 @@
 			import mx.rpc.events.ResultEvent;
 			
 			private var mode:String = null;
-			private var _item:Proyecto;
+			private var _item:DatosGeneralesProyecto;
 			private var validators:InicializaValidadoresEtiquetas;
 			
 			public function set registrer(value:Boolean):void{
@@ -49,7 +48,7 @@
 				this.fillCombos();
 			}
 			
-			public function set projectValidation(value:Proyecto):void{
+			public function set projectValidation(value:DatosGeneralesProyecto):void{
 				if( value == null ){
 					return;
 				}
@@ -63,32 +62,39 @@
 				if( this._item == null ){
 					return;
 				}
-				this.txtConectelID.text = Util.getIDConectelFormat( Util.extractObject( this._item, "id" ) );
-				this.txtCategory.text = Util.extractToText( this._item, "categoria.etiqueta" );
-				this.txtClient.text  = Util.extractToText( this._item, "producto.cliente.nombreComercial" );
-				this.txtProjectType.text = Util.extractToText( this._item, "producto.tipoProyecto" );
-				this.txtTechnology.text = Util.extractToText( this._item, "producto.teconologia" );
-				this.txtEquipment.text = Util.extractToText( this._item, "producto.equipo" );
-				this.txtActivity.text = Util.extractToText( this._item, "producto.actividadRealizar" );
-				this.txtModel.text = Util.extractToText( this._item, "producto.modelo" );
-				this.txtServiceDescription.text = Util.extractToText( this._item, "producto.descripcionServicio" );
-				this.txtServiceType.text = Util.extractToText( this._item, "producto.tipoServicio" );
+				this.txtConectelID.text = Util.getIDConectelFormat( Util.extractObject( this._item, "proyecto.id" ) );
+				this.txtCategory.text = Util.extractToText( this._item, "proyecto.categoria.etiqueta" );
+				this.txtClient.text  = Util.extractToText( this._item, "proyecto.producto.cliente.nombreComercial" );
+				this.txtProjectType.text = Util.extractToText( this._item, "proyecto.producto.tipoProyecto" );
+				this.txtTechnology.text = Util.extractToText( this._item, "proyecto.producto.teconologia" );
+				this.txtEquipment.text = Util.extractToText( this._item, "proyecto.producto.equipo" );
+				this.txtActivity.text = Util.extractToText( this._item, "proyecto.producto.actividadRealizar" );
+				this.txtModel.text = Util.extractToText( this._item, "proyecto.producto.modelo" );
+				this.txtServiceDescription.text = Util.extractToText( this._item, "proyecto.producto.descripcionServicio" );
+				this.txtServiceType.text = Util.extractToText( this._item, "proyecto.producto.tipoServicio" );
 				var costo:String = "costo";
 				if( this.txtServiceType.text == Producto.TIPO_SERVICIO_LOCAL ){
-					costo = "producto.costoLocalCliente";	
+					costo = "proyecto.producto.costoLocalCliente";	
 				}
 				if( this.txtServiceType.text == Producto.TIPO_SERVICIO_FORANEO ){
-					costo = "producto.costoForaneoCliente";	
+					costo = "proyecto.producto.costoForaneoCliente";	
 				}				
 				//this.txtCost.text = Util.formatNumber( Util.extractObject( this._item, costo) );
-				this.txtSite.text = Util.extractToText( this._item, "centralSitio");
-				this.txtParentProject.text = Util.extractToText( this._item, "proyectoPadreHijo.proyectoPadre.descripcion");
-				if( this._item.validacionProyecto != null ){
-					if( Util.isFill( this.cmbOperationalValidationStatus ) && this._item.validacionProyecto != null 
-						&& this._item.validacionProyecto.estadoValidacionOperativa != null ){
+				this.txtSite.text = Util.extractToText( this._item, "proyecto.centralSitio");
+				this.txtParentProject.text = Util.extractToText( this._item, "proyecto.proyectoPadreHijo.proyectoPadre.descripcion");
+				this.txtCordinationResponsible.text = Util.extractToText( this._item, "reponsableConectel.nombreCompleto");
+				this.txtImplementationResponsible.text = Util.extractToText( this._item, "responsableImpl.nombreCompleto");
+				this.txtClientResponsible.text = Util.extractToText( this._item, "responsableCliente");
+				this.txtRealStartDate.text = Util.formatDateToString( this._item.fechaInicioReal );
+				this.txtRealEndDate.text = Util.formatDateToString( this._item.fechaTerminoReal );
+				this.txtFinalClient.text = Util.extractToText( this._item, "clienteFinal");
+				if( this._item.proyecto != null && 
+					this._item.proyecto.validacionProyecto != null ){
+					if( Util.isFill( this.cmbOperationalValidationStatus ) && this._item.proyecto.validacionProyecto != null 
+						&& this._item.proyecto.validacionProyecto.estadoValidacionOperativa != null ){
 						this.cmbOperationalValidationStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbOperationalValidationStatus.dataProvider as ArrayCollection, 
-							this._item.validacionProyecto.estadoValidacionOperativa.id);
-						this.dtfOperativeValidationStatus.selectedDate = this._item.validacionProyecto.fecha;
+							this._item.proyecto.validacionProyecto.estadoValidacionOperativa.id);
+						this.dtfOperativeValidationStatus.selectedDate = this._item.proyecto.validacionProyecto.fecha;
 					}
 				}
 			}
@@ -96,10 +102,11 @@
 			private function getProjectValidation():ValidacionProyecto{
 				var projectValidation:ValidacionProyecto = null;
 				projectValidation = new ValidacionProyecto();
-				if( this._item.validacionProyecto != null ){
-					projectValidation.id = this._item.validacionProyecto.id;
+				if( this._item.proyecto != null && 
+					this._item.proyecto.validacionProyecto != null ){
+					projectValidation.id = this._item.proyecto.validacionProyecto.id;
 				}
-				projectValidation.proyecto = this._item;
+				projectValidation.proyecto = this._item.proyecto;
 				projectValidation.estadoValidacionOperativa = Util.validateCombo( this.cmbOperationalValidationStatus ) as EstadoValidacionOperativa;
 				projectValidation.fecha = this.dtfOperativeValidationStatus.selectedDate;
 				return projectValidation;
@@ -179,6 +186,12 @@
 				//this.txtCost.reset();
 				this.txtSite.reset();
 				this.txtParentProject.reset();
+				this.txtCordinationResponsible.reset();
+				this.txtImplementationResponsible.reset();
+				this.txtClientResponsible.reset();
+				this.txtRealStartDate.reset();
+				this.txtRealEndDate.reset();
+				this.txtFinalClient.reset();
 				this.cmbOperationalValidationStatus.selectedIndex = 0; 
 				this.dtfOperativeValidationStatus.reset();
 			}
@@ -198,10 +211,10 @@
 				}
 				this.cmbOperationalValidationStatus.dataProvider = data;
 				if( Util.isFill( this.cmbOperationalValidationStatus ) && this._item 
-					&& this._item.validacionProyecto != null 
-					&& this._item.validacionProyecto.estadoValidacionOperativa != null ){
+					&& this._item.proyecto.validacionProyecto != null 
+					&& this._item.proyecto.validacionProyecto.estadoValidacionOperativa != null ){
 					this.cmbOperationalValidationStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbOperationalValidationStatus.dataProvider as ArrayCollection, 
-					this._item.validacionProyecto.estadoValidacionOperativa.id);
+						this._item.proyecto.validacionProyecto.estadoValidacionOperativa.id);
 				}
 			}
 			
@@ -259,6 +272,30 @@
 		</mx:FormItem>
 		<mx:FormItem label="Proyecto Padre:">
 			<components:TextInput id="txtParentProject" width="450"
+								  editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Responsable Coordinación:">
+			<components:TextInput id="txtCordinationResponsible" width="350"
+								  editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Responsable Implementación:">
+			<components:TextInput id="txtImplementationResponsible" width="350"
+								  editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Responsable Cliente:">
+			<components:TextInput id="txtClientResponsible" width="350"
+								  editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha Inicio Real:">
+			<components:TextInput id="txtRealStartDate"  width="100"
+								  editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha Termino Real:">
+			<components:TextInput id="txtRealEndDate"  width="100"
+								  editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Cliente Final:">
+			<components:TextInput id="txtFinalClient" width="350"
 								  editable="false"/>
 		</mx:FormItem>
 		<mx:FormItem label="Estatus de Validación Operativa:">

@@ -36,6 +36,9 @@
 			private var _item:DatosGeneralesSolicitante;
 			private var validators:InicializaValidadoresEtiquetas;
 			
+			private static const SI:String = "Sí";
+			private static const NO:String = "No";
+			
 			public function set registrer(value:Boolean):void{
 				mode = Constants.REGISTER_MODE;
 				//this.label = Constants.REGISTRAR;
@@ -126,6 +129,12 @@
 					this.cmbHealthState.selectedIndex = Util.selectedIndexFromCombo( this.cmbHealthState.dataProvider as ArrayCollection, 
 						this._item.estadoSalud.id);
 				}
+				if( this._item.enfermedadCronica != null ){
+					this.cmbChronicDisease.selectedIndex = 0;
+				}else{
+					this.cmbChronicDisease.selectedIndex = 1;
+				}
+				this.cmbChronicDisease.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
 				this.txtChronicDisease.text = this._item.enfermedadCronica;
 				if( Util.isFill( this.cmbHobby ) && this._item 
 					&& this._item.actividadTiempoLibre != null ){
@@ -190,6 +199,9 @@
 				value &&= this.dtfBirthdayDate.selectedDate != null;
 				value &&= this.requestAddress.validations();
 				//value &&= this.driverLicense.validations(); Se remueven los campos de licencia para que no sean obligatorios.
+				if( this.isChronicDisease() ){
+					value &&= Util.validateEmpty( this.txtChronicDisease.text ) != null;
+				}
 				return value;
 			}
 			
@@ -259,6 +271,8 @@
 				this.driverLicense.cleanForm();
 				this.cmbLetterCriminal.selectedIndex = 0;
 				this.cmbHealthState.selectedIndex = 0;
+				this.cmbChronicDisease.selectedIndex = 0;
+				this.cmbChronicDisease.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
 				this.txtChronicDisease.reset();
 				this.cmbHobby.selectedIndex = 0;
 				this.disableCmbForeignDocumentation();
@@ -429,6 +443,24 @@
 				}
 				return value;
 			}
+			
+			protected function cmbChronicDisease_changeHandler(event:ListEvent):void
+			{
+				if( event == null ){
+					return;
+				}
+				var isChronicDisease:Boolean = this.isChronicDisease();
+				if( isChronicDisease ){
+				}else{					
+					this.txtChronicDisease.text = "";
+				}
+				this.txtChronicDisease.enabled = isChronicDisease;
+			}
+			
+			private function isChronicDisease():Boolean{
+				var chronicDisease:String = this.cmbChronicDisease.selectedItem as String;
+				return ( chronicDisease == SI );
+			}			
 		]]>
 	</mx:Script>
 	<mx:FormItem id="frmID" label="ID:" direction="horizontal">
@@ -502,7 +534,8 @@
 		<mx:ComboBox id="cmbHealthState" width="200"
 					 labelField="estado"/>
 	</mx:FormItem>
-	<mx:FormItem label="Enfermedad Crónica:">
+	<mx:FormItem label="Enfermedad Crónica:" direction="horizontal">
+		<mx:ComboBox id="cmbChronicDisease" dataProvider="{[SI,NO]}" change="cmbChronicDisease_changeHandler(event)"/>
 		<components:TextInput id="txtChronicDisease" width="255"/>
 	</mx:FormItem>
 	<mx:FormItem label="Actividad Tiempo Libre:">

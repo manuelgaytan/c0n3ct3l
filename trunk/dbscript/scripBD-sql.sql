@@ -206,6 +206,7 @@
 	entregables_completos BOOLEAN,
 	fk_estatus_validacion_operativa INT(11) UNSIGNED,
 	fecha_validacion_operativa DATE,
+	cierre_coordinacion DATE,
 	PRIMARY KEY (id)
 	);
 
@@ -367,6 +368,8 @@
 	fk_entrega INT(11) UNSIGNED NOT NULL,
 	recibe VARCHAR(255) NOT NULL,
 	fk_autoriza_final INT(11) UNSIGNED,
+	leyenda VARCHAR(255),
+	fecha_retorno DATE,
 	PRIMARY KEY (id)
 	);
 
@@ -650,6 +653,8 @@
 	fk_tipo_mantenimiento INT(11) UNSIGNED NOT NULL,
 	fecha_mantenimiento DATE,
 	costo DECIMAL(11,2),
+	fk_calibracion INT(11) UNSIGNED,
+	fk_mantenimiento_servicio INT(11) UNSIGNED,
 	PRIMARY KEY (id)
 	);
 
@@ -774,8 +779,10 @@
 	curp VARCHAR(255) NOT NULL,
 	fk_categoria_proyecto INT(11) UNSIGNED,
 	fk_tipo_contrato INT(11) UNSIGNED,
-	vigencia_contrato VARCHAR(255) NOT NULL,
+	vigencia_contrato VARCHAR(255),
 	fecha_contrato DATE,
+	fk_forma_pago_maquilador INT(11) UNSIGNED,
+	fk_tecnologia INT(11) UNSIGNED,
 	PRIMARY KEY (id)
 	);
 
@@ -825,6 +832,7 @@
 	fk_area_solicitante INT(11) UNSIGNED NOT NULL,
 	central_sitio VARCHAR(255) NOT NULL,
 	fk_estatus INT(11) UNSIGNED NOT NULL,
+	fecha_estatus_requisicion DATE,
 	PRIMARY KEY (id)
 	);
 
@@ -837,7 +845,7 @@
 	descripcion VARCHAR(255) NOT NULL,
 	cantidad VARCHAR(255) NOT NULL,
 	unidad VARCHAR(255) NULL,
-	validacion VARCHAR(255) NULL,
+	fk_validacion INT(11) UNSIGNED,
 	fk_estatus INT(11) UNSIGNED NOT NULL,
 	costo DECIMAL(11,2),
 	importe DECIMAL(11,2),
@@ -889,7 +897,7 @@
 	fecha DATE NOT NULL,
 	fk_proveedor_calificado INT(11) UNSIGNED NOT NULL,
 	fk_proyecto INT(11) UNSIGNED NOT NULL,
-	fk_requisicion_compra INT(11) UNSIGNED NOT NULL,
+	fk_requisicion_compra INT(11) UNSIGNED,
 	subtotal DECIMAL(11,2) NOT NULL,
 	iva DECIMAL(11,2) NOT NULL,
 	ieps DECIMAL(11,2),
@@ -899,6 +907,7 @@
 	total DECIMAL(11,2) NOT NULL,
 	fecha_entrega_almacen DATE NOT NULL,
 	leyenda VARCHAR(255),
+	importe_letra VARCHAR(255),
 	PRIMARY KEY (id)
 	);
 
@@ -936,8 +945,18 @@
 	fk_solicitud_servicio_maquilado INT(11) UNSIGNED NOT NULL,
 	fecha DATE NOT NULL,
 	fk_proveedor_maquilador INT(11) UNSIGNED NOT NULL,
+	subtotal DECIMAL(11,2) NOT NULL,
+	iva DECIMAL(11,2) NOT NULL,
+	ieps DECIMAL(11,2),
+	retencion_isr DECIMAL(11,2),
+	retencion_iva DECIMAL(11,2),
+	otros_impuestos DECIMAL(11,2),
+	total DECIMAL(11,2) NOT NULL,
 	clave_validacion VARCHAR(255),
 	leyenda VARCHAR(255),
+	importe_letra VARCHAR(255),
+	anticipo DECIMAL(11,2),
+	finiquito DECIMAL(11,2),
 	PRIMARY KEY (id)
 	);
 
@@ -1250,6 +1269,7 @@
 	fk_orden_compra INT(11) UNSIGNED,
 	fk_proveedor_maquilador INT(11) UNSIGNED,
 	fk_orden_compra_maquilado INT(11) UNSIGNED,
+	cantidad DECIMAL(11,2) NOT NULL,
 	numero_factura VARCHAR(255) NOT NULL,
 	fecha_revision DATE,
 	fecha_pago DATE,
@@ -1268,6 +1288,7 @@
 	(
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
 	folio VARCHAR(255) NOT NULL,
+	factura VARCHAR(255),
 	fecha DATE NOT NULL,
 	subtotal DECIMAL(11,2) NOT NULL,
 	iva DECIMAL(11,2),
@@ -1310,7 +1331,7 @@
 	estado_pago_3 VARCHAR(255),
 	estado_factura VARCHAR(255) NOT NULL,
 	fecha_estado_factura DATE NOT NULL,
-	imputabilidad VARCHAR(255),
+	fk_imputable INT(11) UNSIGNED,
 	PRIMARY KEY (id)
 	);
 
@@ -1365,10 +1386,9 @@
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
 	fecha DATE NOT NULL,
 	fk_proyecto INT(11) UNSIGNED NOT NULL,
-	fk_colaborador INT(11) UNSIGNED NOT NULL,
 	fk_medio_transporte INT(11) UNSIGNED NOT NULL,
-	numero_vehiculo VARCHAR(255) NOT NULL,
-	kilometraje_inicial VARCHAR(255) NOT NULL,
+	numero_vehiculo VARCHAR(255),
+	kilometraje_inicial VARCHAR(255),
 	combustible DECIMAL(11,2),
 	casetas DECIMAL(11,2),
 	pasajes DECIMAL(11,2),
@@ -1390,7 +1410,7 @@
 	CREATE TABLE ComprobacionViaticos
 	(
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
-	fk_solicitud_viaticos INT(11) UNSIGNED NOT NULL,
+	fk_pago_viaticos INT(11) UNSIGNED NOT NULL,
 	total_autorizado DECIMAL(11,2) NOT NULL,
 	fecha_subida_documentos DATE,
 	documento_formato VARCHAR(255),
@@ -1426,6 +1446,7 @@
 	(
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
 	descripcion VARCHAR(255) NOT NULL,
+	fk_tipo_operacion INT(11) UNSIGNED NOT NULL,
 	PRIMARY KEY (id)
 	);
 
@@ -1434,7 +1455,7 @@
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
 	fecha DATE,
 	fk_descripcion_fondo_fijo_caja_chica INT(11) UNSIGNED,
-	entrega VARCHAR(255) NOT NULL,
+	fk_entrega INT(11) UNSIGNED NOT NULL,
 	fk_colaborador INT(11) UNSIGNED NOT NULL,
 	ingreso DECIMAL(11,2),
 	egreso DECIMAL(11,2),
@@ -1563,7 +1584,7 @@
 	CREATE TABLE PagoViaticos
 	(
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
-	fk_comprobacion_viaticos INT(11) UNSIGNED NOT NULL,
+	fk_solicitud_viaticos INT(11) UNSIGNED NOT NULL,
 	fk_banco_conectel INT(11) UNSIGNED NOT NULL,
 	fecha_abono DATE NOT NULL,
 	monto DECIMAL(11,2) NOT NULL,
@@ -1791,14 +1812,14 @@
 	CREATE TABLE Contratacion
 	(
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
-	fk_reclutamiento_solicitud_empleo INT(11) UNSIGNED NOT NULL,
+	fk_seleccion_solicitud_empleo INT(11) UNSIGNED NOT NULL,
 	fk_colaborador INTEGER UNSIGNED NOT NULL,
 	sueldo_inicial DECIMAL(11,2) NOT NULL,
 	fecha_expedicion_certificado_medico DATE NOT NULL,
 	fecha_vencimiento_certificado_medico DATE NOT NULL,
 	fk_tipo_contratacion INT(11) UNSIGNED NOT NULL,
 	fk_tipo_contrato INT(11) UNSIGNED NOT NULL,
-	vencimiento_contrato_eventual VARCHAR(255) NOT NULL,
+	vencimiento_contrato_eventual VARCHAR(255),
 	fecha_inicio_contrato DATE NOT NULL,
 	fk_suspension INT(11) UNSIGNED,
 	motivo_suspension VARCHAR(255),
@@ -2132,6 +2153,10 @@
 	(
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
 	fk_contratacion INT(11) UNSIGNED NOT NULL,
+	induccion1 BOOLEAN,
+	induccion2 BOOLEAN,
+	induccion3 BOOLEAN,
+	induccion4 BOOLEAN,
 	fecha_enc DATE,
 	resultado_enc DECIMAL(12,5),
 	enc BOOLEAN,
@@ -2155,7 +2180,7 @@
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
 	fk_contratacion INT(11) UNSIGNED NOT NULL,
 	fk_percepcion INT(11) UNSIGNED NOT NULL,
-	monto_aportacion DECIMAL(11,2) NOT NULL,
+	monto_aportacion DECIMAL(11,2),
 	fk_variaciones INT(11) UNSIGNED,
 	dias_correspondientes INTEGER(5),
 	fecha_inicio DATE,
@@ -2168,7 +2193,8 @@
 	(
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
 	fk_contratacion INT(11) UNSIGNED NOT NULL,
-	fecha_incidencia DATE NOT NULL,
+	fecha_incidencia_inicial DATE NOT NULL,
+	fecha_incidencia_final DATE NOT NULL,
 	fk_clase_incidencia INT(11) UNSIGNED NOT NULL,
 	fk_tipo_incapacidad INT(11) UNSIGNED NOT NULL,
 	monto_imss DECIMAL(11,2) NOT NULL,
@@ -2257,17 +2283,21 @@
 	CREATE TABLE SistemaGestion
 	(
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
-	fk_datos_generales_proyecto INT(11) UNSIGNED NOT NULL,
+	fk_proyecto INT(11) UNSIGNED NOT NULL,
 	aplicacion_auditoria BOOLEAN NOT NULL,
 	fk_tipo_auditoria INT(11) UNSIGNED,
 	fk_forma_auditoria INT(11) UNSIGNED,
+	fecha_auditoria DATE,
+	indice_calidad VARCHAR(255),
 	fecha_envio DATE,
 	fecha_recepcion DATE,
 	formato_auditoria VARCHAR(255),
 	nombre_auditor VARCHAR(255),
+	fecha_recepcion_correcciones_auditorias_internas DATE,
 	fecha_envio_correcciones DATE,
 	fk_estado_sistema_gestion INT(11) UNSIGNED NOT NULL,
 	correcciones VARCHAR(255),
+	fecha_cierre_auditoria DATE,
 	observaciones VARCHAR(255),
 	PRIMARY KEY (id)
 	);
@@ -2299,6 +2329,8 @@
 	nombre_instructor VARCHAR(255),
 	calificacion DECIMAL(12,5),
 	constancia VARCHAR(255),
+	aprobado BOOLEAN,
+	resultado_seguimiento VARCHAR(255),
 	PRIMARY KEY (id)
 	);
 	
@@ -2449,6 +2481,52 @@
 	CREATE VIEW NumeroProyectosCobrados
 	AS
 	SELECT 1 AS 'ID', 'Cobrados' AS 'Tipo', count(*) AS 'Cantidad' FROM NumeroInformacionFacturacionEnCobranza;
+
+	CREATE TABLE Calibracion
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	tipo VARCHAR(25) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE MantenimientoServicio
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	tipo VARCHAR(25) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE FormaPagoMaquilador
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	forma VARCHAR(100) NOT NULL UNIQUE,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE SolicitanteSolicitudViaticos
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_solicitud_viaticos INT(11) UNSIGNED NOT NULL,
+	fk_colaborador INT(11) UNSIGNED NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE ComentarioSistemasGestion
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fecha_captura DATE NOT NULL,
+	fk_usuario INT(11) UNSIGNED NOT NULL,
+	comentario VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE ComentarioSugerencia
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_sugerencia INT(11) UNSIGNED NOT NULL,
+	fk_comentario_sistemas_gestion INT(11) UNSIGNED NOT NULL,
+	PRIMARY KEY (id)
+	);
 
 	ALTER TABLE Cliente ADD FOREIGN KEY id_contacto_idxfk (id_contacto) REFERENCES Contacto (id);
 
@@ -2846,11 +2924,9 @@
 
 	ALTER TABLE SolicitudViaticos ADD FOREIGN KEY fk_proyecto_idxfk (fk_proyecto) REFERENCES Proyecto (id);
 
-	ALTER TABLE SolicitudViaticos ADD FOREIGN KEY fk_colaborador_idxfk (fk_colaborador) REFERENCES Colaborador (id);
-
 	ALTER TABLE SolicitudViaticos ADD FOREIGN KEY fk_medio_transporte_idxfk (fk_medio_transporte) REFERENCES MedioTransporte (id);
 	
-	ALTER TABLE ComprobacionViaticos ADD FOREIGN KEY fk_solicitud_viaticos_idxfk (fk_solicitud_viaticos) REFERENCES SolicitudViaticos (id);
+	ALTER TABLE ComprobacionViaticos ADD FOREIGN KEY fk_pago_viaticos_idxfk_2 (fk_pago_viaticos) REFERENCES PagoViaticos (id);
 
 	ALTER TABLE ComprobacionViaticos ADD FOREIGN KEY fk_estado_comprobacion_viaticos_idxfk (fk_estado_comprobacion_viaticos) REFERENCES EstadoComprobacionViaticos (id);
 
@@ -2861,6 +2937,8 @@
 	ALTER TABLE MoviemientoFondoFijoCajaChica ADD FOREIGN KEY fk_descripcion_fondo_fijo_caja_chica_idxfk (fk_descripcion_fondo_fijo_caja_chica) REFERENCES DescripcionFondoFijoCajaChica (id);
 
 	ALTER TABLE MoviemientoFondoFijoCajaChica ADD FOREIGN KEY fk_colaborador_idxfk_1 (fk_colaborador) REFERENCES Colaborador (id);
+
+	ALTER TABLE MoviemientoFondoFijoCajaChica ADD FOREIGN KEY fk_entrega_idxfk_1 (fk_entrega) REFERENCES Colaborador (id);
 
 	ALTER TABLE ComentarioMoviemientoFondoFijoCajaChica ADD FOREIGN KEY fk_moviemiento_fondo_fijo_caja_chica_idxfk (fk_moviemiento_fondo_fijo_caja_chica) REFERENCES MoviemientoFondoFijoCajaChica (id);
 
@@ -2896,7 +2974,7 @@
 
 	ALTER TABLE ComentarioPagoProveedor ADD FOREIGN KEY fk_comentario_tesoreria_idxfk (fk_comentario_tesoreria) REFERENCES ComentarioTesoreria (id);
 
-	ALTER TABLE PagoViaticos ADD FOREIGN KEY fk_comprobacion_viaticos_idxfk (fk_comprobacion_viaticos) REFERENCES ComprobacionViaticos (id);
+	ALTER TABLE PagoViaticos ADD FOREIGN KEY fk_solicitud_viaticos_idxfk (fk_solicitud_viaticos) REFERENCES SolicitudViaticos (id);
 
 	ALTER TABLE PagoViaticos ADD FOREIGN KEY fk_banco_conectel_idxfk_2 (fk_banco_conectel) REFERENCES BancoConectel (id);
 
@@ -2923,7 +3001,7 @@
 	/* Recursos Humanos */
 	ALTER TABLE Prestaciones ADD FOREIGN KEY fk_contratacion_idxfk (fk_contratacion) REFERENCES Contratacion (id);
 
-	ALTER TABLE Contratacion ADD FOREIGN KEY fk_reclutamiento_solicitud_empleo_idxfk (fk_reclutamiento_solicitud_empleo) REFERENCES ReclutamientoSolicitudEmpleo (id);
+	ALTER TABLE Contratacion ADD FOREIGN KEY fk_seleccion_solicitud_empleo_idxfk (fk_seleccion_solicitud_empleo) REFERENCES SeleccionReclutamiento (id);
 
 	ALTER TABLE Contratacion ADD FOREIGN KEY fk_colaborador_idxfk (fk_colaborador) REFERENCES Colaborador (id);
 
@@ -3030,7 +3108,7 @@
 	ALTER TABLE Curso ADD FOREIGN KEY fk_contratacion_idxfk_1 (fk_contratacion) REFERENCES Contratacion (id);
 
 	/* Sistema de Gestion */
-	ALTER TABLE SistemaGestion ADD FOREIGN KEY fk_datos_generales_proyecto_idxfk (fk_datos_generales_proyecto) REFERENCES DatosGeneralesProyecto (id);
+	ALTER TABLE SistemaGestion ADD FOREIGN KEY fk_proyecto_idxfk_2 (fk_proyecto) REFERENCES Proyecto (id);
 
 	ALTER TABLE SistemaGestion ADD FOREIGN KEY fk_tipo_auditoria_idxfk (fk_tipo_auditoria) REFERENCES TipoAuditoria (id);
 
@@ -3084,13 +3162,32 @@
 
 	ALTER TABLE Proyecto ADD FOREIGN KEY fk_tipo_auditoria_idxfk (fk_tipo_auditoria) REFERENCES TipoAuditoria (id);
 
+	ALTER TABLE EquipoMedicion ADD FOREIGN KEY fk_calibracion_idxfk_1 (fk_calibracion) REFERENCES Calibracion (id);
+
+	ALTER TABLE EquipoMedicion ADD FOREIGN KEY fk_mantenimiento_servicio_idxfk_1 (fk_mantenimiento_servicio) REFERENCES MantenimientoServicio (id);
+
+	ALTER TABLE ProveedorMaquilador ADD FOREIGN KEY fk_forma_pago_maquilador_idxfk (fk_forma_pago_maquilador) REFERENCES FormaPagoMaquilador (id);
+
+	ALTER TABLE PartidaRequisicionCompra ADD FOREIGN KEY fk_validacion_idxfk (fk_validacion) REFERENCES Colaborador (id);
+
+	ALTER TABLE InformacionFacturacion ADD FOREIGN KEY fk_imputable_idxfk_2 (fk_imputable) REFERENCES Imputable (id);
+
+	ALTER TABLE SolicitanteSolicitudViaticos ADD FOREIGN KEY fk_solicitud_viaticos_idxfk_2 (fk_solicitud_viaticos) REFERENCES SolicitudViaticos (id);
+
+	ALTER TABLE SolicitanteSolicitudViaticos ADD FOREIGN KEY fk_colaborador_idxfk_3 (fk_colaborador) REFERENCES Colaborador (id);
+
+	ALTER TABLE ComentarioSugerencia ADD FOREIGN KEY fk_sugerencia_idxfk (fk_sugerencia) REFERENCES Sugerencia (id);
+
+	ALTER TABLE ComentarioSugerencia ADD FOREIGN KEY fk_comentario_sistemas_gestion_idxfk (fk_comentario_sistemas_gestion) REFERENCES ComentarioSistemasGestion (id);
+
+	ALTER TABLE DescripcionFondoFijoCajaChica ADD FOREIGN KEY fk_tipo_operacion_idxfk (fk_tipo_operacion) REFERENCES TipoOperacion (id);
 	/* Perfiles */
 	INSERT INTO Perfil
 	VALUES (1, 'Director General');
 	INSERT INTO Perfil
-	VALUES (2, 'Administrador de Cat醠ogos');
+	VALUES (2, 'Administrador de Cat谩logos');
 	INSERT INTO Perfil
-	VALUES (3, 'Almac閚');
+	VALUES (3, 'Almac茅n');
 	INSERT INTO Perfil
 	VALUES (4, 'Recursos Humanos');
 	INSERT INTO Perfil
@@ -3100,21 +3197,21 @@
 	INSERT INTO Perfil
 	VALUES (7, 'Compras');
 	INSERT INTO Perfil
-	VALUES (8, 'P鷅lico');
+	VALUES (8, 'P煤blico');
 	INSERT INTO Perfil
 	VALUES (9, 'Cuentas por Pagar');
 	INSERT INTO Perfil
-	VALUES (10, 'Facturaci髇');
+	VALUES (10, 'Facturaci贸n');
 	INSERT INTO Perfil
 	VALUES (11, 'Contabilidad');
 	INSERT INTO Perfil
-	VALUES (12, 'Tesorer憝a');
+	VALUES (12, 'Tesorer铆颅a');
 	INSERT INTO Perfil
 	VALUES (13, 'Recursos Humanos');
 	INSERT INTO Perfil
-	VALUES (14, 'Sistemas Gesti髇');
+	VALUES (14, 'Sistemas Gesti贸n');
 	INSERT INTO Perfil
-	VALUES (15, 'Validaci髇 Administrativa');
+	VALUES (15, 'Validaci贸n Administrativa');
 
 	/* Pantallas */
 	INSERT INTO Pantalla
@@ -3484,7 +3581,7 @@
 	INSERT INTO Usuario
 	VALUES (2, 'CATALOGOS', 'NOTIENE', 'ADMINISTRADOR DE CATALOGOS', 2, 1);
 	INSERT INTO Usuario
-	VALUES (3, 'ALMACEN', 'NOTIENE', 'ALMAC蓧N', 3, 1);
+	VALUES (3, 'ALMACEN', 'NOTIENE', 'ALMAC脡N', 3, 1);
 	INSERT INTO Usuario
 	VALUES (4, 'RECURSOS', 'NOTIENE', 'RECURSOS HUMANOS', 4, 1);
 	INSERT INTO Usuario
@@ -3494,11 +3591,11 @@
 	INSERT INTO Usuario
 	VALUES (7, 'COMPRAS', 'NOTIENE', 'COMPRAS', 7, 1);
 	INSERT INTO Usuario
-	VALUES (8, 'PUBLICO', 'NOTIENE', 'P贐LICO', 8, 1);
+	VALUES (8, 'PUBLICO', 'NOTIENE', 'P脷BLICO', 8, 1);
 	INSERT INTO Usuario
 	VALUES (9, 'CUENTASPORPAGAR', 'NOTIENE', 'CUENTAS POR PAGAR', 9, 1);
 	INSERT INTO Usuario
-	VALUES (10, 'FACTURACION', 'NOTIENE', 'FACTURACI訐N', 10, 1);
+	VALUES (10, 'FACTURACION', 'NOTIENE', 'FACTURACI脫N', 10, 1);
 	INSERT INTO Usuario
 	VALUES (11, 'CONTABILIDAD', 'NOTIENE', 'CONTABILIDAD', 11, 1);
 	INSERT INTO Usuario
@@ -3506,13 +3603,13 @@
 	INSERT INTO Usuario
 	VALUES (13, 'RECURSOSHUMANOS', 'NOTIENE', 'RECURSOS HUMANOS', 13, 1);
 	INSERT INTO Usuario
-	VALUES (14, 'AUTOMATICO', 'NOTIENE', 'AUTOM羴TICO', 8, 1);
+	VALUES (14, 'AUTOMATICO', 'NOTIENE', 'AUTOM脕聛TICO', 8, 1);
 	
 	/* Categoria Proyecto */
 	INSERT INTO CategoriaProyecto
 	VALUES (1, 'Acceso');
 	INSERT INTO CategoriaProyecto
-	VALUES (2, 'Transmisi髇');
+	VALUES (2, 'Transmisi贸n');
 	
 	/* Imputable */
 	INSERT INTO Imputable
@@ -3526,23 +3623,23 @@
 	INSERT INTO TipoColaborador
 	VALUES (1, 'Proveedores');
 	INSERT INTO TipoColaborador
-	VALUES (2, 'N髆ina');
+	VALUES (2, 'N贸mina');
 	INSERT INTO TipoColaborador
 	VALUES (3, 'Externos');
 	
 	/* Colaborador */
 	INSERT INTO Colaborador
-	VALUES (1, 'JOS蓧 ANTONIO CRUZ', 2);
+	VALUES (1, 'JOS脡 ANTONIO CRUZ', 2);
 	INSERT INTO Colaborador
 	VALUES (2, 'ANTONIO RAVIZE', 1);
 	INSERT INTO Colaborador
 	VALUES (3, 'FRANCISCO TAPIA', 2);
 	INSERT INTO Colaborador
-	VALUES (4, 'GUSTAVO R蚈S', 3);
+	VALUES (4, 'GUSTAVO R脥OS', 3);
 
 	/* Aplica */
 	INSERT INTO Aplica
-	VALUES (1, 'S憝');
+	VALUES (1, 'S铆颅');
 	INSERT INTO Aplica
 	VALUES (2, 'No');
 	
@@ -3554,7 +3651,7 @@
 	INSERT INTO EstadoProyecto
 	VALUES (3, 'Desarrollo Proyecto A y B');
 	INSERT INTO EstadoProyecto
-	VALUES (4, 'Configuraci髇 Prueba y Entrega');
+	VALUES (4, 'Configuraci贸n Prueba y Entrega');
 	INSERT INTO EstadoProyecto
 	VALUES (5, 'Cerrado');
 	INSERT INTO EstadoProyecto
@@ -3564,33 +3661,33 @@
 	INSERT INTO GrupoFamiliaA
 	VALUES (1, 'Manual');
 	INSERT INTO GrupoFamiliaA
-	VALUES (2, 'El閏trica');
+	VALUES (2, 'El茅ctrica');
 	INSERT INTO GrupoFamiliaA
-	VALUES (3, 'Hidr醬lica');
+	VALUES (3, 'Hidr谩ulica');
 	INSERT INTO GrupoFamiliaA
-	VALUES (4, 'Mec醤ica');
+	VALUES (4, 'Mec谩nica');
 	INSERT INTO GrupoFamiliaA
-	VALUES (5, 'Equipo de protecci髇');
+	VALUES (5, 'Equipo de protecci贸n');
 	
 	/* Grupo Familia B */
 	INSERT INTO GrupoFamiliaB
-	VALUES (1, 'Autom髒il');
+	VALUES (1, 'Autom贸vil');
 	INSERT INTO GrupoFamiliaB
 	VALUES (2, 'Camioneta');
 	INSERT INTO GrupoFamiliaB
 	VALUES (3, 'Trailer');
 	INSERT INTO GrupoFamiliaB
-	VALUES (4, 'Cami髇');
+	VALUES (4, 'Cami贸n');
 	INSERT INTO GrupoFamiliaB
 	VALUES (5, 'Motocicleta');
 	
 	/* Grupo Familia C */
 	INSERT INTO GrupoFamiliaC
-	VALUES (1, 'Construcci髇');
+	VALUES (1, 'Construcci贸n');
 	INSERT INTO GrupoFamiliaC
-	VALUES (2, 'El閏trico');
+	VALUES (2, 'El茅ctrico');
 	INSERT INTO GrupoFamiliaC
-	VALUES (3, 'Telef髇ico');
+	VALUES (3, 'Telef贸nico');
 	INSERT INTO GrupoFamiliaC
 	VALUES (4, 'Mobiliario');
 	INSERT INTO GrupoFamiliaC
@@ -3598,11 +3695,11 @@
 	
 	/* Grupo Familia D */
 	INSERT INTO GrupoFamiliaD
-	VALUES (1, 'Papeler憝a');
+	VALUES (1, 'Papeler铆颅a');
 	INSERT INTO GrupoFamiliaD
 	VALUES (2, 'Limpieza');
 	INSERT INTO GrupoFamiliaD
-	VALUES (3, 'Miscel醤eos');
+	VALUES (3, 'Miscel谩neos');
 	INSERT INTO GrupoFamiliaD
 	VALUES (4, 'Accesorios');
 	
@@ -3618,7 +3715,7 @@
 	INSERT INTO GrupoFamiliaE
 	VALUES (5, 'Scanner');
 	INSERT INTO GrupoFamiliaE
-	VALUES (6, 'Perif閞ico');
+	VALUES (6, 'Perif茅rico');
 	
 	/* Grupo Familia F */	
 	INSERT INTO GrupoFamiliaF
@@ -3698,29 +3795,31 @@
 	INSERT INTO UbicacionA
 	VALUES (3, 'Mantenimiento');
 	INSERT INTO UbicacionA
-	VALUES (4, 'Administraci髇');
+	VALUES (4, 'Administraci贸n');
 	INSERT INTO UbicacionA
 	VALUES (5, 'Renta');
 	INSERT INTO UbicacionA
-	VALUES (6, 'Calibraci髇');
+	VALUES (6, 'Calibraci贸n');
 	
 	/* Ubicacion B */
 	INSERT INTO UbicacionB
 	VALUES (1, 'Acceso');
 	INSERT INTO UbicacionB
-	VALUES (2, 'Transmisi髇');
+	VALUES (2, 'Transmisi贸n');
 	INSERT INTO UbicacionB
 	VALUES (3, 'Proveedor');
 	INSERT INTO UbicacionB
 	VALUES (4, 'Mantenimiento');
 	INSERT INTO UbicacionB
-	VALUES (5, 'Administraci髇');
+	VALUES (5, 'Administraci贸n');
+	INSERT INTO UbicacionB
+	VALUES (6, 'Almac茅n');
 	
 	/* Ubicacion C */
 	INSERT INTO UbicacionC
 	VALUES (1, 'Acceso');
 	INSERT INTO UbicacionC
-	VALUES (2, 'Transmisi髇');
+	VALUES (2, 'Transmisi贸n');
 	INSERT INTO UbicacionC
 	VALUES (3, 'Proveedor');
 	INSERT INTO UbicacionC
@@ -3732,7 +3831,7 @@
 	INSERT INTO TipoAlmacen
 	VALUES (1, 'Herramienta');
 	INSERT INTO TipoAlmacen
-	VALUES (2, 'Equipo de Medici髇');
+	VALUES (2, 'Equipo de Medici贸n');
 	INSERT INTO TipoAlmacen
 	VALUES (3, 'Equipo de Transporte');
 	INSERT INTO TipoAlmacen
@@ -3744,9 +3843,9 @@
 	INSERT INTO TipoAlmacen
 	VALUES (7, 'Software');
 	INSERT INTO TipoAlmacen
-	VALUES (8, 'Telefon憝a M髒il');
+	VALUES (8, 'Telefon铆颅a M贸vil-Fija');
 	INSERT INTO TipoAlmacen
-	VALUES (9, 'Solicitudes de Almac閚');
+	VALUES (9, 'Solicitudes de Almac茅n');
 	
 	/* Prioridad */
 	INSERT INTO Prioridad
@@ -3758,7 +3857,7 @@
 	INSERT INTO AreaSolicitante
 	VALUES (1, 'Acceso');
 	INSERT INTO AreaSolicitante
-	VALUES (2, 'Transmisi髇');
+	VALUES (2, 'Transmisi贸n');
 	INSERT INTO AreaSolicitante
 	VALUES (3, 'Administrativo');
 	INSERT INTO AreaSolicitante
@@ -3770,15 +3869,15 @@
 	INSERT INTO ServicioSolicitado
 	VALUES (2, 'Material');
 	INSERT INTO ServicioSolicitado
-	VALUES (3, 'Equipo de Medici髇');
+	VALUES (3, 'Equipo de Medici贸n');
 	INSERT INTO ServicioSolicitado
-	VALUES (4, 'Equipo de C髆puto');
+	VALUES (4, 'Equipo de C贸mputo');
 	INSERT INTO ServicioSolicitado
 	VALUES (5, 'Hardware');
 	INSERT INTO ServicioSolicitado
 	VALUES (6, 'Software');
 	INSERT INTO ServicioSolicitado
-	VALUES (7, 'Telefon憝a M髒il');
+	VALUES (7, 'Telefon铆颅a M贸vil-Fija');
 	INSERT INTO ServicioSolicitado
 	VALUES (8, 'Equipo de Transporte');
 	INSERT INTO ServicioSolicitado
@@ -3794,7 +3893,7 @@
 	INSERT INTO Compania
 	VALUES (4, 'Nextel');
 	INSERT INTO Compania
-	VALUES (5, 'Tel閒onica');
+	VALUES (5, 'Tel茅fonica');
 	INSERT INTO Compania
 	VALUES (6, 'Unefon');
 	
@@ -3806,25 +3905,25 @@
 	
 	/* Tipo Documento Almacen */
 	INSERT INTO TipoDocumentoAlmacen
-	VALUES (1, 'Poliza de Garant憝a');
+	VALUES (1, 'Poliza de Garant铆颅a');
 	INSERT INTO TipoDocumentoAlmacen
 	VALUES (2, 'Poliza de Seguro');
 	INSERT INTO TipoDocumentoAlmacen
-	VALUES (3, 'Certificado de Calibraci髇');
+	VALUES (3, 'Certificado de Calibraci贸n');
 	INSERT INTO TipoDocumentoAlmacen
 	VALUES (4, 'Orden de Mantenimiento o Servicio');
 	INSERT INTO TipoDocumentoAlmacen
-	VALUES (5, 'Tarjeta de Circulaci髇');
+	VALUES (5, 'Tarjeta de Circulaci贸n');
 	
 	/* Tipo Entregable */
 	INSERT INTO TipoEntregable
-	VALUES (1, 'Entregable Ingenier憝a');
+	VALUES (1, 'Entregable Ingenier铆颅a');
 	INSERT INTO TipoEntregable
 	VALUES (2, 'Site Survey');
 	INSERT INTO TipoEntregable
 	VALUES (3, 'Planos');
 	INSERT INTO TipoEntregable
-	VALUES (4, 'Ingenier憝a');
+	VALUES (4, 'Ingenier铆颅a');
 	INSERT INTO TipoEntregable
 	VALUES (5, 'Visita Factibilidad');
 	INSERT INTO TipoEntregable
@@ -3836,9 +3935,9 @@
 	INSERT INTO TipoEntregable
 	VALUES (9, 'Cliente Satisfecho');
 	INSERT INTO TipoEntregable
-	VALUES (10, 'Checklist de Inspecci髇');
+	VALUES (10, 'Checklist de Inspecci贸n');
 	INSERT INTO TipoEntregable
-	VALUES (11, 'Checklist Fotogr醘ico');
+	VALUES (11, 'Checklist Fotogr谩fico');
 	INSERT INTO TipoEntregable
 	VALUES (12, 'ASBuild');
 	INSERT INTO TipoEntregable
@@ -3848,7 +3947,7 @@
 
 	/* Seguimiento */
 	INSERT INTO Seguimiento
-	VALUES (1, 'S憝');
+	VALUES (1, 'S铆颅');
 	INSERT INTO Seguimiento
 	VALUES (2, 'No');
 	INSERT INTO Seguimiento
@@ -3861,14 +3960,14 @@
 	/* Compras */
 	
 	INSERT INTO TipoPersona
-	VALUES (1, 'F憝sica');
+	VALUES (1, 'F铆颅sica');
 	INSERT INTO TipoPersona
 	VALUES (2, 'Moral');
 	
 	INSERT INTO FormaPago
-	VALUES (1, 'Al contado');
+	VALUES (1, 'Contado');
 	INSERT INTO FormaPago
-	VALUES (2, 'Anticipos');
+	VALUES (2, 'Anticipo');
 	
 	INSERT INTO TipoPago
 	VALUES (1, 'Cheque');
@@ -3952,7 +4051,7 @@
 	INSERT INTO EstadoOrdenCompra
 	VALUES (2, 'Rechazada');
 	INSERT INTO EstadoOrdenCompra
-	VALUES (3, 'En Revisi髇');
+	VALUES (3, 'En Revisi贸n');
 	INSERT INTO EstadoOrdenCompra
 	VALUES (4, 'Pendiente');
 
@@ -3961,7 +4060,7 @@
 	INSERT INTO EstadoValidacionCosto
 	VALUES (2, 'Incorrecto');
 	INSERT INTO EstadoValidacionCosto
-	VALUES (3, 'Sustituci髇');
+	VALUES (3, 'Sustituci贸n');
 	INSERT INTO EstadoValidacionCosto
 	VALUES (4, 'Parcial');
 
@@ -3970,7 +4069,7 @@
 	INSERT INTO EstadoInvestigacionCalidad
 	VALUES (2, 'Sin Desviaciones');
 	INSERT INTO EstadoInvestigacionCalidad
-	VALUES (3, 'En Revisi髇');
+	VALUES (3, 'En Revisi贸n');
 	INSERT INTO EstadoInvestigacionCalidad
 	VALUES (4, 'Pendiente');
 
@@ -3982,11 +4081,11 @@
 	VALUES (3, 'Bloqueados');
 
 	INSERT INTO MedioTransporte
-	VALUES (1, 'A閞eo');
+	VALUES (1, 'A茅reo');
 	INSERT INTO MedioTransporte
-	VALUES (2, 'Autob鷖');
+	VALUES (2, 'Autob煤s');
 	INSERT INTO MedioTransporte
-	VALUES (3, 'Veh憝culo');
+	VALUES (3, 'Veh铆颅culo');
 	INSERT INTO MedioTransporte
 	VALUES (4, 'Otro');
 
@@ -3996,29 +4095,29 @@
 	VALUES (2, 'Rechazado');
 
 	INSERT INTO DescripcionFondoFijoCajaChica
-	VALUES (1, 'Remanente Vi醫icos');
+	VALUES (1, 'Remanente Vi谩ticos', 1);
 	INSERT INTO DescripcionFondoFijoCajaChica
-	VALUES (2, 'Reposici髇 de Fondo Fijo');
+	VALUES (2, 'Reposici贸n de Fondo Fijo', 1);
 	INSERT INTO DescripcionFondoFijoCajaChica
-	VALUES (3, 'Otros');
+	VALUES (3, 'Otros', 1);
 	INSERT INTO DescripcionFondoFijoCajaChica
-	VALUES (4, 'Pasajes Locales');
+	VALUES (4, 'Pasajes Locales', 2);
 	INSERT INTO DescripcionFondoFijoCajaChica
-	VALUES (5, 'Estacionamiento');
+	VALUES (5, 'Estacionamiento', 2);
 	INSERT INTO DescripcionFondoFijoCajaChica
-	VALUES (6, 'Agua Embotellada');
+	VALUES (6, 'Agua Embotellada', 2);
 	INSERT INTO DescripcionFondoFijoCajaChica
-	VALUES (7, 'Servicio de Recolecci髇 de Basura');
+	VALUES (7, 'Servicio de Recolecci贸n de Basura', 2);
 	INSERT INTO DescripcionFondoFijoCajaChica
-	VALUES (8, 'Complemento Vi醫ico');
+	VALUES (8, 'Complemento Vi谩tico', 2);
 	INSERT INTO DescripcionFondoFijoCajaChica
-	VALUES (9, 'Papeler憝a');
+	VALUES (9, 'Papeler铆颅a', 2);
 	INSERT INTO DescripcionFondoFijoCajaChica
-	VALUES (10, 'Combustibles');
+	VALUES (10, 'Combustibles', 2);
 	INSERT INTO DescripcionFondoFijoCajaChica
-	VALUES (11, 'Materiales');
+	VALUES (11, 'Materiales', 2);
 	INSERT INTO DescripcionFondoFijoCajaChica
-	VALUES (12, 'Otros');
+	VALUES (12, 'Otros', 2);
 
 	INSERT INTO TipoOperacion
 	VALUES (1, 'Ingresos');
@@ -4026,41 +4125,41 @@
 	VALUES (2, 'Egresos');
 
 	INSERT INTO DescripcionPagoContableServicio
-	VALUES (1, 'N髆ina Conectel', 1);
+	VALUES (1, 'N贸mina Conectel', 2);
 	INSERT INTO DescripcionPagoContableServicio
-	VALUES (2, 'Gratificaciones', 1);
+	VALUES (2, 'Gratificaciones', 2);
 	INSERT INTO DescripcionPagoContableServicio
-	VALUES (3, 'Finiquitos', 1);
+	VALUES (3, 'Finiquitos', 2);
 	INSERT INTO DescripcionPagoContableServicio
-	VALUES (4, 'IMSS, SAR e INFONAVIT', 1);
+	VALUES (4, 'IMSS, SAR e INFONAVIT', 2);
 	INSERT INTO DescripcionPagoContableServicio
-	VALUES (5, 'Financiamiento Adq. Autom髒il', 1);
+	VALUES (5, 'Financiamiento Adq. Autom贸vil', 2);
 	INSERT INTO DescripcionPagoContableServicio
-	VALUES (6, 'Financiamiento Adq. Otros', 1);
+	VALUES (6, 'Financiamiento Adq. Otros', 2);
 	INSERT INTO DescripcionPagoContableServicio
-	VALUES (7, 'Servicio de Internet', 1);
+	VALUES (7, 'Servicio de Internet', 2);
 	INSERT INTO DescripcionPagoContableServicio
-	VALUES (8, 'Servicio Telef髇ico', 1);
+	VALUES (8, 'Servicio Telef贸nico', 2);
 	INSERT INTO DescripcionPagoContableServicio
-	VALUES (9, 'Impuestos Federales', 1);
+	VALUES (9, 'Impuestos Federales', 2);
 	INSERT INTO DescripcionPagoContableServicio
-	VALUES (10, 'Impuestos Locales', 1);
+	VALUES (10, 'Impuestos Locales', 2);
 	INSERT INTO DescripcionPagoContableServicio
-	VALUES (11, 'Suministro de Agua', 1);
+	VALUES (11, 'Suministro de Agua', 2);
 	INSERT INTO DescripcionPagoContableServicio
-	VALUES (12, 'Multas', 1);
+	VALUES (12, 'Multas', 2);
 	INSERT INTO DescripcionPagoContableServicio
-	VALUES (13, 'Servicio de TV de Paga', 1);
+	VALUES (13, 'Servicio de TV de Paga', 2);
 	INSERT INTO DescripcionPagoContableServicio
-	VALUES (14, 'Otros', 1);
+	VALUES (14, 'Otros', 2);
 	INSERT INTO DescripcionPagoContableServicio
-	VALUES (15, 'Devoluci髇 de Cliente', 2);
+	VALUES (15, 'Devoluci贸n de Cliente', 1);
 	INSERT INTO DescripcionPagoContableServicio
-	VALUES (16, 'Devoluci髇 de Impuestos', 2);
+	VALUES (16, 'Devoluci贸n de Impuestos', 1);
 	INSERT INTO DescripcionPagoContableServicio
-	VALUES (17, 'Venta Activo Fijo', 2);
+	VALUES (17, 'Venta Activo Fijo', 1);
 	INSERT INTO DescripcionPagoContableServicio
-	VALUES (18, 'Otros', 2);
+	VALUES (18, 'Otros', 1);
 
 	INSERT INTO BancoConectel
 	VALUES (1, '012345678901234567', 'BBVA Bancomer', '1515870134');
@@ -4072,9 +4171,9 @@
 	VALUES (4, '123456789012345678', 'Banorte', '1234567890');
 
 	INSERT INTO ConceptoOtraOperacionFinanciera
-	VALUES (1, 'Pr閟tamo Obtenido');
+	VALUES (1, 'Pr茅stamo Obtenido');
 	INSERT INTO ConceptoOtraOperacionFinanciera
-	VALUES (2, 'Pr閟tamo Otorgado');
+	VALUES (2, 'Pr茅stamo Otorgado');
 	INSERT INTO ConceptoOtraOperacionFinanciera
 	VALUES (3, 'Pago de Prestamos Obtenidos');
 	INSERT INTO ConceptoOtraOperacionFinanciera
@@ -4117,7 +4216,7 @@
 	INSERT INTO EstadoCivil
 	VALUES (4, 'Divorciado');
 	INSERT INTO EstadoCivil
-	VALUES (5, 'Uni髇 Libre');
+	VALUES (5, 'Uni贸n Libre');
 
 	INSERT INTO Sexo
 	VALUES (1, 'Masculino');
@@ -4166,7 +4265,7 @@
 	INSERT INTO Dependientes
 	VALUES (1, 'Hijos');
 	INSERT INTO Dependientes
-	VALUES (2, 'C髇yugues');
+	VALUES (2, 'C贸nyugues');
 	INSERT INTO Dependientes
 	VALUES (3, 'Padres');
 	INSERT INTO Dependientes
@@ -4183,13 +4282,13 @@
 	INSERT INTO UltimoGradoEstudios
 	VALUES (4, 'Licenciatura');
 	INSERT INTO UltimoGradoEstudios
-	VALUES (5, 'T憝tulado');
+	VALUES (5, 'T铆颅tulado');
 	INSERT INTO UltimoGradoEstudios
 	VALUES (6, 'Posgrado');
 	INSERT INTO UltimoGradoEstudios
-	VALUES (7, 'Maestr憝a');
+	VALUES (7, 'Maestr铆颅a');
 	INSERT INTO UltimoGradoEstudios
-	VALUES (8, 'T閏nico');
+	VALUES (8, 'T茅cnico');
 	INSERT INTO UltimoGradoEstudios
 	VALUES (9, 'Sin Estudios');
 	INSERT INTO UltimoGradoEstudios
@@ -4198,7 +4297,7 @@
 	VALUES (11, 'Ninguno');
 
 	INSERT INTO EstadoAcademico
-	VALUES (1, 'T憝tulado');
+	VALUES (1, 'T铆颅tulado');
 	INSERT INTO EstadoAcademico
 	VALUES (2, 'Pasante');
 	INSERT INTO EstadoAcademico
@@ -4214,13 +4313,15 @@
 	INSERT INTO FuenteReclutamiento
 	VALUES (2, 'Bolsa Trabajo');
 	INSERT INTO FuenteReclutamiento
-	VALUES (3, 'Delegaci髇');
+	VALUES (3, 'Delegaci贸n');
 	INSERT INTO FuenteReclutamiento
 	VALUES (4, 'Feria');
 	INSERT INTO FuenteReclutamiento
 	VALUES (5, 'Trabajador o Empleado');
 	INSERT INTO FuenteReclutamiento
 	VALUES (6, 'Internet');
+	INSERT INTO FuenteReclutamiento
+	VALUES (7, 'Otros');
 
 	INSERT INTO TipoCandidato
 	VALUES (1, 'Personal Universitario');
@@ -4245,7 +4346,7 @@
 	VALUES (3, 'N/A');
 
 	INSERT INTO MotivoTerminoContrato
-	VALUES (1, 'Rescisi髇');
+	VALUES (1, 'Rescisi贸n');
 	INSERT INTO MotivoTerminoContrato
 	VALUES (2, 'Renuncia Voluntaria');
 	INSERT INTO MotivoTerminoContrato
@@ -4253,11 +4354,11 @@
 	INSERT INTO MotivoTerminoContrato
 	VALUES (4, 'Incapacidad');
 	INSERT INTO MotivoTerminoContrato
-	VALUES (5, 'Promoci髇');
+	VALUES (5, 'Promoci贸n');
 	INSERT INTO MotivoTerminoContrato
-	VALUES (6, 'Jubilaci髇');
+	VALUES (6, 'Jubilaci贸n');
 	INSERT INTO MotivoTerminoContrato
-	VALUES (7, 'Renovaci髇 de Contrato');
+	VALUES (7, 'Fin de Contrato');
 
 	INSERT INTO EstadoColaborador
 	VALUES (1, 'Activo');
@@ -4265,11 +4366,17 @@
 	VALUES (2, 'Inactivo');
 	
 	INSERT INTO ClaseIncidencia
-	VALUES (1, 'Accidente');
+	VALUES (1, 'Accidente Dentro del Horario de Trabajo');
 	INSERT INTO ClaseIncidencia
-	VALUES (2, 'Maternidad');
+	VALUES (2, 'Accidente Fuera del Horario de Trabajo');
 	INSERT INTO ClaseIncidencia
-	VALUES (3, 'Enfermedad Profesional');
+	VALUES (3, 'Enfermedad Natural');
+	INSERT INTO ClaseIncidencia
+	VALUES (4, 'Enfermedad Laboral');
+	INSERT INTO ClaseIncidencia
+	VALUES (5, 'Enfermedad No Laboral');
+	INSERT INTO ClaseIncidencia
+	VALUES (6, 'Paternidad');
 	
 	INSERT INTO TipoIncapacidad
 	VALUES (1, 'Temporal');
@@ -4279,9 +4386,9 @@
 	INSERT INTO Deduccion
 	VALUES (1, 'Herramienta');
 	INSERT INTO Deduccion
-	VALUES (2, 'Equipo Telef髇ico');
+	VALUES (2, 'Equipo Telef贸nico');
 	INSERT INTO Deduccion
-	VALUES (3, 'Equipo de C髆puto');
+	VALUES (3, 'Equipo de C贸mputo');
 	INSERT INTO Deduccion
 	VALUES (4, 'Credencial');
 	INSERT INTO Deduccion
@@ -4291,7 +4398,7 @@
 	INSERT INTO Deduccion
 	VALUES (7, 'Faltas');
 	INSERT INTO Deduccion
-	VALUES (8, 'Pensi髇 Alimenticia');
+	VALUES (8, 'Pensi贸n Alimenticia');
 	INSERT INTO Deduccion
 	VALUES (9, 'Fonacot');
 	INSERT INTO Deduccion
@@ -4299,7 +4406,7 @@
 	INSERT INTO Deduccion
 	VALUES (11, 'Infonavit');
 	INSERT INTO Deduccion
-	VALUES (12, 'Pr閟tamo');
+	VALUES (12, 'Pr茅stamo');
 	INSERT INTO Deduccion
 	VALUES (13, 'IMSS');
 	INSERT INTO Deduccion
@@ -4322,11 +4429,11 @@
 	VALUES (2, 'Sin Goce de Sueldo');
 
 	INSERT INTO TipoSancion
-	VALUES (1, 'Descuento 1 D憝a');
+	VALUES (1, 'Descuento 1 D铆颅a');
 	INSERT INTO TipoSancion
-	VALUES (2, 'Rescisi髇');
+	VALUES (2, 'Rescisi贸n');
 	INSERT INTO TipoSancion
-	VALUES (3, 'Suspensi髇');
+	VALUES (3, 'Suspensi贸n');
 	INSERT INTO TipoSancion
 	VALUES (4, 'Acta Administrativa');
 	INSERT INTO TipoSancion
@@ -4348,7 +4455,7 @@
 	INSERT INTO Percepcion
 	VALUES (5, 'Ayuda por Fallecimiento');
 	INSERT INTO Percepcion
-	VALUES (6, 'Texto');
+	VALUES (6, 'Vacaciones');
 	INSERT INTO Percepcion
 	VALUES (7, 'Ayuda por Natalicio');
 
@@ -4365,31 +4472,31 @@
 	INSERT INTO AreaLevantaNoConformidad
 	VALUES (3, 'Contabilidad');
 	INSERT INTO AreaLevantaNoConformidad
-	VALUES (4, 'Direcci髇 General');
+	VALUES (4, 'Direcci贸n General');
 	INSERT INTO AreaLevantaNoConformidad
-	VALUES (5, 'Facturaci髇');
+	VALUES (5, 'Facturaci贸n');
 	INSERT INTO AreaLevantaNoConformidad
 	VALUES (6, 'Intendencia y Vigilancia');
 	INSERT INTO AreaLevantaNoConformidad
-	VALUES (7, 'Operaci髇 Acceso');
+	VALUES (7, 'Operaci贸n Acceso');
 	INSERT INTO AreaLevantaNoConformidad
-	VALUES (8, 'Operaci髇 Transmisi髇');
+	VALUES (8, 'Operaci贸n Transmisi贸n');
 	INSERT INTO AreaLevantaNoConformidad
-	VALUES (9, 'Recepci髇');
+	VALUES (9, 'Recepci贸n');
 	INSERT INTO AreaLevantaNoConformidad
 	VALUES (10, 'Recursos Humanos');
 	INSERT INTO AreaLevantaNoConformidad
-	VALUES (11, 'Sistemas de Gesti髇');
+	VALUES (11, 'Sistemas de Gesti贸n');
 	INSERT INTO AreaLevantaNoConformidad
-	VALUES (12, 'Supervisi髇 de Almac閚 y Servicios Generales');
+	VALUES (12, 'Supervisi贸n de Almac茅n y Servicios Generales');
 	INSERT INTO AreaLevantaNoConformidad
-	VALUES (13, 'Supervisi髇 de Sistemas y Comunicaci髇');
+	VALUES (13, 'Supervisi贸n de Sistemas y Comunicaci贸n');
 	INSERT INTO AreaLevantaNoConformidad
-	VALUES (14, 'Ingenier憝a');
+	VALUES (14, 'Ingenier铆颅a');
 	INSERT INTO AreaLevantaNoConformidad
 	VALUES (15, 'Coordinador de Acceso');
 	INSERT INTO AreaLevantaNoConformidad
-	VALUES (16, 'Coordinador de Transmisi髇');
+	VALUES (16, 'Coordinador de Transmisi贸n');
 	INSERT INTO AreaLevantaNoConformidad
 	VALUES (17, 'Auditores de SG');
 	
@@ -4404,19 +4511,21 @@
 	VALUES (2, 'Correctiva');
 
 	INSERT INTO FuenteNoConformidad
-	VALUES (1, 'Auditor憝a');
+	VALUES (1, 'Auditor铆颅a Interna');
 	INSERT INTO FuenteNoConformidad
-	VALUES (2, 'Indicadores de Gesti髇');
+	VALUES (2, 'Indicadores de Gesti贸n');
 	INSERT INTO FuenteNoConformidad
-	VALUES (3, 'Encuestas de Satisfacci髇');
+	VALUES (3, 'Encuestas de Satisfacci贸n');
 	INSERT INTO FuenteNoConformidad
 	VALUES (4, 'Comentarios o Sugerencias');
 	INSERT INTO FuenteNoConformidad
-	VALUES (5, 'Bit醕ora de Producto No Conforme y/o No Conformidades');
+	VALUES (5, 'Bit谩cora de Producto No Conforme y/o No Conformidades');
 	INSERT INTO FuenteNoConformidad
-	VALUES (6, 'Correo Electr髇ico');
+	VALUES (6, 'Incumplimiento de Objetivos');
 	INSERT INTO FuenteNoConformidad
 	VALUES (7, 'Otra');
+	INSERT INTO FuenteNoConformidad
+	VALUES (8, 'Auditor铆颅a Externa');
 
 	INSERT INTO EstadoAccionPreventivaCorrectiva
 	VALUES (1, 'Cerrada');
@@ -4428,7 +4537,7 @@
 	INSERT INTO EstadoSistemaGestion
 	VALUES (2, 'Sin Desviaciones');
 	INSERT INTO EstadoSistemaGestion
-	VALUES (3, 'En Revisi髇');
+	VALUES (3, 'En Revisi贸n');
 	INSERT INTO EstadoSistemaGestion
 	VALUES (4, 'Pendiente');
 	INSERT INTO EstadoSistemaGestion
@@ -4437,7 +4546,16 @@
 	INSERT INTO FormaAuditoria
 	VALUES (1, 'En Sitio');
 	INSERT INTO FormaAuditoria
-	VALUES (2, 'Sobre Reporte Fotogr醘ico');
+	VALUES (2, 'Sobre Reporte Fotogr谩fico');
+	INSERT INTO FormaAuditoria
+	VALUES (3, 'Check List de Proyecto');
+	INSERT INTO FormaAuditoria
+	VALUES (4, 'Reporte de Auditor铆颅a');
+	INSERT INTO FormaAuditoria
+	VALUES (5, 'Reporte de Supervisi贸n');
+	INSERT INTO FormaAuditoria
+	VALUES (6, 'Reporte Informal');
+
 
 	INSERT INTO TipoAuditoria
 	VALUES (1, 'Interna');
@@ -4450,11 +4568,11 @@
 	VALUES (2, 'Externa');
 
 	INSERT INTO TipoFormacion
-	VALUES (1, 'Evaluaci髇');
+	VALUES (1, 'Evaluaci贸n');
 	INSERT INTO TipoFormacion
-	VALUES (2, 'Capacitaci髇');
+	VALUES (2, 'Capacitaci贸n');
 	INSERT INTO TipoFormacion
-	VALUES (3, 'Capacitaci髇 CV');
+	VALUES (3, 'Capacitaci贸n CV');
 	
 	INSERT INTO ResponsableMinuta
 	VALUES (1, 'Participantes');
@@ -4472,7 +4590,22 @@
 	VALUES (1, 'A');
 	INSERT INTO TipoDesarrolloProyecto
 	VALUES (2, 'B');
+
+	INSERT INTO Calibracion
+	VALUES (1, 'Aplica');
+	INSERT INTO Calibracion
+	VALUES (2, 'No Aplica');
 	
+	INSERT INTO MantenimientoServicio
+	VALUES (1, 'Mantenimiento');
+	INSERT INTO MantenimientoServicio
+	VALUES (2, 'Servicio');
+
+	INSERT INTO FormaPagoMaquilador
+	VALUES (1, '50% Anticipo');
+	INSERT INTO FormaPagoMaquilador
+	VALUES (2, '50% Finiquito');
+
 	insert into ReclutamientoSolicitudEmpleo values(1,'test');
 	/*
 	INSERT INTO 

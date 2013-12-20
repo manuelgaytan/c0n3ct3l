@@ -20,6 +20,9 @@
 			
 			private var _project:Proyecto;
 			
+			[Bidnable]
+			public var asComplement:Boolean = false;
+			
 			protected function creationCompleteHandler(event:FlexEvent):void
 			{
 			}
@@ -33,6 +36,14 @@
 				this.setProject(); 
 			}
 			
+			public function set getProjectValue(value:Proyecto):void{
+				if( value == null ){
+					return;
+				}
+				this._project = value;
+				this.getProject();
+			}
+			
 			private function setProject():void
 			{
 				if( this._project == null ){
@@ -43,7 +54,7 @@
 				this.validateStatus( Number( Util.extractObject( this._project, "estado.id") ) );
 			}
 			
-			private function cleanForm():void
+			public function cleanForm():void
 			{
 				Util.upScroll( this );
 				this.requirements.reset();
@@ -59,8 +70,16 @@
 				if( event.detail == Alert.NO ){
 					return;
 				}
+				this.getProject();
+				this.updateProject();
+			}
+			
+			private function getProject():void{
 				this._project.requisiciones = this.requirements.requirements;
 				this._project.observaciones = this.observations.observations;
+			}
+			
+			public function updateProject():void{
 				Util.showProperties( _project );
 				this.responseUpdate.token = this.proyectoService.update( _project );
 			}
@@ -93,7 +112,8 @@
 	</mx:Metadata>
 	<proyectos:FormRequirements id="requirements"/>
  	<components:Observations id="observations" fase="{Estado.createEstado(Estado.ID_ALTA, Estado.ALTA)}"/>
-	<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
+	<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"
+			   visible="{!this.asComplement}"/>
 	<mx:RemoteObject id="proyectoService" destination="proyectoService" fault="proyectoService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>

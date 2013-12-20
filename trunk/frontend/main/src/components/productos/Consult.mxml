@@ -31,6 +31,7 @@
 			private var _filter:FiltroProducto;
 			private var loadFile:LoadFile;
 			private var typeImportFile:String = "IMPORT-PRODUCTS";
+			[Bindable]
 			private var _preciarios:Boolean = false;
 			
 			protected function responseGetAll_resultHandler(event:ResultEvent):void
@@ -145,6 +146,7 @@
 			
 			protected function responseImportProductos_resultHandler(event:ResultEvent):void
 			{
+				Util.showInfoMessage("Operación Importar exitosa.");
 				this.executeQuery();
 			}
 			
@@ -206,6 +208,11 @@
 				
 			}
 			
+			protected function responseImportProductos_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage("Ocurrió un error al Importar, tenga presente el formato del Archivo Separado por Comas, así como que existan el(los) Cliente(s) de los registros a Importar.");
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -238,9 +245,9 @@
 			<mx:DataGridColumn id="dtgServiceDescription" headerText="{'Descripción\ndel Servicio'}"
 							   dataField="descripcionServicio"
 							   width="205"/>
-			<mx:DataGridColumn id="dtgServiceType" headerText="{'Tipo de\nServicio'}"
+			<!--<mx:DataGridColumn id="dtgServiceType" headerText="{'Tipo de\nServicio'}"
 							   dataField="tipoServicio"
-							   width="150"/>
+							   width="150"/>-->
 			<mx:DataGridColumn id="dtgLocalCostCustomer" headerText="{'Costo\nLocal\nCliente'}" textAlign="right"
 							   dataField="costoLocalCliente"
 							   labelFunction="{Util.labelFunctionCurrency}"
@@ -291,7 +298,8 @@
 	<mx:CallResponder id="responseGetProducto" result="responseGetProducto_resultHandler(event)"/>
 	<mx:CallResponder id="responseDeleteProductos" result="responseDeleteProductos_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetAllByFiltro" result="responseGetAll_resultHandler(event)"/>
-	<mx:CallResponder id="responseImportProductos" result="responseImportProductos_resultHandler(event)"/>
+	<mx:CallResponder id="responseImportProductos" result="responseImportProductos_resultHandler(event)"
+					  fault="responseImportProductos_faultHandler(event)"/>
 	<mx:CallResponder id="responseExportProductos" result="responseExportProductos_resultHandler(event)"/>
 	<mx:HTTPService id="exposeService" url="{Model.getInstance().urlBase}exposing.jsp"
 					result="exposeService_resultHandler(event)" fault="exposeService_faultHandler(event)"

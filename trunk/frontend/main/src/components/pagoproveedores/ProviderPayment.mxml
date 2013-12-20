@@ -30,6 +30,7 @@
 			import model.Proyecto;
 			import model.TipoColaborador;
 			import model.TipoEntregable;
+			import model.TipoServicio;
 			import model.Util;
 			
 			import mx.charts.chartClasses.DualStyleObject;
@@ -257,11 +258,11 @@
 					subtotal = vendorInvoice.ordenCompra.subtotal;
 					iva = vendorInvoice.ordenCompra.iva;
 					total = vendorInvoice.ordenCompra.total;
-				}else if(vendorInvoice.ordenCompraMaquilado.solicitudServicioMaquilado.proyecto.producto.tipoServicio == Producto.TIPO_SERVICIO_LOCAL ){
+				}else if(vendorInvoice.ordenCompraMaquilado.solicitudServicioMaquilado.proyecto.tipoServicio.id == TipoServicio.ID_LOCAL ){
 					subtotal = Util.truncate(vendorInvoice.ordenCompraMaquilado.solicitudServicioMaquilado.proyecto.producto.costoLocalProveedor);
 					iva = Util.truncate(vendorInvoice.ordenCompraMaquilado.solicitudServicioMaquilado.proyecto.producto.costoLocalProveedor * Constants.IVA);
 					total = Util.truncate(subtotal + iva);
-				}else if(vendorInvoice.ordenCompraMaquilado.solicitudServicioMaquilado.proyecto.producto.tipoServicio == Producto.TIPO_SERVICIO_FORANEO ){
+				}else if(vendorInvoice.ordenCompraMaquilado.solicitudServicioMaquilado.proyecto.tipoServicio.id == TipoServicio.ID_FORANEO ){
 					subtotal = Util.truncate(vendorInvoice.ordenCompraMaquilado.solicitudServicioMaquilado.proyecto.producto.costoForaneoProveedor);
 					iva = Util.truncate(vendorInvoice.ordenCompraMaquilado.solicitudServicioMaquilado.proyecto.producto.costoForaneoProveedor * Constants.IVA);
 					total = Util.truncate(subtotal + iva);

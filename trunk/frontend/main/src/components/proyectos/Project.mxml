@@ -11,6 +11,7 @@
 			import model.Proyecto;
 			import model.ProyectoPadre;
 			import model.ProyectoPadreHijo;
+			import model.TipoServicio;
 			import model.Util;
 			
 			import mx.collections.ArrayCollection;
@@ -63,6 +64,8 @@
 				project.estado.id = Estado.ID_ALTA;
 				project.proyectoPadreHijo = new ProyectoPadreHijo();
 				project.proyectoPadreHijo.proyectoPadre = Util.validateCombo( this.cmbParentProject ) as ProyectoPadre;
+				project.tipoServicio = Util.validateCombo( this.cmbServiceType ) as TipoServicio;
+				this.complement.getProjectValue = project;
 				return project;
 			}
 			
@@ -81,6 +84,7 @@
 				Util.freeDataProvider( this.cmbCost );
 				this.cmbParentProject.selectedIndex = 0;
 				this.txtSite.reset();
+				this.complement.cleanForm();
 			}
 
 			protected function responseSave_resultHandler(event:ResultEvent):void
@@ -202,23 +206,17 @@
 					cleanCombos( cmbServiceDescription.id );
 					return;
 				}
-				this.responseGetTiposServicios.token = this.productoService.getTipoServicio( Util.selectedId( this.cmbClient ),
-					Util.selectedLabel( this.cmbProjectType ),
-					Util.selectedLabel( this.cmbTechnology ),
-					Util.selectedLabel( this.cmbEquipment ),
-					Util.selectedLabel( this.cmbActivity ),
-					Util.selectedLabel( this.cmbModel ),
-					i);
+				this.responseGetTiposServicios.token = this.catalogoService.getTipoServicio();
 			}
 			
 			protected function cmbServiceType_changeHandler(event:ListEvent):void
 			{
-				var i:String = Util.selectedLabel( this.cmbServiceType );
-				if( Util.validateEmpty( i) == null ){
+				var serviceType:TipoServicio = Util.validateCombo( this.cmbServiceType ) as TipoServicio;
+				if( serviceType == null ){
 					cleanCombos( cmbServiceType.id );
 					return;
 				}
-				if( i == Producto.TIPO_SERVICIO_LOCAL ){
+				if( serviceType.id == TipoServicio.ID_LOCAL ){
 					this.responseGetCostos.token = this.productoService.getCostoLocalCliente( Util.selectedId( this.cmbClient ),
 						Util.selectedLabel( this.cmbProjectType ),
 						Util.selectedLabel( this.cmbTechnology ),
@@ -226,9 +224,10 @@
 						Util.selectedLabel( this.cmbActivity ),
 						Util.selectedLabel( this.cmbModel ),
 						Util.selectedLabel( this.cmbServiceDescription ),
-						i);
+						//TipoServicio.LOCAL);
+						null);
 				}
-				if( i == Producto.TIPO_SERVICIO_FORANEO ){
+				if( serviceType.id == TipoServicio.ID_FORANEO ){
 					this.responseGetCostos.token = this.productoService.getCostoForaneoCliente( Util.selectedId( this.cmbClient ),
 						Util.selectedLabel( this.cmbProjectType ),
 						Util.selectedLabel( this.cmbTechnology ),
@@ -236,7 +235,8 @@
 						Util.selectedLabel( this.cmbActivity ),
 						Util.selectedLabel( this.cmbModel ),
 						Util.selectedLabel( this.cmbServiceDescription ),
-						i);
+						//TipoServicio.FORANEO);
+						null);
 				}
 			}
 			
@@ -362,13 +362,13 @@
 				this.cmbServiceDescription.dataProvider = Util.addEmptyCatalgo( data );
 			}
 			
-			protected function responseGetTiposServicios_resultHandler(event:ResultEvent):void
+			protected function responseGetTiposServicios_resultHandler(event:ResultEvent=null):void
 			{
 				var data:ArrayCollection = event.result as ArrayCollection;
 				if( data == null ){
 					return;
 				}
-				this.cmbServiceType.dataProvider = Util.addEmptyCatalgo( data );
+				this.cmbServiceType.dataProvider = Util.addEmptyCatalgo( data, "tipo" );
 			}
 			
 			protected function responseGetCostos_resultHandler(event:ResultEvent):void
@@ -394,7 +394,8 @@
 	<mx:Metadata>
 		[Event(name="projectNew", type="flash.events.Event")]
 	</mx:Metadata>
-	<mx:Form>
+	<mx:Form 
+		verticalScrollPolicy="off" horizontalScrollPolicy="off">
 		<mx:FormItem label="Categoria:">
 			<mx:ComboBox id="cmbCategory" width="400"
 						 labelField="etiqueta"/>
@@ -436,7 +437,7 @@
 		</mx:FormItem>
 		<mx:FormItem label="Tipo de Servicio:">
 			<mx:ComboBox id="cmbServiceType" width="250"
-						 labelField="etiqueta"
+						 labelField="tipo"
 						 change="cmbServiceType_changeHandler(event)"/>
 		</mx:FormItem>
 		<mx:FormItem label="Costo:">
@@ -450,6 +451,7 @@
 			<mx:ComboBox id="cmbParentProject" width="450"
 						 labelField="descripcion"/>
 		</mx:FormItem>
+		<proyectos:ProjectUpdate id="complement" asComplement="true"/>
 		<mx:FormItem>
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
 		</mx:FormItem>
@@ -466,7 +468,6 @@
 	<mx:CallResponder id="responseGetActividadesRealizar" result="responseGetActividadesRealizar_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetModelos" result="responseGetModelos_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetDescripcionesServicios" result="responseGetDescripcionesServicios_resultHandler(event)"/>
-	<mx:CallResponder id="responseGetTiposServicios" result="responseGetTiposServicios_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetCostos" result="responseGetCostos_resultHandler(event)"/>
 	<mx:RemoteObject id="clienteService" destination="clienteService" fault="clienteService_faultHandler(event)"
 					 showBusyCursor="true"/>
@@ -474,4 +475,7 @@
 	<mx:RemoteObject id="proyectoPadreService" destination="proyectoPadreService" fault="proyectoPadreService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetAll" result="responseGetAll_resultHandler(event)"/>
+	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="productoService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetTiposServicios" result="responseGetTiposServicios_resultHandler(event)"/>
 </mx:VBox>

@@ -77,11 +77,11 @@ package model
 			entry.unidad = OC_UNIT;
 			entry.descripcion = OC_ADVANCE + " " + proyecto.producto.modelo + 
 				"\n" + proyecto.producto.actividadRealizar + ", " + proyecto.producto.equipo + 
-				"\n" + proyecto.producto.tipoServicio + " " + OC_SITE + " " + proyecto.centralSitio;
-			if( proyecto.producto.tipoServicio == Producto.TIPO_SERVICIO_LOCAL == 0 ){
+				"\n" + proyecto.tipoServicio.tipo + " " + OC_SITE + " " + proyecto.centralSitio;
+			if( proyecto.tipoServicio.id == TipoServicio.ID_LOCAL ){
 				entry.costo = proyecto.producto.costoLocalProveedor;
 			}
-			if( proyecto.producto.tipoServicio == Producto.TIPO_SERVICIO_FORANEO == 0 ){
+			if( proyecto.tipoServicio.id == TipoServicio.ID_FORANEO ){
 				entry.costo = proyecto.producto.costoForaneoProveedor;
 			}
 			entry.importe = entry.cantidad * entry.costo;
@@ -93,11 +93,11 @@ package model
 			entry.unidad = OC_UNIT;
 			entry.descripcion = OC_SETTLEMENT + " " + proyecto.producto.modelo + 
 				"\n" + proyecto.producto.actividadRealizar + ", " + proyecto.producto.equipo + 
-				"\n" + proyecto.producto.tipoServicio + " " + OC_SITE + " " + proyecto.centralSitio;
-			if( proyecto.producto.tipoServicio == Producto.TIPO_SERVICIO_LOCAL == 0 ){
+				"\n" + proyecto.tipoServicio.tipo + " " + OC_SITE + " " + proyecto.centralSitio;
+			if( proyecto.tipoServicio.id == TipoServicio.ID_LOCAL ){
 				entry.costo = proyecto.producto.costoLocalProveedor;
 			}
-			if( proyecto.producto.tipoServicio == Producto.TIPO_SERVICIO_FORANEO == 0 ){
+			if( proyecto.tipoServicio.id == TipoServicio.ID_FORANEO ){
 				entry.costo = proyecto.producto.costoForaneoProveedor;
 			}
 			entry.importe = entry.cantidad * entry.costo;

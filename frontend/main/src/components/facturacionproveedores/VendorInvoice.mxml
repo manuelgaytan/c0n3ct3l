@@ -24,6 +24,7 @@
 			import model.ProveedorMaquilador;
 			import model.Proyecto;
 			import model.TipoEntregable;
+			import model.TipoServicio;
 			import model.Util;
 			
 			import modules.OrdenesCompraServicioMaquilado;
@@ -328,7 +329,7 @@
 				this.txtSite.text = Util.extractToText(project, "centralSitio");
 				this.txtModel.text = Util.extractToText(project, "producto.modelo");
 				this.txtServiceDescription.text = Util.extractToText(project, "producto.descripcionServicio");
-				this.txtServiceType.text = Util.extractToText(project, "producto.tipoServicio");
+				this.txtServiceType.text = Util.extractToText(project, "tipoServicio.tipo");
 				this.setCost( project );
 			}
 			
@@ -336,10 +337,10 @@
 				if( project == null ){
 					return;
 				}
-				if( project.producto.tipoServicio == Producto.TIPO_SERVICIO_LOCAL ){
+				if( project.tipoServicio.id == TipoServicio.ID_LOCAL ){
 					this.txtCostSupplier.text = Util.currencyFormatter.format(project.producto.costoLocalCliente);
 				}
-				if( project.producto.tipoServicio == Producto.TIPO_SERVICIO_FORANEO ){
+				if( project.tipoServicio.id == TipoServicio.ID_FORANEO ){
 					this.txtCostSupplier.text = Util.currencyFormatter.format(project.producto.costoForaneoCliente);
 				}
 			}

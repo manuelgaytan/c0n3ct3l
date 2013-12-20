@@ -112,7 +112,7 @@
 							   dataField="proyecto.producto.descripcionServicio"
 							   width="80"/>
 			<mx:DataGridColumn id="dtgServiceType" headerText="{'Tipo de\nServicio'}"
-							   dataField="proyecto.producto.tipoServicio"
+							   dataField="proyecto.tipoServicio.tipo"
 							   />	
 		</mx:columns>
 	</mx:DataGrid>

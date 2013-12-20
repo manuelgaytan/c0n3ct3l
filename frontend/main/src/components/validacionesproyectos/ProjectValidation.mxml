@@ -71,7 +71,7 @@
 				this.txtActivity.text = Util.extractToText( this._item, "proyecto.producto.actividadRealizar" );
 				this.txtModel.text = Util.extractToText( this._item, "proyecto.producto.modelo" );
 				this.txtServiceDescription.text = Util.extractToText( this._item, "proyecto.producto.descripcionServicio" );
-				this.txtServiceType.text = Util.extractToText( this._item, "proyecto.producto.tipoServicio" );
+				this.txtServiceType.text = Util.extractToText( this._item, "proyecto.tipoServicio.tipo" );
 				var costo:String = "costo";
 				if( this.txtServiceType.text == Producto.TIPO_SERVICIO_LOCAL ){
 					costo = "proyecto.producto.costoLocalCliente";	

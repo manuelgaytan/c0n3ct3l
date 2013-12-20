@@ -10,6 +10,7 @@
 			import model.Estado;
 			import model.Producto;
 			import model.Proyecto;
+			import model.TipoServicio;
 			import model.Util;
 			
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
@@ -59,12 +60,12 @@
 				this.txtActivity.text = Util.extractToText( this._project, "producto.actividadRealizar" );
 				this.txtModel.text = Util.extractToText( this._project, "producto.modelo" );
 				this.txtServiceDescription.text = Util.extractToText( this._project, "producto.descripcionServicio" );
-				this.txtServiceType.text = Util.extractToText( this._project, "producto.tipoServicio" );
+				this.txtServiceType.text = Util.extractToText( this._project, "tipoServicio.tipo" );
 				var costo:String = "producto.costo";
-				if( this.txtServiceType.text == Producto.TIPO_SERVICIO_LOCAL ){
+				if( this._project.tipoServicio.id == TipoServicio.ID_LOCAL ){
 					costo = "producto.costoLocalCliente";	
 				}
-				if( this.txtServiceType.text == Producto.TIPO_SERVICIO_FORANEO ){
+				if( this._project.tipoServicio.id == TipoServicio.ID_FORANEO ){
 					costo = "producto.costoForaneoCliente";	
 				}				
 				this.txtCost.text = Util.formatNumber( Util.extractObject( this._project, costo) );

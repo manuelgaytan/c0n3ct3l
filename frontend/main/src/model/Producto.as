@@ -18,7 +18,7 @@ package model
 		public var actividadRealizar:String;
 		public var modelo:String;
 		public var descripcionServicio:String;
-		public var tipoServicio:String;
+		//public var tipoServicio:String;
 		public var costoLocalCliente:Number;
 		public var costoForaneoCliente:Number;
 		public var costoLocalProveedor:Number;

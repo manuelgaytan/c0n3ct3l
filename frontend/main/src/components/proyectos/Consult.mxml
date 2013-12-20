@@ -157,7 +157,7 @@
 							   labelFunction="labelFunctionGenerico"
 							   width="205"/>
 			<mx:DataGridColumn id="dtgServiceType" headerText="{'Tipo de\nServicio'}"
-							   dataField="producto.tipoServicio"
+							   dataField="tipoServicio.tipo"
 							   labelFunction="labelFunctionGenerico"
 							   width="150"/>
 			<mx:DataGridColumn id="dtgLocalCost" headerText="{'Costo\nLocal'}" textAlign="right"

@@ -27,7 +27,7 @@
 				productFilter.actividadRealizar = Util.selectedLabel( cmbActivity );
 				productFilter.modelo = Util.selectedLabel( cmbModel );
 				productFilter.descripcionServicio = Util.selectedLabel( cmbServiceDescription );
-				productFilter.tipoServicio = Util.selectedLabel( cmbServiceType );
+				//productFilter.tipoServicio = Util.selectedLabel( cmbServiceType );
 				productFilter.proyectoPadre = Util.validateEmpty( this.txtParentProject.text );
 				
 				var filterEvent:GenericEvent = new GenericEvent("filterCommand");
@@ -129,7 +129,7 @@
 				if( data == null ){
 					return;
 				}
-				this.cmbServiceType.dataProvider = Util.addEmptyCatalgo( data );
+				//this.cmbServiceType.dataProvider = Util.addEmptyCatalgo( data );
 			}
 			
 			protected function cmbClient_changeHandler(event:ListEvent):void
@@ -223,7 +223,7 @@
 					Util.selectedLabel( this.cmbModel ),
 					i);
 			}
-			
+			/* 
 			protected function cmbServiceType_changeHandler(event:ListEvent):void
 			{
 				var i:String = Util.selectedLabel( this.cmbServiceType );
@@ -232,7 +232,7 @@
 					return;
 				}
 			}
-			
+			 */
 			private function cleanCombos(id:String):void
 			{
 				switch(id)
@@ -275,8 +275,10 @@
 					}
 					case cmbServiceDescription.id:
 					{
+						/* 
 						Util.freeDataProvider( cmbServiceType );
-						cmbServiceType.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
+						cmbServiceType.dispatchEvent( new ListEvent( ListEvent.CHANGE ) ); 
+						*/
 						break;
 					}
 					default:
@@ -340,11 +342,11 @@
 						 change="cmbServiceDescription_changeHandler(event)"
 						 labelField="etiqueta"/>
 		</mx:FormItem>
-		<mx:FormItem label="Tipo de Servicio:">
+		<!--<mx:FormItem label="Tipo de Servicio:">
 			<mx:ComboBox id="cmbServiceType" width="250"
 						 change="cmbServiceType_changeHandler(event)"
 						 labelField="etiqueta"/>
-		</mx:FormItem>
+		</mx:FormItem>-->
 		<mx:FormItem>
 			<mx:Button id="btnFilter" label="Filtrar" click="btnFilter_clickHandler(event)"/>
 		</mx:FormItem>

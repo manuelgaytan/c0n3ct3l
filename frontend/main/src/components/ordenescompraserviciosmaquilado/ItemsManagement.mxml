@@ -12,6 +12,7 @@
 			import model.Proyecto;
 			import model.ProyectoPadreHijo;
 			import model.SolicitudServicioMaquilado;
+			import model.TipoServicio;
 			import model.Util;
 			
 			import mx.collections.ArrayCollection;
@@ -79,11 +80,11 @@
 				entry.unidad = Constants.OC_UNIT;
 				entry.descripcion = Constants.OC_ADVANCE + " " + proyecto.producto.modelo + 
 									"\n" + proyecto.producto.actividadRealizar + ", " + proyecto.producto.equipo + 
-									"\n" + proyecto.producto.tipoServicio + " " + Constants.OC_SITE + " " + proyecto.centralSitio;
-				if( proyecto.producto.tipoServicio == Producto.TIPO_SERVICIO_LOCAL ){
+									"\n" + proyecto.tipoServicio.tipo + " " + Constants.OC_SITE + " " + proyecto.centralSitio;
+				if( proyecto.tipoServicio.id == TipoServicio.ID_LOCAL ){
 					entry.costo = proyecto.producto.costoLocalProveedor;
 				}
-				if( proyecto.producto.tipoServicio == Producto.TIPO_SERVICIO_FORANEO ){
+				if( proyecto.tipoServicio.id == TipoServicio.ID_FORANEO ){
 					entry.costo = proyecto.producto.costoForaneoProveedor;
 				}
 				entry.importe = entry.cantidad + entry.costo;
@@ -95,11 +96,11 @@
 				entry.unidad = Constants.OC_UNIT;
 				entry.descripcion = Constants.OC_SETTLEMENT + " " + proyecto.producto.modelo + 
 					"\n" + proyecto.producto.actividadRealizar + ", " + proyecto.producto.equipo + 
-					"\n" + proyecto.producto.tipoServicio + " " + Constants.OC_SITE + " " + proyecto.centralSitio;
-				if( proyecto.producto.tipoServicio == Producto.TIPO_SERVICIO_LOCAL ){
+					"\n" + proyecto.tipoServicio.tipo + " " + Constants.OC_SITE + " " + proyecto.centralSitio;
+				if( proyecto.tipoServicio.id == TipoServicio.ID_LOCAL ){
 					entry.costo = proyecto.producto.costoLocalProveedor;
 				}
-				if( proyecto.producto.tipoServicio == Producto.TIPO_SERVICIO_FORANEO ){
+				if( proyecto.tipoServicio.id == TipoServicio.ID_FORANEO ){
 					entry.costo = proyecto.producto.costoForaneoProveedor;
 				}
 				entry.importe = entry.cantidad + entry.costo;

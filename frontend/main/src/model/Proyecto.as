@@ -19,6 +19,7 @@ package model
 		public var validacionProyecto:ValidacionProyecto;
 		public var claveAuditoria:String;
 		public var tipoAuditoria:TipoAuditoria;
+		public var tipoServicio:TipoServicio;
 		
 		public function Proyecto()
 		{

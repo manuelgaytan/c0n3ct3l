@@ -54,6 +54,7 @@
 	fk_estado_solicitud_servicio_maquilado INT(11) UNSIGNED,
 	clave_auditoria VARCHAR(255),
 	fk_tipo_auditoria INT(11) UNSIGNED,
+	fk_tipo_servicio INT(11) UNSIGNED NOT NULL,
 	PRIMARY KEY (id)
 	);
 
@@ -2528,6 +2529,13 @@
 	PRIMARY KEY (id)
 	);
 
+	CREATE TABLE TipoServicio
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	tipo VARCHAR(100) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
 	ALTER TABLE Cliente ADD FOREIGN KEY id_contacto_idxfk (id_contacto) REFERENCES Contacto (id);
 
 	ALTER TABLE Proyecto ADD FOREIGN KEY id_categoria_proyecto_idxfk (id_categoria_proyecto) REFERENCES CategoriaProyecto (id);
@@ -3181,6 +3189,8 @@
 	ALTER TABLE ComentarioSugerencia ADD FOREIGN KEY fk_comentario_sistemas_gestion_idxfk (fk_comentario_sistemas_gestion) REFERENCES ComentarioSistemasGestion (id);
 
 	ALTER TABLE DescripcionFondoFijoCajaChica ADD FOREIGN KEY fk_tipo_operacion_idxfk (fk_tipo_operacion) REFERENCES TipoOperacion (id);
+
+	ALTER TABLE Proyecto ADD FOREIGN KEY fk_tipo_servicio_idxfk (fk_tipo_servicio) REFERENCES TipoServicio (id);
 	/* Perfiles */
 	INSERT INTO Perfil
 	VALUES (1, 'Director General');
@@ -3628,6 +3638,7 @@
 	VALUES (3, 'Externos');
 	
 	/* Colaborador */
+	/*
 	INSERT INTO Colaborador
 	VALUES (1, 'JOSÉ ANTONIO CRUZ', 2);
 	INSERT INTO Colaborador
@@ -3636,7 +3647,7 @@
 	VALUES (3, 'FRANCISCO TAPIA', 2);
 	INSERT INTO Colaborador
 	VALUES (4, 'GUSTAVO RÍOS', 3);
-
+	*/
 	/* Aplica */
 	INSERT INTO Aplica
 	VALUES (1, 'Sí­');
@@ -4094,6 +4105,11 @@
 	INSERT INTO EstadoComprobacionViaticos
 	VALUES (2, 'Rechazado');
 
+	INSERT INTO TipoOperacion
+	VALUES (1, 'Ingresos');
+	INSERT INTO TipoOperacion
+	VALUES (2, 'Egresos');
+
 	INSERT INTO DescripcionFondoFijoCajaChica
 	VALUES (1, 'Remanente Viáticos', 1);
 	INSERT INTO DescripcionFondoFijoCajaChica
@@ -4118,11 +4134,6 @@
 	VALUES (11, 'Materiales', 2);
 	INSERT INTO DescripcionFondoFijoCajaChica
 	VALUES (12, 'Otros', 2);
-
-	INSERT INTO TipoOperacion
-	VALUES (1, 'Ingresos');
-	INSERT INTO TipoOperacion
-	VALUES (2, 'Egresos');
 
 	INSERT INTO DescripcionPagoContableServicio
 	VALUES (1, 'Nómina Conectel', 2);
@@ -4606,7 +4617,11 @@
 	INSERT INTO FormaPagoMaquilador
 	VALUES (2, '50% Finiquito');
 
-	insert into ReclutamientoSolicitudEmpleo values(1,'test');
+	/* Tipo Colaborador */
+	INSERT INTO TipoServicio
+	VALUES (1, 'LOCAL');
+	INSERT INTO TipoServicio
+	VALUES (2, 'FORANEO');
 	/*
 	INSERT INTO 
 	VALUES (1, '');

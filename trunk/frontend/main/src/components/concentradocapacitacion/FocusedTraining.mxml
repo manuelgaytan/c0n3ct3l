@@ -162,7 +162,7 @@
 				value &&= this.validators.validarFormulario();
 				value &&= this.dtfDateTrainingStart.selectedDate;
 				value &&= this.dtfDateTrainingEnd.selectedDate;
-				value &&= Util.listBaseSelected( this.cmbColaboratorName );
+				value &&= Util.listBaseSelected( this.cmbColaboratorName, "id", true );
 				value &&= Util.listBaseSelected( this.cmbFormationType );
 				value &&= Util.listBaseSelected( this.cmbTrainingType );
 				return value;

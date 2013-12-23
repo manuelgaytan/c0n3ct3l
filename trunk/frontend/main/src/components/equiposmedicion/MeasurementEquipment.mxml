@@ -372,6 +372,10 @@
 		<mx:FormItem label="Poliza de Seguro:">
 			<components:FlatDeliver id="dlvInsurance"/>
 		</mx:FormItem>
+		<mx:FormItem label="Costo:">
+			<components:TextInput id="txtCost"
+								  textAlign="right"/>
+		</mx:FormItem>
 		<mx:FormItem label="Ubicación:">
 			<mx:ComboBox id="cmbLocation"
 						 labelField="etiqueta"
@@ -419,10 +423,6 @@
 		</mx:FormItem>
 		<mx:FormItem label="Orden de Mantenimiento o Servicio:">
 			<components:FlatDeliver id="dlvServiceOrder"/>
-		</mx:FormItem>
-		<mx:FormItem label="Costo:">
-			<components:TextInput id="txtCost"
-								  textAlign="right"/>
 		</mx:FormItem>
 		<components:Comments id="comments"/>
 		<mx:FormItem>

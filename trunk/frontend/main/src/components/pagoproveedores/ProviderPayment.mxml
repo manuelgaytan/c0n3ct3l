@@ -102,7 +102,7 @@
 				}
 				this.dtfPaymentDate.selectedDate = this._item.fechaAbono;
 				this.txtAmount.text = this._item.monto.toString();
-				this.txtPaymentReference.text = this._item.referenciaAbono.toString();
+				this.txtPaymentReference.text = Util.numberToString( this._item.referenciaAbono, true);
 				this.comments.setCommentsIn( this._item.comentariosPagoProveedor, "comentarioTesoreria");
 			}
 			

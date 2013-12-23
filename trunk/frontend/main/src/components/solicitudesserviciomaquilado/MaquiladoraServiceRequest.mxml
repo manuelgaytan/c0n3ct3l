@@ -172,6 +172,7 @@
 			
 			private function executeProjectQuery():void
 			{
+				/*
 				var filter:FiltroProyecto = new FiltroProyecto();
 				filter.idConectel = null;
 				filter.idCategoria = undefined;
@@ -184,6 +185,8 @@
 				filter.descripcionServicio = undefined;
 				filter.tipoServicio = undefined;
 				this.responseGetAllByFiltro.token = this.proyectoService.getAllByFiltro(filter);
+				*/
+				this.responseGetAllByFiltro.token = this.proyectoService.getAllByWithOutMaquilaRequest();
 			}
 			
 			protected function responseGetAll_resultHandler(event:ResultEvent):void

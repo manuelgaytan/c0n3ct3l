@@ -149,7 +149,7 @@
 	</mx:DataGrid>
 	</mx:HBox>
 	<mx:HBox>
-		<mx:Button id="btnExport" label="Exportar" click="btnExport_clickHandler(event)"/>
+		<mx:Button id="btnExport" label="Exportar" click="btnExport_clickHandler(event)" visible="false"/>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>
 	</mx:HBox>
 	<mx:RemoteObject id="softwareService" destination="softwareService" fault="softwareService_faultHandler(event)"

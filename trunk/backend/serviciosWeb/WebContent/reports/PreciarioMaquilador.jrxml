@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PreciarioMaquilador" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0a99f18f-48d8-429d-93ad-51869a41c8cf">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="346"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -241,70 +241,56 @@
 				<textFieldExpression><![CDATA[$F{descripcionServicio}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="d7c52755-1904-4c3b-8270-ad027f91620f" x="7" y="222" width="156" height="20"/>
-				<textElement textAlignment="Right">
-					<font size="12"/>
-				</textElement>
-				<text><![CDATA[Tipo de Servicio:]]></text>
-			</staticText>
-			<textField>
-				<reportElement uuid="f2da8feb-fec0-42f6-b917-d55dc2c185b3" x="168" y="222" width="400" height="50"/>
-				<textElement>
-					<font size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{tipoServicio}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement uuid="6a417c46-f44b-4b4d-8723-fcc6dfefb461" x="7" y="252" width="156" height="20"/>
+				<reportElement uuid="6a417c46-f44b-4b4d-8723-fcc6dfefb461" x="7" y="222" width="156" height="20"/>
 				<textElement textAlignment="Right">
 					<font size="12"/>
 				</textElement>
 				<text><![CDATA[Costo Local Proveedor:]]></text>
 			</staticText>
 			<textField>
-				<reportElement uuid="9bf26266-f9df-4a6f-ac30-40c3b5120161" x="168" y="252" width="400" height="50"/>
+				<reportElement uuid="9bf26266-f9df-4a6f-ac30-40c3b5120161" x="168" y="222" width="400" height="50"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{costoLocalProveedor}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="c1d07c01-237a-414c-9c15-712551dd7616" x="7" y="282" width="156" height="20"/>
+				<reportElement uuid="c1d07c01-237a-414c-9c15-712551dd7616" x="7" y="252" width="156" height="20"/>
 				<textElement textAlignment="Right">
 					<font size="12"/>
 				</textElement>
 				<text><![CDATA[Costo Foraneo Proveedor:]]></text>
 			</staticText>
 			<textField>
-				<reportElement uuid="46ac46dd-a17d-47dc-a49b-5ba3e7264999" x="168" y="282" width="400" height="50"/>
+				<reportElement uuid="46ac46dd-a17d-47dc-a49b-5ba3e7264999" x="168" y="252" width="400" height="50"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{costoForaneoProveedor}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="f14c28e8-f4c4-4f41-bf8f-706ecc3a070d" x="7" y="312" width="156" height="20"/>
+				<reportElement uuid="f14c28e8-f4c4-4f41-bf8f-706ecc3a070d" x="7" y="282" width="156" height="20"/>
 				<textElement textAlignment="Right">
 					<font size="12"/>
 				</textElement>
 				<text><![CDATA[Días Implementacion:]]></text>
 			</staticText>
 			<textField>
-				<reportElement uuid="1c7d6055-a312-4477-8751-4028ffb4863c" x="168" y="312" width="400" height="50"/>
+				<reportElement uuid="1c7d6055-a312-4477-8751-4028ffb4863c" x="168" y="282" width="400" height="50"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{diasImplementacion}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="fb29a96d-ef3d-4578-936e-358085efc545" x="7" y="340" width="156" height="20"/>
+				<reportElement uuid="fb29a96d-ef3d-4578-936e-358085efc545" x="7" y="310" width="156" height="20"/>
 				<textElement textAlignment="Right">
 					<font size="12"/>
 				</textElement>
 				<text><![CDATA[Alcances:]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true">
-				<reportElement uuid="c9e47cfd-c379-47b3-913a-e4c588a7b4bc" x="168" y="340" width="400" height="50"/>
+				<reportElement uuid="c9e47cfd-c379-47b3-913a-e4c588a7b4bc" x="168" y="310" width="400" height="50"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>

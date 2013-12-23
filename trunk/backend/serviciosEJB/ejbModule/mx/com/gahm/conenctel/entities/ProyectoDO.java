@@ -27,7 +27,8 @@ import java.util.List;
 			@NamedQuery(name = "ProyectoDO.getProyectosNoAsociados", query = "select c from ProyectoDO c where c.id NOT IN(select dp.proyecto.id from DesarrolloProyectoABDO dp)"),
 			@NamedQuery(name = "ProyectoDO.getProyectosByEstado", query = "select c from ProyectoDO c where c.estado.id=:idEstado"),
 			@NamedQuery(name = "ProyectoDO.getCantidadEstatusProyectos", query = "select new mx.com.gahm.conenctel.model.ItemEstatusProyecto( p.id, ep.etiqueta, count(p.id) ) from ProyectoDO p, EstadoDO ep where p.estado.id = ep.id group by ep.etiqueta"),
-			@NamedQuery(name = "ProyectoDO.getCantidadProyectosByEstado", query = "select new mx.com.gahm.conenctel.model.ItemEstatusProyecto( p.id, ep.etiqueta, count(p.id) ) from ProyectoDO p, EstadoDO ep where p.estado.id = ep.id and ep.id = :idEstadoProyecto group by ep.etiqueta")
+			@NamedQuery(name = "ProyectoDO.getCantidadProyectosByEstado", query = "select new mx.com.gahm.conenctel.model.ItemEstatusProyecto( p.id, ep.etiqueta, count(p.id) ) from ProyectoDO p, EstadoDO ep where p.estado.id = ep.id and ep.id = :idEstadoProyecto group by ep.etiqueta"),
+			@NamedQuery(name = "ProyectoDO.getAllByWithOutMaquilaRequest", query = "select p from ProyectoDO p where p.id not in (select s.proyecto.id from SolicitudServicioMaquiladoDO s)")
 })
 @Table(name = "proyecto")
 public class ProyectoDO implements Serializable {
@@ -82,6 +83,10 @@ public class ProyectoDO implements Serializable {
 	@ManyToOne(fetch= FetchType.EAGER)
 	@JoinColumn(name="fk_tipo_auditoria")
 	private TipoAuditoriaDO tipoAuditoria;
+	
+	@ManyToOne(fetch= FetchType.EAGER)
+	@JoinColumn(name="fk_tipo_servicio")
+	private TipoServicioDO tipoServicio;
 	
 	public ProyectoDO() {
 	}
@@ -233,5 +238,17 @@ public class ProyectoDO implements Serializable {
 
 	public void setTipoAuditoria(TipoAuditoriaDO tipoAuditoria) {
 		this.tipoAuditoria = tipoAuditoria;
+	}
+
+
+
+	public TipoServicioDO getTipoServicio() {
+		return tipoServicio;
+	}
+
+
+
+	public void setTipoServicio(TipoServicioDO tipoServicio) {
+		this.tipoServicio = tipoServicio;
 	}
 }

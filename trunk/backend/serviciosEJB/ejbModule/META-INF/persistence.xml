@@ -21,6 +21,7 @@
 		<class>mx.com.gahm.conenctel.entities.PantallaDO</class>
 		<class>mx.com.gahm.conenctel.entities.ParametroDO</class>
 		<class>mx.com.gahm.conenctel.entities.PerfilPantallaDO</class>
+		<class>mx.com.gahm.conenctel.entities.TipoServicioDO</class>
 		<class>mx.com.gahm.conenctel.entities.ProyectoDO</class>
 		<class>mx.com.gahm.conenctel.entities.ProyectoEntregableDO</class>
 		<class>mx.com.gahm.conenctel.entities.RequisicionDO</class>

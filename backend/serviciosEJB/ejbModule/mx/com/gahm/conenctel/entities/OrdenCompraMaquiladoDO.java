@@ -131,11 +131,11 @@ public class OrdenCompraMaquiladoDO implements java.io.Serializable {
 		entry.setUnidad( OC_UNIT );
 		entry.setDescripcion( OC_ADVANCE + " " + proyecto.getProducto().getModelo() + 
 							"\n" + proyecto.getProducto().getActividadRealizar() + ", " + proyecto.getProducto().getEquipo() + 
-							"\n" + proyecto.getProducto().getTipoServicio() + " " + OC_SITE + " " + proyecto.getCentralSitio() );
-		if( proyecto.getProducto().getTipoServicio().compareTo( ProductoDO.TIPO_SERVICIO_LOCAL ) == 0 ){
+							"\n" + proyecto.getTipoServicio().getTipo() + " " + OC_SITE + " " + proyecto.getCentralSitio() );
+		if( proyecto.getTipoServicio().getId() == TipoServicioDO.ID_LOCAL ){
 			entry.setCosto( proyecto.getProducto().getCostoLocalProveedor() );
 		}
-		if( proyecto.getProducto().getTipoServicio().compareTo( ProductoDO.TIPO_SERVICIO_FORANEO ) == 0 ){
+		if( proyecto.getTipoServicio().getId() == TipoServicioDO.ID_FORANEO ){
 			entry.setCosto( proyecto.getProducto().getCostoForaneoProveedor() );
 		}
 		entry.setImporte( entry.getCantidad() * entry.getCosto() );
@@ -147,11 +147,11 @@ public class OrdenCompraMaquiladoDO implements java.io.Serializable {
 		entry.setUnidad( OC_UNIT );
 		entry.setDescripcion( OC_SETTLEMENT + " " + proyecto.getProducto().getModelo() + 
 			"\n" + proyecto.getProducto().getActividadRealizar() + ", " + proyecto.getProducto().getEquipo() + 
-			"\n" + proyecto.getProducto().getTipoServicio() + " " + OC_SITE + " " + proyecto.getCentralSitio() );
-		if( proyecto.getProducto().getTipoServicio().compareTo( ProductoDO.TIPO_SERVICIO_LOCAL ) == 0 ){
+			"\n" + proyecto.getTipoServicio().getTipo() + " " + OC_SITE + " " + proyecto.getCentralSitio() );
+		if( proyecto.getTipoServicio().getId() == TipoServicioDO.ID_LOCAL ){
 			entry.setCosto( proyecto.getProducto().getCostoLocalProveedor() );
 		}
-		if( proyecto.getProducto().getTipoServicio().compareTo( ProductoDO.TIPO_SERVICIO_FORANEO ) == 0 ){
+		if( proyecto.getTipoServicio().getId() == TipoServicioDO.ID_FORANEO ){
 			entry.setCosto( proyecto.getProducto().getCostoForaneoProveedor() );
 		}
 		entry.setImporte( entry.getCantidad() * entry.getCosto() );

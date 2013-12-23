@@ -393,7 +393,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{subtotal}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement uuid="19c2d2e5-7b85-43a3-98d2-b8a23af65449" x="1" y="1" width="360" height="39"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{leyenda}]]></textFieldExpression>
@@ -426,16 +426,6 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{authorizer}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement uuid="b57fe5da-84fd-43c5-8342-58b4f1dae605" x="330" y="163" width="242" height="20"/>
-				<textElement/>
-				<textFieldExpression><![CDATA[$F{claveValidacion}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement uuid="2868725a-3e48-4955-9fc9-947604c3cfa9" x="330" y="145" width="100" height="20"/>
-				<textElement verticalAlignment="Middle"/>
-				<text><![CDATA[Clave de Validación:]]></text>
-			</staticText>
 			<textField>
 				<reportElement uuid="4f3194c5-bebd-47d6-874a-d7507e01e5ba" x="1" y="42" width="360" height="26"/>
 				<textElement/>

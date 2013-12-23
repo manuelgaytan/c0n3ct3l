@@ -37,7 +37,7 @@ public class ProductoService implements IProductoService {
 	@Inject
 	private EntityManager entityManager;
 
-	private static final String QUERY_EXPORT_ALL_PRODUCTO = "SELECT CONCAT(c.nombre_comercial,',',p.tipo_proyecto,',',p.teconologia,',',p.equipo,',',p.actividad_realizar,',',p.modelo,',',p.descripcion_servicio,',',p.tipo_servicio,',',p.costo_local_cliente,',',p.costo_foraneo_cliente,',',p.costo_local_proveedor,',',p.costo_foraneo_proveedor,',',p.dias_implementacion,',',p.alcances) FROM producto p INNER JOIN cliente c ON p.id_cliente = c.id";
+	private static final String QUERY_EXPORT_ALL_PRODUCTO = "SELECT CONCAT(c.nombre_comercial,',',p.tipo_proyecto,',',p.teconologia,',',p.equipo,',',p.actividad_realizar,',',p.modelo,',',p.descripcion_servicio,',',p.costo_local_cliente,',',p.costo_foraneo_cliente,',',p.costo_local_proveedor,',',p.costo_foraneo_proveedor,',',p.dias_implementacion,',',p.alcances) FROM producto p INNER JOIN cliente c ON p.id_cliente = c.id";
 
 //	@EJB
 //	private TransformacionServiceEJB transformacionService;
@@ -309,7 +309,7 @@ public class ProductoService implements IProductoService {
 		query.setParameter("actividadRealizar", actividadRealizar);
 		query.setParameter("modelo", modelo);
 		query.setParameter("descripcionServicio", descripcionServicio);
-		query.setParameter("tipoServicio", tipoServicio);
+		//query.setParameter("tipoServicio", tipoServicio);
 		List<Object[]> tipoProyectoList = null;
 		try {
 			tipoProyectoList = query.getResultList();
@@ -338,7 +338,7 @@ public class ProductoService implements IProductoService {
 		query.setParameter("actividadRealizar", actividadRealizar);
 		query.setParameter("modelo", modelo);
 		query.setParameter("descripcionServicio", descripcionServicio);
-		query.setParameter("tipoServicio", tipoServicio);
+		//query.setParameter("tipoServicio", tipoServicio);
 		List<Object[]> tipoProyectoList = null;
 		try {
 			tipoProyectoList = query.getResultList();
@@ -367,7 +367,7 @@ public class ProductoService implements IProductoService {
 		query.setParameter("actividadRealizar", actividadRealizar);
 		query.setParameter("modelo", modelo);
 		query.setParameter("descripcionServicio", descripcionServicio);
-		query.setParameter("tipoServicio", tipoServicio);
+		//query.setParameter("tipoServicio", tipoServicio);
 		List<Object[]> tipoProyectoList = null;
 		try {
 			tipoProyectoList = query.getResultList();
@@ -396,7 +396,7 @@ public class ProductoService implements IProductoService {
 		query.setParameter("actividadRealizar", actividadRealizar);
 		query.setParameter("modelo", modelo);
 		query.setParameter("descripcionServicio", descripcionServicio);
-		query.setParameter("tipoServicio", tipoServicio);
+		//query.setParameter("tipoServicio", tipoServicio);
 		List<Object[]> tipoProyectoList = null;
 		try {
 			tipoProyectoList = query.getResultList();
@@ -464,13 +464,12 @@ public class ProductoService implements IProductoService {
 			producto.setActividadRealizar((String) t.getValueAt(x, 4));
 			producto.setModelo((String) t.getValueAt(x, 5));
 			producto.setDescripcionServicio((String) t.getValueAt(x, 6));
-			producto.setTipoServicio((String) t.getValueAt(x, 7));
-			producto.setCostoLocalCliente(Double.valueOf((String) t.getValueAt(x, 8)));
-			producto.setCostoForaneoCliente(Double.valueOf((String) t.getValueAt(x, 8)));
-			producto.setCostoLocalProveedor(Double.valueOf((String) t.getValueAt(x, 8)));
-			producto.setCostoForaneoProveedor(Double.valueOf((String) t.getValueAt(x, 8)));
-			producto.setDiasImplementacion(Integer.valueOf((String) t.getValueAt(x, 9)));
-			producto.setAlcances((String) t.getValueAt(x, 10));
+			producto.setCostoLocalCliente(Double.valueOf((String) t.getValueAt(x, 7)));
+			producto.setCostoForaneoCliente(Double.valueOf((String) t.getValueAt(x, 7)));
+			producto.setCostoLocalProveedor(Double.valueOf((String) t.getValueAt(x, 7)));
+			producto.setCostoForaneoProveedor(Double.valueOf((String) t.getValueAt(x, 7)));
+			producto.setDiasImplementacion(Integer.valueOf((String) t.getValueAt(x, 8)));
+			producto.setAlcances((String) t.getValueAt(x, 9));
 			entityManager.persist(producto);
 		}
 	}

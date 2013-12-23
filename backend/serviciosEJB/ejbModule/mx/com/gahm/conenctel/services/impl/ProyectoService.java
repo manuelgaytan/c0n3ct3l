@@ -109,11 +109,23 @@ public class ProyectoService implements IProyectoService {
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public ProyectoDO save(ProyectoDO project) throws ConectelException {
+		
+		List<RequisicionDO> requisiciones = project.getRequisiciones();
+		List<ObservacionDO> observaciones = project.getObservaciones();
+		
+		project.setRequisiciones(null);
+		project.setObservaciones(null);
+		
 		project.getProyectoPadreHijo().setProyecto(project);
 		entityManager.persist(project);
 		entityManager.flush();
 		System.out.println("-> proyecto id: "+project.getId());
 		this.validarEnvioNotificaciones( project );
+		
+		project.setRequisiciones(requisiciones);
+		project.setObservaciones(observaciones);
+		this.update(project);
+		
 		/*
 		entityManager.persist(project.getProyectoPadreHijo());
 		*//*
@@ -148,28 +160,38 @@ public class ProyectoService implements IProyectoService {
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public ProyectoDO update(ProyectoDO project) throws ConectelException {
+		// almacena temporalmente
+		List<RequisicionDO> requisiciones = project.getRequisiciones();
+		List<ObservacionDO> observaciones = project.getObservaciones();
+		// borra las anteriores
 		ProyectoDO regProject = entityManager.find(ProyectoDO.class, project.getId());
-		
-		if (project.getRequisiciones() != null) {
-			List<RequisicionDO> requisiciones = project.getRequisiciones();
-			
-			for (RequisicionDO current:requisiciones) {
-				current.setProyecto(project);
+		if (regProject.getRequisiciones() != null) {
+			for (RequisicionDO current:regProject.getRequisiciones()) {
+				entityManager.remove(current);
 			}
 		}
-		if (project.getObservaciones() != null) {
-			List<ObservacionDO> observaciones=project.getObservaciones(); 
-			
+		if (regProject.getObservaciones() != null) {
+			for (ObservacionDO current:regProject.getObservaciones()) {
+				entityManager.remove(current);
+			}
+		}
+		// guarda las nuevas
+		if (requisiciones != null) {
+			for (RequisicionDO current:requisiciones) {
+				current.setProyecto(project);
+				entityManager.persist(current);
+			}
+		}
+		if (observaciones != null) {
 			for (ObservacionDO current:observaciones) {
 				current.setProyecto(project);
 				current.setEstado(project.getEstado());
+				entityManager.persist(current);
 			}
 		}
-		regProject.setObservaciones(project.getObservaciones());
-		regProject.setRequisiciones(project.getRequisiciones());
-		entityManager.merge(regProject);
-		entityManager.flush();
-		return regProject;
+		project.setRequisiciones(requisiciones);
+		project.setObservaciones(observaciones);
+		return project;
 	}
 
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
@@ -218,7 +240,7 @@ public class ProyectoService implements IProyectoService {
 		}
 	}
 
-	public List<ProyectoDO> getAllByEstado(Long idEstado){
+	public List<ProyectoDO> getAllByEstado(Long idEstado) throws ConectelException{
 		TypedQuery<ProyectoDO> query = entityManager.createNamedQuery(
 				"ProyectoDO.getProyectosByEstado", ProyectoDO.class);
 		query.setParameter("idEstado",idEstado);
@@ -226,6 +248,11 @@ public class ProyectoService implements IProyectoService {
 		
 		return categoryList;
 	} 
-
-
+	
+	public List<ProyectoDO> getAllByWithOutMaquilaRequest() throws ConectelException{
+		TypedQuery<ProyectoDO> query = entityManager.createNamedQuery(
+				"ProyectoDO.getAllByWithOutMaquilaRequest", ProyectoDO.class);
+		List<ProyectoDO> categoryList = query.getResultList();		
+		return categoryList;
+	}
 }

@@ -162,10 +162,12 @@
 							   width="140"
 							   dataField="proveedorMaquilador.proveedor.nombreComercial"
 							   labelFunction="labelFunctionGenerico"/>
+			<!--
 			<mx:DataGridColumn id="dtgValidationKey" headerText="{'Clave\nValidación'}"
 							   width="100"
 							   dataField="claveValidacion"
 							   labelFunction="labelFunctionGenerico"/>
+			-->
 			<mx:DataGridColumn headerText="Importe con Letra"
 							   width="500"
 							   dataField="importeLetra"/>

@@ -385,6 +385,10 @@
 			<components:TextInput id="txtExistence"
 								  textAlign="right"/>
 		</mx:FormItem>
+		<mx:FormItem label="Costo:">
+			<components:TextInput id="txtCost"
+								  textAlign="right"/>
+		</mx:FormItem>
 		<mx:FormItem label="Unidad:">
 			<mx:ComboBox id="cmbUnit"
 						 labelField="etiqueta"
@@ -427,10 +431,6 @@
 		</mx:FormItem>
 		<mx:FormItem label="Orden de Mantenimiento o Servicio:">
 			<components:FlatDeliver id="dlvServiceOrder"/>
-		</mx:FormItem>
-		<mx:FormItem label="Costo:">
-			<components:TextInput id="txtCost"
-								  textAlign="right"/>
 		</mx:FormItem>
 		<components:Comments id="comments"/>
 		<mx:FormItem>

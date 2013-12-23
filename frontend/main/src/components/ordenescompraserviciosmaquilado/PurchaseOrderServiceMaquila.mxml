@@ -109,7 +109,7 @@
 				this.txtIVARetention.text = Util.numberToString( this._item.retencionIva );
 				this.txtOtherTaxes.text = Util.numberToString( this._item.otrosImpuestos );
 				this.txtTotal.text = Util.numberToString( this._item.total );
-				this.txtValidationKey.text = this._item.claveValidacion;
+				//this.txtValidationKey.text = this._item.claveValidacion;
 				this.txtLegend.text = this._item.leyenda;
 				this.txtAmountWithLetter.text = this._item.importeLetra;
 			}
@@ -148,7 +148,7 @@
 				item.retencionIva = Util.stringToNumber( this.txtIVARetention.text );
 				item.otrosImpuestos = Util.stringToNumber( this.txtOtherTaxes.text );
 				item.total = Util.stringToNumber( this.txtTotal.text );
-				item.claveValidacion = Util.validateEmpty( this.txtValidationKey.text );
+				//item.claveValidacion = Util.validateEmpty( this.txtValidationKey.text );
 				item.leyenda = Util.validateEmpty( this.txtLegend.text );
 				item.importeLetra = Util.validateEmpty( this.txtAmountWithLetter.text );
 				return item;
@@ -193,7 +193,7 @@
 			{
 				var value:Boolean = true;
 				value &&= this.validators.validarFormulario();
-				value &&= Util.listBaseSelected(this.cmbMaquiladoSupplier);
+				value &&= Util.listBaseSelected(this.cmbMaquiladoSupplier, "id", true);
 				return value;
 			}
 			
@@ -208,7 +208,7 @@
 			{
 				this.validators = new InicializaValidadoresEtiquetas();
 				validators.crearValidadorRestrictor("generic",ValidadorCadenaCualquierCaracter.nombre, 0, 255);
-				validators.setRestrictor(txtValidationKey, "generic");
+				//validators.setRestrictor(txtValidationKey, "generic");
 				this.validators.setRestrictor( this.txtLegend, "generic");
 				this.validators.setRestrictor( this.txtAmountWithLetter, "generic");
 				
@@ -251,7 +251,7 @@
 				this.txtIVARetention.reset();
 				this.txtOtherTaxes.reset();
 				this.txtTotal.reset();
-				this.txtValidationKey.reset();
+				//this.txtValidationKey.reset();
 				this.txtLegend.reset();
 				this.txtAmountWithLetter.reset();
 			}
@@ -476,9 +476,11 @@
 		<mx:FormItem label="Importe con Letra:">
 			<components:TextArea id="txtAmountWithLetter" width="450"/>
 		</mx:FormItem>
+		<!--
 		<mx:FormItem label="Clave de Validación:">
 			<components:TextInput id="txtValidationKey" width="200"/>
 		</mx:FormItem>
+		-->
 		<mx:FormItem label="Leyenda:">
 			<components:TextArea id="txtLegend" width="600"/>
 		</mx:FormItem>

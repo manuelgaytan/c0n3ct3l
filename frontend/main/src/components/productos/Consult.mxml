@@ -284,7 +284,7 @@
 		<mx:Button label="Exportar formato comas" id="btnExportComaFormat" click="btnExportComaFormat_clickHandler(event)"
 				   includeInLayout="{!this._preciarios}"
 				   visible="{!this._preciarios}"/>
-		<mx:Button label="Exportar" id="btnExport" click="btnExport_clickHandler(event)"
+		<mx:Button label="Exportar" id="btnExport" click="btnExport_clickHandler(event)" visible="false"
 				   />
 		<mx:Button label="Importar" id="btnImport" click="btnImport_clickHandler(event)"
 				   includeInLayout="{!this._preciarios}"

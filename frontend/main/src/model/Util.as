@@ -382,7 +382,7 @@ package model
 		
 		public static function showProperties(object:Object):void
 		{
-			 Alert.show( ObjectUtil.toString( object ), "Show Properties" );
+			 //Alert.show( ObjectUtil.toString( object ), "Show Properties" );
 		}
 		
 		public static function isFill(cmbProfile:ComboBox):Boolean

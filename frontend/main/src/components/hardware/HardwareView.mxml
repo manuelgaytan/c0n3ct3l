@@ -356,6 +356,10 @@
 		<mx:FormItem label="Modelo:">
 			<components:TextInput id="txtModel"/>
 		</mx:FormItem>
+		<mx:FormItem label="Costo:">
+			<components:TextInput id="txtCost"
+								  textAlign="right"/>
+		</mx:FormItem>
 		<mx:FormItem label="Poliza de Garantía:">
 			<components:FlatDeliver id="dlvWarranty"/>
 		</mx:FormItem>
@@ -380,10 +384,6 @@
 			<mx:ComboBox id="cmbResponsible"
 						 labelField="nombreCompleto"
 						 />
-		</mx:FormItem>
-		<mx:FormItem label="Costo:">
-			<components:TextInput id="txtCost"
-								  textAlign="right"/>
 		</mx:FormItem>
 		<mx:FormItem label="Estatus:">
 			<mx:ComboBox id="cmbStatus"

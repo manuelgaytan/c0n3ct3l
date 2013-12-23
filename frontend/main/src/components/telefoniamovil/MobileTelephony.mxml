@@ -349,6 +349,10 @@
 		<mx:FormItem label="Poliza de Seguro:">
 			<components:FlatDeliver id="dlvInsurance"/>
 		</mx:FormItem>
+		<mx:FormItem label="Costo:">
+			<components:TextInput id="txtCost"
+								  textAlign="right"/>
+		</mx:FormItem>
 		<mx:FormItem label="IMEI:">
 			<components:TextInput id="txtIMEI"/>
 		</mx:FormItem>
@@ -376,10 +380,6 @@
 			<mx:ComboBox id="cmbResponsible"
 						 labelField="nombreCompleto"
 						 />
-		</mx:FormItem>
-		<mx:FormItem label="Costo:">
-			<components:TextInput id="txtCost"
-								  textAlign="right"/>
 		</mx:FormItem>
 		<mx:FormItem label="Estatus:">
 			<mx:ComboBox id="cmbStatus"

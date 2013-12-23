@@ -309,6 +309,10 @@
 						 labelField="etiqueta"
 						 />
 		</mx:FormItem>
+		<mx:FormItem label="Costo:">
+			<components:TextInput id="txtCost"
+								  textAlign="right"/>
+		</mx:FormItem>
 		<mx:FormItem label="Ubicación:">
 			<mx:ComboBox id="cmbLocation"
 						 labelField="etiqueta"
@@ -318,10 +322,6 @@
 			<mx:ComboBox id="cmbResponsible"
 						 labelField="nombreCompleto"
 						 />
-		</mx:FormItem>
-		<mx:FormItem label="Costo:">
-			<components:TextInput id="txtCost"
-								  textAlign="right"/>
 		</mx:FormItem>
 		<mx:FormItem label="Estatus:">
 			<mx:ComboBox id="cmbStatus"

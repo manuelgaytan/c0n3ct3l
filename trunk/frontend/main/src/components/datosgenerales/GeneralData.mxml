@@ -501,7 +501,7 @@
 			<components:TextInput id="txtConectelID" width="150" textAlign="right"/>
 		</mx:FormItem>
 		-->
-		<mx:FormHeading label="Proyectos"/>
+		<mx:FormItem required="true" label="Proyecto:"/>
 		<proyectos:Consult id="projectsConsult" projectSelected="projectsConsult_projectSelectedHandler(event)"/>
 		<mx:FormItem label="Divisón o Región:">
 			<components:TextInput id="txtDivision" width="200"/>
@@ -533,20 +533,20 @@
 		<mx:FormItem label="Semana:">
 			<components:TextInput id="txtWeek" width="300"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha Asignación Cliente:">
+		<mx:FormItem required="true" label="Fecha Asignación Cliente:">
 			<components:DateField id="dtfAsignDateClient"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha Inicio Programada:">
+		<mx:FormItem required="true" label="Fecha Inicio Programada:">
 			<components:DateField id="dtfStartDateProgramming"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha Fin Programada:">
+		<mx:FormItem required="true" label="Fecha Fin Programada:">
 			<components:DateField id="dtfEndDateProgramming"/>
 		</mx:FormItem>
-		<mx:FormItem label="Responsable Coordinación:">
+		<mx:FormItem required="true" label="Responsable Coordinación:">
 			<mx:ComboBox id="cmbConectelResponsable" width="400"
 						 labelField="nombreCompleto"/>
 		</mx:FormItem>
-		<mx:FormItem label="Responsable Implementación:"
+		<mx:FormItem required="true" label="Responsable Implementación:"
 					 direction="horizontal">
 			<mx:ComboBox id="cmbColaboratorType" width="200"
 						 labelField="tipo"
@@ -554,30 +554,30 @@
 			<mx:ComboBox id="cmbImplementationResponsable" width="400"
 						 labelField="nombreCompleto"/>
 		</mx:FormItem>
-		<mx:FormItem label="Material:">
+		<mx:FormItem required="true" label="Material:">
 			<mx:ComboBox id="cmbMaterial" width="300"
 						 labelField="etiqueta"/>
 		</mx:FormItem>
-		<mx:FormItem label="Herramienta:">
+		<mx:FormItem required="true" label="Herramienta:">
 			<mx:ComboBox id="cmbTool" width="300"
 						 labelField="etiqueta"/>
 		</mx:FormItem>
-		<mx:FormItem label="Equipo:">
+		<mx:FormItem required="true" label="Equipo:">
 			<mx:ComboBox id="cmbEquipment" width="300"
 						 labelField="etiqueta"/>
 		</mx:FormItem>
-		<mx:FormItem label="Unidad:">
+		<mx:FormItem required="true" label="Unidad:">
 			<mx:ComboBox id="cmbVehicle" width="300"
 						 labelField="etiqueta"/>
 		</mx:FormItem>
-		<mx:FormItem label="Viáticos:">
+		<mx:FormItem required="true" label="Viáticos:">
 			<mx:ComboBox id="cmbPerDiem" width="300"
 						 labelField="etiqueta"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha Inicio Real:">
+		<mx:FormItem required="true" label="Fecha Inicio Real:">
 			<components:DateField id="dtfStartDateReal"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha Termino Real:">
+		<mx:FormItem required="true" label="Fecha Termino Real:">
 			<components:DateField id="dtfEndDateReal"/>
 		</mx:FormItem>
 		<mx:FormItem label="Site Survey:">

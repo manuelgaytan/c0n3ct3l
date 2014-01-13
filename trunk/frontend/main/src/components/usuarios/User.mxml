@@ -208,22 +208,22 @@
 		[Event(name="userUpdated", type="flash.events.Event")]
 	</mx:Metadata>
 	<mx:Form id="form">
-		<mx:FormItem label="Nombre Completo:">
+		<mx:FormItem required="true" label="Nombre Completo:">
 			<components:TextInput id="txtWholeName" width="400"/>
 		</mx:FormItem>
-		<mx:FormItem label="Perfil:">
+		<mx:FormItem required="true" label="Perfil:">
 			<mx:ComboBox id="cmbProfile" width="300"
 						 labelField="etiqueta"
 						 />
 		</mx:FormItem>
-		<mx:FormItem label="Usuario:">
+		<mx:FormItem required="true" label="Usuario:">
 			<components:TextInput id="txtUser" width="200"/>
 		</mx:FormItem>
-		<mx:FormItem label="Contraseña:">
+		<mx:FormItem required="true" label="Contraseña:">
 			<components:TextInput id="txtPasword" width="150"
 								  displayAsPassword="true"/>
 		</mx:FormItem>
-		<mx:FormItem label="Confirmar Contraseña:">
+		<mx:FormItem required="true" label="Confirmar Contraseña:">
 			<components:TextInput id="txtVerifyPassword" width="150"
 								  displayAsPassword="true"
 								  />

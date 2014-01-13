@@ -178,15 +178,15 @@
 		[Event(name="parentProjectUpdated", type="flash.events.Event")]
 	</mx:Metadata>
 	<mx:Form id="form">
-		<mx:FormItem label="ID:" id="frmID">
+		<mx:FormItem required="true" label="ID:" id="frmID">
 			<components:TextInput id="txtID"
 								  textAlign="right"
 								  editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Nombre de Proyecto:">
+		<mx:FormItem required="true" label="Nombre de Proyecto:">
 			<components:TextInput id="txtDescription" width="400"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha Creación:" id="frmCreationDate">
+		<mx:FormItem required="true" label="Fecha Creación:" id="frmCreationDate">
 			<components:TextInput id="txtCreationDate" width="80" editable="false"/>
 		</mx:FormItem>
 		<mx:FormItem label="Proyectos Asociados:" id="frmProjectsAssociated">

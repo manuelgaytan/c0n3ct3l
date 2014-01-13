@@ -228,48 +228,48 @@
 	</mx:Metadata>
 	<mx:Form id="form">
 		<mx:FormHeading label="Datos Generales"/>
-		<mx:FormItem label="Nombre Comercial:">
+		<mx:FormItem required="true" label="Nombre Comercial:">
 			<components:TextInput id="txtComercialName" width="500"/>
 		</mx:FormItem>
-		<mx:FormItem label="Razón Social:">
+		<mx:FormItem required="false" label="Razón Social:">
 			<components:TextInput id="txtLegalName" width="500"/>
 		</mx:FormItem>
-		<mx:FormItem label="R.F.C.:">
+		<mx:FormItem required="false" label="R.F.C.:">
 			<components:TextInput id="txtRFC" width="120"/>
 		</mx:FormItem>
-		<mx:FormItem label="Domicilio Fiscal:">
+		<mx:FormItem required="false" label="Domicilio Fiscal:">
 			<components:TextInput id="txtFiscalAddress" width="600"/>
 		</mx:FormItem>
 		<mx:FormHeading label="Datos de Contacto"/>
-		<mx:FormItem label="Nombre Completo:">
+		<mx:FormItem required="true" label="Nombre Completo:">
 			<components:TextInput id="txtWholeName" width="400"/>
 		</mx:FormItem>
-		<mx:FormItem label="Correo Electrónico:">
+		<mx:FormItem required="false" label="Correo Electrónico:">
 			<components:TextInput id="txtEmail" width="300" upperCase="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Teléfono:">
+		<mx:FormItem required="false" label="Teléfono:">
 			<components:TextInput id="txtPhone" width="120"/>
 		</mx:FormItem>
-		<mx:FormItem label="Página Web:">
+		<mx:FormItem required="false" label="Página Web:">
 			<components:TextInput id="txtWebPage" width="300" upperCase="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Localidad:">
+		<mx:FormItem required="false" label="Localidad:">
 			<components:TextInput id="txtLocality" width="250"/>
 		</mx:FormItem>
-		<mx:FormItem label="Estado:">
+		<mx:FormItem required="false" label="Estado:">
 			<components:TextInput id="txtState" width="250"/>
 		</mx:FormItem>
 		<mx:FormHeading label="Datos Comerciales"/>
-		<mx:FormItem label="Condiciones Comerciales:">
+		<mx:FormItem required="false" label="Condiciones Comerciales:">
 			<components:TextArea id="txtComercialConditions" width="600" height="70"/>
 		</mx:FormItem>
-		<mx:FormItem label="No. de Vendor:">
+		<mx:FormItem required="false" label="No. de Vendor:">
 			<components:TextInput id="txtVendorNumber" width="120"/>
 		</mx:FormItem>
-		<mx:FormItem label="Ejecutivo de Cuenta:">
+		<mx:FormItem required="false" label="Ejecutivo de Cuenta:">
 			<components:TextInput id="txtAccountExecutive" width="400"/>
 		</mx:FormItem>
-		<mx:FormItem>
+		<mx:FormItem required="false">
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
 		</mx:FormItem>
 	</mx:Form>

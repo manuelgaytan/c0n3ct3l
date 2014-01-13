@@ -19,10 +19,10 @@ package model
 		public var modelo:String;
 		public var descripcionServicio:String;
 		//public var tipoServicio:String;
-		public var costoLocalCliente:Number;
-		public var costoForaneoCliente:Number;
-		public var costoLocalProveedor:Number;
-		public var costoForaneoProveedor:Number;
+		public var costoLocalCliente:*;
+		public var costoForaneoCliente:*;
+		public var costoLocalProveedor:*;
+		public var costoForaneoProveedor:*;
 		public var diasImplementacion:*;
 		public var alcances:String;
 		

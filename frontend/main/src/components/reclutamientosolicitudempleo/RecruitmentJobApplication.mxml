@@ -34,7 +34,6 @@
 			import model.TipoEntregable;
 			import model.Util;
 			
-			import mx.charts.chartClasses.DualStyleObject;
 			import mx.collections.ArrayCollection;
 			import mx.com.gahm.componentes.validadores.Constantes;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;

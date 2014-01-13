@@ -171,6 +171,7 @@
 			{
 				var value:Boolean = true;
 				value &&= this.validators.validarFormulario();
+				value &&= Util.listBaseSelected(this.cmbClient,"id",true);
 				return value;
 			}
 			
@@ -271,32 +272,32 @@
 		[Event(name="productUpdated", type="flash.events.Event")]
 	</mx:Metadata>
 	<mx:Form>
-		<mx:FormItem label="Cliente:">
+		<mx:FormItem required="true" label="Cliente:">
 			<mx:ComboBox id="cmbClient" width="400"
 						 labelField="nombreComercial"
 						 editable="{!this._preciarios}"/>
 		</mx:FormItem>
-		<mx:FormItem label="Tipo de Proyecto:">
+		<mx:FormItem required="true" label="Tipo de Proyecto:">
 			<components:TextInput id="txtProjectType" width="300"
 								  editable="{!this._preciarios}"/>
 		</mx:FormItem>
-		<mx:FormItem label="Tecnología:">
+		<mx:FormItem required="true" label="Tecnología:">
 			<components:TextInput id="txtTechnology" width="250"
 								  editable="{!this._preciarios}"/>
 		</mx:FormItem>
-		<mx:FormItem label="Equipo:">
+		<mx:FormItem required="true" label="Equipo:">
 			<components:TextInput id="txtEquipment" width="300"
 								  editable="{!this._preciarios}"/>
 		</mx:FormItem>
-		<mx:FormItem label="Actividad a Realizar:">
+		<mx:FormItem required="true" label="Actividad a Realizar:">
 			<components:TextInput id="txtActivity" width="600"
 								  editable="{!this._preciarios}"/>
 		</mx:FormItem>
-		<mx:FormItem label="Modelo:">
+		<mx:FormItem required="true" label="Modelo:">
 			<components:TextInput id="txtModel" width="450"
 								  editable="{!this._preciarios}"/>
 		</mx:FormItem>
-		<mx:FormItem label="Descripción del Servicio:">
+		<mx:FormItem required="true" label="Descripción del Servicio:">
 			<components:TextInput id="txtServiceDescription" width="600"
 								  editable="{!this._preciarios}"/>
 		</mx:FormItem>
@@ -331,7 +332,7 @@
 			<components:TextInput id="txtImplementationDays" width="150" textAlign="right"
 								  editable="{!this._preciarios}"/>
 		</mx:FormItem>
-		<mx:FormItem label="Alcances:">
+		<mx:FormItem required="true" label="Alcances:">
 			<components:TextArea id="txtScope" width="600"
 								 editable="{!this._preciarios}"/>
 		</mx:FormItem>

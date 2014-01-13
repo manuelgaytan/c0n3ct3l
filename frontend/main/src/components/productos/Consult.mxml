@@ -272,7 +272,7 @@
 							   />
 			<mx:DataGridColumn headerText="{'Alcances'}"
 							   dataField="alcances"
-							   width="110"
+							   width="210"
 							   />
 		</mx:columns>
 	</mx:DataGrid>

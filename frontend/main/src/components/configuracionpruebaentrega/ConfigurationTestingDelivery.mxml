@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
-		 creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*"
+		 creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*" xmlns:desarrolloproyectoab="components.desarrolloproyectoab.*"
 		 >
 	<mx:Script>
 		<![CDATA[
@@ -9,6 +9,7 @@
 			import model.Catalogo;
 			import model.ConfiguracionPruebaEntrega;
 			import model.Constants;
+			import model.DesarrolloProyecto;
 			import model.Estado;
 			import model.EstadoValidacionOperativa;
 			import model.FiltroProyecto;
@@ -67,9 +68,7 @@
 				}
 				this.stateValidation();
 				//this.txtConectelID.text = Util.numberToString( this._configurationTestingDelivery.proyecto.id );
-				this.projectsConsult.datagrid.dataProvider = Util.asArrayCollection( this._configurationTestingDelivery.proyecto );
-				this.projectsConsult.datagrid.selectedIndex = 0;
-				this.projectsConsult.datagrid.dispatchEvent( new ListEvent(ListEvent.CHANGE) );
+				this.projectsConsult.setDataAndSelected( Util.asArrayCollection( this._configurationTestingDelivery.proyecto ) );
 				this.txtCommissioner.text = this._configurationTestingDelivery.comisionado;
 				this.txtPortsDelivered.text = this._configurationTestingDelivery.puertosEntregados;
 				this.txtAlign.text = this._configurationTestingDelivery.alineacion;
@@ -401,6 +400,7 @@
 					return;
 				}
 				this.txtAuditKey.text = project.claveAuditoria;
+				this.responseGetDesarrolloProyectoAB.token = this.desarrolloProyectoABService.getDesarrolloProyectoAB( project.id );
 			}
 			
 			protected function responseGetAll_resultHandler(event:ResultEvent):void
@@ -433,6 +433,14 @@
 				return value;
 			}
 			
+			protected function responseGetDesarrolloProyectoAB_resultHandler(event:ResultEvent):void
+			{
+				var developmentProjectAB:DesarrolloProyecto = event.result as DesarrolloProyecto;
+				if( developmentProjectAB == null ){
+					return;
+				}
+				this.secondaryConsult.datagrid.dataProvider = Util.asArrayCollection( developmentProjectAB );
+			}
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -447,8 +455,13 @@
 			<components:TextInput id="txtConectelID" width="150" textAlign="right"/>
 		</mx:FormItem>
 		-->
-		<mx:FormHeading label="Proyectos"/>
-		<proyectos:Consult id="projectsConsult" projectSelected="projectsConsult_projectSelectedHandler(event)"/>
+		<mx:FormItem required="true" label="Proyecto:"/>
+		<mx:VBox width="800">
+			<mx:VBox width="100%" height="100%" verticalGap="5">
+				<proyectos:Consult id="projectsConsult" projectSelected="projectsConsult_projectSelectedHandler(event)"/>
+				<desarrolloproyectoab:Consult id="secondaryConsult" noExecuteQuery="true"/>
+			</mx:VBox>
+		</mx:VBox>
 		<mx:FormItem label="Comisionamiento:">
 			<components:TextInput id="txtCommissioner" width="200" textAlign="right"/>
 		</mx:FormItem>
@@ -541,4 +554,7 @@
 	<mx:RemoteObject id="proyectoService" destination="proyectoService" fault="datosGeneralesProyectoService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetAllByFiltro" result="responseGetAll_resultHandler(event)"/>
+	<mx:RemoteObject id="desarrolloProyectoABService" destination="desarrolloProyectoABService" fault="datosGeneralesProyectoService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetDesarrolloProyectoAB" result="responseGetDesarrolloProyectoAB_resultHandler(event)"/>
 </mx:VBox>

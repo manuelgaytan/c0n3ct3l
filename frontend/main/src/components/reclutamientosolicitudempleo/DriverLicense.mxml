@@ -159,6 +159,9 @@
 			{
 				var hasLicense:Boolean = this.cmbLicense.selectedIndex == 0;
 				this.enabledComponents = hasLicense;
+				this.frmItmExpire.required = hasLicense;
+				this.frmItmLicenseNumber.required = hasLicense;
+				this.frmItmLicenseType.required = hasLicense;
 			}
 			
 		]]>
@@ -170,13 +173,13 @@
 	<mx:FormItem label="Tiene Licencia:">
 		<mx:ComboBox id="cmbLicense" dataProvider="{['Sí','No']}" change="cmbLicense_changeHandler(event)"/>
 	</mx:FormItem>
-	<mx:FormItem label="Vigencia:">
+	<mx:FormItem id="frmItmExpire" label="Vigencia:">
 		<components:DateField id="dtfExpire"/>
 	</mx:FormItem>
-	<mx:FormItem label="Número de Licencia:">
+	<mx:FormItem id="frmItmLicenseNumber" label="Número de Licencia:">
 		<components:TextInput id="txtLicenseNumber" width="120"/>
 	</mx:FormItem>
-	<mx:FormItem label="Tipo de Licencia:">
+	<mx:FormItem id="frmItmLicenseType" label="Tipo de Licencia:">
 		<mx:ComboBox id="cmbLicenseType" labelField="tipo"/>
 	</mx:FormItem>
 	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="Util.faultHandler(event)"

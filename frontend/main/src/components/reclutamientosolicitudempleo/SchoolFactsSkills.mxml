@@ -110,6 +110,8 @@
 			public function validations():Boolean
 			{
 				var value:Boolean = true;
+				value &&= Util.listBaseSelected( this.cmbMostRecentStudies );
+				value &&= Util.listBaseSelected( this.cmbAcademicState );
 				value &&= this.validators.validarFormulario();
 				value &&= this.officeEquipmentDominates.validations();
 				value &&= this.software.validations();
@@ -189,14 +191,14 @@
 	<mx:FormItem id="frmID" label="ID:" direction="horizontal">
 		<components:TextInput id="txtID" width="80" textAlign="right" editable="false"/>
 	</mx:FormItem>
-	<mx:FormItem label="Último Grado de Estudios:">
+	<mx:FormItem required="true" label="Último Grado de Estudios:">
 		<mx:ComboBox id="cmbMostRecentStudies" width="200"
 					 labelField="estudios"/>
 	</mx:FormItem>
 	<mx:FormItem label="Escuela Procedencia:">
 		<components:TextInput id="txtSchoolNameOrigin" width="200"/>
 	</mx:FormItem>
-	<mx:FormItem label="Estado Academico:">
+	<mx:FormItem required="true" label="Estado Academico:">
 		<mx:ComboBox id="cmbAcademicState" width="200"
 					 labelField="estado"/>
 	</mx:FormItem>

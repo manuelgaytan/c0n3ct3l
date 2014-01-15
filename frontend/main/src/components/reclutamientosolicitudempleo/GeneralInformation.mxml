@@ -197,6 +197,12 @@
 				var value:Boolean = true;
 				value &&= this.validators.validarFormulario();
 				value &&= this.dtfBirthdayDate.selectedDate != null;
+				value &&= Util.listBaseSelected( this.cmbID );
+				value &&= Util.listBaseSelected( this.cmbMaritalStatus );
+				value &&= Util.listBaseSelected( this.cmbSex );
+				value &&= Util.listBaseSelected( this.cmbLetterCriminal );
+				value &&= Util.listBaseSelected( this.cmbHealthState );
+				value &&= Util.listBaseSelected( this.cmbHobby );
 				value &&= this.requestAddress.validations();
 				//value &&= this.driverLicense.validations(); Se remueven los campos de licencia para que no sean obligatorios.
 				if( this.isChronicDisease() ){
@@ -235,7 +241,7 @@
 				this.validators.crearValidadorRestrictor("genericInteger", ValidadorEntero.nombre, 2);
 				this.validators.setRestrictor( this.txtAge, "genericInteger" );
 				this.validators.crearValidadorRestrictor("genericInteger10", ValidadorEntero.nombre, 10);
-				this.validators.setRestrictor( this.txtMobile, "genericInteger10" );
+				this.validators.setValidador( this.txtMobile, "genericInteger10" );
 				this.validators.crearValidadorRestrictor("genericEmail", ValidadorEmail.nombre);
 				this.validators.setRestrictor( this.txtEmail, "genericEmail");
 			}
@@ -463,19 +469,19 @@
 			}			
 		]]>
 	</mx:Script>
-	<mx:FormItem id="frmID" label="ID:" direction="horizontal">
+	<mx:FormItem required="true" id="frmID" label="ID:" direction="horizontal">
 		<components:TextInput id="txtID" width="80" textAlign="right" editable="false"/>
 	</mx:FormItem>
-	<mx:FormItem label="Apellido Paterno:">
+	<mx:FormItem required="true" label="Apellido Paterno:">
 		<components:TextInput id="txtLastName" width="270"/>
 	</mx:FormItem>
-	<mx:FormItem label="Apellido Materno:">
+	<mx:FormItem required="true" label="Apellido Materno:">
 		<components:TextInput id="txtMothersLastName" width="270"/>
 	</mx:FormItem>
-	<mx:FormItem label="Nombres:">
+	<mx:FormItem required="true" label="Nombres:">
 		<components:TextInput id="txtName" width="270"/>
 	</mx:FormItem>
-	<mx:FormItem label="Fecha de Nacimiento:">
+	<mx:FormItem required="true" label="Fecha de Nacimiento:">
 		<components:DateField id="dtfBirthdayDate"
 							  change="dtfBirthdayDate_changeHandler(event)"/>
 	</mx:FormItem>
@@ -485,12 +491,12 @@
 	<mx:FormItem label="Edad:">
 		<components:TextInput id="txtAge" textAlign="right" width="50"/>
 	</mx:FormItem>
-	<mx:FormItem label="Nacionalidad:">
+	<mx:FormItem required="true" label="Nacionalidad:">
 		<mx:ComboBox id="cmbNationality" width="200"
 					 labelField="nacionalidad"
 					 change="cmbNationality_changeHandler(event)"/>
 	</mx:FormItem>
-	<mx:FormItem label="Identificación:">
+	<mx:FormItem required="true" label="Identificación:">
 		<mx:ComboBox id="cmbID" width="200"
 					 labelField="identificacion"/>
 	</mx:FormItem>
@@ -498,19 +504,19 @@
 		<mx:ComboBox id="cmbForeignDocumentation" width="200"
 					 labelField="documento"/>
 	</mx:FormItem>
-	<mx:FormItem label="Estado Civil:">
+	<mx:FormItem required="true" label="Estado Civil:">
 		<mx:ComboBox id="cmbMaritalStatus" width="200"
 					 labelField="estado"/>
 	</mx:FormItem>
-	<mx:FormItem label="Sexo:">
+	<mx:FormItem required="true" label="Sexo:">
 		<mx:ComboBox id="cmbSex" width="200"
 					 labelField="sexo"/>
 	</mx:FormItem>
 	<reclutamientosolicitudempleo:RequestAddress id="requestAddress"/>
-	<mx:FormItem label="Teléfono:">
+	<mx:FormItem required="true" label="Teléfono:">
 		<components:TextInput id="txtPhone" width="150"/>
 	</mx:FormItem>
-	<mx:FormItem label="Celular:">
+	<mx:FormItem required="true" label="Celular:">
 		<components:TextInput id="txtMobile" width="100"/>
 	</mx:FormItem>
 	<mx:FormItem label="Correo Electrónico:">
@@ -526,19 +532,19 @@
 		<components:TextInput id="txtCURP" width="200"/>
 	</mx:FormItem>
 	<reclutamientosolicitudempleo:DriverLicense id="driverLicense"/>
-	<mx:FormItem label="Carta Antecedentes Penales:">
+	<mx:FormItem required="true" label="Carta Antecedentes Penales:">
 		<mx:ComboBox id="cmbLetterCriminal" width="200"
 					 labelField="tieneCarta"/>
 	</mx:FormItem>
-	<mx:FormItem label="Estado de Salud:">
+	<mx:FormItem required="true" label="Estado de Salud:">
 		<mx:ComboBox id="cmbHealthState" width="200"
 					 labelField="estado"/>
 	</mx:FormItem>
-	<mx:FormItem label="Enfermedad Crónica:" direction="horizontal">
+	<mx:FormItem required="true" label="Enfermedad Crónica:" direction="horizontal">
 		<mx:ComboBox id="cmbChronicDisease" dataProvider="{[SI,NO]}" change="cmbChronicDisease_changeHandler(event)"/>
 		<components:TextInput id="txtChronicDisease" width="255"/>
 	</mx:FormItem>
-	<mx:FormItem label="Actividad Tiempo Libre:">
+	<mx:FormItem required="true" label="Actividad Tiempo Libre:">
 		<mx:ComboBox id="cmbHobby" width="200"
 					 labelField="actividad"/>
 	</mx:FormItem>

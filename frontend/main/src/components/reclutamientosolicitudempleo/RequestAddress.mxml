@@ -62,14 +62,21 @@
 				this.txtZipCode.text = this._item.codigoPostal;
 				this.txtMunicipally.text = this._item.delegacionMunicipio;
 				this.txtState.text = this._item.entidadFederativa;
+				this.validateRequires();
 			}
 			
 			public function getRequestAddress():DireccionSolicitante{
 				var requestAddress:DireccionSolicitante = null;
+				if( this.isEmptyAddress() ){
+					return requestAddress;
+				}
 				if( this.mode == Constants.REGISTER_MODE ){
 					requestAddress = new DireccionSolicitante();
 				}else{
 					requestAddress = this._item;
+					if( requestAddress == null ){
+						requestAddress = new DireccionSolicitante();
+					}
 				}
 				requestAddress.calleNumero = Util.validateEmpty( this.txtStreetNumber.text );
 				requestAddress.colonia = Util.validateEmpty( this.txtNeighborhood.text );
@@ -78,7 +85,7 @@
 				requestAddress.entidadFederativa = Util.validateEmpty( this.txtState.text );
 				return requestAddress;
 			}
-			
+						
 			private function fillCombos():void
 			{
 			}
@@ -92,6 +99,7 @@
 			{
 				var value:Boolean = true;
 				value &&= this.validators.validarFormulario();
+				value &&= this.validateRequires();
 				return value;
 			}
 			
@@ -131,6 +139,38 @@
 				this.txtZipCode.reset();
 				this.txtMunicipally.reset();
 				this.txtState.reset();
+				this.frmItmStreetNumber.required = false;
+				this.frmItmNeighborhood.required = false;
+				this.frmItmMunicipally.required = false;
+				this.frmItmState.required = false;
+			}
+			
+			private function isEmptyAddress():Boolean
+			{
+				var empty:Boolean = true;
+				empty &&= ( Util.validateEmpty( this.txtStreetNumber.text ) == null );
+				empty &&= ( Util.validateEmpty( this.txtNeighborhood.text ) == null );
+				empty &&= ( Util.stringToNumber( this.txtZipCode.text ) == null );
+				empty &&= ( Util.validateEmpty( this.txtMunicipally.text ) == null );
+				empty &&= ( Util.validateEmpty( this.txtState.text ) == null );
+				return empty;
+			}
+			
+			private function validateRequires():Boolean
+			{
+				var empty:Boolean = this.isEmptyAddress();
+				this.frmItmStreetNumber.required = !empty;
+				this.frmItmNeighborhood.required = !empty;
+				this.frmItmMunicipally.required = !empty;
+				this.frmItmState.required = !empty;
+				var validated:Boolean = true;
+				if( !empty ){
+					validated &&= ( Util.validateEmpty( this.txtStreetNumber.text ) != null );
+					validated &&= ( Util.validateEmpty( this.txtNeighborhood.text ) != null );
+					validated &&= ( Util.validateEmpty( this.txtMunicipally.text ) != null );
+					validated &&= ( Util.validateEmpty( this.txtState.text ) != null );
+				}
+				return validated;
 			}
 		]]>
 	</mx:Script>
@@ -138,19 +178,19 @@
 	<mx:FormItem id="frmID" label="ID:" direction="horizontal">
 		<components:TextInput id="txtID" width="80" textAlign="right" editable="false"/>
 	</mx:FormItem>
-	<mx:FormItem label="Calle y Número:">
+	<mx:FormItem id="frmItmStreetNumber" label="Calle y Número:">
 		<components:TextInput id="txtStreetNumber" width="300"/>
 	</mx:FormItem>
-	<mx:FormItem label="Colonia:">
+	<mx:FormItem id="frmItmNeighborhood" label="Colonia:">
 		<components:TextInput id="txtNeighborhood" width="220"/>
 	</mx:FormItem>
 	<mx:FormItem label="Código Postal:">
 		<components:TextInput id="txtZipCode" textAlign="right" width="50"/>
 	</mx:FormItem>
-	<mx:FormItem label="Delegación o Municipio:">
+	<mx:FormItem id="frmItmMunicipally" label="Delegación o Municipio:">
 		<components:TextInput id="txtMunicipally" width="220"/>
 	</mx:FormItem>
-	<mx:FormItem label="Entidad Federativa:">
+	<mx:FormItem id="frmItmState" label="Entidad Federativa:">
 		<components:TextInput id="txtState" width="200"/>
 	</mx:FormItem>
 </mx:Form>

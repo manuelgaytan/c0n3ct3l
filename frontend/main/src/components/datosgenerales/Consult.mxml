@@ -189,7 +189,8 @@
 	</mx:DataGrid>
 	</mx:HBox>
 	<mx:HBox>
-		<mx:Button id="btnExport" label="Exportar" click="btnExport_clickHandler(event)" visible="false"/>
+		<mx:Button id="btnExport" label="Exportar" click="btnExport_clickHandler(event)"
+				   visible="{!this._noExecuteQuery}"/>
 	</mx:HBox>
 	<mx:RemoteObject id="datosGeneralesService" destination="datosGeneralesService" fault="datosGeneralesProyectoService_faultHandler(event)"
 					 showBusyCursor="true"/>

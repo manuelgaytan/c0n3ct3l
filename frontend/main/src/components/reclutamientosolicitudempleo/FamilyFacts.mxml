@@ -93,6 +93,8 @@
 			public function validations():Boolean
 			{
 				var value:Boolean = true;
+				value &&= Util.listBaseSelected( this.cmbLiveWith );
+				value &&= Util.listBaseSelected( this.cmbDependents );
 				return value;
 			}
 			
@@ -149,11 +151,11 @@
 	<mx:FormItem id="frmID" label="ID:" direction="horizontal">
 		<components:TextInput id="txtID" width="80" textAlign="right" editable="false"/>
 	</mx:FormItem>
-	<mx:FormItem label="Vive con:">
+	<mx:FormItem required="true" label="Vive con:">
 		<mx:ComboBox id="cmbLiveWith" width="200"
 					 labelField="relacion"/>
 	</mx:FormItem>
-	<mx:FormItem label="Dependientes:">
+	<mx:FormItem required="true" label="Dependientes:">
 		<mx:ComboBox id="cmbDependents" width="200"
 					 labelField="dependientes"/>
 	</mx:FormItem>

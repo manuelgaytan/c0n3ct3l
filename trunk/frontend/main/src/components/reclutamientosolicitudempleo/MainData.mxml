@@ -91,6 +91,7 @@
 			{
 				var value:Boolean = true;
 				value &&= this.validators.validarFormulario();
+				value &&= this.dtfRequestDate.selectedDate != null;
 				return value;
 			}
 			
@@ -131,19 +132,19 @@
 			}
 		]]>
 	</mx:Script>
-	<mx:FormItem id="frmID" label="ID:" direction="horizontal">
+	<mx:FormItem required="true" id="frmID" label="ID:" direction="horizontal">
 		<components:TextInput id="txtID" width="80" textAlign="right" editable="false"/>
 	</mx:FormItem>
-	<mx:FormItem label="Fecha Solicitud:">
+	<mx:FormItem required="true" label="Fecha Solicitud:">
 		<components:DateField id="dtfRequestDate" creationComplete="this.dtfRequestDate.selectedDate = new Date()"/>
 	</mx:FormItem>
-	<mx:FormItem label="Puesto Solicitado:">
+	<mx:FormItem required="true" label="Puesto Solicitado:">
 		<components:TextInput id="txtPositionRequested" width="150"/>
 	</mx:FormItem>
-	<mx:FormItem label="Sueldo Solicitado:">
+	<mx:FormItem required="true" label="Sueldo Solicitado:">
 		<components:TextInput id="txtRequestedSalary" textAlign="right" width="100"/>
 	</mx:FormItem>
-	<mx:FormItem label="Objetivo Laboral:">
+	<mx:FormItem required="true" label="Objetivo Laboral:">
 		<components:TextInput id="txtEmploymentGoal" width="250"/>
 	</mx:FormItem>
 </mx:Form>

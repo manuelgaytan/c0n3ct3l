@@ -502,7 +502,11 @@
 		</mx:FormItem>
 		-->
 		<mx:FormItem required="true" label="Proyecto:"/>
-		<proyectos:Consult id="projectsConsult" projectSelected="projectsConsult_projectSelectedHandler(event)"/>
+		<mx:VBox width="900">
+			<mx:VBox width="100%" height="100%" verticalGap="5">
+				<proyectos:Consult id="projectsConsult" projectSelected="projectsConsult_projectSelectedHandler(event)"/>
+			</mx:VBox>
+		</mx:VBox>
 		<mx:FormItem label="Divisón o Región:">
 			<components:TextInput id="txtDivision" width="200"/>
 		</mx:FormItem>

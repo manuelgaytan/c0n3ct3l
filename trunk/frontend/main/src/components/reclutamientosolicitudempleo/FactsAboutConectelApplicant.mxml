@@ -100,6 +100,8 @@
 			{
 				var value:Boolean = true;
 				//value &&= this.validators.validarFormulario();
+				value &&= Util.listBaseSelected( this.cmbRecruitmentSource );
+				value &&= Util.listBaseSelected( this.cmbSelectionPhase );
 				value &&= this.dtfDateWork.selectedDate != null;
 				return value;
 			}
@@ -160,21 +162,21 @@
 	<mx:FormItem id="frmID" label="ID:" direction="horizontal">
 		<components:TextInput id="txtID" width="80" textAlign="right" editable="false"/>
 	</mx:FormItem>
-	<mx:FormItem label="Fuente Reclutamiento:">
+	<mx:FormItem required="true" label="Fuente Reclutamiento:">
 		<mx:ComboBox id="cmbRecruitmentSource" width="200"
 					 labelField="fuente"/>
 	</mx:FormItem>
-	<mx:FormItem label="Conocidos Conectel:">
+	<mx:FormItem required="true" label="Conocidos Conectel:">
 		<mx:CheckBox id="chkConectelKnown"/>
 	</mx:FormItem>
-	<mx:FormItem label="Puede Viajar:">
+	<mx:FormItem required="true" label="Puede Viajar:">
 		<mx:CheckBox id="chkTripAvailable"/>
 	</mx:FormItem>
-	<mx:FormItem label="Fecha en que podría Presentarse:">
+	<mx:FormItem required="true" label="Fecha en que podría Presentarse:">
 		<components:DateField id="dtfDateWork"
 							  creationComplete="this.dtfDateWork.selectedDate = new Date()"/>
 	</mx:FormItem>
-	<mx:FormItem label="Fase Selección:">
+	<mx:FormItem required="true" label="Fase Selección:">
 		<mx:ComboBox id="cmbSelectionPhase" width="200"
 					 labelField="fase"/>
 	</mx:FormItem>

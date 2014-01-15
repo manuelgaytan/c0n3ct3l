@@ -14,6 +14,7 @@
 			import mx.controls.Alert;
 			import mx.events.CloseEvent;
 			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
 			import mx.rpc.events.FaultEvent;
 			import mx.rpc.events.ResultEvent;
 			
@@ -55,7 +56,7 @@
 			{
 			}
 			
-			protected function datagrid_doubleClickHandler(event:MouseEvent):void
+			protected function datagrid_doubleClickHandler(event:MouseEvent=null):void
 			{
 				var project:Proyecto = this.datagrid.selectedItem as Proyecto;
 				if( project == null ){
@@ -103,12 +104,24 @@
 				
 			}
 			
+			public function setDataAndSelected( data:ArrayCollection, selected:Boolean=true ):void{
+				if( data == null ){
+					return;
+				}
+				this.setDataGridData( data );
+				if( selected ){
+					this.datagrid.selectedIndex = 0;
+					this.datagrid.dispatchEvent( new ListEvent(ListEvent.CHANGE) );
+					this.datagrid.dispatchEvent( new MouseEvent(MouseEvent.DOUBLE_CLICK) );
+				}
+			}												
 		]]>
 	</mx:Script>
 	<mx:Metadata>
 		[Event(name="projectDetail", type="events.GenericEvent")]
 		[Event(name="projectSelected", type="events.GenericEvent")]
 	</mx:Metadata>
+	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
 	<mx:DataGrid id="datagrid" width="2250" height="100%" dataProvider="{this.projects}"
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)">
 		<mx:columns>
@@ -174,9 +187,10 @@
 							   />
 		</mx:columns>
 	</mx:DataGrid>
+	</mx:HBox>
 	<mx:HBox>
 		<mx:Button id="btnExport" label="Exportar" click="btnExport_clickHandler(event)"
-				   visible="false"/> <!--visible="{!this._consultOnly}"/>-->
+				   visible="{!this._consultOnly}"/>
 	</mx:HBox>
 	<mx:RemoteObject id="proyectoService" destination="proyectoService" fault="proyectoService_faultHandler(event)"
 					 showBusyCursor="true"/>

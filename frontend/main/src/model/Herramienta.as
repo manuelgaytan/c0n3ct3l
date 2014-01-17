@@ -13,7 +13,7 @@ package model
 		public var noSerie:String;
 		public var marca:String;
 		public var modelo:String;
-		public var existencia:Number;
+		public var existencia:*;
 		public var fkUnidadA:*;
 		public var fkUbicacionA:*;
 		public var fkResponsable:*;

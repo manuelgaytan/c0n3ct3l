@@ -10,7 +10,7 @@ package model
 		public var codigo:String;
 		public var descripcion:String;
 		public var noSerie:String;
-		public var existencia:Number;
+		public var existencia:*;
 		public var unidad:String;
 		public var fkUbicacionB:*;
 		public var fkResponsable:*;

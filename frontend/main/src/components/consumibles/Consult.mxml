@@ -124,16 +124,16 @@
 							   dataField="unidadB.etiqueta"
 							   width="50"
 							   labelFunction="labelFunctionGenerico"/>
+			<mx:DataGridColumn headerText="Costo"
+							   dataField="costo"
+							   width="120"
+							   textAlign="right"/>
 			<mx:DataGridColumn headerText="Ubicación"
 							   dataField="ubicacionC.etiqueta"
 							   width="120"/>
 			<mx:DataGridColumn headerText="Responsable"
 							   dataField="responsable.nombreCompleto"
 							   width="160"/>
-			<mx:DataGridColumn headerText="Costo"
-							   dataField="costo"
-							   width="120"
-							   textAlign="right"/>
 			<mx:DataGridColumn id="dtgStatus" headerText="Estatus"
 							   dataField="estatusC.etiqueta"
 							   labelFunction="labelFunctionGenerico"
@@ -142,7 +142,7 @@
 	</mx:DataGrid>
 	</mx:HBox>
 	<mx:HBox>
-		<mx:Button id="btnExport" label="Exportar" click="btnExport_clickHandler(event)" visible="false"/>
+		<mx:Button id="btnExport" label="Exportar" click="btnExport_clickHandler(event)"/>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>
 	</mx:HBox>
 	<mx:RemoteObject id="consumibleService" destination="consumibleService" fault="consumibleService_faultHandler(event)"

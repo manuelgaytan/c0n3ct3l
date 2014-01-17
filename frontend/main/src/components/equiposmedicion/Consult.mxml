@@ -124,6 +124,10 @@
 			<mx:DataGridColumn id="dtgModel" headerText="Modelo"
 							   dataField="modelo"
 							   width="120"/>
+			<mx:DataGridColumn headerText="Costo"
+							   dataField="costo"
+							   width="120"
+							   textAlign="right"/>
 			<mx:DataGridColumn headerText="Ubicación"
 							   dataField="ubicacionb.etiqueta"
 							   width="160"/>
@@ -161,10 +165,6 @@
 							   labelFunction="{Util.labelFunctionDate}"
 							   width="120"
 							   textAlign="center"/>
-			<mx:DataGridColumn headerText="Costo"
-							   dataField="costo"
-							   width="120"
-							   textAlign="right"/>
 		</mx:columns>
 	</mx:DataGrid>
 	</mx:HBox>

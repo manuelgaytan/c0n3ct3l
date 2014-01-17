@@ -125,6 +125,10 @@
 			<mx:DataGridColumn id="dtgModel" headerText="Modelo"
 							   dataField="modelo"
 							   width="120"/>
+			<mx:DataGridColumn headerText="{'Costo'}"
+							   dataField="costo"
+							   width="120"
+							   textAlign="right"/>
 			<mx:DataGridColumn id="dtgExistence" headerText="Existencia"
 							   dataField="existencia"
 							   width="120"
@@ -139,10 +143,6 @@
 			<mx:DataGridColumn headerText="{'Responsable'}"
 							   dataField="responsable.nombreCompleto"
 							   width="200"/>
-			<mx:DataGridColumn headerText="{'Costo'}"
-							   dataField="costo"
-							   width="120"
-							   textAlign="right"/>
 			<mx:DataGridColumn id="dtgStatus" headerText="Estatus"
 							   dataField="estatusB.etiqueta"
 							   labelFunction="labelFunctionGenerico"

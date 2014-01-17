@@ -134,7 +134,7 @@
 				item.fkUbicacionB = Util.extractId(item.ubicacionb);
 				item.responsable = Util.validateCombo( this.cmbResponsible ) as Colaborador;
 				item.fkResponsable = Util.extractId(item.responsable);
-				item.costo = Util.stringToNumber( this.txtCost.text );
+				item.costo = Util.stringToNumber( this.txtCost.text, true );
 				item.estatusa = Util.validateCombo( this.cmbStatus ) as EstatusA;
 				item.fkEstatusA = Util.extractId(item.estatusa);
 				item.noCertificado = Util.validateEmpty( this.txtCertificateNumber.text );
@@ -195,6 +195,10 @@
 			{
 				var value:Boolean = true;
 				value &&= this.validators.validarFormulario();
+				value &&= Util.listBaseSelected( this.cmbLocation );
+				value &&= Util.listBaseSelected( this.cmbResponsible );
+				value &&= Util.listBaseSelected( this.cmbStatus );
+				value &&= Util.listBaseSelected( this.cmbService );
 				return value;
 			}
 			
@@ -206,13 +210,15 @@
 			{
 				this.validators = new InicializaValidadoresEtiquetas();
 				validators.crearValidadorRestrictor("generic",ValidadorCadenaCualquierCaracter.nombre, 0, 255);
-				validators.setValidador(txtCode, "generic");
+				validators.setRestrictor(txtCode, "generic");
 				validators.setRestrictor(txtFamily, "generic");
-				validators.setValidador(txtDescription, "generic");
-				validators.setValidador(txtSerie, "generic");
-				validators.setValidador(txtTrade, "generic");
-				validators.setValidador(txtModel, "generic");
+				validators.setRestrictor(txtDescription, "generic");
+				validators.setRestrictor((txtSerie, "generic");
+				validators.setRestrictor((txtTrade, "generic");
+				validators.setRestrictor(txtModel, "generic");
 				validators.setRestrictor(txtCertificateNumber, "generic");
+				validators.crearValidadorRestrictor("numberCosto",ValidadorDecimal.nombre, 9, 2);
+				validators.setRestrictor(txtCost, "numberCosto");
 			}
 			
 			protected function responseSave_resultHandler(event:ResultEvent):void
@@ -376,17 +382,17 @@
 			<components:TextInput id="txtCost"
 								  textAlign="right"/>
 		</mx:FormItem>
-		<mx:FormItem label="Ubicación:">
+		<mx:FormItem required="true" label="Ubicación:">
 			<mx:ComboBox id="cmbLocation"
 						 labelField="etiqueta"
 						 />
 		</mx:FormItem>
-		<mx:FormItem label="Responsable:">
+		<mx:FormItem required="true" label="Responsable:">
 			<mx:ComboBox id="cmbResponsible"
 						 labelField="nombreCompleto"
 						 />
 		</mx:FormItem>
-		<mx:FormItem label="Estatus:">
+		<mx:FormItem required="true" label="Estatus:">
 			<mx:ComboBox id="cmbStatus"
 						 labelField="etiqueta"
 						 />
@@ -413,7 +419,7 @@
 						 labelField="etiqueta"
 						 />
 		</mx:FormItem>
-		<mx:FormItem label="Tipo de Mantenimiento:">
+		<mx:FormItem required="true" label="Tipo de Mantenimiento:">
 			<mx:ComboBox id="cmbService"
 						 labelField="etiqueta"
 						 />

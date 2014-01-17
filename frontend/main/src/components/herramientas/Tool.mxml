@@ -85,8 +85,8 @@
 				this.txtModel.text = this._item.modelo;
 				this.dlvWarranty.delivers = Util.setDocumentosAlmacen( this._item.polizaGarantia );
 				this.dlvInsurance.delivers = Util.setDocumentosAlmacen( this._item.polizaSeguro );
-				this.txtExistence.text = Util.numberToString( this._item.existencia );
-				this.txtCost.text = Util.numberToString( this._item.costo );
+				this.txtExistence.text = Util.numberToString( this._item.existencia, true );
+				this.txtCost.text = Util.numberToString( this._item.costo, true );
 				if( Util.isFill( this.cmbUnit ) && this._item.unidadA != null ){
 					this.cmbUnit.selectedIndex = Util.selectedIndexFromCombo( this.cmbUnit.dataProvider as ArrayCollection, 
 						this._item.unidadA.id);
@@ -134,8 +134,8 @@
 				item.modelo = Util.validateEmpty( this.txtModel.text );
 				item.polizaGarantia = Util.getDocumentosAlmacen( this.dlvWarranty.delivers, TipoAlmacen.getHerramienta(), TipoDocumentoAlmacen.getPolizaGarantia());
 				item.polizaSeguro = Util.getDocumentosAlmacen( this.dlvInsurance.delivers, TipoAlmacen.getHerramienta(), TipoDocumentoAlmacen.getPolizaSeguro());
-				item.existencia = Util.stringToNumber( this.txtExistence.text );
-				item.costo = Util.stringToNumber( this.txtCost.text );
+				item.existencia = Util.stringToNumber( this.txtExistence.text, true );
+				item.costo = Util.stringToNumber( this.txtCost.text, true );
 				item.unidadA = Util.validateCombo( this.cmbUnit ) as UnidadA;
 				item.fkUnidadA = Util.extractId(item.unidadA);
 				item.ubicacionA = Util.validateCombo( this.cmbLocation ) as UbicacionA;
@@ -214,6 +214,12 @@
 			{
 				var value:Boolean = true;
 				value &&= this.validators.validarFormulario();
+				value &&= Util.listBaseSelected( this.cmbFamily );
+				value &&= Util.listBaseSelected( this.cmbUnit );
+				value &&= Util.listBaseSelected( this.cmbLocation );
+				value &&= Util.listBaseSelected( this.cmbResponsible );
+				value &&= Util.listBaseSelected( this.cmbStatus );
+				value &&= Util.listBaseSelected( this.cmbService );
 				return value;
 			}
 			
@@ -225,14 +231,16 @@
 			{
 				this.validators = new InicializaValidadoresEtiquetas();
 				validators.crearValidadorRestrictor("generic",ValidadorCadenaCualquierCaracter.nombre, 0, 255);
-				validators.setValidador(txtCode, "generic");
-				validators.setValidador(txtDescription, "generic");
+				validators.setRestrictor(txtCode, "generic");
+				validators.setRestrictor(txtDescription, "generic");
 				validators.setRestrictor(txtSerie, "generic");
 				validators.setRestrictor(txtTrade, "generic");
 				validators.setRestrictor(txtModel, "generic");
 				validators.setRestrictor(txtCertificateNumber, "generic");
 				validators.crearValidadorRestrictor("number",ValidadorDecimal.nombre, 10, 4);
-				validators.setValidador(txtExistence, "number");
+				validators.setRestrictor(txtExistence, "number");
+				validators.crearValidadorRestrictor("numberCosto",ValidadorDecimal.nombre, 9, 2);
+				validators.setRestrictor(txtCost, "numberCosto");
 			}
 			
 			protected function responseSave_resultHandler(event:ResultEvent):void
@@ -356,7 +364,7 @@
 		<mx:FormItem label="Código:">
 			<components:TextInput id="txtCode"/>
 		</mx:FormItem>
-		<mx:FormItem label="Grupo o Familia:">
+		<mx:FormItem required="true" label="Grupo o Familia:">
 			<mx:ComboBox id="cmbFamily"
 						 labelField="etiqueta"
 						 />
@@ -389,22 +397,22 @@
 			<components:TextInput id="txtCost"
 								  textAlign="right"/>
 		</mx:FormItem>
-		<mx:FormItem label="Unidad:">
+		<mx:FormItem required="true" label="Unidad:">
 			<mx:ComboBox id="cmbUnit"
 						 labelField="etiqueta"
 						 />
 		</mx:FormItem>
-		<mx:FormItem label="Ubicación:">
+		<mx:FormItem required="true" label="Ubicación:">
 			<mx:ComboBox id="cmbLocation"
 						 labelField="etiqueta"
 						 />
 		</mx:FormItem>
-		<mx:FormItem label="Responsable:">
+		<mx:FormItem required="true" label="Responsable:">
 			<mx:ComboBox id="cmbResponsible"
 						 labelField="nombreCompleto"
 						 />
 		</mx:FormItem>
-		<mx:FormItem label="Estatus:">
+		<mx:FormItem required="true" label="Estatus:">
 			<mx:ComboBox id="cmbStatus"
 						 labelField="etiqueta"
 						 />
@@ -421,7 +429,7 @@
 		<mx:FormItem label="Certificado de Calibración:">
 			<components:FlatDeliver id="dlvCalibrationCertificate"/>
 		</mx:FormItem>
-		<mx:FormItem label="Mantenimiento o Servicio:">
+		<mx:FormItem required="true" label="Mantenimiento o Servicio:">
 			<mx:ComboBox id="cmbService"
 						 labelField="etiqueta"
 						 />

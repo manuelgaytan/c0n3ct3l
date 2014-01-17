@@ -400,7 +400,8 @@
 					return;
 				}
 				this.txtAuditKey.text = project.claveAuditoria;
-				this.responseGetDesarrolloProyectoAB.token = this.desarrolloProyectoABService.getDesarrolloProyectoAB( project.id );
+				this.cleanSecondaryGrid();
+				this.responseGetDesarrolloProyectoAB.token = this.desarrolloProyectoABService.getByIdProyecto( project.id );
 			}
 			
 			protected function responseGetAll_resultHandler(event:ResultEvent):void
@@ -440,6 +441,11 @@
 					return;
 				}
 				this.secondaryConsult.datagrid.dataProvider = Util.asArrayCollection( developmentProjectAB );
+			}
+			
+			private function cleanSecondaryGrid():void
+			{
+				Util.removeItems( this.secondaryConsult.datagrid.dataProvider );
 			}
 		]]>
 	</mx:Script>

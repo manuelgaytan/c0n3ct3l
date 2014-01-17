@@ -107,8 +107,8 @@
 					this.cmbCalibration.selectedIndex = Util.selectedIndexFromCombo( this.cmbCalibration.dataProvider as ArrayCollection, 
 						this._item.calibracion.id);
 				}
-				if( Util.isFill( this.cmbMaintanceService ) && this._item.mantenimientoServicio != null ){
-					this.cmbMaintanceService.selectedIndex = Util.selectedIndexFromCombo( this.cmbMaintanceService.dataProvider as ArrayCollection, 
+				if( Util.isFill( this.cmbMaintainService ) && this._item.mantenimientoServicio != null ){
+					this.cmbMaintainService.selectedIndex = Util.selectedIndexFromCombo( this.cmbMaintainService.dataProvider as ArrayCollection, 
 						this._item.mantenimientoServicio.id);
 				}
 			}
@@ -147,7 +147,7 @@
 				item.ordenMantenimiento = Util.getDocumentosAlmacen( this.dlvServiceOrder.delivers, TipoAlmacen.getEquipoMedicion(), TipoDocumentoAlmacen.getOrdenMantenimientoServicio() );
 				item.comentarios = Util.getComentariosTipoAlmacen( this.comments.comments, TipoAlmacen.getEquipoMedicion() );
 				item.calibracion = Util.validateCombo( this.cmbCalibration ) as Calibracion;
-				item.mantenimientoServicio = Util.validateCombo( this.cmbMaintanceService ) as MantenimientoServicio;
+				item.mantenimientoServicio = Util.validateCombo( this.cmbMaintainService ) as MantenimientoServicio;
 				return item;
 			}
 			
@@ -246,7 +246,7 @@
 				this.dlvServiceOrder.reset();
 				this.comments.reset();
 				this.cmbCalibration.selectedIndex = 0;
-				this.cmbMaintanceService.selectedIndex = 0;
+				this.cmbMaintainService.selectedIndex = 0;
 			}
 			
 			protected function responseUpdate_resultHandler(event:ResultEvent):void
@@ -332,9 +332,9 @@
 				if( data == null ){
 					return;
 				}
-				this.cmbMaintanceService.dataProvider = Util.addEmptyCatalgo( data );
+				this.cmbMaintainService.dataProvider = Util.addEmptyCatalgo( data );
 				if( this._item != null && this._item.mantenimientoServicio != null ){
-					this.cmbMaintanceService.selectedIndex = Util.selectedIndexFromCombo( this.cmbMaintanceService.dataProvider as ArrayCollection, 
+					this.cmbMaintainService.selectedIndex = Util.selectedIndexFromCombo( this.cmbMaintainService.dataProvider as ArrayCollection, 
 						this._item.mantenimientoServicio.id);
 				}
 			}
@@ -409,7 +409,7 @@
 			<components:FlatDeliver id="dlvCalibrationCertificate"/>
 		</mx:FormItem>
 		<mx:FormItem label="Mantenimiento o Servicio:">
-			<mx:ComboBox id="cmbMaintanceService"
+			<mx:ComboBox id="cmbMaintainService"
 						 labelField="etiqueta"
 						 />
 		</mx:FormItem>

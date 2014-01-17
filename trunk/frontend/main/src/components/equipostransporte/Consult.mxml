@@ -145,6 +145,9 @@
 							   dataField="estatusb.etiqueta"
 							   labelFunction="labelFunctionGenerico"
 							   width="120"/>
+			<mx:DataGridColumn headerText="{'Mantenimiento\no Servicio'}"
+							   dataField="mantenimientoServicio.etiqueta"
+							   width="120"/>
 			<mx:DataGridColumn headerText="{'Responsable\nMantenimiento\no Servicio'}"
 							   dataField="tipomantenimiento.etiqueta"
 							   width="120"/>

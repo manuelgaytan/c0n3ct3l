@@ -10,6 +10,7 @@
 			import model.EquipoTransporte;
 			import model.EstatusB;
 			import model.GrupoFamiliaB;
+			import model.MantenimientoServicio;
 			import model.Perfil;
 			import model.TipoAlmacen;
 			import model.TipoDocumentoAlmacen;
@@ -19,7 +20,6 @@
 			
 			import mx.collections.ArrayCollection;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
-			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
 			import mx.com.gahm.componentes.validadores.ValidadorNumerico;
@@ -95,6 +95,10 @@
 					this.cmbStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbStatus.dataProvider as ArrayCollection, 
 						this._item.estatusb.id);
 				}
+				if( Util.isFill( this.cmbMaintainService ) && this._item.mantenimientoServicio != null ){
+					this.cmbMaintainService.selectedIndex = Util.selectedIndexFromCombo( this.cmbMaintainService.dataProvider as ArrayCollection, 
+						this._item.mantenimientoServicio.id);
+				}
 				if( Util.isFill( this.cmbService ) && this._item.tipomantenimiento != null ){
 					this.cmbService.selectedIndex = Util.selectedIndexFromCombo( this.cmbService.dataProvider as ArrayCollection, 
 						this._item.tipomantenimiento.id);
@@ -132,6 +136,7 @@
 				item.costo = Util.stringToNumber( this.txtCost.text );
 				item.estatusb = Util.validateCombo( this.cmbStatus ) as EstatusB;
 				item.fkEstatusB = Util.extractId(item.estatusb);
+				item.mantenimientoServicio = Util.validateCombo( this.cmbMaintainService ) as MantenimientoServicio;
 				item.tipomantenimiento = Util.validateCombo( this.cmbService ) as TipoMantenimiento;
 				item.fkTipoMantenimiento = Util.extractId(item.tipomantenimiento);
 				item.fechaMantenimiento = this.dtfServiceDate.selectedDate;
@@ -147,6 +152,7 @@
 				this.responseGetColaborador.token = this.catalogoService.getColaborador();
 				this.responseGetEstatusB.token = this.catalogoService.getEstatusB();
 				this.responseGetTipoMantenimiento.token = this.catalogoService.getTipoMantenimiento();
+				this.responseGetMantenimientoServicio.token = this.catalogoService.getMantenimientoServicio();
 			}
 			
 			
@@ -242,6 +248,7 @@
 				this.cmbResponsible.selectedIndex = 0;
 				this.txtCost.reset();
 				this.cmbStatus.selectedIndex = 0;
+				this.cmbMaintainService.selectedIndex = 0;
 				this.cmbService.selectedIndex = 0;
 				this.dtfServiceDate.reset();
 				this.dlvServiceOrder.reset();
@@ -312,6 +319,18 @@
 				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
 			}
 			
+			protected function responseGetMantenimientoServicio_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbMaintainService.dataProvider = Util.addEmptyCatalgo( data );
+				if( this._item != null && this._item.mantenimientoServicio != null ){
+					this.cmbMaintainService.selectedIndex = Util.selectedIndexFromCombo( this.cmbMaintainService.dataProvider as ArrayCollection, 
+						this._item.mantenimientoServicio.id);
+				}
+			}
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -375,6 +394,11 @@
 						 labelField="etiqueta"
 						 />
 		</mx:FormItem>
+		<mx:FormItem label="Mantenimiento o Servicio:">
+			<mx:ComboBox id="cmbMaintainService"
+						 labelField="etiqueta"
+						 />
+		</mx:FormItem>
 		<mx:FormItem label="Responsable Mantenimiento o Servicio:">
 			<mx:ComboBox id="cmbService"
 						 labelField="etiqueta"
@@ -402,4 +426,5 @@
 	<mx:CallResponder id="responseGetColaborador" result="responseGetColaborador_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetEstatusB" result="responseGetEstatusB_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetTipoMantenimiento" result="responseGetTipoMantenimiento_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetMantenimientoServicio" result="responseGetMantenimientoServicio_resultHandler(event)"/>
 </mx:VBox>

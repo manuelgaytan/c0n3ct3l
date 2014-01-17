@@ -32,6 +32,7 @@ package model
 		public var grupofamiliab:GrupoFamiliaB;
 		public var ubicacionb:UbicacionB;
 		public var responsable:Colaborador;
+		public var mantenimientoServicio:MantenimientoServicio;
 		public var estatusb:EstatusB;
 		public var tipomantenimiento:TipoMantenimiento;
 		

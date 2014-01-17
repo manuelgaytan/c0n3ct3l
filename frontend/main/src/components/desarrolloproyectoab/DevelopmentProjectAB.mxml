@@ -68,8 +68,7 @@
 				}
 				this.stateValidation();
 				//this.txtConectelID.text = Util.numberToString( this._developmentProjectAB.proyecto.id );
-				this.projectsConsult.datagrid.dataProvider = Util.asArrayCollection( this._developmentProjectAB.proyecto );
-				this.projectsConsult.datagrid.selectedIndex = 0;
+				this.projectsConsult.setDataAndSelected( Util.asArrayCollection( this._developmentProjectAB.proyecto ) );
 				if( Util.isFill( this.cmbAuditType ) && this._developmentProjectAB != null &&
 					this._developmentProjectAB.proyecto != null &&
 					this._developmentProjectAB.proyecto.tipoAuditoria != null ){
@@ -519,7 +518,8 @@
 				if( project == null ){
 					return;
 				}
-				this.responseGetDatosGeneralesProyecto.token = this.datosGeneralesService.getDatosGrlsProyecto( project.id );
+				this.cleanSecondaryGrid();
+				this.responseGetDatosGeneralesProyecto.token = this.datosGeneralesService.getByIdProyecto( project.id );
 			}
 			
 			protected function responseGetAll_resultHandler(event:ResultEvent):void
@@ -545,6 +545,12 @@
 				}
 				this.secondaryConsult.datagrid.dataProvider = Util.asArrayCollection( generalDataProject ); 
 			}
+			
+			private function cleanSecondaryGrid():void
+			{
+				Util.removeItems( this.secondaryConsult.datagrid.dataProvider );
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:Metadata>

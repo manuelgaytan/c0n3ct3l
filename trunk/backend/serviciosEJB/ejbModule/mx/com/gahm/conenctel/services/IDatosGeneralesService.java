@@ -23,4 +23,7 @@ public interface IDatosGeneralesService {
 	
 	public DatosGrlsProyectoDO getDatosGrlsProyecto(long idDataProject)
 			throws ConectelException;
+	
+	public DatosGrlsProyectoDO getByIdProyecto(long idProyecto) 
+			throws ConectelException;
 }

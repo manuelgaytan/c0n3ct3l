@@ -207,4 +207,17 @@ public class DatosGeneralesService implements IDatosGeneralesService {
 		return entityManager.find(DatosGrlsProyectoDO.class, idDataProject);
 	}
 
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public DatosGrlsProyectoDO getByIdProyecto(long idProyecto) throws ConectelException {
+		TypedQuery<DatosGrlsProyectoDO> query = entityManager.createNamedQuery(
+				"DatosGrlsProyectoDO.getByIdProyecto", DatosGrlsProyectoDO.class);
+		query.setParameter("idProyecto", idProyecto);
+		List<DatosGrlsProyectoDO> dataProjectList;
+		try {
+			dataProjectList = query.getResultList();
+		} catch(NoResultException e) {
+			throw new ConectelException("No existen Datos Generales registrados.");
+		}
+		return dataProjectList.size() > 0 ? dataProjectList.get(0) : null;
+	}
 }

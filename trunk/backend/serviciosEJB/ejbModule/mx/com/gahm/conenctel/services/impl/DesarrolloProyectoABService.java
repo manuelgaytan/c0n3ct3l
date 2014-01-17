@@ -11,6 +11,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
 import mx.com.gahm.conenctel.constants.EstadoProyecto;
+import mx.com.gahm.conenctel.entities.DatosGrlsProyectoDO;
 import mx.com.gahm.conenctel.entities.DesarrolloProyectoABDO;
 import mx.com.gahm.conenctel.entities.EstadoDO;
 import mx.com.gahm.conenctel.entities.ObservacionDO;
@@ -148,5 +149,17 @@ public class DesarrolloProyectoABService implements IDesarrolloProyectoABService
 		return developmentProjectList;
 	}
 	
-	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public DesarrolloProyectoABDO getByIdProyecto(long idProyecto) throws ConectelException {
+		TypedQuery<DesarrolloProyectoABDO> query = entityManager.createNamedQuery(
+				"DesarrolloProyectoABDO.getByIdProyecto", DesarrolloProyectoABDO.class);
+		query.setParameter("idProyecto", idProyecto);
+		List<DesarrolloProyectoABDO> dataProjectList;
+		try {
+			dataProjectList = query.getResultList();
+		} catch(NoResultException e) {
+			throw new ConectelException("No existen Datos Generales registrados.");
+		}
+		return dataProjectList.size() > 0 ? dataProjectList.get(0) : null;
+	}
 }

@@ -69,6 +69,10 @@ public class EquipoTransporteDO implements Serializable {
 	@JoinColumn(name="fk_estatus_b")
 	private EstatusBDO estatusb;
 	
+	@ManyToOne
+	@JoinColumn(name="fk_mantenimiento_servicio")
+	private MantenimientoServicioDO mantenimientoServicio;
+	
 	private Double costo;
 	
 	@Transient
@@ -310,6 +314,15 @@ public class EquipoTransporteDO implements Serializable {
 
 	public void setCosto(Double costo) {
 		this.costo = costo;
+	}
+
+	public MantenimientoServicioDO getMantenimientoServicio() {
+		return mantenimientoServicio;
+	}
+
+	public void setMantenimientoServicio(
+			MantenimientoServicioDO mantenimientoServicio) {
+		this.mantenimientoServicio = mantenimientoServicio;
 	}
 
 }

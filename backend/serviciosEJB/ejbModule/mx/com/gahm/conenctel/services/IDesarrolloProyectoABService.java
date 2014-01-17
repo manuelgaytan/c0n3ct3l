@@ -24,4 +24,6 @@ public interface IDesarrolloProyectoABService {
 			throws ConectelException;
 	
 	public List<ProyectoDO> getAllBySinDesarrolloProyecto() throws ConectelException;
+	
+	public DesarrolloProyectoABDO getByIdProyecto(long idProyecto) throws ConectelException;
 }

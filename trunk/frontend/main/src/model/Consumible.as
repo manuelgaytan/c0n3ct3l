@@ -10,7 +10,7 @@ package model
 		public var codigo:String;
 		public var fkGrupoFamiliaD:*;
 		public var descripcion:String;
-		public var existencia:Number;
+		public var existencia:*;
 		public var fkUnidadB:*;
 		public var fkUbicacionC:*;
 		public var fkResponsable:*;

@@ -95,7 +95,7 @@
 		[Event(name="generalDataProjectDetail", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
-	<mx:DataGrid id="datagrid" width="1330" height="100%" dataProvider="{generalDataProjects}"
+	<mx:DataGrid id="datagrid" width="1530" height="100%" dataProvider="{generalDataProjects}"
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 				 allowMultipleSelection="true">
 		<mx:columns>
@@ -147,6 +147,9 @@
 							   labelFunction="labelFunctionDate"
 							   textAlign="center"
 							   width="100"/>
+			<mx:DataGridColumn headerText="{'Clave\nAuditoría'}"
+							   dataField="proyecto.claveAuditoria"
+							   width="200"/>
 		</mx:columns>
 	</mx:DataGrid>
 	</mx:HBox>

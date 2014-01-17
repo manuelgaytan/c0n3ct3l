@@ -133,7 +133,7 @@
 				item.fkUbicacionB = Util.extractId(item.ubicacionb);
 				item.responsable = Util.validateCombo( this.cmbResponsible ) as Colaborador;
 				item.fkResponsable = Util.extractId(item.responsable);
-				item.costo = Util.stringToNumber( this.txtCost.text );
+				item.costo = Util.stringToNumber( this.txtCost.text, true );
 				item.estatusb = Util.validateCombo( this.cmbStatus ) as EstatusB;
 				item.fkEstatusB = Util.extractId(item.estatusb);
 				item.mantenimientoServicio = Util.validateCombo( this.cmbMaintainService ) as MantenimientoServicio;
@@ -203,6 +203,11 @@
 			{
 				var value:Boolean = true;
 				value &&= this.validators.validarFormulario();
+				value &&= Util.listBaseSelected( this.cmbFamily );
+				value &&= Util.listBaseSelected( this.cmbLocation );
+				value &&= Util.listBaseSelected( this.cmbResponsible );
+				value &&= Util.listBaseSelected( this.cmbStatus );
+				value &&= Util.listBaseSelected( this.cmbService );
 				return value;
 			}
 			
@@ -214,13 +219,15 @@
 			{
 				this.validators = new InicializaValidadoresEtiquetas();
 				validators.crearValidadorRestrictor("generic",ValidadorCadenaCualquierCaracter.nombre, 0, 255);
-				validators.setValidador(txtCode, "generic");
-				validators.setValidador(txtDescription, "generic");
-				validators.setValidador(txtSerie, "generic");
-				validators.setValidador(txtTrade, "generic");
-				validators.setValidador(txtModel, "generic");
-				validators.setValidador(txtPlaces, "generic");
-				validators.setValidador(txtCirculationCard, "generic");
+				validators.setRestrictor(txtCode, "generic");
+				validators.setRestrictor(txtDescription, "generic");
+				validators.setRestrictor(txtSerie, "generic");
+				validators.setRestrictor(txtTrade, "generic");
+				validators.setRestrictor(txtModel, "generic");
+				validators.setRestrictor(txtPlaces, "generic");
+				validators.setRestrictor(txtCirculationCard, "generic");
+				validators.crearValidadorRestrictor("numberCosto",ValidadorDecimal.nombre, 9, 2);
+				validators.setRestrictor(txtCost, "numberCosto");
 			}
 			
 			protected function responseSave_resultHandler(event:ResultEvent):void
@@ -341,7 +348,7 @@
 		<mx:FormItem label="Código:">
 			<components:TextInput id="txtCode"/>
 		</mx:FormItem>
-		<mx:FormItem label="Grupo o Familia:">
+		<mx:FormItem required="true" label="Grupo o Familia:">
 			<mx:ComboBox id="cmbFamily"
 						 labelField="etiqueta"
 						 />
@@ -379,17 +386,17 @@
 		<mx:FormItem label="Poliza de Seguro:">
 			<components:FlatDeliver id="dlvInsurance"/>
 		</mx:FormItem>
-		<mx:FormItem label="Ubicación:">
+		<mx:FormItem required="true" label="Ubicación:">
 			<mx:ComboBox id="cmbLocation"
 						 labelField="etiqueta"
 						 />
 		</mx:FormItem>
-		<mx:FormItem label="Responsable:">
+		<mx:FormItem required="true" label="Responsable:">
 			<mx:ComboBox id="cmbResponsible"
 						 labelField="nombreCompleto"
 						 />
 		</mx:FormItem>
-		<mx:FormItem label="Estatus:">
+		<mx:FormItem required="true" label="Estatus:">
 			<mx:ComboBox id="cmbStatus"
 						 labelField="etiqueta"
 						 />
@@ -399,7 +406,7 @@
 						 labelField="etiqueta"
 						 />
 		</mx:FormItem>
-		<mx:FormItem label="Responsable Mantenimiento o Servicio:">
+		<mx:FormItem required="true" label="Responsable Mantenimiento o Servicio:">
 			<mx:ComboBox id="cmbService"
 						 labelField="etiqueta"
 						 />

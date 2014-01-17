@@ -126,6 +126,10 @@
 			<mx:DataGridColumn id="dtgUnit" headerText="Unidad"
 							   dataField="unidad"
 							   width="120"/>
+			<mx:DataGridColumn headerText="Costo"
+							   dataField="costo"
+							   width="120"
+							   textAlign="right"/>
 			<mx:DataGridColumn headerText="Ubicación"
 							   dataField="ubicacionB.etiqueta"
 							   width="160"/>
@@ -141,10 +145,6 @@
 							   dataField="licenciamientoFinal"
 							   labelFunction="labelFunctionDate"
 							   width="120"/>
-			<mx:DataGridColumn headerText="Costo"
-							   dataField="costo"
-							   width="120"
-							   textAlign="right"/>
 		</mx:columns>
 	</mx:DataGrid>
 	</mx:HBox>

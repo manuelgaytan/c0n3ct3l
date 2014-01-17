@@ -17,7 +17,7 @@ package model
 		public var fkCompania:*;
 		public var noTelefono:String;
 		public var tipoPlanContratado:String;
-		public var existencia:Number;
+		public var existencia:*;
 		public var fkUbicacionB:*;
 		public var fkResponsable:*;
 		public var fkEstatusB:*;

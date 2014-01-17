@@ -104,8 +104,8 @@
 				item.noSerie = Util.validateEmpty( this.txtSerie.text );
 				item.polizaSeguro = Util.getDocumentosAlmacen( this.dlvInsurance.delivers, TipoAlmacen.getSoftware(), TipoDocumentoAlmacen.getPolizaSeguro() );
 				item.polizaGarantia = Util.getDocumentosAlmacen( this.dlvWarranty.delivers, TipoAlmacen.getSoftware(), TipoDocumentoAlmacen.getPolizaGarantia() );
-				item.existencia = Util.stringToNumber( this.txtExistence.text );
-				item.costo = Util.stringToNumber( this.txtCost.text );
+				item.existencia = Util.stringToNumber( this.txtExistence.text, true );
+				item.costo = Util.stringToNumber( this.txtCost.text, true );
 				item.unidad = Util.validateEmpty( this.txtUnit.text );
 				item.ubicacionB = Util.validateCombo( this.cmbLocation ) as UbicacionB;
 				item.fkUbicacionB = Util.extractId(item.ubicacionB);
@@ -157,8 +157,12 @@
 			{
 				var value:Boolean = true;
 				value &&= this.validators.validarFormulario();
+				value &&= Util.listBaseSelected( this.cmbLocation );
+				value &&= Util.listBaseSelected( this.cmbResponsible );
+				/*
 				value &&= this.dtfInitialLicensing.selectedDate != null;
 				value &&= this.dtfFinalLicensing.selectedDate != null;
+				*/
 				return value;
 			}
 			
@@ -170,12 +174,14 @@
 			{
 				this.validators = new InicializaValidadoresEtiquetas();
 				validators.crearValidadorRestrictor("generic",ValidadorCadenaCualquierCaracter.nombre, 0, 255);
-				validators.setValidador(txtCode, "generic");
-				validators.setValidador(txtDescription, "generic");
-				validators.setValidador(txtSerie, "generic");
+				validators.setRestrictor(txtCode, "generic");
+				validators.setRestrictor(txtDescription, "generic");
+				validators.setRestrictor(txtSerie, "generic");
 				validators.setRestrictor(txtUnit, "generic");
 				validators.crearValidadorRestrictor("number",ValidadorDecimal.nombre, 10, 4);
-				validators.setValidador(txtExistence, "number");
+				validators.setRestrictor(txtExistence, "number");
+				validators.crearValidadorRestrictor("numberCosto",ValidadorDecimal.nombre, 9, 2);
+				validators.setRestrictor(txtCost, "numberCosto");
 			}
 			
 			protected function responseSave_resultHandler(event:ResultEvent):void
@@ -275,12 +281,12 @@
 			<components:TextInput id="txtCost"
 								  textAlign="right"/>
 		</mx:FormItem>
-		<mx:FormItem label="Ubicación:">
+		<mx:FormItem required="true" label="Ubicación:">
 			<mx:ComboBox id="cmbLocation"
 						 labelField="etiqueta"
 						 />
 		</mx:FormItem>
-		<mx:FormItem label="Responsable:">
+		<mx:FormItem required="true" label="Responsable:">
 			<mx:ComboBox id="cmbResponsible"
 						 labelField="nombreCompleto"
 						 />

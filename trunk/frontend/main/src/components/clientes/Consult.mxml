@@ -2,7 +2,7 @@
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
 		 horizontalAlign="right"
-		 creationComplete="creationCompleteHandler(event)">
+		 creationComplete="creationCompleteHandler(event)" xmlns:components="components.*">
 	<mx:Script>
 		<![CDATA[
 			import events.GenericEvent;
@@ -135,6 +135,7 @@
 	</mx:HBox>
 	<mx:HBox>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>
+		<components:ExportButton datagrid="{this.datagrid}" visible="true"/>
 	</mx:HBox>
 	<mx:RemoteObject id="clienteService" destination="clienteService" fault="clienteService_faultHandler(event)"
 					 showBusyCursor="true"/>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Button xmlns:mx="http://www.adobe.com/2006/mxml" 
+	initialize="initializeHandler(event)"
+	click="clickExportHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.DataGrid;
+			import mx.events.FlexEvent;
+			
+			[Bindable]
+			public var datagrid:DataGrid;
+			
+			private function initializeHandler(event:FlexEvent):void{
+				this.label = "Exportar";	
+			}
+			
+			private function clickExportHandler(event:MouseEvent):void{
+				var clip:AMClipListado = new AMClipListado();
+             	clip.createClip(this.datagrid.dataProvider, this.datagrid.columns, null, null, new Array());
+			}
+		]]>
+	</mx:Script>	
+</mx:Button>

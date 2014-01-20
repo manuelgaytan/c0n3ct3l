@@ -6,9 +6,7 @@ package model
 	public class PagoProveedor
 	{
 		public var id:*;
-		public var facturaProveedor:FacturaProveedor;
 		public var folioFactura:String;
-		public var notaCreditoProveedor:NotaCreditoProveedor;
 		public var subtotal:Number;
 		public var iva:Number;
 		public var total:Number;
@@ -17,6 +15,8 @@ package model
 		public var monto:Number;
 		public var referenciaAbono:*;
 		public var comentariosPagoProveedor:ArrayCollection;
+		public var facturasProveedor:ArrayCollection;
+		public var notasCreditoProveedor:ArrayCollection;
 		
 		public function PagoProveedor(){
 			

@@ -18,6 +18,7 @@
 			import model.Deduccion;
 			import model.FormaPagoPrenomina;
 			import model.Minuta;
+			import model.Reportes;
 			import model.ResultadoImplementacion;
 			import model.TipoSancion;
 			import model.Util;
@@ -26,7 +27,6 @@
 			import mx.collections.ArrayCollection;
 			import mx.com.gahm.componentes.validadores.Constantes;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
-			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
 			import mx.com.gahm.componentes.validadores.ValidadorEmail;
@@ -159,6 +159,7 @@
 			{
 				if( this.mode == Constants.REGISTER_MODE ){
 					form.removeChild( this.frmID );
+					this.btnPrint.visible = false;
 				}
 				if( this.mode == Constants.UPDATE_MODE ){
 				}
@@ -221,6 +222,13 @@
 				data.addItem( item );
 				return data;
 			}
+			
+			protected function btnPrint_clickHandler(event:MouseEvent):void
+			{
+				var params:Array = [{key:"id", value:this._item.id}];
+				Util.launchReport( Reportes.MINUTA_REUNION, params );
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -229,7 +237,7 @@
 		[Event(name="minutaMeetingProjectDone", type="flash.events.Event")]
 	</mx:Metadata>
 	<mx:Form id="form">
-		<mx:FormItem id="frmID" label="ID:" direction="horizontal">
+		<mx:FormItem required="true" id="frmID" label="ID:" direction="horizontal">
 			<components:TextInput id="txtID" width="80" textAlign="right"
 								  editable="false"/>
 		</mx:FormItem>
@@ -242,16 +250,17 @@
 			<mx:ComboBox id="cmbAMPM" dataProvider="{this.getAMPM()}"
 						 labelField="etiqueta"/>
 		</mx:FormItem>
-		<mx:FormItem label="Lugar:">
+		<mx:FormItem required="true" label="Lugar:">
 			<components:TextInput id="txtPlace" width="350"/>
 		</mx:FormItem>
-		<mx:FormItem label="Asunto:">
+		<mx:FormItem required="true" label="Asunto:">
 			<components:TextInput id="txtSubject" width="420"/>
 		</mx:FormItem>
 		<minutareunion:ParticipantForm id="participantForm"/>
 		<minutareunion:AgreementForm id="agreementForm"/>
 		<mx:FormItem direction="horizontal">
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
+			<mx:Button id="btnPrint" label="Imprimir" click="btnPrint_clickHandler(event)"/>
 		</mx:FormItem>
 	</mx:Form>
 	<mx:RemoteObject id="minutaService" destination="minutaService" fault="minutaService_faultHandler(event)"

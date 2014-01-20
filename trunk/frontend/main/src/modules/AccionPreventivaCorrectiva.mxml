@@ -2,13 +2,15 @@
 <mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
 		   width="1010" height="545"
 		   xmlns:accionpreventivacorrectiva="components.accionpreventivacorrectiva.*"
-		   creationComplete="creationCompleteHandler(event)" xmlns:bitacoraproductonoconformenoconformidades="components.bitacoraproductonoconformenoconformidades.*">
+		   creationComplete="creationCompleteHandler(event)" xmlns:bitacoraproductonoconformenoconformidades="components.bitacoraproductonoconformenoconformidades.*" xmlns:comentariossugerencias="components.comentariossugerencias.*">
 	<mx:Script>
 		<![CDATA[
 			import events.GenericEvent;
 			
 			import model.AccionPreventivaCorrectiva;
+			import model.ComentarioSugerencia;
 			import model.NoConformidad;
+			import model.Sugerencia;
 			import model.Usuario;
 			
 			import mx.events.FlexEvent;
@@ -45,17 +47,33 @@
 				if( nonConformity == null ){
 					return;
 				}
-				nonConformityDetail.nonConformity = nonConformity;
+				this.nonConformityDetail.nonConformity = nonConformity;
 				this.navigator.selectedChild = this.nonConformityDetail;
+			}
+			
+			protected function detail_adviceSelectedHandler(event:GenericEvent):void
+			{
+				if( event == null ){
+					return;
+				}
+				var advice:Sugerencia = event.information as Sugerencia;
+				if( advice == null ){
+					return;
+				}
+				this.adviceDetail.advice = advice;
+				this.navigator.selectedChild = this.adviceDetail;
 			}
 		]]>
 	</mx:Script>
 	<mx:TabNavigator id="navigator" width="1010" height="100%" creationPolicy="all">
 		<accionpreventivacorrectiva:Consult id="consult" itemDetail="consult_correctivePreventiveActionDetailHandler(event)"/>
 		<accionpreventivacorrectiva:CorrectivePreventiveAction id="detail" update="true" correctivePreventiveActionUpdated="detail_correctivePreventiveActionUpdatedHandler(event)"
-							 									nonConformitySelected="detail_nonConformitySelectedHandler(event)"/>
+							 									nonConformitySelected="detail_nonConformitySelectedHandler(event)"
+																adviceSelected="detail_adviceSelectedHandler(event)"/>
 		<accionpreventivacorrectiva:CorrectivePreventiveAction id="register" registrer="true" correctivePreventiveActionNew="register_correctivePreventiveActionNewHandler(event)"
-															   	nonConformitySelected="detail_nonConformitySelectedHandler(event)"/>
+															   	nonConformitySelected="detail_nonConformitySelectedHandler(event)"
+																adviceSelected="detail_adviceSelectedHandler(event)"/>
 		<bitacoraproductonoconformenoconformidades:NonConformity id="nonConformityDetail" readOnly="true"/>
+		<comentariossugerencias:Advice id="adviceDetail" readOnly="true"/>
 	</mx:TabNavigator>
 </mx:Module>

@@ -91,7 +91,7 @@ ScrollBar{
 DataGrid{
 	headerColors:#7ab8ef,#c6fdff;
 	selectionColor:#4385d9;
-	rollOverColor:#4385d9;
+	rollOverColor:#7ab8ef;
 	textRollOverColor:#ffffff;
 	textSelectedColor:#ffffff;
 }

@@ -31,5 +31,11 @@ package model
 		
 		public static const TRANSACTION_ABORTED:String = " Transaction aborted";
 		public static const TRANSACTION_ABORTED_MESSAGE:String = "Existen elementos asociados, por tanto, no se puede Eliminar.";
+		
+		public static var MAQUILADORES:String = "Servicios de Implementación";
+		public static var CALIFICADOS:String = "Bienes y Servicios";
+		public static var ID_MAQUILADORES:Number = 2;
+		public static var ID_CALIFICADOS:Number = 1;
+		
 	}
 }

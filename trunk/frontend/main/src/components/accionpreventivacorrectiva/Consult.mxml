@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
-		 creationComplete="creationCompleteHandler(event)">
+		 horizontalAlign="right"
+		 creationComplete="creationCompleteHandler(event)" xmlns:components="components.*">
 	<mx:Script>
 		<![CDATA[
 			import events.GenericEvent;
@@ -102,8 +103,8 @@
 	<mx:Metadata>
 		[Event(name="itemDetail", type="events.GenericEvent")]
 	</mx:Metadata>
-	<mx:VBox id="vBox" width="100%" height="100%">
-		<mx:DataGrid id="datagrid" width="1002" height="100%" dataProvider="{items}"
+	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
+		<mx:DataGrid id="datagrid" width="1840" height="100%" dataProvider="{items}"
 					 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 					 allowMultipleSelection="true"
 					 >
@@ -116,6 +117,10 @@
 								   dataField="noConformidad.id"
 								   textAlign="center"
 								   width="60"/>
+				<mx:DataGridColumn headerText="{'Folio de \nComentario\no Sugerencia'}"
+								   dataField="sugerencia.id"
+								   textAlign="center"
+								   width="60"/>
 				<mx:DataGridColumn id="dtgOpenDate" headerText="{'Fecha \nApertura'}"
 								   labelFunction="{Util.labelFunctionDate}"
 								   dataField="fechaApertura"
@@ -126,10 +131,22 @@
 				<mx:DataGridColumn id="dtgSourceNonConformity" headerText="{'Fuente de la\nNo Conformidad'}"
 								   dataField="fuenteNoConformidad.fuente"
 								   width="150"/>
-				<mx:DataGridColumn id="dtgResponsibleFollowUp" headerText="{'Responsable\nSeguimiento'}"
+				<mx:DataGridColumn headerText="{'Especificar'}"
+								   dataField="especificar"
+								   width="250"/>
+				<mx:DataGridColumn headerText="{'Participantes del Análisis'}"
+								   dataField="participantesAnalisis"
+								   width="250"/>
+				<mx:DataGridColumn headerText="{'Determinación de las Causas'}"
+								   dataField="determinacionCausas"
+								   width="250"/>
+				<mx:DataGridColumn id="dtgResponsibleFollowUp" headerText="{'Responsable\nde Acciones de\nSeguimiento'}"
 								   dataField="responsableSeguimiento"
 								   width="150"/>
-				<mx:DataGridColumn id="dtgEffectiveAction" headerText="{'¿Acción\ntomada\nEficaz?'}"
+				<mx:DataGridColumn headerText="{'Acciones de Seguimiento'}"
+								   dataField="accionesSeguimiento"
+								   width="250"/>
+				<mx:DataGridColumn id="dtgEffectiveAction" headerText="{' ¿Acción\ntomada\nEficaz?'}"
 								   dataField="accionTomadaEficaz"
 								   width="80"
 								   textAlign="center"
@@ -141,11 +158,11 @@
 								   width="80"/>
 			</mx:columns>
 		</mx:DataGrid>
-	</mx:VBox>
-	<mx:HBox width="100%">
-		<mx:Spacer width="100%"/>
+	</mx:HBox>
+	<mx:HBox>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"
 				   visible="{!this._readMode}"/>
+		<components:ExportButton datagrid="{this.datagrid}"/>
 	</mx:HBox>
 	<mx:RemoteObject id="accionPreventivaCorrectivaService" destination="accionPreventivaCorrectivaService" fault="accionPreventivaCorrectivaService_faultHandler(event)"
 					 showBusyCursor="true"/>

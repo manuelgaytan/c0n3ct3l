@@ -201,6 +201,9 @@
 			{
 				var value:Boolean = true;
 				value &&= this.validators.validarFormulario();
+				value &&= Util.listBaseSelected( this.cmbQualifiedSupplier );
+				value &&= this.dtfDate.selectedDate != null;
+				value &&= this.dtfWarehouseDeliveryDate.selectedDate != null;
 				return value;
 			}
 			
@@ -384,10 +387,10 @@
 		[Event(name="purchaseOrderUpdated", type="flash.events.Event")]
 	</mx:Metadata>
 	<mx:Form id="form">
-		<mx:FormItem label="ID:" id="frmID">
+		<mx:FormItem required="true" label="ID:" id="frmID">
 			<components:TextInput id="txtID" textAlign="right" editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="ID Proyecto:" direction="horizontal">
+		<mx:FormItem required="true" label="ID Proyecto:" direction="horizontal">
 			<components:TextInput id="txtProjectID" textAlign="right"/>
 			<!--<mx:Button label="Ver Proyecto" id="btnProjectID"/>-->
 		</mx:FormItem>
@@ -401,10 +404,10 @@
 			<components:TextInput id="txtQuotationID" textAlign="right"/>
 			<!--<mx:Button label="Ver Cotización" id="btnQuotationID"/>-->
 		</mx:FormItem>
-		<mx:FormItem label="Fecha:">
+		<mx:FormItem required="true" label="Fecha:">
 			<components:DateField id="dtfDate" enabled="false" creationComplete="dtfDate.selectedDate=new Date()"/>
 		</mx:FormItem>
-		<mx:FormItem label="Proveedor Calificado:">
+		<mx:FormItem required="true" label="Proveedor Calificado:">
 			<!--<components:ComboList id="cmbQualifiedSupplier"/>-->
 			<mx:ComboBox id="cmbQualifiedSupplier" labelField="etiqueta"
 						 change="cmbQualifiedSupplier_changeHandler(event)"/>
@@ -413,7 +416,7 @@
 		<mx:FormItem label="Razón Social:">
 			<components:TextInput id="txtBusinessName" editable="false" width="400"/>
 		</mx:FormItem>
-		<mx:FormItem label="R.F.C:">
+		<mx:FormItem label="R.F.C.:">
 			<components:TextInput id="txtRFC" editable="false"/>
 		</mx:FormItem>
 		<mx:FormItem label="Dirección Fiscal:">
@@ -454,12 +457,11 @@
 			<requisicionescompra:ItemsManagement id="itemsManagement" purchaseOrderMode="true"/>
 			<mx:Button id="btnUpdate" label="Actualiazar" click="btnUpdate_clickHandler(event)"/>
 		</mx:VBox>
-		
-		<mx:FormItem label="Subtotal:">
+		<mx:FormItem required="true" label="Subtotal:">
 			<components:TextInput id="txtSubtotal" textAlign="right" width="110"
 								  focusOut="this.sum()" enter="this.sum()"/>
 		</mx:FormItem>
-		<mx:FormItem label="I.V.A.:">
+		<mx:FormItem required="true" label="I.V.A.:">
 			<components:TextInput id="txtIVA" textAlign="right" width="110"
 								  focusOut="this.sum()" enter="this.sum()"/>
 		</mx:FormItem>
@@ -479,13 +481,13 @@
 			<components:TextInput id="txtOtherTaxes" textAlign="right" width="110"
 								  focusOut="this.sum()" enter="this.sum()"/>
 		</mx:FormItem>
-		<mx:FormItem label="Total:">
+		<mx:FormItem required="true" label="Total:">
 			<components:TextInput id="txtTotal" textAlign="right" width="110"/>
 		</mx:FormItem>
 		<mx:FormItem label="Importe con Letra:">
 			<components:TextArea id="txtAmountWithLetter" width="450"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha de Entrega Almacén:">
+		<mx:FormItem required="true" label="Fecha de Entrega Almacén:">
 			<components:DateField id="dtfWarehouseDeliveryDate" textAlign="right"/>
 		</mx:FormItem>
 		<mx:FormItem label="Leyenda:">

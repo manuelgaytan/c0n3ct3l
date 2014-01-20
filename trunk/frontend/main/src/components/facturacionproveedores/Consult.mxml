@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
-		 creationComplete="creationCompleteHandler(event)">
+		 horizontalAlign="right"
+		 creationComplete="creationCompleteHandler(event)" xmlns:components="components.*">
 	<mx:Script>
 		<![CDATA[
 			import events.GenericEvent;
 			
+			import model.Constants;
 			import model.FacturaProveedor;
 			import model.FiltroProyecto;
+			import model.Producto;
 			import model.Proyecto;
+			import model.TipoServicio;
 			import model.Util;
+			
+			import modules.Productos;
 			
 			import mx.collections.ArrayCollection;
 			import mx.controls.Alert;
@@ -87,13 +93,173 @@
 				this.items = datas;
 			}
 			
+			public function setDataAndSelected(datas:ArrayCollection):void
+			{
+				this.setDataGridData( datas );
+				this.datagrid.selectedItems = datas.source;
+			}
+			
+			private function labelFunctionTipoProveedor(item:Object, column:DataGridColumn):String{
+				var invoice:FacturaProveedor = item as FacturaProveedor;
+				if( invoice == null ){
+					return "";
+				}
+				if( !(invoice.proveedorCalificado == null) ){
+					return Constants.CALIFICADOS;
+				}else{
+					return Constants.MAQUILADORES;
+				}
+			}
+			
+			private function labelFunctionProveedor(item:Object, column:DataGridColumn):String{
+				var invoice:FacturaProveedor = item as FacturaProveedor;
+				if( this.labelFunctionTipoProveedor(item, column) == Constants.CALIFICADOS ){
+					return Util.extractToText(invoice, "ordenCompra.proveedorCalificado.proveedorSeleccionado.proveedor.nombreComercial");
+				}else{
+					return Util.extractToText(invoice, "ordenCompraMaquilado.proveedorMaquilador.proveedor.nombreComercial");		
+				}
+			}
+			
+			private function labelFunctionTelefonos(item:Object, column:DataGridColumn):String{
+				var invoice:FacturaProveedor = item as FacturaProveedor;
+				if( this.labelFunctionTipoProveedor(item, column) == Constants.CALIFICADOS ){
+					return Util.extractToText(invoice, "ordenCompra.proveedorCalificado.proveedorSeleccionado.proveedor.telefonos");
+				}else{
+					return Util.extractToText(invoice, "ordenCompraMaquilado.proveedorMaquilador.proveedor.telefonos");		
+				}
+			}
+			
+			private function labelFunctionContacto(item:Object, column:DataGridColumn):String{
+				var invoice:FacturaProveedor = item as FacturaProveedor;
+				if( this.labelFunctionTipoProveedor(item, column) == Constants.CALIFICADOS ){
+					return Util.extractToText(invoice, "ordenCompra.proveedorCalificado.proveedorSeleccionado.proveedor.contacto");
+				}else{
+					return Util.extractToText(invoice, "ordenCompraMaquilado.proveedorMaquilador.proveedor.contacto");		
+				}	
+			}
+			
+			private function labelFunctionCorreo(item:Object, column:DataGridColumn):String{
+				var invoice:FacturaProveedor = item as FacturaProveedor;
+				if( this.labelFunctionTipoProveedor(item, column) == Constants.CALIFICADOS ){
+					return Util.extractToText(invoice, "ordenCompra.proveedorCalificado.proveedorSeleccionado.proveedor.correo");
+				}else{
+					return Util.extractToText(invoice, "ordenCompraMaquilado.proveedorMaquilador.proveedor.correo");		
+				}
+			}
+			
+			private function labelFunctionCliente(item:Object, column:DataGridColumn):String{
+				var invoice:FacturaProveedor = item as FacturaProveedor;
+				if( this.labelFunctionTipoProveedor(item, column) == Constants.CALIFICADOS ){
+					return Util.extractToText(invoice, "ordenCompra.proyecto.producto.cliente.nombreComercial");
+				}else{
+					return Util.extractToText(invoice, "ordenCompraMaquilado.solicitudServicioMaquilado.proyecto.producto.cliente.nombreComercial");		
+				}
+			}
+			
+			private function labelFunctionEquipo(item:Object, column:DataGridColumn):String{
+				var invoice:FacturaProveedor = item as FacturaProveedor;
+				if( this.labelFunctionTipoProveedor(item, column) == Constants.CALIFICADOS ){
+					return Util.extractToText(invoice, "ordenCompra.proyecto.producto.equipo");
+				}else{
+					return Util.extractToText(invoice, "ordenCompraMaquilado.solicitudServicioMaquilado.proyecto.producto.equipo");		
+				}
+			}
+			
+			private function labelFunctionCentralSitio(item:Object, column:DataGridColumn):String{
+				var invoice:FacturaProveedor = item as FacturaProveedor;
+				if( this.labelFunctionTipoProveedor(item, column) == Constants.CALIFICADOS ){
+					return Util.extractToText(invoice, "ordenCompra.proyecto.centralSitio");
+				}else{
+					return Util.extractToText(invoice, "ordenCompraMaquilado.solicitudServicioMaquilado.proyecto.centralSitio");		
+				}
+			}
+			
+			private function labelFunctionModelo(item:Object, column:DataGridColumn):String{
+				var invoice:FacturaProveedor = item as FacturaProveedor;
+				if( this.labelFunctionTipoProveedor(item, column) == Constants.CALIFICADOS ){
+					return Util.extractToText(invoice, "ordenCompra.proyecto.producto.modelo");
+				}else{
+					return Util.extractToText(invoice, "ordenCompraMaquilado.solicitudServicioMaquilado.proyecto.producto.modelo");		
+				}
+			}
+			
+			private function labelFunctionDescripcionServicio(item:Object, column:DataGridColumn):String{
+				var invoice:FacturaProveedor = item as FacturaProveedor;
+				if( this.labelFunctionTipoProveedor(item, column) == Constants.CALIFICADOS ){
+					return Util.extractToText(invoice, "ordenCompra.proyecto.producto.descripcionServicio");
+				}else{
+					return Util.extractToText(invoice, "ordenCompraMaquilado.solicitudServicioMaquilado.proyecto.producto.descripcionServicio");		
+				}
+			}
+			
+			private function labelFunctionTipoServicio(item:Object, column:DataGridColumn):String{
+				var invoice:FacturaProveedor = item as FacturaProveedor;
+				if( this.labelFunctionTipoProveedor(item, column) == Constants.CALIFICADOS ){
+					return Util.extractToText( invoice, "ordenCompra.proyecto.tipoServicio.tipo" );
+				}else{
+					return Util.extractToText( invoice, "ordenCompraMaquilado.solicitudServicioMaquilado.proyecto.tipoServicio.tipo" );
+				}
+			}
+			
+			private function labelFunctionCostoUnitario(item:Object, column:DataGridColumn):String{
+				var invoice:FacturaProveedor = item as FacturaProveedor;
+				if( this.labelFunctionTipoProveedor(item, column) == Constants.CALIFICADOS ){
+					if( Util.extractId( invoice, "ordenCompra.proyecto.tipoServicio.id") == TipoServicio.ID_LOCAL ){
+						return Util.formatCurrency( Util.extractToText(invoice, "ordenCompra.proyecto.producto.costoLocalCliente") );
+					}else{
+						return Util.formatCurrency( Util.extractToText(invoice, "ordenCompra.proyecto.producto.costoForaneoCliente") );
+					}
+				}else{
+					if( Util.extractId( invoice, "ordenCompraMaquilado.solicitudServicioMaquilado.proyecto.tipoServicio.id") == TipoServicio.ID_LOCAL ){
+						return Util.formatCurrency( Util.extractToText(invoice, "ordenCompraMaquilado.solicitudServicioMaquilado.proyecto.producto.costoLocalCliente") );
+					}else{
+						return Util.formatCurrency( Util.extractToText(invoice, "ordenCompraMaquilado.solicitudServicioMaquilado.proyecto.producto.costoForaneoCliente") );
+					}
+				}
+			}
+			
+			private function labelFunctionNumeroOrdenCompra(item:Object, column:DataGridColumn):String{
+				var invoice:FacturaProveedor = item as FacturaProveedor;
+				if( this.labelFunctionTipoProveedor(item, column) == Constants.CALIFICADOS ){
+					return Util.extractToText(invoice, "ordenCompra.id");
+				}else{
+					return Util.extractToText(invoice, "ordenCompraMaquilado.id");		
+				}
+			}
+			
+			private function labelFunctionSubtotal(item:Object, column:DataGridColumn):String{
+				var invoice:FacturaProveedor = item as FacturaProveedor;
+				if( this.labelFunctionTipoProveedor(item, column) == Constants.CALIFICADOS ){
+					return Util.formatCurrency( Util.extractToText(invoice, "ordenCompra.subtotal") );
+				}else{
+					return Util.formatCurrency( Util.extractToText(invoice, "ordenCompraMaquilado.subtotal") );		
+				}
+			}
+			
+			private function labelFunctionIVA(item:Object, column:DataGridColumn):String{
+				var invoice:FacturaProveedor = item as FacturaProveedor;
+				if( this.labelFunctionTipoProveedor(item, column) == Constants.CALIFICADOS ){
+					return Util.formatCurrency( Util.extractToText(invoice, "ordenCompra.iva") );
+				}else{
+					return Util.formatCurrency( Util.extractToText(invoice, "ordenCompraMaquilado.iva") );		
+				}
+			}
+			
+			private function labelFunctionTotal(item:Object, column:DataGridColumn):String{
+				var invoice:FacturaProveedor = item as FacturaProveedor;
+				if( this.labelFunctionTipoProveedor(item, column) == Constants.CALIFICADOS ){
+					return Util.formatCurrency( Util.extractToText(invoice, "ordenCompra.total") );
+				}else{
+					return Util.formatCurrency( Util.extractToText(invoice, "ordenCompraMaquilado.total") );		
+				}
+			}
 		]]>
 	</mx:Script>
 	<mx:Metadata>
 		[Event(name="itemDetail", type="events.GenericEvent")]
 	</mx:Metadata>
-	<mx:VBox width="1095" height="100%">
-		<mx:DataGrid id="datagrid" width="1095" height="100%" dataProvider="{items}"
+	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
+		<mx:DataGrid id="datagrid" width="3130" height="100%" dataProvider="{items}"
 					 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 					 allowMultipleSelection="true"
 					 >
@@ -102,41 +268,129 @@
 								   dataField="id"
 								   width="130"
 								   textAlign="right"/>
-				<mx:DataGridColumn id="dtgVendorInvoiceDate" headerText="{'Fecha\nFactura'}"
-								   dataField="fechaFactura"
-								   labelFunction="{Util.labelFunctionDate}"
-								   textAlign="center"/>
 				<mx:DataGridColumn id="dtgQualityResearchStatus" headerText="{'Estado\nInvestigación\nCalidad'}"
 								   dataField="estadoInvestigacionCalidad.etiqueta"
 								   textAlign="center"
+								   width="120"
 								   />
-				<mx:DataGridColumn id="dtgTreasuryStatus" headerText="{'Estado\nTesorería'}"
-								   dataField="estadoTesoreria.etiqueta"
+				<mx:DataGridColumn headerText="{'Semana'}"
+								   dataField="semana"
+								   textAlign="right"
+								   width="80"
+								   />
+				<mx:DataGridColumn headerText="{'Tipo\nProveedor'}"
+								   labelFunction="labelFunctionTipoProveedor"
 								   textAlign="center"
+								   width="150"
+								   />
+				<mx:DataGridColumn headerText="{'Proveedor'}"
+								   labelFunction="labelFunctionProveedor"
+								   textAlign="left"
+								   width="210"
+								   />
+				<mx:DataGridColumn headerText="{'Teléfonos'}"
+								   labelFunction="labelFunctionTelefonos"
+								   textAlign="left"
+								   width="160"
+								   />
+				<mx:DataGridColumn headerText="{'Contacto'}"
+								   labelFunction="labelFunctionContacto"
+								   textAlign="left"
+								   width="160"
+								   />
+				<mx:DataGridColumn headerText="{'Correo'}"
+								   labelFunction="labelFunctionCorreo"
+								   textAlign="left"
+								   width="160"
+								   />
+				<mx:DataGridColumn headerText="{'Cliente'}"
+								   labelFunction="labelFunctionCliente"
+								   textAlign="left"
+								   width="160"
+								   />
+				<mx:DataGridColumn headerText="{'Equipo'}"
+								   labelFunction="labelFunctionEquipo"
+								   textAlign="left"
+								   width="160"
+								   />
+				<mx:DataGridColumn headerText="{'Central\no Sitio'}"
+								   labelFunction="labelFunctionCentralSitio"
+								   textAlign="left"
+								   width="160"
+								   />
+				<mx:DataGridColumn headerText="{'Modelo'}"
+								   labelFunction="labelFunctionModelo"
+								   textAlign="left"
+								   width="160"
+								   />
+				<mx:DataGridColumn headerText="{'Descripción\ndel Servicio'}"
+								   labelFunction="labelFunctionDescripcionServicio"
+								   textAlign="left"
+								   width="160"
+								   />
+				<mx:DataGridColumn headerText="{'Tipo de\nServicio'}"
+								   labelFunction="labelFunctionTipoServicio"
+								   textAlign="left"
+								   width="160"
+								   />
+				<mx:DataGridColumn headerText="{'Costo\nUnitario'}"
+								   labelFunction="labelFunctionCostoUnitario"
+								   textAlign="right"
+								   width="160"
+								   />
+				<mx:DataGridColumn headerText="{'Número\nde Orden\nde Compra'}"
+								   labelFunction="labelFunctionNumeroOrdenCompra"
+								   textAlign="center"
+								   width="80"
+								   />
+				<mx:DataGridColumn headerText="{'Subtotal'}"
+								   labelFunction="labelFunctionSubtotal"
+								   textAlign="right"
+								   width="80"
+								   />
+				<mx:DataGridColumn headerText="{'I.V.A.'}"
+								   labelFunction="labelFunctionIVA"
+								   textAlign="right"
+								   width="80"
+								   />
+				<mx:DataGridColumn headerText="{'Total'}"
+								   labelFunction="labelFunctionTotal"
+								   textAlign="right"
+								   width="80"
 								   />
 				<mx:DataGridColumn id="dtgQuantity" headerText="{'Cantidad'}"
 								   dataField="cantidad"
 								   textAlign="right"
+								   width="80"
 								   />
+				<mx:DataGridColumn id="dtgVendorInvoiceDate" headerText="{'Fecha\nFactura'}"
+								   dataField="fechaFactura"
+								   labelFunction="{Util.labelFunctionDate}"
+								   textAlign="center"
+								   width="120"/>
 				<mx:DataGridColumn id="dtgVendorInvoiceNumber" headerText="{'Número\nFactura'}"
 								   dataField="numeroFactura"
 								   textAlign="center"
+								   width="80"
 								   />
 				<mx:DataGridColumn id="dtgReviewDate" headerText="{'Fecha\nRevision'}"
 								   dataField="fechaRevision"
 								   labelFunction="{Util.labelFunctionDate}"
 								   textAlign="center"
+								   width="120"
 								   />
 				<mx:DataGridColumn id="dtgPaymentDate" headerText="{'Fecha\nPago'}"
 								   dataField="fechaPago"
 								   labelFunction="{Util.labelFunctionDate}"
 								   textAlign="center"
+								   width="120"
 								   />
 			</mx:columns>
 		</mx:DataGrid>
-	</mx:VBox>
+	</mx:HBox>
 	<mx:HBox>
 		<!--<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>-->
+		<components:ExportButton datagrid="{this.datagrid}" visible="true"/>
 	</mx:HBox>
 	<mx:RemoteObject id="facturaProveedorService" destination="facturaProveedorService" fault="datosGeneralesProyectoService_faultHandler(event)"
 					 showBusyCursor="true"/>

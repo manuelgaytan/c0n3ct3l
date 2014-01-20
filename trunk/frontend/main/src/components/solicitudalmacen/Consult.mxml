@@ -2,7 +2,7 @@
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
 		 horizontalAlign="right"
-		 creationComplete="creationCompleteHandler(event)">
+		 creationComplete="creationCompleteHandler(event)" xmlns:components="components.*">
 	<mx:Script>
 		<![CDATA[
 			import events.GenericEvent;
@@ -93,13 +93,6 @@
 			private function labelFunctionDate(object:Object, column:DataGridColumn):String{
 				return Util.formatDateToString( object[column.dataField] );
 			}
-			
-			protected function btnExport_clickHandler(event:MouseEvent):void
-			{
-				// TODO Auto-generated method stub
-				
-			}
-			
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -162,7 +155,7 @@
 	</mx:DataGrid>
 	</mx:HBox>
 	<mx:HBox>
-		<mx:Button id="btnExport" label="Exportar" click="btnExport_clickHandler(event)" visible="false"/>
+		<components:ExportButton datagrid="{this.datagrid}"/>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>
 	</mx:HBox>
 	<mx:RemoteObject id="solicitudAlmacenService" destination="solicitudAlmacenService" fault="solicitudAlmacenService_faultHandler(event)"

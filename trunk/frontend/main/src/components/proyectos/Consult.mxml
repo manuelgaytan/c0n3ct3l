@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
-		 horizontalAlign="right" creationComplete="creationCompleteHandler(event)">
+		 horizontalAlign="right" creationComplete="creationCompleteHandler(event)" xmlns:components="components.*">
 	<mx:Script>
 		<![CDATA[
 			import events.GenericEvent;
@@ -98,12 +98,6 @@
 				return Util.getIDConectelFormat( Util.extractObject(item, column.dataField) );
 			}
 			
-			protected function btnExport_clickHandler(event:MouseEvent):void
-			{
-				// TODO Auto-generated method stub
-				
-			}
-			
 			public function setDataAndSelected( data:ArrayCollection, selected:Boolean=true ):void{
 				if( data == null ){
 					return;
@@ -189,7 +183,7 @@
 	</mx:DataGrid>
 	</mx:HBox>
 	<mx:HBox>
-		<mx:Button id="btnExport" label="Exportar" click="btnExport_clickHandler(event)"
+		<components:ExportButton datagrid="{this.datagrid}"
 				   visible="{!this._consultOnly}"/>
 	</mx:HBox>
 	<mx:RemoteObject id="proyectoService" destination="proyectoService" fault="proyectoService_faultHandler(event)"

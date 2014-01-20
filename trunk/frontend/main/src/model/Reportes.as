@@ -9,6 +9,7 @@ package model
 		public static const ORDEN_COMPRA_ALMANCEN:String = loadURL( "OrdenCompraAlmacen" );
 		public static const ORDEN_COMPRA_MAQUILADO:String = loadURL( "OrdenCompraMaquilado" );
 		public static const PRECIARIO_MAQUILADOR:String = loadURL( "PreciarioMaquilado" );
+		public static const MINUTA_REUNION:String = loadURL( "MinutaReunion" );
 		
 		public function Reportes()
 		{

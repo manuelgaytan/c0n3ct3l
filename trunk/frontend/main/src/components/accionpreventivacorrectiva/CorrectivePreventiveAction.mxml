@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)"
-		 initialize="initializeHandler(event)" xmlns:bitacoraproductonoconformenoconformidades="components.bitacoraproductonoconformenoconformidades.*"
+		 initialize="initializeHandler(event)" xmlns:bitacoraproductonoconformenoconformidades="components.bitacoraproductonoconformenoconformidades.*" xmlns:comentariossugerencias="components.comentariossugerencias.*"
 		 >
 	<mx:Script>
 		<![CDATA[
@@ -13,6 +13,7 @@
 			import model.ClasificacionFalta;
 			import model.ClasificacionPermiso;
 			import model.Colaborador;
+			import model.Sugerencia;
 			import model.Constants;
 			import model.Contratacion;
 			import model.Deduccion;
@@ -30,7 +31,6 @@
 			import mx.collections.ArrayCollection;
 			import mx.com.gahm.componentes.validadores.Constantes;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
-			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
 			import mx.com.gahm.componentes.validadores.ValidadorEmail;
@@ -82,8 +82,8 @@
 					return;
 				}
 				this.txtID.text = this._item.id.toString();
-				this.consultNonConformities.datagrid.dataProvider = Util.asArrayCollection( this._item.noConformidad );
-				this.consultNonConformities.datagrid.selectedIndex = 0;
+				this.consultNonConformities.setDataAndSelected( Util.asArrayCollection( this._item.noConformidad ) );
+				this.consultAdvices.setDataAndSelected( Util.asArrayCollection( this._item.sugerencia ) );
 				this.dtfOpenDate.selectedDate = this._item.fechaApertura;
 				if( Util.isFill( this.cmbActionType ) && this._item 
 					&& this._item.tipoAccion != null ){
@@ -116,6 +116,7 @@
 					correctivePreventiveAction = this._item;
 				}
 				correctivePreventiveAction.noConformidad = this.consultNonConformities.datagrid.selectedItem as NoConformidad;
+				correctivePreventiveAction.sugerencia = this.consultAdvices.datagrid.selectedItem as Sugerencia;
 				correctivePreventiveAction.fechaApertura = this.dtfOpenDate.selectedDate;
 				correctivePreventiveAction.tipoAccion = Util.validateCombo( this.cmbActionType ) as TipoAccion;
 				correctivePreventiveAction.fuenteNoConformidad = Util.validateCombo( this.cmbSourceNonConformity ) as FuenteNoConformidad;
@@ -170,7 +171,8 @@
 			{
 				var value:Boolean = true;
 				value &&= this.validators.validarFormulario();
-				value &&= this.consultNonConformities.datagrid.selectedItem != null;
+				value &&= this.consultNonConformities.datagrid.selectedItem != null ||
+						  this.consultAdvices.datagrid.selectedItem != null;
 				value &&= this.dtfOpenDate.selectedDate != null;
 				return value;
 			}
@@ -208,6 +210,7 @@
 				Util.upScroll( this );
 				this.txtID.reset();
 				this.consultNonConformities.datagrid.selectedItem = false;
+				this.consultAdvices.datagrid.selectedItem = false;
 				this.dtfOpenDate.reset();
 				this.cmbActionType.selectedIndex = 0;
 				this.cmbSourceNonConformity.selectedIndex = 0;
@@ -244,6 +247,18 @@
 				}
 				var genericEvent:GenericEvent = new GenericEvent("nonConformitySelected");
 				genericEvent.information = nonConformity;
+				this.dispatchEvent( genericEvent );
+			}
+			
+			protected function btnViewAdvice_clickHandler(event:MouseEvent):void
+			{
+				var advice:Sugerencia = this.consultAdvices.datagrid.selectedItem as Sugerencia;
+				if( advice == null ){
+					Util.showErrorMessage("Primero debe seleccionar un elemento.");
+					return;
+				}
+				var genericEvent:GenericEvent = new GenericEvent("adviceSelected");
+				genericEvent.information = advice;
 				this.dispatchEvent( genericEvent );
 			}
 			
@@ -296,47 +311,59 @@
 		[Event(name="correctivePreventiveActionUpdated", type="flash.events.Event")]
 		[Event(name="correctivePreventiveActionProjectDone", type="flash.events.Event")]
 		[Event(name="nonConformitySelected", type="events.GenericEvent")]
+		[Event(name="adviceSelected", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:Form id="form">
-		<mx:FormItem id="frmID" label="ID:" direction="horizontal">
+		<mx:FormItem required="true" id="frmID" label="ID:" direction="horizontal">
 			<components:TextInput id="txtID" width="80" textAlign="right"
 								  editable="false"/>
 		</mx:FormItem>
 		<mx:FormItem label="No Conformidades:"/>
-		<bitacoraproductonoconformenoconformidades:Consult id="consultNonConformities" readMode="true"/>
+		<mx:VBox width="960">
+			<mx:VBox width="100%" height="100%" verticalGap="5">
+				<bitacoraproductonoconformenoconformidades:Consult id="consultNonConformities" readMode="true"/>
+			</mx:VBox>
+		</mx:VBox>
 		<mx:Button label="Ver No Conformidad" click="btnViewPerDiemCheck_clickHandler(event)"/>
-		<mx:FormItem label="Fecha Apertura:">
+		<mx:FormItem label="Comentarios y/o Sugerencias:"/>
+		<mx:VBox width="960">
+			<mx:VBox width="100%" height="100%" verticalGap="5">
+				<comentariossugerencias:Consult id="consultAdvices" readMode="true"/>
+			</mx:VBox>
+		</mx:VBox>
+		<mx:Button label="Ver Comentario y/o Sugerencia" click="btnViewAdvice_clickHandler(event)"/>
+		<mx:FormItem required="true" label="Fecha Apertura:">
 			<components:DateField id="dtfOpenDate"/>
 		</mx:FormItem>
-		<mx:FormItem label="Tipo de Acción:">
+		<mx:FormItem required="true" label="Tipo de Acción:">
 			<mx:ComboBox id="cmbActionType" width="400"
 						 labelField="accion"
 						 />
 		</mx:FormItem>
-		<mx:FormItem label="Fuente de la No Conformidad:">
+		<mx:FormItem required="true" label="Fuente de la No Conformidad:">
 			<mx:ComboBox id="cmbSourceNonConformity" width="400"
 						 labelField="fuente"
 						 />
 		</mx:FormItem>
-		<mx:FormItem label="Especificar:">
+		<mx:FormItem required="true" label="Especificar:">
 			<components:TextInput id="txtSpecify" width="350"/>
 		</mx:FormItem>
-		<mx:FormItem label="Participantes del Análisis:">
+		<mx:FormItem required="true" label="Participantes del Análisis:">
 			<components:TextArea id="txtFromAnalysis" width="250"/>
 		</mx:FormItem>
-		<mx:FormItem label="Determinación de las Causas:">
+		<mx:FormItem required="true" label="Determinación de las Causas:">
 			<components:TextArea id="txtDeterminationCauses" width="520"/>
 		</mx:FormItem>
-		<mx:FormItem label="Responsable de Acciones de Seguimiento:">
+		<mx:FormItem required="true" label="Responsable de Acciones de Seguimiento:">
 			<components:TextInput id="txtResponsibleFollowUp" width="520"/>
 		</mx:FormItem>
-		<mx:FormItem label="Acciones de Seguimiento:">
+		<mx:FormItem required="true" label="Acciones de Seguimiento:">
 			<components:TextArea id="txtFollowUpActions" width="520"/>
 		</mx:FormItem>
-		<mx:FormItem label="¿La Acción tomada fue Eficaz?:">
+		<mx:FormItem required="true" label="¿La Acción tomada fue Eficaz?:">
 			<mx:CheckBox id="chkEffectiveAction"/>
 		</mx:FormItem>
-		<mx:FormItem label="Estado de la Acción Preventiva-Correctiva:">
+		<mx:FormItem required="true" label="Estado de la Acción Preventiva-Correctiva:">
 			<mx:ComboBox id="cmbActionPCStatus" width="400"
 						 labelField="estado"
 						 />

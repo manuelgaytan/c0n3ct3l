@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
-		 creationComplete="creationCompleteHandler(event)">
+		 horizontalAlign="right"
+		 creationComplete="creationCompleteHandler(event)" xmlns:components="components.*">
 	<mx:Script>
 		<![CDATA[
 			import events.GenericEvent;
@@ -80,8 +81,8 @@
 	<mx:Metadata>
 		[Event(name="itemDetail", type="events.GenericEvent")]
 	</mx:Metadata>
-	<mx:VBox width="{parent.parent.width-5}" height="100%">
-		<mx:DataGrid id="datagrid" width="845" height="100%" dataProvider="{items}"
+	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
+		<mx:DataGrid id="datagrid" width="1150" height="100%" dataProvider="{items}"
 					 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 					 allowMultipleSelection="true"
 					 >
@@ -96,11 +97,20 @@
 								   itemRenderer="mx.controls.CheckBox"
 								   textAlign="center"
 								   width="130"/>
-				<mx:DataGridColumn id="dtgDate" headerText="Fecha"
+				<mx:DataGridColumn headerText="{'Número de\nOrden de\nCompra'}"
+								   dataField="numeroOrdenCompra"
+								   labelFunction="labelFunctionIDProyecto"
+								   width="90"
+								   textAlign="right"/>
+				<mx:DataGridColumn id="dtgDate" headerText="{'Fecha de\nOrden de\nCompra'}"
 								   dataField="fechaOrdenCompra"
 								   labelFunction="{Util.labelFunctionDate}"
 								   textAlign="center"
 								   width="130"/>
+				<mx:DataGridColumn headerText="{'Partida,\nLínea\no Ítem'}"
+								   dataField="item"
+								   textAlign="right"
+								   width="90"/>
 				<mx:DataGridColumn id="dtgPurchaseOrderCost" headerText="{'Costo\nOC\nCliente'}"
 								   dataField="costoOrdenCompra"
 								   textAlign="right"
@@ -111,6 +121,11 @@
 								   textAlign="center"
 								   width="150"
 								   />
+				<mx:DataGridColumn headerText="Leyenda"
+								   dataField="leyenda"
+								   textAlign="left"
+								   width="150"
+								   />
 				<mx:DataGridColumn id="dtgPurchaseOrderState" headerText="{'Estado\nOrden de\nCompra'}"
 								   dataField="estadoOrdenCompra.etiqueta"
 								   textAlign="center"
@@ -118,9 +133,10 @@
 								   />
 			</mx:columns>
 		</mx:DataGrid>
-	</mx:VBox>
+	</mx:HBox>
 	<mx:HBox>
 		<!--<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>-->
+		<components:ExportButton datagrid="{this.datagrid}" visible="true"/>
 	</mx:HBox>
 	<mx:RemoteObject id="ordenCompraClienteService" destination="ordenCompraClienteService" fault="datosGeneralesProyectoService_faultHandler(event)"
 					 showBusyCursor="true"/>

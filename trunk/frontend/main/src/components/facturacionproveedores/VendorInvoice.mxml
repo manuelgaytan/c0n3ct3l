@@ -97,7 +97,7 @@
 					this.cmbTreasuryStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbTreasuryStatus.dataProvider as ArrayCollection, 
 						this._item.estadoTesoreria.id);
 				}
-				this.txtWeek.text = this._item.semana.toString();
+				this.txtWeek.text = Util.extractToText(this._item, "semana");
 				if( !(this._item.proveedorCalificado == null) ){
 					this.cmbSupplierType.selectedIndex = Util.selectedIndexFromCombo( this.cmbSupplierType.dataProvider as ArrayCollection, 1);
 				}else{
@@ -180,6 +180,8 @@
 				value &&= this.validators.validarFormulario();
 				value &&= this.dtfVendorInvoiceDate.selectedDate != null;
 				value &&= (this.odcAlmacen.datagrid.selectedItem != null || this.odcMaquilado.datagrid.selectedItem != null);
+				value &&= Util.listBaseSelected( this.cmbQualityResearchStatus );
+				value &&= Util.listBaseSelected( this.cmbTreasuryStatus );
 				return value;
 			}
 			
@@ -216,6 +218,8 @@
 				this.txtID.reset();
 				this.cmbQualityResearchStatus.selectedIndex = 0;
 				this.cmbTreasuryStatus.selectedIndex = 0;
+				Util.removeItems( this.odcAlmacen.datagrid.dataProvider );
+				Util.removeItems( this.odcMaquilado.datagrid.dataProvider );
 				this.txtWeek.reset();
 				this.cleanSuppplierForm();
 				this.dtfVendorInvoiceDate.reset();
@@ -233,7 +237,9 @@
 				this.txtContact.reset();
 				this.txtMail.reset();
 				this.txtBank.reset();
+				this.frmODCAlmacen.required = false;
 				Util.removeItems(this.odcAlmacen.datagrid.dataProvider);
+				this.frmODCMaquilado.required = false;
 				Util.removeItems(this.odcMaquilado.datagrid.dataProvider);
 				this.cleanPurchaseOrderForm();
 			}
@@ -401,11 +407,13 @@
 					this.cmbSupplier.labelFunction = qualifiedSupplier;
 					this.responseGetAllProveedorCalificado.token = this.proveedorCalificadoService.getProveedoresCalificados();
 					this.loadPurchaseOrderAlmacen();
+					this.frmODCAlmacen.required = true;
 				}else{	//Maquiladores
 					this.cmbSupplier.labelField = null;
 					this.cmbSupplier.labelFunction = maquiladorSupplier;
 					this.responseGetAllProveedorMaquilador.token = this.proveedorMaquiladorService.getProveedoresMaquiladores();
 					this.loadPurchaseOrderMaquilado();
+					this.frmODCMaquilado.required = true;
 				}
 			}
 			
@@ -484,26 +492,26 @@
 		[Event(name="vendorInvoiceProjectDone", type="flash.events.Event")]
 	</mx:Metadata>
 	<mx:Form id="form">
-		<mx:FormItem id="frmID" label="ID:" direction="horizontal">
+		<mx:FormItem required="true" id="frmID" label="ID:" direction="horizontal">
 			<components:TextInput id="txtID" width="80" textAlign="right"
 								  editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Estado de Investigación de Calidad:">
+		<mx:FormItem required="true" label="Estado de Investigación de Calidad:">
 			<mx:ComboBox id="cmbQualityResearchStatus" labelField="etiqueta"/>
 		</mx:FormItem>
-		<mx:FormItem label="Estado de Tesorería:">
+		<mx:FormItem required="true" label="Estado de Tesorería:">
 			<mx:ComboBox id="cmbTreasuryStatus" labelField="etiqueta"/>
 		</mx:FormItem>
 		<mx:FormItem label="Semana:">
 			<components:TextInput id="txtWeek" textAlign="right"/>
 		</mx:FormItem>
-		<mx:FormItem label="Tipo de Proveedor:">
+		<mx:FormItem required="true" label="Tipo de Proveedor:">
 			<mx:ComboBox id="cmbSupplierType" dataProvider="{this.getSupplierTypes()}"
 						 change="cmbSupplierType_changeHandler(event)"
 						 labelField="etiqueta"
 						 />
 		</mx:FormItem>
-		<mx:FormItem label="Proveedor:">
+		<mx:FormItem required="true" label="Proveedor:">
 			<mx:ComboBox id="cmbSupplier"
 						 change="cmbSupplier_changeHandler(event)"
 						 />
@@ -517,12 +525,20 @@
 		<mx:FormItem label="Correo:">
 			<components:TextInput id="txtMail" editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Orden Compra Almacén:"/>
-		<ordenescompraalmacen:Consult id="odcAlmacen" purchaseOrderDetail="purchaseOrderSelectedHandler(event)"
+		<mx:FormItem id="frmODCAlmacen" label="Orden Compra Almacén:"/>
+		<mx:VBox width="1050">
+			<mx:VBox width="100%" height="100%" verticalGap="5">
+				<ordenescompraalmacen:Consult id="odcAlmacen" purchaseOrderDetail="purchaseOrderSelectedHandler(event)"
 									  readOnly="true"/>
-		<mx:FormItem label="Orden Compra Maquilado:"/>
-		<ordenescompraserviciosmaquilado:Consult id="odcMaquilado" purchaseOrderMaquiladoDetail="purchaseOrderMaquiladoSelectedHandler(event)"
+			</mx:VBox>
+		</mx:VBox>	
+		<mx:FormItem id="frmODCMaquilado" label="Orden Compra Maquilado:"/>
+		<mx:VBox width="1050">
+			<mx:VBox width="100%" height="100%" verticalGap="5">
+				<ordenescompraserviciosmaquilado:Consult id="odcMaquilado" purchaseOrderMaquiladoDetail="purchaseOrderMaquiladoSelectedHandler(event)"
 												 readOnly="true"/>
+			</mx:VBox>
+		</mx:VBox>
 		<mx:FormItem id="frmClient" label="Cliente:">
 			<components:TextInput id="txtClient" editable="false"/>
 		</mx:FormItem>
@@ -556,13 +572,13 @@
 		<mx:FormItem label="Total:">
 			<components:TextInput id="txtTotal" editable="false" textAlign="right"/>
 		</mx:FormItem>
-		<mx:FormItem label="Cantidad:">
+		<mx:FormItem required="true" label="Cantidad:">
 			<components:TextInput id="txtQuantity" textAlign="right"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha Factura:">
+		<mx:FormItem required="true" label="Fecha Factura:">
 			<components:DateField id="dtfVendorInvoiceDate"/>
 		</mx:FormItem>
-		<mx:FormItem label="Número Factura Proveedor:">
+		<mx:FormItem required="true" label="Número Factura Proveedor:">
 			<components:TextInput id="txtVendorInvoiceNumber" textAlign="right"/>
 		</mx:FormItem>
 		<mx:FormItem label="Fecha de Revisión:">

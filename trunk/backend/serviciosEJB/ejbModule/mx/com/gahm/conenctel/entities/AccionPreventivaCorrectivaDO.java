@@ -81,13 +81,18 @@ public class AccionPreventivaCorrectivaDO implements Serializable{
 	@JoinColumn(name = "fk_estado_accion_preventiva_correctiva", nullable = false)
 	private EstadoAccionPreventivaCorrectivaDO estadoAccionPreventivaCorrectiva;
 
+	@ManyToOne
+	@JoinColumn(name = "fk_sugerencia", nullable = false)
+	private SugerenciaDO sugerencia;
+	
 	public AccionPreventivaCorrectivaDO() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
 	public AccionPreventivaCorrectivaDO(Integer id,
-			NoConformidadDO noConformidad, Date fechaApertura,
+			NoConformidadDO noConformidad, SugerenciaDO consejo, 
+			Date fechaApertura,
 			TipoAccionDO tipoAccion, FuenteNoConformidadDO fuenteNoConformidad,
 			String participantesAnalisis, String determinacionCausas,
 			String responsableSeguimiento, String accionesSeguimiento,
@@ -96,6 +101,7 @@ public class AccionPreventivaCorrectivaDO implements Serializable{
 		super();
 		this.id = id;
 		this.noConformidad = noConformidad;
+		this.sugerencia = consejo;
 		this.fechaApertura = fechaApertura;
 		this.tipoAccion = tipoAccion;
 		this.fuenteNoConformidad = fuenteNoConformidad;
@@ -203,10 +209,12 @@ public class AccionPreventivaCorrectivaDO implements Serializable{
 	public void setEspecificar(String especificar) {
 		this.especificar = especificar;
 	}
-	
-	
-	
-	
-	
-	
+
+	public SugerenciaDO getSugerencia() {
+		return sugerencia;
+	}
+
+	public void setSugerencia(SugerenciaDO consejo) {
+		this.sugerencia = consejo;
+	}
 }

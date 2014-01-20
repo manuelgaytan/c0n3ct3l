@@ -46,16 +46,8 @@ public class PagoProveedorDO  implements Serializable{
 	@Column(name = "id", unique = true, nullable = false)
 	private Integer id;
 
-	@ManyToOne
-	@JoinColumn(name = "fk_factura_proveedor", nullable = false)
-	private FacturaProveedorDO facturaProveedor; 
-	
 	@Column(name = "folio_factura", nullable = false)
 	private String folioFactura;
-	
-	@OneToOne
-	@JoinColumn(name = "fk_nota_credito_proveedor", nullable = false)
-	private NotaCreditoProveedorDO notaCreditoProveedor; 
 	
 	@Column(name = "subtotal", nullable = false)
 	private Double subtotal;
@@ -82,6 +74,12 @@ public class PagoProveedorDO  implements Serializable{
 	
 	@OneToMany(mappedBy="pagoProveedor", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)	
 	private List<ComentarioPagoProveedorDO> comentariosPagoProveedor;
+	
+	@OneToMany(mappedBy="pagoProveedor", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)	
+	private List<FacturaProveedorPagoProveedorDO> facturasProveedor;
+	
+	@OneToMany(mappedBy="pagoProveedor", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)	
+	private List<NotaCreditoProveedorPagoProveedorDO> notasCreditoProveedor;
 
 	public PagoProveedorDO() {
 		super();
@@ -95,9 +93,7 @@ public class PagoProveedorDO  implements Serializable{
 			Integer referenciaAbono) {
 		super();
 		this.id = id;
-		this.facturaProveedor = facturaProveedor;
 		this.folioFactura = folioFactura;
-		this.notaCreditoProveedor = notaCreditoProveedor;
 		this.subtotal = subtotal;
 		this.iva = iva;
 		this.total = total;
@@ -115,28 +111,12 @@ public class PagoProveedorDO  implements Serializable{
 		this.id = id;
 	}
 
-	public FacturaProveedorDO getFacturaProveedor() {
-		return facturaProveedor;
-	}
-
-	public void setFacturaProveedor(FacturaProveedorDO facturaProveedor) {
-		this.facturaProveedor = facturaProveedor;
-	}
-
 	public String getFolioFactura() {
 		return folioFactura;
 	}
 
 	public void setFolioFactura(String folioFactura) {
 		this.folioFactura = folioFactura;
-	}
-
-	public NotaCreditoProveedorDO getNotaCreditoProveedor() {
-		return notaCreditoProveedor;
-	}
-
-	public void setNotaCreditoProveedor(NotaCreditoProveedorDO notaCreditoProveedor) {
-		this.notaCreditoProveedor = notaCreditoProveedor;
 	}
 
 	public Double getSubtotal() {
@@ -202,6 +182,24 @@ public class PagoProveedorDO  implements Serializable{
 	public void setComentariosPagoProveedor(
 			List<ComentarioPagoProveedorDO> comentariosPagoProveedor) {
 		this.comentariosPagoProveedor = comentariosPagoProveedor;
+	}
+
+	public List<FacturaProveedorPagoProveedorDO> getFacturasProveedor() {
+		return facturasProveedor;
+	}
+
+	public void setFacturasProveedor(
+			List<FacturaProveedorPagoProveedorDO> facturasProveedor) {
+		this.facturasProveedor = facturasProveedor;
+	}
+
+	public List<NotaCreditoProveedorPagoProveedorDO> getNotasCreditoProveedor() {
+		return notasCreditoProveedor;
+	}
+
+	public void setNotasCreditoProveedor(
+			List<NotaCreditoProveedorPagoProveedorDO> notasCreditoProveedor) {
+		this.notasCreditoProveedor = notasCreditoProveedor;
 	}
 		
 }

@@ -519,6 +519,7 @@
 	fk_tipo_mantenimiento INT(11) UNSIGNED NOT NULL,
 	fecha_mantenimiento DATE,
 	costo DECIMAL(11,2),
+	fk_mantenimiento_servicio INT(11) UNSIGNED,
 	PRIMARY KEY (id)
 	);
 
@@ -1123,6 +1124,7 @@
 	fk_validacion_costo INT(11) UNSIGNED,
 	fk_estado_orden_compra INT(11) UNSIGNED,
 	leyenda VARCHAR(255),
+	item VARCHAR(255),
 	PRIMARY KEY (id)
 	);
 
@@ -1560,10 +1562,8 @@
 
 	CREATE TABLE PagoProveedor
 	(
-	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
-	fk_factura_proveedor INT(11) UNSIGNED NOT NULL,
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,	
 	folio_factura VARCHAR(255),
-	fk_nota_credito_proveedor INT(11) UNSIGNED,
 	subtotal DECIMAL(11,2) NOT NULL,
 	iva DECIMAL(11,2) NOT NULL,
 	total DECIMAL(11,2) NOT NULL,
@@ -2373,7 +2373,8 @@
 	CREATE TABLE AccionPreventivaCorrectiva
 	(
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
-	fk_no_conformidad INT(11) UNSIGNED NOT NULL,
+	fk_no_conformidad INT(11) UNSIGNED,
+	fk_sugerencia INT(11) UNSIGNED,
 	fecha_apertura DATE NOT NULL,
 	fk_tipo_accion INT(11) UNSIGNED NOT NULL,
 	fk_fuente_no_conformidad INT(11) UNSIGNED NOT NULL,
@@ -2412,6 +2413,7 @@
 	acuerdo VARCHAR(255) NOT NULL,
 	fecha_compromiso DATE,
 	responsable_elaboracion VARCHAR(255),
+	fecha_cumplimiento DATE,
 	PRIMARY KEY (id)
 	);
 
@@ -2533,6 +2535,22 @@
 	(
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
 	tipo VARCHAR(100) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE FacturaProveedorPagoProveedor
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_pago_proveedor INT(11) UNSIGNED NOT NULL,
+	fk_factura_proveedor INT(11) UNSIGNED NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE NotaCreditoProveedorPagoProveedor
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_pago_proveedor INT(11) UNSIGNED NOT NULL,
+	fk_nota_credito_proveedor INT(11) UNSIGNED NOT NULL,
 	PRIMARY KEY (id)
 	);
 
@@ -2974,8 +2992,6 @@
 
 	ALTER TABLE ComentarioCobranza ADD FOREIGN KEY fk_comentario_tesoreria_idxfk (fk_comentario_tesoreria) REFERENCES ComentarioTesoreria (id);
 
-	ALTER TABLE PagoProveedor ADD FOREIGN KEY fk_nota_credito_proveedor_idxfk (fk_nota_credito_proveedor) REFERENCES NotaCreditoProveedor (id);
-
 	ALTER TABLE PagoProveedor ADD FOREIGN KEY fk_banco_conectel_idxfk (fk_banco_conectel) REFERENCES BancoConectel (id);
 
 	ALTER TABLE ComentarioPagoProveedor ADD FOREIGN KEY fk_pago_proveedor_idxfk (fk_pago_proveedor) REFERENCES PagoProveedor (id);
@@ -3191,6 +3207,19 @@
 	ALTER TABLE DescripcionFondoFijoCajaChica ADD FOREIGN KEY fk_tipo_operacion_idxfk (fk_tipo_operacion) REFERENCES TipoOperacion (id);
 
 	ALTER TABLE Proyecto ADD FOREIGN KEY fk_tipo_servicio_idxfk (fk_tipo_servicio) REFERENCES TipoServicio (id);
+
+	ALTER TABLE EquipoTransporte ADD FOREIGN KEY fk_mantenimiento_servicio_idxfk_2 (fk_mantenimiento_servicio) REFERENCES MantenimientoServicio (id);
+
+	ALTER TABLE FacturaProveedorPagoProveedor ADD FOREIGN KEY fk_pago_proveedor_idxfk_2 (fk_pago_proveedor) REFERENCES PagoProveedor (id);
+
+	ALTER TABLE FacturaProveedorPagoProveedor ADD FOREIGN KEY fk_factura_proveedor_idxfk_2 (fk_factura_proveedor) REFERENCES FacturaProveedor (id);
+
+	ALTER TABLE NotaCreditoProveedorPagoProveedor ADD FOREIGN KEY fk_pago_proveedor_idxfk_3 (fk_pago_proveedor) REFERENCES PagoProveedor (id);
+
+	ALTER TABLE NotaCreditoProveedorPagoProveedor ADD FOREIGN KEY fk_nota_credito_proveedor_idxfk_2 (fk_nota_credito_proveedor) REFERENCES NotaCreditoProveedor (id);
+
+	ALTER TABLE AccionPreventivaCorrectiva ADD FOREIGN KEY fk_sugerencia_idxfk_2 (fk_sugerencia) REFERENCES Sugerencia (id);
+
 	/* Perfiles */
 	INSERT INTO Perfil
 	VALUES (1, 'Director General');

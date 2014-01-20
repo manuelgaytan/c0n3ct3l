@@ -21,6 +21,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 /**
  * @author MHDolores
@@ -59,6 +60,9 @@ public class MinutaDO implements Serializable{
 	@OneToMany(mappedBy="minuta", fetch = FetchType.EAGER,cascade=CascadeType.ALL)
 	private List<AcuerdoMinutaDO> acuerdoMinuta;
 
+	@Transient
+	private Date fechaEmision = new Date();
+	
 	public MinutaDO() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -143,8 +147,12 @@ public class MinutaDO implements Serializable{
 	public void setAcuerdoMinuta(List<AcuerdoMinutaDO> acuerdoMinuta) {
 		this.acuerdoMinuta = acuerdoMinuta;
 	}
-	
-	
-	
 
+	public Date getFechaEmision() {
+		return fechaEmision;
+	}
+
+	public void setFechaEmision(Date fechaEmision) {
+		this.fechaEmision = fechaEmision;
+	}
 }

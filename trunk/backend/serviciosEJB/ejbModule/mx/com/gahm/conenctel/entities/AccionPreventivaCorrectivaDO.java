@@ -91,17 +91,17 @@ public class AccionPreventivaCorrectivaDO implements Serializable{
 	}
 
 	public AccionPreventivaCorrectivaDO(Integer id,
-			NoConformidadDO noConformidad, SugerenciaDO consejo, 
+			NoConformidadDO noConformidad, 
 			Date fechaApertura,
 			TipoAccionDO tipoAccion, FuenteNoConformidadDO fuenteNoConformidad,
 			String participantesAnalisis, String determinacionCausas,
 			String responsableSeguimiento, String accionesSeguimiento,
 			Boolean accionTomadaEficaz,
-			EstadoAccionPreventivaCorrectivaDO estadoAccionPreventivaCorrectiva) {
+			EstadoAccionPreventivaCorrectivaDO estadoAccionPreventivaCorrectiva,
+			SugerenciaDO sugerencia) {
 		super();
 		this.id = id;
 		this.noConformidad = noConformidad;
-		this.sugerencia = consejo;
 		this.fechaApertura = fechaApertura;
 		this.tipoAccion = tipoAccion;
 		this.fuenteNoConformidad = fuenteNoConformidad;
@@ -111,6 +111,7 @@ public class AccionPreventivaCorrectivaDO implements Serializable{
 		this.accionesSeguimiento = accionesSeguimiento;
 		this.accionTomadaEficaz = accionTomadaEficaz;
 		this.estadoAccionPreventivaCorrectiva = estadoAccionPreventivaCorrectiva;
+		this.sugerencia = sugerencia;
 	}
 
 	public Integer getId() {
@@ -214,7 +215,7 @@ public class AccionPreventivaCorrectivaDO implements Serializable{
 		return sugerencia;
 	}
 
-	public void setSugerencia(SugerenciaDO consejo) {
-		this.sugerencia = consejo;
+	public void setSugerencia(SugerenciaDO sugerencia) {
+		this.sugerencia = sugerencia;
 	}
 }

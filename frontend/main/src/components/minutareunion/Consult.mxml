@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
-		 creationComplete="creationCompleteHandler(event)">
+		 horizontalAlign="right"
+		 creationComplete="creationCompleteHandler(event)" xmlns:components="components.*">
 	<mx:Script>
 		<![CDATA[
 			import events.GenericEvent;
@@ -116,7 +117,7 @@
 	<mx:Metadata>
 		[Event(name="itemDetail", type="events.GenericEvent")]
 	</mx:Metadata>
-	<mx:VBox id="vBox" width="100%" height="100%">
+	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
 		<mx:DataGrid id="datagrid" width="742" height="100%" dataProvider="{items}"
 					 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 					 allowMultipleSelection="true"
@@ -149,11 +150,11 @@
 								   />
 			</mx:columns>
 		</mx:DataGrid>
-	</mx:VBox>
-	<mx:HBox width="100%">
-		<mx:Spacer width="100%"/>
+	</mx:HBox>
+	<mx:HBox>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"
 				   visible="{!this._readMode}"/>
+		<components:ExportButton datagrid="{this.datagrid}"/>
 	</mx:HBox>
 	<mx:RemoteObject id="minutaService" destination="minutaService" fault="minutaService_faultHandler(event)"
 					 showBusyCursor="true"/>

@@ -2,7 +2,7 @@
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
 		 horizontalAlign="right"
-		 creationComplete="creationCompleteHandler(event)">
+		 creationComplete="creationCompleteHandler(event)" xmlns:components="components.*">
 	<mx:Script>
 		<![CDATA[
 			import components.DownloadFile;
@@ -201,18 +201,11 @@
 				var params:Array = [{key:"id", value:Reportes.IMPRIMIR_TODOS}];
 				Util.launchReport( Reportes.PRECIARIO_MAQUILADOR, params );
 			}
-			
-			protected function btnExport_clickHandler(event:MouseEvent):void
-			{
-				// TODO Auto-generated method stub
-				
-			}
-			
+
 			protected function responseImportProductos_faultHandler(event:FaultEvent):void
 			{
 				Util.showErrorMessage("Ocurrió un error al Importar, tenga presente el formato del Archivo Separado por Comas, así como que existan el(los) Cliente(s) de los registros a Importar.");
 			}
-			
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -284,8 +277,7 @@
 		<mx:Button label="Exportar formato comas" id="btnExportComaFormat" click="btnExportComaFormat_clickHandler(event)"
 				   includeInLayout="{!this._preciarios}"
 				   visible="{!this._preciarios}"/>
-		<mx:Button label="Exportar" id="btnExport" click="btnExport_clickHandler(event)" visible="false"
-				   />
+		<components:ExportButton datagrid="{this.datagrid}"/>
 		<mx:Button label="Importar" id="btnImport" click="btnImport_clickHandler(event)"
 				   includeInLayout="{!this._preciarios}"
 				   visible="{!this._preciarios}"/>

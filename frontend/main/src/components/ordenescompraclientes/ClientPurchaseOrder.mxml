@@ -75,6 +75,7 @@
 				this.chbPurchaseOrder.selected = this._item.ordenCompra;
 				this.txtPurchaseOrderNumber.text = this._item.numeroOrdenCompra;
 				this.dtfPurchaseOrderDate.selectedDate = this._item.fechaOrdenCompra;
+				this.txtItem.text = this._item.item;
 				this.txtPurchaseOrderCost.text = this._item.costoOrdenCompra.toString();
 				this.setCommercialCost(this._item.proyecto);
 				if( Util.isFill( this.cmbCostValidationStatus ) && this._item.validacionCosto != null ){
@@ -101,6 +102,7 @@
 				clientPurchaseOrder.ordenCompra = this.chbPurchaseOrder.selected;
 				clientPurchaseOrder.numeroOrdenCompra = Util.validateEmpty( this.txtPurchaseOrderNumber.text );
 				clientPurchaseOrder.fechaOrdenCompra = this.dtfPurchaseOrderDate.selectedDate;
+				clientPurchaseOrder.item = Util.validateEmpty( this.txtItem.text );
 				clientPurchaseOrder.costoOrdenCompra = Util.stringToNumber( this.txtPurchaseOrderCost.text );
 				clientPurchaseOrder.validacionCosto = Util.validateCombo( this.cmbCostValidationStatus ) as EstadoValidacionCosto;
 				clientPurchaseOrder.comentarioValidacionCostoOrdenCompraCliente = this.commentsCostValidation.getCommentsAsInWith("model.ComentarioValidacionAdministrativa","model.ComentarioValidacionCostoOrdenCompraCliente","comentarioValidacionAdministrativa");
@@ -189,6 +191,7 @@
 				this,chbPurchaseOrder.selected = false;
 				this.txtPurchaseOrderNumber.reset();
 				this.dtfPurchaseOrderDate.reset();
+				this.txtItem.reset();
 				this.txtPurchaseOrderCost.reset();
 				this.txtCommercialCost.reset();
 				this.cmbCostValidationStatus.selectedIndex = 0;
@@ -308,8 +311,12 @@
 			<components:TextInput id="txtID" width="80" textAlign="right"
 								  editable="false"/>
 		</mx:FormItem>
-		<mx:FormHeading label="Datos de Proyecto"/>
-		<proyectos:Consult id="projectsConsult" projectSelected="projectsConsult_projectSelectedHandler(event)"/>
+		<mx:FormItem label="Datos de Proyecto"/>
+		<mx:VBox width="800">
+			<mx:VBox width="100%" height="100%" verticalGap="5">
+				<proyectos:Consult id="projectsConsult" projectSelected="projectsConsult_projectSelectedHandler(event)"/>
+			</mx:VBox>
+		</mx:VBox>
 		<mx:FormItem label="Orden de Compra:">
 			<mx:CheckBox id="chbPurchaseOrder"/>
 		</mx:FormItem>
@@ -319,6 +326,10 @@
 		</mx:FormItem>
 		<mx:FormItem label="Fecha de Orden de Compra:">
 			<components:DateField id="dtfPurchaseOrderDate"/>
+		</mx:FormItem>
+		<mx:FormItem label="Partida, Línea o Ítem:">
+			<components:TextInput id="txtItem" width="90"
+								  textAlign="right"/>
 		</mx:FormItem>
 		<mx:FormHeading label="Validación del Costo"/>
 		<mx:FormItem label="Costo OC Cliente:">

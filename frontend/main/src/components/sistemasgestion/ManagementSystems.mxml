@@ -363,7 +363,11 @@
 								  editable="false"/>
 		</mx:FormItem>
 		<mx:FormItem label="Proyectos:"/>
-		<proyectos:Consult id="projectsConsult" projectSelected="projectsConsult_projectSelectedHandler(event)"/>
+		<mx:VBox width="900">
+			<mx:VBox width="100%" height="100%" verticalGap="5">
+				<proyectos:Consult id="projectsConsult" projectSelected="projectsConsult_projectSelectedHandler(event)"/>
+			</mx:VBox>
+		</mx:VBox>
 		<!--<mx:Button label="Ver Datos Generales Proyecto" click="btnViewPerDiemCheck_clickHandler(event)"/>-->
 		<mx:FormItem label="Aplicación de Auditoría:">
 			<mx:CheckBox id="chkAuditApply"/>

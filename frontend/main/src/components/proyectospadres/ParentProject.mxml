@@ -134,6 +134,7 @@
 					form.removeChild( this.frmID );
 					form.removeChild( this.frmCreationDate );
 					form.removeChild( this.frmProjectsAssociated );
+					form.removeChild( this.vBoxProjectsAssociated );
 				}
 			}
 			
@@ -189,9 +190,12 @@
 		<mx:FormItem required="true" label="Fecha Creación:" id="frmCreationDate">
 			<components:TextInput id="txtCreationDate" width="80" editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Proyectos Asociados:" id="frmProjectsAssociated">
-			<proyectos:Consult id="dtgProyectosAsociados"/>
-		</mx:FormItem>
+		<mx:FormItem label="Proyectos Asociados:" id="frmProjectsAssociated"/>
+		<mx:VBox width="550" id="vBoxProjectsAssociated">
+			<mx:VBox width="100%" height="100%" verticalGap="5">
+				<proyectos:Consult id="dtgProyectosAsociados"/>
+			</mx:VBox>
+		</mx:VBox>
 		<mx:FormItem>
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
 		</mx:FormItem>

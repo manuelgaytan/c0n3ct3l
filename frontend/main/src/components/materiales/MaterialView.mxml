@@ -20,7 +20,6 @@
 			import mx.collections.ArrayCollection;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
 			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
-			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
 			import mx.com.gahm.componentes.validadores.ValidadorNumerico;
 			import mx.controls.Alert;
@@ -108,8 +107,8 @@
 				item.grupoFamiliaC = Util.validateCombo( this.cmbFamily ) as GrupoFamiliaC;
 				item.fkGrupoFamiliaC = Util.extractId(item.grupoFamiliaC);
 				item.descripcion = Util.validateEmpty( this.txtDescription.text );
-				item.existencia = Util.stringToNumber( this.txtExistence.text );
-				item.costo = Util.stringToNumber( this.txtCost.text );
+				item.existencia = Util.stringToNumber( this.txtExistence.text, true );
+				item.costo = Util.stringToNumber( this.txtCost.text, true );
 				item.unidadB = Util.validateCombo( this.cmbUnit ) as UnidadB;
 				item.fkUnidadB = Util.extractId(item.unidadB);
 				item.ubicacionB = Util.validateCombo( this.cmbLocation ) as UbicacionB;
@@ -179,6 +178,11 @@
 			{
 				var value:Boolean = true;
 				value &&= this.validators.validarFormulario();
+				value &&= Util.listBaseSelected( this.cmbFamily );
+				value &&= Util.listBaseSelected( this.cmbUnit );
+				value &&= Util.listBaseSelected( this.cmbLocation );
+				value &&= Util.listBaseSelected( this.cmbResponsible );
+				value &&= Util.listBaseSelected( this.cmbStatus );
 				return value;
 			}
 			
@@ -190,10 +194,10 @@
 			{
 				this.validators = new InicializaValidadoresEtiquetas();
 				validators.crearValidadorRestrictor("generic",ValidadorCadenaCualquierCaracter.nombre, 0, 255);
-				validators.setValidador(txtCode, "generic");
-				validators.setValidador(txtDescription, "generic");
+				validators.setRestrictor(txtCode, "generic");
+				validators.setRestrictor(txtDescription, "generic");
 				validators.crearValidadorRestrictor("number",ValidadorDecimal.nombre, 10, 4);
-				validators.setValidador(txtExistence, "number");
+				validators.setRestrictor(txtExistence, "number");
 			}
 			
 			protected function responseSave_resultHandler(event:ResultEvent):void

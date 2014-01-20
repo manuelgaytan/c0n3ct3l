@@ -42,6 +42,14 @@
 			private var _item:Sugerencia;
 			private var validators:InicializaValidadoresEtiquetas;
 			
+			[Bindable]
+			private var _readOnly:Boolean = false;
+			
+			public function set readOnly(value:Boolean):void{
+				this._readOnly = value;
+				this.label = Constants.DETALLE;
+			}
+			
 			public function set registrer(value:Boolean):void{
 				mode = Constants.REGISTER_MODE;
 				this.label = Constants.REGISTRAR;
@@ -322,7 +330,8 @@
 		</mx:FormItem>
 		<components:Comments id="comments"/>
 		<mx:FormItem direction="horizontal">
-			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
+			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"
+					   visible="{!this._readOnly}"/>
 		</mx:FormItem>
 	</mx:Form>
 	<mx:RemoteObject id="sugerenciaService" destination="sugerenciaService" fault="sugerenciaService_faultHandler(event)"

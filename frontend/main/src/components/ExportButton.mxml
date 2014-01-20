@@ -4,6 +4,8 @@
 	click="clickExportHandler(event)">
 	<mx:Script>
 		<![CDATA[
+			import model.Util;
+			
 			import mx.controls.DataGrid;
 			import mx.events.FlexEvent;
 			
@@ -17,6 +19,7 @@
 			private function clickExportHandler(event:MouseEvent):void{
 				var clip:AMClipListado = new AMClipListado();
              	clip.createClip(this.datagrid.dataProvider, this.datagrid.columns, null, null, new Array());
+				Util.showInfoMessage("La información de la tabla se ha copiado en el portapapeles, por favor ir a una hoja de cálculo (Excel) y ejecutar la opción Pegar");
 			}
 		]]>
 	</mx:Script>	

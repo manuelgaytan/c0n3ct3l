@@ -11,17 +11,12 @@ package components
 	
 	import flash.system.System;
 	
+	import model.Util;
+	
 	import mx.collections.ArrayCollection;
-/*	
-	import mx.collections.Grouping;
-	import mx.collections.GroupingCollection;
-	import mx.collections.HierarchicalCollectionView;
-*/
 	import mx.collections.IViewCursor;
-/*
-	import mx.controls.advancedDataGridClasses.AdvancedDataGridColumn;
-*/
 	import mx.formatters.Formatter;
+
 	public class AMClipListado
 	{
 		private var obj:Object = new Object();
@@ -134,7 +129,7 @@ package components
 									var mostrarColumna1:Boolean = true;
 									if( (columnasOcultar != null) && (columnasOcultar.length>0) && (columnasOcultar.getItemIndex(y) > -1) ) mostrarColumna1 = false;
 									if(mostrarColumna1){
-										if ((objeto[columnaActual1.dataField] != "undefined") && (objeto[columnaActual1.dataField] != undefined)) tmpString += obtenerValorTD(objeto, columnaActual1, columnasFormato, y, columnasFunciones, htmlCallbackFormatter);
+										if (( Util.extractObject( objeto, columnaActual1.dataField) != "undefined") && ( Util.extractObject( objeto, columnaActual1.dataField ) != undefined)) tmpString += obtenerValorTD(objeto, columnaActual1, columnasFormato, y, columnasFunciones, htmlCallbackFormatter);
 										else tmpString += "<td></td>";
 									}
 								}
@@ -152,7 +147,7 @@ package components
 		
 		private function obtenerValorTD(objeto:Object, columnaActual:Object, columnasFormato:Array, indiceActual:int, columnasFunciones:Array, htmlCallbackFormatter:Function = null):String{
 			var tmpString:String = "";
-			var valorTd:* = objeto[columnaActual.dataField];
+			var valorTd:* = Util.extractObject( objeto, columnaActual.dataField );
 			var formatoActual:Object = new Object();
 			var funcionActual:Object = new Object();
 			var align:String = "ALIGN='LEFT'";

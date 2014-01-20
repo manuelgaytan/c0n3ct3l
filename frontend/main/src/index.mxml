@@ -131,6 +131,7 @@
 			import model.ExamenPsicometrico;
 			import model.FacturaPorPagar;
 			import model.FacturaProveedor;
+			import model.FacturaProveedorPagoProveedor;
 			import model.FaseContratacion;
 			import model.FaseSeleccion;
 			import model.FiltroProducto;
@@ -171,6 +172,7 @@
 			import model.NombreSolicitante;
 			import model.NotaCreditoCliente;
 			import model.NotaCreditoProveedor;
+			import model.NotaCreditoProveedorPagoProveedor;
 			import model.Notificacion;
 			import model.Observacion;
 			import model.OrdenCompraAlmacen;
@@ -547,6 +549,8 @@
 			private var comentarioSugerencia:ComentarioSugerencia;
 			private var comentarioSistemasGestion:ComentarioSistemasGestion;
 			private var tipoServicio:TipoServicio;
+			private var facturaProveedorPagoProveedor:FacturaProveedorPagoProveedor;
+			private var notaCreditoProveedorPagoProveedor:NotaCreditoProveedorPagoProveedor;
 						
 			protected function login_readyHandler(event:ModuleEvent):void
 			{

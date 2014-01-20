@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
-		 creationComplete="creationCompleteHandler(event)">
+		 horizontalAlign="right"
+		 creationComplete="creationCompleteHandler(event)" xmlns:components="components.*">
 	<mx:Script>
 		<![CDATA[
 			import events.GenericEvent;
 			
 			import model.ConfiguracionPruebaEntrega;
+			import model.Constants;
+			import model.FacturaProveedorPagoProveedor;
 			import model.FiltroProyecto;
 			import model.PagoProveedor;
 			import model.Proyecto;
@@ -109,13 +112,34 @@
 			private function labelFunctionProveedor(item:Object, column:DataGridColumn):String{
 				var providerPayment:PagoProveedor = item as PagoProveedor;
 				if( providerPayment == null ||
-					providerPayment.facturaProveedor == null ){
+					providerPayment.facturasProveedor == null ||
+					providerPayment.facturasProveedor.length == 0 ||
+					providerPayment.facturasProveedor.getItemAt( 0 ) == null ||
+					(providerPayment.facturasProveedor.getItemAt( 0 ) as FacturaProveedorPagoProveedor) == null ||
+					(providerPayment.facturasProveedor.getItemAt( 0 ) as FacturaProveedorPagoProveedor).facturaProveedor == null){
 					return "";
 				}
-				if( providerPayment.facturaProveedor.proveedorCalificado != null ){
-					return providerPayment.facturaProveedor.proveedorCalificado.proveedorSeleccionado.proveedor.nombreComercial;
+				if( (providerPayment.facturasProveedor.getItemAt( 0 ) as FacturaProveedorPagoProveedor).facturaProveedor.proveedorCalificado != null ){
+					return (providerPayment.facturasProveedor.getItemAt( 0 ) as FacturaProveedorPagoProveedor).facturaProveedor.proveedorCalificado.proveedorSeleccionado.proveedor.nombreComercial;
 				}else{
-					return providerPayment.facturaProveedor.proveedorMaquilador.proveedor.nombreComercial;
+					return (providerPayment.facturasProveedor.getItemAt( 0 ) as FacturaProveedorPagoProveedor).facturaProveedor.proveedorMaquilador.proveedor.nombreComercial;
+				}
+			}
+			
+			private function labelFunctionTipoProveedor(item:Object, column:DataGridColumn):String{
+				var providerPayment:PagoProveedor = item as PagoProveedor;
+				if( providerPayment == null ||
+					providerPayment.facturasProveedor == null ||
+					providerPayment.facturasProveedor.length == 0 ||
+					providerPayment.facturasProveedor.getItemAt( 0 ) == null ||
+					(providerPayment.facturasProveedor.getItemAt( 0 ) as FacturaProveedorPagoProveedor) == null ||
+					(providerPayment.facturasProveedor.getItemAt( 0 ) as FacturaProveedorPagoProveedor).facturaProveedor == null){
+					return "";
+				}
+				if( (providerPayment.facturasProveedor.getItemAt( 0 ) as FacturaProveedorPagoProveedor).facturaProveedor.proveedorCalificado != null ){
+					return Constants.CALIFICADOS;
+				}else{
+					return Constants.MAQUILADORES;
 				}
 			}
 		]]>
@@ -123,8 +147,8 @@
 	<mx:Metadata>
 		[Event(name="itemDetail", type="events.GenericEvent")]
 	</mx:Metadata>
-	<mx:VBox id="vBox" width="100%" height="100%">
-		<mx:DataGrid id="datagrid" width="842" height="100%" dataProvider="{items}"
+	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
+		<mx:DataGrid id="datagrid" width="1270" height="100%" dataProvider="{items}"
 					 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 					 allowMultipleSelection="true"
 					 >
@@ -133,13 +157,32 @@
 								   dataField="id"
 								   width="60"
 								   textAlign="right"/>
+				<mx:DataGridColumn headerText="{'Tipo de\nProveedor'}"
+								   labelFunction="labelFunctionTipoProveedor"
+								   width="170"
+								   textAlign="right"/>
+				<mx:DataGridColumn id="dtgClient" headerText="{'Proveedor'}"
+								   labelFunction="labelFunctionProveedor"
+								   width="210"/>
 				<mx:DataGridColumn id="dtgInvoiceFolio" headerText="{'Folio\nFactura'}"
 								   dataField="folioFactura"
 								   width="130"
 								   textAlign="right"/>
-				<mx:DataGridColumn id="dtgClient" headerText="{'Proveedor'}"
-								   labelFunction="labelFunctionProveedor"
-								   width="170"/>
+				<mx:DataGridColumn headerText="{'Subtotal'}"
+								   dataField="subtotal"
+								   textAlign="right"
+								   width="100"
+								   />
+				<mx:DataGridColumn headerText="{'I.V.A.'}"
+								   dataField="iva"
+								   textAlign="right"
+								   width="100"
+								   />
+				<mx:DataGridColumn headerText="{'Total'}"
+								   dataField="total"
+								   textAlign="right"
+								   width="100"
+								   />
 				<mx:DataGridColumn id="dtgBank" headerText="{'Banco'}"
 								   dataField="bancoConectel.banco"
 								   width="100"/>
@@ -161,11 +204,12 @@
 								   />
 			</mx:columns>
 		</mx:DataGrid>
-	</mx:VBox>
-	<mx:HBox width="100%">
-		<mx:Spacer width="100%"/>
+	</mx:HBox>
+	<mx:HBox>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"
-				   visible="{!this._readMode}"/>
+					visible="{!this._readMode}"/>
+		<components:ExportButton datagrid="{this.datagrid}"
+					visible="{!this._readMode}"/>
 	</mx:HBox>
 	<mx:RemoteObject id="pagoProveedorService" destination="pagoProveedorService" fault="datosGeneralesProyectoService_faultHandler(event)"
 					 showBusyCursor="true"/>

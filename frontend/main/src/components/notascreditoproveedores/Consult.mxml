@@ -114,6 +114,11 @@
 				items = datas;
 			}
 			
+			public function setDataAndSelected(datas:ArrayCollection):void
+			{
+				this.setDataGridData( datas );
+				this.datagrid.selectedItems = datas.source;
+			}
 		]]>
 	</mx:Script>
 	<mx:Metadata>

@@ -28,7 +28,6 @@
 			import mx.com.gahm.componentes.validadores.Constantes;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
 			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
-			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
 			import mx.com.gahm.componentes.validadores.ValidadorEmail;
 			import mx.com.gahm.componentes.validadores.ValidadorEntero;
@@ -164,6 +163,8 @@
 			{
 				var value:Boolean = true;
 				value &&= this.validators.validarFormulario();
+				value &&= Util.listBaseSelected( this.cmbAreaRaisesNonConformity );
+				value &&= this.dtfEventDate.selectedDate != null;
 				return value;
 			}
 			
@@ -251,44 +252,44 @@
 		[Event(name="nonConformityProjectDone", type="flash.events.Event")]
 	</mx:Metadata>
 	<mx:Form id="form">
-		<mx:FormItem id="frmID" label="ID:" direction="horizontal">
+		<mx:FormItem required="true" id="frmID" label="ID:" direction="horizontal">
 			<components:TextInput id="txtID" width="80" textAlign="right"
 								  editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Área que Levanta la No Conformidad:">
+		<mx:FormItem required="true" label="Área que Levanta la No Conformidad:">
 			<mx:ComboBox id="cmbAreaRaisesNonConformity" width="400"
 						 labelField="area"
 						 />
 		</mx:FormItem>
-		<mx:FormItem label="Nombre de quién Levanta la No Conformidad:">
+		<mx:FormItem required="true" label="Nombre de quién Levanta la No Conformidad:">
 			<components:TextInput id="txtName" width="350" editable="false"
 								  text="{Model.getInstance().user.nombreCompleto}"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha del Suceso:">
+		<mx:FormItem required="true" label="Fecha del Suceso:">
 			<components:DateField id="dtfEventDate"/>
 		</mx:FormItem>
-		<mx:FormItem label="Área a quién se Levanta la No Conformidad:">
+		<mx:FormItem required="true" label="Área a quién se Levanta la No Conformidad:">
 			<components:TextInput id="txtAreaWhoRaisedNonConformity" width="250"/>
 		</mx:FormItem>
-		<mx:FormItem label="Suceso/Evento:">
+		<mx:FormItem required="true" label="Suceso/Evento:">
 			<components:TextArea id="txtEvent" width="520"/>
 		</mx:FormItem>
-		<mx:FormItem label="¿Dónde Ocurrió el Evento?:">
+		<mx:FormItem required="true" label="¿Dónde Ocurrió el Evento?:">
 			<components:TextInput id="txtPlaceEvent" width="520"/>
 		</mx:FormItem>
-		<mx:FormItem label="¿Cuánto Afecto?:">
+		<mx:FormItem required="true" label="¿Cuánto Afecto?:">
 			<components:TextInput id="txtAffectation" width="400"/>
 		</mx:FormItem>
-		<mx:FormItem label="Causas de la Ocurrencia:">
+		<mx:FormItem required="true" label="Causas de la Ocurrencia:">
 			<components:TextArea id="txtCauses" width="520"/>
 		</mx:FormItem>
-		<mx:FormItem label="Acción Inmediata:">
+		<mx:FormItem required="true" label="Acción Inmediata:">
 			<components:TextArea id="txtEstablished" width="520"/>
 		</mx:FormItem>
-		<mx:FormItem label="Observaciones:">
+		<mx:FormItem required="true" label="Observaciones:">
 			<components:TextArea id="txtObservations" width="520"/>
 		</mx:FormItem>
-		<mx:FormItem label="Requiere Acción Preventiva-Correctiva:">
+		<mx:FormItem required="true" label="Requiere Acción Preventiva-Correctiva:">
 			<mx:CheckBox id="chkCorrectiveAction"/>
 		</mx:FormItem>
 		<mx:FormItem direction="horizontal">

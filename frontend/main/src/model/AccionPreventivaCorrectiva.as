@@ -5,6 +5,7 @@ package model
 	{
 		public var id:*;
 		public var noConformidad:NoConformidad;
+		public var sugerencia:Sugerencia;
 		public var fechaApertura:Date;
 		public var tipoAccion:TipoAccion;
 		public var fuenteNoConformidad:FuenteNoConformidad;

@@ -213,8 +213,8 @@
 				validators.setRestrictor(txtCode, "generic");
 				validators.setRestrictor(txtFamily, "generic");
 				validators.setRestrictor(txtDescription, "generic");
-				validators.setRestrictor((txtSerie, "generic");
-				validators.setRestrictor((txtTrade, "generic");
+				validators.setRestrictor(txtSerie, "generic");
+				validators.setRestrictor(txtTrade, "generic");
 				validators.setRestrictor(txtModel, "generic");
 				validators.setRestrictor(txtCertificateNumber, "generic");
 				validators.crearValidadorRestrictor("numberCosto",ValidadorDecimal.nombre, 9, 2);

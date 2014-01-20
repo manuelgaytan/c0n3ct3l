@@ -371,17 +371,21 @@
 			<components:TextInput id="txtID" width="80" textAlign="right"
 								  editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Pago de Viáticos:">
+		<mx:FormItem label="Pago de Viáticos:"/>
+		<mx:VBox>
 			<pagoviaticos:Consult id="perDiemPaymentConsult" itemDetail="perDiemPaymentConsult_perDiemPaymentDetailHandler(event)"
 											readMode="true"/>
 			<mx:Button id="btnViewPerDiemPayment" label="Ver Pago Viáticos" click="btnViewPerDiemPayment_clickHandler(event)"/>
-		</mx:FormItem>
+		</mx:VBox>
 		<mx:FormItem label="Fecha:">
 			<components:TextInput id="txtDate" editable="false" width="85"/>
 		</mx:FormItem>
 		<mx:FormItem label="Proyectos:" direction="horizontal"/>
-		<proyectos:Consult id="projectsConsult"
-						   height="90"/>
+		<mx:VBox width="800">
+			<mx:VBox width="100%" height="100%" verticalGap="5">
+				<proyectos:Consult id="projectsConsult" height="105"/>
+			</mx:VBox>
+		</mx:VBox>
 		<mx:FormItem label="Responsable Viático:">
 			<mx:List id="lstApplicantsNames" labelFunction="labelFunctionSolicitante" 
 					 width="300" change="lstApplicantsNames_changeHandler(event)"/>

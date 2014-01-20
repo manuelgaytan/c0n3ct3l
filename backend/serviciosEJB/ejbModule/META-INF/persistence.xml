@@ -226,6 +226,8 @@
 		<class>mx.com.gahm.conenctel.entities.SolicitanteSolicitudViaticosDO</class>
 		<class>mx.com.gahm.conenctel.entities.ComentarioSistemasGestionDO</class>
 		<class>mx.com.gahm.conenctel.entities.ComentarioSugerenciaDO</class>
+		<class>mx.com.gahm.conenctel.entities.FacturaProveedorPagoProveedorDO</class>
+		<class>mx.com.gahm.conenctel.entities.NotaCreditoProveedorPagoProveedorDO</class>
 		<properties>
 			<property name="eclipselink.logging.level" value="FINE"/> 
 			<property name="eclipselink.logging.parameters" value="true"/>

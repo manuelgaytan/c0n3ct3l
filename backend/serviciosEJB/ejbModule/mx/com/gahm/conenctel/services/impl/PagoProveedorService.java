@@ -14,6 +14,8 @@ import mx.com.gahm.conenctel.entities.ComentarioCuentasPagarFacturacionDO;
 import mx.com.gahm.conenctel.entities.ComentarioPagoProveedorDO;
 import mx.com.gahm.conenctel.entities.ComentarioTesoreriaDO;
 import mx.com.gahm.conenctel.entities.FacturaProveedorDO;
+import mx.com.gahm.conenctel.entities.FacturaProveedorPagoProveedorDO;
+import mx.com.gahm.conenctel.entities.NotaCreditoProveedorPagoProveedorDO;
 import mx.com.gahm.conenctel.entities.PagoProveedorDO;
 import mx.com.gahm.conenctel.services.IPagoProveedorService;
 
@@ -49,14 +51,44 @@ public class PagoProveedorService implements IPagoProveedorService{
 	@Override
 	public PagoProveedorDO save(PagoProveedorDO item) {
 		List<ComentarioPagoProveedorDO> comentarios = item.getComentariosPagoProveedor();
+		List<FacturaProveedorPagoProveedorDO> facturasProveedor = item.getFacturasProveedor();
+		List<NotaCreditoProveedorPagoProveedorDO> notasCreditoProveedor = item.getNotasCreditoProveedor();
 		item.setComentariosPagoProveedor(null);
+		item.setFacturasProveedor(null);
+		item.setNotasCreditoProveedor(null);
 		entityManager.persist(item);
 		if(comentarios != null){
 			saveComentarios(item,comentarios);
 		}
+		saveFacturasProveedor(item, facturasProveedor);
+		saveNotasCreditoProveedor(item, notasCreditoProveedor);
 		return item;
 	}
 	
+	private void saveNotasCreditoProveedor(PagoProveedorDO item,
+			List<NotaCreditoProveedorPagoProveedorDO> notasCreditoProveedor) {
+		if( notasCreditoProveedor == null ){
+			return;
+		}
+		for (NotaCreditoProveedorPagoProveedorDO dato : notasCreditoProveedor) {
+			dato.setPagoProveedor( item );
+			entityManager.persist( dato );
+		}
+		item.setNotasCreditoProveedor(notasCreditoProveedor);
+	}
+
+	private void saveFacturasProveedor(PagoProveedorDO item,
+			List<FacturaProveedorPagoProveedorDO> facturasProveedor) {
+		if( facturasProveedor == null ){
+			return;
+		}
+		for (FacturaProveedorPagoProveedorDO dato : facturasProveedor) {
+			dato.setPagoProveedor( item );
+			entityManager.persist( dato );
+		}
+		item.setFacturasProveedor(facturasProveedor);
+	}
+
 	private void saveComentarios(PagoProveedorDO item,List<ComentarioPagoProveedorDO> comentarios){
 		if( comentarios == null ){
 			return;
@@ -74,15 +106,41 @@ public class PagoProveedorService implements IPagoProveedorService{
 	@Override
 	public PagoProveedorDO update(PagoProveedorDO item) {
 		deleteComentarios(item.getId());
+		deleteFacturasProveedor(item.getId());
+		deleteNotasCreditoProveedor(item.getId());
 		List<ComentarioPagoProveedorDO> comentarios =item.getComentariosPagoProveedor();
+		List<FacturaProveedorPagoProveedorDO> facturasProveedor = item.getFacturasProveedor();
+		List<NotaCreditoProveedorPagoProveedorDO> notasCreditoProveedor = item.getNotasCreditoProveedor();
 		item.setComentariosPagoProveedor(null);
+		item.setFacturasProveedor(null);
+		item.setNotasCreditoProveedor(null);
 		entityManager.merge(item);
 		if( comentarios!=null ){
 			saveComentarios(item,comentarios);
 		}
+		saveFacturasProveedor(item, facturasProveedor);
+		saveNotasCreditoProveedor(item, notasCreditoProveedor);
 		return item;
 	}
 	
+	private void deleteNotasCreditoProveedor(Integer id) {
+		PagoProveedorDO pagoProveedor = getItem(id);
+		if( pagoProveedor != null && pagoProveedor.getNotasCreditoProveedor() != null ){
+			for (NotaCreditoProveedorPagoProveedorDO dato : pagoProveedor.getNotasCreditoProveedor()) {
+				entityManager.remove(dato);
+			}
+		}
+	}
+
+	private void deleteFacturasProveedor(Integer id) {
+		PagoProveedorDO pagoProveedor = getItem(id);
+		if( pagoProveedor != null && pagoProveedor.getFacturasProveedor() != null ){
+			for (FacturaProveedorPagoProveedorDO dato : pagoProveedor.getFacturasProveedor()) {
+				entityManager.remove(dato);
+			}
+		}
+	}
+
 	private void deleteComentarios(Integer idPago){
 		PagoProveedorDO pago=getItem(idPago);
 		if( pago.getComentariosPagoProveedor() != null ){

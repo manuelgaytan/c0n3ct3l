@@ -2554,6 +2554,52 @@
 	PRIMARY KEY (id)
 	);
 
+	CREATE TABLE SolicitudPermiso
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_contratacion INT(11) UNSIGNED NOT NULL,
+	fecha DATE NOT NULL,
+	fk_forma_pago_prenomina INT(11) UNSIGNED NOT NULL,
+	fecha_hora_salida DATETIME NOT NULL,
+	fecha_hora_retorno DATETIME NOT NULL,
+	fk_permiso_sin_goce_sueldo INT(11) UNSIGNED NOT NULL,
+	fk_permiso_con_goce_sueldo INT(11) UNSIGNED NOT NULL,
+	visto_bueno_jefe_inmediato BOOLEAN NOT NULL,
+	autorizacion BOOLEAN NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE ComentarioRecursosHumanos
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fecha_captura DATE NOT NULL,
+	fk_usuario INT(11) UNSIGNED NOT NULL,
+	comentario VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE ComentarioSolicitudPermiso
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_solicitud_permiso INT(11) UNSIGNED NOT NULL,
+	fk_comentario_recursos_humanos INT(11) UNSIGNED NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE PermisoSinGoceSueldo
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	permiso VARCHAR(100) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE PermisoConGoceSueldo
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	permiso VARCHAR(100) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
 	ALTER TABLE Cliente ADD FOREIGN KEY id_contacto_idxfk (id_contacto) REFERENCES Contacto (id);
 
 	ALTER TABLE Proyecto ADD FOREIGN KEY id_categoria_proyecto_idxfk (id_categoria_proyecto) REFERENCES CategoriaProyecto (id);
@@ -3220,6 +3266,22 @@
 
 	ALTER TABLE AccionPreventivaCorrectiva ADD FOREIGN KEY fk_sugerencia_idxfk_2 (fk_sugerencia) REFERENCES Sugerencia (id);
 
+	ALTER TABLE ComentarioSistemasGestion ADD FOREIGN KEY fk_usuario_idxfk_9 (fk_usuario) REFERENCES Usuario (id);
+
+	ALTER TABLE ComentarioRecursosHumanos ADD FOREIGN KEY fk_usuario_idxfk_10 (fk_usuario) REFERENCES Usuario (id);
+
+	ALTER TABLE ComentarioSolicitudPermiso ADD FOREIGN KEY fk_solicitud_permiso_idxfk (fk_solicitud_permiso) REFERENCES SolicitudPermiso (id);
+
+	ALTER TABLE ComentarioSolicitudPermiso ADD FOREIGN KEY fk_comentario_recursos_humanos_idxfk (fk_comentario_recursos_humanos) REFERENCES ComentarioRecursosHumanos (id);
+
+	ALTER TABLE SolicitudPermiso ADD FOREIGN KEY fk_contratacion_idxfk_6 (fk_contratacion) REFERENCES Contratacion (id);
+
+	ALTER TABLE SolicitudPermiso ADD FOREIGN KEY fk_forma_pago_prenomina_idxfk_2 (fk_forma_pago_prenomina) REFERENCES FormaPagoPrenomina (id);
+
+	ALTER TABLE SolicitudPermiso ADD FOREIGN KEY fk_permiso_sin_goce_sueldo_idxfk (fk_permiso_sin_goce_sueldo) REFERENCES PermisoSinGoceSueldo (id);
+
+	ALTER TABLE SolicitudPermiso ADD FOREIGN KEY fk_permiso_con_goce_sueldo_idxfk (fk_permiso_con_goce_sueldo) REFERENCES PermisoConGoceSueldo (id);
+
 	/* Perfiles */
 	INSERT INTO Perfil
 	VALUES (1, 'Director General');
@@ -3244,7 +3306,7 @@
 	INSERT INTO Perfil
 	VALUES (11, 'Contabilidad');
 	INSERT INTO Perfil
-	VALUES (12, 'Tesorerí­a');
+	VALUES (12, 'Tesorería');
 	INSERT INTO Perfil
 	VALUES (13, 'Recursos Humanos');
 	INSERT INTO Perfil
@@ -3663,8 +3725,10 @@
 	VALUES (1, 'Proveedores');
 	INSERT INTO TipoColaborador
 	VALUES (2, 'Nómina');
+	/*
 	INSERT INTO TipoColaborador
 	VALUES (3, 'Externos');
+	*/
 	
 	/* Colaborador */
 	/*
@@ -3679,7 +3743,7 @@
 	*/
 	/* Aplica */
 	INSERT INTO Aplica
-	VALUES (1, 'Sí­');
+	VALUES (1, 'Sí');
 	INSERT INTO Aplica
 	VALUES (2, 'No');
 	
@@ -3735,7 +3799,7 @@
 	
 	/* Grupo Familia D */
 	INSERT INTO GrupoFamiliaD
-	VALUES (1, 'Papelerí­a');
+	VALUES (1, 'Papelería');
 	INSERT INTO GrupoFamiliaD
 	VALUES (2, 'Limpieza');
 	INSERT INTO GrupoFamiliaD
@@ -3883,7 +3947,7 @@
 	INSERT INTO TipoAlmacen
 	VALUES (7, 'Software');
 	INSERT INTO TipoAlmacen
-	VALUES (8, 'Telefoní­a Móvil-Fija');
+	VALUES (8, 'Telefonía Móvil-Fija');
 	INSERT INTO TipoAlmacen
 	VALUES (9, 'Solicitudes de Almacén');
 	
@@ -3917,7 +3981,7 @@
 	INSERT INTO ServicioSolicitado
 	VALUES (6, 'Software');
 	INSERT INTO ServicioSolicitado
-	VALUES (7, 'Telefoní­a Móvil-Fija');
+	VALUES (7, 'Telefonía Móvil-Fija');
 	INSERT INTO ServicioSolicitado
 	VALUES (8, 'Equipo de Transporte');
 	INSERT INTO ServicioSolicitado
@@ -3945,7 +4009,7 @@
 	
 	/* Tipo Documento Almacen */
 	INSERT INTO TipoDocumentoAlmacen
-	VALUES (1, 'Poliza de Garantí­a');
+	VALUES (1, 'Poliza de Garantía');
 	INSERT INTO TipoDocumentoAlmacen
 	VALUES (2, 'Poliza de Seguro');
 	INSERT INTO TipoDocumentoAlmacen
@@ -3957,13 +4021,13 @@
 	
 	/* Tipo Entregable */
 	INSERT INTO TipoEntregable
-	VALUES (1, 'Entregable Ingenierí­a');
+	VALUES (1, 'Entregable Ingeniería');
 	INSERT INTO TipoEntregable
 	VALUES (2, 'Site Survey');
 	INSERT INTO TipoEntregable
 	VALUES (3, 'Planos');
 	INSERT INTO TipoEntregable
-	VALUES (4, 'Ingenierí­a');
+	VALUES (4, 'Ingeniería');
 	INSERT INTO TipoEntregable
 	VALUES (5, 'Visita Factibilidad');
 	INSERT INTO TipoEntregable
@@ -3987,7 +4051,7 @@
 
 	/* Seguimiento */
 	INSERT INTO Seguimiento
-	VALUES (1, 'Sí­');
+	VALUES (1, 'Sí');
 	INSERT INTO Seguimiento
 	VALUES (2, 'No');
 	INSERT INTO Seguimiento
@@ -4000,7 +4064,7 @@
 	/* Compras */
 	
 	INSERT INTO TipoPersona
-	VALUES (1, 'Fí­sica');
+	VALUES (1, 'Física');
 	INSERT INTO TipoPersona
 	VALUES (2, 'Moral');
 	
@@ -4125,7 +4189,7 @@
 	INSERT INTO MedioTransporte
 	VALUES (2, 'Autobús');
 	INSERT INTO MedioTransporte
-	VALUES (3, 'Vehí­culo');
+	VALUES (3, 'Vehículo');
 	INSERT INTO MedioTransporte
 	VALUES (4, 'Otro');
 
@@ -4156,7 +4220,7 @@
 	INSERT INTO DescripcionFondoFijoCajaChica
 	VALUES (8, 'Complemento Viático', 2);
 	INSERT INTO DescripcionFondoFijoCajaChica
-	VALUES (9, 'Papelerí­a', 2);
+	VALUES (9, 'Papelería', 2);
 	INSERT INTO DescripcionFondoFijoCajaChica
 	VALUES (10, 'Combustibles', 2);
 	INSERT INTO DescripcionFondoFijoCajaChica
@@ -4322,11 +4386,11 @@
 	INSERT INTO UltimoGradoEstudios
 	VALUES (4, 'Licenciatura');
 	INSERT INTO UltimoGradoEstudios
-	VALUES (5, 'Tí­tulado');
+	VALUES (5, 'Títulado');
 	INSERT INTO UltimoGradoEstudios
 	VALUES (6, 'Posgrado');
 	INSERT INTO UltimoGradoEstudios
-	VALUES (7, 'Maestrí­a');
+	VALUES (7, 'Maestría');
 	INSERT INTO UltimoGradoEstudios
 	VALUES (8, 'Técnico');
 	INSERT INTO UltimoGradoEstudios
@@ -4337,7 +4401,7 @@
 	VALUES (11, 'Ninguno');
 
 	INSERT INTO EstadoAcademico
-	VALUES (1, 'Tí­tulado');
+	VALUES (1, 'Títulado');
 	INSERT INTO EstadoAcademico
 	VALUES (2, 'Pasante');
 	INSERT INTO EstadoAcademico
@@ -4469,7 +4533,7 @@
 	VALUES (2, 'Sin Goce de Sueldo');
 
 	INSERT INTO TipoSancion
-	VALUES (1, 'Descuento 1 Dí­a');
+	VALUES (1, 'Descuento 1 Día');
 	INSERT INTO TipoSancion
 	VALUES (2, 'Rescisión');
 	INSERT INTO TipoSancion
@@ -4532,7 +4596,7 @@
 	INSERT INTO AreaLevantaNoConformidad
 	VALUES (13, 'Supervisión de Sistemas y Comunicación');
 	INSERT INTO AreaLevantaNoConformidad
-	VALUES (14, 'Ingenierí­a');
+	VALUES (14, 'Ingeniería');
 	INSERT INTO AreaLevantaNoConformidad
 	VALUES (15, 'Coordinador de Acceso');
 	INSERT INTO AreaLevantaNoConformidad
@@ -4551,7 +4615,7 @@
 	VALUES (2, 'Correctiva');
 
 	INSERT INTO FuenteNoConformidad
-	VALUES (1, 'Auditorí­a Interna');
+	VALUES (1, 'Auditoría Interna');
 	INSERT INTO FuenteNoConformidad
 	VALUES (2, 'Indicadores de Gestión');
 	INSERT INTO FuenteNoConformidad
@@ -4565,7 +4629,7 @@
 	INSERT INTO FuenteNoConformidad
 	VALUES (7, 'Otra');
 	INSERT INTO FuenteNoConformidad
-	VALUES (8, 'Auditorí­a Externa');
+	VALUES (8, 'Auditoría Externa');
 
 	INSERT INTO EstadoAccionPreventivaCorrectiva
 	VALUES (1, 'Cerrada');
@@ -4590,7 +4654,7 @@
 	INSERT INTO FormaAuditoria
 	VALUES (3, 'Check List de Proyecto');
 	INSERT INTO FormaAuditoria
-	VALUES (4, 'Reporte de Auditorí­a');
+	VALUES (4, 'Reporte de Auditoría');
 	INSERT INTO FormaAuditoria
 	VALUES (5, 'Reporte de Supervisión');
 	INSERT INTO FormaAuditoria
@@ -4651,6 +4715,33 @@
 	VALUES (1, 'LOCAL');
 	INSERT INTO TipoServicio
 	VALUES (2, 'FORANEO');
+
+	INSERT INTO PermisoSinGoceSueldo
+	VALUES (1, 'Particular');
+	INSERT INTO PermisoSinGoceSueldo
+	VALUES (2, 'Capacitación No Oficializada');
+	INSERT INTO PermisoSinGoceSueldo
+	VALUES (3, 'Sin Notificación');
+	INSERT INTO PermisoSinGoceSueldo
+	VALUES (4, 'Otros');
+	INSERT INTO PermisoSinGoceSueldo
+	VALUES (5, 'N/A');
+
+	INSERT INTO PermisoConGoceSueldo
+	VALUES (1, 'Fallecimiento');
+	INSERT INTO PermisoConGoceSueldo
+	VALUES (2, 'Enfermedad');
+	INSERT INTO PermisoConGoceSueldo
+	VALUES (3, 'Pre Natal');
+	INSERT INTO PermisoConGoceSueldo
+	VALUES (4, 'Post Natal');
+	INSERT INTO PermisoConGoceSueldo
+	VALUES (5, 'Capacitación Oficializada');
+	INSERT INTO PermisoConGoceSueldo
+	VALUES (6, 'Citación o Instrucción Militar');
+	INSERT INTO PermisoConGoceSueldo
+	VALUES (7, 'N/A');
+
 	/*
 	INSERT INTO 
 	VALUES (1, '');

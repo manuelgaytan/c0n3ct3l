@@ -20,8 +20,6 @@
 <%@page import="net.sf.jasperreports.engine.JasperCompileManager"%>
 <%@page import="net.sf.jasperreports.engine.JasperReport"%>
 <%@page import="net.sf.jasperreports.engine.JRException"%>
-<%@page import="com.archivos.utils.GenerarReporte"%>
-<%@page import="com.archivos.utils.ClienteDTO"%>
 <%@page import="javax.naming.InitialContext"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.Date"%>

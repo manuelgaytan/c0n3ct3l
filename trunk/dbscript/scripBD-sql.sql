@@ -2600,6 +2600,28 @@
 	PRIMARY KEY (id)
 	);
 
+	CREATE TABLE SolicitudVacaciones
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_contratacion INT(11) UNSIGNED NOT NULL,
+	fecha DATE NOT NULL,
+	fk_variacion INT(11) UNSIGNED NOT NULL,
+	dias_correspondientes INTEGER(5),
+	fecha_inicio DATE NOT NULL,
+	fecha_fin DATE NOT NULL,
+	visto_bueno_jefe_inmediato BOOLEAN NOT NULL,
+	autorizacion BOOLEAN NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE ComentarioSolicitudVacaciones
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_solicitud_vacaciones INT(11) UNSIGNED NOT NULL,
+	fk_comentario_recursos_humanos INT(11) UNSIGNED NOT NULL,
+	PRIMARY KEY (id)
+	);
+
 	ALTER TABLE Cliente ADD FOREIGN KEY id_contacto_idxfk (id_contacto) REFERENCES Contacto (id);
 
 	ALTER TABLE Proyecto ADD FOREIGN KEY id_categoria_proyecto_idxfk (id_categoria_proyecto) REFERENCES CategoriaProyecto (id);
@@ -3281,6 +3303,14 @@
 	ALTER TABLE SolicitudPermiso ADD FOREIGN KEY fk_permiso_sin_goce_sueldo_idxfk (fk_permiso_sin_goce_sueldo) REFERENCES PermisoSinGoceSueldo (id);
 
 	ALTER TABLE SolicitudPermiso ADD FOREIGN KEY fk_permiso_con_goce_sueldo_idxfk (fk_permiso_con_goce_sueldo) REFERENCES PermisoConGoceSueldo (id);
+
+	ALTER TABLE SolicitudVacaciones ADD FOREIGN KEY fk_contratacion_idxfk_7 (fk_contratacion) REFERENCES Contratacion (id);
+
+	ALTER TABLE SolicitudVacaciones ADD FOREIGN KEY fk_variacion_idxfk (fk_variacion) REFERENCES Variacion (id);
+	
+	ALTER TABLE ComentarioSolicitudVacaciones ADD FOREIGN KEY fk_solicitud_vacaciones_idxfk (fk_solicitud_vacaciones) REFERENCES SolicitudVacaciones (id);
+
+	ALTER TABLE ComentarioSolicitudVacaciones ADD FOREIGN KEY fk_comentario_recursos_humanos_idxfk_2 (fk_comentario_recursos_humanos) REFERENCES ComentarioRecursosHumanos (id);
 
 	/* Perfiles */
 	INSERT INTO Perfil

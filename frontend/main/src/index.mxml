@@ -6,6 +6,13 @@
 				creationComplete="creationCompleteHandler(event)">
 	<mx:Script>
 		<![CDATA[
+			import model.SolicitudVacaciones;
+			import model.ComentarioSolicitudVacaciones;
+			import model.ComentarioSolicitudPermiso;
+			import model.ComentarioRecursosHumanos;
+			import model.PermisoConGoceSueldo;
+			import model.PermisoSinGoceSueldo;
+			import model.SolicitudPermiso;
 			import components.ComboList;
 			import components.Comments;
 			import components.DateField;
@@ -551,6 +558,13 @@
 			private var tipoServicio:TipoServicio;
 			private var facturaProveedorPagoProveedor:FacturaProveedorPagoProveedor;
 			private var notaCreditoProveedorPagoProveedor:NotaCreditoProveedorPagoProveedor;
+			private var solicitudPermiso:SolicitudPermiso;
+			private var permisoSinGoceSueldo:PermisoSinGoceSueldo;
+			private var permisoConGoceSueldo:PermisoConGoceSueldo;
+			private var comentarioRecursosHumanos:ComentarioRecursosHumanos;
+			private var comentarioSolicitudPermiso:ComentarioSolicitudPermiso;
+			private var solicitudVacaciones:SolicitudVacaciones;
+			private var comentarioSolicitudVacaciones:ComentarioSolicitudVacaciones;
 						
 			protected function login_readyHandler(event:ModuleEvent):void
 			{

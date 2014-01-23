@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+		 label="Consulta"
+		 horizontalAlign="right"
+		 creationComplete="creationCompleteHandler(event)" xmlns:components="components.*">
+	<mx:Script>
+		<![CDATA[
+			import events.GenericEvent;
+			
+			import model.RequisicionCompra;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			[Bindable]
+			private var items:ArrayCollection = null;
+			
+			private var requisicionCompra:RequisicionCompra;
+			
+			protected function responseGetAll_resultHandler(event:ResultEvent):void
+			{
+				items = event.result as ArrayCollection;
+			}
+			
+			protected function requisicionService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.executeQuery();
+			}
+			
+			protected function datagrid_doubleClickHandler(event:MouseEvent):void
+			{
+				var item:RequisicionCompra = this.datagrid.selectedItem as RequisicionCompra;
+				if( item == null ){
+					return;
+				}
+				this.responseGetItem.token = this.requisicionService.getItem( item.id );
+			}
+			
+			protected function responseGetItem_resultHandler(event:ResultEvent):void
+			{
+				var item:RequisicionCompra = event.result as RequisicionCompra;
+				if( item == null ){
+					return;
+				}
+				var genericEvent:GenericEvent = new GenericEvent("purchaseRequisitionDetail");
+				genericEvent.information = item;
+				this.dispatchEvent( genericEvent );
+			}
+			
+			public function executeQuery():void
+			{
+				this.responseGetAll.token = this.requisicionService.getAll();
+			}
+			
+			protected function btnDelete_clickHandler(event:MouseEvent):void
+			{
+				if( this.datagrid.selectedItems == null ||
+					this.datagrid.selectedItems.length == 0 ){
+					Util.showErrorMessage("Debe seleccionar elementos de la tabla.");
+					return;
+				}
+				Alert.show("Confirme si desea eliminar los elementos.","Advertencia",Alert.YES+Alert.NO,this, deleteItems);
+			}
+			
+			private function deleteItems(event:CloseEvent):void
+			{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var items:ArrayCollection = Util.selectedIDs( this.datagrid.selectedItems ); 
+				this.responseDeleteItems.token = this.requisicionService.deleteItems( items );
+			}
+			
+			protected function responseDeleteItems_resultHandler(event:ResultEvent):void
+			{
+				this.executeQuery();
+			}
+			
+			private function labelFunctionGenerico(item:Object, column:DataGridColumn):String{
+				return Util.extractToText( item, column.dataField );
+			}
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="purchaseRequisitionDetail", type="events.GenericEvent")]
+	</mx:Metadata>
+	<mx:DataGrid id="datagrid" width="100%" height="100%" dataProvider="{items}"
+				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
+				 allowMultipleSelection="true">
+		<mx:columns>
+			<mx:DataGridColumn id="dtgID" headerText="Folio"
+							   dataField="id"
+							   width="80"
+							   textAlign="right"/>
+			<mx:DataGridColumn id="dtgApplicationDate" headerText="{'Fecha de\nSolicitud'}"
+							   width="80"
+							   dataField="fechaSolicitud"
+							   labelFunction="{Util.labelFunctionDate}"
+							   textAlign="center"/>
+			<mx:DataGridColumn id="dtgMotive" headerText="Motivo"
+							   dataField="motivo"
+							   width="200"/>
+			<mx:DataGridColumn id="dtgPriority" headerText="Prioridad"
+							   dataField="prioridad.etiqueta"
+							   width="80"
+							   textAlign="center"/>
+			<mx:DataGridColumn id="dtgApplicationArea" headerText="{'Área \nSolicitante'}"
+							   dataField="areaSolicitante.etiqueta"
+							   width="100"
+							   />
+			<mx:DataGridColumn id="dtgSite" headerText="{'Central\no Sitio'}"
+							   dataField="centralSitio"
+							   width="100"
+							   labelFunction="labelFunctionGenerico"/>
+			<mx:DataGridColumn id="dtgStatus" headerText="Estatus"
+							   dataField="estatusRequisicionCompra.estatus"
+							   labelFunction="labelFunctionGenerico"
+							   width="80"
+							   textAlign="center"/>
+			<mx:DataGridColumn headerText="{'Fecha del\nEstatus de\nRequisición'}"
+							   width="80"
+							   dataField="fechaEstatusRequisicion"
+							   labelFunction="{Util.labelFunctionDate}"
+							   textAlign="center"/>
+		</mx:columns>
+	</mx:DataGrid>
+	<mx:HBox>
+		<components:ExportButton datagrid="{this.datagrid}"/>
+		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>
+	</mx:HBox>
+	<mx:RemoteObject id="requisicionService" destination="requisicionCompraService" fault="requisicionService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetAll" result="responseGetAll_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetItem" result="responseGetItem_resultHandler(event)"/>
+	<mx:CallResponder id="responseDeleteItems" result="responseDeleteItems_resultHandler(event)"/>
+</mx:VBox>

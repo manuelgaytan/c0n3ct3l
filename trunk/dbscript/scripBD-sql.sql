@@ -2087,7 +2087,7 @@
 	PRIMARY KEY (id)
 	);
 
-		CREATE TABLE Variacion
+	CREATE TABLE Variacion
 	(
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
 	tipo VARCHAR(100) NOT NULL UNIQUE,
@@ -3451,6 +3451,10 @@
 	VALUES (52, 'MinutaReunion');
 	INSERT INTO Pantalla
 	VALUES (53, 'GraficaEvaluacionFacturacionProyectosConectel');
+	INSERT INTO Pantalla
+	VALUES (54, 'SolicitudesPermiso');
+	INSERT INTO Pantalla
+	VALUES (55, 'SolicitudesVacaciones');
 	
 	/* Perfil-Pantalla */
 	INSERT INTO PerfilPantalla
@@ -3705,6 +3709,14 @@
 	VALUES (125, 13, 8);
 	INSERT INTO PerfilPantalla
 	VALUES (126, 14, 8);
+	INSERT INTO PerfilPantalla
+	VALUES (127, 1, 54);
+	INSERT INTO PerfilPantalla
+	VALUES (128, 1, 55);
+	INSERT INTO PerfilPantalla
+	VALUES (129, 13, 54);
+	INSERT INTO PerfilPantalla
+	VALUES (130, 13, 55);
 
 	/* Usuarios */
 	INSERT INTO Usuario

@@ -114,6 +114,12 @@
 					return datosGenerales.apellidoPaterno + " " + datosGenerales.nombres;
 				}
 			}
+			
+			public function setDataAndSelected( data:ArrayCollection ):void{
+				this.datagrid.dataProvider = data;
+				this.datagrid.selectedIndex = 0;
+				this.datagrid.dispatchEvent( new MouseEvent( MouseEvent.DOUBLE_CLICK ) );
+			}
 		]]>
 	</mx:Script>
 	<mx:Metadata>

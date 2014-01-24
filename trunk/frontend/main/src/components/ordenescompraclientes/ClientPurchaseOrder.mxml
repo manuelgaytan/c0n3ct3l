@@ -75,7 +75,7 @@
 				this.chbPurchaseOrder.selected = this._item.ordenCompra;
 				this.txtPurchaseOrderNumber.text = this._item.numeroOrdenCompra;
 				this.dtfPurchaseOrderDate.selectedDate = this._item.fechaOrdenCompra;
-				this.txtItem.text = this._item.item;
+				this.txtItem.text = Util.extractToText( this._item, "partida" );
 				this.txtPurchaseOrderCost.text = this._item.costoOrdenCompra.toString();
 				this.setCommercialCost(this._item.proyecto);
 				if( Util.isFill( this.cmbCostValidationStatus ) && this._item.validacionCosto != null ){
@@ -102,7 +102,7 @@
 				clientPurchaseOrder.ordenCompra = this.chbPurchaseOrder.selected;
 				clientPurchaseOrder.numeroOrdenCompra = Util.validateEmpty( this.txtPurchaseOrderNumber.text );
 				clientPurchaseOrder.fechaOrdenCompra = this.dtfPurchaseOrderDate.selectedDate;
-				clientPurchaseOrder.item = Util.validateEmpty( this.txtItem.text );
+				clientPurchaseOrder.partida = Util.validateEmpty( this.txtItem.text );
 				clientPurchaseOrder.costoOrdenCompra = Util.stringToNumber( this.txtPurchaseOrderCost.text );
 				clientPurchaseOrder.validacionCosto = Util.validateCombo( this.cmbCostValidationStatus ) as EstadoValidacionCosto;
 				clientPurchaseOrder.comentarioValidacionCostoOrdenCompraCliente = this.commentsCostValidation.getCommentsAsInWith("model.ComentarioValidacionAdministrativa","model.ComentarioValidacionCostoOrdenCompraCliente","comentarioValidacionAdministrativa");

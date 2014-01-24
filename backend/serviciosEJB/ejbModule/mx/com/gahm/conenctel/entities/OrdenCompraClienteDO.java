@@ -43,7 +43,7 @@ public class OrdenCompraClienteDO implements java.io.Serializable {
 	@Column(name = "fecha_orden_compra", nullable = false, length = 10)
 	private Date fechaOrdenCompra;
 	@Column(name = "item", nullable = false)
-	private String item;
+	private String partida;
 	@Column(name = "costo_orden_compra", nullable = false)
 	private Double costoOrdenCompra;
 	@ManyToOne
@@ -81,7 +81,7 @@ public class OrdenCompraClienteDO implements java.io.Serializable {
 	 */
 	public OrdenCompraClienteDO(Long id, ProyectoDO proyecto,
 			Boolean ordenCompra, String numeroOrdenCompra, Date fechaOrdenCompra,
-			String item, 
+			String partida, 
 			Double costoOrdenCompra, ValidacionCostoDO validacionCosto,
 			EstadoOrdenCompraDO estadoOrdenCompra) {
 		super();
@@ -90,7 +90,7 @@ public class OrdenCompraClienteDO implements java.io.Serializable {
 		this.ordenCompra = ordenCompra;
 		this.numeroOrdenCompra = numeroOrdenCompra;
 		this.fechaOrdenCompra = fechaOrdenCompra;
-		this.item = item;
+		this.partida = partida;
 		this.costoOrdenCompra = costoOrdenCompra;
 		this.validacionCosto = validacionCosto;
 		this.estadoOrdenCompra = estadoOrdenCompra;
@@ -186,12 +186,12 @@ public class OrdenCompraClienteDO implements java.io.Serializable {
 		this.leyenda = leyenda;
 	}
 
-	public String getItem() {
-		return item;
+	public String getPartida() {
+		return partida;
 	}
 
-	public void setItem(String item) {
-		this.item = item;
+	public void setPartida(String partida) {
+		this.partida = partida;
 	}
 
 }

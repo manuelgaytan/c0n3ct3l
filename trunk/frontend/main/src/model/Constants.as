@@ -1,5 +1,7 @@
 package model
 {
+	import mx.collections.ArrayCollection;
+
 	public class Constants
 	{
 		public static const IVA:Number = 0.16;
@@ -37,5 +39,18 @@ package model
 		public static var ID_MAQUILADORES:Number = 2;
 		public static var ID_CALIFICADOS:Number = 1;
 		
+		public static function getAMPM():ArrayCollection{
+			var data:ArrayCollection = new ArrayCollection();
+			var item:Catalogo = null;
+			item = new Catalogo();
+			item.id = 1;
+			item.etiqueta = "AM";
+			data.addItem( item );
+			item = new Catalogo();
+			item.id = 2;
+			item.etiqueta = "PM";
+			data.addItem( item );
+			return data;
+		}
 	}
 }

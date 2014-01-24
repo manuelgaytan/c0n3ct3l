@@ -209,20 +209,6 @@
 				}
 			}
 			
-			private function getAMPM():ArrayCollection{
-				var data:ArrayCollection = new ArrayCollection();
-				var item:Catalogo = null;
-				item = new Catalogo();
-				item.id = 1;
-				item.etiqueta = "AM";
-				data.addItem( item );
-				item = new Catalogo();
-				item.id = 2;
-				item.etiqueta = "PM";
-				data.addItem( item );
-				return data;
-			}
-			
 			protected function btnPrint_clickHandler(event:MouseEvent):void
 			{
 				var params:Array = [{key:"id", value:this._item.id}];
@@ -247,7 +233,7 @@
 		<mx:FormItem label="Hora:" direction="horizontal">
 			<mx:NumericStepper id="nstHour" minimum="1" maximum="12" textAlign="right"/>
 			<mx:NumericStepper id="nstMinutes" minimum="0" maximum="59" textAlign="right"/>
-			<mx:ComboBox id="cmbAMPM" dataProvider="{this.getAMPM()}"
+			<mx:ComboBox id="cmbAMPM" dataProvider="{Constants.getAMPM()}"
 						 labelField="etiqueta"/>
 		</mx:FormItem>
 		<mx:FormItem required="true" label="Lugar:">

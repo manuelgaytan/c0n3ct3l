@@ -155,8 +155,8 @@
 	</mx:DataGrid>
 	</mx:HBox>
 	<mx:HBox>
-		<components:ExportButton datagrid="{this.datagrid}"/>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>
+		<components:ExportButton datagrid="{this.datagrid}"/>
 	</mx:HBox>
 	<mx:RemoteObject id="solicitudAlmacenService" destination="solicitudAlmacenService" fault="solicitudAlmacenService_faultHandler(event)"
 					 showBusyCursor="true"/>

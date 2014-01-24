@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
 		   width="780" height="500"
-		   xmlns:requisicionescompra="components.requisicionescompra.*"
+		   xmlns:solicitudespermiso="components.solicitudespermiso.*"
 		   creationComplete="creationCompleteHandler(event)">
 	<mx:Script>
 		<![CDATA[
 			import events.GenericEvent;
 			
-			import model.RequisicionCompra;
+			import model.SolicitudPermiso;
 			
 			import mx.events.FlexEvent;
 			
@@ -16,19 +16,19 @@
 				
 			}
 			
-			protected function consult_purchaseRequisitionDetailHandler(event:GenericEvent):void
+			protected function consult_requestPermissionDetailHandler(event:GenericEvent):void
 			{
-				this.detail.purchaseRequisition = event.information as model.RequisicionCompra;
+				this.detail.requestPermission = event.information as model.SolicitudPermiso;
 				this.navigator.selectedChild = this.detail;
 			}
 			
-			protected function register_purchaseRequisitionNewHandler(event:Event):void
+			protected function register_requestPermissionNewHandler(event:Event):void
 			{
 				this.navigator.selectedChild = this.consult;
 				this.consult.executeQuery();
 			}
 			
-			protected function detail_purchaseRequisitionUpdatedHandler(event:Event):void
+			protected function detail_requestPermissionUpdatedHandler(event:Event):void
 			{
 				this.navigator.selectedChild = this.consult;
 				this.consult.executeQuery();
@@ -36,8 +36,8 @@
 		]]>
 	</mx:Script>
 	<mx:TabNavigator id="navigator" width="100%" height="100%" creationPolicy="all">
-		<requisicionescompra:Consult id="consult" purchaseRequisitionDetail="consult_purchaseRequisitionDetailHandler(event)"/>
-		<requisicionescompra:PurchaseRequisition id="detail" update="true" purchaseRequisitionUpdated="detail_purchaseRequisitionUpdatedHandler(event)"/>
-		<requisicionescompra:PurchaseRequisition id="register" registrer="true" purchaseRequisitionNew="register_purchaseRequisitionNewHandler(event)"/>
+		<solicitudespermiso:Consult id="consult" requestPermissionDetail="consult_requestPermissionDetailHandler(event)"/>
+		<solicitudespermiso:RequestPermission id="detail" update="true" requestPermissionUpdated="detail_requestPermissionUpdatedHandler(event)"/>
+		<solicitudespermiso:RequestPermission id="register" registrer="true" requestPermissionNew="register_requestPermissionNewHandler(event)"/>
 	</mx:TabNavigator>
 </mx:Module>

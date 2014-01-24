@@ -7,7 +7,8 @@
 		<![CDATA[
 			import events.GenericEvent;
 			
-			import model.RequisicionCompra;
+			import model.Contratacion;
+			import model.SolicitudVacaciones;
 			import model.Util;
 			
 			import mx.collections.ArrayCollection;
@@ -20,7 +21,7 @@
 			[Bindable]
 			private var items:ArrayCollection = null;
 			
-			private var requisicionCompra:RequisicionCompra;
+			private var solicitudVacaciones:SolicitudVacaciones;
 			
 			protected function responseGetAll_resultHandler(event:ResultEvent):void
 			{
@@ -39,7 +40,7 @@
 			
 			protected function datagrid_doubleClickHandler(event:MouseEvent):void
 			{
-				var item:RequisicionCompra = this.datagrid.selectedItem as RequisicionCompra;
+				var item:SolicitudVacaciones = this.datagrid.selectedItem as SolicitudVacaciones;
 				if( item == null ){
 					return;
 				}
@@ -48,11 +49,11 @@
 			
 			protected function responseGetItem_resultHandler(event:ResultEvent):void
 			{
-				var item:RequisicionCompra = event.result as RequisicionCompra;
+				var item:SolicitudVacaciones = event.result as SolicitudVacaciones;
 				if( item == null ){
 					return;
 				}
-				var genericEvent:GenericEvent = new GenericEvent("purchaseRequisitionDetail");
+				var genericEvent:GenericEvent = new GenericEvent("rentalApplicationDetail");
 				genericEvent.information = item;
 				this.dispatchEvent( genericEvent );
 			}
@@ -89,12 +90,21 @@
 			private function labelFunctionGenerico(item:Object, column:DataGridColumn):String{
 				return Util.extractToText( item, column.dataField );
 			}
+			
+			private function labelFunctionNombreEmpleado(item:Object, column:DataGridColumn):String{
+				var contratacion:Contratacion = item as Contratacion;
+				if( contratacion == null ){
+					return "";
+				}
+				return RentalApplication.getEmployeeWholeName( contratacion );
+			}
 		]]>
 	</mx:Script>
 	<mx:Metadata>
-		[Event(name="purchaseRequisitionDetail", type="events.GenericEvent")]
+		[Event(name="rentalApplicationDetail", type="events.GenericEvent")]
 	</mx:Metadata>
-	<mx:DataGrid id="datagrid" width="100%" height="100%" dataProvider="{items}"
+	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
+	<mx:DataGrid id="datagrid" width="1120" height="100%" dataProvider="{items}"
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 				 allowMultipleSelection="true">
 		<mx:columns>
@@ -107,38 +117,56 @@
 							   dataField="fechaSolicitud"
 							   labelFunction="{Util.labelFunctionDate}"
 							   textAlign="center"/>
-			<mx:DataGridColumn id="dtgMotive" headerText="Motivo"
-							   dataField="motivo"
-							   width="200"/>
-			<mx:DataGridColumn id="dtgPriority" headerText="Prioridad"
-							   dataField="prioridad.etiqueta"
+			<mx:DataGridColumn headerText="{'Nombre del Empleado'}"
+							   labelFunction="labelFunctionNombreEmpleado"
+							   width="280"/>
+			<mx:DataGridColumn headerText="{'Fecha\nInicio\nContrato'}"
 							   width="80"
-							   textAlign="center"/>
-			<mx:DataGridColumn id="dtgApplicationArea" headerText="{'Área \nSolicitante'}"
-							   dataField="areaSolicitante.etiqueta"
-							   width="100"
-							   />
-			<mx:DataGridColumn id="dtgSite" headerText="{'Central\no Sitio'}"
-							   dataField="centralSitio"
-							   width="100"
-							   labelFunction="labelFunctionGenerico"/>
-			<mx:DataGridColumn id="dtgStatus" headerText="Estatus"
-							   dataField="estatusRequisicionCompra.estatus"
-							   labelFunction="labelFunctionGenerico"
-							   width="80"
-							   textAlign="center"/>
-			<mx:DataGridColumn headerText="{'Fecha del\nEstatus de\nRequisición'}"
-							   width="80"
-							   dataField="fechaEstatusRequisicion"
+							   dataField=""
 							   labelFunction="{Util.labelFunctionDate}"
 							   textAlign="center"/>
+			<mx:DataGridColumn headerText="Vacaciones"
+							   dataField="variacion.tipo"
+							   width="120"
+							   textAlign="center"/>
+			<mx:DataGridColumn headerText="{'Días\nCorrespondientes'}"
+							   dataField="diasCorrespondientes"
+							   width="120"
+							   />
+			<mx:DataGridColumn headerText="{'Inicio'}"
+							   width="80"
+							   dataField="fechaInicio"
+							   labelFunction="{Util.labelFunctionDate}"
+							   textAlign="center"/>
+			<mx:DataGridColumn headerText="{'Fin'}"
+							   width="80"
+							   dataField="fechaFin"
+							   labelFunction="{Util.labelFunctionDate}"
+							   textAlign="center"/>
+			<mx:DataGridColumn headerText="{'Vo. Bo.\nJefe Inmediato'}" editable="false" textAlign="center"
+							   dataField="vistoBuenoJefeInmediato" width="100">
+				<mx:itemRenderer>
+					<mx:Component>
+						<mx:CheckBox selected="{data.vistoBuenoJefeInmediato}" enabled="false"/>
+					</mx:Component>
+				</mx:itemRenderer>
+			</mx:DataGridColumn>
+			<mx:DataGridColumn headerText="{'Autorización'}" editable="false" textAlign="center"
+							   dataField="autorizacion" width="100">
+				<mx:itemRenderer>
+					<mx:Component>
+						<mx:CheckBox selected="{data.autorizacion}" enabled="false"/>
+					</mx:Component>
+				</mx:itemRenderer>
+			</mx:DataGridColumn>
 		</mx:columns>
 	</mx:DataGrid>
-	<mx:HBox>
-		<components:ExportButton datagrid="{this.datagrid}"/>
-		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>
 	</mx:HBox>
-	<mx:RemoteObject id="requisicionService" destination="requisicionCompraService" fault="requisicionService_faultHandler(event)"
+	<mx:HBox>
+		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>
+		<components:ExportButton datagrid="{this.datagrid}"/>
+	</mx:HBox>
+	<mx:RemoteObject id="requisicionService" destination="solicitudVacacionesService" fault="requisicionService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetAll" result="responseGetAll_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetItem" result="responseGetItem_resultHandler(event)"/>

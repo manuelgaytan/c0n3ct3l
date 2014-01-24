@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
 		   width="780" height="500"
-		   xmlns:requisicionescompra="components.requisicionescompra.*"
+		   xmlns:solicitudesvacaciones="components.solicitudesvacaciones.*"
 		   creationComplete="creationCompleteHandler(event)">
 	<mx:Script>
 		<![CDATA[
 			import events.GenericEvent;
 			
-			import model.RequisicionCompra;
+			import model.SolicitudVacaciones;
 			
 			import mx.events.FlexEvent;
 			
@@ -16,19 +16,19 @@
 				
 			}
 			
-			protected function consult_purchaseRequisitionDetailHandler(event:GenericEvent):void
+			protected function consult_rentalApplicationDetailHandler(event:GenericEvent):void
 			{
-				this.detail.purchaseRequisition = event.information as model.RequisicionCompra;
+				this.detail.rentalApplication = event.information as model.SolicitudVacaciones;
 				this.navigator.selectedChild = this.detail;
 			}
 			
-			protected function register_purchaseRequisitionNewHandler(event:Event):void
+			protected function register_rentalApplicationNewHandler(event:Event):void
 			{
 				this.navigator.selectedChild = this.consult;
 				this.consult.executeQuery();
 			}
 			
-			protected function detail_purchaseRequisitionUpdatedHandler(event:Event):void
+			protected function detail_rentalApplicationUpdatedHandler(event:Event):void
 			{
 				this.navigator.selectedChild = this.consult;
 				this.consult.executeQuery();
@@ -36,8 +36,8 @@
 		]]>
 	</mx:Script>
 	<mx:TabNavigator id="navigator" width="100%" height="100%" creationPolicy="all">
-		<requisicionescompra:Consult id="consult" purchaseRequisitionDetail="consult_purchaseRequisitionDetailHandler(event)"/>
-		<requisicionescompra:PurchaseRequisition id="detail" update="true" purchaseRequisitionUpdated="detail_purchaseRequisitionUpdatedHandler(event)"/>
-		<requisicionescompra:PurchaseRequisition id="register" registrer="true" purchaseRequisitionNew="register_purchaseRequisitionNewHandler(event)"/>
+		<solicitudesvacaciones:Consult id="consult" rentalApplicationDetail="consult_rentalApplicationDetailHandler(event)"/>
+		<solicitudesvacaciones:RentalApplication id="detail" update="true" rentalApplicationUpdated="detail_rentalApplicationUpdatedHandler(event)"/>
+		<solicitudesvacaciones:RentalApplication id="register" registrer="true" rentalApplicationNew="register_rentalApplicationNewHandler(event)"/>
 	</mx:TabNavigator>
 </mx:Module>

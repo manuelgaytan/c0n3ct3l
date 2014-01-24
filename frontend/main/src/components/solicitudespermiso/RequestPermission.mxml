@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
-		 creationComplete="creationCompleteHandler(event)" xmlns:requisicionescompra="components.requisicionescompra.*"
-		 >
+		 creationComplete="creationCompleteHandler(event)" xmlns:solicitudespermiso="components.solicitudespermiso.*"
+		 xmlns:contratacion="components.contratacion.*">
 	<mx:Script>
 		<![CDATA[
 			import components.equiposmedicion.Consult;
@@ -9,23 +9,29 @@
 			import components.hardware.Consult;
 			import components.herramientas.Consult;
 			import components.materiales.Consult;
+			import components.minutareunion.MinutaMeeting;
 			import components.software.Consult;
 			import components.solicitudalmacen.Consult;
 			import components.telefoniamovil.Consult;
+			
+			import events.GenericEvent;
 			
 			import model.AreaSolicitante;
 			import model.Catalogo;
 			import model.Colaborador;
 			import model.Constants;
-			import model.EstatusRequisicionCompra;
-			import model.PartidaRequisicionCompra;
+			import model.Contratacion;
+			import model.FormaPagoPrenomina;
 			import model.Perfil;
+			import model.PermisoConGoceSueldo;
+			import model.PermisoSinGoceSueldo;
 			import model.Prioridad;
-			import model.RequisicionCompra;
+			import model.SolicitudPermiso;
 			import model.TipoAlmacen;
 			import model.TipoColaborador;
 			import model.TipoMantenimiento;
 			import model.Util;
+			import model.Variacion;
 			
 			import modules.Almacen;
 			
@@ -43,7 +49,7 @@
 			import mx.utils.object_proxy;
 			
 			private var mode:String = null;
-			private var _item:RequisicionCompra;
+			private var _item:SolicitudPermiso;
 			private var validators:InicializaValidadoresEtiquetas;
 			private var validatorsEntry:InicializaValidadoresEtiquetas;
 			
@@ -67,84 +73,92 @@
 				this.fillCombos();
 			}
 			
-			public function set purchaseRequisition(value:RequisicionCompra):void{
+			public function set requestPermission(value:SolicitudPermiso):void{
 				if( value == null ){
 					return;
 				}
 				this.cleanForm();
 				this._item = value;
-				this.setPurchaseRequisition(); 
+				this.setItem(); 
 			}
 			
-			private function setPurchaseRequisition():void
+			private function setItem():void
 			{
 				if( this._item == null ){
 					return;
 				}
 				this.txtID.text = this._item.id;
-				this.dtfApplicationDate.selectedDate = this._item.fechaSolicitud;
-				this.txtReason.text = this._item.motivo;
-				if( Util.isFill( this.cmbPriority ) && this._item.prioridad != null ){
-					this.cmbPriority.selectedIndex = Util.selectedIndexFromCombo( this.cmbPriority.dataProvider as ArrayCollection, 
-						this._item.prioridad.id);
+				this.dtfPermissionDate.selectedDate = this._item.fecha;
+				this.recruitmentConsult.setDataAndSelected( Util.asArrayCollection( this._item.contratacion ) )
+				if( Util.isFill( this.cmbPaymentForm ) && this._item 
+					&& this._item.formaPagoPrenomina != null ){
+					this.cmbPaymentForm.selectedIndex = Util.selectedIndexFromCombo( this.cmbPaymentForm.dataProvider as ArrayCollection, 
+						this._item.formaPagoPrenomina.id);
 				}
-				this.cmbApplicantsNames.setListIn( this._item.solicitantesRequisicion, "colaborador" );
-				if( Util.isFill( this.cmbApplicantArea ) && this._item.areaSolicitante != null ){
-					this.cmbApplicantArea.selectedIndex = Util.selectedIndexFromCombo( this.cmbApplicantArea.dataProvider as ArrayCollection, 
-						this._item.areaSolicitante.id);
+				this.nstHourGoOut.value = this._item.fechaHoraSalida.hours > 12 ? this._item.fechaHoraSalida.hours - 12 : this._item.fechaHoraSalida.hours;
+				this.nstMinutesGoOut.value = this._item.fechaHoraSalida.minutes;
+				if( Util.isFill( this.cmbAMPMGoOut ) && this._item 
+					&& this._item.fechaHoraSalida != null ){
+					var index:int = 2;
+					if( this._item.fechaHoraSalida.hours < 12 ){
+						index = 1;
+					}
+					this.cmbAMPMGoOut.selectedIndex = Util.selectedIndexFromCombo( this.cmbAMPMGoOut.dataProvider as ArrayCollection, 
+						index);
 				}
-				this.txtSite.text = this._item.centralSitio;
-				this.itemsManagement.dataProvider = this._item.partidasRequisicionCompra;
-				if( Util.isFill( this.cmbStatus ) && this._item.estatusRequisicionCompra != null ){
-					this.cmbStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbStatus.dataProvider as ArrayCollection, 
-						this._item.estatusRequisicionCompra.id);
-				}		
-				this.dtfStatusDate.selectedDate = this._item.fechaEstatusRequisicion;
-				this.comments.setCommentsIn( this._item.comentariosRequisicion, "comentarioCompras");
+				this.nstHourArrive.value = this._item.fechaHoraRetorno.hours > 12 ? this._item.fechaHoraRetorno.hours - 12 : this._item.fechaHoraRetorno.hours;
+				this.nstMinutesArrive.value = this._item.fechaHoraRetorno.minutes;
+				if( Util.isFill( this.cmbAMPMArrive ) && this._item 
+					&& this._item.fechaHoraRetorno != null ){
+					var index:int = 2;
+					if( this._item.fechaHoraRetorno.hours < 12 ){
+						index = 1;
+					}
+					this.cmbAMPMArrive.selectedIndex = Util.selectedIndexFromCombo( this.cmbAMPMArrive.dataProvider as ArrayCollection, 
+						index);
+				}
+				if( Util.isFill( this.cmbPermitWithoutPay ) && this._item 
+					&& this._item.permisoSinGoceSueldo != null ){
+					this.cmbPermitWithoutPay.selectedIndex = Util.selectedIndexFromCombo( this.cmbPermitWithoutPay.dataProvider as ArrayCollection, 
+						this._item.permisoSinGoceSueldo.id);
+				}
+				if( Util.isFill( this.cmbPermitWithPay ) && this._item 
+					&& this._item.permisoConGoceSueldo != null ){
+					this.cmbPermitWithPay.selectedIndex = Util.selectedIndexFromCombo( this.cmbPermitWithPay.dataProvider as ArrayCollection, 
+						this._item.permisoConGoceSueldo.id);
+				}
+				this.chkImmediateSupervisorApproval.selected = this._item.vistoBuenoJefeInmediato;
+				this.chkAuthorization.selected = this._item.autorizacion;
+				this.comments.setCommentsIn( this._item.comentarios, "comentarioRecursosHumanos");
 			}
 			
-			private function getPurchaseRequisition():RequisicionCompra{
-				var item:RequisicionCompra = null;
+			private function getRequestPermission():SolicitudPermiso{
+				var item:SolicitudPermiso = null;
 				if( this.mode == Constants.REGISTER_MODE ){
-					item = new RequisicionCompra();
+					item = new SolicitudPermiso();
 				}else{
 					item = this._item;
 				}
-				item.fechaSolicitud= this.dtfApplicationDate.selectedDate;
-				item.motivo= Util.validateEmpty( this.txtReason.text );
-				item.prioridad = Util.validateCombo( this.cmbPriority ) as Prioridad;
-				item.areaSolicitante = Util.validateCombo( this.cmbApplicantArea ) as AreaSolicitante;
-				item.centralSitio = Util.validateEmpty( this.txtSite.text );
-				item.estatusRequisicionCompra = Util.validateCombo( this.cmbStatus ) as EstatusRequisicionCompra;
-				item.fechaEstatusRequisicion = this.dtfStatusDate.selectedDate;
-				item.solicitantesRequisicion = this.cmbApplicantsNames.getListsAsInWith("model.Colaborador","model.SolicitanteRequisicion","colaborador");
-				item.partidasRequisicionCompra = this.itemsManagement.dataProvider as ArrayCollection;
-				item.comentariosRequisicion = this.comments.getCommentsAsInWith("model.ComentarioCompras","model.ComentarioRequisicion","comentarioCompras");
+				item.fecha= this.dtfPermissionDate.selectedDate;
+				item.contratacion = this.recruitmentConsult.datagrid.selectedItem as Contratacion;
+				item.formaPagoPrenomina = Util.validateCombo( this.cmbPaymentForm ) as FormaPagoPrenomina;
+				item.fechaHoraSalida.hours = this.cmbAMPMGoOut.selectedItem.id == 2 ? this.nstHourGoOut.value + 12 : this.nstHourGoOut.value;
+				item.fechaHoraSalida.minutes = this.nstMinutesGoOut.value;
+				item.fechaHoraRetorno.hours = this.cmbAMPMArrive.selectedItem.id == 2 ? this.nstHourArrive.value + 12 : this.nstHourArrive.value;
+				item.fechaHoraRetorno.minutes = this.nstMinutesArrive.value;
+				item.permisoSinGoceSueldo = Util.validateCombo( this.cmbPermitWithoutPay ) as PermisoSinGoceSueldo;
+				item.permisoConGoceSueldo = Util.validateCombo( this.cmbPermitWithPay ) as PermisoConGoceSueldo;
+				item.vistoBuenoJefeInmediato = this.chkImmediateSupervisorApproval.selected;
+				item.vistoBuenoJefeInmediato = this.chkAuthorization.selected;				
+				item.comentarios = this.comments.getCommentsAsInWith("model.ComentarioRecursosHumanos","model.ComentarioSolicitudPermiso","comentarioRecursosHumanos");
 				return item;
 			}
 			
 			private function fillCombos():void
 			{
-				this.responseGetPrioridad.token = this.catalogoService.getPrioridad();
-				this.responseGetColaborador.token = this.catalogoService.getColaborador();
-				this.responseGetAreaSolicitante.token = this.catalogoService.getAreaSolicitante();
-				this.responseGetAlmacen.token = this.catalogoService.getTipoAlmacen();
-				this.responseGetEstatusRequisicionCompra.token = this.catalogoService.getEstadoRequiscionCompra();
-				this.responseGetColaboradorByTipoColaborador.token = this.catalogoService.getColaboradorByTipoColaborador( TipoColaborador.ID_NOMINA );
-				
-			}
-			
-			protected function responseGetPrioridad_resultHandler(event:ResultEvent):void
-			{
-				var data:ArrayCollection = event.result as ArrayCollection;
-				if( data == null ){
-					return;
-				}
-				this.cmbPriority.dataProvider = data; //Util.addEmptyCatalgo( data );
-				if( this._item != null && this._item.prioridad != null ){
-					this.cmbPriority.selectedIndex = Util.selectedIndexFromCombo( this.cmbPriority.dataProvider as ArrayCollection, 
-						this._item.prioridad.id);
-				}
+				this.responseGetFormaPagoPrenomina.token = this.catalogoService.getFormaPagoPrenomina();
+				this.responseGetPermisoSinGoceSueldo.token = this.catalogoService.getPermisoSinGoceSueldo();
+				this.responseGetPermisoConGoceSueldo.token = this.catalogoService.getPermisoConGoceSueldo();
 			}
 			
 			protected function requisicionService_faultHandler(event:FaultEvent):void
@@ -159,9 +173,9 @@
 					return;
 				}
 				if( this.mode == Constants.REGISTER_MODE ){
-					var purchaseRequisition:RequisicionCompra = this.getPurchaseRequisition();
-					Util.showProperties( purchaseRequisition );
-					this.responseSave.token = this.requisicionService.save( purchaseRequisition );
+					var requestPermission:SolicitudPermiso = this.getRequestPermission();
+					Util.showProperties( requestPermission );
+					this.responseSave.token = this.requisicionService.save( requestPermission );
 				}
 				if( this.mode == Constants.UPDATE_MODE ){
 					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
@@ -172,15 +186,19 @@
 				if( event.detail == Alert.NO ){
 					return;
 				}
-				var purchaseRequisition:RequisicionCompra = this.getPurchaseRequisition();
-				Util.showProperties( purchaseRequisition );
-				this.responseUpdate.token = this.requisicionService.update( purchaseRequisition );
+				var requestPermission:SolicitudPermiso = this.getRequestPermission();
+				Util.showProperties( requestPermission );
+				this.responseUpdate.token = this.requisicionService.update( requestPermission );
 			}
 			
 			private function validations():Boolean
 			{
 				var value:Boolean = true;
 				value &&= this.validators.validarFormulario();
+				value &&= this.recruitmentConsult.datagrid.selectedItem != null;
+				value &&= Util.listBaseSelected( this.cmbPaymentForm );
+				value &&= Util.listBaseSelected( this.cmbPermitWithoutPay );
+				value &&= Util.listBaseSelected( this.cmbPermitWithPay );
 				return value;
 			}
 			
@@ -188,7 +206,6 @@
 			{
 				if( this.mode == Constants.REGISTER_MODE ){
 					form.removeChild( this.frmID );
-					this.dtfStatusDate.selectedDate = new Date();
 				}
 			}
 			
@@ -196,22 +213,13 @@
 			{
 				this.validators = new InicializaValidadoresEtiquetas();
 				validators.crearValidadorRestrictor("generic",ValidadorCadenaCualquierCaracter.nombre, 0, 255);
-				validators.setRestrictor(txtReason, "generic");
-				validators.setRestrictor(txtSite, "generic");
-				this.validatorsEntry = new InicializaValidadoresEtiquetas();
-				validatorsEntry.crearValidadorRestrictor("generic",ValidadorCadenaCualquierCaracter.nombre, 0, 255);
-				validatorsEntry.setValidador(txtDescription, "generic");
-				validatorsEntry.setRestrictor(txtUnit, "generic");
-				validatorsEntry.crearValidadorRestrictor("decimal",ValidadorDecimal.nombre, 12, 5);
-				validatorsEntry.setValidador(txtQuantity, "decimal");
-				validatorsEntry.crearValidadorRestrictor("decimalCosto",ValidadorDecimal.nombre, 9, 2);
-				validatorsEntry.setValidador(txtCost, "decimalCosto");
+				validators.setRestrictor( this.txtEmployeeName, "generic" );
 			}
 			
 			protected function responseSave_resultHandler(event:ResultEvent):void
 			{
-				var eventPurchaseRequisitionNew:Event = new Event("purchaseRequisitionNew");
-				this.dispatchEvent( eventPurchaseRequisitionNew );
+				var eventRequestPermissionNew:Event = new Event("requestPermissionNew");
+				this.dispatchEvent( eventRequestPermissionNew );
 				this.cleanForm();
 			}
 			
@@ -219,65 +227,28 @@
 			{
 				Util.upScroll( this );
 				this.txtID.reset();
-				this.dtfApplicationDate.selectedDate = new Date();
-				this.txtReason.reset();
-				this.cmbPriority.selectedIndex = 0;
-				this.cmbApplicantsNames.reset();
-				this.cmbApplicantArea.selectedIndex = 0;
-				this.txtSite.reset();
-				this.cmbProduct.selectedIndex = 0;
-				this.dtgProducts.doubleClickEnabled = true;
-				this.chkOthres.selected = false;
-				Util.removeItems(this.dtgProducts.dataProvider);
-				this.txtCode.reset();
-				this.txtFamily.reset();
-				this.txtDescription.reset();
-				this.txtQuantity.reset();
-				this.txtUnit.reset();
-				this.cmbValidation.selectedIndex = 0;
-				this.txtCost.reset();
-				this.itemsManagement.reset();
-				this.cmbStatus.selectedIndex = 0;
-				this.dtfStatusDate.reset();
+				this.recruitmentConsult.datagrid.selectedItem = null;
+				this.dtfPermissionDate.selectedDate = new Date();
+				this.txtEmployeeName.reset();
+				this.cmbPaymentForm.selectedIndex = 0;
+				this.nstHourGoOut.value = 1;
+				this.nstMinutesGoOut.value = 0;
+				this.cmbAMPMGoOut.selectedIndex = 0;
+				this.nstHourArrive.value = 1;
+				this.nstMinutesArrive.value = 0;
+				this.cmbAMPMArrive.selectedIndex = 0;
+				this.cmbPermitWithoutPay.selectedIndex = 0;
+				this.cmbPermitWithPay.selectedIndex = 0;
+				this.chkImmediateSupervisorApproval.selected = false;
+				this.chkAuthorization.selected = false;
 				this.comments.reset();
 			}
 			
 			protected function responseUpdate_resultHandler(event:ResultEvent):void
 			{
-				var eventPurchaseRequisitionUpdated:Event = new Event("purchaseRequisitionUpdated");
-				this.dispatchEvent( eventPurchaseRequisitionUpdated );
+				var eventRequestPermissionUpdated:Event = new Event("requestPermissionUpdated");
+				this.dispatchEvent( eventRequestPermissionUpdated );
 				this.cleanForm();
-			}
-			
-			protected function responseGetColaborador_resultHandler(event:ResultEvent):void
-			{
-				var data:ArrayCollection = event.result as ArrayCollection;
-				if( data == null ){
-					return;
-				}
-				this.cmbApplicantsNames.comboList = Util.addEmptyCatalgo( data, "nombreCompleto" );
-			}
-			
-			protected function responseGetAreaSolicitante_resultHandler(event:ResultEvent):void
-			{
-				var data:ArrayCollection = event.result as ArrayCollection;
-				if( data == null ){
-					return;
-				}
-				this.cmbApplicantArea.dataProvider = data; //Util.addEmptyCatalgo( data );
-			}
-			
-			protected function responseGetEstatusRequisicionCompra_resultHandler(event:ResultEvent):void
-			{
-				var data:ArrayCollection = event.result as ArrayCollection;
-				if( data == null ){
-					return;
-				}
-				this.cmbStatus.dataProvider = data; //Util.addEmptyCatalgo( data, "estatus" );
-				if( this._item != null && this._item.estatusRequisicionCompra != null ){
-					this.cmbStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbStatus.dataProvider as ArrayCollection, 
-						this._item.estatusRequisicionCompra.id);
-				}
 			}
 			
 			protected function catalogoService_faultHandler(event:FaultEvent):void
@@ -285,335 +256,129 @@
 				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
 			}
 			
-			protected function chkOthres_changeHandler(event:Event):void
+			protected function recruitmentConsult_itemDetailHandler(event:GenericEvent):void
 			{
-				var enableNoOthers:Boolean = false;
-				if( this.chkOthres.selected ){
-					this.txtCode.reset();
-					this.txtFamily.reset();
-				}
-				enableNoOthers = !this.chkOthres.selected;
-				this.cmbProduct.enabled = enableNoOthers;
-				this.dtgProducts.doubleClickEnabled = enableNoOthers;
-			}
-			
-			protected function cmbProduct_changeHandler(event:ListEvent):void
-			{
-				var id:* = Util.selectedId(this.cmbProduct);
-				if( id == 0 ){
-					Util.removeItems( this.dtgProducts.dataProvider );
+				if( event == null || event.information ){
 					return;
 				}
-				switch(id){
-					case 1:
-						this.responseGetAllAlmacen.token = herramientaService.getAll();
-						break;
-					case 2:
-						this.responseGetAllAlmacen.token = equipoMedicionService.getAll();
-						break;
-					case 3:
-						this.responseGetAllAlmacen.token = equipoTransporteService.getAll();
-						break;
-					case 4:
-						this.responseGetAllAlmacen.token = materialService.getAll();
-						break;
-					case 5:
-						this.responseGetAllAlmacen.token = consumibleService.getAll();
-						break;
-					case 6:
-						this.responseGetAllAlmacen.token = hardwareService.getAll();
-						break;
-					case 7:
-						this.responseGetAllAlmacen.token = softwareService.getAll();
-						break;
-					case 8:
-						this.responseGetAllAlmacen.token = telefoniaMovilService.getAll();
-						break;
-				}
+				var item:Contratacion = event.information as Contratacion;
+				this.txtEmployeeName.text = getEmployeeWholeName( item );
+				//this.dtfStartContractDate.selectedDate = item.fechaInicioContrato;
 			}
 			
-			protected function responseGetAlmacen_resultHandler(event:ResultEvent):void
+			public static function getEmployeeWholeName( item:Contratacion ):String{
+				return Util.extractToText( item, "seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosGeneralesSolicitante.nombres") + " " +
+					Util.extractToText( item, "seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosGeneralesSolicitante.apellidoPaterno") + " " +
+					Util.extractToText( item, "seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosGeneralesSolicitante.apellidoMaterno")
+			}
+			
+			protected function responseGetFormaPagoPrenomina_resultHandler(event:ResultEvent):void
 			{
 				var data:ArrayCollection = event.result as ArrayCollection;
 				if( data == null ){
 					return;
 				}
-				Almacen.removerSolicitudAlmacen( data );
-				this.cmbProduct.dataProvider = Util.addEmptyCatalgo( data );
+				this.cmbPaymentForm.dataProvider = data;
+				if( Util.isFill( this.cmbPaymentForm ) && this._item 
+					&& this._item.formaPagoPrenomina != null ){
+					this.cmbPaymentForm.selectedIndex = Util.selectedIndexFromCombo( this.cmbPaymentForm.dataProvider as ArrayCollection, 
+						this._item.formaPagoPrenomina.id);
+				}
 			}
-
-			protected function responseGetAllAlmacen_resultHandler(event:ResultEvent):void
+			
+			protected function responseGetPermisoSinGoceSueldo_resultHandler(event:ResultEvent):void
 			{
 				var data:ArrayCollection = event.result as ArrayCollection;
 				if( data == null ){
 					return;
 				}
-				this.dtgProducts.dataProvider = data;
-			}
-			
-			private function labelFunctionGrupoFamilia(object:Object, column:DataGridColumn):String{
-				return this.findGrupoFamilia( object );
-			}
-			
-			private function labelFunctionUnidad(object:Object, column:DataGridColumn):String{
-				return this.findUnidad( object );
-			}
-			
-			protected function dtgProducts_doubleClickHandler(event:MouseEvent):void
-			{
-				var item:Object = this.dtgProducts.selectedItem;
-				if( item == null ){
-					return;
+				this.cmbPermitWithoutPay.dataProvider = data;
+				if( Util.isFill( this.cmbPermitWithoutPay ) && this._item 
+					&& this._item.permisoSinGoceSueldo != null ){
+					this.cmbPermitWithoutPay.selectedIndex = Util.selectedIndexFromCombo( this.cmbPermitWithoutPay.dataProvider as ArrayCollection, 
+						this._item.permisoSinGoceSueldo.id);
 				}
-				this.txtCode.text = Util.extractToText(item,"codigo");
-				this.txtFamily.text = this.findGrupoFamilia(item);
-				this.txtDescription.text = Util.extractToText(item,"descripcion");
-				this.txtUnit.text = this.findUnidad(item);
-				this.txtCost.text = item.costo.toString();				
 			}
 			
-			private function findGrupoFamilia(item:Object):String{
-				if( item == null ){
-					return "";
-				}
-				var grupoFamilia:String = "";
-				if( item.hasOwnProperty("grupoFamilia") ){
-					grupoFamilia = item["grupoFamilia"];
-				}else if( item.hasOwnProperty("grupoFamiliaA") ){
-					grupoFamilia = item["grupoFamiliaA"]["etiqueta"];
-				}else if( item.hasOwnProperty("grupoFamiliab") ){
-					grupoFamilia = item["grupoFamiliab"]["etiqueta"];
-				}else if( item.hasOwnProperty("grupoFamiliaC") ){
-					grupoFamilia = item["grupoFamiliaC"]["etiqueta"];
-				}else if( item.hasOwnProperty("grupoFamiliaD") ){
-					grupoFamilia = item["grupoFamiliaD"]["etiqueta"];
-				}else if( item.hasOwnProperty("grupoFamiliaE") ){
-					grupoFamilia = item["grupoFamiliaE"]["etiqueta"];
-				}else if( item.hasOwnProperty("grupoFamiliaF") ){
-					grupoFamilia = item["grupoFamiliaF"]["etiqueta"];
-				}
-				return grupoFamilia;
-			}
-			
-			private function findUnidad(item:Object):String{
-				if( item == null ){
-					return "";
-				}
-				var unidad:String = "";
-				if( item.hasOwnProperty("unidad") ){
-					unidad = item["unidad"];
-				}else if( item.hasOwnProperty("unidadA") ){
-					unidad = item["unidadA"]["etiqueta"];
-				}else if( item.hasOwnProperty("unidadB") ){
-					unidad = item["unidadB"]["etiqueta"];
-				}else if( item.hasOwnProperty("unidadC") ){
-					unidad = item["unidadC"]["etiqueta"];
-				}
-				return unidad;
-			}
-			
-			protected function btnAddItem_clickHandler(event:MouseEvent):void
-			{
-				var entry:PartidaRequisicionCompra  = this.getValidEntry();
-				if( entry == false ){
-					Util.showErrorMessage("Valide los campos de la Partida");
-					return;
-				}
-				this.itemsManagement.addItem( entry );
-				this.cleanFormEntry();
-			}
-			
-			private function getValidEntry():PartidaRequisicionCompra
-			{
-				var entry:PartidaRequisicionCompra = null;
-				if( !this.isValidEntry() ){
-					return entry;
-				}
-				entry = new PartidaRequisicionCompra();
-				entry.codigo = Util.validateEmpty( this.txtCode.text );
-				entry.grupoFamilia = Util.validateEmpty( this.txtFamily.text );
-				entry.descripcion = Util.validateEmpty( this.txtDescription.text );
-				entry.cantidad = Util.validateEmpty( this.txtQuantity.text );
-				entry.unidad = Util.validateEmpty( this.txtUnit.text );
-				entry.validacion = Util.validateCombo( this.cmbValidation ) as Colaborador;
-				entry.costo = Util.validateEmpty( this.txtCost.text );
-				return entry;
-			}
-			
-			private function isValidEntry():Boolean
-			{
-				return this.validatorsEntry.validarFormulario();
-			}
-			
-			private function cleanFormEntry():void
-			{
-				this.chkOthres.selected = false;
-				this.chkOthres.dispatchEvent( new Event( Event.CHANGE ) );
-				this.txtCode.reset();
-				this.txtFamily.reset();
-				this.txtDescription.reset();
-				this.txtQuantity.reset();
-				this.txtUnit.reset();
-				this.cmbValidation.selectedIndex = 0;
-				this.txtCost.reset();
-			}
-			
-			protected function responseGetColaboradorByTipoColaborador_resultHandler(event:ResultEvent):void
+			protected function responseGetPermisoConGoceSueldo_resultHandler(event:ResultEvent):void
 			{
 				var data:ArrayCollection = event.result as ArrayCollection;
 				if( data == null ){
 					return;
 				}
-				this.cmbValidation.dataProvider = Util.addEmptyCatalgo( data, "nombreCompleto" );
+				this.cmbPermitWithPay.dataProvider = data;
+				if( Util.isFill( this.cmbPermitWithPay ) && this._item 
+					&& this._item.permisoConGoceSueldo != null ){
+					this.cmbPermitWithPay.selectedIndex = Util.selectedIndexFromCombo( this.cmbPermitWithPay.dataProvider as ArrayCollection, 
+						this._item.permisoConGoceSueldo.id);
+				}
 			}
 		]]>
 	</mx:Script>
 	<mx:Metadata>
-		[Event(name="purchaseRequisitionNew", type="flash.events.Event")]
-		[Event(name="purchaseRequisitionUpdated", type="flash.events.Event")]
+		[Event(name="requestPermissionNew", type="flash.events.Event")]
+		[Event(name="requestPermissionUpdated", type="flash.events.Event")]
 	</mx:Metadata>
 	<mx:Form id="form">
-		<mx:FormItem id="frmID" label="Folio:">
+		<mx:FormItem required="true" id="frmID" label="Folio:">
 			<components:TextInput id="txtID" editable="false"
 								  textAlign="right"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha de Solicitud:">
-			<components:DateField id="dtfApplicationDate" enabled="false" creationComplete="dtfApplicationDate.selectedDate = new Date()"/>
+		<mx:FormItem required="true" label="Contratación:"/>
+		<contratacion:Consult id="recruitmentConsult" readMode="true" itemDetail="recruitmentConsult_itemDetailHandler(event)"/>
+		<mx:FormItem required="true" label="Nombre del Empleado:">
+			<components:TextInput id="txtEmployeeName" editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Motivo:">
-			<components:TextInput id="txtReason"
-								  />
+		<!--
+		<mx:FormItem required="true" label="Fecha Inicio Contrato:">
+			<components:DateField id="dtfStartContractDate" enabled="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Prioridad:">
-			<mx:ComboBox id="cmbPriority"
-						 labelField="etiqueta"
-						 />
+		-->
+		<mx:FormItem required="true" label="Fecha de Permiso:">
+			<components:DateField id="dtfPermissionDate"/>
 		</mx:FormItem>
-		<mx:FormItem label="Nombres de los Solicitantes:">
-			<components:ComboList id="cmbApplicantsNames" labelField="nombreCompleto"
-						 />
+		<mx:FormItem required="true" label="Tipo:">
+			<mx:ComboBox id="cmbPaymentForm" width="200"
+						 labelField="tipo"/>
 		</mx:FormItem>
-		<mx:FormItem label="Área Solicitante:">
-			<mx:ComboBox id="cmbApplicantArea"
-						 labelField="etiqueta"
-						 />
+		<mx:FormItem required="true" label="Hora de Salida:" direction="horizontal">
+			<mx:NumericStepper id="nstHourGoOut" minimum="1" maximum="12" textAlign="right"/>
+			<mx:NumericStepper id="nstMinutesGoOut" minimum="0" maximum="59" textAlign="right"/>
+			<mx:ComboBox id="cmbAMPMGoOut" dataProvider="{Constants.getAMPM()}"
+						 labelField="etiqueta"/>
 		</mx:FormItem>
-		<mx:FormItem label="Central, Sitio u Otro:">
-			<components:TextInput id="txtSite"
-								  />
+		<mx:FormItem required="true" label="Hora de Retorno:" direction="horizontal">
+			<mx:NumericStepper id="nstHourArrive" minimum="1" maximum="12" textAlign="right"/>
+			<mx:NumericStepper id="nstMinutesArrive" minimum="0" maximum="59" textAlign="right"/>
+			<mx:ComboBox id="cmbAMPMArrive" dataProvider="{Constants.getAMPM()}"
+						 labelField="etiqueta"/>
 		</mx:FormItem>
-		<mx:FormItem label="Producto o Servicio Solicitado:" direction="horizontal">
-			<mx:ComboBox id="cmbProduct"
-						 labelField="etiqueta"
-						 change="cmbProduct_changeHandler(event)"
-						 />
-			<mx:CheckBox id="chkOthres" label="Otros" change="chkOthres_changeHandler(event)"/> 
+		<mx:FormItem required="true" label="Permiso Sin Goce de Sueldo:">
+			<mx:ComboBox id="cmbPermitWithoutPay" width="200"
+						 labelField="permiso"/>
 		</mx:FormItem>
-		<mx:DataGrid id="dtgProducts" width="100%" height="250"
-					 doubleClickEnabled="true"
-					 doubleClick="dtgProducts_doubleClickHandler(event)">
-			<mx:columns>
-				<mx:DataGridColumn id="dtgCode" headerText="Código"
-								   dataField="codigo"
-								   width="80"/>
-				<mx:DataGridColumn id="dtgFamily" headerText="{'Grupo o\nFamilia'}"
-								   width="100"
-								   labelFunction="labelFunctionGrupoFamilia"/>
-				<mx:DataGridColumn id="dtgDescription" headerText="Descripción"
-								   dataField="descripcion"
-								   width="160"/>
-				<mx:DataGridColumn id="dtgExistence" headerText="Existencia"
-								   dataField="existencia"
-								   width="60"
-								   textAlign="right"/>
-				<mx:DataGridColumn id="dtgUnit" headerText="Unidad"
-								   width="60"
-								   textAlign="right"
-								   labelFunction="labelFunctionUnidad"/>
-			</mx:columns>
-		</mx:DataGrid>
-		<mx:FormItem label="Código:">
-			<components:TextInput id="txtCode"
-								  editable="false"/>
+		<mx:FormItem required="true" label="Permiso Con Goce de Sueldo:">
+			<mx:ComboBox id="cmbPermitWithPay" width="200"
+						 labelField="permiso"/>
 		</mx:FormItem>
-		<mx:FormItem label="Grupo o Familia:">
-			<components:TextInput id="txtFamily"
-								  editable="false"
-								  />
+		<mx:FormItem required="true" label="Vo. Bo. Jefe Inmediato:">
+			<mx:CheckBox id="chkImmediateSupervisorApproval"/>
 		</mx:FormItem>
-		<mx:FormItem label="Descripción:">
-			<components:TextInput id="txtDescription"
-								  width="400"
-								  />
-		</mx:FormItem>
-		<mx:FormItem label="Cantidad:">
-			<components:TextInput id="txtQuantity"
-								  textAlign="right"
-								  width="90"
-								  />
-		</mx:FormItem>
-		<mx:FormItem label="Unidad:">
-			<components:TextInput id="txtUnit"
-								  width="200"
-								  />
-		</mx:FormItem>
-		<mx:FormItem label="Validación:">
-			<mx:ComboBox id="cmbValidation"
-						 labelField="nombreCompleto"
-						 />
-		</mx:FormItem>
-		<mx:FormItem label="Costo:" includeInLayout="false" direction="vertical">
-			<components:TextInput id="txtCost"
-								  width="200" textAlign="right"
-								  />
-		</mx:FormItem>
-		<mx:Spacer height="28"/>
-		<mx:FormItem label="">
-			<mx:Button id="btnAddItem" label="Agregar Partida" click="btnAddItem_clickHandler(event)"/>
-		</mx:FormItem>
-		<requisicionescompra:ItemsManagement id="itemsManagement" purchaseOrderMode="false"/>
-		<mx:FormItem label="Estatus:">
-			<mx:ComboBox id="cmbStatus"
-						 labelField="estatus"
-						 />
-		</mx:FormItem>
-		<mx:FormItem label="Fecha del Estatus de Requisición:">
-			<components:DateField id="dtfStatusDate" enabled="false"/>
+		<mx:FormItem required="true" label="Autorización:">
+			<mx:CheckBox id="chkAuthorization"/>
 		</mx:FormItem>
 		<components:Comments id="comments"/>
 		<mx:FormItem>
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
 		</mx:FormItem>
 	</mx:Form>
-	<mx:RemoteObject id="requisicionService" destination="requisicionCompraService" fault="requisicionService_faultHandler(event)"
+	<mx:RemoteObject id="requisicionService" destination="solicitudPermisoService" fault="requisicionService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
 	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
 	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="catalogoService_faultHandler(event)"
 					 showBusyCursor="true"/>
-	<mx:CallResponder id="responseGetPrioridad" result="responseGetPrioridad_resultHandler(event)"/>
-	<mx:CallResponder id="responseGetColaborador" result="responseGetColaborador_resultHandler(event)"/>
-	<mx:CallResponder id="responseGetAreaSolicitante" result="responseGetAreaSolicitante_resultHandler(event)"/>
-	<mx:CallResponder id="responseGetAlmacen" result="responseGetAlmacen_resultHandler(event)"/>
-	<mx:CallResponder id="responseGetEstatusRequisicionCompra" result="responseGetEstatusRequisicionCompra_resultHandler(event)"/>
-	<mx:CallResponder id="responseGetColaboradorByTipoColaborador" result="responseGetColaboradorByTipoColaborador_resultHandler(event)"/>
-	<mx:RemoteObject id="telefoniaMovilService" destination="telefoniaMovilService" fault="requisicionService_faultHandler(event)"
-					 showBusyCursor="true"/>
-	<mx:RemoteObject id="solicitudAlmacenService" destination="solicitudAlmacenService" fault="requisicionService_faultHandler(event)"
-					 showBusyCursor="true"/>	
-	<mx:RemoteObject id="softwareService" destination="softwareService" fault="requisicionService_faultHandler(event)"
-					 showBusyCursor="true"/>
-	<mx:RemoteObject id="materialService" destination="materialService" fault="requisicionService_faultHandler(event)"
-					 showBusyCursor="true"/>
-	<mx:RemoteObject id="herramientaService" destination="herramientaService" fault="requisicionService_faultHandler(event)"
-					 showBusyCursor="true"/>
-	<mx:RemoteObject id="hardwareService" destination="hardwareService" fault="requisicionService_faultHandler(event)"
-					 showBusyCursor="true"/>
-	<mx:RemoteObject id="equipoTransporteService" destination="equipoTransporteService" fault="requisicionService_faultHandler(event)"
-					 showBusyCursor="true"/>
-	<mx:RemoteObject id="equipoMedicionService" destination="equipoMedicionService" fault="requisicionService_faultHandler(event)"
-					 showBusyCursor="true"/>
-	<mx:RemoteObject id="consumibleService" destination="consumibleService" fault="requisicionService_faultHandler(event)"
-					 showBusyCursor="true"/>
-	<mx:CallResponder id="responseGetAllAlmacen" result="responseGetAllAlmacen_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetFormaPagoPrenomina" result="responseGetFormaPagoPrenomina_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetPermisoConGoceSueldo" result="responseGetPermisoConGoceSueldo_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetPermisoSinGoceSueldo" result="responseGetPermisoSinGoceSueldo_resultHandler(event)"/>
 </mx:VBox>

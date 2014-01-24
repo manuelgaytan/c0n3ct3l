@@ -174,7 +174,7 @@
 					   icon="@Embed(source='assets/images/entrenamiento.png')"/>
 		<mx:LinkButton label="Solicitud Permiso" id="SolicitudesPermiso" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/entrenamiento.png')"/>
-		<mx:LinkButton label="Solicitud Permiso" id="SolicitudesVacaciones" click="clickMenuHandler(event)"
+		<mx:LinkButton label="Solicitud Vacaciones" id="SolicitudesVacaciones" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/entrenamiento.png')"/>
 	</mx:VBox>
 	<mx:VBox label="Sistemas de Gestión" width="100%" height="100%">

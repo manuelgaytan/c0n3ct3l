@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
-		 creationComplete="creationCompleteHandler(event)" xmlns:requisicionescompra="components.requisicionescompra.*"
+		 creationComplete="creationCompleteHandler(event)" xmlns:solicitudesvacaciones="components.solicitudesvacaciones.*"
 		 xmlns:contratacion="components.contratacion.*">
 	<mx:Script>
 		<![CDATA[
-			import model.Contratacion;
 			import components.equiposmedicion.Consult;
 			import components.equipostransporte.Consult;
 			import components.hardware.Consult;
@@ -14,19 +13,21 @@
 			import components.solicitudalmacen.Consult;
 			import components.telefoniamovil.Consult;
 			
+			import events.GenericEvent;
+			
 			import model.AreaSolicitante;
 			import model.Catalogo;
 			import model.Colaborador;
 			import model.Constants;
-			import model.EstatusRequisicionCompra;
-			import model.PartidaRequisicionCompra;
+			import model.Contratacion;
 			import model.Perfil;
 			import model.Prioridad;
-			import model.RequisicionCompra;
+			import model.SolicitudVacaciones;
 			import model.TipoAlmacen;
 			import model.TipoColaborador;
 			import model.TipoMantenimiento;
 			import model.Util;
+			import model.Variacion;
 			
 			import modules.Almacen;
 			
@@ -44,7 +45,7 @@
 			import mx.utils.object_proxy;
 			
 			private var mode:String = null;
-			private var _item:RequisicionCompra;
+			private var _item:SolicitudVacaciones;
 			private var validators:InicializaValidadoresEtiquetas;
 			private var validatorsEntry:InicializaValidadoresEtiquetas;
 			
@@ -68,7 +69,7 @@
 				this.fillCombos();
 			}
 			
-			public function set purchaseRequisition(value:RequisicionCompra):void{
+			public function set rentalApplication(value:SolicitudVacaciones):void{
 				if( value == null ){
 					return;
 				}
@@ -83,77 +84,43 @@
 					return;
 				}
 				this.txtID.text = this._item.id;
-				this.dtfApplicationDate.selectedDate = this._item.fechaSolicitud;
+				this.dtfApplicationDate.selectedDate = this._item.fecha;
 				this.recruitmentConsult.setDataAndSelected( Util.asArrayCollection( this._item.contratacion ) )
-				this.txtEmployeeName.text = this._item.contratacion;
-				
 				if( Util.isFill( this.cmbVariation ) && this._item 
 					&& this._item.variacion != null ){
 					this.cmbVariation.selectedIndex = Util.selectedIndexFromCombo( this.cmbVariation.dataProvider as ArrayCollection, 
 						this._item.variacion.id);
 				}
-				
-				if( Util.isFill( this.cmbPriority ) && this._item.prioridad != null ){
-					this.cmbPriority.selectedIndex = Util.selectedIndexFromCombo( this.cmbPriority.dataProvider as ArrayCollection, 
-						this._item.prioridad.id);
-				}
-				this.cmbApplicantsNames.setListIn( this._item.solicitantesRequisicion, "colaborador" );
-				if( Util.isFill( this.cmbApplicantArea ) && this._item.areaSolicitante != null ){
-					this.cmbApplicantArea.selectedIndex = Util.selectedIndexFromCombo( this.cmbApplicantArea.dataProvider as ArrayCollection, 
-						this._item.areaSolicitante.id);
-				}
-				this.txtSite.text = this._item.centralSitio;
-				this.itemsManagement.dataProvider = this._item.partidasRequisicionCompra;
-				if( Util.isFill( this.cmbStatus ) && this._item.estatusRequisicionCompra != null ){
-					this.cmbStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbStatus.dataProvider as ArrayCollection, 
-						this._item.estatusRequisicionCompra.id);
-				}		
-				this.dtfStatusDate.selectedDate = this._item.fechaEstatusRequisicion;
-				this.comments.setCommentsIn( this._item.comentariosRequisicion, "comentarioCompras");
+				this.txtCorrespondDays.text = Util.extractToText( this._item, "diasCorrespondientes");
+				this.dtfStartDate.selectedDate = this._item.fechaInicio;
+				this.dtfEndDate.selectedDate = this._item.fechaFin;
+				this.chkImmediateSupervisorApproval.selected = this._item.vistoBuenoJefeInmediato;
+				this.chkAuthorization.selected = this._item.autorizacion;
+				this.comments.setCommentsIn( this._item.comentarios, "comentarioRecursosHumanos");
 			}
 			
-			private function getPurchaseRequisition():RequisicionCompra{
-				var item:RequisicionCompra = null;
+			private function getRentalApplication():SolicitudVacaciones{
+				var item:SolicitudVacaciones = null;
 				if( this.mode == Constants.REGISTER_MODE ){
-					item = new RequisicionCompra();
+					item = new SolicitudVacaciones();
 				}else{
 					item = this._item;
 				}
-				item.fechaSolicitud= this.dtfApplicationDate.selectedDate;
-				item.motivo= Util.validateEmpty( this.txtReason.text );
-				item.prioridad = Util.validateCombo( this.cmbPriority ) as Prioridad;
-				item.areaSolicitante = Util.validateCombo( this.cmbApplicantArea ) as AreaSolicitante;
-				item.centralSitio = Util.validateEmpty( this.txtSite.text );
-				item.estatusRequisicionCompra = Util.validateCombo( this.cmbStatus ) as EstatusRequisicionCompra;
-				item.fechaEstatusRequisicion = this.dtfStatusDate.selectedDate;
-				item.solicitantesRequisicion = this.cmbApplicantsNames.getListsAsInWith("model.Colaborador","model.SolicitanteRequisicion","colaborador");
-				item.partidasRequisicionCompra = this.itemsManagement.dataProvider as ArrayCollection;
-				item.comentariosRequisicion = this.comments.getCommentsAsInWith("model.ComentarioCompras","model.ComentarioRequisicion","comentarioCompras");
+				item.fecha= this.dtfApplicationDate.selectedDate;
+				item.contratacion = this.recruitmentConsult.datagrid.selectedItem as Contratacion;
+				item.variacion = Util.validateCombo( this.cmbVariation ) as Variacion;
+				item.diasCorrespondientes = Util.validateEmpty( this.txtCorrespondDays.text );
+				item.fechaInicio = this.dtfStartDate.selectedDate;
+				item.fechaFin = this.dtfEndDate.selectedDate;
+				item.vistoBuenoJefeInmediato = this.chkImmediateSupervisorApproval.selected;
+				item.vistoBuenoJefeInmediato = this.chkAuthorization.selected;				
+				item.comentarios = this.comments.getCommentsAsInWith("model.ComentarioRecursosHumanos","model.ComentarioSolicitudVacaciones","comentarioRecursosHumanos");
 				return item;
 			}
 			
 			private function fillCombos():void
 			{
-				this.responseGetPrioridad.token = this.catalogoService.getPrioridad();
-				this.responseGetColaborador.token = this.catalogoService.getColaborador();
-				this.responseGetAreaSolicitante.token = this.catalogoService.getAreaSolicitante();
-				this.responseGetAlmacen.token = this.catalogoService.getTipoAlmacen();
-				this.responseGetEstatusRequisicionCompra.token = this.catalogoService.getEstadoRequiscionCompra();
-				this.responseGetColaboradorByTipoColaborador.token = this.catalogoService.getColaboradorByTipoColaborador( TipoColaborador.ID_NOMINA );
-				
-			}
-			
-			protected function responseGetPrioridad_resultHandler(event:ResultEvent):void
-			{
-				var data:ArrayCollection = event.result as ArrayCollection;
-				if( data == null ){
-					return;
-				}
-				this.cmbPriority.dataProvider = data; //Util.addEmptyCatalgo( data );
-				if( this._item != null && this._item.prioridad != null ){
-					this.cmbPriority.selectedIndex = Util.selectedIndexFromCombo( this.cmbPriority.dataProvider as ArrayCollection, 
-						this._item.prioridad.id);
-				}
+				this.responseGetVariacion.token = this.catalogoService.getVariacion();
 			}
 			
 			protected function requisicionService_faultHandler(event:FaultEvent):void
@@ -168,9 +135,9 @@
 					return;
 				}
 				if( this.mode == Constants.REGISTER_MODE ){
-					var purchaseRequisition:RequisicionCompra = this.getPurchaseRequisition();
-					Util.showProperties( purchaseRequisition );
-					this.responseSave.token = this.requisicionService.save( purchaseRequisition );
+					var rentalApplication:SolicitudVacaciones = this.getRentalApplication();
+					Util.showProperties( rentalApplication );
+					this.responseSave.token = this.requisicionService.save( rentalApplication );
 				}
 				if( this.mode == Constants.UPDATE_MODE ){
 					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
@@ -181,15 +148,19 @@
 				if( event.detail == Alert.NO ){
 					return;
 				}
-				var purchaseRequisition:RequisicionCompra = this.getPurchaseRequisition();
-				Util.showProperties( purchaseRequisition );
-				this.responseUpdate.token = this.requisicionService.update( purchaseRequisition );
+				var rentalApplication:SolicitudVacaciones = this.getRentalApplication();
+				Util.showProperties( rentalApplication );
+				this.responseUpdate.token = this.requisicionService.update( rentalApplication );
 			}
 			
 			private function validations():Boolean
 			{
 				var value:Boolean = true;
 				value &&= this.validators.validarFormulario();
+				value &&= this.recruitmentConsult.datagrid.selectedItem != null;
+				value &&= Util.listBaseSelected( this.cmbVariation );
+				value &&= this.dtfStartDate.selectedDate != null;
+				value &&= this.dtfEndDate.selectedDate != null;
 				return value;
 			}
 			
@@ -197,7 +168,6 @@
 			{
 				if( this.mode == Constants.REGISTER_MODE ){
 					form.removeChild( this.frmID );
-					this.dtfStatusDate.selectedDate = new Date();
 				}
 			}
 			
@@ -205,22 +175,15 @@
 			{
 				this.validators = new InicializaValidadoresEtiquetas();
 				validators.crearValidadorRestrictor("generic",ValidadorCadenaCualquierCaracter.nombre, 0, 255);
-				validators.setRestrictor(txtReason, "generic");
-				validators.setRestrictor(txtSite, "generic");
-				this.validatorsEntry = new InicializaValidadoresEtiquetas();
-				validatorsEntry.crearValidadorRestrictor("generic",ValidadorCadenaCualquierCaracter.nombre, 0, 255);
-				validatorsEntry.setValidador(txtDescription, "generic");
-				validatorsEntry.setRestrictor(txtUnit, "generic");
-				validatorsEntry.crearValidadorRestrictor("decimal",ValidadorDecimal.nombre, 12, 5);
-				validatorsEntry.setValidador(txtQuantity, "decimal");
-				validatorsEntry.crearValidadorRestrictor("decimalCosto",ValidadorDecimal.nombre, 9, 2);
-				validatorsEntry.setValidador(txtCost, "decimalCosto");
+				validators.setRestrictor( this.txtEmployeeName, "generic" );
+				validators.crearValidadorRestrictor("decimal",ValidadorDecimal.nombre, 12, 5);
+				validators.setValidador( this.txtCorrespondDays, "decimal" );
 			}
 			
 			protected function responseSave_resultHandler(event:ResultEvent):void
 			{
-				var eventPurchaseRequisitionNew:Event = new Event("purchaseRequisitionNew");
-				this.dispatchEvent( eventPurchaseRequisitionNew );
+				var eventRentalApplicationNew:Event = new Event("rentalApplicationNew");
+				this.dispatchEvent( eventRentalApplicationNew );
 				this.cleanForm();
 			}
 			
@@ -229,251 +192,28 @@
 				Util.upScroll( this );
 				this.txtID.reset();
 				this.dtfApplicationDate.selectedDate = new Date();
-				this.txtReason.reset();
-				this.cmbPriority.selectedIndex = 0;
-				this.cmbApplicantsNames.reset();
-				this.cmbApplicantArea.selectedIndex = 0;
-				this.txtSite.reset();
-				this.cmbProduct.selectedIndex = 0;
-				this.dtgProducts.doubleClickEnabled = true;
-				this.chkOthres.selected = false;
-				Util.removeItems(this.dtgProducts.dataProvider);
-				this.txtCode.reset();
-				this.txtFamily.reset();
-				this.txtDescription.reset();
-				this.txtQuantity.reset();
-				this.txtUnit.reset();
-				this.cmbValidation.selectedIndex = 0;
-				this.txtCost.reset();
-				this.itemsManagement.reset();
-				this.cmbStatus.selectedIndex = 0;
-				this.dtfStatusDate.reset();
+				this.recruitmentConsult.datagrid.selectedItem = null;
+				this.txtEmployeeName.reset();
+				this.dtfStartContractDate.reset();
+				this.cmbVariation.selectedIndex = 0;
+				this.txtCorrespondDays.reset();
+				this.dtfStartDate.reset();
+				this.dtfEndDate.reset();
+				this.chkImmediateSupervisorApproval.selected = false;
+				this.chkAuthorization.selected = false;
 				this.comments.reset();
 			}
 			
 			protected function responseUpdate_resultHandler(event:ResultEvent):void
 			{
-				var eventPurchaseRequisitionUpdated:Event = new Event("purchaseRequisitionUpdated");
-				this.dispatchEvent( eventPurchaseRequisitionUpdated );
+				var eventRentalApplicationUpdated:Event = new Event("rentalApplicationUpdated");
+				this.dispatchEvent( eventRentalApplicationUpdated );
 				this.cleanForm();
-			}
-			
-			protected function responseGetColaborador_resultHandler(event:ResultEvent):void
-			{
-				var data:ArrayCollection = event.result as ArrayCollection;
-				if( data == null ){
-					return;
-				}
-				this.cmbApplicantsNames.comboList = Util.addEmptyCatalgo( data, "nombreCompleto" );
-			}
-			
-			protected function responseGetAreaSolicitante_resultHandler(event:ResultEvent):void
-			{
-				var data:ArrayCollection = event.result as ArrayCollection;
-				if( data == null ){
-					return;
-				}
-				this.cmbApplicantArea.dataProvider = data; //Util.addEmptyCatalgo( data );
-			}
-			
-			protected function responseGetEstatusRequisicionCompra_resultHandler(event:ResultEvent):void
-			{
-				var data:ArrayCollection = event.result as ArrayCollection;
-				if( data == null ){
-					return;
-				}
-				this.cmbStatus.dataProvider = data; //Util.addEmptyCatalgo( data, "estatus" );
-				if( this._item != null && this._item.estatusRequisicionCompra != null ){
-					this.cmbStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbStatus.dataProvider as ArrayCollection, 
-						this._item.estatusRequisicionCompra.id);
-				}
 			}
 			
 			protected function catalogoService_faultHandler(event:FaultEvent):void
 			{
 				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
-			}
-			
-			protected function chkOthres_changeHandler(event:Event):void
-			{
-				var enableNoOthers:Boolean = false;
-				if( this.chkOthres.selected ){
-					this.txtCode.reset();
-					this.txtFamily.reset();
-				}
-				enableNoOthers = !this.chkOthres.selected;
-				this.cmbProduct.enabled = enableNoOthers;
-				this.dtgProducts.doubleClickEnabled = enableNoOthers;
-			}
-			
-			protected function cmbProduct_changeHandler(event:ListEvent):void
-			{
-				var id:* = Util.selectedId(this.cmbProduct);
-				if( id == 0 ){
-					Util.removeItems( this.dtgProducts.dataProvider );
-					return;
-				}
-				switch(id){
-					case 1:
-						this.responseGetAllAlmacen.token = herramientaService.getAll();
-						break;
-					case 2:
-						this.responseGetAllAlmacen.token = equipoMedicionService.getAll();
-						break;
-					case 3:
-						this.responseGetAllAlmacen.token = equipoTransporteService.getAll();
-						break;
-					case 4:
-						this.responseGetAllAlmacen.token = materialService.getAll();
-						break;
-					case 5:
-						this.responseGetAllAlmacen.token = consumibleService.getAll();
-						break;
-					case 6:
-						this.responseGetAllAlmacen.token = hardwareService.getAll();
-						break;
-					case 7:
-						this.responseGetAllAlmacen.token = softwareService.getAll();
-						break;
-					case 8:
-						this.responseGetAllAlmacen.token = telefoniaMovilService.getAll();
-						break;
-				}
-			}
-			
-			protected function responseGetAlmacen_resultHandler(event:ResultEvent):void
-			{
-				var data:ArrayCollection = event.result as ArrayCollection;
-				if( data == null ){
-					return;
-				}
-				Almacen.removerSolicitudAlmacen( data );
-				this.cmbProduct.dataProvider = Util.addEmptyCatalgo( data );
-			}
-
-			protected function responseGetAllAlmacen_resultHandler(event:ResultEvent):void
-			{
-				var data:ArrayCollection = event.result as ArrayCollection;
-				if( data == null ){
-					return;
-				}
-				this.dtgProducts.dataProvider = data;
-			}
-			
-			private function labelFunctionGrupoFamilia(object:Object, column:DataGridColumn):String{
-				return this.findGrupoFamilia( object );
-			}
-			
-			private function labelFunctionUnidad(object:Object, column:DataGridColumn):String{
-				return this.findUnidad( object );
-			}
-			
-			protected function dtgProducts_doubleClickHandler(event:MouseEvent):void
-			{
-				var item:Object = this.dtgProducts.selectedItem;
-				if( item == null ){
-					return;
-				}
-				this.txtCode.text = Util.extractToText(item,"codigo");
-				this.txtFamily.text = this.findGrupoFamilia(item);
-				this.txtDescription.text = Util.extractToText(item,"descripcion");
-				this.txtUnit.text = this.findUnidad(item);
-				this.txtCost.text = item.costo.toString();				
-			}
-			
-			private function findGrupoFamilia(item:Object):String{
-				if( item == null ){
-					return "";
-				}
-				var grupoFamilia:String = "";
-				if( item.hasOwnProperty("grupoFamilia") ){
-					grupoFamilia = item["grupoFamilia"];
-				}else if( item.hasOwnProperty("grupoFamiliaA") ){
-					grupoFamilia = item["grupoFamiliaA"]["etiqueta"];
-				}else if( item.hasOwnProperty("grupoFamiliab") ){
-					grupoFamilia = item["grupoFamiliab"]["etiqueta"];
-				}else if( item.hasOwnProperty("grupoFamiliaC") ){
-					grupoFamilia = item["grupoFamiliaC"]["etiqueta"];
-				}else if( item.hasOwnProperty("grupoFamiliaD") ){
-					grupoFamilia = item["grupoFamiliaD"]["etiqueta"];
-				}else if( item.hasOwnProperty("grupoFamiliaE") ){
-					grupoFamilia = item["grupoFamiliaE"]["etiqueta"];
-				}else if( item.hasOwnProperty("grupoFamiliaF") ){
-					grupoFamilia = item["grupoFamiliaF"]["etiqueta"];
-				}
-				return grupoFamilia;
-			}
-			
-			private function findUnidad(item:Object):String{
-				if( item == null ){
-					return "";
-				}
-				var unidad:String = "";
-				if( item.hasOwnProperty("unidad") ){
-					unidad = item["unidad"];
-				}else if( item.hasOwnProperty("unidadA") ){
-					unidad = item["unidadA"]["etiqueta"];
-				}else if( item.hasOwnProperty("unidadB") ){
-					unidad = item["unidadB"]["etiqueta"];
-				}else if( item.hasOwnProperty("unidadC") ){
-					unidad = item["unidadC"]["etiqueta"];
-				}
-				return unidad;
-			}
-			
-			protected function btnAddItem_clickHandler(event:MouseEvent):void
-			{
-				var entry:PartidaRequisicionCompra  = this.getValidEntry();
-				if( entry == false ){
-					Util.showErrorMessage("Valide los campos de la Partida");
-					return;
-				}
-				this.itemsManagement.addItem( entry );
-				this.cleanFormEntry();
-			}
-			
-			private function getValidEntry():PartidaRequisicionCompra
-			{
-				var entry:PartidaRequisicionCompra = null;
-				if( !this.isValidEntry() ){
-					return entry;
-				}
-				entry = new PartidaRequisicionCompra();
-				entry.codigo = Util.validateEmpty( this.txtCode.text );
-				entry.grupoFamilia = Util.validateEmpty( this.txtFamily.text );
-				entry.descripcion = Util.validateEmpty( this.txtDescription.text );
-				entry.cantidad = Util.validateEmpty( this.txtQuantity.text );
-				entry.unidad = Util.validateEmpty( this.txtUnit.text );
-				entry.validacion = Util.validateCombo( this.cmbValidation ) as Colaborador;
-				entry.costo = Util.validateEmpty( this.txtCost.text );
-				return entry;
-			}
-			
-			private function isValidEntry():Boolean
-			{
-				return this.validatorsEntry.validarFormulario();
-			}
-			
-			private function cleanFormEntry():void
-			{
-				this.chkOthres.selected = false;
-				this.chkOthres.dispatchEvent( new Event( Event.CHANGE ) );
-				this.txtCode.reset();
-				this.txtFamily.reset();
-				this.txtDescription.reset();
-				this.txtQuantity.reset();
-				this.txtUnit.reset();
-				this.cmbValidation.selectedIndex = 0;
-				this.txtCost.reset();
-			}
-			
-			protected function responseGetColaboradorByTipoColaborador_resultHandler(event:ResultEvent):void
-			{
-				var data:ArrayCollection = event.result as ArrayCollection;
-				if( data == null ){
-					return;
-				}
-				this.cmbValidation.dataProvider = Util.addEmptyCatalgo( data, "nombreCompleto" );
 			}
 			
 			protected function recruitmentConsult_itemDetailHandler(event:GenericEvent):void
@@ -482,16 +222,34 @@
 					return;
 				}
 				var item:Contratacion = event.information as Contratacion;
-				this.txtName.text = Util.extractToText( item, "seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosGeneralesSolicitante.nombres") + " " +
-									Util.extractToText( item, "seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosGeneralesSolicitante.apellidoPaterno") + " " +
-									Util.extractToText( item, "seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosGeneralesSolicitante.apellidoMaterno");
+				this.txtEmployeeName.text = getEmployeeWholeName( item );
 				this.dtfStartContractDate.selectedDate = item.fechaInicioContrato;
+			}
+			
+			public static function getEmployeeWholeName( item:Contratacion ):String{
+				return Util.extractToText( item, "seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosGeneralesSolicitante.nombres") + " " +
+						Util.extractToText( item, "seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosGeneralesSolicitante.apellidoPaterno") + " " +
+						Util.extractToText( item, "seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosGeneralesSolicitante.apellidoMaterno")
+			}
+			
+			protected function responseGetVariacion_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbVariation.dataProvider = data;
+				if( Util.isFill( this.cmbVariation ) && this._item 
+					&& this._item.variacion != null ){
+					this.cmbVariation.selectedIndex = Util.selectedIndexFromCombo( this.cmbVariation.dataProvider as ArrayCollection, 
+						this._item.variacion.id);
+				}
 			}
 		]]>
 	</mx:Script>
 	<mx:Metadata>
-		[Event(name="purchaseRequisitionNew", type="flash.events.Event")]
-		[Event(name="purchaseRequisitionUpdated", type="flash.events.Event")]
+		[Event(name="rentalApplicationNew", type="flash.events.Event")]
+		[Event(name="rentalApplicationUpdated", type="flash.events.Event")]
 	</mx:Metadata>
 	<mx:Form id="form">
 		<mx:FormItem required="true" id="frmID" label="Folio:">
@@ -523,45 +281,21 @@
 			<components:DateField id="dtfEndDate"/>
 		</mx:FormItem>
 		<mx:FormItem required="true" label="Vo. Bo. Jefe Inmediato:">
-			<mx:CheckBox id="chkImmediateSupervisorApproval"
+			<mx:CheckBox id="chkImmediateSupervisorApproval"/>
 		</mx:FormItem>
 		<mx:FormItem required="true" label="Autorización:">
-			<mx:CheckBox id="chkImmediateSupervisorApproval"
+			<mx:CheckBox id="chkAuthorization"/>
 		</mx:FormItem>
 		<components:Comments id="comments"/>
 		<mx:FormItem>
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
 		</mx:FormItem>
 	</mx:Form>
-	<mx:RemoteObject id="requisicionService" destination="requisicionCompraService" fault="requisicionService_faultHandler(event)"
+	<mx:RemoteObject id="requisicionService" destination="solicitudVacacionesService" fault="requisicionService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
 	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
 	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="catalogoService_faultHandler(event)"
 					 showBusyCursor="true"/>
-	<mx:CallResponder id="responseGetPrioridad" result="responseGetPrioridad_resultHandler(event)"/>
-	<mx:CallResponder id="responseGetColaborador" result="responseGetColaborador_resultHandler(event)"/>
-	<mx:CallResponder id="responseGetAreaSolicitante" result="responseGetAreaSolicitante_resultHandler(event)"/>
-	<mx:CallResponder id="responseGetAlmacen" result="responseGetAlmacen_resultHandler(event)"/>
-	<mx:CallResponder id="responseGetEstatusRequisicionCompra" result="responseGetEstatusRequisicionCompra_resultHandler(event)"/>
-	<mx:CallResponder id="responseGetColaboradorByTipoColaborador" result="responseGetColaboradorByTipoColaborador_resultHandler(event)"/>
-	<mx:RemoteObject id="telefoniaMovilService" destination="telefoniaMovilService" fault="requisicionService_faultHandler(event)"
-					 showBusyCursor="true"/>
-	<mx:RemoteObject id="solicitudAlmacenService" destination="solicitudAlmacenService" fault="requisicionService_faultHandler(event)"
-					 showBusyCursor="true"/>	
-	<mx:RemoteObject id="softwareService" destination="softwareService" fault="requisicionService_faultHandler(event)"
-					 showBusyCursor="true"/>
-	<mx:RemoteObject id="materialService" destination="materialService" fault="requisicionService_faultHandler(event)"
-					 showBusyCursor="true"/>
-	<mx:RemoteObject id="herramientaService" destination="herramientaService" fault="requisicionService_faultHandler(event)"
-					 showBusyCursor="true"/>
-	<mx:RemoteObject id="hardwareService" destination="hardwareService" fault="requisicionService_faultHandler(event)"
-					 showBusyCursor="true"/>
-	<mx:RemoteObject id="equipoTransporteService" destination="equipoTransporteService" fault="requisicionService_faultHandler(event)"
-					 showBusyCursor="true"/>
-	<mx:RemoteObject id="equipoMedicionService" destination="equipoMedicionService" fault="requisicionService_faultHandler(event)"
-					 showBusyCursor="true"/>
-	<mx:RemoteObject id="consumibleService" destination="consumibleService" fault="requisicionService_faultHandler(event)"
-					 showBusyCursor="true"/>
-	<mx:CallResponder id="responseGetAllAlmacen" result="responseGetAllAlmacen_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetVariacion" result="responseGetVariacion_resultHandler(event)"/>
 </mx:VBox>

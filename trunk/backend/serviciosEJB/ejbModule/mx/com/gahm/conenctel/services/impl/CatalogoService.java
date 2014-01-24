@@ -1432,4 +1432,32 @@ public class CatalogoService implements ICatalogoService {
 		}
 		return list;
 	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<PermisoSinGoceSueldoDO> getPermisoSinGoceSueldo() throws ConectelException {
+		TypedQuery<PermisoSinGoceSueldoDO> query = entityManager.createNamedQuery(
+				"PermisoSinGoceSueldoDO.findAll", PermisoSinGoceSueldoDO.class);
+		
+		List<PermisoSinGoceSueldoDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<PermisoConGoceSueldoDO> getPermisoConGoceSueldo() throws ConectelException {
+		TypedQuery<PermisoConGoceSueldoDO> query = entityManager.createNamedQuery(
+				"PermisoConGoceSueldoDO.findAll", PermisoConGoceSueldoDO.class);
+		
+		List<PermisoConGoceSueldoDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
 }

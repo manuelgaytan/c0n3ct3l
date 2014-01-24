@@ -2622,6 +2622,39 @@
 	PRIMARY KEY (id)
 	);
 
+	CREATE TABLE EstadisticaPersonal
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_trimestre INT(11) UNSIGNED NOT NULL,
+	fk_ano INT(11) UNSIGNED NOT NULL,
+	fk_rango_estadistica_personal_ausencia INT(11) UNSIGNED NOT NULL,
+	fk_rango_estadistica_personal_puntualidad INT(11) UNSIGNED NOT NULL,
+	fk_rango_estadistica_personal_rotacion INT(11) UNSIGNED NOT NULL,
+	fk_rango_estadistica_personal_retardo INT(11) UNSIGNED NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE Trimestre
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	trimestre VARCHAR(100) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE Ano
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	ano VARCHAR(100) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE RangoEstadisticaPersonal
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	rango VARCHAR(100) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
 	ALTER TABLE Cliente ADD FOREIGN KEY id_contacto_idxfk (id_contacto) REFERENCES Contacto (id);
 
 	ALTER TABLE Proyecto ADD FOREIGN KEY id_categoria_proyecto_idxfk (id_categoria_proyecto) REFERENCES CategoriaProyecto (id);
@@ -3312,6 +3345,18 @@
 
 	ALTER TABLE ComentarioSolicitudVacaciones ADD FOREIGN KEY fk_comentario_recursos_humanos_idxfk_2 (fk_comentario_recursos_humanos) REFERENCES ComentarioRecursosHumanos (id);
 
+	ALTER TABLE EstadisticaPersonal ADD FOREIGN KEY fk_trimestre_idxfk (fk_trimestre) REFERENCES Trimestre (id);
+
+	ALTER TABLE EstadisticaPersonal ADD FOREIGN KEY fk_ano_idxfk (fk_ano) REFERENCES Ano (id);
+
+	ALTER TABLE EstadisticaPersonal ADD FOREIGN KEY fk_rango_estadistica_personal_ausencia_idxfk (fk_rango_estadistica_personal_ausencia) REFERENCES RangoEstadisticaPersonal (id);
+
+	ALTER TABLE EstadisticaPersonal ADD FOREIGN KEY fk_rango_estadistica_personal_puntualidad_idxfk (fk_rango_estadistica_personal_puntualidad) REFERENCES RangoEstadisticaPersonal (id);
+
+	ALTER TABLE EstadisticaPersonal ADD FOREIGN KEY fk_rango_estadistica_personal_rotacion_idxfk (fk_rango_estadistica_personal_rotacion) REFERENCES RangoEstadisticaPersonal (id);
+
+	ALTER TABLE EstadisticaPersonal ADD FOREIGN KEY fk_rango_estadistica_personal_retardo_idxfk (fk_rango_estadistica_personal_retardo) REFERENCES RangoEstadisticaPersonal (id);
+
 	/* Perfiles */
 	INSERT INTO Perfil
 	VALUES (1, 'Director General');
@@ -3455,6 +3500,10 @@
 	VALUES (54, 'SolicitudesPermiso');
 	INSERT INTO Pantalla
 	VALUES (55, 'SolicitudesVacaciones');
+	INSERT INTO Pantalla
+	VALUES (56, 'FichaPresentacion');
+	INSERT INTO Pantalla
+	VALUES (57, 'EstadisticaPersonal');
 	
 	/* Perfil-Pantalla */
 	INSERT INTO PerfilPantalla
@@ -3717,6 +3766,14 @@
 	VALUES (129, 13, 54);
 	INSERT INTO PerfilPantalla
 	VALUES (130, 13, 55);
+	INSERT INTO PerfilPantalla
+	VALUES (131, 1, 56);
+	INSERT INTO PerfilPantalla
+	VALUES (132, 1, 57);
+	INSERT INTO PerfilPantalla
+	VALUES (133, 13, 56);
+	INSERT INTO PerfilPantalla
+	VALUES (134, 13, 57);
 
 	/* Usuarios */
 	INSERT INTO Usuario
@@ -4783,6 +4840,45 @@
 	VALUES (6, 'Citación o Instrucción Militar');
 	INSERT INTO PermisoConGoceSueldo
 	VALUES (7, 'N/A');
+
+	INSERT INTO Trimestre
+	VALUES (1, 'Enero - Marzo');
+	INSERT INTO Trimestre
+	VALUES (2, 'Abril - Junio');
+	INSERT INTO Trimestre
+	VALUES (3, 'Julio - Septiembre');
+	INSERT INTO Trimestre
+	VALUES (4, 'Octubre - Noviembre');
+
+	INSERT INTO Ano
+	VALUES (1, '2013');
+	INSERT INTO Ano
+	VALUES (2, '2014');
+	INSERT INTO Ano
+	VALUES (3, '2015');
+	INSERT INTO Ano
+	VALUES (4, '2016');
+	INSERT INTO Ano
+	VALUES (5, '2017');
+	INSERT INTO Ano
+	VALUES (6, '2018');
+	INSERT INTO Ano
+	VALUES (7, '2019');
+	INSERT INTO Ano
+	VALUES (8, '2020');
+	INSERT INTO Ano
+	VALUES (9, '2021');
+	INSERT INTO Ano
+	VALUES (10, '2022');
+
+	INSERT INTO RangoEstadisticaPersonal
+	VALUES (1, '0 - 20');
+	INSERT INTO RangoEstadisticaPersonal
+	VALUES (2, '21 - 40');
+	INSERT INTO RangoEstadisticaPersonal
+	VALUES (3, '41 - 60');
+	INSERT INTO RangoEstadisticaPersonal
+	VALUES (4, '61 - 89');
 
 	/*
 	INSERT INTO 

@@ -108,7 +108,7 @@
 								   textAlign="center"
 								   width="130"/>
 				<mx:DataGridColumn headerText="{'Partida,\nLínea\no Ítem'}"
-								   dataField="item"
+								   dataField="partida"
 								   textAlign="right"
 								   width="90"/>
 				<mx:DataGridColumn id="dtgPurchaseOrderCost" headerText="{'Costo\nOC\nCliente'}"

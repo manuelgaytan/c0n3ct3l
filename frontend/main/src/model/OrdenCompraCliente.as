@@ -10,7 +10,7 @@ package model
 		public var ordenCompra:Boolean;
 		public var numeroOrdenCompra:String;
 		public var fechaOrdenCompra:Date;
-		public var item:String;
+		public var partida:String;
 		public var costoOrdenCompra:Number;
 		public var validacionCosto:EstadoValidacionCosto;
 		public var comentarioValidacionCostoOrdenCompraCliente:ArrayCollection;

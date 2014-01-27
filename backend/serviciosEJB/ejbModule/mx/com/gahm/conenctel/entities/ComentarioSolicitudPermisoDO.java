@@ -28,7 +28,7 @@ public class ComentarioSolicitudPermisoDO implements Serializable{
 	private Integer id;
 	
 	@ManyToOne
-	@JoinColumn(name = "fk_solicitud_vacaciones", nullable = false)
+	@JoinColumn(name = "fk_solicitud_permiso", nullable = false)
 	private SolicitudPermisoDO solicitudPermiso;
 	
 	@OneToOne

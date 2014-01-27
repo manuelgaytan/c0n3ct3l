@@ -44,68 +44,69 @@
 	    }
 
 		String fileName = request.getParameter("document");
-		
+
 		if( !(fileName == null) ){
-		String filePath = repository + "/" + fileName;
-		String copyFilePath = webRepositiry + "/" + fileName;
-		
-		File sourceFile = new File( filePath );
-		File destinationFile = new File( copyFilePath );
-		/*
-		FileChannel source = null;
-		FileChannel destination = null;
-		*/
-		InputStream inStream = null;
-		OutputStream outStream = null;
-
-		
-		try{
-			inStream = new FileInputStream(sourceFile);
-    	    outStream = new FileOutputStream(destinationFile);
- 
-    	    byte[] buffer = new byte[1024];
- 
-    	    int length;
-    	    //copy the file content in bytes 
-    	    while ((length = inStream.read(buffer)) > 0){
- 
-    	    	outStream.write(buffer, 0, length);
- 
-    	    }
- 
-    	    inStream.close();
-    	    outStream.close();
-
+			String filePath = repository + "/" + fileName;
+			String copyFilePath = webRepositiry + "/" + fileName;
+			
+			File sourceFile = new File( filePath );
+			File destinationFile = new File( copyFilePath );
 			/*
-			if( !(sourceFile == null) && sourceFile.exists() ){
-				if( !destinationFile.exists() ){
-					destinationFile.createNewFile();
+			FileChannel source = null;
+			FileChannel destination = null;
+			*/
+			InputStream inStream = null;
+			OutputStream outStream = null;
+	
+			
+			try{
+				System.out.println("copiando de " + sourceFile + " a " + destinationFile); 
+				inStream = new FileInputStream(sourceFile);
+	    	    outStream = new FileOutputStream(destinationFile);
+	 
+	    	    byte[] buffer = new byte[1024];
+	 
+	    	    int length;
+	    	    //copy the file content in bytes 
+	    	    while ((length = inStream.read(buffer)) > 0){
+	 
+	    	    	outStream.write(buffer, 0, length);
+	 
+	    	    }
+	 
+	    	    inStream.close();
+	    	    outStream.close();
+	
+				/*
+				if( !(sourceFile == null) && sourceFile.exists() ){
+					if( !destinationFile.exists() ){
+						destinationFile.createNewFile();
+					}
+					
+					source = new FileInputStream( sourceFile ).getChannel();
+					destination = new FileInputStream( destinationFile ).getChannel();
+					
+					long count = 0;
+					long size = source.size();
+					while( (count += destination.transferFrom( source, count, size-count)) < size );
+				}else{
+					out.println("No existe el archivo " + fileName);
 				}
-				
-				source = new FileInputStream( sourceFile ).getChannel();
-				destination = new FileInputStream( destinationFile ).getChannel();
-				
-				long count = 0;
-				long size = source.size();
-				while( (count += destination.transferFrom( source, count, size-count)) < size );
-			}else{
+				*/
+			}catch(Exception e){
+				e.printStackTrace();
 				out.println("No existe el archivo " + fileName);
 			}
+			/*
+			finally{
+				if( !(source == null) ){
+					source.close();
+				}
+				if( !(destination == null) ){
+					destination.close();
+				}
+			}
 			*/
-		}catch(Exception e){
-			e.printStackTrace();
-			out.println("No existe el archivo " + fileName);
-		}
-		/*
-		finally{
-			if( !(source == null) ){
-				source.close();
-			}
-			if( !(destination == null) ){
-				destination.close();
-			}
-		}
-		*/
 		}else{
 			out.write("No existe nombre del archivo.");
 		}

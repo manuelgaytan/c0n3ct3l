@@ -162,7 +162,9 @@ public interface ICatalogoService extends Serializable {
 	public List<MantenimientoServicioDO> getMantenimientoServicio() throws ConectelException;
 	public List<PagoDO> getPago() throws ConectelException;
 	public List<TipoServicioDO> getTipoServicio() throws ConectelException;
-	
 	public List<PermisoSinGoceSueldoDO> getPermisoSinGoceSueldo() throws ConectelException;
 	public List<PermisoConGoceSueldoDO> getPermisoConGoceSueldo() throws ConectelException;
+	public List<TrimestreDO> getTrimestre() throws ConectelException;
+	public List<AnoDO> getAno() throws ConectelException;
+	public List<RangoEstadisticaPersonalDO> getRangoEstadisticaPersonal() throws ConectelException;
 }

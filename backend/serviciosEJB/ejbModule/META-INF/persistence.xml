@@ -228,14 +228,16 @@
 		<class>mx.com.gahm.conenctel.entities.ComentarioSugerenciaDO</class>
 		<class>mx.com.gahm.conenctel.entities.FacturaProveedorPagoProveedorDO</class>
 		<class>mx.com.gahm.conenctel.entities.NotaCreditoProveedorPagoProveedorDO</class>
-
 		<class>mx.com.gahm.conenctel.entities.SolicitudPermisoDO</class>
 		<class>mx.com.gahm.conenctel.entities.PermisoSinGoceSueldoDO</class>
 		<class>mx.com.gahm.conenctel.entities.PermisoConGoceSueldoDO</class>
 		<class>mx.com.gahm.conenctel.entities.ComentarioSolicitudPermisoDO</class>
 		<class>mx.com.gahm.conenctel.entities.ComentarioRecursosHumanosDO</class>
 		<class>mx.com.gahm.conenctel.entities.ComentarioSolicitudVacacionesDO</class>
-
+		<class>mx.com.gahm.conenctel.entities.EstadisticaPersonalDO</class>
+		<class>mx.com.gahm.conenctel.entities.TrimestreDO</class>
+		<class>mx.com.gahm.conenctel.entities.AnoDO</class>
+		<class>mx.com.gahm.conenctel.entities.RangoEstadisticaPersonalDO</class>
 		<properties>
 			<property name="eclipselink.logging.level" value="FINE"/> 
 			<property name="eclipselink.logging.parameters" value="true"/>

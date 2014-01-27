@@ -1,5 +1,6 @@
 package mx.com.gahm.conenctel.entities;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -20,7 +21,7 @@ import javax.persistence.TemporalType;
 @NamedQueries({
 	@NamedQuery(name = "ComentarioRecursosHumanosDO.findAll", query = "select rc from ComentarioRecursosHumanosDO rc")
 	})
-public class ComentarioRecursosHumanosDO {
+public class ComentarioRecursosHumanosDO implements Serializable{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +29,7 @@ public class ComentarioRecursosHumanosDO {
 	private Integer id;
 	
 	@Temporal(TemporalType.DATE)
-	@Column(name = "fecha")
+	@Column(name = "fecha_captura")
 	private Date fechaCaptura;
 	
 	@ManyToOne

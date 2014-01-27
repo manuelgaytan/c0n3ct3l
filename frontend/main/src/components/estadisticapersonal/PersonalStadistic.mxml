@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)" xmlns:solicitudesvacaciones="components.solicitudesvacaciones.*"
+		 xmlns:contratacion="components.contratacion.*">
+	<mx:Script>
+		<![CDATA[
+			import components.equiposmedicion.Consult;
+			import components.equipostransporte.Consult;
+			import components.hardware.Consult;
+			import components.herramientas.Consult;
+			import components.materiales.Consult;
+			import components.software.Consult;
+			import components.solicitudalmacen.Consult;
+			import components.telefoniamovil.Consult;
+			
+			import events.GenericEvent;
+			
+			import model.Ano;
+			import model.AreaSolicitante;
+			import model.Catalogo;
+			import model.Colaborador;
+			import model.Constants;
+			import model.Contratacion;
+			import model.EstadisticaPersonal;
+			import model.Perfil;
+			import model.Prioridad;
+			import model.RangoEstadisticaPersonal;
+			import model.TipoAlmacen;
+			import model.TipoColaborador;
+			import model.TipoMantenimiento;
+			import model.Trimestre;
+			import model.Util;
+			import model.Variacion;
+			
+			import modules.Almacen;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
+			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.com.gahm.componentes.validadores.ValidadorNumerico;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.utils.object_proxy;
+			
+			private var mode:String = null;
+			private var _item:EstadisticaPersonal;
+			private var validators:InicializaValidadoresEtiquetas;
+			private var validatorsEntry:InicializaValidadoresEtiquetas;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				this.label = Constants.REGISTRAR;
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set personalStadistic(value:EstadisticaPersonal):void{
+				if( value == null ){
+					return;
+				}
+				this.cleanForm();
+				this._item = value;
+				this.setItem(); 
+			}
+			
+			private function setItem():void
+			{
+				if( this._item == null ){
+					return;
+				}
+				this.txtID.text = this._item.id;
+				if( Util.isFill( this.cmbThreeMonths ) && this._item 
+					&& this._item.trimestre != null ){
+					this.cmbThreeMonths.selectedIndex = Util.selectedIndexFromCombo( this.cmbThreeMonths.dataProvider as ArrayCollection, 
+						this._item.trimestre.id);
+				}
+				if( Util.isFill( this.cmbYear ) && this._item 
+					&& this._item.ano != null ){
+					this.cmbYear.selectedIndex = Util.selectedIndexFromCombo( this.cmbYear.dataProvider as ArrayCollection, 
+						this._item.ano.id);
+				}
+				if( Util.isFill( this.cmbAbsence ) && this._item 
+					&& this._item.rangoEstadisticaPersonalAusencia != null ){
+					this.cmbAbsence.selectedIndex = Util.selectedIndexFromCombo( this.cmbAbsence.dataProvider as ArrayCollection, 
+						this._item.rangoEstadisticaPersonalAusencia.id);
+				}
+				if( Util.isFill( this.cmbPuntual ) && this._item 
+					&& this._item.rangoEstadisticaPersonalPuntualidad != null ){
+					this.cmbPuntual.selectedIndex = Util.selectedIndexFromCombo( this.cmbPuntual.dataProvider as ArrayCollection, 
+						this._item.rangoEstadisticaPersonalPuntualidad.id);
+				}
+				if( Util.isFill( this.cmbRotation ) && this._item 
+					&& this._item.rangoEstadisticaPersonalRotacion != null ){
+					this.cmbRotation.selectedIndex = Util.selectedIndexFromCombo( this.cmbRotation.dataProvider as ArrayCollection, 
+						this._item.rangoEstadisticaPersonalRotacion.id);
+				}
+				if( Util.isFill( this.cmbLate ) && this._item 
+					&& this._item.rangoEstadisticaPersonalRetardo != null ){
+					this.cmbLate.selectedIndex = Util.selectedIndexFromCombo( this.cmbLate.dataProvider as ArrayCollection, 
+						this._item.rangoEstadisticaPersonalRetardo.id);
+				}
+			}
+			
+			private function getPersonalStadistic():EstadisticaPersonal{
+				var item:EstadisticaPersonal = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					item = new EstadisticaPersonal();
+				}else{
+					item = this._item;
+				}
+				item.trimestre = Util.validateCombo( this.cmbThreeMonths ) as Trimestre;
+				item.ano = Util.validateCombo( this.cmbYear ) as Ano;
+				item.rangoEstadisticaPersonalAusencia = Util.validateCombo( this.cmbAbsence ) as RangoEstadisticaPersonal;
+				item.rangoEstadisticaPersonalPuntualidad = Util.validateCombo( this.cmbPuntual ) as RangoEstadisticaPersonal;
+				item.rangoEstadisticaPersonalRotacion = Util.validateCombo( this.cmbRotation ) as RangoEstadisticaPersonal;
+				item.rangoEstadisticaPersonalRetardo = Util.validateCombo( this.cmbLate ) as RangoEstadisticaPersonal;
+				return item;
+			}
+			
+			private function fillCombos():void
+			{
+				this.responseGetTrimestre.token = this.catalogoService.getTrimestre();
+				this.responseGetAno.token = this.catalogoService.getAno();
+				this.responseGetRangoEstadisticaPersonal.token = this.catalogoService.getRangoEstadisticaPersonal();
+			}
+			
+			protected function requisicionService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function btnAccept_clickHandler(event:MouseEvent):void
+			{
+				if( !this.validations() ){
+					Util.showMessageVerifyFields();
+					return;
+				}
+				if( this.mode == Constants.REGISTER_MODE ){
+					var personalStadistic:EstadisticaPersonal = this.getPersonalStadistic();
+					Util.showProperties( personalStadistic );
+					this.responseSave.token = this.personalStadisticService.save( personalStadistic );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
+				}
+			}
+			
+			private function updateItem(event:CloseEvent):void{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var personalStadistic:EstadisticaPersonal = this.getPersonalStadistic();
+				Util.showProperties( personalStadistic );
+				this.responseUpdate.token = this.personalStadisticService.update( personalStadistic );
+			}
+			
+			private function validations():Boolean
+			{
+				var value:Boolean = true;
+				value &&= Util.listBaseSelected( this.cmbThreeMonths );
+				value &&= Util.listBaseSelected( this.cmbYear );
+				value &&= Util.listBaseSelected( this.cmbAbsence );
+				value &&= Util.listBaseSelected( this.cmbPuntual );
+				value &&= Util.listBaseSelected( this.cmbRotation );
+				value &&= Util.listBaseSelected( this.cmbLate );
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+					form.removeChild( this.frmID );
+				}
+			}
+			
+			private function initializeValidators():void
+			{
+				this.validators = null;
+			}
+			
+			protected function responseSave_resultHandler(event:ResultEvent):void
+			{
+				var eventPersonalStadisticNew:Event = new Event("personalStadisticNew");
+				this.dispatchEvent( eventPersonalStadisticNew );
+				this.cleanForm();
+			}
+			
+			private function cleanForm():void
+			{
+				Util.upScroll( this );
+				this.txtID.reset();
+				this.cmbThreeMonths.selectedIndex = 0;
+				this.cmbYear.selectedIndex = 0;
+				this.cmbAbsence.selectedIndex = 0;
+				this.cmbPuntual.selectedIndex = 0;
+				this.cmbRotation.selectedIndex = 0;
+				this.cmbLate.selectedIndex = 0;
+			}
+			
+			protected function responseUpdate_resultHandler(event:ResultEvent):void
+			{
+				var eventPersonalStadisticUpdated:Event = new Event("personalStadisticUpdated");
+				this.dispatchEvent( eventPersonalStadisticUpdated );
+				this.cleanForm();
+			}
+			
+			protected function catalogoService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function responseGetTrimestre_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbThreeMonths.dataProvider = data;
+				if( Util.isFill( this.cmbThreeMonths ) && this._item 
+					&& this._item.trimestre != null ){
+					this.cmbThreeMonths.selectedIndex = Util.selectedIndexFromCombo( this.cmbThreeMonths.dataProvider as ArrayCollection, 
+						this._item.trimestre.id);
+				}
+			}
+			
+			protected function responseGetAno_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbYear.dataProvider = data;
+				if( Util.isFill( this.cmbYear ) && this._item 
+					&& this._item.ano != null ){
+					this.cmbYear.selectedIndex = Util.selectedIndexFromCombo( this.cmbYear.dataProvider as ArrayCollection, 
+						this._item.ano.id);
+				}
+			}
+			
+			protected function responseGetRangoEstadisticaPersonal_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.setDataToCombo( this.cmbAbsence, data, "rangoEstadisticaPersonalAusencia");
+				this.setDataToCombo( this.cmbPuntual, data, "rangoEstadisticaPersonalPuntualidad");
+				this.setDataToCombo( this.cmbRotation, data, "rangoEstadisticaPersonalRotacion");
+				this.setDataToCombo( this.cmbLate, data, "rangoEstadisticaPersonalRetardo");
+			}
+				
+			private function setDataToCombo( comboBox:ComboBox, data:ArrayCollection, property:String ):void{
+				comboBox.dataProvider = data;
+				if( Util.isFill( comboBox ) && this._item 
+					&& this._item[property] != null ){
+					comboBox.selectedIndex = Util.selectedIndexFromCombo( comboBox.dataProvider as ArrayCollection, 
+						this._item[property].id);
+				}
+			}
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="personalStadisticNew", type="flash.events.Event")]
+		[Event(name="personalStadisticUpdated", type="flash.events.Event")]
+	</mx:Metadata>
+	<mx:Form id="form">
+		<mx:FormItem required="true" id="frmID" label="Folio:">
+			<components:TextInput id="txtID" editable="false"
+								  textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem required="true" label="Trimestre:">
+			<mx:ComboBox id="cmbThreeMonths" width="200"
+						 labelField="trimestre"/>
+		</mx:FormItem>
+		<mx:FormItem required="true" label="Año:">
+			<mx:ComboBox id="cmbYear" width="200"
+						 labelField="ano"/>
+		</mx:FormItem>
+		<mx:FormItem required="true" label="Ausencia:">
+			<mx:ComboBox id="cmbAbsence" width="200"
+						 labelField="rango"/>
+		</mx:FormItem>
+		<mx:FormItem required="true" label="Puntualidad:">
+			<mx:ComboBox id="cmbPuntual" width="200"
+						 labelField="rango"/>
+		</mx:FormItem>
+		<mx:FormItem required="true" label="Rotación:">
+			<mx:ComboBox id="cmbRotation" width="200"
+						 labelField="rango"/>
+		</mx:FormItem>
+		<mx:FormItem required="true" label="Retardo:">
+			<mx:ComboBox id="cmbLate" width="200"
+						 labelField="rango"/>
+		</mx:FormItem>
+		<mx:FormItem>
+			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:RemoteObject id="personalStadisticService" destination="estadisticaPersonalService" fault="requisicionService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
+	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
+	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="catalogoService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetTrimestre" result="responseGetTrimestre_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetAno" result="responseGetAno_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetRangoEstadisticaPersonal" result="responseGetRangoEstadisticaPersonal_resultHandler(event)"/>
+</mx:VBox>

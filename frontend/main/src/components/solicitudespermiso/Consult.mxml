@@ -92,7 +92,11 @@
 			}
 			
 			private function labelFunctionNombreEmpleado(item:Object, column:DataGridColumn):String{
-				var contratacion:Contratacion = item as Contratacion;
+				var solicitudPermiso:SolicitudPermiso = item as SolicitudPermiso;
+				if( solicitudPermiso == null ){
+					return "";
+				}
+				var contratacion:Contratacion = solicitudPermiso.contratacion;
 				if( contratacion == null ){
 					return "";
 				}
@@ -104,7 +108,7 @@
 		[Event(name="requestPermissionDetail", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
-		<mx:DataGrid id="datagrid" width="1080" height="100%" dataProvider="{items}"
+		<mx:DataGrid id="datagrid" width="1470" height="100%" dataProvider="{items}"
 					 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 					 allowMultipleSelection="true">
 			<mx:columns>
@@ -112,37 +116,36 @@
 								   dataField="id"
 								   width="80"
 								   textAlign="right"/>
-				<mx:DataGridColumn id="dtgApplicationDate" headerText="{'Fecha de\nSolicitud'}"
-								   width="80"
-								   dataField="fechaSolicitud"
-								   labelFunction="{Util.labelFunctionDate}"
-								   textAlign="center"/>
 				<mx:DataGridColumn headerText="{'Nombre del Empleado'}"
 								   labelFunction="labelFunctionNombreEmpleado"
 								   width="280"/>
-				<mx:DataGridColumn headerText="{'Fecha\nInicio\nContrato'}"
-								   width="80"
-								   dataField=""
+				<mx:DataGridColumn id="dtgApplicationDate" headerText="{'Fecha de\nPermiso'}"
+								   width="90"
+								   dataField="fecha"
 								   labelFunction="{Util.labelFunctionDate}"
 								   textAlign="center"/>
-				<mx:DataGridColumn headerText="Vacaciones"
-								   dataField="variacion.tipo"
+				<mx:DataGridColumn headerText="{'Tipo'}"
+								   width="80"
+								   dataField="formaPagoPrenomina.tipo"
+								   textAlign="center"/>
+				<mx:DataGridColumn headerText="{'Hora de\nSalida'}"
+								   dataField="fechaHoraSalida"
 								   width="120"
+								   labelFunction="{Util.labelFunctionHour}"
 								   textAlign="center"/>
-				<mx:DataGridColumn headerText="{'Días\nCorrespondientes'}"
-								   dataField="diasCorrespondientes"
-								   width="100"
+				<mx:DataGridColumn headerText="{'Hora de\nRetorno'}"
+								   dataField="fechaHoraRetorno"
+								   width="120"
+								   labelFunction="{Util.labelFunctionHour}"
+								   textAlign="center"/>
+				<mx:DataGridColumn headerText="{'Permiso Sin\nGoce de Sueldo'}"
+								   dataField="permisoSinGoceSueldo.permiso"
+								   width="260"
 								   />
-				<mx:DataGridColumn headerText="{'Inicio'}"
-								   width="80"
-								   dataField="fechaInicio"
-								   labelFunction="{Util.labelFunctionDate}"
-								   textAlign="center"/>
-				<mx:DataGridColumn headerText="{'Fin'}"
-								   width="80"
-								   dataField="fechaFin"
-								   labelFunction="{Util.labelFunctionDate}"
-								   textAlign="center"/>
+				<mx:DataGridColumn headerText="{'Permiso Con\nGoce de Sueldo'}"
+								   dataField="permisoConGoceSueldo.permiso"
+								   width="260"
+								   />
 				<mx:DataGridColumn headerText="{'Vo. Bo.\nJefe Inmediato'}" editable="false" textAlign="center"
 								   dataField="vistoBuenoJefeInmediato" width="90">
 					<mx:itemRenderer>

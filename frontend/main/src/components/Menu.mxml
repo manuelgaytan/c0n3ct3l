@@ -171,11 +171,15 @@
 		<mx:LinkButton label="Percepciones y Prestaciones" id="Percepciones" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/percepcion.png')"/>
 		<mx:LinkButton label="Entrenamiento y Desarrollo" id="EntrenamientoDesarrollo" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/entrenamiento.png')"/>
+					   icon="@Embed(source='assets/images/entrenamientodesarrollo.png')"/>
+		<mx:LinkButton label="Ficha de Presentación" id="FichaPresentacion" click="clickMenuHandler(event)"
+					   icon="@Embed(source='assets/images/fichapresentacion.png')"/>
 		<mx:LinkButton label="Solicitud Permiso" id="SolicitudesPermiso" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/entrenamiento.png')"/>
+					   icon="@Embed(source='assets/images/solicitudpermiso.png')"/>
 		<mx:LinkButton label="Solicitud Vacaciones" id="SolicitudesVacaciones" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/entrenamiento.png')"/>
+					   icon="@Embed(source='assets/images/solicitudvacaciones.png')"/>
+		<mx:LinkButton label="Estadística de Personal" id="EstadisticaPersonal" click="clickMenuHandler(event)"
+					   icon="@Embed(source='assets/images/estadisticapersonal.png')"/>
 	</mx:VBox>
 	<mx:VBox label="Sistemas de Gestión" width="100%" height="100%">
 		<mx:LinkButton label="Comentarios y/o Sugerencias" id="ComentariosSugerencias" click="clickMenuHandler(event)"

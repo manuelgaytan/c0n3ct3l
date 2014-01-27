@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*" xmlns:notascreditoclientes="components.notascreditoclientes.*" xmlns:informacionfacturas="components.informacionfacturas.*" xmlns:notascreditoproveedores="components.notascreditoproveedores.*" xmlns:facturacionproveedores="components.facturacionproveedores.*" xmlns:comprobacionesviaticos="components.comprobacionesviaticos.*" xmlns:seleccion="components.seleccion.*"
+		 initialize="initializeHandler(event)" xmlns:reclutamientosolicitudempleo="components.reclutamientosolicitudempleo.*" xmlns:informacionConfidencialColaborador="components.informacionConfidencialColaborador.*" xmlns:contratacion="components.contratacion.*"
+		 >
+	<mx:Script>
+		<![CDATA[
+			import components.Deliver;
+			import components.DownloadFile;
+			import components.clientes.Client;
+			import components.solicitudespermiso.RequestPermission;
+			
+			import events.GenericEvent;
+			
+			import model.BancoConectel;
+			import model.Catalogo;
+			import model.Cliente;
+			import model.Colaborador;
+			import model.ComprobacionViaticos;
+			import model.ConceptoOtraOperacionFinanciera;
+			import model.Constants;
+			import model.Contratacion;
+			import model.Estado;
+			import model.EstadoColaborador;
+			import model.EstadoOrdenCompra;
+			import model.EstadoValidacionCosto;
+			import model.EstadoValidacionOperativa;
+			import model.FiltroProyecto;
+			import model.InformacionConfidencialColaborador;
+			import model.MedioTransporte;
+			import model.Model;
+			import model.MotivoTerminoContrato;
+			import model.NotaCreditoCliente;
+			import model.NotaCreditoProveedor;
+			import model.Producto;
+			import model.Proveedor;
+			import model.ProveedorCalificado;
+			import model.ProveedorMaquilador;
+			import model.Proyecto;
+			import model.ReclutamientoSolicitudEmpleo;
+			import model.Reportes;
+			import model.SeleccionReclutamiento;
+			import model.Suspension;
+			import model.TipoCandidato;
+			import model.TipoColaborador;
+			import model.TipoContrato;
+			import model.TipoEntregable;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.Constantes;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
+			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.com.gahm.componentes.validadores.ValidadorEmail;
+			import mx.com.gahm.componentes.validadores.ValidadorEntero;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			[Bindable]
+			private var mode:String = null;
+			private var _item:InformacionConfidencialColaborador;
+			private var validators:InicializaValidadoresEtiquetas;
+			private var fileName:String = null;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				this.label = Constants.REGISTRAR;
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set recordFiling(value:InformacionConfidencialColaborador):void{
+				if( value == null ){
+					return;
+				}
+				this.cleanForm();
+				this._item = value;
+				this.setItem(); 
+			}
+			
+			private function setItem():void
+			{
+				if( this._item == null ){
+					return;
+				}
+				this.txtID.text = this._item.id.toString();
+				this.recruitmentConsult.datagrid.dataProvider = Util.asArrayCollection( this._item.contratacion );
+				this.recruitmentConsult.datagrid.selectedIndex = 0;
+				this.downloadFile( this._item.foto );
+				// this.fltDlvPhoto.source = this.downloadFile( this._item.foto ); // en espera de la exposicion del archivo.
+				this.txtName.text = RequestPermission.getEmployeeWholeName( this._item.contratacion );
+				this.txtMostRecentStudies.text = Util.extractToText( this._item, "contratacion.seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosEscolaresHabilidades.ultimoGradoEstudios.estudios" );
+				this.dtfDateIncome.selectedDate = Util.extractObject( this._item, "contratacion.fechaInicioContrato" ) as Date;
+				this.txtPosition.text = Util.extractToText( this._item, "contratacion.seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosPrincipalesSolicitante.puestoSolicitado" );
+				this.txtJobObjective.text = Util.extractToText( this._item, "contratacion.seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosPrincipalesSolicitante.objetivoLaboral" );
+			}
+			
+			private function getRecordFiling():InformacionConfidencialColaborador{
+				var recordFiling:InformacionConfidencialColaborador = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					recordFiling = new InformacionConfidencialColaborador();
+				}else{
+					recordFiling = this._item;
+				}
+				return recordFiling;
+			}
+			
+			private function fillCombos():void
+			{
+			}
+			
+			protected function informacionConfidencialColaboradorService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function btnAccept_clickHandler(event:MouseEvent):void
+			{
+				if( !this.validations() ){
+					Util.showMessageVerifyFields();
+					return;
+				}
+				if( this.mode == Constants.REGISTER_MODE ){
+					var recordFiling:InformacionConfidencialColaborador = this.getRecordFiling();
+					Util.showProperties( recordFiling );
+					this.responseSave.token = this.informacionConfidencialColaboradorService.save( recordFiling );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
+				}
+			}
+			
+			private function updateItem(event:CloseEvent):void{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var item:InformacionConfidencialColaborador = this.getRecordFiling();
+				Util.showProperties( item );
+				this.responseUpdate.token = this.informacionConfidencialColaboradorService.update( item );
+			}
+			
+			private function validations():Boolean
+			{
+				var value:Boolean = true;
+				value &&= this.validators.validarFormulario();
+				value &&= recruitmentConsult.datagrid.selectedItem != null;
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+					form.removeChild( this.frmID );
+				}else if( this.mode == Constants.UPDATE_MODE ){
+				}else{
+					this.label = Constants.DETALLE;
+				}
+			}
+			
+			private function initializeValidators():void
+			{
+				this.validators = new InicializaValidadoresEtiquetas();
+				this.validators.crearValidadorRestrictor("generic",ValidadorCadenaCualquierCaracter.nombre, 0, 255);
+				this.validators.setRestrictor( this.txtPosition, "generic");
+				this.validators.setRestrictor( this.txtJobObjective, "generic");
+				this.validators.setValidador( this.txtName, "generic" );
+			}
+			
+			protected function responseSave_resultHandler(event:ResultEvent):void
+			{
+				var eventGeneralDataProjectNew:Event = new Event("recordFilingNew");
+				this.dispatchEvent( eventGeneralDataProjectNew );
+				this.cleanForm();
+			}
+			
+			private function cleanForm():void
+			{
+				Util.upScroll( this );
+				this.txtID.reset();
+				this.recruitmentConsult.datagrid.selectedItem = false;
+				//this.fltDlvPhoto.reset();
+				this.txtName.reset();
+				this.dtfDateIncome.reset();
+				this.txtPosition.reset();
+				this.txtJobObjective.reset();
+			}
+			
+			protected function responseUpdate_resultHandler(event:ResultEvent):void
+			{
+				var eventGeneralDataProjectUpdated:Event = new Event("recordFilingUpdated");
+				this.dispatchEvent( eventGeneralDataProjectUpdated );
+				this.cleanForm();
+			}
+			
+			protected function initializeHandler(event:FlexEvent):void
+			{
+				if( this.mode == Constants.REGISTER_MODE ){
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+				}
+			}
+			
+			private function downloadFile(foto:String):void
+			{
+				var params:Object = new Object();
+				this.fileName = foto;
+				params.document = this.fileName;
+				this.exposeService.send(params);
+			}
+			
+			protected function exposeService_resultHandler(event:ResultEvent):void
+			{
+				this.showImage(); 
+			}
+			
+			protected function exposeService_faultHandler(event:FaultEvent):void
+			{
+				this.showImage();
+			}
+			
+			private function showImage():void{
+				this.imgPhoto.source = Model.getInstance().urlBase+"output" + "/" + this.fileName;
+			}
+			
+			protected function btnPrint_clickHandler(event:MouseEvent):void
+			{
+				var params:Array = [{key:"id", value:this._item.id}];
+				Util.launchReport( Reportes.FICHA_PRESENTACION, params );
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="recordFilingNew", type="flash.events.Event")]
+		[Event(name="recordFilingUpdated", type="flash.events.Event")]
+		[Event(name="recordFilingProjectDone", type="flash.events.Event")]
+	</mx:Metadata>
+	<mx:Form id="form">
+		<mx:FormItem id="frmID" label="ID:" direction="horizontal">
+			<components:TextInput id="txtID" width="80" textAlign="right"
+								  editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Contratación:"/>
+		<mx:VBox width="730">
+			<mx:VBox width="100%" height="100%" verticalGap="5">
+				<contratacion:Consult id="recruitmentConsult" readMode="true"/>
+			</mx:VBox>
+		</mx:VBox>
+		<mx:FormItem label="Foto:">
+			<mx:VBox width="570">
+				<mx:Image id="imgPhoto"/>
+			</mx:VBox>
+		</mx:FormItem>
+		<mx:FormItem label="Nombre:">
+			<components:TextInput id="txtName" width="300" editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Último Grado de Estudios:">
+			<components:TextInput id="txtMostRecentStudies" width="200" editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha de Ingreso:">
+			<components:DateField id="dtfDateIncome" enabled="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Puesto:">
+			<components:TextInput id="txtPosition" width="250" editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Objetivo Laboral:">
+			<components:TextInput id="txtJobObjective" width="570" editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem direction="horizontal">
+			<mx:Button id="btnPrint" label="Imprimir" click="btnPrint_clickHandler(event)"/>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:RemoteObject id="informacionConfidencialColaboradorService" destination="informacionConfidencialColaboradorService" fault="informacionConfidencialColaboradorService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
+	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
+	<mx:HTTPService id="exposeService" url="{Model.getInstance().urlBase}exposing.jsp"
+					result="exposeService_resultHandler(event)" fault="exposeService_faultHandler(event)"/>
+</mx:VBox>

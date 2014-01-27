@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+		 label="Consulta"
+		 creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import components.solicitudespermiso.RequestPermission;
+			
+			import events.GenericEvent;
+			
+			import model.ConfiguracionPruebaEntrega;
+			import model.DatosGeneralesSolicitante;
+			import model.FiltroProyecto;
+			import model.InformacionConfidencialColaborador;
+			import model.Proyecto;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			[Bindable]
+			private var items:ArrayCollection = null;
+			
+			private var configuracionPruebaEntrega:ConfiguracionPruebaEntrega;
+			[Bindable]
+			private var _readMode:Boolean = false;
+			
+			public function set readMode(value:Boolean):void{
+				this._readMode = value;
+			}
+			
+			protected function responseGetAll_resultHandler(event:ResultEvent):void
+			{
+				items = event.result as ArrayCollection;
+			}
+			
+			protected function informacionConfidencialColaboradorService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.executeQuery();
+			}
+			
+			protected function datagrid_doubleClickHandler(event:MouseEvent):void
+			{
+				if( event.currentTarget.selectedItem == null ){
+					return;
+				}
+				var item:InformacionConfidencialColaborador = this.datagrid.selectedItem as InformacionConfidencialColaborador;
+				this.responseGetProyecto.token = this.informacionConfidencialColaboradorService.getItem( item.id );
+			}
+			
+			protected function responseGetItem_resultHandler(event:ResultEvent):void
+			{
+				var item:InformacionConfidencialColaborador = event.result as InformacionConfidencialColaborador;
+				if( item == null ){
+					return;
+				}
+				var genericEvent:GenericEvent = new GenericEvent("recordFilingDetail");
+				genericEvent.information = item;
+				this.dispatchEvent( genericEvent );
+			}
+			
+			public function executeQuery():void
+			{
+				this.responseGetAll.token = this.informacionConfidencialColaboradorService.getAll();
+			}
+			
+			private function labelFunctionDate(object:Object, column:DataGridColumn):String{
+				return Util.formatDateToString( object[column.dataField] );
+			}
+			
+			private function labelFunctionIDProyecto(item:Object, column:DataGridColumn):String{
+				return Util.getIDConectelFormat( Util.extractObject(item, column.dataField) );
+			}
+			
+			protected function btnDelete_clickHandler(event:MouseEvent):void
+			{
+				if( this.datagrid.selectedItems == null ||
+					this.datagrid.selectedItems.length == 0 ){
+					Util.showErrorMessage("Debe seleccionar elementos de la tabla.");
+					return;
+				}
+				Alert.show("Confirme si desea eliminar los elementos.","Advertencia",Alert.YES+Alert.NO,this, deleteItems);
+			}
+			
+			private function deleteItems(event:CloseEvent):void
+			{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var items:ArrayCollection = Util.selectedIDs( this.datagrid.selectedItems ); 
+				this.responseDeleteItems.token = this.informacionConfidencialColaboradorService.deleteItems( items );
+			}
+			
+			protected function responseDeleteItems_resultHandler(event:ResultEvent):void
+			{
+				this.executeQuery();
+			}
+			
+			private function labelFunctionNombre( item:Object, column:DataGridColumn ):String{
+				var informacionConfidencialColaborador:InformacionConfidencialColaborador = item as InformacionConfidencialColaborador;
+				if( informacionConfidencialColaborador == null ||
+					informacionConfidencialColaborador.contratacion.seleccionSolicitudEmpleo == null ||
+					informacionConfidencialColaborador.contratacion.seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo == null ||
+					informacionConfidencialColaborador.contratacion.seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosGeneralesSolicitante == null ){
+					return "";
+				}else{
+					return RequestPermission.getEmployeeWholeName( informacionConfidencialColaborador.contratacion );
+				}
+			}
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="recordFilingDetail", type="events.GenericEvent")]
+	</mx:Metadata>
+	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
+		<mx:DataGrid id="datagrid" width="1590" height="100%" dataProvider="{items}"
+					 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
+					 allowMultipleSelection="true"
+					 >
+			<mx:columns>
+				<mx:DataGridColumn id="dtgID" headerText="ID"
+								   dataField="id"
+								   width="60"
+								   textAlign="right"/>
+				<mx:DataGridColumn headerText="{'Foto'}"
+								   dataField="foto"
+								   width="120"/>
+				<mx:DataGridColumn id="dtgName" headerText="{'Nombre'}"
+								   labelFunction="labelFunctionNombre"
+								   width="300"/>
+				<mx:DataGridColumn headerText="{'Último Grado\nde Estudios'}"
+								   dataField="contratacion.seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosEscolaresHabilidades.ultimoGradoEstudios.estudios"
+								   width="200"/>
+				<mx:DataGridColumn headerText="{'Fecha de\nIngreso'}"
+								   dataField="contratacion.fechaInicioContrato"
+								   labelFunction="{Util.labelFunctionDate}"
+								   width="90"/>
+				<mx:DataGridColumn headerText="{'Puesto'}"
+								   dataField="contratacion.seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosPrincipalesSolicitante.puestoSolicitado"
+								   width="250"/>
+				<mx:DataGridColumn headerText="{'Objetivo Laboral'}"
+								   dataField="contratacion.seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosPrincipalesSolicitante.objetivoLaboral"
+								   width="570"/>
+			</mx:columns>
+		</mx:DataGrid>
+	</mx:HBox>
+	<mx:HBox width="100%">
+		<mx:Spacer width="100%"/>
+		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"
+				   visible="{!this._readMode}"/>
+	</mx:HBox>
+	<mx:RemoteObject id="informacionConfidencialColaboradorService" destination="informacionConfidencialColaboradorService" fault="informacionConfidencialColaboradorService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetAll" result="responseGetAll_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetProyecto" result="responseGetItem_resultHandler(event)"/>
+	<mx:CallResponder id="responseDeleteItems" result="responseDeleteItems_resultHandler(event)"/>
+</mx:VBox>

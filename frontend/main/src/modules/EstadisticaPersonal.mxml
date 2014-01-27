@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
+		   width="780" height="500"
+		   xmlns:estadisticapersonal="components.estadisticapersonal.*"
+		   creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import events.GenericEvent;
+			
+			import model.EstadisticaPersonal;
+			
+			import mx.events.FlexEvent;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				
+			}
+			
+			protected function consult_personalStadisticDetailHandler(event:GenericEvent):void
+			{
+				this.detail.personalStadistic = event.information as model.EstadisticaPersonal;
+				this.navigator.selectedChild = this.detail;
+			}
+			
+			protected function register_personalStadisticNewHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+			
+			protected function detail_personalStadisticUpdatedHandler(event:Event):void
+			{
+				this.navigator.selectedChild = this.consult;
+				this.consult.executeQuery();
+			}
+			
+			protected function consult_personalStadisticDetailForGraphicHandler(event:GenericEvent):void
+			{
+				if( event == null ||
+					event.information == null ){
+					return;
+				}
+				var personalStadistic:model.EstadisticaPersonal = event.information as model.EstadisticaPersonal;
+				this.graphic.personalStadistic = personalStadistic;
+				this.navigator.selectedChild = this.graphic;
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:TabNavigator id="navigator" width="100%" height="100%" creationPolicy="all">
+		<estadisticapersonal:Consult id="consult" personalStadisticDetail="consult_personalStadisticDetailHandler(event)"
+									 personalStadisticDetailForGraphic="consult_personalStadisticDetailForGraphicHandler(event)"/>
+		<estadisticapersonal:PersonalStadistic id="detail" update="true" personalStadisticUpdated="detail_personalStadisticUpdatedHandler(event)"/>
+		<estadisticapersonal:PersonalStadistic id="register" registrer="true" personalStadisticNew="register_personalStadisticNewHandler(event)"/>
+		<estadisticapersonal:PersonalStadisticColumnChart id="graphic"/> 
+	</mx:TabNavigator>
+</mx:Module>

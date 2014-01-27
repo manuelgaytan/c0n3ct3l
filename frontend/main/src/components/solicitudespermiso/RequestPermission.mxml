@@ -97,9 +97,10 @@
 				}
 				this.nstHourGoOut.value = this._item.fechaHoraSalida.hours > 12 ? this._item.fechaHoraSalida.hours - 12 : this._item.fechaHoraSalida.hours;
 				this.nstMinutesGoOut.value = this._item.fechaHoraSalida.minutes;
+				var index:int = NaN;
 				if( Util.isFill( this.cmbAMPMGoOut ) && this._item 
 					&& this._item.fechaHoraSalida != null ){
-					var index:int = 2;
+					index = 2;
 					if( this._item.fechaHoraSalida.hours < 12 ){
 						index = 1;
 					}
@@ -110,7 +111,7 @@
 				this.nstMinutesArrive.value = this._item.fechaHoraRetorno.minutes;
 				if( Util.isFill( this.cmbAMPMArrive ) && this._item 
 					&& this._item.fechaHoraRetorno != null ){
-					var index:int = 2;
+					index = 2;
 					if( this._item.fechaHoraRetorno.hours < 12 ){
 						index = 1;
 					}
@@ -142,14 +143,16 @@
 				item.fecha= this.dtfPermissionDate.selectedDate;
 				item.contratacion = this.recruitmentConsult.datagrid.selectedItem as Contratacion;
 				item.formaPagoPrenomina = Util.validateCombo( this.cmbPaymentForm ) as FormaPagoPrenomina;
+				item.fechaHoraSalida = new Date( item.fecha.fullYear, item.fecha.month, item.fecha.date );
 				item.fechaHoraSalida.hours = this.cmbAMPMGoOut.selectedItem.id == 2 ? this.nstHourGoOut.value + 12 : this.nstHourGoOut.value;
 				item.fechaHoraSalida.minutes = this.nstMinutesGoOut.value;
+				item.fechaHoraRetorno = new Date( item.fecha.fullYear, item.fecha.month, item.fecha.date );
 				item.fechaHoraRetorno.hours = this.cmbAMPMArrive.selectedItem.id == 2 ? this.nstHourArrive.value + 12 : this.nstHourArrive.value;
 				item.fechaHoraRetorno.minutes = this.nstMinutesArrive.value;
 				item.permisoSinGoceSueldo = Util.validateCombo( this.cmbPermitWithoutPay ) as PermisoSinGoceSueldo;
 				item.permisoConGoceSueldo = Util.validateCombo( this.cmbPermitWithPay ) as PermisoConGoceSueldo;
 				item.vistoBuenoJefeInmediato = this.chkImmediateSupervisorApproval.selected;
-				item.vistoBuenoJefeInmediato = this.chkAuthorization.selected;				
+				item.autorizacion = this.chkAuthorization.selected;				
 				item.comentarios = this.comments.getCommentsAsInWith("model.ComentarioRecursosHumanos","model.ComentarioSolicitudPermiso","comentarioRecursosHumanos");
 				return item;
 			}
@@ -258,7 +261,7 @@
 			
 			protected function recruitmentConsult_itemDetailHandler(event:GenericEvent):void
 			{
-				if( event == null || event.information ){
+				if( event == null || event.information == null ){
 					return;
 				}
 				var item:Contratacion = event.information as Contratacion;
@@ -313,6 +316,31 @@
 						this._item.permisoConGoceSueldo.id);
 				}
 			}
+			
+			protected function cmbPermitWithoutPay_changeHandler(event:ListEvent = null):void
+			{
+				var permitWithoutPay:PermisoSinGoceSueldo = this.cmbPermitWithoutPay.selectedItem as PermisoSinGoceSueldo;
+				if( permitWithoutPay == null ){
+					return;
+				}
+				if( permitWithoutPay.id != PermisoSinGoceSueldo.NA ){
+					this.cmbPermitWithPay.selectedIndex = Util.selectedIndexFromCombo( this.cmbPermitWithPay.dataProvider as ArrayCollection,
+						PermisoConGoceSueldo.NA );
+				}
+			}
+			
+			protected function cmbPermitWithPay_changeHandler(event:ListEvent = null):void
+			{
+				var permitWithPay:PermisoConGoceSueldo = this.cmbPermitWithPay.selectedItem as PermisoConGoceSueldo;
+				if( permitWithPay == null ){
+					return;
+				}
+				if( permitWithPay.id != PermisoConGoceSueldo.NA ){
+					this.cmbPermitWithoutPay.selectedIndex = Util.selectedIndexFromCombo( this.cmbPermitWithoutPay.dataProvider as ArrayCollection,
+																							PermisoSinGoceSueldo.NA );
+				}
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -325,7 +353,11 @@
 								  textAlign="right"/>
 		</mx:FormItem>
 		<mx:FormItem required="true" label="Contratación:"/>
-		<contratacion:Consult id="recruitmentConsult" readMode="true" itemDetail="recruitmentConsult_itemDetailHandler(event)"/>
+		<mx:VBox width="730">
+			<mx:VBox width="100%" height="100%" verticalGap="5">
+				<contratacion:Consult id="recruitmentConsult" readMode="true" itemDetail="recruitmentConsult_itemDetailHandler(event)"/>
+			</mx:VBox>
+		</mx:VBox>
 		<mx:FormItem required="true" label="Nombre del Empleado:">
 			<components:TextInput id="txtEmployeeName" editable="false"/>
 		</mx:FormItem>
@@ -354,11 +386,11 @@
 						 labelField="etiqueta"/>
 		</mx:FormItem>
 		<mx:FormItem required="true" label="Permiso Sin Goce de Sueldo:">
-			<mx:ComboBox id="cmbPermitWithoutPay" width="200"
+			<mx:ComboBox id="cmbPermitWithoutPay" width="200" change="cmbPermitWithoutPay_changeHandler(event)"
 						 labelField="permiso"/>
 		</mx:FormItem>
 		<mx:FormItem required="true" label="Permiso Con Goce de Sueldo:">
-			<mx:ComboBox id="cmbPermitWithPay" width="200"
+			<mx:ComboBox id="cmbPermitWithPay" width="200" change="cmbPermitWithPay_changeHandler(event)"
 						 labelField="permiso"/>
 		</mx:FormItem>
 		<mx:FormItem required="true" label="Vo. Bo. Jefe Inmediato:">

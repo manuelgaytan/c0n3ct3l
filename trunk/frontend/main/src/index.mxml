@@ -6,13 +6,6 @@
 				creationComplete="creationCompleteHandler(event)">
 	<mx:Script>
 		<![CDATA[
-			import model.SolicitudVacaciones;
-			import model.ComentarioSolicitudVacaciones;
-			import model.ComentarioSolicitudPermiso;
-			import model.ComentarioRecursosHumanos;
-			import model.PermisoConGoceSueldo;
-			import model.PermisoSinGoceSueldo;
-			import model.SolicitudPermiso;
 			import components.ComboList;
 			import components.Comments;
 			import components.DateField;
@@ -30,6 +23,7 @@
 			import model.AccionPreventivaCorrectiva;
 			import model.ActividadTiempoLibre;
 			import model.AcuerdoMinuta;
+			import model.Ano;
 			import model.Aplica;
 			import model.AreaLevantaNoConformidad;
 			import model.AreaSolicitante;
@@ -66,8 +60,11 @@
 			import model.ComentarioPagoViaticos;
 			import model.ComentarioPantallaValidacionAdministrativa;
 			import model.ComentarioProveedor;
+			import model.ComentarioRecursosHumanos;
 			import model.ComentarioRequisicion;
 			import model.ComentarioSistemasGestion;
+			import model.ComentarioSolicitudPermiso;
+			import model.ComentarioSolicitudVacaciones;
 			import model.ComentarioSugerencia;
 			import model.ComentarioTesoreria;
 			import model.ComentarioValidacionAdministrativa;
@@ -111,6 +108,7 @@
 			import model.EquipoOficinaDomina;
 			import model.EquipoTransporte;
 			import model.EquipoTransporteSolicitudAlmacen;
+			import model.EstadisticaPersonal;
 			import model.Estado;
 			import model.EstadoAcademico;
 			import model.EstadoAccionPreventivaCorrectiva;
@@ -201,6 +199,8 @@
 			import model.Perfil;
 			import model.PerfilEscala;
 			import model.PerfilPantalla;
+			import model.PermisoConGoceSueldo;
+			import model.PermisoSinGoceSueldo;
 			import model.Prioridad;
 			import model.Producto;
 			import model.ProveedorCalificadoCombo;
@@ -209,6 +209,7 @@
 			import model.ProyectoEntregable;
 			import model.ProyectoPadre;
 			import model.ProyectoPadreHijo;
+			import model.RangoEstadisticaPersonal;
 			import model.ReclutamientoSolicitudEmpleo;
 			import model.RegistroDeduccion;
 			import model.RegistroPercepcion;
@@ -227,7 +228,9 @@
 			import model.SolicitanteRequisicion;
 			import model.SolicitanteSolicitudViaticos;
 			import model.SolicitudAlmacen;
+			import model.SolicitudPermiso;
 			import model.SolicitudServicioMaquilado;
+			import model.SolicitudVacaciones;
 			import model.SolicitudViaticos;
 			import model.Sugerencia;
 			import model.Suspension;
@@ -251,6 +254,7 @@
 			import model.TipoSancion;
 			import model.TipoServicio;
 			import model.TipoValidacionAdministrativa;
+			import model.Trimestre;
 			import model.UbicacionA;
 			import model.UbicacionB;
 			import model.UbicacionC;
@@ -565,6 +569,10 @@
 			private var comentarioSolicitudPermiso:ComentarioSolicitudPermiso;
 			private var solicitudVacaciones:SolicitudVacaciones;
 			private var comentarioSolicitudVacaciones:ComentarioSolicitudVacaciones;
+			private var estadisticaPersonal:EstadisticaPersonal;
+			private var trimestre:Trimestre;
+			private var ano:Ano;
+			private var rangoEstadisticaPersonal:RangoEstadisticaPersonal;
 						
 			protected function login_readyHandler(event:ModuleEvent):void
 			{

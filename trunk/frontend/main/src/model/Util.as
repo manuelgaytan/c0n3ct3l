@@ -160,6 +160,16 @@ package model
 			return dateFormatter.format( value );
 		}
 		
+		public static function formatTimeToString(value:Date):String
+		{
+			if( value == null ){
+				return null;
+			}
+			var dateFormatter:DateFormatter = new DateFormatter();
+			dateFormatter.formatString = "JJ:NN:SS";
+			return dateFormatter.format( value );
+		}
+		
 		public static function addTimeToDate(time:Date, destino:Date):void
 		{
 			if( time == null ){
@@ -547,6 +557,10 @@ package model
 		
 		public static function labelFunctionDateHour(object:Object, column:DataGridColumn):String{
 			return Util.formatDateTimeToString( Util.extractObject(object,column.dataField) as Date );
+		}
+		
+		public static function labelFunctionHour(object:Object, column:DataGridColumn):String{
+			return Util.formatTimeToString( Util.extractObject(object,column.dataField) as Date );
 		}
 		
 		public static function asArrayCollection(object:Object):ArrayCollection{

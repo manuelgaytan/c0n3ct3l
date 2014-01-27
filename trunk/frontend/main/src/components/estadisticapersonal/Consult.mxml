@@ -8,7 +8,7 @@
 			import events.GenericEvent;
 			
 			import model.Contratacion;
-			import model.SolicitudVacaciones;
+			import model.EstadisticaPersonal;
 			import model.Util;
 			
 			import mx.collections.ArrayCollection;
@@ -21,7 +21,7 @@
 			[Bindable]
 			private var items:ArrayCollection = null;
 			
-			private var solicitudVacaciones:SolicitudVacaciones;
+			private var estadisticaPersonal:EstadisticaPersonal;
 			
 			protected function responseGetAll_resultHandler(event:ResultEvent):void
 			{
@@ -40,7 +40,7 @@
 			
 			protected function datagrid_doubleClickHandler(event:MouseEvent):void
 			{
-				var item:SolicitudVacaciones = this.datagrid.selectedItem as SolicitudVacaciones;
+				var item:EstadisticaPersonal = this.datagrid.selectedItem as EstadisticaPersonal;
 				if( item == null ){
 					return;
 				}
@@ -49,11 +49,11 @@
 			
 			protected function responseGetItem_resultHandler(event:ResultEvent):void
 			{
-				var item:SolicitudVacaciones = event.result as SolicitudVacaciones;
+				var item:EstadisticaPersonal = event.result as EstadisticaPersonal;
 				if( item == null ){
 					return;
 				}
-				var genericEvent:GenericEvent = new GenericEvent("rentalApplicationDetail");
+				var genericEvent:GenericEvent = new GenericEvent("personalStadisticDetail");
 				genericEvent.information = item;
 				this.dispatchEvent( genericEvent );
 			}
@@ -71,6 +71,20 @@
 					return;
 				}
 				Alert.show("Confirme si desea eliminar los elementos.","Advertencia",Alert.YES+Alert.NO,this, deleteItems);
+			}
+			
+			protected function btnGraphic_clickHandler(event:MouseEvent):void
+			{
+				if( this.datagrid.selectedItems == null ||
+					this.datagrid.selectedItems.length == 0 ){
+					Util.showErrorMessage("Primero debe seleccionar un elemento.");
+					return;
+				}
+				var item:EstadisticaPersonal = this.datagrid.selectedItem as EstadisticaPersonal;
+				if( item == null ){
+					return;
+				}
+				this.responseGetItemForGraphic.token = this.requisicionService.getItem( item.id );
 			}
 			
 			private function deleteItems(event:CloseEvent):void
@@ -91,21 +105,22 @@
 				return Util.extractToText( item, column.dataField );
 			}
 			
-			private function labelFunctionNombreEmpleado(item:Object, column:DataGridColumn):String{
-				var solicitudVacaciones:SolicitudVacaciones = item as SolicitudVacaciones;
-				if( solicitudVacaciones == null ){
-					return "";
+			protected function responseGetItemForGraphic_resultHandler(event:ResultEvent):void
+			{
+				var item:EstadisticaPersonal = event.result as EstadisticaPersonal;
+				if( item == null ){
+					return;
 				}
-				var contratacion:Contratacion = solicitudVacaciones.contratacion;
-				if( contratacion == null ){
-					return "";
-				}
-				return RentalApplication.getEmployeeWholeName( contratacion );
+				var genericEvent:GenericEvent = new GenericEvent("personalStadisticDetailForGraphic");
+				genericEvent.information = item;
+				this.dispatchEvent( genericEvent );
 			}
+			
 		]]>
 	</mx:Script>
 	<mx:Metadata>
-		[Event(name="rentalApplicationDetail", type="events.GenericEvent")]
+		[Event(name="personalStadisticDetail", type="events.GenericEvent")]
+		[Event(name="personalStadisticDetailForGraphic", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
 	<mx:DataGrid id="datagrid" width="1120" height="100%" dataProvider="{items}"
@@ -116,63 +131,38 @@
 							   dataField="id"
 							   width="80"
 							   textAlign="right"/>
-			<mx:DataGridColumn id="dtgApplicationDate" headerText="{'Fecha de\nSolicitud'}"
-							   width="80"
-							   dataField="fecha"
-							   labelFunction="{Util.labelFunctionDate}"
-							   textAlign="center"/>
-			<mx:DataGridColumn headerText="{'Nombre del Empleado'}"
-							   labelFunction="labelFunctionNombreEmpleado"
-							   width="280"/>
-			<mx:DataGridColumn headerText="{'Fecha\nInicio\nContrato'}"
-							   width="80"
-							   dataField="contratacion.fechaInicioContrato"
-							   labelFunction="{Util.labelFunctionDate}"
-							   textAlign="center"/>
-			<mx:DataGridColumn headerText="Vacaciones"
-							   dataField="variacion.tipo"
-							   width="120"
-							   textAlign="center"/>
-			<mx:DataGridColumn headerText="{'Días\nCorrespondientes'}"
-							   dataField="diasCorrespondientes"
-							   width="120"
+			<mx:DataGridColumn headerText="{'Trimestre'}"
+							   width="150"
+							   dataField="trimestre.trimestre"
 							   />
-			<mx:DataGridColumn headerText="{'Inicio'}"
+			<mx:DataGridColumn headerText="{'Año'}"
+							   dataField="ano.ano"
 							   width="80"
-							   dataField="fechaInicio"
-							   labelFunction="{Util.labelFunctionDate}"
-							   textAlign="center"/>
-			<mx:DataGridColumn headerText="{'Fin'}"
-							   width="80"
-							   dataField="fechaFin"
-							   labelFunction="{Util.labelFunctionDate}"
-							   textAlign="center"/>
-			<mx:DataGridColumn headerText="{'Vo. Bo.\nJefe Inmediato'}" editable="false" textAlign="center"
-							   dataField="vistoBuenoJefeInmediato" width="100">
-				<mx:itemRenderer>
-					<mx:Component>
-						<mx:CheckBox selected="{data.vistoBuenoJefeInmediato}" enabled="false"/>
-					</mx:Component>
-				</mx:itemRenderer>
-			</mx:DataGridColumn>
-			<mx:DataGridColumn headerText="{'Autorización'}" editable="false" textAlign="center"
-							   dataField="autorizacion" width="100">
-				<mx:itemRenderer>
-					<mx:Component>
-						<mx:CheckBox selected="{data.autorizacion}" enabled="false"/>
-					</mx:Component>
-				</mx:itemRenderer>
-			</mx:DataGridColumn>
+							   textAlign="right"/>
+			<mx:DataGridColumn headerText="{'Ausencia'}"
+							   dataField="rangoEstadisticaPersonalAusencia.rango"
+							   width="80"/>
+			<mx:DataGridColumn headerText="{'Puntualidad'}"
+							   dataField="rangoEstadisticaPersonalPuntualidad.rango"
+							   width="80"/>
+			<mx:DataGridColumn headerText="{'Rotación'}"
+							   dataField="rangoEstadisticaPersonalRotacion.rango"
+							   width="80"/>
+			<mx:DataGridColumn headerText="{'Retardo'}"
+							   dataField="rangoEstadisticaPersonalRetardo.rango"
+							   width="80"/>
 		</mx:columns>
 	</mx:DataGrid>
 	</mx:HBox>
 	<mx:HBox>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>
+		<mx:Button id="btnGraphic" label="Graficar" click="btnGraphic_clickHandler(event)"/>
 		<components:ExportButton datagrid="{this.datagrid}"/>
 	</mx:HBox>
-	<mx:RemoteObject id="requisicionService" destination="solicitudVacacionesService" fault="requisicionService_faultHandler(event)"
+	<mx:RemoteObject id="requisicionService" destination="estadisticaPersonalService" fault="requisicionService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetAll" result="responseGetAll_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetItem" result="responseGetItem_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetItemForGraphic" result="responseGetItemForGraphic_resultHandler(event)"/>
 	<mx:CallResponder id="responseDeleteItems" result="responseDeleteItems_resultHandler(event)"/>
 </mx:VBox>

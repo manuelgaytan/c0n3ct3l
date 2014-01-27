@@ -113,7 +113,7 @@
 				item.fechaInicio = this.dtfStartDate.selectedDate;
 				item.fechaFin = this.dtfEndDate.selectedDate;
 				item.vistoBuenoJefeInmediato = this.chkImmediateSupervisorApproval.selected;
-				item.vistoBuenoJefeInmediato = this.chkAuthorization.selected;				
+				item.autorizacion = this.chkAuthorization.selected;				
 				item.comentarios = this.comments.getCommentsAsInWith("model.ComentarioRecursosHumanos","model.ComentarioSolicitudVacaciones","comentarioRecursosHumanos");
 				return item;
 			}
@@ -218,7 +218,7 @@
 			
 			protected function recruitmentConsult_itemDetailHandler(event:GenericEvent):void
 			{
-				if( event == null || event.information ){
+				if( event == null || event.information == null ){
 					return;
 				}
 				var item:Contratacion = event.information as Contratacion;
@@ -260,7 +260,11 @@
 			<components:DateField id="dtfApplicationDate" enabled="false" creationComplete="dtfApplicationDate.selectedDate = new Date()"/>
 		</mx:FormItem>
 		<mx:FormItem required="true" label="Contratación:"/>
-		<contratacion:Consult id="recruitmentConsult" readMode="true" itemDetail="recruitmentConsult_itemDetailHandler(event)"/>
+		<mx:VBox width="730">
+			<mx:VBox width="100%" height="100%" verticalGap="5">
+				<contratacion:Consult id="recruitmentConsult" readMode="true" itemDetail="recruitmentConsult_itemDetailHandler(event)"/>
+			</mx:VBox>
+		</mx:VBox>
 		<mx:FormItem required="true" label="Nombre del Empleado:">
 			<components:TextInput id="txtEmployeeName" editable="false"/>
 		</mx:FormItem>		

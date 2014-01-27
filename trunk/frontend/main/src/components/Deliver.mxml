@@ -18,7 +18,7 @@
 			[Bindable]
 			protected var _delivers:ArrayCollection;
 			
-			private var textTypes:FileFilter = new FileFilter("Archivos de Texto (*.doc, *.docx, *.xls, *.xlsx, *.pdf)", "*.doc; *.docx; *.xls; *.xlsx; *.pdf");
+			private var textTypes:FileFilter = new FileFilter("Archivos (*.doc, *.docx, *.xls, *.xlsx, *.pdf, *.jpg, *.png, *.gif)", "*.doc; *.docx; *.xls; *.xlsx; *.pdf; *.jpg; *.png; *.gif");
 			private var allTypes:Array = new Array(textTypes);
 			private var fileRef:FileReference = null;
 			

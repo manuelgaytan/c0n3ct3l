@@ -514,4 +514,28 @@
 			<scope>session</scope>
 		</properties>
 	</destination>
+	
+	<destination id="solicitudVacacionesService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/SolicitudVacacionesService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+	
+	<destination id="solicitudPermisoService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/SolicitudPermisoService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
+	
+	<destination id="estadisticaPersonalService">
+		<properties>
+			<factory>ejb3</factory>
+			<source>ejb/EstadisticaPersonalService</source>
+			<scope>session</scope>
+		</properties>
+	</destination>
 </service>

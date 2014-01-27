@@ -45,11 +45,11 @@ public class SolicitudPermisoDO implements Serializable {
 	private FormaPagoPrenominaDO formaPagoPrenomina;
 	
 	@Column(name = "fecha_hora_salida", nullable = false)
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaHoraSalida;
 	
 	@Column(name = "fecha_hora_retorno", nullable = false)
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaHoraRetorno;
 	
 	@ManyToOne

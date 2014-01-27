@@ -1460,4 +1460,46 @@ public class CatalogoService implements ICatalogoService {
 		}
 		return list;
 	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<TrimestreDO> getTrimestre() throws ConectelException {
+		TypedQuery<TrimestreDO> query = entityManager.createNamedQuery(
+				"TrimestreDO.findAll", TrimestreDO.class);
+		
+		List<TrimestreDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<AnoDO> getAno() throws ConectelException {
+		TypedQuery<AnoDO> query = entityManager.createNamedQuery(
+				"AnoDO.findAll", AnoDO.class);
+		
+		List<AnoDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<RangoEstadisticaPersonalDO> getRangoEstadisticaPersonal() throws ConectelException {
+		TypedQuery<RangoEstadisticaPersonalDO> query = entityManager.createNamedQuery(
+				"RangoEstadisticaPersonalDO.findAll", RangoEstadisticaPersonalDO.class);
+		
+		List<RangoEstadisticaPersonalDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
 }

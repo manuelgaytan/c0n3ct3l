@@ -44,6 +44,8 @@
 			private var _item:OrdenCompraAlmacen;
 			private var validators:InicializaValidadoresEtiquetas;
 			
+			public var IVApercent:Number = Constants.IVA;
+			
 			public function set registrer(value:Boolean):void{
 				mode = Constants.REGISTER_MODE;
 				this.label = Constants.REGISTRAR;
@@ -258,6 +260,7 @@
 				this.cmbQualifiedSupplier.selectedIndex = 0; 
 				this.txtSubtotal.reset();
 				this.txtIVA.reset();
+				this.compIVA.reset();
 				this.txtIEPS.reset();
 				this.txtISRRetention.reset();
 				this.txtIVARetention.reset();
@@ -354,7 +357,7 @@
 				}
 			}
 			
-			protected function btnUpdate_clickHandler(event:MouseEvent):void
+			protected function btnUpdate_clickHandler(event:MouseEvent = null):void
 			{
 				var datas:ArrayCollection = this.itemsManagement.dataProvider as ArrayCollection;
 				var subtotal:Number = 0;
@@ -366,8 +369,8 @@
 					}
 				}
 				this.txtSubtotal.text = Util.truncateToString(subtotal);
-				this.txtIVA.text = Util.truncateToString(subtotal*Constants.IVA);
-				this.txtTotal.text = Util.truncateToString(subtotal*Constants.IVA+subtotal);
+				this.txtIVA.text = Util.truncateToString(subtotal*IVApercent);
+				this.txtTotal.text = Util.truncateToString(subtotal*IVApercent+subtotal);
 			}
 			
 			private function sum():void{
@@ -461,9 +464,10 @@
 			<components:TextInput id="txtSubtotal" textAlign="right" width="110"
 								  focusOut="this.sum()" enter="this.sum()"/>
 		</mx:FormItem>
-		<mx:FormItem required="true" label="I.V.A.:">
+		<mx:FormItem required="true" label="I.V.A.:" direction="horizontal">
 			<components:TextInput id="txtIVA" textAlign="right" width="110"
 								  focusOut="this.sum()" enter="this.sum()"/>
+			<components:TextInputIVA id="compIVA" view="{this}" calculate="{btnUpdate_clickHandler}"/>
 		</mx:FormItem>
 		<mx:FormItem label="I.E.P.S.:">
 			<components:TextInput id="txtIEPS" textAlign="right" width="110"

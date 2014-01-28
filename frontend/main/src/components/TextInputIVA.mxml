@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml"
+					   xmlns:components="components.*"
+					   initialize="initializeHandler(event)"
+					   creationComplete="creationCompleteHandler(event)"
+					   horizontalGap="0"
+	>
+	<mx:Script>
+		<![CDATA[
+			import model.Constants;
+			import model.Util;
+			
+			import mx.events.FlexEvent;
+			[Bindable]
+			public var view:Object = null;
+			[Bindable]
+			public var calculate:Function = null;
+						
+			private function setIVAPercent():void{
+				if( this.view == null ){
+					return;
+				}
+				if( this.view.hasOwnProperty( "IVApercent" ) ){
+					var iva:Number = Util.stringToNumber( this.txtInput.text );
+					iva /= 100;
+					iva = Util.truncate( iva );
+					this.view[ "IVApercent" ] = iva;
+					this.executeCalculate();
+				}
+			}
+			
+			private function executeCalculate():void{
+				if( this.calculate != null ){
+					this.calculate();
+				}
+			}
+			
+			private function ajusteIVA():void{
+				this.setIVAPercent();
+			}
+			
+			protected function initializeHandler(event:FlexEvent = null):void
+			{
+				this.txtInput.text = Util.truncateToString( Constants.IVA * 100 );
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.setIVAPercent();
+			}
+			
+			public function reset():void{
+				this.initializeHandler();	
+			}			
+		]]>
+	</mx:Script>
+	<mx:Label text="Tasa Impuesto:"/>
+	<components:TextInput id="txtInput" restrict="0-9." focusOut="ajusteIVA()" enter="ajusteIVA()"
+						  width="30" textAlign="right"/>
+	<mx:Label text="%"/>
+	<mx:Label fontSize="11" text="(Valor de referencia, no propiamente es el aplicado al registro)"/>
+</mx:HBox>

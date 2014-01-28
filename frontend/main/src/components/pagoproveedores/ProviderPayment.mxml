@@ -53,6 +53,8 @@
 			private var _item:PagoProveedor;
 			private var validators:InicializaValidadoresEtiquetas;
 			
+			public var IVApercent:Number = Constants.IVA;
+			
 			public function set registrer(value:Boolean):void{
 				mode = Constants.REGISTER_MODE;
 				this.label = Constants.REGISTRAR;
@@ -223,6 +225,7 @@
 				Util.removeItems(this.creditNoteConsult.datagrid.dataProvider);
 				this.txtSubtotal.reset();
 				this.txtIVA.reset();
+				this.compIVA.reset();
 				this.txtTotal.reset();
 				this.cmbConectelBank.selectedIndex = 0;
 				this.dtfPaymentDate.reset();
@@ -270,11 +273,11 @@
 						total += vendorInvoice.ordenCompra.total;
 					}else if(vendorInvoice.ordenCompraMaquilado.solicitudServicioMaquilado.proyecto.tipoServicio.id == TipoServicio.ID_LOCAL ){
 						subtotal += Util.truncate(vendorInvoice.ordenCompraMaquilado.solicitudServicioMaquilado.proyecto.producto.costoLocalProveedor);
-						iva += Util.truncate(vendorInvoice.ordenCompraMaquilado.solicitudServicioMaquilado.proyecto.producto.costoLocalProveedor * Constants.IVA);
+						iva += Util.truncate(vendorInvoice.ordenCompraMaquilado.solicitudServicioMaquilado.proyecto.producto.costoLocalProveedor * IVApercent);
 						total += Util.truncate(subtotal + iva);
 					}else if(vendorInvoice.ordenCompraMaquilado.solicitudServicioMaquilado.proyecto.tipoServicio.id == TipoServicio.ID_FORANEO ){
 						subtotal += Util.truncate(vendorInvoice.ordenCompraMaquilado.solicitudServicioMaquilado.proyecto.producto.costoForaneoProveedor);
-						iva += Util.truncate(vendorInvoice.ordenCompraMaquilado.solicitudServicioMaquilado.proyecto.producto.costoForaneoProveedor * Constants.IVA);
+						iva += Util.truncate(vendorInvoice.ordenCompraMaquilado.solicitudServicioMaquilado.proyecto.producto.costoForaneoProveedor * IVApercent);
 						total += Util.truncate(subtotal + iva);
 					}
 				}
@@ -449,7 +452,7 @@
 				return Util.addEmptyCatalgo( datas );
 			}
 			
-			protected function btnCalculate_clickHandler(event:MouseEvent):void
+			protected function btnCalculate_clickHandler(event:MouseEvent = null):void
 			{
 				this.vendorInvoiceConsult_vendorInvoiceDetailHandler();
 				this.creditNoteConsult_creditNoteDetailHandler();
@@ -568,8 +571,9 @@
 		<mx:FormItem required="true" label="Subtotal:">
 			<components:TextInput id="txtSubtotal" textAlign="right" width="100"/>
 		</mx:FormItem>
-		<mx:FormItem required="true" label="I.V.A.:">
+		<mx:FormItem required="true" label="I.V.A.:" direction="horizontal">
 			<components:TextInput id="txtIVA" textAlign="right" width="100"/>
+			<components:TextInputIVA id="compIVA" view="{this}" calculate="{btnCalculate_clickHandler}"/>
 		</mx:FormItem>
 		<mx:FormItem required="true" label="Total:">
 			<components:TextInput id="txtTotal" textAlign="right" width="100"/>

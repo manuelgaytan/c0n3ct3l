@@ -127,7 +127,7 @@
 		[Event(name="purchaseOrderDetail", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
-	<mx:DataGrid id="datagrid" width="3230" height="100%" dataProvider="{items}"
+	<mx:DataGrid id="datagrid" width="3590" height="100%" dataProvider="{items}"
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 				 allowMultipleSelection="true">
 		<mx:columns>
@@ -156,15 +156,15 @@
 							   labelFunction="labelFunctionDate"
 							   textAlign="center"/>
 			<mx:DataGridColumn id="dtgSupplier" headerText="{'Proveedor\nCalificado'}"
-							   width="80"
+							   width="200"
 							   dataField="proveedorCalificado.proveedorSeleccionado.proveedor.nombreComercial"
 							   labelFunction="labelFunctionGenerico"/>
 			<mx:DataGridColumn headerText="{'Razón Social'}"
 							   dataField="proveedorCalificado.proveedorSeleccionado.proveedor.razonSocial"
-							   width="120"/>
+							   width="200"/>
 			<mx:DataGridColumn headerText="{'R.F.C.'}"
 							   dataField="proveedorCalificado.proveedorSeleccionado.proveedor.rfc"
-							   width="120"/>
+							   width="160"/>
 			<mx:DataGridColumn headerText="{'Dirección Fiscal'}"
 							   dataField="proveedorCalificado.proveedorSeleccionado.proveedor.direccionFisica"
 							   width="120"/>
@@ -173,10 +173,10 @@
 							   width="120"/>
 			<mx:DataGridColumn headerText="{'Contacto'}"
 							   dataField="proveedorCalificado.proveedorSeleccionado.proveedor.contacto"
-							   width="120"/>
+							   width="180"/>
 			<mx:DataGridColumn headerText="{'Correo Electrónico'}"
 							   dataField="proveedorCalificado.proveedorSeleccionado.proveedor.correo"
-							   width="120"/>
+							   width="180"/>
 			<mx:DataGridColumn headerText="{'Página Web'}"
 							   dataField="proveedorCalificado.proveedorSeleccionado.proveedor.paginaWeb"
 							   width="120"/>
@@ -213,12 +213,12 @@
 							   dataField="ieps"
 							   labelFunction="{Util.labelFunctionCurrency}"
 							   textAlign="right"/>
-			<mx:DataGridColumn headerText="Retención I.S.R."
+			<mx:DataGridColumn headerText="{'Retención\nI.S.R.'}"
 							   width="80"
 							   dataField="retencionIsr"
 							   labelFunction="{Util.labelFunctionCurrency}"
 							   textAlign="right"/>
-			<mx:DataGridColumn headerText="Retención I.V.A."
+			<mx:DataGridColumn headerText="{'Retención\nI.V.A.'}"
 							   width="80"
 							   dataField="retencionIva"
 							   labelFunction="{Util.labelFunctionCurrency}"
@@ -251,7 +251,7 @@
 		<mx:Button id="btnViewFormat" label="Visualizar Formato" click="btnViewFormat_clickHandler(event)"/>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"
 				   visible="{!this._readOnly}"/>
-		<components:ExportButton datagrid="{this.datagrid}"/>
+		<components:ExportButton datagrid="{this.datagrid}" visible="{!this._readOnly}"/>
 	</mx:HBox>
 	<mx:RemoteObject id="ordenCompraService" destination="ordenCompraService" fault="ordenCompraAlmacenService_faultHandler(event)"
 					 showBusyCursor="true"/>

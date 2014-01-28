@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
-		   width="850" height="525"
+		   width="900" height="525"
 		   xmlns:cobranza="components.cobranza.*"
 		   creationComplete="creationCompleteHandler(event)" xmlns:informacionfacturas="components.informacionfacturas.*" xmlns:notascreditoclientes="components.notascreditoclientes.*">
 	<mx:Script>
@@ -64,7 +64,7 @@
 			}
 		]]>
 	</mx:Script>
-	<mx:TabNavigator id="navigator" width="850" height="100%" creationPolicy="all">
+	<mx:TabNavigator id="navigator" width="100%" height="100%" creationPolicy="all">
 		<cobranza:Consult id="consult" itemDetail="consult_collectionDetailHandler(event)"/>
 		<cobranza:Collection id="detail" update="true" collectionUpdated="detail_collectionUpdatedHandler(event)"
 							 informationBillingSelected="detail_informationBillingSelectedHandler(event)"

@@ -45,6 +45,8 @@
 			private var _item:Cobranza;
 			private var validators:InicializaValidadoresEtiquetas;
 			
+			public var IVApercent:Number = Constants.IVA;
+			
 			public function set registrer(value:Boolean):void{
 				mode = Constants.REGISTER_MODE;
 				this.label = Constants.REGISTRAR;
@@ -172,8 +174,8 @@
 			private function validations():Boolean
 			{
 				var value:Boolean = true;
-				value &&= Util.listBaseSelected( this.cmbClient );
 				value &&= this.validators.validarFormulario();
+				value &&= Util.listBaseSelected( this.cmbClient );
 				value &&= this.informationBillingConsult.datagrid.selectedItem != null;
 				//value &&= this.creditNoteConsult.datagrid.selectedItem != null;
 				value &&= Util.listBaseSelected( this.cmbConectelBank );
@@ -221,6 +223,7 @@
 				Util.removeItems(this.creditNoteConsult.datagrid.dataProvider);
 				this.txtSubtotal.reset();
 				this.txtIVA.reset();
+				this.compIVA.reset();
 				this.txtTotal.reset();
 				this.cmbConectelBank.selectedIndex = 0;
 				this.dtfPaymentDate.reset();
@@ -377,14 +380,14 @@
 								informationBilling["total"+idInformationBilling] );
 			}
 			
-			protected function txtSubtotal_focusOutHandler(event:FocusEvent):void
+			protected function txtSubtotal_focusOutHandler(event:FocusEvent=null):void
 			{
 				var subtotal:Number = Number(this.txtSubtotal.text);
 				if( isNaN( subtotal ) ){
 					return;
 				}
-				this.txtIVA.text = Util.truncateToString(subtotal*Constants.IVA);
-				this.txtTotal.text = Util.truncateToString(subtotal*Constants.IVA+subtotal);
+				this.txtIVA.text = Util.truncateToString(subtotal*IVApercent);
+				this.txtTotal.text = Util.truncateToString(subtotal*IVApercent+subtotal);
 			}
 			
 			private function setInvoice(value:String = ""):void
@@ -402,52 +405,59 @@
 		[Event(name="informationBillingSelected", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:Form id="form">
-		<mx:FormItem id="frmID" label="ID:" direction="horizontal">
+		<mx:FormItem required="true" id="frmID" label="ID:" direction="horizontal">
 			<components:TextInput id="txtID" width="80" textAlign="right"
 								  editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Cliente:">
+		<mx:FormItem required="true" label="Cliente:">
 			<mx:ComboBox id="cmbClient" width="300"
 						 labelField="nombreComercial"
 						 change="cmbClient_changeHandler(event)"/>
 		</mx:FormItem>
-		<mx:FormItem label="Información Facturación:">
-			<informacionfacturas:Consult id="informationBillingConsult" informationBillingDetail="informationBillingConsult_informationBillingDetailHandler(event)"
-										 readOnly="true" noExecuteQuery="true"/>
-			<mx:HBox>
-				<mx:ComboBox id="cmbInformationBilling"
-							 dataProvider="{['','Información Factura 1','Información Factura 2','Información Factura 3']}"
-							 change="cmbInformationBilling_changeHandler(event)"/>
-				<mx:Button id="btnViewInformationBilling" label="Ver Información Facturación" click="btnViewInformationBilling_clickHandler(event)"/>
-			</mx:HBox>
-		</mx:FormItem>
+		<mx:FormItem required="true" label="Información Facturación:"/>
+		<mx:VBox width="850">
+			<mx:VBox width="100%" height="100%" verticalGap="5">
+				<informacionfacturas:Consult id="informationBillingConsult" informationBillingDetail="informationBillingConsult_informationBillingDetailHandler(event)"
+											 readOnly="true" noExecuteQuery="true"/>
+				<mx:HBox>
+					<mx:ComboBox id="cmbInformationBilling"
+								 dataProvider="{['','Información Factura 1','Información Factura 2','Información Factura 3']}"
+								 change="cmbInformationBilling_changeHandler(event)"/>
+					<mx:Button id="btnViewInformationBilling" label="Ver Información Facturación" click="btnViewInformationBilling_clickHandler(event)"/>
+				</mx:HBox>
+			</mx:VBox>
+		</mx:VBox>
 		<mx:FormItem label="Folio Factura:">
 			<components:TextInput id="txtInvoiceFolio" textAlign="right" width="100"/>
 		</mx:FormItem>
-		<mx:FormItem label="Nota Crédito Cliente:">
-			<notascreditoclientes:Consult id="creditNoteConsult" creditNoteDetail="creditNoteConsult_creditNoteDetailHandler(event)"
-										  readOnly="true"/>
-			<mx:Button id="btnViewCreditNote" label="Ver Nota Crédito Cliente" click="btnViewCreditNote_clickHandler(event)"/>
-		</mx:FormItem>
-		<mx:FormItem label="Subtotal:">
+		<mx:FormItem label="Nota Crédito Cliente:"/>
+		<mx:VBox width="850">
+			<mx:VBox width="100%" height="100%" verticalGap="5">
+				<notascreditoclientes:Consult id="creditNoteConsult" creditNoteDetail="creditNoteConsult_creditNoteDetailHandler(event)"
+											  readOnly="true"/>
+				<mx:Button id="btnViewCreditNote" label="Ver Nota Crédito Cliente" click="btnViewCreditNote_clickHandler(event)"/>
+			</mx:VBox>
+		</mx:VBox>
+		<mx:FormItem required="true" label="Subtotal:">
 			<components:TextInput id="txtSubtotal" textAlign="right" width="100"
 								  focusOut="txtSubtotal_focusOutHandler(event)"/>
 		</mx:FormItem>
-		<mx:FormItem label="I.V.A.:">
+		<mx:FormItem required="true" label="I.V.A.:" direction="horizontal">
 			<components:TextInput id="txtIVA" textAlign="right" width="100"/>
+			<components:TextInputIVA id="compIVA" view="{this}" calculate="{txtSubtotal_focusOutHandler}"/>
 		</mx:FormItem>
-		<mx:FormItem label="Total:">
+		<mx:FormItem required="true" label="Total:">
 			<components:TextInput id="txtTotal" textAlign="right" width="100"/>
 		</mx:FormItem>
-		<mx:FormItem label="Banco Conectel:">
+		<mx:FormItem required="true" label="Banco Conectel:">
 			<mx:ComboBox id="cmbConectelBank" width="200"
 						 labelField="banco"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha:">
+		<mx:FormItem required="true" label="Fecha:">
 			<components:DateField id="dtfPaymentDate"
 								  creationComplete="this.dtfPaymentDate.selectedDate = new Date()"/>
 		</mx:FormItem>
-		<mx:FormItem label="Monto:">
+		<mx:FormItem required="true" label="Monto:">
 			<components:TextInput id="txtAmount" textAlign="right" width="100"/>
 		</mx:FormItem>
 		<mx:FormItem label="Referencia:">

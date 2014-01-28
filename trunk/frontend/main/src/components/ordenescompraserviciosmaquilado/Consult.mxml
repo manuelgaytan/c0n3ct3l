@@ -2,7 +2,7 @@
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
 		 horizontalAlign="right"
-		 creationComplete="creationCompleteHandler(event)">
+		 creationComplete="creationCompleteHandler(event)" xmlns:components="components.*">
 	<mx:Script>
 		<![CDATA[
 			import events.GenericEvent;
@@ -126,42 +126,102 @@
 	<mx:Metadata>
 		[Event(name="purchaseOrderMaquiladoDetail", type="events.GenericEvent")]
 	</mx:Metadata>
-	<mx:DataGrid id="datagrid" width="100%" height="100%" dataProvider="{items}"
+	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
+	<mx:DataGrid id="datagrid" width="3050" height="100%" dataProvider="{items}"
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 				 allowMultipleSelection="true">
 		<mx:columns>
 			<mx:DataGridColumn id="dtgID" headerText="ID"
 							   dataField="id"
-							   width="70"
+							   width="90"
 							   textAlign="right"/>
 			<mx:DataGridColumn headerText="{'ID Requisición\nServicios\nTELECOM'}"
 							   dataField="solicitudServicioMaquilado.id"
-							   width="90"
+							   width="100"
 							   textAlign="right"/>
 			<mx:DataGridColumn id="dtgProjectID" headerText="{'ID \nProyecto'}"
-							   width="70"
+							   width="90"
 							   dataField="solicitudServicioMaquilado.proyecto.id"
 							   labelFunction="labelFunctionGenerico"
 							   textAlign="right"/>
 			<mx:DataGridColumn id="dtgProjectParentID" headerText="{'ID \nProyecto\nPadre'}"
-							   width="70"
+							   width="90"
 							   dataField="solicitudServicioMaquilado.proyectoPadre.id"
 							   labelFunction="labelFunctionGenerico"
 							   textAlign="right"/>
 			<mx:DataGridColumn id="dtgRequisicionID" headerText="{'ID \nSolicitud\nServicio\nMaquilado'}"
-							   width="70"
+							   width="90"
 							   dataField="solicitudServicioMaquilado.id"
 							   labelFunction="labelFunctionGenerico"
 							   textAlign="right"/>
 			<mx:DataGridColumn id="dtgDate" headerText="Fecha"
-							   width="80"
+							   width="90"
 							   dataField="fecha"
 							   labelFunction="labelFunctionDate"
 							   textAlign="center"/>
 			<mx:DataGridColumn id="dtgSupplier" headerText="Proveedor"
-							   width="140"
+							   width="200"
 							   dataField="proveedorMaquilador.proveedor.nombreComercial"
 							   labelFunction="labelFunctionGenerico"/>
+			<mx:DataGridColumn headerText="Razón Social"
+							   width="200"
+							   dataField="proveedorMaquilador.proveedor.razonSocial"
+							   labelFunction="labelFunctionGenerico"/>
+			<mx:DataGridColumn headerText="{'R.F.C.'}"
+							   dataField="proveedorMaquilador.proveedor.rfc"
+							   width="160"/>
+			<mx:DataGridColumn headerText="{'Dirección Fiscal'}"
+							   dataField="proveedorMaquilador.proveedor.direccionFisica"
+							   width="120"/>
+			<mx:DataGridColumn headerText="{'Teléfonos'}"
+							   dataField="proveedorMaquilador.proveedor.telefonos"
+							   width="120"/>
+			<mx:DataGridColumn headerText="{'Correo Electrónico'}"
+							   dataField="proveedorMaquilador.proveedor.correo"
+							   width="180"/>
+			<mx:DataGridColumn headerText="Anticipo"
+							   width="80"
+							   dataField="anticipo"
+							   textAlign="right"/>
+			<mx:DataGridColumn headerText="Finiquito"
+							   width="80"
+							   dataField="finiquito"
+							   textAlign="right"/>
+			<mx:DataGridColumn id="dtgSubtotal" headerText="Subtotal"
+							   width="80"
+							   dataField="subtotal"
+							   labelFunction="{Util.labelFunctionCurrency}"
+							   textAlign="right"/>
+			<mx:DataGridColumn id="dtgIVA" headerText="I.V.A."
+							   width="80"
+							   dataField="iva"
+							   labelFunction="{Util.labelFunctionCurrency}"
+							   textAlign="right"/>
+			<mx:DataGridColumn headerText="I.E.P.S."
+							   width="80"
+							   dataField="ieps"
+							   labelFunction="{Util.labelFunctionCurrency}"
+							   textAlign="right"/>
+			<mx:DataGridColumn headerText="{'Retención\nI.S.R.'}"
+							   width="80"
+							   dataField="retencionIsr"
+							   labelFunction="{Util.labelFunctionCurrency}"
+							   textAlign="right"/>
+			<mx:DataGridColumn headerText="{'Retención\nI.V.A.'}"
+							   width="80"
+							   dataField="retencionIva"
+							   labelFunction="{Util.labelFunctionCurrency}"
+							   textAlign="right"/>
+			<mx:DataGridColumn headerText="Otros Impuestos"
+							   width="80"
+							   dataField="otrosImpuestos"
+							   labelFunction="{Util.labelFunctionCurrency}"
+							   textAlign="right"/>
+			<mx:DataGridColumn id="dtgTotal" headerText="Total"
+							   width="80"
+							   dataField="total"
+							   labelFunction="{Util.labelFunctionCurrency}"
+							   textAlign="right"/>
 			<!--
 			<mx:DataGridColumn id="dtgValidationKey" headerText="{'Clave\nValidación'}"
 							   width="100"
@@ -171,12 +231,17 @@
 			<mx:DataGridColumn headerText="Importe con Letra"
 							   width="500"
 							   dataField="importeLetra"/>
+			<mx:DataGridColumn headerText="Leyenda"
+							   width="300"
+							   dataField="leyenda"/>
 		</mx:columns>
 	</mx:DataGrid>
+	</mx:HBox>
 	<mx:HBox>
 		<mx:Button id="btnViewFormat" label="Visualizar Formato" click="btnViewFormat_clickHandler(event)"/>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"
 				   visible="{!this._readOnly}"/>
+		<components:ExportButton datagrid="{this.datagrid}" visible="{!this._readOnly}"/>
 	</mx:HBox>
 	<mx:RemoteObject id="ordenCompraMaquiladoService" destination="ordenCompraMaquiladoService" fault="ordenCompraAlmacenService_faultHandler(event)"
 					 showBusyCursor="true"/>

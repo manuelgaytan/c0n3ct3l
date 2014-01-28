@@ -17,6 +17,7 @@
 			import components.Provider;
 			import components.TextArea;
 			import components.TextInput;
+			import components.TextInputIVA;
 			
 			import events.GenericEvent;
 			
@@ -573,6 +574,7 @@
 			private var trimestre:Trimestre;
 			private var ano:Ano;
 			private var rangoEstadisticaPersonal:RangoEstadisticaPersonal;
+			private var textInputIVA:TextInputIVA;
 						
 			protected function login_readyHandler(event:ModuleEvent):void
 			{

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
-		 creationComplete="creationCompleteHandler(event)">
+		 creationComplete="creationCompleteHandler(event)" xmlns:components="components.*">
 	<mx:Script>
 		<![CDATA[
 			import events.GenericEvent;
@@ -122,8 +122,8 @@
 	<mx:Metadata>
 		[Event(name="itemDetail", type="events.GenericEvent")]
 	</mx:Metadata>
-	<mx:VBox id="vBox" width="100%" height="100%">
-		<mx:DataGrid id="datagrid" width="842" height="100%" dataProvider="{items}"
+	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
+		<mx:DataGrid id="datagrid" width="1160" height="100%" dataProvider="{items}"
 					 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 					 allowMultipleSelection="true"
 					 >
@@ -140,9 +140,28 @@
 				<mx:DataGridColumn id="dtgClient" headerText="{'Cliente'}"
 								   dataField="labelFunctionCliente"
 								   width="170"/>
-				<mx:DataGridColumn id="dtgBank" headerText="{'Banco'}"
-								   dataField="bancoConectel.banco"
+				<mx:DataGridColumn headerText="{'Folio o\nFactura'}"
+								   dataField="folioFactura"
+								   textAlign="right"
 								   width="100"/>
+				<mx:DataGridColumn id="dtgSubtotal" headerText="Subtotal"
+								   width="80"
+								   dataField="subtotal"
+								   labelFunction="{Util.labelFunctionCurrency}"
+								   textAlign="right"/>
+				<mx:DataGridColumn id="dtgIVA" headerText="I.V.A."
+								   width="80"
+								   dataField="iva"
+								   labelFunction="{Util.labelFunctionCurrency}"
+								   textAlign="right"/>
+				<mx:DataGridColumn id="dtgTotal" headerText="Total"
+								   width="80"
+								   dataField="total"
+								   labelFunction="{Util.labelFunctionCurrency}"
+								   textAlign="right"/>
+				<mx:DataGridColumn id="dtgBank" headerText="{'Banco\nConectel'}"
+								   dataField="bancoConectel.banco"
+								   width="160"/>
 				<mx:DataGridColumn id="dtgDate" headerText="{'Fecha'}"
 								   dataField="fechaAbono"
 								   labelFunction="{Util.labelFunctionDate}"
@@ -161,11 +180,12 @@
 								   />
 			</mx:columns>
 		</mx:DataGrid>
-	</mx:VBox>
+	</mx:HBox>
 	<mx:HBox width="100%">
 		<mx:Spacer width="100%"/>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"
 				   visible="{!this._readMode}"/>
+		<components:ExportButton datagrid="{this.datagrid}" visible="{!this._readMode}"/>
 	</mx:HBox>
 	<mx:RemoteObject id="cobranzaService" destination="cobranzaService" fault="datosGeneralesProyectoService_faultHandler(event)"
 					 showBusyCursor="true"/>

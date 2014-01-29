@@ -390,7 +390,7 @@
 	</mx:HBox>
 	<mx:HBox>
 		<!--<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>-->
-		<components:ExportButton datagrid="{this.datagrid}" visible="true"/>
+		<components:ExportButton datagrid="{this.datagrid}" visible="{!this._readOnly}"/>
 	</mx:HBox>
 	<mx:RemoteObject id="facturaProveedorService" destination="facturaProveedorService" fault="datosGeneralesProyectoService_faultHandler(event)"
 					 showBusyCursor="true"/>

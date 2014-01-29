@@ -33,7 +33,6 @@
 			import mx.collections.ArrayCollection;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
 			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
-			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
 			import mx.com.gahm.componentes.validadores.ValidadorNumerico;
 			import mx.controls.Alert;
@@ -191,6 +190,11 @@
 				if( this.mode == Constants.UPDATE_MODE ){
 					value &&= Util.listBaseSelected( this.cmbAreaCordinator, "id", true );
 				}
+				value &&= Util.listBaseSelected( this.cmbPriority );
+				value &&= Util.listBaseSelected( this.cmbApplicantArea );
+				value &&= Util.listBaseSelected( this.cmbApplicantState );
+				value &&= Util.listBaseSelected( this.cmbAuthorizedBy );
+				value &&= Util.listBaseSelected( this.cmbDeliver );
 				return value;
 			}
 			
@@ -570,7 +574,7 @@
 		[Event(name="warehouseApplicationUpdated", type="flash.events.Event")]
 	</mx:Metadata>
 	<mx:Form id="form">
-		<mx:FormItem id="frmItmCode" label="Folio:">
+		<mx:FormItem required="true" id="frmItmCode" label="Folio:">
 			<components:TextInput id="txtFolio"
 								  width="70"
 								  textAlign="right"
@@ -579,17 +583,17 @@
 		<mx:FormItem label="Motivo:">
 			<components:TextInput id="txtMotive"/>
 		</mx:FormItem>
-		<mx:FormItem label="Prioridad:">
+		<mx:FormItem required="true" label="Prioridad:">
 			<mx:ComboBox id="cmbPriority"
 						 labelField="etiqueta"
 						 />
 		</mx:FormItem>
-		<mx:FormItem label="햞ea Solicitante:">
+		<mx:FormItem required="true" label="햞ea Solicitante:">
 			<mx:ComboBox id="cmbApplicantArea"
 						 labelField="etiqueta"
 						 />
 		</mx:FormItem>
-		<mx:FormItem label="Fecha de Solicitud:">
+		<mx:FormItem required="true" label="Fecha de Solicitud:">
 			<components:DateField selectedDate="{new Date()}"
 								  id="dtfApplicationDate"
 								  enabled="false"/>
@@ -597,7 +601,7 @@
 		<mx:FormItem label="Central o Sitio:">
 			<components:TextInput id="txtSite"/>
 		</mx:FormItem>
-		<mx:FormItem label="Producto o Servicio Solicitado:" direction="horizontal">
+		<mx:FormItem required="true" label="Producto o Servicio Solicitado:" direction="horizontal">
 			<mx:ComboBox id="cmbProduct"
 						 labelField="etiqueta"
 						 change="cmbProduct_changeHandler(event)"
@@ -673,28 +677,28 @@
 			<mx:Button id="btnAddItem" label="Agregar Partida" click="btnAddItem_clickHandler(event)"/>
 		</mx:FormItem>
 		<solicitudalmacen:ItemsManagement id="itemsManagement"/>
-		<mx:FormItem label="Estado de la Solicitud:">
+		<mx:FormItem required="true" label="Estado de la Solicitud:">
 			<mx:ComboBox id="cmbApplicantState"
 						 labelField="etiqueta"/>
 		</mx:FormItem>
-		<mx:FormItem label="Nombre del Solicitante:">
+		<mx:FormItem required="true" label="Nombre del Solicitante:">
 			<components:TextInput id="txtApplicantName" width="400"/>
 		</mx:FormItem>
-		<mx:FormItem label="Autorizado por:">
+		<mx:FormItem required="true" label="Autorizado por:">
 			<mx:ComboBox id="cmbAuthorizedBy"
 						 labelField="nombreCompleto"
 						 />
 		</mx:FormItem>
-		<mx:FormItem label="Coordinador de 햞ea:" id="frmAreaCordinator">
+		<mx:FormItem required="true" label="Coordinador de 햞ea:" id="frmAreaCordinator">
 			<mx:ComboBox id="cmbAreaCordinator"
 						 labelField="nombreCompleto"
 						 />
 		</mx:FormItem>
-		<mx:FormItem label="Entrega:">
+		<mx:FormItem required="true" label="Entrega:">
 			<mx:ComboBox id="cmbDeliver"
 									  labelField="nombreCompleto"/>
 		</mx:FormItem>
-		<mx:FormItem label="Recibe:">
+		<mx:FormItem required="true" label="Recibe:">
 			<components:TextInput id="txtReceives" width="400"/>
 		</mx:FormItem>
 		<mx:FormItem label="Fecha de Retorno:">

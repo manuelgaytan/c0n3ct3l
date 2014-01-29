@@ -272,16 +272,16 @@
 						iva += vendorInvoice.ordenCompra.iva;
 						total += vendorInvoice.ordenCompra.total;
 					}else if(vendorInvoice.ordenCompraMaquilado.solicitudServicioMaquilado.proyecto.tipoServicio.id == TipoServicio.ID_LOCAL ){
-						subtotal += Util.truncate(vendorInvoice.ordenCompraMaquilado.solicitudServicioMaquilado.proyecto.producto.costoLocalProveedor);
-						iva += Util.truncate(vendorInvoice.ordenCompraMaquilado.solicitudServicioMaquilado.proyecto.producto.costoLocalProveedor * IVApercent);
-						total += Util.truncate(subtotal + iva);
+						subtotal += vendorInvoice.ordenCompraMaquilado.solicitudServicioMaquilado.proyecto.producto.costoLocalProveedor;
+						iva += vendorInvoice.ordenCompraMaquilado.solicitudServicioMaquilado.proyecto.producto.costoLocalProveedor * IVApercent;
+						total += subtotal + iva;
 					}else if(vendorInvoice.ordenCompraMaquilado.solicitudServicioMaquilado.proyecto.tipoServicio.id == TipoServicio.ID_FORANEO ){
-						subtotal += Util.truncate(vendorInvoice.ordenCompraMaquilado.solicitudServicioMaquilado.proyecto.producto.costoForaneoProveedor);
-						iva += Util.truncate(vendorInvoice.ordenCompraMaquilado.solicitudServicioMaquilado.proyecto.producto.costoForaneoProveedor * IVApercent);
-						total += Util.truncate(subtotal + iva);
+						subtotal += vendorInvoice.ordenCompraMaquilado.solicitudServicioMaquilado.proyecto.producto.costoForaneoProveedor;
+						iva += vendorInvoice.ordenCompraMaquilado.solicitudServicioMaquilado.proyecto.producto.costoForaneoProveedor * IVApercent;
+						total += subtotal + iva;
 					}
 				}
-				this.setMontos( subtotal, iva, total);
+				this.setMontos( subtotal, iva, total );
 			}
 			
 			protected function creditNoteConsult_creditNoteDetailHandler(event:GenericEvent = null):void
@@ -359,10 +359,10 @@
 			}
 			
 			private function setMontos(subtotal:Number, iva:Number, total:Number):void{
-				this.txtSubtotal.text = Util.numberToString(subtotal, true);
-				this.txtIVA.text = Util.numberToString(iva, true);
-				this.txtTotal.text = Util.numberToString(total, true);
-				this.txtAmount.text = Util.numberToString(total, true); 
+				this.txtSubtotal.text = Util.numberToString( Util.truncate( subtotal ), true);
+				this.txtIVA.text = Util.numberToString( Util.truncate( iva ), true);
+				this.txtTotal.text = Util.numberToString( Util.truncate( total ), true);
+				this.txtAmount.text = Util.numberToString( Util.truncate( total ), true);
 			}
 			
 			protected function responseGetProveedores_resultHandler(event:ResultEvent):void
@@ -395,6 +395,8 @@
 			
 			protected function cmbSupplier_changeHandler(event:ListEvent):void
 			{
+				Util.removeItems( this.vendorInvoiceConsult.datagrid.dataProvider );
+				Util.removeItems( this.creditNoteConsult.datagrid.dataProvider );
 				if( !Util.listBaseSelected( this.cmbSupplier, "id", true ) ){
 					return;
 				}
@@ -416,6 +418,7 @@
 			protected function cmbSupplierType_changeHandler(event:ListEvent):void
 			{
 				Util.removeItems( this.cmbSupplier.dataProvider );
+				this.cmbSupplier.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
 				if( !Util.listBaseSelected( this.cmbSupplierType, "id", true ) ){
 					return;
 				}

@@ -196,6 +196,7 @@
 				var value:Boolean = true;
 				value &&= this.validators.validarFormulario();
 				value &&= Util.listBaseSelected(this.cmbMaquiladoSupplier, "id", true);
+				value &&= this.dtfDate.selectedDate != null;
 				return value;
 			}
 			
@@ -395,18 +396,18 @@
 		[Event(name="purchaseOrderMaquiladoUpdated", type="flash.events.Event")]
 	</mx:Metadata>
 	<mx:Form id="form">
-		<mx:FormItem label="ID:" id="frmID">
+		<mx:FormItem required="true" label="ID:" id="frmID">
 			<components:TextInput id="txtID" textAlign="right" editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="ID Requisición Servicios TELECOM:" direction="horizontal">
+		<mx:FormItem required="true" label="ID Requisición Servicios TELECOM:" direction="horizontal">
 			<components:TextInput id="txtRequisicionID" textAlign="right"
 								  enter="txtRequisicionID_enterHandler()"
 								  focusOut="txtRequisicionID_focusOutHandler()"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha:">
+		<mx:FormItem required="true" label="Fecha:">
 			<components:DateField id="dtfDate" enabled="false" creationComplete="dtfDate.selectedDate=new Date()"/>
 		</mx:FormItem>
-		<mx:FormItem label="Proveedor Maquilador:">
+		<mx:FormItem required="true" label="Proveedor Maquilador:">
 			<mx:ComboBox id="cmbMaquiladoSupplier"
 						 change="cmbQualifiedSupplier_changeHandler(event)"
 						 labelFunction="labelFunctionProveedor"/>
@@ -449,11 +450,11 @@
 			<ordenescompraserviciosmaquilado:ItemsManagement id="itemsManagement"/>
 			<mx:Button id="btnUpdate" label="Actualiazar" click="btnUpdate_clickHandler(event)"/>
 		</mx:VBox>
-		<mx:FormItem label="Subtotal:">
+		<mx:FormItem required="true" label="Subtotal:">
 			<components:TextInput id="txtSubtotal" textAlign="right" width="110"
 								  focusOut="this.sum()" enter="this.sum()"/>
 		</mx:FormItem>
-		<mx:FormItem label="I.V.A.:" direction="horizontal">
+		<mx:FormItem required="true" label="I.V.A.:" direction="horizontal">
 			<components:TextInput id="txtIVA" textAlign="right" width="110"
 								  focusOut="this.sum()" enter="this.sum()"/>
 			<components:TextInputIVA id="compIVA" view="{this}" calculate="{btnUpdate_clickHandler}"/>
@@ -474,7 +475,7 @@
 			<components:TextInput id="txtOtherTaxes" textAlign="right" width="110"
 								  focusOut="this.sum()" enter="this.sum()"/>
 		</mx:FormItem>
-		<mx:FormItem label="Total:">
+		<mx:FormItem required="true" label="Total:">
 			<components:TextInput id="txtTotal" textAlign="right" width="110"/>
 		</mx:FormItem>
 		<mx:FormItem label="Importe con Letra:">

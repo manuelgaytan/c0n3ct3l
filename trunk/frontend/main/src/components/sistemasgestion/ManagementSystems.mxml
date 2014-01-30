@@ -175,6 +175,7 @@
 				var value:Boolean = true;
 				value &&= this.validators.validarFormulario();
 				value &&= this.projectsConsult.datagrid.selectedItem != null;
+				value &&= Util.listBaseSelected( this.cmbManagementSystemStatus );
 				return value;
 			}
 			
@@ -358,18 +359,18 @@
 		[Event(name="generalDataSelected", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:Form id="form">
-		<mx:FormItem id="frmID" label="ID:" direction="horizontal">
+		<mx:FormItem required="true" id="frmID" label="ID:" direction="horizontal">
 			<components:TextInput id="txtID" width="80" textAlign="right"
 								  editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Proyectos:"/>
+		<mx:FormItem required="true" label="Proyectos:"/>
 		<mx:VBox width="900">
 			<mx:VBox width="100%" height="100%" verticalGap="5">
 				<proyectos:Consult id="projectsConsult" projectSelected="projectsConsult_projectSelectedHandler(event)"/>
 			</mx:VBox>
 		</mx:VBox>
 		<!--<mx:Button label="Ver Datos Generales Proyecto" click="btnViewPerDiemCheck_clickHandler(event)"/>-->
-		<mx:FormItem label="Aplicación de Auditoría:">
+		<mx:FormItem required="true" label="Aplicación de Auditoría:">
 			<mx:CheckBox id="chkAuditApply"/>
 		</mx:FormItem>
 		<mx:FormItem label="Tipo de Auditoría:">
@@ -397,7 +398,7 @@
 		<mx:FormItem label="Formato de Auditoría:">
 			<components:FlatDeliver id="fltDlvAuditFormat" limitedTo="1"/>
 		</mx:FormItem>
-		<mx:FormItem label="Nombre del Auditor:">
+		<mx:FormItem required="true" label="Nombre del Auditor:">
 			<components:TextInput id="txtNameAuditor" width="350"/>
 		</mx:FormItem>
 		<mx:FormItem label="Fecha Recepción Correcciones Auditorias Internas:">
@@ -406,7 +407,7 @@
 		<mx:FormItem label="Fecha de Envío Correcciones al Cliente:">
 			<components:DateField id="dtfCorrectionsShippingDate"/>
 		</mx:FormItem>
-		<mx:FormItem label="Estado:">
+		<mx:FormItem required="true" label="Estado:">
 			<mx:ComboBox id="cmbManagementSystemStatus" width="250"
 						 labelField="estado"
 						 />
@@ -417,7 +418,7 @@
 		<mx:FormItem label="Fecha Cierre Auditoría:">
 			<components:DateField id="dtfAuditCloseDate"/>
 		</mx:FormItem>
-		<mx:FormItem label="Observaciones:">
+		<mx:FormItem required="true" label="Observaciones:">
 			<components:TextArea id="txtObservations" width="520"/>
 		</mx:FormItem>
 		<mx:FormItem direction="horizontal">

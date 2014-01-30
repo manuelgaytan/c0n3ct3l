@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
-		 creationComplete="creationCompleteHandler(event)">
+		 creationComplete="creationCompleteHandler(event)" xmlns:components="components.*">
 	<mx:Script>
 		<![CDATA[
 			import events.GenericEvent;
@@ -117,8 +117,8 @@
 	<mx:Metadata>
 		[Event(name="itemDetail", type="events.GenericEvent")]
 	</mx:Metadata>
-	<mx:VBox id="vBox" width="100%" height="100%">
-		<mx:DataGrid id="datagrid" width="942" height="100%" dataProvider="{items}"
+	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
+		<mx:DataGrid id="datagrid" width="1910" height="100%" dataProvider="{items}"
 					 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 					 allowMultipleSelection="true"
 					 >
@@ -127,35 +127,58 @@
 								   dataField="id"
 								   width="60"
 								   textAlign="right"/>
+				<mx:DataGridColumn headerText="{'Fecha'}"
+								   dataField="fecha"
+								   labelFunction="{Util.labelFunctionDate}"
+								   textAlign="center"
+								   width="100"/>
 				<mx:DataGridColumn id="dtgName" headerText="{'Nombre'}"
 								   dataField="nombre"
-								   width="200"/>
+								   width="250"/>
 				<mx:DataGridColumn id="dtgPosition" headerText="{'Correo\nElectrónico'}"
 								   dataField="correoElectronico"
 								   width="100"/>
 				<mx:DataGridColumn id="dtgPhone" headerText="{'Teléfono'}"
 								   dataField="telefono"
-								   width="80"/>
-				<mx:DataGridColumn id="dtgAdvice" headerText="{'Comentario y/o Sugerencia'}"
+								   width="100"/>
+				<mx:DataGridColumn id="dtgAdvice" headerText="{'Descripción del\nComentario y/o Sugerencia'}"
 								   dataField="sugerencia"
 								   width="370"/>
 				<mx:DataGridColumn id="dtgInmediatlyAction" headerText="{'Requiere\nAcción'}"
 								   dataField="requiereAccionInmediata"
-								   width="70"
+								   width="100"
 								   textAlign="center"
 								   itemRenderer="mx.controls.CheckBox"
 								   />
+				<mx:DataGridColumn headerText="{'Acción'}"
+								   dataField="accionInmediata"
+								   width="300"/>
+				<mx:DataGridColumn headerText="{'Fecha'}"
+								   dataField="fechaImplementacion"
+								   labelFunction="{Util.labelFunctionDate}"
+								   textAlign="center"
+								   width="100"/>
+				<mx:DataGridColumn headerText="{'Responsable'}"
+								   dataField="responsableImplementacion"
+								   width="250"/>
 				<mx:DataGridColumn id="dtgImplmentResult" headerText="{'Resultado\nImplementación'}"
 								   dataField="resultadoImplementacion.resultado"
 								   width="80"
 								   />
+				<mx:DataGridColumn headerText="{'Requiere\nAcción\nPreventiva-\nCorrectiva'}"
+								   dataField="requiereAccionCorrectiva"
+								   width="100"
+								   textAlign="center"
+								   itemRenderer="mx.controls.CheckBox"
+								   />
 			</mx:columns>
 		</mx:DataGrid>
-	</mx:VBox>
+	</mx:HBox>
 	<mx:HBox width="100%">
 		<mx:Spacer width="100%"/>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"
 				   visible="{!this._readMode}"/>
+		<components:ExportButton datagrid="{this.datagrid}" visible="{!this._readMode}"/>
 	</mx:HBox>
 	<mx:RemoteObject id="sugerenciaService" destination="sugerenciaService" fault="sugerenciaService_faultHandler(event)"
 					 showBusyCursor="true"/>

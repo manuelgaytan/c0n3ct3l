@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
-		 creationComplete="creationCompleteHandler(event)">
+		 creationComplete="creationCompleteHandler(event)" xmlns:components="components.*">
 	<mx:Script>
 		<![CDATA[
 			import events.GenericEvent;
@@ -102,8 +102,8 @@
 	<mx:Metadata>
 		[Event(name="itemDetail", type="events.GenericEvent")]
 	</mx:Metadata>
-	<mx:VBox id="vBox" width="100%" height="100%">
-		<mx:DataGrid id="datagrid" width="942" height="100%" dataProvider="{items}"
+	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
+		<mx:DataGrid id="datagrid" width="2160" height="100%" dataProvider="{items}"
 					 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 					 allowMultipleSelection="true"
 					 >
@@ -127,30 +127,63 @@
 								   dataField="formaAuditoria.forma"
 								   textAlign="center"
 								   width="100"/>
-				<mx:DataGridColumn id="dtgShippingDateAudit" headerText="{'Fecha \nEnvío'}"
+				<mx:DataGridColumn headerText="{'Fecha \nAuditoria'}"
+								   labelFunction="{Util.labelFunctionDate}"
+								   dataField="fechaAuditoria"
+								   textAlign="center"
+								   width="100"/>
+				<mx:DataGridColumn headerText="{'Índice de\nCalidad'}"
+								   dataField="indiceCalidad"
+								   width="120"/>
+				<mx:DataGridColumn id="dtgShippingDateAudit" headerText="{'Fecha \nEnvío\nAuditoría'}"
 								   labelFunction="{Util.labelFunctionDate}"
 								   dataField="fechaEnvio"
 								   textAlign="center"
-								   width="80"/>
+								   width="100"/>
 				<mx:DataGridColumn id="dtgReceiptDate" headerText="{'Fecha de \nRecepción\nde Auditoría\nInterno-Externo'}"
 								   labelFunction="{Util.labelFunctionDate}"
 								   dataField="fechaRecepcion"
 								   textAlign="center"
 								   width="100"/>
+				<mx:DataGridColumn headerText="{'Formato de\nAuditoría'}"
+								   dataField="formatoAuditoria"
+								   width="120"/>
 				<mx:DataGridColumn id="dtgNameAuditor" headerText="{'Nombre\ndel\nAuditor'}"
 								   dataField="nombreAuditor"
-								   width="150"/>
+								   width="250"/>
+				<mx:DataGridColumn headerText="{'Fecha \nRecepción\nCorrecciones\nAuditorías\nInternas'}"
+								   labelFunction="{Util.labelFunctionDate}"
+								   dataField="fechaRecepcionCorreccionesAuditoriasInternas"
+								   textAlign="center"
+								   width="100"/>
+				<mx:DataGridColumn headerText="{'Fecha de \nEnvío\nCorrecciones\nal Cliente'}"
+								   labelFunction="{Util.labelFunctionDate}"
+								   dataField="fechaEnvioCorrecciones"
+								   textAlign="center"
+								   width="100"/>
 				<mx:DataGridColumn id="dtgManagementSystemStatus" headerText="{'Estado'}"
 								   dataField="estadoSistemaGestion.estado"
 								   textAlign="center"
 								   width="100"/>
+				<mx:DataGridColumn headerText="{'Correcciones'}"
+								   dataField="correcciones"
+								   width="250"/>
+				<mx:DataGridColumn headerText="{'Fecha \nCierre\nAuditoría'}"
+								   labelFunction="{Util.labelFunctionDate}"
+								   dataField="fechaCierreAuditoria"
+								   textAlign="center"
+								   width="100"/>
+				<mx:DataGridColumn headerText="{'Observaciones'}"
+								   dataField="observaciones"
+								   width="400"/>
 			</mx:columns>
 		</mx:DataGrid>
-	</mx:VBox>
+	</mx:HBox>
 	<mx:HBox width="100%">
 		<mx:Spacer width="100%"/>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"
 				   visible="{!this._readMode}"/>
+		<components:ExportButton datagrid="{this.datagrid}" visible="{!this._readMode}"/>
 	</mx:HBox>
 	<mx:RemoteObject id="sistemaGestionService" destination="sistemaGestionService" fault="sistemaGestionService_faultHandler(event)"
 					 showBusyCursor="true"/>

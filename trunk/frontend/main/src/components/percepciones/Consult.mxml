@@ -159,7 +159,7 @@
 								   labelFunction="{Util.labelFunctionDate}"
 								   width="80"
 								   />
-				<mx:DataGridColumn id="dtgInitialDate" headerText="{'Fecha\nInicio'}"
+				<mx:DataGridColumn headerText="{'Fecha\nInicio'}"
 								   dataField="fechaInicio"
 								   labelFunction="{Util.labelFunctionDate}"
 								   width="80"
@@ -177,7 +177,7 @@
 								   />
 			</mx:columns>
 		</mx:DataGrid>
-	</mx:VBox>
+	</mx:HBox>
 	<mx:HBox>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"
 				   visible="{!this._readMode}"/>

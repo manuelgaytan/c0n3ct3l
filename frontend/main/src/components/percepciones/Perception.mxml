@@ -155,6 +155,7 @@
 				var value:Boolean = true;
 				value &&= this.validators.validarFormulario();
 				value &&= recruitmentConsult.datagrid.selectedItem != null;
+				value &&= Util.listBaseSelected( this.cmbPerception );
 				return value;
 			}
 			
@@ -286,13 +287,13 @@
 		[Event(name="perceptionProjectDone", type="flash.events.Event")]
 	</mx:Metadata>
 	<mx:Form id="form">
-		<mx:FormItem id="frmID" label="ID:" direction="horizontal">
+		<mx:FormItem required="true" id="frmID" label="ID:" direction="horizontal">
 			<components:TextInput id="txtID" width="80" textAlign="right"
 								  editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Contratación:"/>
+		<mx:FormItem required="true label="Contratación:"/>
 		<contratacion:Consult id="recruitmentConsult" readMode="true" itemDetail="recruitmentConsult_itemDetailHandler(event)"/>
-		<mx:FormItem label="Percepción:">
+		<mx:FormItem required="true label="Percepción:">
 			<mx:ComboBox id="cmbPerception" width="200"
 						 labelField="percepcion" change="cmbPerception_changeHandler(event)"/>
 		</mx:FormItem>
@@ -316,7 +317,7 @@
 		<mx:FormItem label="Fin:">
 			<components:DateField id="dtfFinalDate"/>
 		</mx:FormItem>
-		<mx:FormItem label="Prima Vacacional:">
+		<mx:FormItem required="true label="Prima Vacacional:">
 			<mx:CheckBox id="chkVacationPay"/>
 		</mx:FormItem>
 		<mx:FormItem direction="horizontal">

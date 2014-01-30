@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
-		 creationComplete="creationCompleteHandler(event)">
+		 horizontalAlign="right"
+		 creationComplete="creationCompleteHandler(event)" xmlns:components="components.*">
 	<mx:Script>
 		<![CDATA[
 			import events.GenericEvent;
@@ -121,8 +122,8 @@
 	<mx:Metadata>
 		[Event(name="itemDetail", type="events.GenericEvent")]
 	</mx:Metadata>
-	<mx:VBox id="vBox" width="100%" height="100%">
-		<mx:DataGrid id="datagrid" width="942" height="100%" dataProvider="{items}"
+	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
+		<mx:DataGrid id="datagrid" width="1130" height="100%" dataProvider="{items}"
 					 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 					 allowMultipleSelection="true"
 					 >
@@ -143,33 +144,44 @@
 				<mx:DataGridColumn id="dtgContributionAmount" headerText="{'Monto\nAportación'}"
 								   dataField="montoAportacion"
 								   textAlign="right"
-								   width="70"/>
+								   width="80"/>
 				<mx:DataGridColumn id="dtgVariation" headerText="{'Vacaciones'}"
 								   dataField="variacion.tipo"
-								   width="70"
+								   width="120"
 								   />
 				<mx:DataGridColumn id="dtgCorrespondDays" headerText="{'Días\nCorrespondientes'}"
 								   dataField="diasCorrespondientes"
 								   textAlign="right"
 								   width="80"
 								   />
+				<mx:DataGridColumn id="dtgInitialDate" headerText="{'Fecha\nInicio\nContrato'}"
+								   dataField="contratacion.fechaInicioContrato"
+								   labelFunction="{Util.labelFunctionDate}"
+								   width="80"
+								   />
 				<mx:DataGridColumn id="dtgInitialDate" headerText="{'Fecha\nInicio'}"
 								   dataField="fechaInicio"
 								   labelFunction="{Util.labelFunctionDate}"
-								   width="70"
+								   width="80"
 								   />
 				<mx:DataGridColumn id="dtgFinalDate" headerText="{'Fecha\nFin'}"
 								   dataField="fechaTermino"
 								   labelFunction="{Util.labelFunctionDate}"
-								   width="70"
+								   width="80"
+								   />
+				<mx:DataGridColumn id="dtgInmediatlyAction" headerText="{'Prima\nVacacional'}"
+								   dataField="primaVacacional"
+								   width="80"
+								   textAlign="center"
+								   itemRenderer="mx.controls.CheckBox"
 								   />
 			</mx:columns>
 		</mx:DataGrid>
 	</mx:VBox>
-	<mx:HBox width="100%">
-		<mx:Spacer width="100%"/>
+	<mx:HBox>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"
 				   visible="{!this._readMode}"/>
+		<components:ExportButton datagrid="{this.datagrid}" visible="{!this._readMode}"/>
 	</mx:HBox>
 	<mx:RemoteObject id="registroPercepcionService" destination="registroPercepcionService" fault="registroPercepcionService_faultHandler(event)"
 					 showBusyCursor="true"/>

@@ -26,7 +26,6 @@
 			import mx.com.gahm.componentes.validadores.Constantes;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
 			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
-			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
 			import mx.com.gahm.componentes.validadores.ValidadorEmail;
 			import mx.com.gahm.componentes.validadores.ValidadorEntero;
@@ -171,6 +170,9 @@
 			{
 				var value:Boolean = true;
 				value &&= this.validators.validarFormulario();
+				value &&= this.dtfDate.selectedDate != null;
+				value &&= this.dtfImplementationDate.selectedDate != null;
+				value &&= Util.listBaseSelected( this.cmbImplementationResult );
 				return value;
 			}
 			
@@ -284,11 +286,11 @@
 		[Event(name="adviceProjectDone", type="flash.events.Event")]
 	</mx:Metadata>
 	<mx:Form id="form">
-		<mx:FormItem id="frmID" label="ID:" direction="horizontal">
+		<mx:FormItem required="true" id="frmID" label="ID:" direction="horizontal">
 			<components:TextInput id="txtID" width="80" textAlign="right"
 								  editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha:">
+		<mx:FormItem required="true" label="Fecha:">
 			<components:DateField id="dtfDate"/>
 		</mx:FormItem>
 		<mx:FormItem label="Nómina Conectel:">
@@ -305,27 +307,27 @@
 		<mx:FormItem label="Teléfono:">
 			<components:TextInput id="txtPhone" width="100"/>
 		</mx:FormItem>
-		<mx:FormItem label="Descripción del Comentario y/o Sugerencia:">
+		<mx:FormItem required="true" label="Descripción del Comentario y/o Sugerencia:">
 			<components:TextArea id="txtAdvice" width="520"/>
 		</mx:FormItem>
-		<mx:FormItem label="Requiere Acción:">
+		<mx:FormItem required="true" label="Requiere Acción:">
 			<mx:CheckBox id="chkInmediatlyAction"/>
 		</mx:FormItem>
 		<mx:FormItem label="Acción:">
 			<components:TextInput id="txtInmediatlyAction" width="520"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha:">
+		<mx:FormItem required="true" label="Fecha:">
 			<components:DateField id="dtfImplementationDate"/>
 		</mx:FormItem>
-		<mx:FormItem label="Responsable:">
+		<mx:FormItem required="true" label="Responsable:">
 			<components:TextInput id="txtImplementationResponsible" width="350"/>
 		</mx:FormItem>
-		<mx:FormItem label="Resultado Implementación:">
+		<mx:FormItem required="true" label="Resultado Implementación:">
 			<mx:ComboBox id="cmbImplementationResult" width="400"
 						 labelField="resultado"
 						 />
 		</mx:FormItem>
-		<mx:FormItem label="Requiere Acción Preventiva-Correctiva:">
+		<mx:FormItem required="true" label="Requiere Acción Preventiva-Correctiva:">
 			<mx:CheckBox id="chkCorrectiveAction"/>
 		</mx:FormItem>
 		<components:Comments id="comments"/>

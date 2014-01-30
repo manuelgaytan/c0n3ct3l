@@ -2,7 +2,7 @@
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
 		 horizontalAlign="right"
-		 creationComplete="creationCompleteHandler(event)">
+		 creationComplete="creationCompleteHandler(event)" xmlns:components="components.*">
 	<mx:Script>
 		<![CDATA[
 			import model.Model;
@@ -74,7 +74,8 @@
 			
 		]]>
 	</mx:Script>
-	<mx:DataGrid id="datagrid" width="100%" height="100%" dataProvider="{items}">
+	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
+	<mx:DataGrid id="datagrid" width="790" height="100%" dataProvider="{items}">
 		<mx:columns>
 			<mx:DataGridColumn id="dtgCreationDate" headerText="Fecha" width="100"
 							   dataField="fechaHoraCreacion"
@@ -92,9 +93,11 @@
 							   dataField="estado.estado"/>
 		</mx:columns>
 	</mx:DataGrid>
+	</mx:HBox>
 	<mx:HBox>
 		<mx:Button id="btnRefresh" label="Refrescar" click="btnRefresh_clickHandler(event)"/>
 		<mx:Button id="btnServer" label="Atendida" click="btnServer_clickHandler(event)"/>
+		<components:ExportButton datagrid="{this.datagrid}"/>
 	</mx:HBox>
 	<mx:RemoteObject id="notificacionService" destination="notificacionService" fault="notificacionService_faultHandler(event)"
 					 showBusyCursor="true"/>

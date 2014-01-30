@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
-		 creationComplete="creationCompleteHandler(event)">
+		 creationComplete="creationCompleteHandler(event)" xmlns:components="components.*">
 	<mx:Script>
 		<![CDATA[
 			import events.GenericEvent;
 			
-			import model.ConfiguracionPruebaEntrega;
 			import model.ConcentradoCapacitacion;
+			import model.ConfiguracionPruebaEntrega;
 			import model.DatosGeneralesSolicitante;
 			import model.FiltroProyecto;
 			import model.Proyecto;
@@ -113,13 +113,37 @@
 					return concentradoCapacitacion.colaborador.nombreCompleto;
 				}
 			}
+			
+			private function labelFunctionTipoColaborador( item:Object, column:DataGridColumn ):String{
+				var concentradoCapacitacion:ConcentradoCapacitacion = item as ConcentradoCapacitacion;
+				if( concentradoCapacitacion == null ||
+					concentradoCapacitacion.colaborador == null ||
+					concentradoCapacitacion.colaborador.tipoColaborador == null ||
+					concentradoCapacitacion.colaborador.tipoColaborador.tipo == null ){
+					return "";
+				}else{
+					return concentradoCapacitacion.colaborador.tipoColaborador.tipo;
+				}
+			}
+			
+			private function labelFunctionEstatusCapacitacion( item:Object, column:DataGridColumn ):String{
+				var concentradoCapacitacion:ConcentradoCapacitacion = item as ConcentradoCapacitacion;
+				if( concentradoCapacitacion == null ){
+					return "";
+				}
+				if( concentradoCapacitacion.aprobado ){
+					return FocusedTraining.APROBADO;
+				}else{
+					return FocusedTraining.NO_APROBADO;
+				}
+			}
 		]]>
 	</mx:Script>
 	<mx:Metadata>
 		[Event(name="itemDetail", type="events.GenericEvent")]
 	</mx:Metadata>
-	<mx:VBox id="vBox" width="100%" height="100%">
-		<mx:DataGrid id="datagrid" width="842" height="100%" dataProvider="{items}"
+	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
+		<mx:DataGrid id="datagrid" width="2080" height="100%" dataProvider="{items}"
 					 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 					 allowMultipleSelection="true"
 					 >
@@ -128,9 +152,12 @@
 								   dataField="id"
 								   width="60"
 								   textAlign="right"/>
-				<mx:DataGridColumn id="dtgColaboratorName" headerText="{'Nombre Colaborador'}"
-								   labelFunction="labelFunctionNombre"
+				<mx:DataGridColumn headerText="{'Tipo de Colaborador'}"
+								   dataField="colaborador.tipoColaborador.tipo"
 								   width="120"/>
+				<mx:DataGridColumn id="dtgColaboratorName" headerText="{'Nombre Colaborador'}"
+								   dataField="colaborador.nombreCompleto"
+								   width="250"/>
 				<mx:DataGridColumn id="dtgFormationType" headerText="{'Tipo\nInformación'}"
 								   dataField="tipoFormacion.tipo"
 								   width="100"/>
@@ -141,18 +168,52 @@
 								   dataField="nombreCapacitacion"
 								   width="110"
 								   />
+				<mx:DataGridColumn headerText="{'Fecha de\nInicio de\nCapacitación/\nEvaluación'}"
+								   dataField="fechaInicioCapacitacion"
+								   labelFunction="{Util.labelFunctionDate}"
+								   width="100"
+								   textAlign="center"
+								   />
+				<mx:DataGridColumn headerText="{'Fecha de\nTérmino de\nCapacitación/\nEvaluación'}"
+								   dataField="fechaTerminoCapacitacion"
+								   labelFunction="{Util.labelFunctionDate}"
+								   width="100"
+								   textAlign="center"
+								   />
+				<mx:DataGridColumn headerText="{'Lugar de \nCapacitación/\nEvaluación'}"
+								   dataField="lugarCapacitacion"
+								   width="200"
+								   />
+				<mx:DataGridColumn headerText="{'Nombre del \nInstructor/Evaluador'}"
+								   dataField="nombreInstructor"
+								   width="250"
+								   />
 				<mx:DataGridColumn id="dtgTrainingGrade" headerText="{'Calificación de\nCapacitación/\nEvaluación'}"
 								   dataField="calificacion"
 								   textAlign="right"
 								   width="100"
 								   />
+				<mx:DataGridColumn headerText="{'Constancia/Evidencia'}"
+								   dataField="constancia"
+								   width="250"
+								   />
+				<mx:DataGridColumn headerText="{'Estatus de\nla Capacitación'}"
+								   labelFunction="labelFunctionEstatusCapacitacion"
+								   dataField="aprobado"
+								   width="120"
+								   />
+				<mx:DataGridColumn headerText="{'Resultado de\nSeguimiento'}"
+								   dataField="resultadoSeguimiento"
+								   width="220"
+								   />
 			</mx:columns>
 		</mx:DataGrid>
-	</mx:VBox>
+	</mx:HBox>
 	<mx:HBox width="100%">
 		<mx:Spacer width="100%"/>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"
 				   visible="{!this._readMode}"/>
+		<components:ExportButton datagrid="{this.datagrid}" visible="{!this._readMode}"/>
 	</mx:HBox>
 	<mx:RemoteObject id="concentradoCapacitacionService" destination="concentradoCapacitacionService" fault="concentradoCapacitacionService_faultHandler(event)"
 					 showBusyCursor="true"/>

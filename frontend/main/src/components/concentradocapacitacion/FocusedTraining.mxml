@@ -36,6 +36,9 @@
 			private var _item:ConcentradoCapacitacion;
 			private var validators:InicializaValidadoresEtiquetas;
 			
+			public static const APROBADO:String = 'Aprobado';
+			public static const NO_APROBADO:String = 'No Aprobado';
+			
 			public function set registrer(value:Boolean):void{
 				mode = Constants.REGISTER_MODE;
 				this.label = Constants.REGISTRAR;
@@ -296,11 +299,18 @@
 			
 			protected function responseGetContratacionByIdColaborador_resultHandler(event:ResultEvent):void
 			{
-				var contratacion:Contratacion = event.result as Contratacion;
+				this.txtPosition.reset();
+				if( event == null ||
+					event.result == null ||
+					!(event.result is ArrayCollection) ||
+					(event.result as ArrayCollection).length == 0 ){
+					return;
+				}
+				var contratacion:Contratacion = (event.result as ArrayCollection).getItemAt(0) as Contratacion;
 				if( contratacion == null ){
 					return;
 				}
-				this.txtPosition.text = Util.extractToText(contratacion,"reclutamientoSolicitudEmpleo.datosPrincipalesSolicitante.puestoSolicitado");
+				this.txtPosition.text = Util.extractToText(contratacion,"seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosPrincipalesSolicitante.puestoSolicitado");
 			}
 			
 			protected function cmbColaboratorName_changeHandler(event:ListEvent):void
@@ -326,11 +336,11 @@
 		[Event(name="focusedTrainingProjectDone", type="flash.events.Event")]
 	</mx:Metadata>
 	<mx:Form id="form">
-		<mx:FormItem id="frmID" label="ID:" direction="horizontal">
+		<mx:FormItem required="true" id="frmID" label="ID:" direction="horizontal">
 			<components:TextInput id="txtID" width="80" textAlign="right"
 								  editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Tipo de Colaborador:"
+		<mx:FormItem required="true" label="Tipo de Colaborador:"
 					 direction="horizontal">
 			<mx:ComboBox id="cmbColaboratorType" width="130"
 						 labelField="tipo"
@@ -343,21 +353,21 @@
 			<components:TextInput id="txtPosition" textAlign="right"
 								  editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Tipo de Información:">
+		<mx:FormItem required="true" label="Tipo de Información:">
 			<mx:ComboBox id="cmbFormationType" width="200"
 						 labelField="tipo"/>
 		</mx:FormItem>
-		<mx:FormItem label="Tipo de Capacitación:">
+		<mx:FormItem required="true" label="Tipo de Capacitación:">
 			<mx:ComboBox id="cmbTrainingType" width="200"
 						 labelField="tipo"/>
 		</mx:FormItem>
-		<mx:FormItem label="Nombre de la Capacitación:">
+		<mx:FormItem required="true" label="Nombre de la Capacitación:">
 			<components:TextInput id="txtTrainingName" width="300"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha de Inicio de Capacitación/Evaluación:">
+		<mx:FormItem required="true" label="Fecha de Inicio de Capacitación/Evaluación:">
 			<components:DateField id="dtfDateTrainingStart"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha de Término de Capacitación/Evaluación:">
+		<mx:FormItem required="true" label="Fecha de Término de Capacitación/Evaluación:">
 			<components:DateField id="dtfDateTrainingEnd"/>
 		</mx:FormItem>
 		<mx:FormItem label="Lugar de Capacitación/Evaluación:">
@@ -373,7 +383,7 @@
 			<components:FlatDeliver id="fltDlvEvidence" limitedTo="1"/>
 		</mx:FormItem>
 		<mx:FormItem label="Estatus de la Capacitación:">
-			<mx:ComboBox id="cmbTrainingStatus" dataProvider="{['Aprobado','No Aprobado']}" change="cmbTrainingStatus_changeHandler(event)"/>
+			<mx:ComboBox id="cmbTrainingStatus" dataProvider="{[APROBADO, NO_APROBADO]}" change="cmbTrainingStatus_changeHandler(event)"/>
 		</mx:FormItem>
 		<mx:FormItem label="Resultado de Seguimiento:">
 			<components:TextInput id="txtTraceResult" width="300"/>

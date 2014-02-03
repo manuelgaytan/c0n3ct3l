@@ -146,13 +146,15 @@
 				<mx:DataGridColumn headerText="{'Acciones de Seguimiento'}"
 								   dataField="accionesSeguimiento"
 								   width="250"/>
-				<mx:DataGridColumn id="dtgEffectiveAction" headerText="{' ¿Acción\ntomada\nEficaz?'}"
-								   dataField="accionTomadaEficaz"
-								   width="80"
-								   textAlign="center"
-								   itemRenderer="mx.controls.CheckBox"
-								   editable="false"
-								   />
+				<mx:DataGridColumn id="dtgEffectiveAction" headerText="{'¿La Acción\ntomada\nfue\nEficaz?'}"
+								   width="80" editable="false" textAlign="center"
+								   imeMode="accionTomadaEficaz">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:CheckBox selected="{data.accionTomadaEficaz}" enabled="false"/>
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
 				<mx:DataGridColumn id="dtgActionPCStatus" headerText="{'Estado de\nla Acción '}"
 								   dataField="estadoAccionPreventivaCorrectiva.estado"
 								   width="80"/>
@@ -162,7 +164,7 @@
 	<mx:HBox>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"
 				   visible="{!this._readMode}"/>
-		<components:ExportButton datagrid="{this.datagrid}"/>
+		<components:ExportButton datagrid="{this.datagrid}" visible="{!this._readMode}"/>
 	</mx:HBox>
 	<mx:RemoteObject id="accionPreventivaCorrectivaService" destination="accionPreventivaCorrectivaService" fault="accionPreventivaCorrectivaService_faultHandler(event)"
 					 showBusyCursor="true"/>

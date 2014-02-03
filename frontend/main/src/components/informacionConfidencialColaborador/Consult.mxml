@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
+		 horizontalAlign="right"
 		 creationComplete="creationCompleteHandler(event)">
 	<mx:Script>
 		<![CDATA[
@@ -120,8 +121,8 @@
 	<mx:Metadata>
 		[Event(name="itemDetail", type="events.GenericEvent")]
 	</mx:Metadata>
-	<mx:VBox id="vBox" width="100%" height="100%">
-		<mx:DataGrid id="datagrid" width="1042" height="100%" dataProvider="{items}"
+	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
+		<mx:DataGrid id="datagrid" width="2010" height="100%" dataProvider="{items}"
 					 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 					 allowMultipleSelection="true"
 					 >
@@ -136,15 +137,54 @@
 				<mx:DataGridColumn id="dtgPosition" headerText="{'Puesto'}"
 								   dataField="contratacion.seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosPrincipalesSolicitante.puestoSolicitado"
 								   width="120"/>
+				<mx:DataGridColumn headerText="{'Foto'}"
+								   dataField="foto"
+								   width="120"/>
 				<mx:DataGridColumn id="dtgSalary" headerText="{'Sueldo\nPosterior'}"
 								   dataField="sueldo"
 								   textAlign="right"
 								   width="100"/>
+				<mx:DataGridColumn headerText="{'I.M.S.S.'}" width="80" editable="false" textAlign="center">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:CheckBox selected="{data.tieneImss}" enabled="false"/>
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="{'N.S.S.'}"
+								   dataField="nss"
+								   width="120"/>
+				<mx:DataGridColumn headerText="{'Alta\nI.M.S.S.'}"
+								   labelFunction="{Util.labelFunctionDate}"
+								   dataField="altaImss"
+								   width="100"/>
+				<mx:DataGridColumn headerText="{'Baja\nI.M.S.S.'}"
+								   labelFunction="{Util.labelFunctionDate}"
+								   dataField="bajaImss"
+								   width="100"/>
+				<mx:DataGridColumn headerText="{'Modificación\nI.M.S.S.'}"
+								   labelFunction="{Util.labelFunctionDate}"
+								   dataField="modificacionImss"
+								   width="100"/>
+				<mx:DataGridColumn headerText="{'Estado del\nColaborador'}"
+								   dataField="estadoColaborador.estado"
+								   width="120"/>
 				<mx:DataGridColumn id="dtgContractStartDate" headerText="{'En Caso de\nAccidente Avisar'}"
 								   dataField="enCasoAccidenteAvisar"
 								   width="100"/>
 				<mx:DataGridColumn id="dtgConfidentialInformationColaboratorType" headerText="{'Teléfono de\nEmergencia'}"
 								   dataField="telefonoEmergencia"
+								   width="80"
+								   />
+				<mx:DataGridColumn headerText="{'Se Encuentra\nBajo\nTratamiento'}" width="80" editable="false" textAlign="center">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:CheckBox selected="{data.bajoTratamiento}" enabled="false"/>
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="{'¿Qué\nMedicamento?'}"
+								   dataField="medicamento"
 								   width="80"
 								   />
 				<mx:DataGridColumn id="dtgAlergies" headerText="{'Alergías'}"
@@ -155,15 +195,19 @@
 								   dataField="tipoSangre"
 								   width="60"
 								   />
-				<mx:DataGridColumn id="dtgConectelEmail" headerText="{'Correo\nElectrónico'}"
+				<mx:DataGridColumn headerText="{'Número\nTarjeta de\nNómina'}"
+								   dataField="numeroTarjetaNomina"
+								   textAlign="right"
+								   width="120"
+								   />
+				<mx:DataGridColumn id="dtgConectelEmail" headerText="{'Correo\nElectrónico\nConectel'}"
 								   dataField="correoElectronico"
 								   width="100"
 								   />
 			</mx:columns>
 		</mx:DataGrid>
-	</mx:VBox>
-	<mx:HBox width="100%">
-		<mx:Spacer width="100%"/>
+	</mx:HBox>
+	<mx:HBox>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"
 				   visible="{!this._readMode}"/>
 	</mx:HBox>

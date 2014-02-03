@@ -78,6 +78,9 @@
 					software = new Paqueteria();
 				}else{
 					software = this._item;
+					if( software == null ){
+						software = new Paqueteria();
+					}
 				}
 				software.word = this.chkWord.selected;
 				software.powerPoint = this.chkPowerPoint.selected;

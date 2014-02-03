@@ -15,6 +15,7 @@ package components
 	
 	import mx.collections.ArrayCollection;
 	import mx.collections.IViewCursor;
+	import mx.controls.dataGridClasses.DataGridColumn;
 	import mx.formatters.Formatter;
 
 	public class AMClipListado
@@ -127,10 +128,21 @@ package components
 								try{
 									//Columnas Ocultar
 									var mostrarColumna1:Boolean = true;
-									if( (columnasOcultar != null) && (columnasOcultar.length>0) && (columnasOcultar.getItemIndex(y) > -1) ) mostrarColumna1 = false;
+									if( (columnasOcultar != null) && 
+										(columnasOcultar.length>0) && 
+										(columnasOcultar.getItemIndex(y) > -1) ){
+										mostrarColumna1 = false;
+									}
 									if(mostrarColumna1){
-										if (( Util.extractObject( objeto, columnaActual1.dataField) != "undefined") && ( Util.extractObject( objeto, columnaActual1.dataField ) != undefined)) tmpString += obtenerValorTD(objeto, columnaActual1, columnasFormato, y, columnasFunciones, htmlCallbackFormatter);
-										else tmpString += "<td></td>";
+										if( Util.extractObject( objeto, columnaActual1.dataField) != null ){
+											tmpString += obtenerValorTD(objeto, columnaActual1, columnasFormato, y, columnasFunciones, htmlCallbackFormatter);
+										}else if( this.validaItemRenderCheckBox( columnaActual1 ) ){
+											tmpString += obtenerValorCheckBox(objeto, columnaActual1, columnasFormato, y, columnasFunciones, htmlCallbackFormatter);
+										}else if( Util.extractToText( objeto, columnaActual1.dataField) == "" ){
+											tmpString += obtenerValorTD(objeto, columnaActual1, columnasFormato, y, columnasFunciones, htmlCallbackFormatter);
+										}else{
+											tmpString += "<td></td>";
+										}
 									}
 								}
 								catch(error:Error){
@@ -145,9 +157,35 @@ package components
 			return tmpString;
 		}
 		
+		private function obtenerValorCheckBox(objeto:Object, columnaActual:Object, columnasFormato:Array, indiceActual:int, columnasFunciones:Array, htmlCallbackFormatter:Function = null):String{
+			var tmpString:String = "";
+			var valorTd:* = Util.extractObject( objeto, (columnaActual as DataGridColumn).imeMode );
+			if( valorTd == undefined || valorTd == null ){
+				valorTd = Util.extractObject( objeto, (columnaActual as DataGridColumn).dataField );
+			}
+			valorTd = new Boolean( valorTd );
+			valorTd = valorTd == true ? "Sí" : "No";
+			var formatoActual:Object = new Object();
+			var funcionActual:Object = new Object();
+			var align:String = "ALIGN='LEFT'";
+			var textAlign:String = "left";
+			var backgroundColor:String = "#FFFFFF";
+			return this.crearCelda( valorTd, columnaActual, textAlign, backgroundColor, objeto, htmlCallbackFormatter); 
+		}
+		
+		private function validaItemRenderCheckBox( columnaObject:Object ):Boolean
+		{
+			if( columnaObject == null ||
+				!(columnaObject is DataGridColumn) ){
+				return false;
+			}
+			var columna:DataGridColumn = columnaObject as DataGridColumn;
+			return columna != null && columna.itemRenderer != null;
+		}
+		
 		private function obtenerValorTD(objeto:Object, columnaActual:Object, columnasFormato:Array, indiceActual:int, columnasFunciones:Array, htmlCallbackFormatter:Function = null):String{
 			var tmpString:String = "";
-			var valorTd:* = Util.extractObject( objeto, columnaActual.dataField );
+			var valorTd:* = Util.extractToText( objeto, columnaActual.dataField );
 			var formatoActual:Object = new Object();
 			var funcionActual:Object = new Object();
 			var align:String = "ALIGN='LEFT'";
@@ -204,6 +242,11 @@ package components
 				backgroundColor = advColumn.getStyle("backgroundColor") != "" ? advColumn.getStyle("backgroundColor") : backgroundColor;
 			}
 */			
+			return this.crearCelda( valorTd, columnaActual, textAlign, backgroundColor, objeto, htmlCallbackFormatter);	
+		}	
+		
+		private function crearCelda( valorTd:*, columnaActual:Object, textAlign:String, backgroundColor:String, objeto:Object, htmlCallbackFormatter:Function ):String{
+			var celda:String = "";
 			var htmlFormatterObj:Object = new Object();
 			htmlFormatterObj.htmlString = "";
 			htmlFormatterObj.htmlTd = valorTd;
@@ -213,11 +256,13 @@ package components
 			
 			var columnWidth:String = columnaActual.hasOwnProperty("width") ? columnaActual.width : "120%";
 			
-			if(htmlCallbackFormatter != null) htmlFormatterObj = htmlCallbackFormatter(valorTd, columnaActual.dataField, objeto, htmlFormatterObj);
+			if( htmlCallbackFormatter != null ){
+				htmlFormatterObj = htmlCallbackFormatter(valorTd, columnaActual.dataField, objeto, htmlFormatterObj);
+			}
 			
-		 	tmpString += "<td width='" +  columnWidth +"' style='text-align:"+ htmlFormatterObj.textAlign +"; background-color:"+ htmlFormatterObj.backgroundColor +"'" + " " + htmlFormatterObj.htmlString + ">" + htmlFormatterObj.htmlTd + "</td>";
+			celda += "<td width='" +  columnWidth +"' style='text-align:"+ htmlFormatterObj.textAlign +"; background-color:"+ htmlFormatterObj.backgroundColor +"'" + " " + htmlFormatterObj.htmlString + ">" + htmlFormatterObj.htmlTd + "</td>";
 		 	//tmpString += "<td width='" +  columnWidth +"' style='text-align:"+ htmlFormatterObj.textAlign +";' " + htmlFormatterObj.htmlString + ">" + htmlFormatterObj.htmlTd + "</td>";
-		 	return tmpString; 
+		 	return celda; 
 		}
 		
 		public function creatHtmlGrupo(dataProvider:*, objetoColumnas:Object):String{

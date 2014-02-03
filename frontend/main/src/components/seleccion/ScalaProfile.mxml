@@ -140,46 +140,46 @@
 		]]>
 	</mx:Script>
 	<mx:FormHeading label="Perfil y Escala"/>
-	<mx:FormItem id="frmID" label="ID:" direction="horizontal">
+	<mx:FormItem required="true" id="frmID" label="ID:" direction="horizontal">
 		<components:TextInput id="txtID" width="80" textAlign="right" editable="false"/>
 	</mx:FormItem>
-	<mx:FormItem label="Inteligencia:">
+	<mx:FormItem required="true" label="Inteligencia:">
 		<mx:NumericStepper id="nstIntelligence" minimum="1" maximum="3"/>
 	</mx:FormItem>
-	<mx:FormItem label="Sociable:">
+	<mx:FormItem required="true" label="Sociable:">
 		<mx:NumericStepper id="nstSociable" minimum="1" maximum="3"/>
 	</mx:FormItem>
-	<mx:FormItem label="Métodos y Procedimientos:">
+	<mx:FormItem required="true" label="Métodos y Procedimientos:">
 		<mx:NumericStepper id="nstMethodsProcedures" minimum="1" maximum="3"/>
 	</mx:FormItem>
-	<mx:FormItem label="Aspectos Físico:">
+	<mx:FormItem required="true" label="Aspectos Físico:">
 		<mx:NumericStepper id="nstPhysicalAspect" minimum="1" maximum="3"/>
 	</mx:FormItem>
-	<mx:FormItem label="Desenvolvimiento:">
+	<mx:FormItem required="true" label="Desenvolvimiento:">
 		<mx:NumericStepper id="nstDevelopment" minimum="1" maximum="3"/>
 	</mx:FormItem>
-	<mx:FormItem label="Concentración:">
+	<mx:FormItem required="true" label="Concentración:">
 		<mx:NumericStepper id="nstConcentrate" minimum="1" maximum="3"/>
 	</mx:FormItem>
-	<mx:FormItem label="Entusiasmo:">
+	<mx:FormItem required="true" label="Entusiasmo:">
 		<mx:NumericStepper id="nstEthusiasm" minimum="1" maximum="3"/>
 	</mx:FormItem>
-	<mx:FormItem label="Amabilidad:">
+	<mx:FormItem required="true" label="Amabilidad:">
 		<mx:NumericStepper id="nstKindness" minimum="1" maximum="3"/>
 	</mx:FormItem>
-	<mx:FormItem label="Agresivo:">
+	<mx:FormItem required="true" label="Agresivo:">
 		<mx:NumericStepper id="nstAggressive" minimum="1" maximum="3"/>
 	</mx:FormItem>
-	<mx:FormItem label="Audaz:">
+	<mx:FormItem required="true" label="Audaz:">
 		<mx:NumericStepper id="nstFearless" minimum="1" maximum="3"/>
 	</mx:FormItem>
-	<mx:FormItem label="Lenguaje:">
+	<mx:FormItem required="true" label="Lenguaje:">
 		<mx:NumericStepper id="nstLanguaje" minimum="1" maximum="3"/>
 	</mx:FormItem>
-	<mx:FormItem label="Respeto a la Autoridad:">
+	<mx:FormItem required="true" label="Respeto a la Autoridad:">
 		<mx:NumericStepper id="nstAuthority" minimum="1" maximum="3"/>
 	</mx:FormItem>
-	<mx:FormItem label="Orden:">
+	<mx:FormItem required="true" label="Orden:">
 		<mx:NumericStepper id="nstSort" minimum="1" maximum="3"/>
 	</mx:FormItem>
 </mx:Form>

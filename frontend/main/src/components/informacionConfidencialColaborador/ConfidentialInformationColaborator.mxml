@@ -186,6 +186,7 @@
 				var value:Boolean = true;
 				value &&= this.validators.validarFormulario();
 				value &&= recruitmentConsult.datagrid.selectedItem != null;
+				value &&= Util.listBaseSelected( this.cmbColaboratorStatus );
 				return value;
 			}
 			
@@ -203,8 +204,8 @@
 			{
 				this.validators = new InicializaValidadoresEtiquetas();
 				validators.crearValidadorRestrictor("generic",ValidadorCadenaCualquierCaracter.nombre, 0, 255);
-				validators.setRestrictor( this.txtAccidentCaseNotify, "generic");
-				validators.setRestrictor( this.txtEmergencyNumber, "generic");
+				validators.setValidador( this.txtAccidentCaseNotify, "generic");
+				validators.setValidador( this.txtEmergencyNumber, "generic");
 				this.validators.crearValidadorRestrictor("genericDecimal", ValidadorDecimal.nombre, 9, 2);
 				this.validators.setValidador( this.txtSalary, "genericDecimal" );
 				validators.crearValidadorRestrictor("email",ValidadorEmail.nombre);
@@ -296,19 +297,23 @@
 		[Event(name="confidentialInformationColaboratorProjectDone", type="flash.events.Event")]
 	</mx:Metadata>
 	<mx:Form id="form">
-		<mx:FormItem id="frmID" label="ID:" direction="horizontal">
+		<mx:FormItem required="true" id="frmID" label="ID:" direction="horizontal">
 			<components:TextInput id="txtID" width="80" textAlign="right"
 								  editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Contratación:"/>
-		<contratacion:Consult id="recruitmentConsult" readMode="true"/>
+		<mx:FormItem required="true" label="Contratación:"/>
+		<mx:VBox width="1000">
+			<mx:VBox width="100%" height="100%" verticalGap="5">
+				<contratacion:Consult id="recruitmentConsult" readMode="true"/>
+			</mx:VBox>
+		</mx:VBox>
 		<mx:FormItem label="Foto:">
 			<components:FlatDeliver id="fltDlvPhoto" limitedTo="1"/>
 		</mx:FormItem>
-		<mx:FormItem label="Sueldo Posterior:">
+		<mx:FormItem required="true" label="Sueldo Posterior:">
 			<components:TextInput id="txtSalary" textAlign="right"/>
 		</mx:FormItem>
-		<mx:FormItem label="I.M.S.S.:">
+		<mx:FormItem required="true" label="I.M.S.S.:">
 			<mx:CheckBox id="chkIMSS" change="chkIMSS_changeHandler(event)"/>
 		</mx:FormItem>
 		<mx:FormItem label="N.S.S.:">
@@ -323,17 +328,17 @@
 		<mx:FormItem label="Modificación I.M.S.S.:">
 			<components:DateField id="dtfUpdateDateIMSS"/>
 		</mx:FormItem>
-		<mx:FormItem label="Estado del Colaborador:">
+		<mx:FormItem required="true" label="Estado del Colaborador:">
 			<mx:ComboBox id="cmbColaboratorStatus" width="200"
 						 labelField="estado"/>
 		</mx:FormItem>
-		<mx:FormItem label="En Caso de Accidente Avisar:">
+		<mx:FormItem required="true" label="En Caso de Accidente Avisar:">
 			<components:TextInput id="txtAccidentCaseNotify" width="300"/>
 		</mx:FormItem>
-		<mx:FormItem label="Teléfono para Emergencia:">
+		<mx:FormItem required="true" label="Teléfono para Emergencia:">
 			<components:TextInput id="txtEmergencyNumber" width="300"/>
 		</mx:FormItem>
-		<mx:FormItem label="Se Encuentra Bajo Tratamiento:">
+		<mx:FormItem required="true" label="Se Encuentra Bajo Tratamiento:">
 			<mx:CheckBox id="chkTreatment"/>
 		</mx:FormItem>
 		<mx:FormItem label="¿Qué Medicamento?:">
@@ -348,7 +353,7 @@
 		<mx:FormItem label="Número Tarjeta de Nómina:">
 			<components:TextInput id="txtPayrollCardNumber" textAlign="right"/>
 		</mx:FormItem>
-		<mx:FormItem label="Correo Electrónico Conectel:">
+		<mx:FormItem required="true" label="Correo Electrónico Conectel:">
 			<components:TextInput id="txtConectelEmail" width="300" upperCase="false"/>
 		</mx:FormItem>
 		<mx:FormItem direction="horizontal">

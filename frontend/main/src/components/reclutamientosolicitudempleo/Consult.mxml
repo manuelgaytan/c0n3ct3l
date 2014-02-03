@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
-		 creationComplete="creationCompleteHandler(event)">
+		 horizontalAlign="right"
+		 creationComplete="creationCompleteHandler(event)" xmlns:components="components.*">
 	<mx:Script>
 		<![CDATA[
 			import events.GenericEvent;
@@ -110,8 +111,8 @@
 	<mx:Metadata>
 		[Event(name="itemDetail", type="events.GenericEvent")]
 	</mx:Metadata>
-	<mx:VBox id="vBox" width="100%" height="100%">
-		<mx:DataGrid id="datagrid" width="842" height="100%" dataProvider="{items}"
+	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
+		<mx:DataGrid id="datagrid" width="11710" height="100%" dataProvider="{items}"
 					 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 					 allowMultipleSelection="true"
 					 >
@@ -123,7 +124,7 @@
 				<mx:DataGridColumn id="dtgApplicationDate" headerText="{'Fecha\nSolicitud'}"
 								   dataField="datosPrincipalesSolicitante.fechaSolicitud"
 								   labelFunction="{Util.labelFunctionDate}"
-								   width="130"
+								   width="100"
 								   textAlign="center"/>
 				<mx:DataGridColumn id="dtgPositionRequested" headerText="{'Puesto\nSolicitado'}"
 								   dataField="datosPrincipalesSolicitante.puestoSolicitado"
@@ -132,6 +133,9 @@
 								   dataField="datosPrincipalesSolicitante.sueldoSolicitado"
 								   width="100"
 								   textAlign="right"/>
+				<mx:DataGridColumn headerText="{'Objetivo Laboral'}"
+								   dataField="datosPrincipalesSolicitante.objetivoLaboral"
+								   width="250"/>
 				<mx:DataGridColumn id="dtgLastName" headerText="{'Apellido\nPaterno'}"
 								   dataField="datosGeneralesSolicitante.apellidoPaterno"
 								   width="100"
@@ -140,17 +144,267 @@
 								   dataField="datosGeneralesSolicitante.apellidoMaterno"
 								   width="100"
 								   />
-				<mx:DataGridColumn id="dtgName" headerText="{'Nombre'}"
+				<mx:DataGridColumn id="dtgName" headerText="{'Nombres'}"
 								   dataField="datosGeneralesSolicitante.nombres"
 								   width="120"
 								   />
+				<mx:DataGridColumn headerText="{'Fecha de\nNacimiento'}"
+								   dataField="datosGeneralesSolicitante.fechaNacimiento"
+								   labelFunction="{Util.labelFunctionDate}"
+								   width="100"
+								   textAlign="center"/>
+				<mx:DataGridColumn headerText="{'Lugar de\nNacimiento'}"
+								   dataField="datosGeneralesSolicitante.lugarNacimiento"
+								   width="120"/>
+				<mx:DataGridColumn headerText="{'Edad'}"
+								   dataField="datosGeneralesSolicitante.edad"
+								   textAlign="right"
+								   width="80"/>
+				<mx:DataGridColumn headerText="{'Nacionalidad'}"
+								   dataField="datosGeneralesSolicitante.nacionalidad.nacionalidad"
+								   width="120"/>
+				<mx:DataGridColumn headerText="{'Identificación'}"
+								   dataField="datosGeneralesSolicitante.identificacion.identificacion"
+								   width="120"/>
+				<mx:DataGridColumn headerText="{'Documentación\nExtranjeros'}"
+								   dataField="datosGeneralesSolicitante.documentacionExtranjeros.documento"
+								   width="120"/>
+				<mx:DataGridColumn headerText="{'Estado\nCivil'}"
+								   dataField="datosGeneralesSolicitante.estadoCivil.estado"
+								   width="120"/>
+				<mx:DataGridColumn headerText="{'Sexo'}"
+								   dataField="datosGeneralesSolicitante.sexo.sexo"
+								   width="120"/>
+				<mx:DataGridColumn headerText="{'Calle y Número'}"
+								   dataField="datosGeneralesSolicitante.direccionSolicitante.calleNumero"
+								   width="250"/>
+				<mx:DataGridColumn headerText="{'Colonia'}"
+								   dataField="datosGeneralesSolicitante.direccionSolicitante.colonia"
+								   width="200"/>
+				<mx:DataGridColumn headerText="{'Código\nPostal'}"
+								   dataField="datosGeneralesSolicitante.direccionSolicitante.codigoPostal"
+								   textAlign="right"
+								   width="100"/>
+				<mx:DataGridColumn headerText="{'Delegación o\nMunicipio'}"
+								   dataField="datosGeneralesSolicitante.direccionSolicitante.delegacionMunicipio"
+								   width="200"/>
+				<mx:DataGridColumn headerText="{'Entidad\nFederativa'}"
+								   dataField="datosGeneralesSolicitante.direccionSolicitante.entidadFederativa"
+								   width="200"/>
+				<mx:DataGridColumn headerText="{'Teléfono'}"
+								   dataField="datosGeneralesSolicitante.telefono"
+								   width="150"/>
+				<mx:DataGridColumn headerText="{'Celular'}"
+								   dataField="datosGeneralesSolicitante.celular"
+								   width="150"/>
+				<mx:DataGridColumn headerText="{'Correo\nElectrónico'}"
+								   dataField="datosGeneralesSolicitante.correoElectronico"
+								   width="200"/>
+				<mx:DataGridColumn headerText="{'R.F.C.'}"
+								   dataField="datosGeneralesSolicitante.rfc"
+								   width="150"/>
+				<mx:DataGridColumn headerText="{'N.S.S.'}"
+								   dataField="datosGeneralesSolicitante.nss"
+								   width="150"/>
+				<mx:DataGridColumn headerText="{'C.U.R.P.'}"
+								   dataField="datosGeneralesSolicitante.curp"
+								   width="200"/>
+				<mx:DataGridColumn headerText="{'Tiene\nLicencia'}" width="80"
+								   imeMode="datosGeneralesSolicitante.licencia.numeroLicencia"
+								   itemRenderer="components.renderers.CheckBoxRendererLicencia">
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="{'Vigencia\nLicencia'}"
+								   dataField="datosGeneralesSolicitante.licencia.vigencia"
+								   labelFunction="{Util.labelFunctionDate}"
+								   width="100"
+								   textAlign="center"/>
+				<mx:DataGridColumn headerText="{'Número de \nLicencia'}"
+								   dataField="datosGeneralesSolicitante.licencia.numeroLicencia"
+								   width="150"/>
+				<mx:DataGridColumn headerText="{'Tipo de \nLicencia'}"
+								   dataField="datosGeneralesSolicitante.licencia.tipoLicencia.tipo"
+								   width="150"/>
+				<mx:DataGridColumn headerText="{'Carta\nAntecedentes\nPenales'}"
+								   dataField="datosGeneralesSolicitante.cartaAntecedentesPenales.tieneCarta"
+								   width="200"/>
+				<mx:DataGridColumn headerText="{'Estado\nde Salud'}"
+								   dataField="datosGeneralesSolicitante.estadoSalud.estado"
+								   width="200"/>
+				<mx:DataGridColumn headerText="{'Enfermedad\nCrónica'}"
+								   dataField="datosGeneralesSolicitante.enfermedadCronica"
+								   width="200"/>
+				<mx:DataGridColumn headerText="{'Actividad\nTiempo\nLibre'}"
+								   dataField="datosGeneralesSolicitante.actividadTiempoLibre.actividad"
+								   width="150"/>
+				<mx:DataGridColumn headerText="{'Vive\ncon'}"
+								   dataField="datosFamiliaresSolicitante.viveCon.relacion"
+								   width="150"/>
+				<mx:DataGridColumn headerText="{'Dependientes'}"
+								   dataField="datosFamiliaresSolicitante.dependientes.dependientes"
+								   width="150"/>
+				<mx:DataGridColumn headerText="{'Último\nGrado de\nEstudios'}"
+								   dataField="datosEscolaresHabilidades.ultimoGradoEstudios.estudios"
+								   width="150"/>
+				<mx:DataGridColumn headerText="{'Escuela\nProcedencia'}"
+								   dataField="datosEscolaresHabilidades.escuelaProcedencia"
+								   width="200"/>
+				<mx:DataGridColumn headerText="{'Estado\nAcademico'}"
+								   dataField="datosEscolaresHabilidades.estadoAcademico.estado"
+								   width="150"/>
+				<mx:DataGridColumn headerText="{'Idiomas'}"
+								   dataField="datosEscolaresHabilidades.idiomas"
+								   width="150"/>
+				<mx:DataGridColumn headerText="{'Porcentaje\nIdiomas'}" 
+								   dataField="datosEscolaresHabilidades.porcentajeIdiomas"
+								   width="150"/>
+				<mx:DataGridColumn headerText="{'Computadora\nPersonal'}" width="80"
+								   imeMode="datosEscolaresHabilidades.equipoOficinaDomina.pc"
+								   itemRenderer="components.renderers.CheckBoxRendererPC"/>
+				<mx:DataGridColumn headerText="{'Calculadora'}" width="80" editable="false" textAlign="center"
+								   imeMode="datosEscolaresHabilidades.equipoOficinaDomina.calculadora"
+								   itemRenderer="components.renderers.CheckBoxRendererCalculadora"/>
+				<mx:DataGridColumn headerText="{'Impresora'}" width="80" editable="false" textAlign="center"
+								   imeMode="datosEscolaresHabilidades.equipoOficinaDomina.impresora"
+								   itemRenderer="components.renderers.CheckBoxRendererImpresora"/>
+				<mx:DataGridColumn headerText="{'Fax'}" width="80" editable="false" textAlign="center"
+								   imeMode="datosEscolaresHabilidades.equipoOficinaDomina.fax"
+								   itemRenderer="components.renderers.CheckBoxRendererFax"/>
+				<mx:DataGridColumn headerText="{'Teléfono'}" width="80" editable="false" textAlign="center"
+								   imeMode="datosEscolaresHabilidades.equipoOficinaDomina.telefono"
+								   itemRenderer="components.renderers.CheckBoxRendererTelefono"/>
+				<mx:DataGridColumn headerText="{'Escáner'}" width="80" editable="false" textAlign="center"
+								   imeMode="datosEscolaresHabilidades.equipoOficinaDomina.scanner"
+								   itemRenderer="components.renderers.CheckBoxRendererScanner"/>
+				<mx:DataGridColumn headerText="{'Tableta'}" width="80" editable="false" textAlign="center"
+								   imeMode="datosEscolaresHabilidades.equipoOficinaDomina.tablet"
+								   itemRenderer="components.renderers.CheckBoxRendererTablet"/>
+				<mx:DataGridColumn headerText="{'Laptop'}" width="80" editable="false" textAlign="center"
+								   imeMode="datosEscolaresHabilidades.equipoOficinaDomina.laptop"
+								   itemRenderer="components.renderers.CheckBoxRendererLaptop"/>
+				<mx:DataGridColumn headerText="{'Otros'}" width="80" editable="false" textAlign="center"
+								   imeMode="datosEscolaresHabilidades.equipoOficinaDomina.otros"
+								   itemRenderer="components.renderers.CheckBoxRendererOtrosEquipoOficina"/>
+				<mx:DataGridColumn headerText="{'Word'}" width="80" editable="false" textAlign="center"
+								   imeMode="datosEscolaresHabilidades.paqueteria.word"
+								   itemRenderer="components.renderers.CheckBoxRendererWord"/>
+				<mx:DataGridColumn headerText="{'Power\nPoint'}" width="80" editable="false" textAlign="center"
+								   imeMode="datosEscolaresHabilidades.paqueteria.powerPoint"
+								   itemRenderer="components.renderers.CheckBoxRendererPowerPoint"/>
+				<mx:DataGridColumn headerText="{'Excel'}" width="80" editable="false" textAlign="center"
+								   imeMode="datosEscolaresHabilidades.paqueteria.excel"
+								   itemRenderer="components.renderers.CheckBoxRendererExcel"/>
+				<mx:DataGridColumn headerText="{'Publisher'}" width="80" editable="false" textAlign="center"
+								   imeMode="datosEscolaresHabilidades.paqueteria.publisher"
+								   itemRenderer="components.renderers.CheckBoxRendererPublisher"/>
+				<mx:DataGridColumn headerText="{'Access'}" width="80" editable="false" textAlign="center"
+								   imeMode="datosEscolaresHabilidades.paqueteria.access"
+								   itemRenderer="components.renderers.CheckBoxRendererAccess"/>
+				<mx:DataGridColumn headerText="{'Outlook'}" width="80" editable="false" textAlign="center"
+								   imeMode="datosEscolaresHabilidades.paqueteria.outlook"
+								   itemRenderer="components.renderers.CheckBoxRendererOutlook"/>
+				<mx:DataGridColumn headerText="{'Acrobat'}" width="80" editable="false" textAlign="center"
+								   imeMode="datosEscolaresHabilidades.paqueteria.acrobat"
+								   itemRenderer="components.renderers.CheckBoxRendererAcrobat"/>
+				<mx:DataGridColumn headerText="{'COI'}" width="80" editable="false" textAlign="center"
+								   imeMode="datosEscolaresHabilidades.paqueteria.coi"
+								   itemRenderer="components.renderers.CheckBoxRendererCoi"/>
+				<mx:DataGridColumn headerText="{'NOI'}" width="80" editable="false" textAlign="center"
+								   imeMode="datosEscolaresHabilidades.paqueteria.noi"
+								   itemRenderer="components.renderers.CheckBoxRendererNoi"/>
+				<mx:DataGridColumn headerText="{'SAE'}" width="80" editable="false" textAlign="center"
+								   imeMode="datosEscolaresHabilidades.paqueteria.sae"
+								   itemRenderer="components.renderers.CheckBoxRendererSae"/>
+				<mx:DataGridColumn headerText="{'Otros'}" width="80" editable="false" textAlign="center"
+								   imeMode="datosEscolaresHabilidades.paqueteria.otros"
+								   itemRenderer="components.renderers.CheckBoxRendererOtrosSoftware"/>
+				<mx:DataGridColumn headerText="{'Nombre\nEmpresa'}"
+								   dataField="datosUltimoEmpleoSolicitante.nombreEmpresa"
+								   width="150"/>
+				<mx:DataGridColumn headerText="{'Domicilio'}"
+								   dataField="datosUltimoEmpleoSolicitante.domicilio"
+								   width="200"/>
+				<mx:DataGridColumn headerText="{'Teléfonos'}"
+								   dataField="datosUltimoEmpleoSolicitante.telefonos"
+								   width="150"/>
+				<mx:DataGridColumn headerText="{'Puesto\nInicial'}"
+								   dataField="datosUltimoEmpleoSolicitante.puestoInicial"
+								   width="150"/>
+				<mx:DataGridColumn headerText="{'Puesto\nFinal'}"
+								   dataField="datosUltimoEmpleoSolicitante.puestoFinal"
+								   width="150"/>
+				<mx:DataGridColumn headerText="{'Sueldo\nInicial'}"
+								   dataField="datosUltimoEmpleoSolicitante.sueldoInicial"
+								   textAlign="right"
+								   width="100"/>
+				<mx:DataGridColumn headerText="{'Sueldo\nFinal'}"
+								   dataField="datosUltimoEmpleoSolicitante.sueldoFinal"
+								   textAlign="right"
+								   width="100"/>
+				<mx:DataGridColumn headerText="{'Motivo\nSeparación'}"
+								   dataField="datosUltimoEmpleoSolicitante.motivoSeparacion"
+								   width="150"/>
+				<mx:DataGridColumn headerText="{'Nombre\nJefe\nInmediato'}"
+								   dataField="datosUltimoEmpleoSolicitante.nombreJefeInmediato"
+								   width="150"/>
+				<mx:DataGridColumn headerText="{'Actividades\nDesempeñadas'}"
+								   dataField="datosUltimoEmpleoSolicitante.actividadesDesempenadas"
+								   width="250"/>
+				<mx:DataGridColumn headerText="{'Nombre\nEmpresa\nAnterior'}"
+								   dataField="datosUltimoEmpleoSolicitante.nombreEmpresaAnterior"
+								   width="150"/>
+				<mx:DataGridColumn headerText="{'Domicilio\nAnterior'}"
+								   dataField="datosUltimoEmpleoSolicitante.domicilioAnterior"
+								   width="200"/>
+				<mx:DataGridColumn headerText="{'Teléfonos\nAnterior'}"
+								   dataField="datosUltimoEmpleoSolicitante.telefonosAnterior"
+								   width="150"/>
+				<mx:DataGridColumn headerText="{'Puesto\nInicial\nAnterior'}"
+								   dataField="datosUltimoEmpleoSolicitante.puestoInicialAnterior"
+								   width="150"/>
+				<mx:DataGridColumn headerText="{'Puesto\nFinal\nAnterior'}"
+								   dataField="datosUltimoEmpleoSolicitante.puestoFinalAnterior"
+								   width="150"/>
+				<mx:DataGridColumn headerText="{'Sueldo\nInicial\nAnterior'}"
+								   dataField="datosUltimoEmpleoSolicitante.sueldoInicialAnterior"
+								   textAlign="right"
+								   width="100"/>
+				<mx:DataGridColumn headerText="{'Sueldo\nFinal\nAnterior'}"
+								   dataField="datosUltimoEmpleoSolicitante.sueldoFinalAnterior"
+								   textAlign="right"
+								   width="100"/>
+				<mx:DataGridColumn headerText="{'Motivo\nSeparación\nAnterior'}"
+								   dataField="datosUltimoEmpleoSolicitante.motivoSeparacionAnterior"
+								   width="150"/>
+				<mx:DataGridColumn headerText="{'Nombre\nJefe\nInmediato\nAnterior'}"
+								   dataField="datosUltimoEmpleoSolicitante.nombreJefeInmediatoAnterior"
+								   width="150"/>
+				<mx:DataGridColumn headerText="{'Actividades\nDesempeñadas\nAnterior'}"
+								   dataField="datosUltimoEmpleoSolicitante.actividadesDesempenadasAnterior"
+								   width="250"/>
+				<mx:DataGridColumn headerText="{'Fuente\nReclutamiento'}"
+								   dataField="datosSobreConectelSolicitante.fuenteReclutamiento.fuente"
+								   width="250"/>
+				<mx:DataGridColumn headerText="{'Conocidos\nConectel'}" width="80" editable="false" textAlign="center"
+								   imeMode="datosSobreConectelSolicitante.conocidosConectel"
+								   itemRenderer="components.renderers.CheckBoxRendererConocidosConectel"/>
+				<mx:DataGridColumn headerText="{'Puede\nViajar'}" width="80" editable="false" textAlign="center"
+								   imeMode="datosSobreConectelSolicitante.puedeViajar"
+								   itemRenderer="components.renderers.CheckBoxRendererPuedeViajar"/>
+				<mx:DataGridColumn headerText="{'Fecha en\nque podría\nPresentarse'}"
+								   dataField="datosSobreConectelSolicitante.fechaPresentarse"
+								   labelFunction="{Util.labelFunctionDate}"
+								   width="100"
+								   textAlign="center"/>
+				<mx:DataGridColumn headerText="{'Fuente\nReclutamiento'}"
+								   dataField="datosSobreConectelSolicitante.faseSeleccion.fase"
+								   width="150"/>
 			</mx:columns>
 		</mx:DataGrid>
-	</mx:VBox>
-	<mx:HBox width="100%">
-		<mx:Spacer width="100%"/>
+	</mx:HBox>
+	<mx:HBox>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"
 				   visible="{!this._readMode}"/>
+		<components:ExportButton datagrid="{this.datagrid}"/>
 	</mx:HBox>
 	<mx:RemoteObject id="reclutamientoSolicitudEmpleoService" destination="reclutamientoSolicitudEmpleoService" fault="reclutamientoSolicitudEmpleoService_faultHandler(event)"
 					 showBusyCursor="true"/>

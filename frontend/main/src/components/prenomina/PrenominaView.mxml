@@ -20,7 +20,6 @@
 			import mx.com.gahm.componentes.validadores.Constantes;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
 			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
-			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
 			import mx.com.gahm.componentes.validadores.ValidadorEmail;
 			import mx.com.gahm.componentes.validadores.ValidadorEntero;
@@ -148,6 +147,8 @@
 				value &&= this.validators.validarFormulario();
 				value &&= recruitmentConsult.datagrid.selectedItem != null;
 				value &&= dtfInitialIncidenceDate.selectedDate != null;
+				value &&= Util.listBaseSelected( this.cmbIncidenceClass );
+				value &&= Util.listBaseSelected( this.cmbIncapacityType );
 				value &&= dtfFinalIncidenceDate.selectedDate != null;
 				return value;
 			}
@@ -166,8 +167,8 @@
 				this.validators = new InicializaValidadoresEtiquetas();
 				//validators.crearValidadorRestrictor("generic",ValidadorCadenaCualquierCaracter.nombre, 0, 255);
 				this.validators.crearValidadorRestrictor("genericDecimal", ValidadorDecimal.nombre, 9, 2);
-				validators.setRestrictor( this.txtIMSSAmount, "genericDecimal" );
-				validators.setRestrictor( this.txtConectelAmount, "genericDecimal");
+				validators.setValidador( this.txtIMSSAmount, "genericDecimal" );
+				validators.setValidador( this.txtConectelAmount, "genericDecimal");
 				//validators.crearValidadorRestrictor("email",ValidadorEmail.nombre);
 			}
 			
@@ -241,29 +242,33 @@
 		[Event(name="prenominaProjectDone", type="flash.events.Event")]
 	</mx:Metadata>
 	<mx:Form id="form">
-		<mx:FormItem id="frmID" label="ID:" direction="horizontal">
+		<mx:FormItem required="true" id="frmID" label="ID:" direction="horizontal">
 			<components:TextInput id="txtID" width="80" textAlign="right"
 								  editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Contratación:"/>
-		<contratacion:Consult id="recruitmentConsult" readMode="true"/>
-		<mx:FormItem label="Fecha de Incidencia:" direction="horizontal">
+		<mx:FormItem required="true" label="Contratación:"/>
+		<mx:VBox width="910">
+			<mx:VBox width="100%" height="100%" verticalGap="5">
+				<contratacion:Consult id="recruitmentConsult" readMode="true"/>
+			</mx:VBox>
+		</mx:VBox>
+		<mx:FormItem required="true" label="Fecha de Incidencia:" direction="horizontal">
 			<components:DateField id="dtfInitialIncidenceDate"/>
 			<mx:Label text="-"/>
 			<components:DateField id="dtfFinalIncidenceDate"/>
 		</mx:FormItem>
-		<mx:FormItem label="Clase de Incidencia:">
+		<mx:FormItem required="true" label="Clase de Incidencia:">
 			<mx:ComboBox id="cmbIncidenceClass" width="300"
 						 labelField="incidencia"/>
 		</mx:FormItem>
-		<mx:FormItem label="Tipo de Incapacidad:">
+		<mx:FormItem required="true" label="Tipo de Incapacidad:">
 			<mx:ComboBox id="cmbIncapacityType" width="200"
 						 labelField="tipo"/>
 		</mx:FormItem>
-		<mx:FormItem label="Monto I.M.S.S.:">
+		<mx:FormItem required="true" label="Monto I.M.S.S.:">
 			<components:TextInput id="txtIMSSAmount" textAlign="right"/>
 		</mx:FormItem>
-		<mx:FormItem label="Monto Conectel:">
+		<mx:FormItem required="true" label="Monto Conectel:">
 			<components:TextInput id="txtConectelAmount" textAlign="right"/>
 		</mx:FormItem>
 		<mx:FormItem direction="horizontal">

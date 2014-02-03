@@ -41,7 +41,6 @@
 			import mx.com.gahm.componentes.validadores.Constantes;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
 			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
-			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
 			import mx.com.gahm.componentes.validadores.ValidadorEntero;
 			import mx.controls.Alert;
@@ -167,6 +166,7 @@
 				value &&= recruitmentJobApplication.datagrid.selectedItem != null;
 				value &&= psycometricQuiz.validations();
 				value &&= scalaProfile.validations();
+				value &&= Util.listBaseSelected( this.cmbCandidateType )
 				return value;
 			}
 			
@@ -256,13 +256,17 @@
 		[Event(name="perDiemCheckSelected", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:Form id="form">
-		<mx:FormItem id="frmID" label="ID:" direction="horizontal">
+		<mx:FormItem required="true" id="frmID" label="ID:" direction="horizontal">
 			<components:TextInput id="txtID" width="80" textAlign="right"
 								  editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Solicitud Empleo:"/>
-		<reclutamientosolicitudempleo:Consult id="recruitmentJobApplication" readMode="true"/>
-		<mx:FormItem label="Tipo de Candidato:">
+		<mx:FormItem required="true" label="Solicitud Empleo:"/>
+		<mx:VBox width="850">
+			<mx:VBox width="100%" height="100%" verticalGap="5">
+				<reclutamientosolicitudempleo:Consult id="recruitmentJobApplication" readMode="true"/>
+			</mx:VBox>
+		</mx:VBox>
+		<mx:FormItem required="true" label="Tipo de Candidato:">
 			<mx:ComboBox id="cmbCandidateType" width="200"
 						 labelField="tipo"/>
 		</mx:FormItem>
@@ -271,7 +275,7 @@
 		<mx:FormItem label="Exámen Técnico:">
 			<mx:NumericStepper id="nstTechnicalQuiz" minimum="0" maximum="10"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fase de Contratación:">
+		<mx:FormItem required="true" label="Fase de Contratación:">
 			<mx:ComboBox id="cmbContractPhase" width="200"
 						 labelField="fase"/>
 		</mx:FormItem>

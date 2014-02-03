@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
-		 creationComplete="creationCompleteHandler(event)">
+		 horizontalAlign="right"
+		 creationComplete="creationCompleteHandler(event)" xmlns:components="components.*">
 	<mx:Script>
 		<![CDATA[
 			import events.GenericEvent;
@@ -126,7 +127,7 @@
 	<mx:Metadata>
 		[Event(name="itemDetail", type="events.GenericEvent")]
 	</mx:Metadata>
-	<mx:VBox id="vBox" width="100%" height="100%">
+	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
 		<mx:DataGrid id="datagrid" width="892" height="100%" dataProvider="{items}"
 					 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 					 allowMultipleSelection="true"
@@ -145,6 +146,134 @@
 				<mx:DataGridColumn id="dtgBank" headerText="{'Tipo Candidato'}"
 								   dataField="tipoCandidato.tipo"
 								   width="100"/>
+				<mx:DataGridColumn headerText="{'Raven\nó Army\nBeta'}" width="80" editable="false" textAlign="center">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:CheckBox selected="{data.examenPsicometrico.ravenArmyBeta}" enabled="false"/>
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="{'Figura\nHumana'}" width="80" editable="false" textAlign="center">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:CheckBox selected="{data.examenPsicometrico.figuraHumana}" enabled="false"/>
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="{'Árbol'}" width="80" editable="false" textAlign="center">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:CheckBox selected="{data.examenPsicometrico.arbol}" enabled="false"/>
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="{'Casa'}" width="80" editable="false" textAlign="center">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:CheckBox selected="{data.examenPsicometrico.casa}" enabled="false"/>
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="{'Grafologia'}" width="80" editable="false" textAlign="center">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:CheckBox selected="{data.examenPsicometrico.grafologia}" enabled="false"/>
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="{'Cleaver'}" width="80" editable="false" textAlign="center">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:CheckBox selected="{data.examenPsicometrico.cleaver}" enabled="false"/>
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="{'Frases\nIncompletas'}" width="80" editable="false" textAlign="center">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:CheckBox selected="{data.examenPsicometrico.frasesIncompletas}" enabled="false"/>
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="{'Therman'}" width="80" editable="false" textAlign="center">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:CheckBox selected="{data.examenPsicometrico.therman}" enabled="false"/>
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="{'Dominos'}" width="80" editable="false" textAlign="center">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:CheckBox selected="{data.examenPsicometrico.dominos}" enabled="false"/>
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="{'Inteligencia'}"
+								   dataField="perfilEscala.inteligencia"
+								   width="100"
+								   textAlign="right"
+								   />
+				<mx:DataGridColumn headerText="{'Sociable'}"
+								   dataField="perfilEscala.sociable"
+								   width="100"
+								   textAlign="right"
+								   />
+				<mx:DataGridColumn headerText="{'Métodos y\nProcedimientos'}"
+								   dataField="perfilEscala.metodosProcedimientos"
+								   width="100"
+								   textAlign="right"
+								   />
+				<mx:DataGridColumn headerText="{'Aspectos\nFísico'}"
+								   dataField="perfilEscala.aspectoFisico"
+								   width="100"
+								   textAlign="right"
+								   />
+				<mx:DataGridColumn headerText="{'Desenvolvimiento'}"
+								   dataField="perfilEscala.desenvolvimiento"
+								   width="100"
+								   textAlign="right"
+								   />
+				<mx:DataGridColumn headerText="{'Concentración'}"
+								   dataField="perfilEscala.concentracion"
+								   width="100"
+								   textAlign="right"
+								   />
+				<mx:DataGridColumn headerText="{'Entusiasmo'}"
+								   dataField="perfilEscala.entusiasmo"
+								   width="100"
+								   textAlign="right"
+								   />
+				<mx:DataGridColumn headerText="{'Amabilidad'}"
+								   dataField="perfilEscala.amabilidad"
+								   width="100"
+								   textAlign="right"
+								   />
+				<mx:DataGridColumn headerText="{'Agresivo'}"
+								   dataField="perfilEscala.agresivo"
+								   width="100"
+								   textAlign="right"
+								   />
+				<mx:DataGridColumn headerText="{'Audaz'}"
+								   dataField="perfilEscala.audaz"
+								   width="100"
+								   textAlign="right"
+								   />
+				<mx:DataGridColumn headerText="{'Lenguaje'}"
+								   dataField="perfilEscala.lenguaje"
+								   width="100"
+								   textAlign="right"
+								   />
+				<mx:DataGridColumn headerText="{'Respeto a\nla Autoridad'}"
+								   dataField="perfilEscala.respectoAutoridad"
+								   width="100"
+								   textAlign="right"
+								   />
+				<mx:DataGridColumn headerText="{'Orden'}"
+								   dataField="perfilEscala.orden"
+								   width="100"
+								   textAlign="right"
+								   />
 				<mx:DataGridColumn id="dtgDate" headerText="{'Fase Contratación'}"
 								   dataField="faseContratacion.fase"
 								   textAlign="center"
@@ -152,11 +281,11 @@
 								   />
 			</mx:columns>
 		</mx:DataGrid>
-	</mx:VBox>
-	<mx:HBox width="100%">
-		<mx:Spacer width="100%"/>
+	</mx:HBox>
+	<mx:HBox>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"
 				   visible="{!this._readMode}"/>
+		<components:ExportButton datagrid="{this.datagrid}" visible="{!this._readMode}"/> 
 	</mx:HBox>
 	<mx:RemoteObject id="seleccionReclutamientoService" destination="seleccionReclutamientoService" fault="seleccionReclutamientoService_faultHandler(event)"
 					 showBusyCursor="true"/>

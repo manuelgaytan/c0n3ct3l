@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
+		 horizontalAlign="right"
 		 creationComplete="creationCompleteHandler(event)" xmlns:components="components.*">
 	<mx:Script>
 		<![CDATA[
@@ -181,8 +182,7 @@
 			</mx:columns>
 		</mx:DataGrid>
 	</mx:HBox>
-	<mx:HBox width="100%">
-		<mx:Spacer width="100%"/>
+	<mx:HBox>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"
 				   visible="{!this._readMode}"/>
 		<components:ExportButton datagrid="{this.datagrid}" visible="{!this._readMode}"/>

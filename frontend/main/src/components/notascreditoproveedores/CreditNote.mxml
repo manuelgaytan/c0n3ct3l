@@ -29,6 +29,8 @@
 			[Bindable]
 			private var _readOnly:Boolean = false;
 			
+			public var IVApercent:Number = Constants.IVA;
+			
 			public function set readOnly(value:Boolean):void{
 				this._readOnly = value;
 				this.label = Constants.DETALLE;
@@ -191,6 +193,7 @@
 				this.dtfDate.reset();
 				this.txtSubtotal.reset();
 				this.txtIVA.reset();
+				this.compIVA.reset();
 				this.txtTotal.reset();
 				this.cmbQualifiedSupplier.selectedIndex = 0;
 				this.cmbMaquiladoSupplier.selectedIndex = 0;
@@ -244,6 +247,11 @@
 			private function maquiladorSupplier( item:Object ):String{
 				return Util.extractToText( item, "proveedor.nombreComercial" );
 			}
+			
+			private function calculateIVA():void
+			{
+				Util.calculateIVA(txtSubtotal, txtIVA, txtTotal, this.IVApercent);
+			}
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -274,12 +282,13 @@
 		<mx:FormItem label="Subtotal:">
 			<components:TextInput id="txtSubtotal"
 								  textAlign="right"
-								  focusOut="Util.calculateIVA(txtSubtotal, txtIVA, txtTotal)"
-								  enter="Util.calculateIVA(txtSubtotal, txtIVA, txtTotal)"/>
+								  focusOut="this.calculateIVA()"
+								  enter="this.calculateIVA()"/>
 		</mx:FormItem>
 		<mx:FormItem label="I.V.A.:">
 			<components:TextInput id="txtIVA"
 								  textAlign="right"/>
+			<components:TextInputIVA id="compIVA" view="{this}" calculate="{this.calculateIVA}"/>
 		</mx:FormItem>
 		<mx:FormItem label="Total:">
 			<components:TextInput id="txtTotal"

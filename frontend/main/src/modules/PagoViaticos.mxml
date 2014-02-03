@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
-		   width="850" height="525"
+		   width="870" height="525"
 		   xmlns:pagoviaticos="components.pagoviaticos.*"
 		   creationComplete="creationCompleteHandler(event)" xmlns:informacionfacturas="components.informacionfacturas.*" xmlns:notascreditoclientes="components.notascreditoclientes.*" xmlns:facturacionproveedores="components.facturacionproveedores.*" xmlns:notascreditoproveedores="components.notascreditoproveedores.*" xmlns:comprobacionesviaticos="components.comprobacionesviaticos.*" xmlns:solicitudesviaticos="components.solicitudesviaticos.*">
 	<mx:Script>
@@ -54,7 +54,7 @@
 			}
 		]]>
 	</mx:Script>
-	<mx:TabNavigator id="navigator" width="850" height="100%" creationPolicy="all">
+	<mx:TabNavigator id="navigator" width="100%" height="100%" creationPolicy="all">
 		<pagoviaticos:Consult id="consult" itemDetail="consult_providerPaymentDetailHandler(event)"/>
 		<pagoviaticos:PerDiemPayment id="detail" update="true" providerPaymentUpdated="detail_providerPaymentUpdatedHandler(event)"
 							diemRequestSelected="detail_diemRequestSelectedHandler(event)"

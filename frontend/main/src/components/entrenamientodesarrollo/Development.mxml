@@ -256,7 +256,11 @@
 								  editable="false"/>
 		</mx:FormItem>
 		<mx:FormItem label="Contratación:"/>
-		<contratacion:Consult id="recruitmentConsult" readMode="true"/>
+		<mx:VBox width="1100">
+			<mx:VBox width="100%" height="100%" verticalGap="5">
+				<contratacion:Consult id="recruitmentConsult" readMode="true"/>
+			</mx:VBox>
+		</mx:VBox>
 		<mx:FormItem label="Inducción:" direction="horizontal">
 			<mx:CheckBox id="chkInduction1" label="Inducción"/>
 			<mx:CheckBox id="chkInduction2" label="ISO 9001-2008"/>

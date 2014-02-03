@@ -169,12 +169,13 @@
 								   labelFunction="{Util.labelFunctionDate}"
 								   width="80"
 								   />
-				<mx:DataGridColumn id="dtgInmediatlyAction" headerText="{'Prima\nVacacional'}"
-								   dataField="primaVacacional"
-								   width="80"
-								   textAlign="center"
-								   itemRenderer="mx.controls.CheckBox"
-								   />
+				<mx:DataGridColumn id="dtgInmediatlyAction" headerText="{'Prima\nVacacional'}" width="80" editable="false" textAlign="center">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:CheckBox selected="{data.primaVacacional}" enabled="false"/>
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
 			</mx:columns>
 		</mx:DataGrid>
 	</mx:HBox>

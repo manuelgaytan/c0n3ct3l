@@ -37,7 +37,6 @@
 			import mx.com.gahm.componentes.validadores.Constantes;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
 			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
-			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
 			import mx.com.gahm.componentes.validadores.ValidadorEntero;
 			import mx.controls.Alert;
@@ -94,7 +93,7 @@
 				}
 				this.dtfPaymentDate.selectedDate = this._item.fechaAbono;
 				this.txtAmount.text = this._item.monto.toString();
-				this.txtPaymentReference.text = this._item.referenciaAbono;
+				this.txtPaymentReference.text = Util.numberToString( this._item.referenciaAbono, true );
 				this.comments.setCommentsIn( this._item.comentariosPagoMovimientoPagoContableServicio, "comentarioTesoreria");
 			}
 			
@@ -156,6 +155,7 @@
 				value &&= this.validators.validarFormulario();
 				value &&= this.accountingPaymentsServicesConsult.datagrid.selectedItem != null;
 				value &&= Util.listBaseSelected( this.cmbConectelBank );
+				value &&= this.dtfPaymentDate.selectedDate != null;
 				return value;
 			}
 			
@@ -254,24 +254,27 @@
 		[Event(name="accountingPaymentsServicesSelected", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:Form id="form">
-		<mx:FormItem id="frmID" label="ID:" direction="horizontal">
+		<mx:FormItem required="true" id="frmID" label="ID:" direction="horizontal">
 			<components:TextInput id="txtID" width="80" textAlign="right"
 								  editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Pagos Contables y Servicios:">
-			<pagoscontablesservicios:Consult id="accountingPaymentsServicesConsult" accountingPaymentsServicesDetail="accountingPaymentsServicesConsult_accountingPaymentsServicesDetailHandler(event)"
-										 readOnly="true"/>
-			<mx:Button id="btnViewAccountingPaymentsServices" label="Ver Pago Contable y Servicios" click="btnViewAccountingPaymentsServices_clickHandler(event)"/>
-		</mx:FormItem>
-		<mx:FormItem label="Banco Conectel:">
+		<mx:FormItem required="true" label="Pagos Contables y Servicios:"/>
+		<mx:VBox width="820">
+			<mx:VBox width="100%" height="100%" verticalGap="5">
+				<pagoscontablesservicios:Consult id="accountingPaymentsServicesConsult" accountingPaymentsServicesDetail="accountingPaymentsServicesConsult_accountingPaymentsServicesDetailHandler(event)"
+											 readOnly="true"/>
+				<mx:Button id="btnViewAccountingPaymentsServices" label="Ver Pago Contable y Servicios" click="btnViewAccountingPaymentsServices_clickHandler(event)"/>
+			</mx:VBox>
+		</mx:VBox>
+		<mx:FormItem required="true" label="Banco Conectel:">
 			<mx:ComboBox id="cmbConectelBank" width="200"
 						 labelField="banco"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha:">
+		<mx:FormItem required="true" label="Fecha:">
 			<components:DateField id="dtfPaymentDate"
 								  creationComplete="this.dtfPaymentDate.selectedDate = new Date()"/>
 		</mx:FormItem>
-		<mx:FormItem label="Monto:">
+		<mx:FormItem required="true" label="Monto:">
 			<components:TextInput id="txtAmount" textAlign="right" width="100"/>
 		</mx:FormItem>
 		<mx:FormItem label="Referencia:">

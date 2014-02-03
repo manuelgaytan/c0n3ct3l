@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
-		 creationComplete="creationCompleteHandler(event)">
+		 horizontalAlign="right"
+		 creationComplete="creationCompleteHandler(event)" xmlns:components="components.*">
 	<mx:Script>
 		<![CDATA[
 			import events.GenericEvent;
@@ -110,8 +111,8 @@
 	<mx:Metadata>
 		[Event(name="itemDetail", type="events.GenericEvent")]
 	</mx:Metadata>
-	<mx:VBox id="vBox" width="100%" height="100%">
-		<mx:DataGrid id="datagrid" width="842" height="100%" dataProvider="{items}"
+	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
+		<mx:DataGrid id="datagrid" width="860" height="100%" dataProvider="{items}"
 					 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 					 allowMultipleSelection="true"
 					 >
@@ -127,9 +128,9 @@
 				<mx:DataGridColumn id="dtgPerDiemCheckState" headerText="{'Estado\nComprobante\nViáticos'}"
 								   dataField="comprobacionViaticos.estadoComprobacionViaticos.etiqueta"
 								   width="170"/>
-				<mx:DataGridColumn id="dtgBank" headerText="{'Banco'}"
+				<mx:DataGridColumn id="dtgBank" headerText="{'Banco\nConectel'}"
 								   dataField="bancoConectel.banco"
-								   width="100"/>
+								   width="200"/>
 				<mx:DataGridColumn id="dtgDate" headerText="{'Fecha'}"
 								   dataField="fechaAbono"
 								   labelFunction="{Util.labelFunctionDate}"
@@ -148,11 +149,11 @@
 								   />
 			</mx:columns>
 		</mx:DataGrid>
-	</mx:VBox>
-	<mx:HBox width="100%">
-		<mx:Spacer width="100%"/>
+	</mx:HBox>
+	<mx:HBox>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"
 				   visible="{!this._readMode}"/>
+		<components:ExportButton datagrid="{this.datagrid}" visible="{!this._readMode}"/>
 	</mx:HBox>
 	<mx:RemoteObject id="pagoViaticosService" destination="pagoViaticosService" fault="datosGeneralesProyectoService_faultHandler(event)"
 					 showBusyCursor="true"/>

@@ -38,7 +38,6 @@
 			import mx.com.gahm.componentes.validadores.Constantes;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
 			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
-			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
 			import mx.com.gahm.componentes.validadores.ValidadorEntero;
 			import mx.controls.Alert;
@@ -51,6 +50,8 @@
 			private var mode:String = null;
 			private var _item:PagoOtraOperacionFinanciera;
 			private var validators:InicializaValidadoresEtiquetas;
+			
+			public var IVApercent:Number = Constants.IVA;
 			
 			public function set registrer(value:Boolean):void{
 				mode = Constants.REGISTER_MODE;
@@ -101,7 +102,7 @@
 				}
 				this.dtfPaymentDate.selectedDate = this._item.fechaAbono;
 				this.txtAmount.text = this._item.monto.toString();
-				this.txtPaymentReference.text = this._item.referenciaAbono.toString();
+				this.txtPaymentReference.text = Util.numberToString( this._item.referenciaAbono, true);
 				this.comments.setCommentsIn( this._item.comentariosPagoOtraOperacionFinanciera, "comentarioTesoreria");
 			}
 			
@@ -167,6 +168,7 @@
 				value &&= this.validators.validarFormulario();
 				value &&= Util.listBaseSelected( this.cmbAnotherFinancialOperationConcept );
 				value &&= Util.listBaseSelected( this.cmbConectelBank );
+				value &&= this.dtfPaymentDate.selectedDate != null;
 				return value;
 			}
 			
@@ -183,11 +185,11 @@
 			{
 				this.validators = new InicializaValidadoresEtiquetas();
 				this.validators.crearValidadorRestrictor("genericAlfanumeric", ValidadorCadenaCualquierCaracter.nombre, 0, 255);
-				this.validators.setRestrictor( this.txtCorporateName, "genericAlfanumeric");
+				this.validators.setValidador( this.txtCorporateName, "genericAlfanumeric");
 				this.validators.crearValidadorRestrictor("genericDecimal", ValidadorDecimal.nombre, 9, 2);
-				this.validators.setRestrictor( this.txtSubtotal, "genericDecimal" );
-				this.validators.setRestrictor( this.txtIVA, "genericDecimal" );
-				this.validators.setRestrictor( this.txtTotal, "genericDecimal" );
+				this.validators.setValidador( this.txtSubtotal, "genericDecimal" );
+				this.validators.setValidador( this.txtIVA, "genericDecimal" );
+				this.validators.setValidador( this.txtTotal, "genericDecimal" );
 				this.validators.setValidador( this.txtAmount, "genericDecimal" );
 				this.validators.crearValidadorRestrictor("genericInteger", ValidadorEntero.nombre, 14);
 				this.validators.setRestrictor( this.txtPaymentReference, "genericInteger" );
@@ -208,6 +210,7 @@
 				this.txtCorporateName.reset();
 				this.txtSubtotal.reset();
 				this.txtIVA.reset();
+				this.compIVA.reset();
 				this.txtTotal.reset();
 				this.cmbConectelBank.selectedIndex = 0;
 				this.dtfPaymentDate.reset();
@@ -250,6 +253,11 @@
 						this._item.conceptoOtraOperacionFinanciera.id);
 				}
 			}
+			
+			private function calculateIVA():void
+			{
+				Util.calculateIVA(txtSubtotal, txtIVA, txtTotal, this.IVApercent);
+			}
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -260,37 +268,38 @@
 		[Event(name="perDiemCheckSelected", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:Form id="form">
-		<mx:FormItem id="frmID" label="ID:" direction="horizontal">
+		<mx:FormItem required="true" id="frmID" label="ID:" direction="horizontal">
 			<components:TextInput id="txtID" width="80" textAlign="right"
 								  editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Concepto Otra Opeación Financiera:">
+		<mx:FormItem required="true" label="Concepto Otra Opeación Financiera:">
 			<mx:ComboBox id="cmbAnotherFinancialOperationConcept" width="200"
 						 labelField="etiqueta"/>
 		</mx:FormItem>
-		<mx:FormItem label="Razón Social:">
+		<mx:FormItem required="true" label="Razón Social:">
 			<components:TextInput id="txtCorporateName" width="270"/>
 		</mx:FormItem>
-		<mx:FormItem label="Subtotal:">
+		<mx:FormItem required="true" label="Subtotal:" direction="horizontal">
 			<components:TextInput id="txtSubtotal" textAlign="right" width="100"
-								  enter="Util.calculateIVA(txtSubtotal, txtIVA, txtTotal)"
-								  focusOut="Util.calculateIVA(txtSubtotal, txtIVA, txtTotal)"/>
+								  enter="this.calculateIVA()"
+								  focusOut="this.calculateIVA()"/>
 		</mx:FormItem>
-		<mx:FormItem label="I.V.A.:">
+		<mx:FormItem required="true" label="I.V.A.:">
 			<components:TextInput id="txtIVA" textAlign="right" width="100"/>
+			<components:TextInputIVA id="compIVA" view="{this}" calculate="{this.calculateIVA}"/>
 		</mx:FormItem>
-		<mx:FormItem label="Total:">
+		<mx:FormItem required="true" label="Total:">
 			<components:TextInput id="txtTotal" textAlign="right" width="100"/>
 		</mx:FormItem>
-		<mx:FormItem label="Banco Conectel:">
+		<mx:FormItem required="true" label="Banco Conectel:">
 			<mx:ComboBox id="cmbConectelBank" width="200"
 						 labelField="banco"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha:">
+		<mx:FormItem required="true" label="Fecha:">
 			<components:DateField id="dtfPaymentDate"
 								  creationComplete="this.dtfPaymentDate.selectedDate = new Date()"/>
 		</mx:FormItem>
-		<mx:FormItem label="Monto:">
+		<mx:FormItem required="true" label="Monto:">
 			<components:TextInput id="txtAmount" textAlign="right" width="100"/>
 		</mx:FormItem>
 		<mx:FormItem label="Referencia:">

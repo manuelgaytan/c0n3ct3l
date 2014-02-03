@@ -92,11 +92,13 @@
 								   labelFunction="labelFunctionIDProyecto"
 								   width="130"
 								   textAlign="right"/>
-				<mx:DataGridColumn id="dtgPurchaseOrder" headerText="{'Orden de\nCompra'}"
-								   dataField="ordenCompra"
-								   itemRenderer="mx.controls.CheckBox"
-								   textAlign="center"
-								   width="130"/>
+				<mx:DataGridColumn id="dtgPurchaseOrder" headerText="{'Orden de\nCompra'}" width="80" editable="false" textAlign="center">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:CheckBox selected="{data.ordenCompra}" enabled="false"/>
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
 				<mx:DataGridColumn headerText="{'Número de\nOrden de\nCompra'}"
 								   dataField="numeroOrdenCompra"
 								   labelFunction="labelFunctionIDProyecto"

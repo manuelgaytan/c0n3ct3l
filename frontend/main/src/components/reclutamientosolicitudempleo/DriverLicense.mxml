@@ -94,6 +94,9 @@
 					driverLicense = new Licencia();
 				}else{
 					driverLicense = this._item;
+					if( driverLicense == null ){
+						driverLicense = new Licencia();
+					}
 				}
 				driverLicense.vigencia = this.dtfExpire.selectedDate;
 				driverLicense.numeroLicencia = Util.validateEmpty( this.txtLicenseNumber.text );

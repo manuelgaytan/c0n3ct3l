@@ -56,6 +56,10 @@
 			[Bindable]
 			private var _readOnly:Boolean = false;
 			
+			public var IVApercent1:Number = Constants.IVA;
+			public var IVApercent2:Number = Constants.IVA;
+			public var IVApercent3:Number = Constants.IVA;
+			
 			public function set readOnly(value:Boolean):void{
 				this._readOnly = value;
 				this.label = Constants.DETALLE;
@@ -275,6 +279,7 @@
 				this.txtFolio1.reset();
 				this.txtSubtotal1.reset();
 				this.txtIVA1.reset();
+				this.compIVA1.reset();
 				this.txtTotal1.reset();
 				this.dtfIssued1.reset();
 				this.dtfAdmissionDate1.reset();
@@ -285,6 +290,7 @@
 				this.txtFolio2.reset();
 				this.txtSubtotal2.reset();
 				this.txtIVA2.reset();
+				this.compIVA2.reset();
 				this.txtTotal2.reset();
 				this.dtfIssued2.reset();
 				this.dtfAdmissionDate2.reset();
@@ -295,6 +301,7 @@
 				this.txtFolio3.reset();
 				this.txtSubtotal3.reset();
 				this.txtIVA3.reset();
+				this.compIVA3.reset();
 				this.txtTotal3.reset();
 				this.dtfIssued3.reset();
 				this.dtfAdmissionDate3.reset();
@@ -328,6 +335,20 @@
 				this.cmbAccountability.dataProvider = Util.addEmptyCatalgo( data );
 			}
 			
+			private function calculateIVA1():void
+			{
+				Util.calculateIVA(txtSubtotal1, txtIVA1, txtTotal1, this.IVApercent1);
+			}
+			
+			private function calculateIVA2():void
+			{
+				Util.calculateIVA(txtSubtotal2, txtIVA2, txtTotal2, this.IVApercent2);
+			}
+			
+			private function calculateIVA3():void
+			{
+				Util.calculateIVA(txtSubtotal3, txtIVA3, txtTotal3, this.IVApercent3);
+			}
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -350,12 +371,14 @@
 		<mx:FormItem label="Subtotal 1:">
 			<components:TextInput id="txtSubtotal1"
 								  textAlign="right"
-								  focusOut="Util.calculateIVA(txtSubtotal1, txtIVA1, txtTotal1)"
-								  enter="Util.calculateIVA(txtSubtotal1, txtIVA1, txtTotal1)"/>
+								  focusOut="this.calculateIVA1()"
+								  enter="this.calculateIVA1()"/>
 		</mx:FormItem>
-		<mx:FormItem label="I.V.A. 1:">
+		<mx:FormItem label="I.V.A. 1:" direction="horizontal">
 			<components:TextInput id="txtIVA1"
 								  textAlign="right"/>
+			<components:TextInputIVA id="compIVA1" view="{this}" calculate="{this.calculateIVA1}"
+									 propertyIVApercent="IVApercent1"/>
 		</mx:FormItem>
 		<mx:FormItem label="Total 1:">
 			<components:TextInput id="txtTotal1"
@@ -388,12 +411,14 @@
 		<mx:FormItem label="Subtotal 2:">
 			<components:TextInput id="txtSubtotal2"
 								  textAlign="right"
-								  focusOut="Util.calculateIVA(txtSubtotal2, txtIVA2, txtTotal2)"
-								  enter="Util.calculateIVA(txtSubtotal2, txtIVA2, txtTotal2)"/>
+								  focusOut="this.calculateIVA2()"
+								  enter="this.calculateIVA2()"/>
 		</mx:FormItem>
-		<mx:FormItem label="I.V.A. 2:">
+		<mx:FormItem label="I.V.A. 2:" direction="horizontal">
 			<components:TextInput id="txtIVA2"
 								  textAlign="right"/>
+			<components:TextInputIVA id="compIVA2" view="{this}" calculate="{this.calculateIVA2}"
+									 propertyIVApercent="IVApercent2"/>
 		</mx:FormItem>
 		<mx:FormItem label="Total 2:">
 			<components:TextInput id="txtTotal2"
@@ -426,12 +451,14 @@
 		<mx:FormItem label="Subtotal 3:">
 			<components:TextInput id="txtSubtotal3"
 								  textAlign="right"
-								  focusOut="Util.calculateIVA(txtSubtotal3, txtIVA3, txtTotal3)"
-								  enter="Util.calculateIVA(txtSubtotal3, txtIVA3, txtTotal3)"/>
+								  focusOut="this.calculateIVA3()"
+								  enter="this.calculateIVA3()"/>
 		</mx:FormItem>
 		<mx:FormItem label="I.V.A. 3:">
 			<components:TextInput id="txtIVA3"
 								  textAlign="right"/>
+			<components:TextInputIVA id="compIVA3" view="{this}" calculate="{this.calculateIVA3}"
+									 propertyIVApercent="IVApercent3"/>
 		</mx:FormItem>
 		<mx:FormItem label="Total 3:">
 			<components:TextInput id="txtTotal3"

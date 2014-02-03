@@ -409,6 +409,9 @@ package model
 		
 		public static function extractObject(object:Object, property:String):Object
 		{
+			if( object == null || property == null ){
+				return null;
+			}
 			var text:String = "";
 			var properties:Array = property.split(".");
 			var objectTemp:Object = object;
@@ -425,6 +428,12 @@ package model
 		{
 			var objectResult:Object = extractObject( object, property );
 			return ( objectResult == null ) ? "" : objectResult.toString();
+		}
+		
+		public static function extractToBoolean(object:Object, property:String):Boolean
+		{
+			var objectResult:Object = extractObject( object, property );
+			return ( objectResult == null ) ? false : Boolean( objectResult );
 		}
 		
 		public static function propertyOfObject(object:Object, property:String):Object{
@@ -571,8 +580,8 @@ package model
 			arrayCollection.addItem( object );
 			return arrayCollection;
 		}
-		
-		public static function calculateIVA(subtotal:TextInput, iva:TextInput, total:TextInput ):void{
+
+		public static function calculateIVA(subtotal:TextInput, iva:TextInput, total:TextInput, ivaPercent:Number ):void{
 			if( subtotal == null || iva == null || total === null ){
 				return;
 			}
@@ -580,13 +589,13 @@ package model
 			if( isNaN( subtotalNumber ) ){
 				return;
 			}
-			var ivaNumber:Number = subtotalNumber * Constants.IVA;
+			var ivaNumber:Number = subtotalNumber * ivaPercent;
 			var totalNumber:Number = subtotalNumber + ivaNumber;
 			subtotal.text = formatNumber( subtotalNumber );
 			iva.text = formatNumber( ivaNumber );
 			total.text = formatNumber( totalNumber );
 		}
-		
+
 		public static function faultHandler(event:FaultEvent):void
 		{
 			Util.showErrorMessage( Util.splitException( event.fault.faultString ) );

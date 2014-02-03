@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml"
+		 horizontalAlign="center" width="100%">
+	<mx:Script>
+		<![CDATA[
+			import model.Util;
+			[Bindable]
+			public var property:String = null;
+		]]>
+	</mx:Script>
+	<mx:CheckBox selected="{Util.extractToBoolean(data,property)}" enabled="false"/>
+</mx:HBox>

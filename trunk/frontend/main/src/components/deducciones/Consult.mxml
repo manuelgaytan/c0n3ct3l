@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
+		 horizontalAlign="right"
 		 creationComplete="creationCompleteHandler(event)">
 	<mx:Script>
 		<![CDATA[
 			import events.GenericEvent;
 			
 			import model.ConfiguracionPruebaEntrega;
-			import model.RegistroDeduccion;
 			import model.DatosGeneralesSolicitante;
 			import model.FiltroProyecto;
 			import model.Proyecto;
+			import model.RegistroDeduccion;
 			import model.Util;
 			
 			import mx.collections.ArrayCollection;
@@ -121,8 +122,8 @@
 	<mx:Metadata>
 		[Event(name="itemDetail", type="events.GenericEvent")]
 	</mx:Metadata>
-	<mx:VBox id="vBox" width="100%" height="100%">
-		<mx:DataGrid id="datagrid" width="942" height="100%" dataProvider="{items}"
+	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
+		<mx:DataGrid id="datagrid" width="1300" height="100%" dataProvider="{items}"
 					 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 					 allowMultipleSelection="true"
 					 >
@@ -144,8 +145,18 @@
 								   dataField="retardos"
 								   textAlign="right"
 								   width="60"/>
+				<mx:DataGridColumn headerText="{'Fecha de\nRetardos'}"
+								   dataField="fechaRetardo"
+								   textAlign="center"
+								   labelFunction="{Util.labelFunctionDate}"
+								   width="90"/>
 				<mx:DataGridColumn id="dtgFaultClass" headerText="{'Faltas'}"
 								   dataField="faltas"
+								   textAlign="right"
+								   width="60"
+								   />
+				<mx:DataGridColumn headerText="{'Clasificación\nFaltas'}"
+								   dataField="clasificacionFalta.tipo"
 								   textAlign="right"
 								   width="60"
 								   />
@@ -162,11 +173,25 @@
 								   dataField="formaPagoPrenomina.tipo"
 								   width="100"
 								   />
+				<mx:DataGridColumn headerText="{'Descuento\nParcial'}"
+								   dataField="descuentoParcial"
+								   textAlign="right"
+								   width="70"
+								   />
+				<mx:DataGridColumn headerText="{'Fecha de\nInicio'}"
+								   dataField="fechaInicio"
+								   textAlign="center"
+								   labelFunction="{Util.labelFunctionDate}"
+								   width="90"/>
+				<mx:DataGridColumn headerText="{'Fecha de\nTermino'}"
+								   dataField="fechaTermino"
+								   textAlign="center"
+								   labelFunction="{Util.labelFunctionDate}"
+								   width="90"/>
 			</mx:columns>
 		</mx:DataGrid>
-	</mx:VBox>
-	<mx:HBox width="100%">
-		<mx:Spacer width="100%"/>
+	</mx:HBox>
+	<mx:HBox>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"
 				   visible="{!this._readMode}"/>
 	</mx:HBox>

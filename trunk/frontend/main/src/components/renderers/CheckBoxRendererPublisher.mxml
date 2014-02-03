@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<renderers:CheckBoxRenderer xmlns:mx="http://www.adobe.com/2006/mxml"
+							xmlns:renderers="components.renderers.*"
+							property="datosEscolaresHabilidades.paqueteria.publisher"/>

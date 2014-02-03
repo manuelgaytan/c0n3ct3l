@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
-		 creationComplete="creationCompleteHandler(event)">
+		 horizontalAlign="right"
+		 creationComplete="creationCompleteHandler(event)" xmlns:components="components.*">
 	<mx:Script>
 		<![CDATA[
 			import events.GenericEvent;
@@ -125,7 +126,7 @@
 	<mx:Metadata>
 		[Event(name="itemDetail", type="events.GenericEvent")]
 	</mx:Metadata>
-	<mx:VBox id="vBox" width="100%" height="100%">
+	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
 		<mx:DataGrid id="datagrid" width="892" height="100%" dataProvider="{items}"
 					 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 					 allowMultipleSelection="true"
@@ -145,9 +146,13 @@
 								   dataField="sueldoInicial"
 								   textAlign="right"
 								   width="100"/>
-				<mx:DataGridColumn id="dtgContractStartDate" headerText="{'Fecha Inicio\nde Contrato'}"
+				<mx:DataGridColumn headerText="{'Fecha de\nExpedición\nCertificado\nMédico'}"
 								   labelFunction="{Util.labelFunctionDate}"
-								   dataField="fechaInicioContrato"
+								   dataField="fechaExpedicionCertificadoMedico"
+								   width="120"/>
+				<mx:DataGridColumn headerText="{'Fecha de\nVencimiento\nCertificado\nMédico'}"
+								   labelFunction="{Util.labelFunctionDate}"
+								   dataField="fechaVencimientoCertificadoMedico"
 								   width="120"/>
 				<mx:DataGridColumn id="dtgRecruitmentType" headerText="{'Tipo de\nContratación'}"
 								   dataField="tipoContratacion.tipo"
@@ -157,13 +162,100 @@
 								   dataField="tipoContrato.tipo"
 								   width="100"
 								   />
+				<mx:DataGridColumn headerText="{'Vencimiento\ndel Contrato\nEventual'}"
+								   dataField="vencimientoContratoEventual"
+								   width="200"
+								   />
+				<mx:DataGridColumn id="dtgContractStartDate" headerText="{'Fecha Inicio\nde Contrato'}"
+								   labelFunction="{Util.labelFunctionDate}"
+								   dataField="fechaInicioContrato"
+								   width="120"/>
+				<mx:DataGridColumn headerText="{'Seguro\nSocial'}" width="80" textAlign="center">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:CheckBox selected="{data.prestaciones.seguroSocial}" enabled="false"/>
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="{'Vacaciones'}" width="80" editable="false" textAlign="center">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:CheckBox selected="{data.prestaciones.vacaciones}" enabled="false"/>
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="{'Aguinaldo'}" width="80" editable="false" textAlign="center">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:CheckBox selected="{data.prestaciones.seguroSocial}" enabled="false"/>
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="{'Utilidades'}" width="80" editable="false" textAlign="center">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:CheckBox selected="{data.prestaciones.utilidades}" enabled="false"/>
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="{'Fonacot'}" width="80" editable="false" textAlign="center">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:CheckBox selected="{data.prestaciones.fonacot}" enabled="false"/>
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="{'Infonavit'}" width="80" editable="false" textAlign="center">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:CheckBox selected="{data.prestaciones.infonavit}" enabled="false"/>
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="{'25% Prima\nVacacional'}" width="80" editable="false" textAlign="center">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:CheckBox selected="{data.prestaciones.primaVacacional}" enabled="false"/>
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="{'Suspensión'}"
+								   dataField="suspension.suspension"
+								   width="150"
+								   />
+				<mx:DataGridColumn headerText="{'Motivo de\nla Suspensión'}"
+								   dataField="motivoSuspension"
+								   width="250"
+								   />
+				<mx:DataGridColumn headerText="{'Fecha de\nTérmino\nde Contrato'}"
+								   labelFunction="{Util.labelFunctionDate}"
+								   dataField="fechaTerminoContrato"
+								   width="120"/>
+				<mx:DataGridColumn headerText="{'Motivo de\nTérmino de\nContrato'}"
+								   dataField="motivoTerminoContrato"
+								   width="250"
+								   />
+				<mx:DataGridColumn headerText="{'Finiquito'}" width="80" editable="false" textAlign="center">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:CheckBox selected="{data.finiquito}" enabled="false"/>
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="{'Indemnización'}" width="80" editable="false" textAlign="center">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:CheckBox selected="{data.indemnizacion}" enabled="false"/>
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
 			</mx:columns>
 		</mx:DataGrid>
-	</mx:VBox>
-	<mx:HBox width="100%">
-		<mx:Spacer width="100%"/>
+	</mx:HBox>
+	<mx:HBox>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"
 				   visible="{!this._readMode}"/>
+		<components:ExportButton datagrid="{this.datagrid}" visible="{!this._readMode}"/>
 	</mx:HBox>
 	<mx:RemoteObject id="contratacionService" destination="contratacionService" fault="contratacionService_faultHandler(event)"
 					 showBusyCursor="true"/>

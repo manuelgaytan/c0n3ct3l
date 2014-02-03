@@ -183,6 +183,9 @@
 				var value:Boolean = true;
 				value &&= this.validators.validarFormulario();
 				value &&= recruitmentConsult.datagrid.selectedItem != null;
+				value &&= Util.listBaseSelected( this.cmbDeduction );
+				value &&= Util.listBaseSelected( this.cmbSantionClass );
+				value &&= Util.listBaseSelected( this.cmbPaymentForm );
 				return value;
 			}
 			
@@ -203,7 +206,6 @@
 				this.validators.setValidador( this.txtTotalAmountDiscount, "genericDecimal" );
 				this.validators.setRestrictor( this.txtPartialDiscount, "genericDecimal" );
 				validators.crearValidadorRestrictor("genericInteger",ValidadorEntero.nombre, 5);
-				this.validators.setRestrictor( this.txtPartialDiscount, "genericDecimal" );
 				this.validators.setRestrictor( this.txtRetards, "genericInteger" );
 				this.validators.setRestrictor( this.txtFaults, "genericInteger" );
 			}
@@ -413,13 +415,17 @@
 		[Event(name="deductionProjectDone", type="flash.events.Event")]
 	</mx:Metadata>
 	<mx:Form id="form">
-		<mx:FormItem id="frmID" label="ID:" direction="horizontal">
+		<mx:FormItem required="true" id="frmID" label="ID:" direction="horizontal">
 			<components:TextInput id="txtID" width="80" textAlign="right"
 								  editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Contratación:"/>
-		<contratacion:Consult id="recruitmentConsult" readMode="true"/>
-		<mx:FormItem label="Deducción:">
+		<mx:FormItem required="true" label="Contratación:"/>
+		<mx:VBox width="900">
+			<mx:VBox width="100%" height="100%" verticalGap="5">
+				<contratacion:Consult id="recruitmentConsult" readMode="true"/>
+			</mx:VBox>
+		</mx:VBox>
+		<mx:FormItem required="true" label="Deducción:">
 			<mx:ComboBox id="cmbDeduction" width="200"
 						 labelField="deduccion" change="cmbDeduction_changeHandler(event)"/>
 		</mx:FormItem>
@@ -446,15 +452,15 @@
 		<mx:FormItem label="Fecha de Permisos:">
 			<components:DateField id="dtfAllowsDate"/>
 		</mx:FormItem>
-		<mx:FormItem label="Tipo de Sanción:">
+		<mx:FormItem required="true" label="Tipo de Sanción:">
 			<mx:ComboBox id="cmbSantionClass" width="200"
 						 labelField="tipo"/>
 		</mx:FormItem>
-		<mx:FormItem label="Monto Total Descuento:">
+		<mx:FormItem required="true" label="Monto Total Descuento:">
 			<components:TextInput id="txtTotalAmountDiscount" width="150"
 								  textAlign="right"/>
 		</mx:FormItem>
-		<mx:FormItem label="Forma de Pago:">
+		<mx:FormItem required="true" label="Forma de Pago:">
 			<mx:ComboBox id="cmbPaymentForm" width="200"
 						 labelField="tipo" change="cmbPaymentForm_changeHandler(event)"/>
 		</mx:FormItem>

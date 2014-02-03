@@ -105,7 +105,7 @@
 				}
 				this.dtfPaymentDate.selectedDate = this._item.fechaAbono;
 				this.txtAmount.text = this._item.monto.toString();
-				this.txtPaymentReference.text = this._item.referenciaAbono.toString();
+				this.txtPaymentReference.text = Util.numberToString( this._item.referenciaAbono, true);
 				this.comments.setCommentsIn( this._item.comentariosPagoViaticos, "comentarioTesoreria");
 			}
 			
@@ -167,6 +167,7 @@
 				value &&= this.validators.validarFormulario();
 				value &&= this.diemRequestConsult.datagrid.selectedItem != null;
 				value &&= Util.listBaseSelected( this.cmbConectelBank );
+				value &&= this.dtfPaymentDate.selectedDate != null;
 				return value;
 			}
 			
@@ -279,24 +280,27 @@
 		[Event(name="diemRequestSelected", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:Form id="form">
-		<mx:FormItem id="frmID" label="ID:" direction="horizontal">
+		<mx:FormItem required="true" id="frmID" label="ID:" direction="horizontal">
 			<components:TextInput id="txtID" width="80" textAlign="right"
 								  editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Solicitud de Viáticos:">
-			<solicitudesviaticos:Consult id="diemRequestConsult" readMode="true"
-										 itemDetail="diemRequestConsult_diemRequestDetailHandler(event)"/>
-			<mx:Button id="btnViewDiemRequest" label="Ver Solicitud de Viáticos" click="btnViewDiemRequest_clickHandler(event)"/>
-		</mx:FormItem>
-		<mx:FormItem label="Banco Conectel:">
+		<mx:FormItem required="true" label="Solicitud de Viáticos:"/>
+		<mx:VBox width="820">
+			<mx:VBox width="100%" height="100%" verticalGap="5">
+				<solicitudesviaticos:Consult id="diemRequestConsult" readMode="true"
+											 itemDetail="diemRequestConsult_diemRequestDetailHandler(event)"/>
+				<mx:Button id="btnViewDiemRequest" label="Ver Solicitud de Viáticos" click="btnViewDiemRequest_clickHandler(event)"/>
+			</mx:VBox>
+		</mx:VBox>
+		<mx:FormItem required="true" label="Banco Conectel:">
 			<mx:ComboBox id="cmbConectelBank" width="200"
 						 labelField="banco"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha:">
+		<mx:FormItem required="true" label="Fecha:">
 			<components:DateField id="dtfPaymentDate"
 								  creationComplete="this.dtfPaymentDate.selectedDate = new Date()"/>
 		</mx:FormItem>
-		<mx:FormItem label="Monto Autorizado:">
+		<mx:FormItem required="true" label="Monto Autorizado:">
 			<components:TextInput id="txtAmount" textAlign="right" width="100"/>
 		</mx:FormItem>
 		<mx:FormItem label="Referencia:">

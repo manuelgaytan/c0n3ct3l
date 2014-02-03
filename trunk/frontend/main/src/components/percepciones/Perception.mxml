@@ -292,7 +292,11 @@
 								  editable="false"/>
 		</mx:FormItem>
 		<mx:FormItem required="true" label="Contratación:"/>
-		<contratacion:Consult id="recruitmentConsult" readMode="true" itemDetail="recruitmentConsult_itemDetailHandler(event)"/>
+		<mx:VBox width="900">
+			<mx:VBox width="100%" height="100%" verticalGap="5">
+				<contratacion:Consult id="recruitmentConsult" readMode="true" itemDetail="recruitmentConsult_itemDetailHandler(event)"/>
+			</mx:VBox>
+		</mx:VBox>
 		<mx:FormItem required="true" label="Percepción:">
 			<mx:ComboBox id="cmbPerception" width="200"
 						 labelField="percepcion" change="cmbPerception_changeHandler(event)"/>

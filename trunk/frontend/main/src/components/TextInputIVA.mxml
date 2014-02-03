@@ -15,16 +15,19 @@
 			public var view:Object = null;
 			[Bindable]
 			public var calculate:Function = null;
+			
+			[Bindable]
+			public var propertyIVApercent:String = "IVApercent";
 						
 			private function setIVAPercent():void{
 				if( this.view == null ){
 					return;
 				}
-				if( this.view.hasOwnProperty( "IVApercent" ) ){
+				if( this.view.hasOwnProperty( propertyIVApercent ) ){
 					var iva:Number = Util.stringToNumber( this.txtInput.text );
 					iva /= 100;
 					iva = Util.truncate( iva );
-					this.view[ "IVApercent" ] = iva;
+					this.view[ propertyIVApercent ] = iva;
 					this.executeCalculate();
 				}
 			}

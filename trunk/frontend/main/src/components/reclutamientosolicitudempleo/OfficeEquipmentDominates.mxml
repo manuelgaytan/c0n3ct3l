@@ -76,6 +76,9 @@
 					officeEquipmentDominates = new EquipoOficinaDomina();
 				}else{
 					officeEquipmentDominates = this._item;
+					if( officeEquipmentDominates == null ){
+						officeEquipmentDominates = new EquipoOficinaDomina();
+					}
 				}
 				officeEquipmentDominates.pc = this.chkPersonalComputer.selected;
 				officeEquipmentDominates.calculadora = this.chkCalculator.selected;

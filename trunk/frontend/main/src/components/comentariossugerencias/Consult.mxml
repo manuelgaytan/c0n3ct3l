@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
+		 horizontalAlign="right"
 		 creationComplete="creationCompleteHandler(event)" xmlns:components="components.*">
 	<mx:Script>
 		<![CDATA[
@@ -144,12 +145,10 @@
 				<mx:DataGridColumn id="dtgAdvice" headerText="{'Descripción del\nComentario y/o Sugerencia'}"
 								   dataField="sugerencia"
 								   width="370"/>
-				<mx:DataGridColumn id="dtgInmediatlyAction" headerText="{'Requiere\nAcción'}"
+				<mx:DataGridColumn id="dtgInmediatlyAction" headerText="{'Requiere\nAcción'}" 
+								   width="80" editable="false" textAlign="center"
 								   dataField="requiereAccionInmediata"
-								   width="100"
-								   textAlign="center"
-								   itemRenderer="mx.controls.CheckBox"
-								   />
+								   itemRenderer="mx.controls.CheckBox"/>
 				<mx:DataGridColumn headerText="{'Acción'}"
 								   dataField="accionInmediata"
 								   width="300"/>
@@ -165,17 +164,14 @@
 								   dataField="resultadoImplementacion.resultado"
 								   width="80"
 								   />
-				<mx:DataGridColumn headerText="{'Requiere\nAcción\nPreventiva-\nCorrectiva'}"
+				<mx:DataGridColumn headerText="{'Requiere\nAcción\nPreventiva-\nCorrectiva'}" 
+								   width="80" editable="false" textAlign="center"
 								   dataField="requiereAccionCorrectiva"
-								   width="100"
-								   textAlign="center"
-								   itemRenderer="mx.controls.CheckBox"
-								   />
+								   itemRenderer="mx.controls.CheckBox"/>
 			</mx:columns>
 		</mx:DataGrid>
 	</mx:HBox>
-	<mx:HBox width="100%">
-		<mx:Spacer width="100%"/>
+	<mx:HBox>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"
 				   visible="{!this._readMode}"/>
 		<components:ExportButton datagrid="{this.datagrid}" visible="{!this._readMode}"/>

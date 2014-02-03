@@ -134,7 +134,7 @@
 	<mx:FormItem label="Raven ó Army Beta:">
 		<mx:CheckBox id="chkRavenArmyBeta"/>
 	</mx:FormItem>
-	<mx:FormItem label="Power Point:">
+	<mx:FormItem label="Figura Humana:">
 		<mx:CheckBox id="chkFiguraHumana"/>
 	</mx:FormItem>
 	<mx:FormItem label="Árbol:">
@@ -149,7 +149,7 @@
 	<mx:FormItem label="Cleaver:">
 		<mx:CheckBox id="chkCleaver"/>
 	</mx:FormItem>
-	<mx:FormItem label="FrasesIncompletas:">
+	<mx:FormItem label="Frases Incompletas:">
 		<mx:CheckBox id="chkFrasesIncompletas"/>
 	</mx:FormItem>
 	<mx:FormItem label="Therman:">

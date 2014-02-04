@@ -24,7 +24,6 @@
 			import mx.collections.ArrayCollection;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
 			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
-			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
 			import mx.com.gahm.componentes.validadores.ValidadorNumerico;
 			import mx.controls.Alert;
@@ -163,6 +162,9 @@
 			{
 				var value:Boolean = true;
 				value &&= this.validators.validarFormulario();
+				value &&= Util.listBaseSelected( this.cmbProveedor );
+				value &&= Util.listBaseSelected( this.cmbFormaPago );
+				value &&= Util.listBaseSelected( this.cmbTipPago );
 				return value;
 			}
 			
@@ -174,14 +176,14 @@
 			{
 				this.validators = new InicializaValidadoresEtiquetas();
 				validators.crearValidadorRestrictor("generic",ValidadorCadenaCualquierCaracter.nombre, 0, 255);
-				 validators.setRestrictor(txtBanco, "generic");
-				 validators.setRestrictor(txtCLBInterbancaria, "generic");
-				 validators.setRestrictor(txtCuenta, "generic");
-				validators.setRestrictor(txtMoneda, "generic");
+				validators.setValidador(txtBanco, "generic");
+				validators.setValidador(txtCLBInterbancaria, "generic");
+				validators.setValidador(txtCuenta, "generic");
+				validators.setValidador(txtMoneda, "generic");
 				validators.crearValidadorRestrictor("number",ValidadorDecimal.nombre, 10, 4);
-				validators.setRestrictor(txtDescuentos, "number");
-				validators.setRestrictor(txtDiasCredito, "number"); 
-				validators.setRestrictor(txttLimiteCredito, "number"); 
+				validators.setValidador(txtDescuentos, "number");
+				validators.setValidador(txtDiasCredito, "number"); 
+				validators.setValidador(txttLimiteCredito, "number"); 
 			}
 			
 			protected function responseSave_resultHandler(event:ResultEvent):void
@@ -269,44 +271,44 @@
 		[Event(name="proveedorUpdated", type="flash.events.Event")]
 	</mx:Metadata>
 	<mx:Form id="form">
-		<mx:FormItem label="Proveedor Seleccionado:">
+		<mx:FormItem required="true" label="Proveedor Seleccionado:">
 			<mx:ComboBox id="cmbProveedor"
 						 labelFunction="nombreProveedor"
 						 />
 		</mx:FormItem>
-		<mx:FormItem label="Forma de Pago:">
+		<mx:FormItem required="true" label="Forma de Pago:">
 			<mx:ComboBox id="cmbFormaPago"
 						 labelField="forma"
 						 />
 		</mx:FormItem>
-		<mx:FormItem label="Tipo de Pago:">
+		<mx:FormItem required="true" label="Tipo de Pago:">
 			<mx:ComboBox id="cmbTipPago"
 						 labelField="tipo"
 						 />
 		</mx:FormItem>
-		<mx:FormItem label="Moneda:">
+		<mx:FormItem required="true" label="Moneda:">
 			<components:TextInput id="txtMoneda"/>
 		</mx:FormItem>
-		<mx:FormItem label="Límite de Crédito:">
+		<mx:FormItem required="true" label="Límite de Crédito:">
 			<components:TextInput id="txttLimiteCredito" textAlign="right"/>
 		</mx:FormItem>
-		<mx:FormItem label="Días de Crédito:">
+		<mx:FormItem required="true" label="Días de Crédito:">
 			<components:TextInput id="txtDiasCredito"
 								  textAlign="right" width="70"/>
 		</mx:FormItem>
-		<mx:FormItem label="Descuentos:">
+		<mx:FormItem required="true" label="Descuentos:">
 			<components:TextInput id="txtDescuentos" textAlign="right"
 						 />
 		</mx:FormItem>
-		<mx:FormItem label="Cuenta Bancaria:">
+		<mx:FormItem required="true" label="Cuenta Bancaria:">
 			<components:TextInput id="txtCuenta"
 						 />
 		</mx:FormItem>
-		<mx:FormItem label="Banco:">
+		<mx:FormItem required="true" label="Banco:">
 			<components:TextInput id="txtBanco"
 								   width="300"/>
 		</mx:FormItem>
-		<mx:FormItem label="CLABE Interbancaria:">
+		<mx:FormItem required="true" label="CLABE Interbancaria:">
 			<components:TextInput id="txtCLBInterbancaria"
 								 />
 		</mx:FormItem>

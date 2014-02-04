@@ -147,7 +147,8 @@
 			{
 				var value:Boolean = true;
 				value &&= this.validators.validarFormulario();
-				/* value &&= this.dlvEngineeringDeliverable.existElements(); */
+				value &&= this.dtfOperativeValidationStatus.selectedDate != null;
+				value &&= Util.validateCombo( this.cmbOperationalValidationStatus );
 				return value;
 			}
 			
@@ -162,6 +163,8 @@
 			private function initializeValidators():void
 			{
 				this.validators = new InicializaValidadoresEtiquetas();
+				this.validators.crearValidadorRestrictor("generic",ValidadorCadenaCualquierCaracter.nombre, 0, 255);
+				this.validators.setValidador( this.txtConectelID, "generic");
 			}
 			
 			protected function responseSave_resultHandler(event:ResultEvent):void
@@ -226,7 +229,7 @@
 		[Event(name="projectValidationProjectDone", type="flash.events.Event")]
 	</mx:Metadata>
 	<mx:Form id="form">
-		<mx:FormItem label="ID Conectel:" direction="horizontal">
+		<mx:FormItem required="true" label="ID Conectel:" direction="horizontal">
 			<components:TextInput id="txtConectelID" width="150" textAlign="right"
 								  editable="false"/>
 		</mx:FormItem>
@@ -298,11 +301,11 @@
 			<components:TextInput id="txtFinalClient" width="350"
 								  editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Estatus de Validación Operativa:">
+		<mx:FormItem required="true" label="Estatus de Validación Operativa:">
 			<mx:ComboBox id="cmbOperationalValidationStatus" width="400"
 						 labelField="etiqueta"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha de Estatus de Validación Operativa:">
+		<mx:FormItem required="true" label="Fecha de Estatus de Validación Operativa:">
 			<components:DateField id="dtfOperativeValidationStatus"/>
 		</mx:FormItem>
 		<mx:FormItem direction="horizontal">

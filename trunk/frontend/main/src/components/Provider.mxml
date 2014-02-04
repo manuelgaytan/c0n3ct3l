@@ -221,30 +221,30 @@
 			
 		]]>
 	</mx:Script>
-	<mx:FormItem label="Persona:">
+	<mx:FormItem required="true" label="Persona:">
 		<mx:ComboBox id="cmbPersona"
 					 labelField="tipo"
 					 />
 	</mx:FormItem>
-	<mx:FormItem label="Nombre Comercial:">
+	<mx:FormItem required="true" label="Nombre Comercial:">
 		<components:TextInput id="txtNombreComercial" width="400"/>
 	</mx:FormItem>
-	<mx:FormItem label="Razón Social:">
+	<mx:FormItem required="true" label="Razón Social:">
 		<components:TextInput id="txtRazonSocial" width="400"/>
 	</mx:FormItem>
-	<mx:FormItem label="R.F.C.:">
+	<mx:FormItem required="true" label="R.F.C.:">
 		<components:TextInput id="txtRFC" width="120"
 							  />
 	</mx:FormItem>
-	<mx:FormItem label="Dirección Física:">
+	<mx:FormItem required="true" label="Dirección Física:">
 		<components:TextInput id="txtDireccionFisica"
 							  width="500"/>
 	</mx:FormItem>
-	<mx:FormItem label="Dirección Fiscal:">
+	<mx:FormItem required="true" label="Dirección Fiscal:">
 		<components:TextInput id="txtDireccionFiscal"
 							  width="500"/>
 	</mx:FormItem>
-	<mx:FormItem label="Teléfonos:">
+	<mx:FormItem required="true" label="Teléfonos:">
 		<components:TextInput id="txtTelefonos"
 							  width="240"/>
 	</mx:FormItem>

@@ -16,7 +16,6 @@
 			import mx.collections.ArrayCollection;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
 			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
-			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
 			import mx.com.gahm.componentes.validadores.ValidadorEntero;
 			import mx.com.gahm.componentes.validadores.ValidadorNumerico;
@@ -203,6 +202,9 @@
 			{
 				var value:Boolean = true;
 				value &&= this.validators.validarFormulario();
+				value &&= Util.listBaseSelected( this.cmbPurchaseOrderType );
+				value &&= this.dtgPurchaseOrder.selectedItem != null;
+				value &&= this.dtfDate.selectedDate != null;
 				return value;
 			}
 			
@@ -220,6 +222,8 @@
 			private function initializeValidators():void
 			{
 				this.validators = new InicializaValidadoresEtiquetas();
+				this.validators.crearValidadorRestrictor("generic",ValidadorCadenaCualquierCaracter.nombre, 0, 255);
+				this.validators.setValidador( this.txtFolio, "generic");
 			}
 			
 			protected function responseSave_resultHandler(event:ResultEvent):void
@@ -383,10 +387,10 @@
 		[Event(name="seePurchaseOrdenMaquiladoraService", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:Form id="form">
-		<mx:FormItem label="ID:" id="frmID">
+		<mx:FormItem required="true" label="ID:" id="frmID">
 			<components:TextInput id="txtID" textAlign="right" editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Tipo de Orden Compra:" direction="horizontal">
+		<mx:FormItem required="true" label="Tipo de Orden Compra:" direction="horizontal">
 			<mx:ComboBox id="cmbPurchaseOrderType"
 						 dataProvider="{getDataProviderODC()}"
 						 change="cmbPurchaseOrderType_changeHandler(event)"
@@ -419,13 +423,13 @@
 								   />
 			</mx:columns>
 		</mx:DataGrid>
-		<mx:FormItem label="Proveedor:">
+		<mx:FormItem required="true" label="Proveedor:">
 			<mx:Label id="lblSupplier"/>
 		</mx:FormItem>
-		<mx:FormItem label="Número de Folio ó Factura:">
+		<mx:FormItem required="true" label="Número de Folio ó Factura:">
 			<components:TextInput id="txtFolio" width="150"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha:">
+		<mx:FormItem required="true" label="Fecha:">
 			<components:DateField id="dtfDate"/>
 		</mx:FormItem>
 		<mx:FormItem label="Subtotal:">

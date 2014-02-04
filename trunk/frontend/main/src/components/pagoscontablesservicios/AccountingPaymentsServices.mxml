@@ -189,6 +189,7 @@
 			{
 				var value:Boolean = true;
 				value &&= this.validators.validarFormulario();
+				value &&= this.dtfDate.selectedDate != null;
 				value &&= !(this.cmbOperationType.selectedItem == null);
 				value &&= !(this.cmbDescription.selectedItem == null);
 				value &&= !(this.cmbSupplierType.selectedItem == null);
@@ -207,7 +208,7 @@
 			{
 				this.validators = new InicializaValidadoresEtiquetas();
 				validators.crearValidadorRestrictor("generic",ValidadorCadenaCualquierCaracter.nombre, 0, 255);
-				validators.setRestrictor(txtDocumentFolio, "generic");
+				validators.setValidador( txtDocumentFolio, "generic");
 				this.validators.crearValidadorRestrictor("genericDecimal", ValidadorDecimal.nombre, 9, 2);
 				this.validators.setValidador( this.txtImport, "genericDecimal" );
 				this.validators.setRestrictor( this.txtDiscounts, "genericDecimal" );
@@ -294,7 +295,7 @@
 				}
 			}
 			
-			private function calculateTotalToPay(event:Event){
+			private function calculateTotalToPay(event:Event):void{
 				
 			}
 			
@@ -400,71 +401,71 @@
 		[Event(name="accountingPaymentsServicesUpdated", type="flash.events.Event")]
 	</mx:Metadata>
 	<mx:Form id="form">
-		<mx:FormItem label="Folio:" id="frmID">
+		<mx:FormItem required="true" label="Folio:" id="frmID">
 			<components:TextInput id="txtID" textAlign="right" editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha:">
+		<mx:FormItem required="true" label="Fecha:">
 			<components:DateField id="dtfDate" creationComplete="this.dtfDate.selectedDate = new Date()" enabled="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Tipo Operación:">
+		<mx:FormItem required="true" label="Tipo Operación:">
 			<mx:ComboBox id="cmbOperationType"
 						 labelField="etiqueta"
 						 width="150"
 						 change="cmbOperationType_changeHandler(event)"/>
 		</mx:FormItem>
-		<mx:FormItem label="Descripción:">
+		<mx:FormItem required="true" label="Descripción:">
 			<mx:ComboBox id="cmbDescription"
 						 labelField="descripcion"
 						 width="150"/>
 		</mx:FormItem>
-		<mx:FormItem label="Tipo de Proveedor:">
+		<mx:FormItem required="true" label="Tipo de Proveedor:">
 			<mx:ComboBox id="cmbSupplierType" dataProvider="{this.getSupplierTypes()}"
 						 change="cmbSupplierType_changeHandler(event)"
 						 labelField="etiqueta"
 						 />
 		</mx:FormItem>
-		<mx:FormItem label="Proveedor:">
+		<mx:FormItem required="true" label="Proveedor:">
 			<mx:ComboBox id="cmbSupplier"
 						 change="cmbSupplier_changeHandler(event)"
 						 />
 		</mx:FormItem>
-		<mx:FormItem label="Folio del Documento:">
+		<mx:FormItem required="true" label="Folio del Documento:">
 			<components:TextInput id="txtDocumentFolio"
 								  textAlign="right"
 						 		  width="80"/>
 		</mx:FormItem>
-		<mx:FormItem label="Importe:">
+		<mx:FormItem required="true" label="Importe:">
 			<components:TextInput id="txtImport" width="150" textAlign="right"
 								  focusOut="this.sum()" enter="this.sum()"/>
 		</mx:FormItem>
-		<mx:FormItem label="Descuentos:">
+		<mx:FormItem required="false" label="Descuentos:">
 			<components:TextInput id="txtDiscounts" width="150" textAlign="right"
 								  focusOut="this.sum()" enter="this.sum()"/>
 		</mx:FormItem>
-		<mx:FormItem label="I.V.A.:">
+		<mx:FormItem required="false" label="I.V.A.:">
 			<components:TextInput id="txtIVA" width="150" textAlign="right"
 								  focusOut="this.sum()" enter="this.sum()"/>
 		</mx:FormItem>
-		<mx:FormItem label="Redondeo:">
+		<mx:FormItem required="false" label="Redondeo:">
 			<components:TextInput id="txtRounding" width="150" textAlign="right"
 								  focusOut="this.sum()" enter="this.sum()"/>
 		</mx:FormItem>
-		<mx:FormItem label="I.S.R. Retención:">
+		<mx:FormItem required="false" label="I.S.R. Retención:">
 			<components:TextInput id="txtISRRetention" width="150" textAlign="right"
 								  focusOut="this.sum()" enter="this.sum()"/>
 		</mx:FormItem>
-		<mx:FormItem label="I.V.A. Retención:">
+		<mx:FormItem required="false" label="I.V.A. Retención:">
 			<components:TextInput id="txtIVARetention" width="150" textAlign="right"
 								  focusOut="this.sum()" enter="this.sum()"/>
 		</mx:FormItem>
-		<mx:FormItem label="Otros Impuestos:">
+		<mx:FormItem required="false" label="Otros Impuestos:">
 			<components:TextInput id="txtOtherTaxes" width="150" textAlign="right"
 								  focusOut="this.sum()" enter="this.sum()"/>
 		</mx:FormItem>
-		<mx:FormItem label="Total a Pagar:">
+		<mx:FormItem required="true" label="Total a Pagar:">
 			<components:TextInput id="txtTotalToPay" width="150" textAlign="right"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha Límite de Pago:">
+		<mx:FormItem required="true" label="Fecha Límite de Pago:">
 			<components:DateField id="dtfLimitPaymentDate"/>
 		</mx:FormItem>
 		<components:Comments id="comments"/>

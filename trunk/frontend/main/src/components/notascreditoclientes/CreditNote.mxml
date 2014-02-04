@@ -166,7 +166,7 @@
 				validators.setRestrictor(txtItem, "generic");
 				validators.crearValidadorRestrictor("decimalGeneric",ValidadorDecimal.nombre, 7,2);
 				validators.setValidador(txtSubtotal, "decimalGeneric");
-				validators.setRestrictor(txtIVA, "decimalGeneric");
+				validators.setValidador(txtIVA, "decimalGeneric");
 				validators.setValidador(txtTotal, "decimalGeneric");
 			}
 			
@@ -233,37 +233,37 @@
 		[Event(name="creditNoteUpdated", type="flash.events.Event")]
 	</mx:Metadata>
 	<mx:Form id="form">
-		<mx:FormItem label="ID:" id="frmID">
+		<mx:FormItem required="true" label="ID:" id="frmID">
 			<components:TextInput id="txtID" textAlign="right" editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Folio:">
+		<mx:FormItem required="true" label="Folio:">
 			<components:TextInput id="txtFolio" textAlign="right"/>
 		</mx:FormItem>
-		<mx:FormItem label="Factura:">
+		<mx:FormItem required="true" label="Factura:">
 			<components:TextInput id="txtInvoice" textAlign="right"/>
 		</mx:FormItem>
 		<mx:FormItem label="Ítem:">
 			<components:TextInput id="txtItem" textAlign="right"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha:">
+		<mx:FormItem required="true" label="Fecha:">
 			<components:DateField id="dtfDate"/>
 		</mx:FormItem>
-		<mx:FormItem label="Cliente:">
+		<mx:FormItem required="true" label="Cliente:">
 			<mx:ComboBox id="cmbClient"
 						 labelField="nombreComercial"/>
 		</mx:FormItem>
-		<mx:FormItem label="Subtotal:">
+		<mx:FormItem required="true" label="Subtotal:">
 			<components:TextInput id="txtSubtotal"
 								  textAlign="right"
 								  focusOut="this.calculateIVA()"
 								  enter="this.calculateIVA()"/>
 		</mx:FormItem>
-		<mx:FormItem label="I.V.A.:" direction="horizontal">
+		<mx:FormItem required="true" label="I.V.A.:" direction="horizontal">
 			<components:TextInput id="txtIVA"
 								  textAlign="right"/>
 			<components:TextInputIVA id="compIVA" view="{this}" calculate="{this.calculateIVA}"/>
 		</mx:FormItem>
-		<mx:FormItem label="Total:">
+		<mx:FormItem required="true" label="Total:">
 			<components:TextInput id="txtTotal"
 								  textAlign="right"/>
 		</mx:FormItem>

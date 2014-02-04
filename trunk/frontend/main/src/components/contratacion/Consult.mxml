@@ -170,55 +170,27 @@
 								   labelFunction="{Util.labelFunctionDate}"
 								   dataField="fechaInicioContrato"
 								   width="120"/>
-				<mx:DataGridColumn headerText="{'Seguro\nSocial'}" width="80" textAlign="center">
-					<mx:itemRenderer>
-						<mx:Component>
-							<mx:CheckBox selected="{data.prestaciones.seguroSocial}" enabled="false"/>
-						</mx:Component>
-					</mx:itemRenderer>
-				</mx:DataGridColumn>
-				<mx:DataGridColumn headerText="{'Vacaciones'}" width="80" editable="false" textAlign="center">
-					<mx:itemRenderer>
-						<mx:Component>
-							<mx:CheckBox selected="{data.prestaciones.vacaciones}" enabled="false"/>
-						</mx:Component>
-					</mx:itemRenderer>
-				</mx:DataGridColumn>
-				<mx:DataGridColumn headerText="{'Aguinaldo'}" width="80" editable="false" textAlign="center">
-					<mx:itemRenderer>
-						<mx:Component>
-							<mx:CheckBox selected="{data.prestaciones.seguroSocial}" enabled="false"/>
-						</mx:Component>
-					</mx:itemRenderer>
-				</mx:DataGridColumn>
-				<mx:DataGridColumn headerText="{'Utilidades'}" width="80" editable="false" textAlign="center">
-					<mx:itemRenderer>
-						<mx:Component>
-							<mx:CheckBox selected="{data.prestaciones.utilidades}" enabled="false"/>
-						</mx:Component>
-					</mx:itemRenderer>
-				</mx:DataGridColumn>
-				<mx:DataGridColumn headerText="{'Fonacot'}" width="80" editable="false" textAlign="center">
-					<mx:itemRenderer>
-						<mx:Component>
-							<mx:CheckBox selected="{data.prestaciones.fonacot}" enabled="false"/>
-						</mx:Component>
-					</mx:itemRenderer>
-				</mx:DataGridColumn>
-				<mx:DataGridColumn headerText="{'Infonavit'}" width="80" editable="false" textAlign="center">
-					<mx:itemRenderer>
-						<mx:Component>
-							<mx:CheckBox selected="{data.prestaciones.infonavit}" enabled="false"/>
-						</mx:Component>
-					</mx:itemRenderer>
-				</mx:DataGridColumn>
-				<mx:DataGridColumn headerText="{'25% Prima\nVacacional'}" width="80" editable="false" textAlign="center">
-					<mx:itemRenderer>
-						<mx:Component>
-							<mx:CheckBox selected="{data.prestaciones.primaVacacional}" enabled="false"/>
-						</mx:Component>
-					</mx:itemRenderer>
-				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="{'Seguro\nSocial'}" width="80"
+								   imeMode="prestaciones.seguroSocial"
+								   itemRenderer="components.renderers.CheckBoxRendererSeguroSocial"/>
+				<mx:DataGridColumn headerText="{'Vacaciones'}" width="80"
+								   imeMode="prestaciones.vacaciones"
+								   itemRenderer="components.renderers.CheckBoxRendererVacaciones"/>
+				<mx:DataGridColumn headerText="{'Aguinaldo'}" width="80"
+								   imeMode="prestaciones.aguinaldo"
+								   itemRenderer="components.renderers.CheckBoxRendererAguinaldo"/>
+				<mx:DataGridColumn headerText="{'Utilidades'}" width="80"
+								   imeMode="prestaciones.utilidades"
+								   itemRenderer="components.renderers.CheckBoxRendererUtilidades"/>
+				<mx:DataGridColumn headerText="{'Fonacot'}" width="80"
+								   imeMode="prestaciones.fonacot"
+								   itemRenderer="components.renderers.CheckBoxRendererFonacot"/>
+				<mx:DataGridColumn headerText="{'Infonavit'}" width="80"
+								   imeMode="prestaciones.infonavit"
+								   itemRenderer="components.renderers.CheckBoxRendererInfonavit"/>
+				<mx:DataGridColumn headerText="{'25% Prima\nVacacional'}" width="80"
+								   imeMode="prestaciones.primaVacacional"
+								   itemRenderer="components.renderers.CheckBoxRendererPrimaVacacional"/>
 				<mx:DataGridColumn headerText="{'Suspensión'}"
 								   dataField="suspension.suspension"
 								   width="150"
@@ -235,20 +207,12 @@
 								   dataField="motivoTerminoContrato"
 								   width="250"
 								   />
-				<mx:DataGridColumn headerText="{'Finiquito'}" width="80" editable="false" textAlign="center">
-					<mx:itemRenderer>
-						<mx:Component>
-							<mx:CheckBox selected="{data.finiquito}" enabled="false"/>
-						</mx:Component>
-					</mx:itemRenderer>
-				</mx:DataGridColumn>
-				<mx:DataGridColumn headerText="{'Indemnización'}" width="80" editable="false" textAlign="center">
-					<mx:itemRenderer>
-						<mx:Component>
-							<mx:CheckBox selected="{data.indemnizacion}" enabled="false"/>
-						</mx:Component>
-					</mx:itemRenderer>
-				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="{'Finiquito'}" width="80"
+								   imeMode="finiquito"
+								   itemRenderer="components.renderers.CheckBoxRendererFiniquito"/>
+				<mx:DataGridColumn headerText="{'Indemnización'}" width="80"
+								   imeMode="indemnizacion"
+								   itemRenderer="components.renderers.CheckBoxRendererIndemnizacion"/>
 			</mx:columns>
 		</mx:DataGrid>
 	</mx:HBox>

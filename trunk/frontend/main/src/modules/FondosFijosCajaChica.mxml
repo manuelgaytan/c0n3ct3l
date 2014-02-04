@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
-		   width="700" height="600"
+		   width="720" height="600"
 		   xmlns:moviemientofondosfijocajachica="components.fondosfijoscajachica.*"
 		   creationComplete="creationCompleteHandler(event)">
 	<mx:Script>

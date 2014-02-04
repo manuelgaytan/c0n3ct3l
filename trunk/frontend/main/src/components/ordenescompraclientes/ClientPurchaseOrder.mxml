@@ -154,6 +154,8 @@
 				var value:Boolean = true;
 				value &&= this.validators.validarFormulario();
 				value &&= this.projectsConsult.datagrid.selectedItem != null;
+				value &&= Util.listBaseSelected( this.cmbCostValidationStatus );
+				value &&= Util.listBaseSelected( this.cmbPurchaseOrderStatus );
 				return value;
 			}
 			
@@ -174,6 +176,8 @@
 				this.validators.setRestrictor( this.txtPurchaseOrderCost, "genericDecimal" );
 				this.validators.crearValidadorRestrictor("generic",ValidadorCadenaCualquierCaracter.nombre, 0, 255);
 				this.validators.setRestrictor( this.txtLegend, "generic");
+				this.validators.setRestrictor( this.txtPurchaseOrderNumber, "generic");
+				this.validators.setRestrictor( this.txtItem, "generic");
 			}
 			
 			protected function responseSave_resultHandler(event:ResultEvent):void
@@ -307,11 +311,11 @@
 		[Event(name="clientPurchaseOrderProjectDone", type="flash.events.Event")]
 	</mx:Metadata>
 	<mx:Form id="form">
-		<mx:FormItem id="frmID" label="ID:" direction="horizontal">
+		<mx:FormItem required="true" id="frmID" label="ID:" direction="horizontal">
 			<components:TextInput id="txtID" width="80" textAlign="right"
 								  editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Datos de Proyecto"/>
+		<mx:FormItem required="true" label="Datos de Proyecto"/>
 		<mx:VBox width="800">
 			<mx:VBox width="100%" height="100%" verticalGap="5">
 				<proyectos:Consult id="projectsConsult" projectSelected="projectsConsult_projectSelectedHandler(event)"/>
@@ -341,7 +345,7 @@
 								  editable="false"
 								  textAlign="right"/>
 		</mx:FormItem>
-		<mx:FormItem label="Validación del Costo:">
+		<mx:FormItem required="true" label="Validación del Costo:">
 			<mx:ComboBox id="cmbCostValidationStatus" width="200"
 						 labelField="etiqueta"/>
 		</mx:FormItem>
@@ -350,7 +354,7 @@
 		</mx:FormItem>
 		<components:Comments id="commentsCostValidation"/>
 		<mx:FormHeading label="Modificación de Estado de Orden de Compra"/>
-		<mx:FormItem label="Estado de Orden de Compra:">
+		<mx:FormItem required="true" label="Estado de Orden de Compra:">
 			<mx:ComboBox id="cmbPurchaseOrderStatus" width="200"
 						 labelField="etiqueta"/>
 		</mx:FormItem>

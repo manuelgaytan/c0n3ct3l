@@ -2,7 +2,7 @@
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
 		 horizontalAlign="right"
-		 creationComplete="creationCompleteHandler(event)">
+		 creationComplete="creationCompleteHandler(event)" xmlns:components="components.*">
 	<mx:Script>
 		<![CDATA[
 			import events.GenericEvent;
@@ -110,7 +110,8 @@
 	<mx:Metadata>
 		[Event(name="accountingPaymentsServicesDetail", type="events.GenericEvent")]
 	</mx:Metadata>
-	<mx:DataGrid id="datagrid" width="100%" height="100%" dataProvider="{items}"
+	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
+	<mx:DataGrid id="datagrid" width="1650" height="100%" dataProvider="{items}"
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 				 allowMultipleSelection="true">
 		<mx:columns>
@@ -118,6 +119,15 @@
 							   dataField="id"
 							   width="60"
 							   textAlign="right"/>
+			<mx:DataGridColumn headerText="{'Fecha'}"
+							   dataField="fecha"
+							   width="80"
+							   textAlign="center"
+							   labelFunction="labelFunctionDate"/>
+			<mx:DataGridColumn id="dtgDescription" headerText="Descripción"
+							   width="90"
+							   dataField="descripcionPagoContableServicio.descripcion"
+							   />
 			<mx:DataGridColumn id="dtgQualifiedSupplier" headerText="{'Proveedor\nCalificado'}"
 							   width="120"
 							   dataField="proveedorCalificado.proveedorSeleccionado.proveedor.nombreComercial"
@@ -126,10 +136,10 @@
 							   width="120"
 							   dataField="proveedorMaquilador.proveedor.nombreComercial"
 							   />
-			<mx:DataGridColumn id="dtgDescription" headerText="Descripción"
-							   width="90"
-							   dataField="descripcionPagoContableServicio.descripcion"
-							   />
+			<mx:DataGridColumn headerText="{'Folio del\nDocumento'}"
+							   dataField="folioDocumento"
+							   textAlign="right"
+							   width="100"/>
 			<mx:DataGridColumn id="dtgIncomes" headerText="Ingreso"
 							   dataField="ingreso"
 							   textAlign="right"
@@ -140,6 +150,46 @@
 							   textAlign="right"
 							   labelFunction="{Util.labelFunctionCurrency}"
 							   width="100"/>
+			<mx:DataGridColumn headerText="Importe"
+							   dataField="importe"
+							   textAlign="right"
+							   labelFunction="{Util.labelFunctionCurrency}"
+							   width="100"/>
+			<mx:DataGridColumn headerText="Descuentos"
+							   dataField="descuentos"
+							   textAlign="right"
+							   labelFunction="{Util.labelFunctionCurrency}"
+							   width="100"/>
+			<mx:DataGridColumn headerText="I.V.A."
+							   dataField="iva"
+							   textAlign="right"
+							   labelFunction="{Util.labelFunctionCurrency}"
+							   width="100"/>
+			<mx:DataGridColumn headerText="Redondeo"
+							   dataField="redondeo"
+							   textAlign="right"
+							   labelFunction="{Util.labelFunctionCurrency}"
+							   width="100"/>
+			<mx:DataGridColumn headerText="{'I.S.R.\nRetención'}"
+							   dataField="isrRetencion"
+							   textAlign="right"
+							   labelFunction="{Util.labelFunctionCurrency}"
+							   width="100"/>
+			<mx:DataGridColumn headerText="{'I.V.A.\nRetención'}"
+							   dataField="ivaRetencion"
+							   textAlign="right"
+							   labelFunction="{Util.labelFunctionCurrency}"
+							   width="100"/>
+			<mx:DataGridColumn headerText="{'Otros\nImpuestos'}"
+							   dataField="otrosImpuestos"
+							   textAlign="right"
+							   labelFunction="{Util.labelFunctionCurrency}"
+							   width="100"/>
+			<mx:DataGridColumn headerText="{'Total a\nPagar'}"
+							   dataField="totalPagar"
+							   textAlign="right"
+							   labelFunction="{Util.labelFunctionCurrency}"
+							   width="100"/>
 			<mx:DataGridColumn id="dtgDate" headerText="{'Fecha\nLímite\nde Pago'}"
 							   dataField="fechaLimitePago"
 							   width="80"
@@ -147,9 +197,11 @@
 							   labelFunction="labelFunctionDate"/>
 		</mx:columns>
 	</mx:DataGrid>
+	</mx:HBox>
 	<mx:HBox>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"
 				   visible="{!this._readOnly}"/>
+		<components:ExportButton datagrid="{this.datagrid}" visible="{!this._readOnly}"/>
 	</mx:HBox>
 	<mx:RemoteObject id="movimientoPagoContableServicioService" destination="movimientoPagoContableServicioService" fault="movimientoPagoContableServicioService_faultHandler(event)"
 					 showBusyCursor="true"/>

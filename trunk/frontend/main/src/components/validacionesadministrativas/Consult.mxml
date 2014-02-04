@@ -2,13 +2,13 @@
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
 		 horizontalAlign="right"
-		 creationComplete="creationCompleteHandler(event)">
+		 creationComplete="creationCompleteHandler(event)" xmlns:components="components.*">
 	<mx:Script>
 		<![CDATA[
 			import events.GenericEvent;
 			
-			import model.ValidacionAdministrativa;
 			import model.Util;
+			import model.ValidacionAdministrativa;
 			
 			import mx.collections.ArrayCollection;
 			import mx.controls.Alert;
@@ -99,14 +99,16 @@
 	<mx:Metadata>
 		[Event(name="validationAdministrativeDetail", type="events.GenericEvent")]
 	</mx:Metadata>
-	<mx:DataGrid id="datagrid" width="100%" height="100%" dataProvider="{items}"
+	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
+	<mx:DataGrid id="datagrid" width="2190" height="100%" dataProvider="{items}"
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 				 allowMultipleSelection="true">
 		<mx:columns>
 			<mx:DataGridColumn id="dtgProjectID" headerText="{'ID\nProyecto'}"
 							   dataField="id"
 							   labelFunction="labelFunctionIDProyecto"
-							   visible="false"/>
+							   visible="false"
+							   width="90"/>
 			<mx:DataGridColumn id="dtgID" headerText="ID"
 							   dataField="id"
 							   width="80"
@@ -118,24 +120,68 @@
 			<mx:DataGridColumn id="dtgTypeValidationAdministrative" headerText="{'Tipo\nValidación\nAdministrativa'}"
 							   dataField="tipoValidacionAdministrativa.etiqueta"
 							   width="150"/>
+			<mx:DataGridColumn headerText="{'Porcentaje 1'}"
+							   dataField="porcentaje1"
+							   width="100"
+							   textAlign="right"/>
+			<mx:DataGridColumn headerText="{'Clave\nValidación 1'}"
+							   dataField="claveValidacion1"
+							   width="120"/>
+			<mx:DataGridColumn headerText="{'Fecha\nValidación 1'}"
+							   dataField="fechaValidacion1"
+							   labelFunction="{Util.labelFunctionDate}"
+							   width="100"/>
+			<mx:DataGridColumn headerText="{'Estatus de\nCobro 1'}"
+							   dataField="etadoValidacionCobro1.etiqueta"
+							   width="120"/>
+			<mx:DataGridColumn headerText="{'Porcentaje 2'}"
+							   dataField="porcentaje2"
+							   width="100"
+							   textAlign="right"/>
+			<mx:DataGridColumn headerText="{'Clave\nValidación 2'}"
+							   dataField="claveValidacion2"
+							   width="120"/>
+			<mx:DataGridColumn headerText="{'Fecha\nValidación 2'}"
+							   dataField="fechaValidacion2"
+							   labelFunction="{Util.labelFunctionDate}"
+							   width="100"/>
+			<mx:DataGridColumn headerText="{'Estatus de\nCobro 2'}"
+							   dataField="etadoValidacionCobro2.etiqueta"
+							   width="120"/>
+			<mx:DataGridColumn headerText="{'Porcentaje 3'}"
+							   dataField="porcentaje3"
+							   width="100"
+							   textAlign="right"/>
+			<mx:DataGridColumn headerText="{'Clave\nValidación 3'}"
+							   dataField="claveValidacion3"
+							   width="120"/>
+			<mx:DataGridColumn headerText="{'Fecha\nValidación 3'}"
+							   dataField="fechaValidacion3"
+							   labelFunction="{Util.labelFunctionDate}"
+							   width="100"/>
+			<mx:DataGridColumn headerText="{'Estatus de\nCobro 3'}"
+							   dataField="etadoValidacionCobro3.etiqueta"
+							   width="120"/>
 			<mx:DataGridColumn id="dtgTotalPorcentageRecovery" headerText="{'Porcentaje\nTotal\nCobro'}"
 							   dataField="porcentajeTotalCobro"
-							   width="95"
+							   width="100"
 							   textAlign="right"/>
 			<mx:DataGridColumn id="dtgFinalValidationStatus" headerText="{'Estado\nFinal\nValidación'}"
 							   dataField="etadoValidacionFinal.etiqueta"
 							   width="150"
 							   textAlign="right"
 							   />
-			<mx:DataGridColumn id="dtgAttributable" headerText="{'Imputable'}"
+			<mx:DataGridColumn id="dtgAttributable" headerText="{'Imputabilidad'}"
 							   dataField="imputable.etiqueta"
 							   width="150"
 							   />
 		</mx:columns>
 	</mx:DataGrid>
+	</mx:HBox>
 	<mx:HBox>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"
 				   visible="{!this._readMode}"/>
+		<components:ExportButton datagrid="{this.datagrid}" visible="{!this._readMode}"/>
 	</mx:HBox>
 	<mx:RemoteObject id="validacionAdministrativaService" destination="validacionAdministrativaService" fault="requisicionService_faultHandler(event)"
 					 showBusyCursor="true"/>

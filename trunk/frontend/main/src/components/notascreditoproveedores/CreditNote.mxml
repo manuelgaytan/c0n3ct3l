@@ -13,7 +13,6 @@
 			import mx.collections.ArrayCollection;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
 			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
-			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
 			import mx.com.gahm.componentes.validadores.ValidadorNumerico;
 			import mx.controls.Alert;
@@ -75,7 +74,7 @@
 				this.txtInvoice.text = this._item.factura;
 				this.dtfDate.selectedDate = this._item.fecha;
 				this.txtSubtotal.text = this._item.subtotal.toString();
-				this.txtIVA.text = this._item.iva.toString();
+				this.txtIVA.text = Util.numberToString( this._item.iva, true);
 				this.txtTotal.text = this._item.total.toString();
 				if( Util.isFill( this.cmbQualifiedSupplier ) && this._item.proveedorCalificado != null ){
 					this.cmbQualifiedSupplier.selectedIndex = Util.selectedIndexFromCombo( this.cmbQualifiedSupplier.dataProvider as ArrayCollection, 
@@ -155,6 +154,8 @@
 			{
 				var value:Boolean = true;
 				value &&= this.validators.validarFormulario();
+				value &&= Util.listBaseSelected( this.cmbMaquiladoSupplier ) ||
+						  Util.listBaseSelected( this.cmbQualifiedSupplier );
 				value &&= this.dtfDate.selectedDate != null;
 				return value;
 			}
@@ -174,7 +175,7 @@
 				validators.setRestrictor(txtInvoice, "generic");
 				validators.crearValidadorRestrictor("decimalGeneric",ValidadorDecimal.nombre, 7,2);
 				validators.setValidador(txtSubtotal, "decimalGeneric");
-				validators.setRestrictor(txtIVA, "decimalGeneric");
+				validators.setValidador(txtIVA, "decimalGeneric");
 				validators.setValidador(txtTotal, "decimalGeneric");
 			}
 			
@@ -259,16 +260,16 @@
 		[Event(name="creditNoteUpdated", type="flash.events.Event")]
 	</mx:Metadata>
 	<mx:Form id="form">
-		<mx:FormItem label="ID:" id="frmID">
+		<mx:FormItem required="true" label="ID:" id="frmID">
 			<components:TextInput id="txtID" textAlign="right" editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Folio:">
+		<mx:FormItem required="true" label="Folio:">
 			<components:TextInput id="txtFolio" textAlign="right"/>
 		</mx:FormItem>
 		<mx:FormItem label="Aplicable a Factura:">
 			<components:TextInput id="txtInvoice" textAlign="right"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha:">
+		<mx:FormItem required="true" label="Fecha:">
 			<components:DateField id="dtfDate"/>
 		</mx:FormItem>
 		<mx:FormItem label="Proveedor Calificado:">
@@ -279,18 +280,18 @@
 			<mx:ComboBox id="cmbMaquiladoSupplier"
 						 labelFunction="maquiladorSupplier"/>
 		</mx:FormItem>
-		<mx:FormItem label="Subtotal:">
+		<mx:FormItem required="true" label="Subtotal:">
 			<components:TextInput id="txtSubtotal"
 								  textAlign="right"
 								  focusOut="this.calculateIVA()"
 								  enter="this.calculateIVA()"/>
 		</mx:FormItem>
-		<mx:FormItem label="I.V.A.:">
+		<mx:FormItem required="true" label="I.V.A.:">
 			<components:TextInput id="txtIVA"
 								  textAlign="right"/>
 			<components:TextInputIVA id="compIVA" view="{this}" calculate="{this.calculateIVA}"/>
 		</mx:FormItem>
-		<mx:FormItem label="Total:">
+		<mx:FormItem required="true" label="Total:">
 			<components:TextInput id="txtTotal"
 								  textAlign="right"/>
 		</mx:FormItem>

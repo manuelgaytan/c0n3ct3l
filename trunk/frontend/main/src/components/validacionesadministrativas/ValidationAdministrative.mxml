@@ -395,25 +395,28 @@
 		[Event(name="validationAdministrativeUpdated", type="flash.events.Event")]
 	</mx:Metadata>
 	<mx:Form id="form">
-		<mx:FormItem id="frmID" label="ID:">
+		<mx:FormItem required="true" id="frmID" label="ID:">
 			<components:TextInput id="txtID" editable="false"
 								  textAlign="right"/>
 		</mx:FormItem>
-		<mx:FormItem label="Proyectos Padre:">
-			<proyectospadres:Consult id="parentProjectsConsult" width="500" consultOnly="true"/>
-		</mx:FormItem>
+		<mx:FormItem label="Proyectos Padre:"/>
+		<mx:VBox width="850">
+			<mx:VBox width="100%" height="100%" verticalGap="5">
+				<proyectospadres:Consult id="parentProjectsConsult" width="500" consultOnly="true"/>
+			</mx:VBox>
+		</mx:VBox>
 		<mx:FormItem label="Proyectos:"/>
 		<mx:VBox width="850">
 			<mx:VBox width="100%" height="100%" verticalGap="5">
 				<proyectos:Consult id="projectsConsult"/>
 			</mx:VBox>
 		</mx:VBox>
-		<mx:FormItem label="Revisión y Validación Administrativa:">
+		<mx:FormItem required="true" label="Revisión y Validación Administrativa:">
 			<mx:ComboBox id="cmbAdministrativeValidationStatus"
 						 labelField="etiqueta"
 						 />
 		</mx:FormItem>
-		<mx:FormItem label="Tipo Validación Administrativa:">
+		<mx:FormItem required="true" label="Tipo Validación Administrativa:">
 			<mx:ComboBox id="cmbTypeValidationAdministrative"
 						 labelField="etiqueta"
 						 />
@@ -476,12 +479,12 @@
 			<components:TextInput id="txtTotalPorcentageRecovery"
 								  textAlign="right"/>
 		</mx:FormItem>
-		<mx:FormItem label="Estado Final Validación:">
+		<mx:FormItem required="true" label="Estado Final Validación:">
 			<mx:ComboBox id="cmbFinalValidationStatus"
 						 labelField="etiqueta"
 						 />
 		</mx:FormItem>
-		<mx:FormItem label="Imputabilidad:">
+		<mx:FormItem required="true" label="Imputabilidad:">
 			<mx:ComboBox id="cmbAttributable"
 						 labelField="etiqueta"
 						 />

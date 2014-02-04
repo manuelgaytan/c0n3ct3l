@@ -2,7 +2,7 @@
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
 		 horizontalAlign="right"
-		 creationComplete="creationCompleteHandler(event)">
+		 creationComplete="creationCompleteHandler(event)" xmlns:components="components.*">
 	<mx:Script>
 		<![CDATA[
 			import events.GenericEvent;
@@ -131,51 +131,116 @@
 	<mx:Metadata>
 		[Event(name="itemDetail", type="events.GenericEvent")]
 	</mx:Metadata>
-	<mx:VBox width="{845}" height="100%">
-		<mx:DataGrid id="datagrid" width="845" height="100%" dataProvider="{items}"
+	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
+		<mx:DataGrid id="datagrid" width="20320" height="100%" dataProvider="{items}"
 					 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 					 allowMultipleSelection="true"
 					 >
 			<mx:columns>
-				<mx:DataGridColumn id="dtgID" headerText="ID"
+				<mx:DataGridColumn headerText="ID"
 								   dataField="id"
 								   width="80"
 								   textAlign="right"/>
-				<mx:DataGridColumn id="dtgDate" headerText="{'Fecha de\nSubida\nDocumentos'}"
-								   dataField="fechaSubidaDocumentos"
+				<mx:DataGridColumn id="dtgID" headerText="ID\nSolicitud\nViáticos"
+								   dataField="pagoViaticos.solicitudViaticos.id"
+								   width="60"
+								   textAlign="right"/>
+				<mx:DataGridColumn id="dtgDate" headerText="Fecha"
+								   dataField="pagoViaticos.solicitudViaticos.fecha"
 								   labelFunction="{Util.labelFunctionDate}"
 								   textAlign="center"
 								   width="80"
 								   />
 				<mx:DataGridColumn id="dtgProjectID" headerText="{'ID\nProyecto'}"
-								   dataField="solicitudViaticos.proyecto.id"
+								   dataField="pagoViaticos.solicitudViaticos.proyecto.id"
 								   labelFunction="labelFunctionIDProyecto"
-								   width="120"
+								   width="130"
 								   textAlign="right"/>
 				<mx:DataGridColumn id="dtgClient" headerText="{'Cliente'}"
-								   dataField="solicitudViaticos.proyecto.producto.cliente.nombreComercial"
-								   width="150"/>
+								   dataField="pagoViaticos.solicitudViaticos.proyecto.producto.cliente.nombreComercial"
+								   width="170"/>
 				<mx:DataGridColumn id="dtgResponsibleViaticum" headerText="{'Responsable\nViático'}"
-								   dataField="solicitudViaticos.colaborador.nombreCompleto"
-								   textAlign="right"
-								   width="150"
+								   dataField="pagoViaticos.solicitudViaticos.colaborador.nombreCompleto"
+								   width="170"
 								   />
-				<mx:DataGridColumn id="dtgConveyance" headerText="{'Estado\nComprobación\nViáticos'}"
-								   dataField="estadoComprobacionViaticos.etiqueta"
+				<mx:DataGridColumn id="dtgConveyance" headerText="{'Medio\nTransporte'}"
+								   dataField="pagoViaticos.solicitudViaticos.medioTransporte.etiqueta"
 								   textAlign="center"
-								   width="100"
+								   width="170"
 								   />
-				<mx:DataGridColumn id="dtgTotalRequested" headerText="{'Total\nAutorizado'}"
+				<mx:DataGridColumn headerText="{'Número de\nVehículo'}"
+								   dataField="pagoViaticos.solicitudViaticos.numeroVehiculo"
+								   textAlign="right"
+								   width="120"
+								   />
+				<mx:DataGridColumn headerText="{'Kilometraje\nInicial'}"
+								   dataField="pagoViaticos.solicitudViaticos.kilometrajeInicial"
+								   textAlign="right"
+								   width="120"
+								   />
+				<mx:DataGridColumn headerText="{'Combustible'}"
+								   dataField="pagoViaticos.solicitudViaticos.combustible"
+								   textAlign="right"
+								   width="120"
+								   />
+				<mx:DataGridColumn headerText="{'Casetas'}"
+								   dataField="pagoViaticos.solicitudViaticos.casetas"
+								   textAlign="right"
+								   width="120"
+								   />
+				<mx:DataGridColumn headerText="{'Pasajes'}"
+								   dataField="pagoViaticos.solicitudViaticos.pasajes"
+								   textAlign="right"
+								   width="120"
+								   />
+				<mx:DataGridColumn headerText="{'Hospedaje'}"
+								   dataField="pagoViaticos.solicitudViaticos.hospedaje"
+								   textAlign="right"
+								   width="120"
+								   />
+				<mx:DataGridColumn headerText="{'Alimentos'}"
+								   dataField="pagoViaticos.solicitudViaticos.alimentos"
+								   textAlign="right"
+								   width="120"
+								   />
+				<mx:DataGridColumn headerText="{'Materiales\ny/o\nHerramienta'}"
+								   dataField="pagoViaticos.solicitudViaticos.materialesHerramienta"
+								   textAlign="right"
+								   width="120"
+								   />
+				<mx:DataGridColumn headerText="{'Otros'}"
+								   dataField="pagoViaticos.solicitudViaticos.otros"
+								   textAlign="right"
+								   width="120"
+								   />
+				<mx:DataGridColumn id="dtgTotalRequested" headerText="{'Total\nSolicitado'}"
+								   dataField="pagoViaticos.solicitudViaticos.totalSolicitado"
+								   textAlign="right"
+								   width="80"
+								   />
+				<mx:DataGridColumn headerText="{'Total\nAutorizado'}"
 								   dataField="totalAutorizado"
 								   textAlign="right"
 								   width="120"
 								   />
+				<mx:DataGridColumn headerText="{'Fecha de\nSubida\nDocumentos'}"
+								   dataField="fechaSubidaDocumentos"
+								   labelFunction="{Util.labelFunctionDate}"
+								   textAlign="center"
+								   width="80"
+								   />
+				<mx:DataGridColumn headerText="{'Estado'}"
+								   dataField="estadoComprobacionViaticos.etiqueta"
+								   textAlign="center"
+								   width="100"
+								   />
 			</mx:columns>
 		</mx:DataGrid>
-	</mx:VBox>
+	</mx:HBox>
 	<mx:HBox>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"
 				   visible="{!this._readOnly}"/>
+		<components:ExportButton datagrid="{this.datagrid}" visible="{!this._readOnly}"/>
 	</mx:HBox>
 	<mx:RemoteObject id="comprobacionViaticosService" destination="comprobacionViaticosService" fault="comprobacionViaticosService_faultHandler(event)"
 					 showBusyCursor="true"/>

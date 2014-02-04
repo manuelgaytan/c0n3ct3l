@@ -94,7 +94,8 @@
 	<mx:Metadata>
 		[Event(name="purchaseRequisitionDetail", type="events.GenericEvent")]
 	</mx:Metadata>
-	<mx:DataGrid id="datagrid" width="100%" height="100%" dataProvider="{items}"
+	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
+	<mx:DataGrid id="datagrid" width="840" height="100%" dataProvider="{items}"
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 				 allowMultipleSelection="true">
 		<mx:columns>
@@ -118,14 +119,14 @@
 							   dataField="areaSolicitante.etiqueta"
 							   width="100"
 							   />
-			<mx:DataGridColumn id="dtgSite" headerText="{'Central\no Sitio'}"
+			<mx:DataGridColumn id="dtgSite" headerText="{'Central,\nSitio u\nOtro'}"
 							   dataField="centralSitio"
 							   width="100"
 							   labelFunction="labelFunctionGenerico"/>
 			<mx:DataGridColumn id="dtgStatus" headerText="Estatus"
 							   dataField="estatusRequisicionCompra.estatus"
 							   labelFunction="labelFunctionGenerico"
-							   width="80"
+							   width="120"
 							   textAlign="center"/>
 			<mx:DataGridColumn headerText="{'Fecha del\nEstatus de\nRequisición'}"
 							   width="80"
@@ -134,6 +135,7 @@
 							   textAlign="center"/>
 		</mx:columns>
 	</mx:DataGrid>
+	</mx:HBox>
 	<mx:HBox>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>
 		<components:ExportButton datagrid="{this.datagrid}"/>

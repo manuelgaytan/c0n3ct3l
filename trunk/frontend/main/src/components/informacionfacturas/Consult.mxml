@@ -2,7 +2,7 @@
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
 		 horizontalAlign="right"
-		 creationComplete="creationCompleteHandler(event)">
+		 creationComplete="creationCompleteHandler(event)" xmlns:components="components.*">
 	<mx:Script>
 		<![CDATA[
 			import events.GenericEvent;
@@ -127,7 +127,8 @@
 	<mx:Metadata>
 		[Event(name="informationBillingDetail", type="events.GenericEvent")]
 	</mx:Metadata>
-	<mx:DataGrid id="datagrid" width="100%" height="100%" dataProvider="{items}"
+	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
+	<mx:DataGrid id="datagrid" width="3005" height="100%" dataProvider="{items}"
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 				 allowMultipleSelection="true">
 		<mx:columns>
@@ -139,6 +140,138 @@
 							   width="80"
 							   dataField="validacionAdministrativa.id"
 							   textAlign="right"
+							   />
+			<mx:DataGridColumn headerText="{'Información\nFactura 1'}"
+							   width="90"
+							   dataField="folioFactura1"
+							   textAlign="right"
+							   />
+			<mx:DataGridColumn headerText="{'Subtotal 1'}"
+							   width="90"
+							   dataField="subtotal1"
+							   textAlign="right"
+							   />
+			<mx:DataGridColumn headerText="{'I.V.A. 1'}"
+							   width="90"
+							   dataField="iva1"
+							   textAlign="right"
+							   />
+			<mx:DataGridColumn headerText="{'Total 1'}"
+							   width="90"
+							   dataField="total1"
+							   textAlign="right"
+							   />
+			<mx:DataGridColumn headerText="{'Fecha\nEmisión 1'}"
+							   dataField="fechaEmision1"
+							   labelFunction="{Util.labelFunctionDate}"
+							   textAlign="center"
+							   width="90"/>
+			<mx:DataGridColumn headerText="{'Fecha\nIngreso 1'}"
+							   dataField="fechaIngreso1"
+							   labelFunction="{Util.labelFunctionDate}"
+							   textAlign="center"
+							   width="90"/>
+			<mx:DataGridColumn headerText="{'Días\nCrédito 1'}"
+							   width="90"
+							   dataField="diasCredito1"
+							   textAlign="right"
+							   />
+			<mx:DataGridColumn headerText="{'Fecha\nProgramada 1'}"
+							   dataField="fechaProgramada1"
+							   labelFunction="{Util.labelFunctionDate}"
+							   textAlign="center"
+							   width="90"/>
+			<mx:DataGridColumn headerText="{'Estado\nPago 1'}"
+							   width="90"
+							   dataField="estadoPago1"
+							   />
+			<mx:DataGridColumn headerText="{'Información\nFactura 2'}"
+							   width="90"
+							   dataField="folioFactura2"
+							   textAlign="right"
+							   />
+			<mx:DataGridColumn headerText="{'Subtotal 2'}"
+							   width="90"
+							   dataField="subtotal2"
+							   textAlign="right"
+							   />
+			<mx:DataGridColumn headerText="{'I.V.A. 2'}"
+							   width="90"
+							   dataField="iva2"
+							   textAlign="right"
+							   />
+			<mx:DataGridColumn headerText="{'Total 2'}"
+							   width="90"
+							   dataField="total2"
+							   textAlign="right"
+							   />
+			<mx:DataGridColumn headerText="{'Fecha\nEmisión 2'}"
+							   dataField="fechaEmision2"
+							   labelFunction="{Util.labelFunctionDate}"
+							   textAlign="center"
+							   width="90"/>
+			<mx:DataGridColumn headerText="{'Fecha\nIngreso 2'}"
+							   dataField="fechaIngreso2"
+							   labelFunction="{Util.labelFunctionDate}"
+							   textAlign="center"
+							   width="90"/>
+			<mx:DataGridColumn headerText="{'Días\nCrédito 2'}"
+							   width="90"
+							   dataField="diasCredito2"
+							   textAlign="right"
+							   />
+			<mx:DataGridColumn headerText="{'Fecha\nProgramada 2'}"
+							   dataField="fechaProgramada2"
+							   labelFunction="{Util.labelFunctionDate}"
+							   textAlign="center"
+							   width="90"/>
+			<mx:DataGridColumn headerText="{'Estado\nPago 2'}"
+							   width="90"
+							   dataField="estadoPago2"
+							   />
+			<mx:DataGridColumn headerText="{'Información\nFactura 3'}"
+							   width="90"
+							   dataField="folioFactura3"
+							   textAlign="right"
+							   />
+			<mx:DataGridColumn headerText="{'Subtotal 3'}"
+							   width="90"
+							   dataField="subtotal3"
+							   textAlign="right"
+							   />
+			<mx:DataGridColumn headerText="{'I.V.A. 3'}"
+							   width="90"
+							   dataField="iva3"
+							   textAlign="right"
+							   />
+			<mx:DataGridColumn headerText="{'Total 3'}"
+							   width="90"
+							   dataField="total3"
+							   textAlign="right"
+							   />
+			<mx:DataGridColumn headerText="{'Fecha\nEmisión 3'}"
+							   dataField="fechaEmision3"
+							   labelFunction="{Util.labelFunctionDate}"
+							   textAlign="center"
+							   width="90"/>
+			<mx:DataGridColumn headerText="{'Fecha\nIngreso 3'}"
+							   dataField="fechaIngreso3"
+							   labelFunction="{Util.labelFunctionDate}"
+							   textAlign="center"
+							   width="90"/>
+			<mx:DataGridColumn headerText="{'Días\nCrédito 3'}"
+							   width="90"
+							   dataField="diasCredito3"
+							   textAlign="right"
+							   />
+			<mx:DataGridColumn headerText="{'Fecha\nProgramada 3'}"
+							   dataField="fechaProgramada3"
+							   labelFunction="{Util.labelFunctionDate}"
+							   textAlign="center"
+							   width="90"/>
+			<mx:DataGridColumn headerText="{'Estado\nPago 3'}"
+							   width="90"
+							   dataField="estadoPago3"
 							   />
 			<mx:DataGridColumn id="dtgTotalPorcentageInvoice" headerText="{'Pago\nTotal de\nFacturación'}"
 							   labelFunction="labelFunctionTotalPorcentageInvoice"
@@ -154,15 +287,17 @@
 							   labelFunction="{Util.labelFunctionDate}"
 							   textAlign="center"
 							   width="100"/>
-			<mx:DataGridColumn id="dtgAttributable" headerText="{'Imputable'}"
+			<mx:DataGridColumn id="dtgAttributable" headerText="{'Imputabilidad'}"
 							   dataField="imputable.etiqueta"
 							   width="120"
 							   />
 		</mx:columns>
 	</mx:DataGrid>
+	</mx:HBox>
 	<mx:HBox>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"
 				   visible="{!this._readOnly}"/>
+		<components:ExportButton datagrid="{this.datagrid}"/>
 	</mx:HBox>
 	<mx:RemoteObject id="informacionFacturacionService" destination="informacionFacturacionService" fault="requisicionService_faultHandler(event)"
 					 showBusyCursor="true"/>

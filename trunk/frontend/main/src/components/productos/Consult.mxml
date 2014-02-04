@@ -213,7 +213,7 @@
 		[Event(name="productsDeleted", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
-	<mx:DataGrid id="datagrid" width="1800" height="100%" dataProvider="{products}"
+	<mx:DataGrid id="datagrid" width="1856" height="100%" dataProvider="{products}"
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 				 allowMultipleSelection="true">
 		<mx:columns>

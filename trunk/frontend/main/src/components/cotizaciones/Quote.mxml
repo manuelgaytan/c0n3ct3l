@@ -123,6 +123,7 @@
 			{
 				var value:Boolean = true;
 				value &&= this.validators.validarFormulario();
+				value &&= this.dtfDate.selectedDate != null;
 				value &&= this.dlvFileName.existElements();
 				return value;
 			}
@@ -179,20 +180,20 @@
 		[Event(name="quoteUpdated", type="flash.events.Event")]
 	</mx:Metadata>
 	<mx:Form id="form">
-		<mx:FormItem label="ID:" id="frmID">
+		<mx:FormItem required="true" label="ID:" id="frmID">
 			<components:TextInput id="txtID" textAlign="right" editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Descripción:">
+		<mx:FormItem required="true" label="Descripción:">
 			<components:TextInput id="txtDescription" width="400"/>
 		</mx:FormItem>
-		<mx:FormItem label="Emisor:">
+		<mx:FormItem required="true" label="Emisor:">
 			<components:TextInput id="txtTransmitter"
 								  width="500"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha:">
+		<mx:FormItem required="true" label="Fecha:">
 			<components:DateField id="dtfDate"/>
 		</mx:FormItem>
-		<mx:FormItem label="Nombre Archivo:">
+		<mx:FormItem required="true" label="Nombre Archivo:">
 			<components:FlatDeliver id="dlvFileName" limitedTo="1"/>
 		</mx:FormItem>
 		<components:Comments id="comments"/>

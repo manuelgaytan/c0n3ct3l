@@ -156,8 +156,11 @@
 			{
 				var value:Boolean = true;
 				value &&= this.validators.validarFormulario();
-				value &&= !(this.cmbDeliver.selectedItem == null);
-				value &&= !(this.cmbReceiver.selectedItem == null);
+				value &&= Util.listBaseSelected( this.cmbDeliver );
+				value &&= Util.listBaseSelected( this.cmbReceiver );
+				value &&= this.txtDate.text != "";
+				value &&= Util.listBaseSelected( this.cmbOperationType );
+				value &&= Util.listBaseSelected( this.cmbDescription );
 				return value;
 			}
 			
@@ -332,44 +335,44 @@
 		[Event(name="pettyCashFundFixedUpdated", type="flash.events.Event")]
 	</mx:Metadata>
 	<mx:Form id="form">
-		<mx:FormItem label="Numeración:" id="frmID">
+		<mx:FormItem required="true" label="Numeración:" id="frmID">
 			<components:TextInput id="txtID" textAlign="right" editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem id="frmOpeningBalance" label="Saldo Inicial:" direction="horizontal">
+		<mx:FormItem required="true" id="frmOpeningBalance" label="Saldo Inicial:" direction="horizontal">
 			<components:TextInput id="txtOpeningBalance" width="200" editable="false" textAlign="right"/>
 			<mx:Button label="Actualizar" id="btnUpdateOpeningBalance" click="btnUpdateOpeningBalance_clickHandler(event)"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha:">
+		<mx:FormItem required="true" label="Fecha:">
 			<!--<components:DateField id="dtfDate" creationComplete="this.dtfDate.selectedDate = new Date()"/>-->
 			<components:TextInput id="txtDate" editable="false" width="85"/>
 		</mx:FormItem>
-		<mx:FormItem label="Tipo Operación:">
+		<mx:FormItem required="true" label="Tipo Operación:">
 			<mx:ComboBox id="cmbOperationType"
 						 labelField="etiqueta"
 						 width="150"
 						 change="cmbOperationType_changeHandler(event)"/>
 		</mx:FormItem>
-		<mx:FormItem label="Descripción:">
+		<mx:FormItem required="true" label="Descripción:">
 			<mx:ComboBox id="cmbDescription"
 						 labelField="descripcion"
 						 width="250"/>
 		</mx:FormItem>
-		<mx:FormItem label="Entrega:">
+		<mx:FormItem required="true" label="Entrega:">
 			<mx:ComboBox id="cmbDeliver"
 						 labelField="nombreCompleto"
 						 width="250"/>
 		</mx:FormItem>
-		<mx:FormItem label="Recibe:">
+		<mx:FormItem required="true" label="Recibe:">
 			<mx:ComboBox id="cmbReceiver"
 						 labelField="nombreCompleto"
 						 width="250"/>
 		</mx:FormItem>
-		<mx:FormItem label="Importe:">
+		<mx:FormItem required="true" label="Importe:">
 			<components:TextInput id="txtImport" width="200" textAlign="right"
 								  enter="txtImport_Handler(event)"
 								  focusOut="txtImport_Handler(event)"/>
 		</mx:FormItem>
-		<mx:FormItem id="frmClosingBalance" label="Saldo Final:">
+		<mx:FormItem required="true" id="frmClosingBalance" label="Saldo Final:">
 			<components:TextInput id="txtClosingBalance" width="200" editable="false" textAlign="right"/>
 		</mx:FormItem>
 		<components:Comments id="comments"/>

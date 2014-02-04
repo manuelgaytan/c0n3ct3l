@@ -2,7 +2,7 @@
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
 		 horizontalAlign="right"
-		 creationComplete="creationCompleteHandler(event)">
+		 creationComplete="creationCompleteHandler(event)" xmlns:components="components.*">
 	<mx:Script>
 		<![CDATA[
 			import events.GenericEvent;
@@ -124,6 +124,7 @@
 	<mx:Metadata>
 		[Event(name="creditNoteDetail", type="events.GenericEvent")]
 	</mx:Metadata>
+	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
 	<mx:DataGrid id="datagrid" width="100%" height="100%" dataProvider="{items}"
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 				 allowMultipleSelection="true">
@@ -147,21 +148,31 @@
 							   width="60"
 							   textAlign="center"
 							   labelFunction="labelFunctionDate"/>
-			<mx:DataGridColumn id="dtgTotal" headerText="Total"
-							   dataField="total"
-							   width="80"
-							   textAlign="right"/>
 			<mx:DataGridColumn id="dtgQualifiedSupplier" headerText="{'Proveedor Calificado'}"
 							   dataField="proveedorCalificado.proveedorSeleccionado.proveedor.nombreComercial"
 							   width="100"/>
 			<mx:DataGridColumn id="dtgMaquiladoSupplier" headerText="{'Proveedor Maquilador'}"
 							   dataField="proveedorMaquilador.proveedor.nombreComercial"
 							   width="100"/>
+			<mx:DataGridColumn headerText="Subtotal"
+							   dataField="subtotal"
+							   width="80"
+							   textAlign="right"/>
+			<mx:DataGridColumn headerText="I.V.A."
+							   dataField="iva"
+							   width="80"
+							   textAlign="right"/>
+			<mx:DataGridColumn id="dtgTotal" headerText="Total"
+							   dataField="total"
+							   width="80"
+							   textAlign="right"/>
 		</mx:columns>
 	</mx:DataGrid>
+	</mx:HBox>
 	<mx:HBox>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"
 				   visible="{!this._readOnly}"/>
+		<components:ExportButton datagrid="{this.datagrid}" visible="{!this._readOnly}"/>
 	</mx:HBox>
 	<mx:RemoteObject id="notaCreditoProveedorService" destination="notaCreditoProveedorService" fault="notaCreditoProveedorService_faultHandler(event)"
 					 showBusyCursor="true"/>

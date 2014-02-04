@@ -2,7 +2,7 @@
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
 		 horizontalAlign="right"
-		 creationComplete="creationCompleteHandler(event)">
+		 creationComplete="creationCompleteHandler(event)" xmlns:components="components.*">
 	<mx:Script>
 		<![CDATA[
 			import events.GenericEvent;
@@ -102,8 +102,8 @@
 	<mx:Metadata>
 		[Event(name="maquiladoraServiceRequestDetail", type="events.GenericEvent")]
 	</mx:Metadata>
-	<mx:HBox width="895" height="100%">
-	<mx:DataGrid id="datagrid" width="2000" height="100%" dataProvider="{items}"
+	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
+	<mx:DataGrid id="datagrid" width="2180" height="100%" dataProvider="{items}"
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 				 allowMultipleSelection="true"
 				 >
@@ -112,7 +112,7 @@
 							   dataField="id"
 							   textAlign="right"
 							   width="80"/>
-			<mx:DataGridColumn id="dtgRequestDate" headerText="{'Fecha\nSolicitud'}"
+			<mx:DataGridColumn id="dtgRequestDate" headerText="{'Fecha'}"
 							   dataField="fecha"
 							   labelFunction="{Util.labelFunctionDate}"
 							   width="80"
@@ -125,42 +125,53 @@
 							   labelFunction="labelFunctionIDProyecto"
 							   width="130"/>
 			<mx:DataGridColumn id="dtgProjectState" headerText="{'Validación\nProyecto'}"
-							   dataField="proyecto.estado.etiqueta"/>
+							   dataField="proyecto.estado.etiqueta"
+							   width="150"/>
 			<mx:DataGridColumn id="dtgCategoria" headerText="Categoria"
 							   dataField="proyecto.categoria.etiqueta"
+							   width="150"
 							   />
 			<mx:DataGridColumn id="dtgClient" headerText="Cliente"
 							   dataField="proyecto.producto.cliente.nombreComercial"
+							   width="150"
 							   />
 			<mx:DataGridColumn id="dtgProjectType" headerText="{'Tipo de\nProyecto'}"
 							   dataField="proyecto.producto.tipoProyecto"
+							   width="150"
 							   />
 			<mx:DataGridColumn id="dtgTechnology" headerText="Tecnología"
 							   dataField="proyecto.producto.teconologia"
+							   width="150"
 							   />
 			<mx:DataGridColumn id="dtgEquipment" headerText="Equipo"
 							   dataField="proyecto.producto.equipo"
+							   width="150"
 							   />
-			<mx:DataGridColumn id="dtgActivity" headerText="{'Actividad\na Realizar'}" width="180"
+			<mx:DataGridColumn id="dtgActivity" headerText="{'Actividad\na Realizar'}" 
+							   width="205"
 							   dataField="proyecto.producto.actividadRealizar"
 							   />
 			<mx:DataGridColumn id="dtgModel" headerText="Modelo"
 							   dataField="proyecto.producto.modelo"
+							   width="150"
 							   />
 			<mx:DataGridColumn id="dtgServiceDescription" headerText="{'Descripción\ndel Servicio'}"
 							   dataField="proyecto.producto.descripcionServicio"
-							   width="80"/>
+							   width="205"/>
 			<mx:DataGridColumn id="dtgServiceType" headerText="{'Tipo de\nServicio'}"
 							   dataField="proyecto.tipoServicio.tipo"
+							   width="150"
 							   />	
 			<mx:DataGridColumn id="dtgSite" headerText="{'Central\no Sitio'}"
 							   dataField="proyecto.centralSitio"
+							   width="150"
 							   />
 		</mx:columns>
 	</mx:DataGrid>
 	</mx:HBox>
 	<mx:HBox>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>
+		<components:ExportButton datagrid="{this.datagrid}"/>
 	</mx:HBox>
 	<mx:RemoteObject id="solicitudServicioMaquiladoService" destination="solicitudServicioMaquiladoService" fault="solicitudServicioMaquiladoService_faultHandler(event)"
 					 showBusyCursor="true"/>

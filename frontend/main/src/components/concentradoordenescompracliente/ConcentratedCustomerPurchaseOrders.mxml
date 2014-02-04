@@ -31,7 +31,6 @@
 			import mx.collections.ArrayCollection;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
 			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
-			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
 			import mx.com.gahm.componentes.validadores.ValidadorEntero;
 			import mx.com.gahm.componentes.validadores.ValidadorNumerico;
@@ -170,6 +169,7 @@
 			{
 				var value:Boolean = true;
 				value &&= this.validators.validarFormulario();
+				value &&= Util.listBaseSelected( this.cmbClient );
 				value &&= !(this.dtfPurchaseOrderDate.selectedDate == null);
 				return value;
 			}
@@ -186,11 +186,11 @@
 				this.validators = new InicializaValidadoresEtiquetas();
 				validators.crearValidadorRestrictor("generic",ValidadorCadenaCualquierCaracter.nombre, 0, 255);
 				validators.setValidador(txtPurchaseOrder, "generic");
-				validators.setValidador(txtSite, "generic");
 				validators.setRestrictor(txtRequisitionNumber, "generic");
 				validators.setRestrictor(txtSite, "generic");
 				validators.setRestrictor(txtSiteID, "generic");
 				validators.setRestrictor(txtServiceType, "generic");
+				validators.setRestrictor(txtPayCondition, "generic");
 				this.validatorsEntry = new InicializaValidadoresEtiquetas();
 				validatorsEntry.crearValidadorRestrictor("generic",ValidadorCadenaCualquierCaracter.nombre, 0, 255);
 				validatorsEntry.setValidador(txtCode, "generic");
@@ -280,41 +280,41 @@
 		[Event(name="concentratedCustomerPurchaseOrdersUpdated", type="flash.events.Event")]
 	</mx:Metadata>
 	<mx:Form id="form">
-		<mx:FormItem id="frmID" label="ID:">
+		<mx:FormItem required="true" id="frmID" label="ID:">
 			<components:TextInput id="txtID" editable="false"
 								  textAlign="right"/>
 		</mx:FormItem>
-		<mx:FormItem label="Cliente:">
+		<mx:FormItem required="true" label="Cliente:">
 			<mx:ComboBox id="cmbClient"
 						 labelField="nombreComercial"
 						 />
 		</mx:FormItem>
-		<mx:FormItem label="Orden de Compra:">
+		<mx:FormItem required="true" label="Orden de Compra:">
 			<components:TextInput id="txtPurchaseOrder"
 								  />
 		</mx:FormItem>
-		<mx:FormItem label="Fecha de Orden de Compra:">
+		<mx:FormItem required="true" label="Fecha de Orden de Compra:">
 			<components:DateField id="dtfPurchaseOrderDate" creationComplete="dtfPurchaseOrderDate.selectedDate = new Date()"/>
 		</mx:FormItem>
 		<mx:FormItem label="Número de Requisición:">
 			<components:TextInput id="txtRequisitionNumber"
 								  />
 		</mx:FormItem>
-		<mx:FormItem label="Ítem:">
+		<mx:FormItem required="true" label="Ítem:">
 			<components:TextInput id="txtItem"
 								  width="60"
 								  textAlign="right"/>
 		</mx:FormItem>
-		<mx:FormItem label="Código:">
+		<mx:FormItem required="true" label="Código:">
 			<components:TextInput id="txtCode"
 								  />
 		</mx:FormItem>
-		<mx:FormItem label="Descripción:">
+		<mx:FormItem required="true" label="Descripción:">
 			<components:TextInput id="txtDescription"
 								  width="400"
 								  />
 		</mx:FormItem>
-		<mx:FormItem label="Precio Unitario:">
+		<mx:FormItem required="true" label="Precio Unitario:">
 			<components:TextInput id="txtPrice"
 								  textAlign="right"
 								  width="90"

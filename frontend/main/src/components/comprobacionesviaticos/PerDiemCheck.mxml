@@ -198,6 +198,7 @@
 				var value:Boolean = true;
 				value &&= this.validators.validarFormulario();
 				value &&= this.perDiemPaymentConsult.datagrid.selectedItem != null;
+				value &&= Util.listBaseSelected( this.cmbStatus );
 				return value;
 			}
 			
@@ -324,14 +325,14 @@
 				this.txtConveyance.text = diemRequest.medioTransporte.etiqueta;
 				this.txtNumberOfVehicle.text = diemRequest.numeroVehiculo;
 				//this.txtInitialMileage.text = diemRequest.kilometrajeInicial;
-				this.txtGAS.text = diemRequest.combustible.toString();
-				this.txtTollBooths.text = diemRequest.casetas.toString();
-				this.txtPassages.text = diemRequest.pasajes.toString();
-				this.txtLodging.text = diemRequest.hospedaje.toString();
-				this.txtFood.text = diemRequest.alimentos.toString();
-				this.txtMaterialsAndOrTool.text = diemRequest.materialesHerramienta.toString();
-				this.txtOthers.text = diemRequest.otros.toString();
-				this.txtTotalRequested.text = diemRequest.totalSolicitado.toString();
+				this.txtGAS.text = Util.numberToString( diemRequest.combustible, true);
+				this.txtTollBooths.text = Util.numberToString( diemRequest.casetas, true);
+				this.txtPassages.text = Util.numberToString( diemRequest.pasajes, true);
+				this.txtLodging.text = Util.numberToString( diemRequest.hospedaje, true);
+				this.txtFood.text = Util.numberToString( diemRequest.alimentos, true);
+				this.txtMaterialsAndOrTool.text = Util.numberToString( diemRequest.materialesHerramienta, true);
+				this.txtOthers.text = Util.numberToString( diemRequest.otros, true);
+				this.txtTotalRequested.text = Util.numberToString( diemRequest.totalSolicitado, true);
 			}
 			
 			protected function btnViewPerDiemPayment_clickHandler(event:MouseEvent):void
@@ -367,15 +368,17 @@
 		[Event(name="perDiemPaymentSelected", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:Form id="form">
-		<mx:FormItem id="frmID" label="ID:" direction="horizontal">
+		<mx:FormItem required="true" id="frmID" label="ID:" direction="horizontal">
 			<components:TextInput id="txtID" width="80" textAlign="right"
 								  editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Pago de Viáticos:"/>
-		<mx:VBox>
-			<pagoviaticos:Consult id="perDiemPaymentConsult" itemDetail="perDiemPaymentConsult_perDiemPaymentDetailHandler(event)"
+		<mx:FormItem required="true" label="Pago de Viáticos:"/>
+		<mx:VBox width="800">
+			<mx:VBox width="100%" height="100%" verticalGap="5">
+				<pagoviaticos:Consult id="perDiemPaymentConsult" itemDetail="perDiemPaymentConsult_perDiemPaymentDetailHandler(event)"
 											readMode="true"/>
-			<mx:Button id="btnViewPerDiemPayment" label="Ver Pago Viáticos" click="btnViewPerDiemPayment_clickHandler(event)"/>
+				<mx:Button id="btnViewPerDiemPayment" label="Ver Pago Viáticos" click="btnViewPerDiemPayment_clickHandler(event)"/>
+			</mx:VBox>
 		</mx:VBox>
 		<mx:FormItem label="Fecha:">
 			<components:TextInput id="txtDate" editable="false" width="85"/>
@@ -430,7 +433,7 @@
 			<components:TextInput id="txtTotalRequested" textAlign="right" width="170" editable="false"/>
 		</mx:FormItem>
 		<mx:FormHeading label="Datos Comprobación Viáticos"/>
-		<mx:FormItem label="Total Autorizado:">
+		<mx:FormItem required="true" label="Total Autorizado:">
 			<components:TextInput id="txtTotalAuthorized" textAlign="right" width="170"/>
 		</mx:FormItem>
 		<mx:FormItem label="Subir Formato de Comprobación:" direction="horizontal">
@@ -443,7 +446,7 @@
 		<mx:FormItem label="Fecha de Subida de Documentos:">
 			<components:DateField id="dtfDateUploadedDocuments"/>
 		</mx:FormItem>
-		<mx:FormItem label="Estado:">
+		<mx:FormItem required="true" label="Estado:">
 			<mx:ComboBox id="cmbStatus" width="200"
 						 labelField="etiqueta"/>
 		</mx:FormItem>

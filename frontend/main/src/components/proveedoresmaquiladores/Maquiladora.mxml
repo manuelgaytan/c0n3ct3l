@@ -365,23 +365,23 @@
 						 labelField="pago"
 						 />
 		</mx:FormItem>
-		<mx:FormItem label="Cuenta Bancaria:">
+		<mx:FormItem required="true" label="Cuenta Bancaria:">
 			<components:TextInput id="txtCuenta"
 								  />
 		</mx:FormItem>
-		<mx:FormItem label="Banco:">
+		<mx:FormItem required="true" label="Banco:">
 			<components:TextInput id="txtBanco"
 								   width="300"/>
 		</mx:FormItem>
-		<mx:FormItem label="CLABE Interbancaria:">
+		<mx:FormItem required="true" label="CLABE Interbancaria:">
 			<components:TextInput id="txtCLBInterbancaria"
 								  />
 		</mx:FormItem>
-		<mx:FormItem label="NSS:">
+		<mx:FormItem required="true" label="NSS:">
 			<components:TextInput id="txtNSS"
 								  />
 		</mx:FormItem>
-		<mx:FormItem label="C.U.R.P.:">
+		<mx:FormItem required="true" label="C.U.R.P.:">
 			<components:TextInput id="txtCURP"
 								  />
 		</mx:FormItem>

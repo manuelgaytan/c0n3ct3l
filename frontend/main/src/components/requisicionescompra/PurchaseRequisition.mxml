@@ -181,6 +181,10 @@
 			{
 				var value:Boolean = true;
 				value &&= this.validators.validarFormulario();
+				value &&= this.dtfApplicationDate.selectedDate != null;
+				value &&= Util.listBaseSelected( this.cmbPriority );
+				value &&= Util.listBaseSelected( this.cmbApplicantArea );
+				value &&= Util.listBaseSelected( this.cmbStatus );
 				return value;
 			}
 			
@@ -196,12 +200,12 @@
 			{
 				this.validators = new InicializaValidadoresEtiquetas();
 				validators.crearValidadorRestrictor("generic",ValidadorCadenaCualquierCaracter.nombre, 0, 255);
-				validators.setRestrictor(txtReason, "generic");
-				validators.setRestrictor(txtSite, "generic");
+				validators.setValidador(txtReason, "generic");
+				validators.setValidador(txtSite, "generic");
 				this.validatorsEntry = new InicializaValidadoresEtiquetas();
 				validatorsEntry.crearValidadorRestrictor("generic",ValidadorCadenaCualquierCaracter.nombre, 0, 255);
 				validatorsEntry.setValidador(txtDescription, "generic");
-				validatorsEntry.setRestrictor(txtUnit, "generic");
+				validatorsEntry.setValidador(txtUnit, "generic");
 				validatorsEntry.crearValidadorRestrictor("decimal",ValidadorDecimal.nombre, 12, 5);
 				validatorsEntry.setValidador(txtQuantity, "decimal");
 				validatorsEntry.crearValidadorRestrictor("decimalCosto",ValidadorDecimal.nombre, 9, 2);
@@ -473,18 +477,18 @@
 		[Event(name="purchaseRequisitionUpdated", type="flash.events.Event")]
 	</mx:Metadata>
 	<mx:Form id="form">
-		<mx:FormItem id="frmID" label="Folio:">
+		<mx:FormItem required="true" id="frmID" label="Folio:">
 			<components:TextInput id="txtID" editable="false"
 								  textAlign="right"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha de Solicitud:">
+		<mx:FormItem required="true" label="Fecha de Solicitud:">
 			<components:DateField id="dtfApplicationDate" enabled="false" creationComplete="dtfApplicationDate.selectedDate = new Date()"/>
 		</mx:FormItem>
-		<mx:FormItem label="Motivo:">
+		<mx:FormItem required="true" label="Motivo:">
 			<components:TextInput id="txtReason"
 								  />
 		</mx:FormItem>
-		<mx:FormItem label="Prioridad:">
+		<mx:FormItem required="true" label="Prioridad:">
 			<mx:ComboBox id="cmbPriority"
 						 labelField="etiqueta"
 						 />
@@ -493,12 +497,12 @@
 			<components:ComboList id="cmbApplicantsNames" labelField="nombreCompleto"
 						 />
 		</mx:FormItem>
-		<mx:FormItem label="Área Solicitante:">
+		<mx:FormItem required="true" label="Área Solicitante:">
 			<mx:ComboBox id="cmbApplicantArea"
 						 labelField="etiqueta"
 						 />
 		</mx:FormItem>
-		<mx:FormItem label="Central, Sitio u Otro:">
+		<mx:FormItem required="true" label="Central, Sitio u Otro:">
 			<components:TextInput id="txtSite"
 								  />
 		</mx:FormItem>
@@ -541,18 +545,18 @@
 								  editable="false"
 								  />
 		</mx:FormItem>
-		<mx:FormItem label="Descripción:">
+		<mx:FormItem required="true" label="Descripción:">
 			<components:TextInput id="txtDescription"
 								  width="400"
 								  />
 		</mx:FormItem>
-		<mx:FormItem label="Cantidad:">
+		<mx:FormItem required="true" label="Cantidad:">
 			<components:TextInput id="txtQuantity"
 								  textAlign="right"
 								  width="90"
 								  />
 		</mx:FormItem>
-		<mx:FormItem label="Unidad:">
+		<mx:FormItem required="true" label="Unidad:">
 			<components:TextInput id="txtUnit"
 								  width="200"
 								  />
@@ -562,7 +566,7 @@
 						 labelField="nombreCompleto"
 						 />
 		</mx:FormItem>
-		<mx:FormItem label="Costo:" includeInLayout="false" direction="vertical">
+		<mx:FormItem required="true" label="Costo:" includeInLayout="false" direction="vertical">
 			<components:TextInput id="txtCost"
 								  width="200" textAlign="right"
 								  />
@@ -572,7 +576,7 @@
 			<mx:Button id="btnAddItem" label="Agregar Partida" click="btnAddItem_clickHandler(event)"/>
 		</mx:FormItem>
 		<requisicionescompra:ItemsManagement id="itemsManagement" purchaseOrderMode="false"/>
-		<mx:FormItem label="Estatus:">
+		<mx:FormItem required="true" label="Estatus:">
 			<mx:ComboBox id="cmbStatus"
 						 labelField="estatus"
 						 />

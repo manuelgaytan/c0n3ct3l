@@ -99,11 +99,11 @@
 		[Event(name="proveedorDetail", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
-	<mx:DataGrid id="datagrid" width="2350" height="100%" dataProvider="{items}"
+	<mx:DataGrid id="datagrid" width="2590" height="100%" dataProvider="{items}"
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 				 allowMultipleSelection="true">
 		<mx:columns>
-			<mx:DataGridColumn id="dtgCode" headerText="{'Tipo \nPersona'}"
+			<mx:DataGridColumn id="dtgCode" headerText="{'Persona'}"
 							   dataField="proveedor.tipoPersona.tipo"
 							   width="80"/>
 			<mx:DataGridColumn id="dtgFamily" headerText="{'Nombre \nComercial'}"
@@ -131,6 +131,9 @@
 							   dataField="proveedor.correo"
 							   width="150"
 							   />
+			<mx:DataGridColumn headerText="{'Forma\nde Pago'}"
+							   dataField="pago.pago"
+							   width="120"/>
 			<mx:DataGridColumn headerText="Cuenta Bancaria"
 							   dataField="datoBancario.cuentaBancaria"
 							   width="120"/>
@@ -145,6 +148,9 @@
 							   width="120"/>
 			<mx:DataGridColumn headerText="C.U.R.P."
 							   dataField="curp"
+							   width="120"/>
+			<mx:DataGridColumn headerText="Tecnología"
+							   dataField="categoriaProyecto.etiqueta"
 							   width="120"/>
 			<mx:DataGridColumn id="dtgFamily3" headerText="{'Tipo de\nContrato'}"
 							   width="80"

@@ -146,69 +146,33 @@
 				<mx:DataGridColumn id="dtgBank" headerText="{'Tipo Candidato'}"
 								   dataField="tipoCandidato.tipo"
 								   width="100"/>
-				<mx:DataGridColumn headerText="{'Raven\nó Army\nBeta'}" width="80" editable="false" textAlign="center">
-					<mx:itemRenderer>
-						<mx:Component>
-							<mx:CheckBox selected="{data.examenPsicometrico.ravenArmyBeta}" enabled="false"/>
-						</mx:Component>
-					</mx:itemRenderer>
-				</mx:DataGridColumn>
-				<mx:DataGridColumn headerText="{'Figura\nHumana'}" width="80" editable="false" textAlign="center">
-					<mx:itemRenderer>
-						<mx:Component>
-							<mx:CheckBox selected="{data.examenPsicometrico.figuraHumana}" enabled="false"/>
-						</mx:Component>
-					</mx:itemRenderer>
-				</mx:DataGridColumn>
-				<mx:DataGridColumn headerText="{'Árbol'}" width="80" editable="false" textAlign="center">
-					<mx:itemRenderer>
-						<mx:Component>
-							<mx:CheckBox selected="{data.examenPsicometrico.arbol}" enabled="false"/>
-						</mx:Component>
-					</mx:itemRenderer>
-				</mx:DataGridColumn>
-				<mx:DataGridColumn headerText="{'Casa'}" width="80" editable="false" textAlign="center">
-					<mx:itemRenderer>
-						<mx:Component>
-							<mx:CheckBox selected="{data.examenPsicometrico.casa}" enabled="false"/>
-						</mx:Component>
-					</mx:itemRenderer>
-				</mx:DataGridColumn>
-				<mx:DataGridColumn headerText="{'Grafologia'}" width="80" editable="false" textAlign="center">
-					<mx:itemRenderer>
-						<mx:Component>
-							<mx:CheckBox selected="{data.examenPsicometrico.grafologia}" enabled="false"/>
-						</mx:Component>
-					</mx:itemRenderer>
-				</mx:DataGridColumn>
-				<mx:DataGridColumn headerText="{'Cleaver'}" width="80" editable="false" textAlign="center">
-					<mx:itemRenderer>
-						<mx:Component>
-							<mx:CheckBox selected="{data.examenPsicometrico.cleaver}" enabled="false"/>
-						</mx:Component>
-					</mx:itemRenderer>
-				</mx:DataGridColumn>
-				<mx:DataGridColumn headerText="{'Frases\nIncompletas'}" width="80" editable="false" textAlign="center">
-					<mx:itemRenderer>
-						<mx:Component>
-							<mx:CheckBox selected="{data.examenPsicometrico.frasesIncompletas}" enabled="false"/>
-						</mx:Component>
-					</mx:itemRenderer>
-				</mx:DataGridColumn>
-				<mx:DataGridColumn headerText="{'Therman'}" width="80" editable="false" textAlign="center">
-					<mx:itemRenderer>
-						<mx:Component>
-							<mx:CheckBox selected="{data.examenPsicometrico.therman}" enabled="false"/>
-						</mx:Component>
-					</mx:itemRenderer>
-				</mx:DataGridColumn>
-				<mx:DataGridColumn headerText="{'Dominos'}" width="80" editable="false" textAlign="center">
-					<mx:itemRenderer>
-						<mx:Component>
-							<mx:CheckBox selected="{data.examenPsicometrico.dominos}" enabled="false"/>
-						</mx:Component>
-					</mx:itemRenderer>
-				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="{'Raven\nó Army\nBeta'}" width="80"
+								   imeMode="examenPsicometrico.ravenArmyBeta"
+								   itemRenderer="components.renderers.CheckBoxRendererRavenArmyBeta"/>
+				<mx:DataGridColumn headerText="{'Figura\nHumana'}" width="80"
+								   imeMode="examenPsicometrico.figuraHumana"
+								   itemRenderer="components.renderers.CheckBoxRendererFiguraHumana"/>
+				<mx:DataGridColumn headerText="{'Árbol'}" width="80"
+								   imeMode="examenPsicometrico.arbol"
+								   itemRenderer="components.renderers.CheckBoxRendererArbol"/>
+				<mx:DataGridColumn headerText="{'Casa'}" width="80"
+								   imeMode="examenPsicometrico.casa"
+								   itemRenderer="components.renderers.CheckBoxRendererCasa"/>
+				<mx:DataGridColumn headerText="{'Grafologia'}" width="80"
+								   imeMode="examenPsicometrico.grafologia"
+								   itemRenderer="components.renderers.CheckBoxRendererGrafologia"/>
+				<mx:DataGridColumn headerText="{'Cleaver'}" width="80"
+								   imeMode="examenPsicometrico.cleaver"
+								   itemRenderer="components.renderers.CheckBoxRendererCleaver"/>
+				<mx:DataGridColumn headerText="{'Frases\nIncompletas'}" width="80"
+								   imeMode="examenPsicometrico.frasesIncompletas"
+								   itemRenderer="components.renderers.CheckBoxRendererFrasesIncompletas"/>
+				<mx:DataGridColumn headerText="{'Therman'}" width="80"
+								   imeMode="examenPsicometrico.therman"
+								   itemRenderer="components.renderers.CheckBoxRendererTherman"/>
+				<mx:DataGridColumn headerText="{'Dominos'}" width="80"
+								   imeMode="examenPsicometrico.dominos"
+								   itemRenderer="components.renderers.CheckBoxRendererDominos"/>
 				<mx:DataGridColumn headerText="{'Inteligencia'}"
 								   dataField="perfilEscala.inteligencia"
 								   width="100"

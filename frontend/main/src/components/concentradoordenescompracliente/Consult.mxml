@@ -2,7 +2,7 @@
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
 		 horizontalAlign="right"
-		 creationComplete="creationCompleteHandler(event)">
+		 creationComplete="creationCompleteHandler(event)" xmlns:components="components.*">
 	<mx:Script>
 		<![CDATA[
 			import events.GenericEvent;
@@ -90,6 +90,7 @@
 	<mx:Metadata>
 		[Event(name="concentratedCustomerPurchaseOrdersDetail", type="events.GenericEvent")]
 	</mx:Metadata>
+	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
 	<mx:DataGrid id="datagrid" width="100%" height="100%" dataProvider="{items}"
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 				 allowMultipleSelection="true">
@@ -115,18 +116,27 @@
 							   width="100"
 							   textAlign="right"
 							   />
-			<mx:DataGridColumn id="dtgSite" headerText="{'Central\no Sitio'}"
+			<mx:DataGridColumn id="dtgSite" headerText="{'Sitio'}"
 							   dataField="centralSitio"
+							   width="100"
+							   />
+			<mx:DataGridColumn headerText="{'ID Sitio'}"
+							   dataField="idSitio"
 							   width="100"
 							   />
 			<mx:DataGridColumn id="dtgStatus" headerText="{'Local/\nForáneo'}"
 							   dataField="localForaneo"
-							   width="80"
+							   width="100"
 							   textAlign="center"/>
+			<mx:DataGridColumn headerText="{'Condiciones\nde Pago'}"
+							   dataField="condicionPago"
+							   width="300"/>
 		</mx:columns>
 	</mx:DataGrid>
+	</mx:HBox>
 	<mx:HBox>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>
+		<components:ExportButton datagrid="{this.datagrid}"/>
 	</mx:HBox>
 	<mx:RemoteObject id="concentradoOrdenCompraClienteService" destination="concentradoOrdenCompraClienteService" fault="requisicionService_faultHandler(event)"
 					 showBusyCursor="true"/>

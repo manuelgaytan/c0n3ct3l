@@ -82,7 +82,7 @@
 		[Event(name="itemDetail", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
-		<mx:DataGrid id="datagrid" width="1150" height="100%" dataProvider="{items}"
+		<mx:DataGrid id="datagrid" width="1100" height="100%" dataProvider="{items}"
 					 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 					 allowMultipleSelection="true"
 					 >
@@ -92,7 +92,8 @@
 								   labelFunction="labelFunctionIDProyecto"
 								   width="130"
 								   textAlign="right"/>
-				<mx:DataGridColumn id="dtgPurchaseOrder" headerText="{'Orden de\nCompra'}" width="80" editable="false" textAlign="center">
+				<mx:DataGridColumn id="dtgPurchaseOrder" headerText="{'Orden de\nCompra'}" 
+								   width="80" editable="false" textAlign="center">
 					<mx:itemRenderer>
 						<mx:Component>
 							<mx:CheckBox selected="{data.ordenCompra}" enabled="false"/>
@@ -138,7 +139,7 @@
 	</mx:HBox>
 	<mx:HBox>
 		<!--<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>-->
-		<components:ExportButton datagrid="{this.datagrid}" visible="true"/>
+		<components:ExportButton datagrid="{this.datagrid}"/>
 	</mx:HBox>
 	<mx:RemoteObject id="ordenCompraClienteService" destination="ordenCompraClienteService" fault="datosGeneralesProyectoService_faultHandler(event)"
 					 showBusyCursor="true"/>

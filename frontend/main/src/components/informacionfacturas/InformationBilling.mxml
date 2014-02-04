@@ -356,13 +356,17 @@
 		[Event(name="informationBillingUpdated", type="flash.events.Event")]
 	</mx:Metadata>
 	<mx:Form id="form">
-		<mx:FormItem id="frmID" label="ID:">
+		<mx:FormItem required="true" id="frmID" label="ID:">
 			<components:TextInput id="txtID" editable="false"
 								  textAlign="right"/>
 		</mx:FormItem>
-		<mx:FormItem label="Validación Administrativa:"/>
-		<validacionesadministrativas:Consult id="validacionesAdministrativas" readMode="true"
+		<mx:FormItem required="true" label="Validación Administrativa:"/>
+		<mx:VBox width="830">
+			<mx:VBox width="100%" height="100%" verticalGap="5">
+				<validacionesadministrativas:Consult id="validacionesAdministrativas" readMode="true"
 											 validationAdministrativeDetail="validacionesAdministrativas_doubleClickHandler(event)"/>
+			</mx:VBox>
+		</mx:VBox>
 		<mx:FormHeading label="Información Factura 1"/>
 		<mx:FormItem label="Folio Factura 1:">
 			<components:TextInput id="txtFolio1"
@@ -483,10 +487,10 @@
 			<components:TextInput id="txtPaymentState3"/>
 		</mx:FormItem>
 		<components:Comments id="comments3" />
-		<mx:FormItem label="Estado Factura:">
+		<mx:FormItem required="true" label="Estado Factura:">
 			<components:TextInput id="txtInvoiceState"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha Estado Factura:">
+		<mx:FormItem required="true" label="Fecha Estado Factura:">
 			<components:DateField id="dtfInvoiceStateDate"/>
 		</mx:FormItem>
 		<mx:FormItem label="Imputabilidad:">

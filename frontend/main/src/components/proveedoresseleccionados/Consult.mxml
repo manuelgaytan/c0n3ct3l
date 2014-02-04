@@ -101,7 +101,7 @@
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 				 allowMultipleSelection="true">
 		<mx:columns>
-			<mx:DataGridColumn headerText="{'Tipo Persona'}"
+			<mx:DataGridColumn headerText="{'Persona'}"
 							   dataField="proveedor.tipoPersona.tipo"
 							   width="100"/>
 			<mx:DataGridColumn id="dtgNombreComercial" headerText="{'Nombre Comercial'}"

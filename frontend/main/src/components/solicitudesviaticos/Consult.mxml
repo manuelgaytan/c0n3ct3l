@@ -2,7 +2,7 @@
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
 		 horizontalAlign="right"
-		 creationComplete="creationCompleteHandler(event)">
+		 creationComplete="creationCompleteHandler(event)" xmlns:components="components.*">
 	<mx:Script>
 		<![CDATA[
 			import events.GenericEvent;
@@ -116,8 +116,8 @@
 	<mx:Metadata>
 		[Event(name="itemDetail", type="events.GenericEvent")]
 	</mx:Metadata>
-	<mx:VBox id="vBox" width="100%" height="100%">
-		<mx:DataGrid id="datagrid" width="842" height="100%" dataProvider="{items}"
+	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
+		<mx:DataGrid id="datagrid" width="1940" height="100%" dataProvider="{items}"
 					 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 					 allowMultipleSelection="true"
 					 >
@@ -142,13 +142,57 @@
 								   width="170"/>
 				<mx:DataGridColumn id="dtgResponsibleViaticum" headerText="{'Responsable\nViático'}"
 								   dataField="colaborador.nombreCompleto"
-								   textAlign="right"
 								   width="170"
 								   />
 				<mx:DataGridColumn id="dtgConveyance" headerText="{'Medio\nTransporte'}"
 								   dataField="medioTransporte.etiqueta"
 								   textAlign="center"
 								   width="170"
+								   />
+				<mx:DataGridColumn headerText="{'Número de\nVehículo'}"
+								   dataField="numeroVehiculo"
+								   textAlign="right"
+								   width="120"
+								   />
+				<mx:DataGridColumn headerText="{'Kilometraje\nInicial'}"
+								   dataField="kilometrajeInicial"
+								   textAlign="right"
+								   width="120"
+								   />
+				<mx:DataGridColumn headerText="{'Combustible'}"
+								   dataField="combustible"
+								   textAlign="right"
+								   width="120"
+								   />
+				<mx:DataGridColumn headerText="{'Casetas'}"
+								   dataField="casetas"
+								   textAlign="right"
+								   width="120"
+								   />
+				<mx:DataGridColumn headerText="{'Pasajes'}"
+								   dataField="pasajes"
+								   textAlign="right"
+								   width="120"
+								   />
+				<mx:DataGridColumn headerText="{'Hospedaje'}"
+								   dataField="hospedaje"
+								   textAlign="right"
+								   width="120"
+								   />
+				<mx:DataGridColumn headerText="{'Alimentos'}"
+								   dataField="alimentos"
+								   textAlign="right"
+								   width="120"
+								   />
+				<mx:DataGridColumn headerText="{'Materiales\ny/o\nHerramienta'}"
+								   dataField="materialesHerramienta"
+								   textAlign="right"
+								   width="120"
+								   />
+				<mx:DataGridColumn headerText="{'Otros'}"
+								   dataField="otros"
+								   textAlign="right"
+								   width="120"
 								   />
 				<mx:DataGridColumn id="dtgTotalRequested" headerText="{'Total\nSolicitado'}"
 								   dataField="totalSolicitado"
@@ -157,10 +201,11 @@
 								   />
 			</mx:columns>
 		</mx:DataGrid>
-	</mx:VBox>
+	</mx:HBox>
 	<mx:HBox>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"
 				   visible="{!this._readMode}"/>
+		<components:ExportButton datagrid="{this.datagrid}" visible="{!this._readMode}"/>
 	</mx:HBox>
 	<mx:RemoteObject id="solicitudViaticosService" destination="solicitudViaticosService" fault="datosGeneralesProyectoService_faultHandler(event)"
 					 showBusyCursor="true"/>

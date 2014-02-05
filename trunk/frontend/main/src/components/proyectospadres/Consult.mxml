@@ -146,10 +146,10 @@
 		</mx:columns>
 	</mx:DataGrid>
 	<mx:HBox>
-		<components:ExportButton datagrid="{this.datagrid}"
-								 visible="{!this._consultOnly}"/>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"
 				   visible="{!this._consultOnly}"/>
+		<components:ExportButton datagrid="{this.datagrid}"
+								 visible="{!this._consultOnly}"/>
 	</mx:HBox>
 	<mx:RemoteObject id="proyectoPadreService" destination="proyectoPadreService" fault="proyectoPadreService_faultHandler(event)"
 					 showBusyCursor="true"/>

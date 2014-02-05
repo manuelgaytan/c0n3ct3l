@@ -277,10 +277,10 @@
 		<mx:Button label="Exportar formato comas" id="btnExportComaFormat" click="btnExportComaFormat_clickHandler(event)"
 				   includeInLayout="{!this._preciarios}"
 				   visible="{!this._preciarios}"/>
-		<components:ExportButton datagrid="{this.datagrid}"/>
 		<mx:Button label="Importar" id="btnImport" click="btnImport_clickHandler(event)"
 				   includeInLayout="{!this._preciarios}"
 				   visible="{!this._preciarios}"/>
+		<components:ExportButton datagrid="{this.datagrid}"/>
 		<mx:Button label="Imprimir Todo" id="btnPrint" click="btnPrint_clickHandler(event)"
 				   includeInLayout="{this._preciarios}"
 				   visible="{this._preciarios}"/>

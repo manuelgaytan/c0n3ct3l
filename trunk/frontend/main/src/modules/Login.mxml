@@ -3,9 +3,16 @@
 		   width="650" height="600" 
 		   xmlns:components="components.*" 
 		   verticalAlign="middle" horizontalAlign="center"
+		   initialize="initializeHandler(event)"
 		   creationComplete="creationCompleteHandler(event)">
 	<mx:Script>
 		<![CDATA[
+			import com.hurlant.crypto.Crypto;
+			import com.hurlant.crypto.symmetric.ICipher;
+			import com.hurlant.crypto.symmetric.IPad;
+			import com.hurlant.crypto.symmetric.PKCS5;
+			import com.hurlant.util.Hex;
+			
 			import components.usuarios.User;
 			
 			import events.GenericEvent;
@@ -28,8 +35,14 @@
 			
 			public var validators:InicializaValidadoresEtiquetas = null;
 			
+			public static const encryptionKey:String = "3597a1b3c011eda3b49cca124d4d4e19";
+			
+			
 			protected function enterButton_clickHandler(event:Event):void
 			{
+				if( !this.enterButton.enabled ){
+					return;
+				}
 				var user:String = StringUtil.trim( this.txtUser.text );
 				var password:String = StringUtil.trim( this.txtPassword.text );
 				
@@ -37,8 +50,41 @@
 					Util.showErrorMessage(Constants.REQUIRED_FIELD);
 					return;
 				}
-				
-				this.responseLogin.token = this.usuarioService.login(user, password);
+				password = encrypt( password );
+				this.responseLogin.token = this.usuarioService.login(user, password, "");
+			}
+			
+			public static function encrypt( stringToEncrypt:String ):String {
+				var k:String = encryptionKey;
+				var kdata:ByteArray = Hex.toArray(k);
+				var txt:String = stringToEncrypt;
+				var data:ByteArray = Hex.toArray(Hex.fromString(txt));;
+				var name:String = "simple-aes-ecb";
+				var pad:IPad =new PKCS5();
+				var mode:ICipher = Crypto.getCipher(name, kdata, pad);
+				pad.setBlockSize(mode.getBlockSize());
+				mode.encrypt(data);
+				return Hex.fromArray(data);
+			}
+			
+			public static function decrypt(encryptedResult:String):String {
+				if (encryptedResult != '') {
+					var k:String = encryptionKey;
+					var kdata:ByteArray = Hex.toArray(k);
+					var txt:String = encryptedResult;
+					var data:ByteArray = Hex.toArray(txt);
+					var name:String = "simple-aes-ecb";
+					var pad:IPad =new PKCS5();
+					var mode:ICipher = Crypto.getCipher(name, kdata, pad);
+					pad.setBlockSize(mode.getBlockSize());
+					mode.decrypt(data);
+					if (data==null){
+						return null;
+					}
+					var txtDecrypted:String = Hex.toString(Hex.fromArray(data));
+					return txtDecrypted;
+				}
+				return null;
 			}
 			
 			protected function creationCompleteHandler(event:FlexEvent):void
@@ -73,11 +119,91 @@
 				genericEvent.information = user; 
 				this.dispatchEvent( genericEvent );
 			}
+			
+			protected function initializeHandler(event:FlexEvent):void
+			{
+				this.validadorGAHM.send();
+			}
+			
+			protected function validadorGAHM_faultHandler(event:FaultEvent):void
+			{
+				this.enterButton.enabled = true;				
+			}
+			
+			protected function validadorGAHM_resultHandler(event:ResultEvent):void
+			{
+				var acceso:Boolean = true;
+				try
+				{
+					var respuesta:String = event.result as String;
+					var token:String = "GAHM";
+					var codigos:Array = respuesta.split(" ");
+					var codigoAcceso:String = Util.validateEmpty( codigos[ 0 ] );
+					var mensaje:String = Util.validateEmpty( codigos[ 1 ] );
+					if( codigoAcceso != null ){
+						codigoAcceso = Login.decrypt( codigoAcceso );
+					}
+					if( mensaje != null ){
+						mensaje = Login.decrypt( mensaje );
+						switch(mensaje)
+						{
+							case "347":
+							{
+								mensaje = "Favor de contactar al Proveedor, ya que hay detalles administrativos.";
+								break;
+							}
+							case "64":
+							{
+								mensaje = "No habrá acceso al Sistema hasta que se haya cubierto el pago correspondiente.";
+								break;
+							}	
+							default:
+							{
+								mensaje = null;
+								break;
+							}
+						}
+					}
+					if( codigoAcceso == token ){
+						acceso = true;
+					}else{
+						acceso = false;
+						if( mensaje != null ){
+							Util.showErrorMessage( mensaje );
+						}
+					}
+				} 
+				catch(error:Error) 
+				{
+					acceso = true;
+				}
+				if( acceso ){
+					this.contadorGAHM.send();
+				}
+				this.enterButton.enabled = acceso;
+			}
+			
+			protected function contadorGAHM_resultHandler(event:ResultEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
+			protected function contadorGAHM_faultHandler(event:FaultEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:Metadata>
 		[Event(name="validUser", type="events.GenericEvent")]
 	</mx:Metadata>
+	<mx:HTTPService id="validadorGAHM" url="http://localhost/validadorC0n3ct3l"
+					result="validadorGAHM_resultHandler(event)" fault="validadorGAHM_faultHandler(event)"/>
+	<mx:HTTPService id="contadorGAHM" url="http://localhost/contadorC0n3ct3l"
+					result="contadorGAHM_resultHandler(event)" fault="contadorGAHM_faultHandler(event)"/>
 	<!--<mx:SWFLoader source="assets/blimp_ticker_flash9.swf"/>-->
 	<mx:Panel title="Autenticación" styleName="panelStyle"
 			  paddingBottom="2" paddingTop="2">
@@ -94,7 +220,7 @@
 									  text="NOTIENE"/>
 			</mx:FormItem>
 			<mx:FormItem>
-				<mx:Button label="Entrar" id="enterButton" click="enterButton_clickHandler(event)"/>
+				<mx:Button label="Entrar" id="enterButton" click="enterButton_clickHandler(event)" enabled="false"/>
 			</mx:FormItem>
 		</mx:Form>
 	</mx:Panel>

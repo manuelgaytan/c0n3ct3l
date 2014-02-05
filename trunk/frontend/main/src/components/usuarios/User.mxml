@@ -10,6 +10,8 @@
 			import model.Usuario;
 			import model.Util;
 			
+			import modules.Login;
+			
 			import mx.collections.ArrayCollection;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
 			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
@@ -84,7 +86,7 @@
 				user.nombreCompleto = Util.validateEmpty( this.txtWholeName.text );
 				user.perfil = this.cmbProfile.selectedItem as Perfil;
 				user.usuario = Util.validateEmpty( this.txtUser.text );
-				user.contrasena = Util.validateEmpty( this.txtPasword.text );
+				user.contrasena = Login.encrypt( Util.validateEmpty( this.txtPasword.text ) );
 				user.activo = this.chbActive.selected;
 				return user;
 			}
@@ -228,7 +230,7 @@
 								  displayAsPassword="true"
 								  />
 		</mx:FormItem>
-		<mx:FormItem label="Activo:">
+		<mx:FormItem required="true" label="Activo:">
 			<mx:CheckBox id="chbActive"/>
 		</mx:FormItem>
 		<mx:FormItem>

@@ -91,24 +91,25 @@
 	<mx:Metadata>
 		[Event(name="userDetail", type="events.GenericEvent")]
 	</mx:Metadata>
-	<mx:DataGrid id="datagrid" width="100%" height="100%" dataProvider="{users}"
+	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
+	<mx:DataGrid id="datagrid" width="850" height="100%" dataProvider="{users}"
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 				 allowMultipleSelection="true">
 		<mx:columns>
 			<mx:DataGridColumn id="dtgID" headerText="{'ID'}"
 							   dataField="id"
-							   width="100"/>
+							   width="60"/>
 			<mx:DataGridColumn id="dtgWholeName" headerText="Nombre Completo"
 							   dataField="nombreCompleto"
-							   width="250"/>
+							   width="350"/>
 			<mx:DataGridColumn id="dtgProfile" headerText="Perfil"
 							   labelFunction="labelFunctionProfile"
-							   width="160"/>
+							   width="200"/>
 			<mx:DataGridColumn id="dtgUser" headerText="Usuario"
 							   dataField="usuario"
-							   width="120"/>
+							   width="160"/>
 			<mx:DataGridColumn id="dtgActive" headerText="Activo" editable="false" textAlign="center"
-							   dataField="activo">
+							   dataField="activo" width="80">
 				<mx:itemRenderer>
 					<mx:Component>
 						<mx:CheckBox selected="{data.activo}" enabled="false"/>
@@ -117,9 +118,10 @@
 			</mx:DataGridColumn>
 		</mx:columns>
 	</mx:DataGrid>
+	</mx:HBox>
 	<mx:HBox>
-		<components:ExportButton datagrid="{this.datagrid}"/>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>
+		<components:ExportButton datagrid="{this.datagrid}"/>
 	</mx:HBox>
 	<mx:RemoteObject id="usuarioService" destination="usuarioService" fault="usuarioService_faultHandler(event)"
 					 showBusyCursor="true"/>

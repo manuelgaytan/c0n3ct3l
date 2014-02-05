@@ -242,6 +242,9 @@ package components
 				backgroundColor = advColumn.getStyle("backgroundColor") != "" ? advColumn.getStyle("backgroundColor") : backgroundColor;
 			}
 */			
+			if( valorTd == null ){
+				return "<td></td>";
+			}
 			return this.crearCelda( valorTd, columnaActual, textAlign, backgroundColor, objeto, htmlCallbackFormatter);	
 		}	
 		

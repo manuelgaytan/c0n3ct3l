@@ -53,7 +53,7 @@ public class UsuarioService implements IUsuarioService {
 	}
 
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
-	public UsuarioDO login(String user, String password) throws ConectelException {
+	public UsuarioDO login(String user, String password, String foo) throws ConectelException {
 		TypedQuery<UsuarioDO> query = entityManager.createNamedQuery(
 				"UsuarioDO.findByName", UsuarioDO.class);
 		query.setParameter("usuario", user);
@@ -67,7 +67,7 @@ public class UsuarioService implements IUsuarioService {
 			throw new ConectelException("El usuario no esta activo.");
 		}
 		if (!password.equals(userLogged.getContrasena())) {
-			throw new ConectelException("La contraseña es incorrecta.");
+			throw new ConectelException("La contrase–a es incorrecta.");
 		}
 		/*Usuario response;
 		try {

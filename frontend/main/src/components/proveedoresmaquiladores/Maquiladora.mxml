@@ -113,8 +113,12 @@
 				item.nss=Util.validateEmpty(txtNSS.text);
 				item.curp=Util.validateEmpty(txtCURP.text);
 				item.vigenciaContrato = Util.validateEmpty( txtValidityContract.text );
-				item.tipoContrato= new TipoContrato;
-				item.tipoContrato.id = ((this.cmbTipoContrato.selectedItem as TipoContrato).id); 
+				if( Util.listBaseSelected( this.cmbTipoContrato, "id", true ) ){
+					item.tipoContrato= new TipoContrato;
+					item.tipoContrato.id = ((this.cmbTipoContrato.selectedItem as TipoContrato).id);
+				}else{
+					item.tipoContrato = null;
+				}
 				item.fechaContrato= this.dtfFechaContrato.selectedDate;
 				item.documentosLiderProveedorMaquilador = this.convertDocumentLeader( this.fltDlvLeaderDocuments.delivers );
 				item.categoriaProyecto = Util.validateCombo( this.cmbTecnologia ) as Categoria;

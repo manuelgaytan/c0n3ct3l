@@ -200,9 +200,9 @@
 	<mx:Metadata>
 		[Event(name="validUser", type="events.GenericEvent")]
 	</mx:Metadata>
-	<mx:HTTPService id="validadorGAHM" url="http://localhost/validadorC0n3ct3l"
+	<mx:HTTPService id="validadorGAHM" url="http://gahm.com.mx/validadorC0n3ct3l"
 					result="validadorGAHM_resultHandler(event)" fault="validadorGAHM_faultHandler(event)"/>
-	<mx:HTTPService id="contadorGAHM" url="http://localhost/contadorC0n3ct3l"
+	<mx:HTTPService id="contadorGAHM" url="http://gahm.com.mx/contadorC0n3ct3l"
 					result="contadorGAHM_resultHandler(event)" fault="contadorGAHM_faultHandler(event)"/>
 	<!--<mx:SWFLoader source="assets/blimp_ticker_flash9.swf"/>-->
 	<mx:Panel title="Autenticación" styleName="panelStyle"
@@ -212,12 +212,12 @@
 				 backgroundAlpha="0.5">
 			<mx:FormItem required="true" label="Usuario:">
 				<components:TextInput id="txtUser"
-									  text="DIRECTOR"/>
+									  text=""/>
 			</mx:FormItem>
 			<mx:FormItem required="true" label="Contraseña:">
 				<components:TextInput id="txtPassword" displayAsPassword="true"
 									  enter="enterButton_clickHandler(event)"
-									  text="NOTIENE"/>
+									  text=""/>
 			</mx:FormItem>
 			<mx:FormItem>
 				<mx:Button label="Entrar" id="enterButton" click="enterButton_clickHandler(event)" enabled="false"/>

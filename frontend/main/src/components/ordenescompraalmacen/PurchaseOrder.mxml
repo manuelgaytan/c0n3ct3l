@@ -256,7 +256,7 @@
 				this.txtProjectID.reset();
 				this.txtRequisicionID.reset();
 				this.txtQuotationID.reset();
-				this.dtfDate.reset();
+				this.dtfDate.selectedDate = new Date();
 				this.cmbQualifiedSupplier.selectedIndex = 0; 
 				this.txtSubtotal.reset();
 				this.txtIVA.reset();

@@ -1,0 +1,326 @@
+/* CSS file */
+Application
+{
+	/*	backgroundGradientColors: #0000ff, #15185f;*/
+	backgroundImage: Embed(source='images/6809_1_other_wallpapers_hd_wallpapers_blue_simple.jpg');
+	/*backgroundGradientColors: #0000ff, #00ccff;*/
+	/*backgroundGradientColors: #bf102d, #15185f;*/
+	fontFamily: "Arial";
+	color: #000000;
+	fontSize: 12;
+	themeColor:#288bca;
+}
+MenuBar
+{
+	background-skin: ClassReference("com.degrafa.skins.CSSSkin");
+	background-image: Embed(source='images/header_bg.png');
+	background-repeat:repeat-x;
+	menuStyleName: menuStyleName;
+	selectionColor:#4385d9;
+	rollOverColor:#4385d9;
+	textRollOverColor:#ffffff;
+	textSelectedColor:#ffffff;
+}
+
+.menuStyleName
+{
+	
+}
+
+Panela{
+	titleStyleName: "panelTitle";
+	contentStyleName: contentStyleName;
+	headerHeight:35;
+	
+	border-skin:ClassReference("skins.SmartPanelSkin");
+	background-skin: ClassReference("skins.PanelBackgroundSkin");
+	backgroundRepeat:repeat;
+	border-background-image:Embed(source='images/panel_bg.png');
+	cornerRadius:8;
+	bottomCornerRadius: 3;
+	filters:dropShadow;
+	borderColor:#dddddd;
+	border-style: none;
+	paddingTop:20;
+	paddingLeft:20;
+	paddingRight:20;
+	paddingBottom:20;
+}
+.panelTitle{
+	textAlign:center;
+	fontSize:13;
+}
+.contentStyleName
+{
+	skin: ClassReference("skins.PanelContentSkin");
+	filters: contentDropShadow;
+	cornerRadius: 0;
+}
+
+Alert
+{
+	color:#333333;
+	paddingBottom: 10;
+}
+Button
+{
+	upSkin:Embed(source='images/glass_btn_up.png', scaleGridLeft=10, scaleGridRight=11, scaleGridTop=10,scaleGridBottom=11);
+	downSkin:Embed(source='images/glass_btn_over.png', scaleGridLeft=10, scaleGridRight=11, scaleGridTop=10,scaleGridBottom=11);
+	overSkin:Embed(source='images/glass_btn_over.png', scaleGridLeft=10, scaleGridRight=11, scaleGridTop=10,scaleGridBottom=11);
+	selectedUpSkin:Embed(source='images/glass_btn_over.png', scaleGridLeft=10, scaleGridRight=11, scaleGridTop=10,scaleGridBottom=11);
+	selectedOverSkin:Embed(source='images/glass_btn_over.png', scaleGridLeft=10, scaleGridRight=11, scaleGridTop=10,scaleGridBottom=11);
+	disabledSkin:Embed(source='images/glass_btn_disable.png', scaleGridLeft=10, scaleGridRight=11, scaleGridTop=10,scaleGridBottom=11);
+	color:#000000;
+	textRollOverColor:#000000;
+}
+
+
+ScrollBar{
+	trackSkin:Embed(source='images/track_skin.png');
+	thumbUpSkin:Embed(source='images/thum_skin.png', scaleGridLeft=8, scaleGridRight=9, scaleGridTop=11,scaleGridBottom=12);
+	thumbOverSkin:Embed(source='images/thum_skin.png', scaleGridLeft=8, scaleGridRight=9, scaleGridTop=11,scaleGridBottom=12);
+	thumbDownSkin:Embed(source='images/thum_skin.png', scaleGridLeft=8, scaleGridRight=9, scaleGridTop=11,scaleGridBottom=12);
+	upArrowUpSkin:Embed(source='images/scroll_arrow_up_up.png');
+	upArrowDownSkin:Embed(source='images/scroll_arrow_up_over.png');
+	upArrowOverSkin:Embed(source='images/scroll_arrow_up_over.png');
+	downArrowUpSkin:Embed(source='images/scroll_arrow_down_up.png');
+	downArrowDownSkin:Embed(source='images/scroll_arrow_down_over.png');
+	downArrowOverSkin:Embed(source='images/scroll_arrow_down_over.png'); 
+}
+
+DataGrid{
+	headerColors:#7ab8ef,#c6fdff;
+	selectionColor:#4385d9;
+	rollOverColor:#7ab8ef;
+	textRollOverColor:#ffffff;
+	textSelectedColor:#ffffff;
+}
+.searchInput{
+	borderSkin:Embed(source='images/search_input.png', scaleGridLeft=22, scaleGridRight=65, scaleGridTop=18,scaleGridBottom=19);
+	cornerRadius:12;
+	textIndent:18;
+	fontSize:12;
+	fontFamily:Verdana;
+	borderThikness:1;
+	borderStyle:solid;
+}
+TabNavigator, TabBar
+{
+	tabStyleName: tabStyleName;
+	firstTabStyleName: firstTab;
+	lastTabStyleName: lastTab;
+	fontSize: 12;	
+}
+.tabStyleName
+{
+	upSkin:Embed(source='images/tab_middle.png', scaleGridLeft=9, scaleGridRight=37, scaleGridTop=13,scaleGridBottom=14);
+	downSkin: Embed(source='images/tab_middle_over.png', 
+		scaleGridLeft=9, scaleGridRight=37, scaleGridTop=13,scaleGridBottom=14);
+	overSkin: Embed(source='images/tab_middle_over.png', 
+		scaleGridLeft=9, scaleGridRight=37, scaleGridTop=13,scaleGridBottom=14);
+	selectedUpSkin: Embed(source='images/tab_middle_selected.png', 
+		scaleGridLeft=9, scaleGridRight=37, scaleGridTop=13,scaleGridBottom=14);
+	selectedOverSkin: Embed(source='images/tab_middle_selected.png', 
+		scaleGridLeft=9, scaleGridRight=37, scaleGridTop=13,scaleGridBottom=14);
+	paddingBottom: 3;
+	paddingTop: 5;
+	paddingLeft: 9;
+	paddingRight: 9;
+}
+
+.firstTab {
+	upSkin:Embed(source='images/tab_first.png', scaleGridLeft=9, scaleGridRight=37, scaleGridTop=13,scaleGridBottom=14);
+	downSkin:Embed(source='images/tab_first_over.png', 
+		scaleGridLeft=9, scaleGridRight=37, scaleGridTop=13,scaleGridBottom=14);
+	overSkin:Embed(source='images/tab_first_over.png', 
+		scaleGridLeft=9, scaleGridRight=37, scaleGridTop=13,scaleGridBottom=14);
+	selectedUpSkin:Embed(source='images/tab_first_selected.png',
+		scaleGridLeft=9, scaleGridRight=37, scaleGridTop=13,scaleGridBottom=14);
+	selectedOverSkin:Embed(source='images/tab_first_selected.png',
+		scaleGridLeft=9, scaleGridRight=37, scaleGridTop=13,scaleGridBottom=14);
+	paddingBottom: 3;
+	paddingTop: 5;
+	paddingLeft: 9;
+	paddingRight: 9;
+}
+
+.lastTab {
+	upSkin:Embed(source='images/tab_last.png', scaleGridLeft=9, scaleGridRight=37, scaleGridTop=13,scaleGridBottom=14);
+	downSkin:Embed(source='images/tab_last_over.png',
+		scaleGridLeft=9, scaleGridRight=37, scaleGridTop=13,scaleGridBottom=14);
+	overSkin:Embed(source='images/tab_last_over.png',
+		scaleGridLeft=9, scaleGridRight=37, scaleGridTop=13,scaleGridBottom=14);
+	selectedUpSkin:Embed(source='images/tab_last_selected.png', 
+		scaleGridLeft=9, scaleGridRight=37, scaleGridTop=13,scaleGridBottom=14);
+	selectedOverSkin:Embed(source='images/tab_last_selected.png', 
+		scaleGridLeft=9, scaleGridRight=37, scaleGridTop=13,scaleGridBottom=14);
+	paddingBottom: 3;
+	paddingTop: 5;
+	paddingLeft: 9;
+	paddingRight: 9;
+}
+
+RadioButton
+{
+	upIcon: Embed(source='images/radio_up.png');
+	downIcon:Embed(source='images/radio_over.png');
+	overIcon:Embed(source='images/radio_over.png');
+	selectedUpIcon:Embed(source='images/radio_selected.png');
+	selectedOverIcon:Embed(source='images/radio_selected.png');
+	selectedDownIcon:Embed(source='images/radio_selected.png');
+}
+Slider, VSlider
+{
+	thumbUpSkin: Embed(source='images/slider_thumb_up.png', scaleGridLeft=6, scaleGridRight=7, scaleGridTop=7,scaleGridBottom=8);
+	thumbOverSkin: Embed(source='images/slider_thumb_up.png', scaleGridLeft=6, scaleGridRight=7, scaleGridTop=7,scaleGridBottom=8);
+	thumbDownSkin: Embed(source='images/slider_thumb_up.png', scaleGridLeft=6, scaleGridRight=7, scaleGridTop=7,scaleGridBottom=8);
+}
+ComboBox{
+	upSkin: Embed(source='images/comboBox_up.png',scaleGridLeft=10, scaleGridRight=160, scaleGridTop=10,scaleGridBottom=11);
+	overSkin:Embed(source='images/comboBox_over.png',scaleGridLeft=10, scaleGridRight=160, scaleGridTop=10,scaleGridBottom=11);
+	downSkin:Embed(source='images/comboBox_over.png',scaleGridLeft=10, scaleGridRight=160, scaleGridTop=10,scaleGridBottom=11);
+	selectedUpSkin:Embed(source='images/comboBox_up.png',scaleGridLeft=10, scaleGridRight=160, scaleGridTop=10,scaleGridBottom=11);
+	selectedOverSkin:Embed(source='images/comboBox_up.png',scaleGridLeft=10, scaleGridRight=160, scaleGridTop=10,scaleGridBottom=11);
+}
+ComboBox, Tree, List
+{
+	selectionColor:#4385d9;
+	rollOverColor:#4385d9;
+	textRollOverColor:#ffffff;
+	textSelectedColor:#ffffff;
+}
+
+DateChooser {
+	headerColors: #C9C9C9, #C9C9C9;	
+}
+
+Tree {
+	folderClosedIcon: Embed(source='images/tree_folder.png');
+	folderOpenIcon: Embed(source='images/tree_folder_open.png');
+}
+
+CheckBox
+{
+	upIcon: Embed(source='images/checkBox_up.png');
+	downIcon:Embed(source='images/checkBox_selected.png');
+	overIcon:Embed(source='images/checkBox_over.png');
+	selectedUpIcon:Embed(source='images/checkBox_selected.png');
+	selectedOverIcon:Embed(source='images/checkBox_selected.png');
+	selectedDownIcon:Embed(source='images/checkBox_selected.png');
+}
+
+Accordion {
+	headerStyleName: accordionHeader;
+}
+
+.accordionHeader {
+	fontSize: 11;
+/*	fillColors: #FFFFFF, #EEEEEE;
+	fillAlphas: 1, 1;*/
+	paddingTop: 7;
+	paddingLeft: 10;
+	paddingBottom: 4;
+	paddingRight: 10;
+	
+}
+
+ButtonBar {
+	buttonStyleName: buttonBarButton;
+	firstButtonStyleName: firstButtonBarButton;
+	lastButtonStyleName: lastButtonBarButton;
+	fontSize: 11;
+}
+
+.buttonBarButton {
+	upSkin:Embed(source='images/button_bar_middle.png', 
+		scaleGridLeft=4, scaleGridRight=16, scaleGridTop=11,scaleGridBottom=12);
+	downSkin:Embed(source='images/button_bar_middle_selected.png', 
+		scaleGridLeft=4, scaleGridRight=16, scaleGridTop=11,scaleGridBottom=12);
+	overSkin:Embed(source='images/button_bar_middle_selected.png', 
+		scaleGridLeft=4, scaleGridRight=16, scaleGridTop=11,scaleGridBottom=12);
+	selectedUpSkin:Embed(source='images/button_bar_middle_selected.png', 
+		scaleGridLeft=4, scaleGridRight=16, scaleGridTop=11,scaleGridBottom=12);
+	selectedOverSkin:Embed(source='images/button_bar_middle_selected.png', 
+		scaleGridLeft=4, scaleGridRight=16, scaleGridTop=11,scaleGridBottom=12);
+	disabledSkin:Embed(source='images/button_bar_middle_disabled.png', 
+		scaleGridLeft=4, scaleGridRight=16, scaleGridTop=11,scaleGridBottom=12);
+	
+	paddingTop: 5;
+	paddingBottom: 4;
+}
+
+.firstButtonBarButton {
+	upSkin:Embed(source='images/button_bar_left.png', 
+		scaleGridLeft=10, scaleGridRight=11, scaleGridTop=11,scaleGridBottom=12);
+	downSkin:Embed(source='images/button_bar_left_selected.png', 
+		scaleGridLeft=10, scaleGridRight=11, scaleGridTop=11,scaleGridBottom=12);
+	overSkin:Embed(source='images/button_bar_left_selected.png', 
+		scaleGridLeft=10, scaleGridRight=11, scaleGridTop=11,scaleGridBottom=12);
+	selectedUpSkin:Embed(source='images/button_bar_left_selected.png', 
+		scaleGridLeft=10, scaleGridRight=11, scaleGridTop=11,scaleGridBottom=12);
+	selectedOverSkin:Embed(source='images/button_bar_left_selected.png', 
+		scaleGridLeft=10, scaleGridRight=11, scaleGridTop=11,scaleGridBottom=12);
+	disabledSkin:Embed(source='images/button_bar_left_disabled.png', 
+		scaleGridLeft=10, scaleGridRight=11, scaleGridTop=11,scaleGridBottom=12);
+	
+	paddingTop: 5;
+	paddingBottom: 4;
+}
+
+.lastButtonBarButton {
+	upSkin:Embed(source='images/button_bar_right.png', 
+		scaleGridLeft=10, scaleGridRight=14, scaleGridTop=11,scaleGridBottom=12);
+	downSkin:Embed(source='images/button_bar_right_selected.png', 
+		scaleGridLeft=10, scaleGridRight=14, scaleGridTop=11,scaleGridBottom=12);
+	overSkin:Embed(source='images/button_bar_right_selected.png', 
+		scaleGridLeft=10, scaleGridRight=14, scaleGridTop=11,scaleGridBottom=12);
+	selectedUpSkin:Embed(source='images/button_bar_right_selected.png', 
+		scaleGridLeft=10, scaleGridRight=14, scaleGridTop=11,scaleGridBottom=12);
+	selectedOverSkin:Embed(source='images/button_bar_right_selected.png', 
+		scaleGridLeft=10, scaleGridRight=14, scaleGridTop=11,scaleGridBottom=12);
+	disabledSkin:Embed(source='images/button_bar_right_disabled.png', 
+		scaleGridLeft=10, scaleGridRight=14, scaleGridTop=11,scaleGridBottom=12);
+	
+	paddingTop: 5;
+	paddingBottom: 4;
+	paddingRight: 7;
+}
+
+
+/****************************************************************************************************************
+FILTERS                                                            *
+*****************************************************************************************************************
+*/
+.dropShadow
+{
+	filterClass:ClassReference('com.asfusion.skins.filters.CSSDropShadowFilter');
+	distance:5;
+	blurX:32;
+	blurY:32;
+	quality:3;
+	alpha:0.6;
+}
+.contentDropShadow
+{
+	filterClass:ClassReference('com.asfusion.skins.filters.CSSDropShadowFilter');
+	distance: 0;
+	blurX: 4;
+	blurY: 4;
+	quality:3;
+	alpha: 0.5;
+	inner: true;
+}
+
+/****************************************************************************************************************
+FONTS                                                              *
+*****************************************************************************************************************
+*/
+@font-face {
+	src:url("fonts/arial.swf");
+	fontFamily: "Arial";
+}
+@font-face {
+	src:url("fonts/arial.swf");
+	fontFamily: "Arial";
+	fontWeight:bold;
+}

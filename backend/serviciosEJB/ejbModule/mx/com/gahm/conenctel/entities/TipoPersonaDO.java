@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * @author lespinosa
@@ -32,7 +33,11 @@ public class TipoPersonaDO implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
+	@Transient
+	public static long FISICA = 1;
+	@Transient
+	public static long MORAL = 2;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;

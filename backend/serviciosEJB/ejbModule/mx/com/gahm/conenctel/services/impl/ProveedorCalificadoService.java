@@ -12,10 +12,14 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
+import mx.com.gahm.conenctel.entities.ColaboradorDO;
 import mx.com.gahm.conenctel.entities.ComentarioProveedorDO;
 import mx.com.gahm.conenctel.entities.ProductoDO;
 import mx.com.gahm.conenctel.entities.ProveedorCalificadoComboDO;
 import mx.com.gahm.conenctel.entities.ProveedorCalificadoDO;
+import mx.com.gahm.conenctel.entities.ProveedorMaquiladorDO;
+import mx.com.gahm.conenctel.entities.TipoColaboradorDO;
+import mx.com.gahm.conenctel.entities.TipoPersonaDO;
 import mx.com.gahm.conenctel.exceptions.ConectelException;
 import mx.com.gahm.conenctel.services.IProveedorCalificadoService;
 import mx.com.gahm.conenctel.util.DataTypeUtil;
@@ -77,6 +81,7 @@ public class ProveedorCalificadoService implements IProveedorCalificadoService {
 		entityManager.persist(proveedor);
 		proveedor.setComentariosProovedor(comentarios);
 		saveComentarios(proveedor);
+		this.saveColaborador( proveedor );
 		return null;
 	}
 	
@@ -89,6 +94,22 @@ public class ProveedorCalificadoService implements IProveedorCalificadoService {
 			entityManager.persist(comentario);
 		}
 		
+	}
+	
+	private void saveColaborador(ProveedorCalificadoDO proveedor) {
+		if( proveedor == null ||
+			proveedor.getProveedorSeleccionado() == null ||
+			proveedor.getProveedorSeleccionado().getProveedor() == null || 
+			proveedor.getProveedorSeleccionado().getProveedor().getTipoPersona() == null ||
+			proveedor.getProveedorSeleccionado().getProveedor().getTipoPersona().getId() != TipoPersonaDO.FISICA ){
+			return;
+		}
+		ColaboradorDO colaborador = new ColaboradorDO();
+		colaborador.setNombreCompleto( proveedor.getProveedorSeleccionado().getProveedor().getRazonSocial() );
+		TipoColaboradorDO tipoColaborador = entityManager.find(
+				TipoColaboradorDO.class, TipoColaboradorDO.PROVEEDORES);	
+		colaborador.setTipoColaborador( tipoColaborador );
+		entityManager.persist( colaborador );
 	}
 	
 	private void deleteComentarios(ProveedorCalificadoDO item){

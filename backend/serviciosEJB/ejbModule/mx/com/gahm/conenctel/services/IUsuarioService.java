@@ -13,7 +13,7 @@ import mx.com.gahm.conenctel.exceptions.ConectelException;
 public interface IUsuarioService extends Serializable {
 	public List<UsuarioDO> getAll() throws ConectelException;
 	
-	public UsuarioDO login(String user, String password) throws ConectelException;
+	public UsuarioDO login(String user, String password, String foo) throws ConectelException;
 	
 	public UsuarioDO save(UsuarioDO user) throws ConectelException;
 	

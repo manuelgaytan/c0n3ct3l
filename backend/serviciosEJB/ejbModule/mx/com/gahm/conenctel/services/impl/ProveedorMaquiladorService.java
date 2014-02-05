@@ -14,12 +14,15 @@ import javax.persistence.TypedQuery;
 
 import com.sun.faces.config.DocumentOrderingWrapper;
 
+import mx.com.gahm.conenctel.entities.ColaboradorDO;
 import mx.com.gahm.conenctel.entities.ComentarioProveedorDO;
 import mx.com.gahm.conenctel.entities.DocumentoLiderProveedorMaquiladorDO;
 import mx.com.gahm.conenctel.entities.ProductoDO;
 import mx.com.gahm.conenctel.entities.ProveedorCalificadoDO;
 import mx.com.gahm.conenctel.entities.ProveedorDO;
 import mx.com.gahm.conenctel.entities.ProveedorMaquiladorDO;
+import mx.com.gahm.conenctel.entities.TipoColaboradorDO;
+import mx.com.gahm.conenctel.entities.TipoPersonaDO;
 import mx.com.gahm.conenctel.exceptions.ConectelException;
 import mx.com.gahm.conenctel.services.IProveedorMaquiladorService;
 import mx.com.gahm.conenctel.util.DataTypeUtil;
@@ -73,10 +76,25 @@ public class ProveedorMaquiladorService implements IProveedorMaquiladorService {
 				documento.setProveedorMaquilador(proveedor);
 			}
 		}
-		
 		entityManager.persist(proveedor);
+		this.saveColaborador( proveedor );
 		
 		return null;
+	}
+
+	private void saveColaborador(ProveedorMaquiladorDO proveedor) {
+		if( proveedor == null ||
+			proveedor.getProveedor() == null || 
+			proveedor.getProveedor().getTipoPersona() == null ||
+			proveedor.getProveedor().getTipoPersona().getId() != TipoPersonaDO.FISICA ){
+			return;
+		}
+		ColaboradorDO colaborador = new ColaboradorDO();
+		colaborador.setNombreCompleto( proveedor.getProveedor().getRazonSocial() );
+		TipoColaboradorDO tipoColaborador = entityManager.find(
+				TipoColaboradorDO.class, TipoColaboradorDO.PROVEEDORES);	
+		colaborador.setTipoColaborador( tipoColaborador );
+		entityManager.persist( colaborador );
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })

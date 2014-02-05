@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 
 /**
@@ -23,6 +24,10 @@ import javax.persistence.Table;
 public class TipoColaboradorDO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	@Transient
+	public static long PROVEEDORES = 1;
+	@Transient
+	public static long NOMINA = 2;
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;

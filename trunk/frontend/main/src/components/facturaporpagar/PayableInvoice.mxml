@@ -373,7 +373,7 @@
 				if( item is OrdenCompraMaquilado ){
 					returnValue = (item as OrdenCompraMaquilado).solicitudServicioMaquilado.id;
 				}
-				if( item is OrdenCompraAlmacen  ){
+				if( (item is OrdenCompraAlmacen) && ( (item as OrdenCompraAlmacen).requisicionCompra != null ) ){
 					returnValue = (item as OrdenCompraAlmacen).requisicionCompra.id;
 				}
 				return returnValue;

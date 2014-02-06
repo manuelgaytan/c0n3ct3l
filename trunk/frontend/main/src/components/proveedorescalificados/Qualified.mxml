@@ -12,11 +12,13 @@
 			import model.FormaPago;
 			import model.GrupoFamiliaD;
 			import model.Perfil;
+			import model.Proveedor;
 			import model.ProveedorCalificado;
 			import model.ProveedorSeleccionado;
 			import model.TipoAlmacen;
 			import model.TipoMantenimiento;
 			import model.TipoPago;
+			import model.TipoPersona;
 			import model.UbicacionC;
 			import model.UnidadB;
 			import model.Util;
@@ -104,6 +106,10 @@
 				}
 				item.proveedorSeleccionado = new ProveedorSeleccionado();
 				item.proveedorSeleccionado.id = ((this.cmbProveedor.selectedItem as ProveedorSeleccionado).id);
+				item.proveedorSeleccionado.proveedor = new Proveedor();
+				item.proveedorSeleccionado.proveedor.tipoPersona = new TipoPersona();
+				item.proveedorSeleccionado.proveedor.tipoPersona.id = (this.cmbProveedor.selectedItem as ProveedorSeleccionado).proveedor.tipoPersona.id;
+				item.proveedorSeleccionado.proveedor.razonSocial = (this.cmbProveedor.selectedItem as ProveedorSeleccionado).proveedor.razonSocial;
 				item.formaPago = new FormaPago();
 				item.formaPago.id = ((this.cmbFormaPago.selectedItem as FormaPago).id);
 				item.tipoPago = new TipoPago();

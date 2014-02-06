@@ -157,16 +157,19 @@
 				<mx:DataGridColumn id="dtgInitialDate" headerText="{'Fecha\nInicio\nContrato'}"
 								   dataField="contratacion.fechaInicioContrato"
 								   labelFunction="{Util.labelFunctionDate}"
+								   textAlign="center"
 								   width="80"
 								   />
 				<mx:DataGridColumn headerText="{'Fecha\nInicio'}"
 								   dataField="fechaInicio"
 								   labelFunction="{Util.labelFunctionDate}"
+								   textAlign="center"
 								   width="80"
 								   />
 				<mx:DataGridColumn id="dtgFinalDate" headerText="{'Fecha\nFin'}"
 								   dataField="fechaTermino"
 								   labelFunction="{Util.labelFunctionDate}"
+								   textAlign="center"
 								   width="80"
 								   />
 				<mx:DataGridColumn id="dtgInmediatlyAction" headerText="{'Prima\nVacacional'}" width="80" editable="false" textAlign="center">

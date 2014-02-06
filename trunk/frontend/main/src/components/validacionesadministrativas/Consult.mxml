@@ -130,7 +130,8 @@
 			<mx:DataGridColumn headerText="{'Fecha\nValidación 1'}"
 							   dataField="fechaValidacion1"
 							   labelFunction="{Util.labelFunctionDate}"
-							   width="100"/>
+							   width="100"
+							   textAlign="center"/>
 			<mx:DataGridColumn headerText="{'Estatus de\nCobro 1'}"
 							   dataField="etadoValidacionCobro1.etiqueta"
 							   width="120"/>
@@ -144,7 +145,8 @@
 			<mx:DataGridColumn headerText="{'Fecha\nValidación 2'}"
 							   dataField="fechaValidacion2"
 							   labelFunction="{Util.labelFunctionDate}"
-							   width="100"/>
+							   width="100"
+							   textAlign="center"/>
 			<mx:DataGridColumn headerText="{'Estatus de\nCobro 2'}"
 							   dataField="etadoValidacionCobro2.etiqueta"
 							   width="120"/>
@@ -158,7 +160,8 @@
 			<mx:DataGridColumn headerText="{'Fecha\nValidación 3'}"
 							   dataField="fechaValidacion3"
 							   labelFunction="{Util.labelFunctionDate}"
-							   width="100"/>
+							   width="100"
+							   textAlign="center"/>
 			<mx:DataGridColumn headerText="{'Estatus de\nCobro 3'}"
 							   dataField="etadoValidacionCobro3.etiqueta"
 							   width="120"/>

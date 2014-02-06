@@ -157,14 +157,17 @@
 				<mx:DataGridColumn headerText="{'Alta\nI.M.S.S.'}"
 								   labelFunction="{Util.labelFunctionDate}"
 								   dataField="altaImss"
+								   textAlign="center"
 								   width="100"/>
 				<mx:DataGridColumn headerText="{'Baja\nI.M.S.S.'}"
 								   labelFunction="{Util.labelFunctionDate}"
 								   dataField="bajaImss"
+								   textAlign="center"
 								   width="100"/>
 				<mx:DataGridColumn headerText="{'Modificación\nI.M.S.S.'}"
 								   labelFunction="{Util.labelFunctionDate}"
 								   dataField="modificacionImss"
+								   textAlign="center"
 								   width="100"/>
 				<mx:DataGridColumn headerText="{'Estado del\nColaborador'}"
 								   dataField="estadoColaborador.estado"

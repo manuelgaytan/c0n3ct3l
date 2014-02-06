@@ -79,7 +79,8 @@
 		<mx:columns>
 			<mx:DataGridColumn id="dtgCreationDate" headerText="Fecha" width="100"
 							   dataField="fechaHoraCreacion"
-							   labelFunction="{Util.labelFunctionDate}"/>
+							   labelFunction="{Util.labelFunctionDate}"
+							   textAlign="center"/>
 			<mx:DataGridColumn id="dtgUserOriginated" headerText="{'Usuario\nCreación'}" width="100"
 							   dataField="usuarioCreacion.usuario"/>
 			<mx:DataGridColumn id="dtgAction" headerText="Notificación" width="270"

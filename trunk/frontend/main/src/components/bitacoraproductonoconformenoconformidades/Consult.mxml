@@ -132,6 +132,7 @@
 				<mx:DataGridColumn id="dtgEventDate" headerText="{'Fecha del\nSuceso'}"
 								   labelFunction="{Util.labelFunctionDate}"
 								   dataField="fechaSuceso"
+								   textAlign="center"
 								   width="100"/>
 				<mx:DataGridColumn id="dtgAreaWhoRaisedNonConformity" headerText="{'Área a quién\nse Levanta la\nNo Conformidad'}"
 								   dataField="areaNombreSeLevanta"

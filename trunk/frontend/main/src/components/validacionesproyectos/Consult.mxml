@@ -125,7 +125,7 @@
 							   width="150"
 							   />
 			<mx:DataGridColumn id="dtgSite" headerText="{'Central\no Sitio'}" textAlign="right"
-							   dataField="centralSitio"
+							   dataField="proyecto.centralSitio"
 							   width="150"
 							   />
 			<mx:DataGridColumn headerText="{'Proyecto\nPadre'}"
@@ -133,13 +133,14 @@
 							   width="150"
 							   />
 			<mx:DataGridColumn headerText="{'Estatus de\nValidación\nOperativa'}"
-							   dataField="estadoValidacionOperativa.etiqueta"
+							   dataField="proyecto.validacionProyecto.estadoValidacionOperativa.etiqueta"
 							   width="150"
 							   />
 			<mx:DataGridColumn headerText="{'Fecha de\nEstatus de\nValidación\nOperativa'}"
-							   dataField="fecha"
+							   dataField="proyecto.validacionProyecto.fecha"
 							   width="90"
 							   labelFunction="{Util.labelFunctionDate}"
+							   textAlign="center"
 							   />
 		</mx:columns>
 	</mx:DataGrid>

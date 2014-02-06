@@ -132,7 +132,7 @@
 		[Event(name="itemDetail", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
-		<mx:DataGrid id="datagrid" width="20320" height="100%" dataProvider="{items}"
+		<mx:DataGrid id="datagrid" width="2250" height="100%" dataProvider="{items}"
 					 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 					 allowMultipleSelection="true"
 					 >
@@ -141,7 +141,7 @@
 								   dataField="id"
 								   width="80"
 								   textAlign="right"/>
-				<mx:DataGridColumn id="dtgID" headerText="ID\nSolicitud\nViáticos"
+				<mx:DataGridColumn id="dtgID" headerText="{'ID\nSolicitud\nViáticos'}"
 								   dataField="pagoViaticos.solicitudViaticos.id"
 								   width="60"
 								   textAlign="right"/>
@@ -158,11 +158,13 @@
 								   textAlign="right"/>
 				<mx:DataGridColumn id="dtgClient" headerText="{'Cliente'}"
 								   dataField="pagoViaticos.solicitudViaticos.proyecto.producto.cliente.nombreComercial"
-								   width="170"/>
+								   width="250"/>
+				<!--
 				<mx:DataGridColumn id="dtgResponsibleViaticum" headerText="{'Responsable\nViático'}"
 								   dataField="pagoViaticos.solicitudViaticos.colaborador.nombreCompleto"
 								   width="170"
 								   />
+				-->
 				<mx:DataGridColumn id="dtgConveyance" headerText="{'Medio\nTransporte'}"
 								   dataField="pagoViaticos.solicitudViaticos.medioTransporte.etiqueta"
 								   textAlign="center"
@@ -227,7 +229,7 @@
 								   dataField="fechaSubidaDocumentos"
 								   labelFunction="{Util.labelFunctionDate}"
 								   textAlign="center"
-								   width="80"
+								   width="100"
 								   />
 				<mx:DataGridColumn headerText="{'Estado'}"
 								   dataField="estadoComprobacionViaticos.etiqueta"

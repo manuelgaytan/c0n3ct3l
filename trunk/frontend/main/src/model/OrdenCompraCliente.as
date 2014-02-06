@@ -11,7 +11,7 @@ package model
 		public var numeroOrdenCompra:String;
 		public var fechaOrdenCompra:Date;
 		public var partida:String;
-		public var costoOrdenCompra:Number;
+		public var costoOrdenCompra:*;
 		public var validacionCosto:EstadoValidacionCosto;
 		public var comentarioValidacionCostoOrdenCompraCliente:ArrayCollection;
 		public var estadoOrdenCompra:EstadoOrdenCompra;

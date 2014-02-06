@@ -124,6 +124,7 @@
 				<mx:DataGridColumn id="dtgOpenDate" headerText="{'Fecha \nApertura'}"
 								   labelFunction="{Util.labelFunctionDate}"
 								   dataField="fechaApertura"
+								   textAlign="center"
 								   width="100"/>
 				<mx:DataGridColumn id="dtgActionType" headerText="{'Tipo\nAcción'}"
 								   dataField="tipoAccion.accion"

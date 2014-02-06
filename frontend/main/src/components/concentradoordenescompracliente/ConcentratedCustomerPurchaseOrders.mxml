@@ -24,6 +24,7 @@
 			import model.Prioridad;
 			import model.TipoAlmacen;
 			import model.TipoMantenimiento;
+			import model.TipoServicio;
 			import model.Util;
 			
 			import modules.Almacen;
@@ -92,7 +93,11 @@
 				this.itemsManagement.dataProvider = this._item.partidasConcentradoOrdenCompraCliente;
 				this.txtSite.text = this._item.centralSitio;
 				this.txtSiteID.text = this._item.idSitio;
-				this.txtServiceType.text = this._item.localForaneo;
+				//this.txtServiceType.text = this._item.localForaneo;
+				if( Util.isFill( this.cmbServiceType ) && this._item.localForaneo != null ){
+					this.cmbServiceType.selectedIndex = Util.selectedIndexFromCombo( this.cmbServiceType.dataProvider as ArrayCollection, 
+						Number( this._item.localForaneo ));
+				}
 				this.txtPayCondition.text = this._item.idSitio;
 				this.comments.setCommentsIn( this._item.comentariosConcentradoOrdenCompraCliente, "comentarioValidacionAdministrativa");
 			}
@@ -111,7 +116,10 @@
 				item.partidasConcentradoOrdenCompraCliente = this.itemsManagement.dataProvider as ArrayCollection;
 				item.centralSitio = Util.validateEmpty(this.txtSite.text);
 				item.idSitio = Util.validateEmpty(this.txtSiteID.text);
-				item.localForaneo = Util.validateEmpty(this.txtServiceType.text);
+				//item.localForaneo = Util.validateEmpty(this.txtServiceType.text);
+				if( Util.listBaseSelected( this.cmbServiceType, "id", true ) ){
+					item.localForaneo = ( Util.validateCombo( this.cmbServiceType ) as TipoServicio ).id;
+				}
 				item.condicionPago = Util.validateEmpty(this.txtPayCondition.text);
 				item.comentariosConcentradoOrdenCompraCliente = this.comments.getCommentsAsInWith("model.ComentarioValidacionAdministrativa","model.ComentarioConcentradoOrdenCompraCliente","comentarioValidacionAdministrativa");
 				return item;
@@ -120,6 +128,7 @@
 			private function fillCombos():void
 			{
 				this.responseGetAll.token = this.clienteService.getAll();
+				this.responseGetTiposServicios.token = this.catalogoService.getTipoServicio();
 			}
 			
 			protected function responseGetAllClient_resultHandler(event:ResultEvent):void
@@ -189,7 +198,7 @@
 				validators.setRestrictor(txtRequisitionNumber, "generic");
 				validators.setRestrictor(txtSite, "generic");
 				validators.setRestrictor(txtSiteID, "generic");
-				validators.setRestrictor(txtServiceType, "generic");
+				//validators.setRestrictor(txtServiceType, "generic");
 				validators.setRestrictor(txtPayCondition, "generic");
 				this.validatorsEntry = new InicializaValidadoresEtiquetas();
 				validatorsEntry.crearValidadorRestrictor("generic",ValidadorCadenaCualquierCaracter.nombre, 0, 255);
@@ -219,7 +228,8 @@
 				this.itemsManagement.reset();
 				this.txtSite.reset();
 				this.txtSiteID.reset();
-				this.txtServiceType.reset();
+				//this.txtServiceType.reset();
+				this.cmbServiceType.selectedIndex = 0;
 				this.txtPayCondition.reset();
 				this.comments.reset();
 			}
@@ -272,6 +282,19 @@
 				this.txtCode.reset();
 				this.txtDescription.reset();
 				this.txtPrice.reset();
+			}
+			
+			protected function responseGetTiposServicios_resultHandler(event:ResultEvent=null):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbServiceType.dataProvider = Util.addEmptyCatalgo( data, "tipo" );
+				if( this._item != null && Util.isFill( this.cmbServiceType ) && this._item.localForaneo != null ){
+					this.cmbServiceType.selectedIndex = Util.selectedIndexFromCombo( this.cmbServiceType.dataProvider as ArrayCollection, 
+						Number( this._item.localForaneo ));
+				}
 			}
 		]]>
 	</mx:Script>
@@ -332,9 +355,13 @@
 								  />
 		</mx:FormItem>
 		<mx:FormItem label="Local/Foráneo:">
+			<!--
 			<components:TextInput id="txtServiceType"
 								  width="120"
 								  />
+			-->
+			<mx:ComboBox id="cmbServiceType" width="250"
+						 labelField="tipo"/>
 		</mx:FormItem>
 		<mx:FormItem label="Condiciones de Pago:">
 			<components:TextArea id="txtPayCondition"
@@ -354,4 +381,7 @@
 	<mx:RemoteObject id="clienteService" destination="clienteService" fault="requisicionService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetAll" result="responseGetAllClient_resultHandler(event)" fault="requisicionService_faultHandler(event)"/>
+	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="requisicionService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetTiposServicios" result="responseGetTiposServicios_resultHandler(event)"/>
 </mx:VBox>

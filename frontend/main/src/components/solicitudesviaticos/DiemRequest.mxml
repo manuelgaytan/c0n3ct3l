@@ -193,8 +193,8 @@
 				this.validators.setRestrictor( this.txtCardNumber, "genericAlfanumeric");
 				this.validators.setRestrictor( this.txtMail, "genericAlfanumeric");
 				this.validators.setRestrictor( this.txtPhone, "genericAlfanumeric");
-				this.validators.setValidador( this.txtNumberOfVehicle, "genericAlfanumeric");
-				this.validators.setValidador( this.txtInitialMileage, "genericAlfanumeric");
+				this.validators.setRestrictor( this.txtNumberOfVehicle, "genericAlfanumeric");
+				this.validators.setRestrictor( this.txtInitialMileage, "genericAlfanumeric");
 				this.validators.crearValidadorRestrictor("genericDecimal", ValidadorDecimal.nombre, 9, 2);
 				this.validators.setRestrictor( this.txtGAS, "genericDecimal" );
 				this.validators.setRestrictor( this.txtTollBooths, "genericDecimal" );
@@ -497,10 +497,10 @@
 			<mx:ComboBox id="cmbConveyance" width="200"
 						 labelField="etiqueta" change="cmbConveyance_changeHandler(event)"/>
 		</mx:FormItem>
-		<mx:FormItem required="true" label="Número de Vehículo:">
+		<mx:FormItem required="false" label="Número de Vehículo:">
 			<components:TextInput id="txtNumberOfVehicle"/>
 		</mx:FormItem>
-		<mx:FormItem required="true" label="Kilometraje Inicial:">
+		<mx:FormItem required="false" label="Kilometraje Inicial:">
 			<components:TextInput id="txtInitialMileage" textAlign="right" width="120"/>
 		</mx:FormItem>
 		<mx:FormItem label="Combustible:">

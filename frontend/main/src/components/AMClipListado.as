@@ -168,7 +168,7 @@ package components
 			var formatoActual:Object = new Object();
 			var funcionActual:Object = new Object();
 			var align:String = "ALIGN='LEFT'";
-			var textAlign:String = "left";
+			var textAlign:String = (columnaActual as DataGridColumn).getStyle("textAlign");
 			var backgroundColor:String = "#FFFFFF";
 			return this.crearCelda( valorTd, columnaActual, textAlign, backgroundColor, objeto, htmlCallbackFormatter); 
 		}
@@ -233,7 +233,7 @@ package components
 				valorTd = labelFunction(objeto, columnaActual);
 			}
 			
-			var textAlign:String = "left";
+			var textAlign:String = (columnaActual as DataGridColumn).getStyle("textAlign");
 			var backgroundColor:String = "#FFFFFF";
 /*
 			if(columnaActual is AdvancedDataGridColumn) {

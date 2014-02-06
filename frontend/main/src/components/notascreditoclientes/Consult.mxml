@@ -112,7 +112,7 @@
 		[Event(name="creditNoteDetail", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
-	<mx:DataGrid id="datagrid" width="700" height="100%" dataProvider="{items}"
+	<mx:DataGrid id="datagrid" width="870" height="100%" dataProvider="{items}"
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 				 allowMultipleSelection="true">
 		<mx:columns>
@@ -137,12 +137,12 @@
 							   />
 			<mx:DataGridColumn id="dtgDate" headerText="Fecha"
 							   dataField="fecha"
-							   width="60"
+							   width="80"
 							   textAlign="center"
 							   labelFunction="labelFunctionDate"/>
 			<mx:DataGridColumn id="dtgClient" headerText="Cliente"
 							   dataField="cliente.nombreComercial"
-							   width="100"/>
+							   width="250"/>
 			<mx:DataGridColumn headerText="Subtotal"
 							   dataField="subtotal"
 							   width="80"

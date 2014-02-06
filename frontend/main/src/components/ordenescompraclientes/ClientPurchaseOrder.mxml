@@ -76,7 +76,7 @@
 				this.txtPurchaseOrderNumber.text = this._item.numeroOrdenCompra;
 				this.dtfPurchaseOrderDate.selectedDate = this._item.fechaOrdenCompra;
 				this.txtItem.text = Util.extractToText( this._item, "partida" );
-				this.txtPurchaseOrderCost.text = this._item.costoOrdenCompra.toString();
+				this.txtPurchaseOrderCost.text = Util.numberToString( this._item.costoOrdenCompra, true );
 				this.setCommercialCost(this._item.proyecto);
 				if( Util.isFill( this.cmbCostValidationStatus ) && this._item.validacionCosto != null ){
 					this.cmbCostValidationStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbCostValidationStatus.dataProvider as ArrayCollection, 

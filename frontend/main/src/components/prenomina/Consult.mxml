@@ -139,6 +139,7 @@
 				<mx:DataGridColumn id="dtgIncidenceDate" headerText="{'Fecha\nIncidencia'}"
 								   dataField="fechaIncidencia"
 								   labelFunction="{Util.labelFunctionDate}"
+								   textAlign="center"
 								   width="100"/>
 				<mx:DataGridColumn id="dtgIncidenceClas" headerText="{'Clase\nIncidencia'}"
 								   dataField="claseIncidencia.incidencia"

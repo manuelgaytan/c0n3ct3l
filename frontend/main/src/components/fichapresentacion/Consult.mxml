@@ -144,6 +144,7 @@
 				<mx:DataGridColumn headerText="{'Fecha de\nIngreso'}"
 								   dataField="contratacion.fechaInicioContrato"
 								   labelFunction="{Util.labelFunctionDate}"
+								   textAlign="center"
 								   width="90"/>
 				<mx:DataGridColumn headerText="{'Puesto'}"
 								   dataField="contratacion.seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosPrincipalesSolicitante.puestoSolicitado"

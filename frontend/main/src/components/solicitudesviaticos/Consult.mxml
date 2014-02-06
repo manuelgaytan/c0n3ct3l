@@ -117,7 +117,7 @@
 		[Event(name="itemDetail", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
-		<mx:DataGrid id="datagrid" width="1940" height="100%" dataProvider="{items}"
+		<mx:DataGrid id="datagrid" width="1770" height="100%" dataProvider="{items}"
 					 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 					 allowMultipleSelection="true"
 					 >
@@ -140,10 +140,6 @@
 				<mx:DataGridColumn id="dtgClient" headerText="{'Cliente'}"
 								   dataField="proyecto.producto.cliente.nombreComercial"
 								   width="170"/>
-				<mx:DataGridColumn id="dtgResponsibleViaticum" headerText="{'Responsable\nViático'}"
-								   dataField="colaborador.nombreCompleto"
-								   width="170"
-								   />
 				<mx:DataGridColumn id="dtgConveyance" headerText="{'Medio\nTransporte'}"
 								   dataField="medioTransporte.etiqueta"
 								   textAlign="center"

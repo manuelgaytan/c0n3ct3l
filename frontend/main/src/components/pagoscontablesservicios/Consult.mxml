@@ -111,7 +111,7 @@
 		[Event(name="accountingPaymentsServicesDetail", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
-	<mx:DataGrid id="datagrid" width="1650" height="100%" dataProvider="{items}"
+	<mx:DataGrid id="datagrid" width="1910" height="100%" dataProvider="{items}"
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 				 allowMultipleSelection="true">
 		<mx:columns>
@@ -129,11 +129,11 @@
 							   dataField="descripcionPagoContableServicio.descripcion"
 							   />
 			<mx:DataGridColumn id="dtgQualifiedSupplier" headerText="{'Proveedor\nCalificado'}"
-							   width="120"
+							   width="250"
 							   dataField="proveedorCalificado.proveedorSeleccionado.proveedor.nombreComercial"
 							   />
 			<mx:DataGridColumn id="dtgMaquiladoSupplier" headerText="{'Proveedor\nMaquilador'}"
-							   width="120"
+							   width="250"
 							   dataField="proveedorMaquilador.proveedor.nombreComercial"
 							   />
 			<mx:DataGridColumn headerText="{'Folio del\nDocumento'}"

@@ -99,7 +99,7 @@
 		[Event(name="pettyCashFundFixedDetail", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
-	<mx:DataGrid id="datagrid" width="710" height="100%" dataProvider="{items}"
+	<mx:DataGrid id="datagrid" width="940" height="100%" dataProvider="{items}"
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 				 allowMultipleSelection="true">
 		<mx:columns>
@@ -113,15 +113,15 @@
 							   textAlign="center"
 							   labelFunction="labelFunctionDate"/>
 			<mx:DataGridColumn id="dtgDescription" headerText="Descripción"
-							   width="90"
+							   width="200"
 							   dataField="descripcionFondoFijoCajaChica.descripcion"
 							   />
 			<mx:DataGridColumn id="dtgDeliver" headerText="Entrega"
-							   width="140"
+							   width="200"
 							   dataField="entrega.nombreCompleto"
 							   />
 			<mx:DataGridColumn id="dtgReceiver" headerText="Recibe"
-							   width="140"
+							   width="200"
 							   dataField="colaborador.nombreCompleto"
 							   />
 			<mx:DataGridColumn id="dtgIncomes" headerText="Ingreso"

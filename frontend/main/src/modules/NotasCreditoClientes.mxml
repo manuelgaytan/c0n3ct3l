@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
-		   width="710" height="500"
+		   width="750" height="500"
 		   xmlns:notascreditoclientes="components.notascreditoclientes.*"
 		   creationComplete="creationCompleteHandler(event)">
 	<mx:Script>

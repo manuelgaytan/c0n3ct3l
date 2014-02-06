@@ -130,6 +130,7 @@
 				<mx:DataGridColumn id="dtgDateHour" headerText="{'Fecha y Hora'}"
 								   dataField="fechaHora"
 								   labelFunction="{Util.labelFunctionDateHour}"
+								   textAlign="center"
 								   width="150"/>
 				<mx:DataGridColumn id="dtgPlace" headerText="{'Lugar'}"
 								   dataField="lugar"

@@ -149,10 +149,12 @@
 				<mx:DataGridColumn headerText="{'Fecha de\nExpedición\nCertificado\nMédico'}"
 								   labelFunction="{Util.labelFunctionDate}"
 								   dataField="fechaExpedicionCertificadoMedico"
+								   textAlign="center"
 								   width="120"/>
 				<mx:DataGridColumn headerText="{'Fecha de\nVencimiento\nCertificado\nMédico'}"
 								   labelFunction="{Util.labelFunctionDate}"
 								   dataField="fechaVencimientoCertificadoMedico"
+								   textAlign="center"
 								   width="120"/>
 				<mx:DataGridColumn id="dtgRecruitmentType" headerText="{'Tipo de\nContratación'}"
 								   dataField="tipoContratacion.tipo"
@@ -169,6 +171,7 @@
 				<mx:DataGridColumn id="dtgContractStartDate" headerText="{'Fecha Inicio\nde Contrato'}"
 								   labelFunction="{Util.labelFunctionDate}"
 								   dataField="fechaInicioContrato"
+								   textAlign="center"
 								   width="120"/>
 				<mx:DataGridColumn headerText="{'Seguro\nSocial'}" width="80"
 								   imeMode="prestaciones.seguroSocial"
@@ -202,6 +205,7 @@
 				<mx:DataGridColumn headerText="{'Fecha de\nTérmino\nde Contrato'}"
 								   labelFunction="{Util.labelFunctionDate}"
 								   dataField="fechaTerminoContrato"
+								   textAlign="center"
 								   width="120"/>
 				<mx:DataGridColumn headerText="{'Motivo de\nTérmino de\nContrato'}"
 								   dataField="motivoTerminoContrato"

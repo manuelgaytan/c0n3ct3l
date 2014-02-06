@@ -259,7 +259,7 @@
 		[Event(name="itemDetail", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
-		<mx:DataGrid id="datagrid" width="3130" height="100%" dataProvider="{items}"
+		<mx:DataGrid id="datagrid" width="3160" height="100%" dataProvider="{items}"
 					 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 					 allowMultipleSelection="true"
 					 >
@@ -281,7 +281,7 @@
 				<mx:DataGridColumn headerText="{'Tipo\nProveedor'}"
 								   labelFunction="labelFunctionTipoProveedor"
 								   textAlign="center"
-								   width="150"
+								   width="180"
 								   />
 				<mx:DataGridColumn headerText="{'Proveedor'}"
 								   labelFunction="labelFunctionProveedor"

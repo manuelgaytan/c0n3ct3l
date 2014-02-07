@@ -70,6 +70,9 @@ public class PerfilEscalaDO implements Serializable {
 	private Integer agresivo;
 	
 	@Column(name = "audaz", nullable = false)
+	private Integer audaz;
+	
+	@Column(name = "lenguaje", nullable = false)
 	private Integer lenguaje;
 	
 	@Column(name = "respecto_autoridad", nullable = false)
@@ -88,7 +91,7 @@ public class PerfilEscalaDO implements Serializable {
 			Integer inteligencia, Integer sociable,
 			Integer metodosProcedimientos, Integer aspectofisico,
 			Integer desenvolvimiento, Integer concentracion,
-			Integer entusiasmo, Integer amabilidad, Integer agresivo,
+			Integer entusiasmo, Integer amabilidad, Integer agresivo, Integer audaz,
 			Integer lenguaje, Integer respectoAutoridad, Integer orden) {
 		super();
 		this.id = id;
@@ -102,6 +105,7 @@ public class PerfilEscalaDO implements Serializable {
 		this.entusiasmo = entusiasmo;
 		this.amabilidad = amabilidad;
 		this.agresivo = agresivo;
+		this.audaz = audaz;
 		this.lenguaje = lenguaje;
 		this.respectoAutoridad = respectoAutoridad;
 		this.orden = orden;
@@ -194,6 +198,14 @@ public class PerfilEscalaDO implements Serializable {
 
 	public void setAgresivo(Integer agresivo) {
 		this.agresivo = agresivo;
+	}
+	
+	public Integer getAudaz() {
+		return audaz;
+	}
+
+	public void setAudaz(Integer audaz) {
+		this.audaz = audaz;
 	}
 
 	public Integer getLenguaje() {

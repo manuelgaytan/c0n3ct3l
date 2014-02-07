@@ -54,15 +54,58 @@ public class InformacionFacturacionService implements IInformacionFacturacionSer
 	}
 
 	private void setFechaMayor(InformacionFacturacionDO informacionFacturacionDO) {
-		if(  	  informacionFacturacionDO.getFechaProgramada1().before( informacionFacturacionDO.getFechaProgramada2() ) &&
-				  informacionFacturacionDO.getFechaProgramada1().before( informacionFacturacionDO.getFechaProgramada3() ) ){
-				  informacionFacturacionDO.setFechaMayor( informacionFacturacionDO.getFechaProgramada1() );
-		}else if( informacionFacturacionDO.getFechaProgramada2().before( informacionFacturacionDO.getFechaProgramada1() ) &&
-				  informacionFacturacionDO.getFechaProgramada2().before( informacionFacturacionDO.getFechaProgramada3() ) ){
-				  informacionFacturacionDO.setFechaMayor( informacionFacturacionDO.getFechaProgramada2() );
-		}else if( informacionFacturacionDO.getFechaProgramada3().before( informacionFacturacionDO.getFechaProgramada1() ) &&
-				  informacionFacturacionDO.getFechaProgramada3().before( informacionFacturacionDO.getFechaProgramada2() ) ){
-				  informacionFacturacionDO.setFechaMayor( informacionFacturacionDO.getFechaProgramada3() );
+		if (informacionFacturacionDO == null) {
+			return;
+		}
+		if( informacionFacturacionDO.getFechaProgramada1() != null && informacionFacturacionDO.getFechaProgramada2() != null && 
+			informacionFacturacionDO.getFechaProgramada3() == null &&
+			informacionFacturacionDO.getFechaProgramada1().before( informacionFacturacionDO.getFechaProgramada2() ) ){
+			informacionFacturacionDO.setFechaMayor( informacionFacturacionDO.getFechaProgramada1() );
+			return;
+		}
+		if( informacionFacturacionDO.getFechaProgramada1() != null && informacionFacturacionDO.getFechaProgramada2() != null && 
+			informacionFacturacionDO.getFechaProgramada3() == null &&
+			informacionFacturacionDO.getFechaProgramada2().before( informacionFacturacionDO.getFechaProgramada1() ) ){
+			informacionFacturacionDO.setFechaMayor( informacionFacturacionDO.getFechaProgramada2() );
+			return;
+		}
+		if( informacionFacturacionDO.getFechaProgramada1() != null && informacionFacturacionDO.getFechaProgramada3() != null && 
+			informacionFacturacionDO.getFechaProgramada2() == null &&
+			informacionFacturacionDO.getFechaProgramada1().before( informacionFacturacionDO.getFechaProgramada3() ) ){
+			informacionFacturacionDO.setFechaMayor( informacionFacturacionDO.getFechaProgramada1() );
+			return;
+		}
+		if( informacionFacturacionDO.getFechaProgramada1() != null && informacionFacturacionDO.getFechaProgramada3() != null && 
+			informacionFacturacionDO.getFechaProgramada2() == null &&
+			informacionFacturacionDO.getFechaProgramada3().before( informacionFacturacionDO.getFechaProgramada1() ) ){
+			informacionFacturacionDO.setFechaMayor( informacionFacturacionDO.getFechaProgramada3() );
+			return;
+		}
+		if( informacionFacturacionDO.getFechaProgramada2() != null && informacionFacturacionDO.getFechaProgramada3() != null && 
+			informacionFacturacionDO.getFechaProgramada1() == null &&
+			informacionFacturacionDO.getFechaProgramada2().before( informacionFacturacionDO.getFechaProgramada3() ) ){
+			informacionFacturacionDO.setFechaMayor( informacionFacturacionDO.getFechaProgramada2() );
+			return;
+		}
+		if( informacionFacturacionDO.getFechaProgramada2() != null && informacionFacturacionDO.getFechaProgramada3() != null && 
+			informacionFacturacionDO.getFechaProgramada1() == null &&
+			informacionFacturacionDO.getFechaProgramada3().before( informacionFacturacionDO.getFechaProgramada2() ) ){
+			informacionFacturacionDO.setFechaMayor( informacionFacturacionDO.getFechaProgramada3() );
+			return;
+		}
+		if( informacionFacturacionDO.getFechaProgramada1() != null && 
+			informacionFacturacionDO.getFechaProgramada2() != null &&
+			informacionFacturacionDO.getFechaProgramada3() != null ){
+			if(  	  informacionFacturacionDO.getFechaProgramada1().before( informacionFacturacionDO.getFechaProgramada2() ) &&
+					  informacionFacturacionDO.getFechaProgramada1().before( informacionFacturacionDO.getFechaProgramada3() ) ){
+					  informacionFacturacionDO.setFechaMayor( informacionFacturacionDO.getFechaProgramada1() );
+			}else if( informacionFacturacionDO.getFechaProgramada2().before( informacionFacturacionDO.getFechaProgramada1() ) &&
+					  informacionFacturacionDO.getFechaProgramada2().before( informacionFacturacionDO.getFechaProgramada3() ) ){
+					  informacionFacturacionDO.setFechaMayor( informacionFacturacionDO.getFechaProgramada2() );
+			}else if( informacionFacturacionDO.getFechaProgramada3().before( informacionFacturacionDO.getFechaProgramada1() ) &&
+					  informacionFacturacionDO.getFechaProgramada3().before( informacionFacturacionDO.getFechaProgramada2() ) ){
+					  informacionFacturacionDO.setFechaMayor( informacionFacturacionDO.getFechaProgramada3() );
+			}
 		}
 	}
 

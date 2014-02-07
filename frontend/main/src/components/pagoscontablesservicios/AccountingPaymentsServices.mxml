@@ -36,6 +36,8 @@
 			[Bindable]
 			private var _readOnly:Boolean = false;
 			
+			public var IVApercent:Number = Constants.IVA;
+			
 			public function set readOnly(value:Boolean):void{
 				this._readOnly = value;
 				this.label = Constants.DETALLE;
@@ -160,7 +162,7 @@
 				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
 			}
 			
-			protected function btnAccept_clickHandler(event:MouseEvent):void
+			protected function btnAccept_clickHandler(event:MouseEvent = null):void
 			{
 				if( !this.validations() ){
 					Util.showMessageVerifyFields();
@@ -230,7 +232,8 @@
 			
 			private function cleanForm():void
 			{
-				this.dtfDate.reset();
+				Util.upScroll( this );
+				this.dtfDate.selectedDate = new Date();
 				this.cmbOperationType.selectedIndex = 0;
 				this.cmbDescription.selectedIndex = 0;
 				this.cmbSupplierType.selectedIndex = 0;
@@ -239,6 +242,7 @@
 				this.txtImport.reset();
 				this.txtDiscounts.reset();
 				this.txtIVA.reset();
+				this.compIVA.reset();
 				this.txtRounding.reset();
 				this.txtISRRetention.reset();
 				this.txtIVARetention.reset();
@@ -394,6 +398,16 @@
 				total += Util.stringToNumber( this.txtOtherTaxes.text, true );
 				this.txtTotalToPay.text = Util.truncateToString(total);
 			}
+			
+			protected function btnUpdate_clickHandler(event:MouseEvent = null):void
+			{
+				var subtotal:Number = Number(this.txtImport.text);
+				if( isNaN( subtotal ) ){
+					return;
+				}
+				this.txtIVA.text = Util.truncateToString(subtotal*IVApercent);
+				this.txtTotalToPay.text = Util.truncateToString(subtotal*IVApercent+subtotal);
+			}
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -416,7 +430,7 @@
 		<mx:FormItem required="true" label="Descripción:">
 			<mx:ComboBox id="cmbDescription"
 						 labelField="descripcion"
-						 width="150"/>
+						 width="250"/>
 		</mx:FormItem>
 		<mx:FormItem required="true" label="Tipo de Proveedor:">
 			<mx:ComboBox id="cmbSupplierType" dataProvider="{this.getSupplierTypes()}"
@@ -427,6 +441,7 @@
 		<mx:FormItem required="true" label="Proveedor:">
 			<mx:ComboBox id="cmbSupplier"
 						 change="cmbSupplier_changeHandler(event)"
+						 width="250"
 						 />
 		</mx:FormItem>
 		<mx:FormItem required="true" label="Folio del Documento:">
@@ -436,15 +451,16 @@
 		</mx:FormItem>
 		<mx:FormItem required="true" label="Importe:">
 			<components:TextInput id="txtImport" width="150" textAlign="right"
-								  focusOut="this.sum()" enter="this.sum()"/>
+								  focusOut="this.sum();this.btnUpdate_clickHandler();" enter="this.sum();this.btnUpdate_clickHandler();"/>
 		</mx:FormItem>
 		<mx:FormItem required="false" label="Descuentos:">
 			<components:TextInput id="txtDiscounts" width="150" textAlign="right"
 								  focusOut="this.sum()" enter="this.sum()"/>
 		</mx:FormItem>
-		<mx:FormItem required="false" label="I.V.A.:">
+		<mx:FormItem required="false" label="I.V.A.:" direction="horizontal">
 			<components:TextInput id="txtIVA" width="150" textAlign="right"
 								  focusOut="this.sum()" enter="this.sum()"/>
+			<components:TextInputIVA id="compIVA" view="{this}" calculate="{btnUpdate_clickHandler}"/>
 		</mx:FormItem>
 		<mx:FormItem required="false" label="Redondeo:">
 			<components:TextInput id="txtRounding" width="150" textAlign="right"

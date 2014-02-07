@@ -141,10 +141,12 @@
 								   dataField="monto"
 								   textAlign="right"
 								   width="100"
+								   labelFunction="{Util.labelFunctionCurrency}"
 								   />
 				<mx:DataGridColumn id="dtgPaymentReference" headerText="{'Referencia'}"
 								   dataField="referenciaAbono"
 								   width="120"
+								   textAlign="right"
 								   />
 			</mx:columns>
 		</mx:DataGrid>

@@ -222,7 +222,7 @@
 			private function cleanForm():void
 			{
 				this.txtID.reset();
-				this.dtfDate.reset();
+				this.dtfDate.selectedDate = new Date();
 				Util.removeItems(this.projectsConsult.datagrid.dataProvider);
 				this.cmbApplicantsNames.reset();
 				this.cmbConveyance.selectedIndex = 0;

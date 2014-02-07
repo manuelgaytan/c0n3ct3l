@@ -251,12 +251,12 @@
 		[Event(name="developmentProjectDone", type="flash.events.Event")]
 	</mx:Metadata>
 	<mx:Form id="form">
-		<mx:FormItem id="frmID" label="ID:" direction="horizontal">
+		<mx:FormItem required="true" id="frmID" label="ID:" direction="horizontal">
 			<components:TextInput id="txtID" width="80" textAlign="right"
 								  editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Contratación:"/>
-		<mx:VBox width="1100">
+		<mx:FormItem required="true" label="Contratación:"/>
+		<mx:VBox width="1102">
 			<mx:VBox width="100%" height="100%" verticalGap="5">
 				<contratacion:Consult id="recruitmentConsult" readMode="true"/>
 			</mx:VBox>

@@ -125,7 +125,7 @@
 			{
 				Util.upScroll( this );
 				this.txtID.reset();
-				this.dtfRequestDate.selectedIndex = 0;
+				this.dtfRequestDate.selectedDate = new Date();
 				this.txtPositionRequested.reset();
 				this.txtRequestedSalary.reset();
 				this.txtEmploymentGoal.reset();

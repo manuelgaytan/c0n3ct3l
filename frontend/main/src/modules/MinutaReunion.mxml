@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
-		   width="750" height="525"
+		   width="850" height="525"
 		   xmlns:minutareunion="components.minutareunion.*"
 		   creationComplete="creationCompleteHandler(event)">
 	<mx:Script>
@@ -36,7 +36,7 @@
 			}
 		]]>
 	</mx:Script>
-	<mx:TabNavigator id="navigator" width="750" height="100%" creationPolicy="all">
+	<mx:TabNavigator id="navigator" width="100%" height="100%" creationPolicy="all">
 		<minutareunion:Consult id="consult" itemDetail="consult_minutaMeetingDetailHandler(event)"/>
 		<minutareunion:MinutaMeeting id="detail" update="true" minutaMeetingUpdated="detail_minutaMeetingUpdatedHandler(event)"
 							 />

@@ -126,7 +126,7 @@
 				this.cmbRecruitmentSource.selectedIndex = 0;
 				this.chkConectelKnown.selected = false;
 				this.chkTripAvailable.selected = false;
-				this.dtfDateWork.reset();
+				this.dtfDateWork.selectedDate = new Date();
 				this.cmbSelectionPhase.selectedIndex = 0;
 			}
 			

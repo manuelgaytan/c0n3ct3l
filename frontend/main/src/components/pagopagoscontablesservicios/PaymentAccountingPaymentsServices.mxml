@@ -174,8 +174,7 @@
 				this.validators.crearValidadorRestrictor("genericDecimal", ValidadorDecimal.nombre, 9, 2);
 				this.validators.setValidador( this.txtAmount, "genericDecimal" );
 				this.validators.crearValidadorRestrictor("genericInteger", ValidadorEntero.nombre, 14);
-				this.validators.crearValidadorRestrictor("genericAlfanumeric", ValidadorCadenaCualquierCaracter.nombre, 0, 255);
-				this.validators.setRestrictor( this.txtPaymentReference, "genericAlfanumeric");
+				this.validators.setRestrictor( this.txtPaymentReference, "genericInteger");
 			}
 			
 			protected function responseSave_resultHandler(event:ResultEvent):void

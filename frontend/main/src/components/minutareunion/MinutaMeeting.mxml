@@ -152,6 +152,7 @@
 			{
 				var value:Boolean = true;
 				value &&= this.validators.validarFormulario();
+				value &&= this.dtfDate.selectedDate != null;
 				return value;
 			}
 			
@@ -227,7 +228,7 @@
 			<components:TextInput id="txtID" width="80" textAlign="right"
 								  editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha:">
+		<mx:FormItem required="true" label="Fecha:">
 			<components:DateField id="dtfDate"/>
 		</mx:FormItem>
 		<mx:FormItem label="Hora:" direction="horizontal">

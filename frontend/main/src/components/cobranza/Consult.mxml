@@ -139,7 +139,7 @@
 								   width="130"
 								   textAlign="right"/>
 				<mx:DataGridColumn id="dtgClient" headerText="{'Cliente'}"
-								   dataField="labelFunctionCliente"
+								   labelFunction="labelFunctionCliente"
 								   width="170"/>
 				<mx:DataGridColumn headerText="{'Folio o\nFactura'}"
 								   dataField="folioFactura"

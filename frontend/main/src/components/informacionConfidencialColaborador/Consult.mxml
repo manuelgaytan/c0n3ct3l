@@ -2,7 +2,7 @@
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
 		 horizontalAlign="right"
-		 creationComplete="creationCompleteHandler(event)">
+		 creationComplete="creationCompleteHandler(event)" xmlns:components="components.*">
 	<mx:Script>
 		<![CDATA[
 			import events.GenericEvent;
@@ -122,7 +122,7 @@
 		[Event(name="itemDetail", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
-		<mx:DataGrid id="datagrid" width="2010" height="100%" dataProvider="{items}"
+		<mx:DataGrid id="datagrid" width="1660" height="100%" dataProvider="{items}"
 					 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 					 allowMultipleSelection="true"
 					 >
@@ -152,7 +152,7 @@
 					</mx:itemRenderer>
 				</mx:DataGridColumn>
 				<mx:DataGridColumn headerText="{'N.S.S.'}"
-								   dataField="nss"
+								   dataField="seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosGeneralesSolicitante.nss"
 								   width="120"/>
 				<mx:DataGridColumn headerText="{'Alta\nI.M.S.S.'}"
 								   labelFunction="{Util.labelFunctionDate}"
@@ -168,18 +168,18 @@
 								   labelFunction="{Util.labelFunctionDate}"
 								   dataField="modificacionImss"
 								   textAlign="center"
-								   width="100"/>
+								   width="120"/>
 				<mx:DataGridColumn headerText="{'Estado del\nColaborador'}"
 								   dataField="estadoColaborador.estado"
 								   width="120"/>
-				<mx:DataGridColumn id="dtgContractStartDate" headerText="{'En Caso de\nAccidente Avisar'}"
+				<mx:DataGridColumn id="dtgContractStartDate" headerText="{'En Caso de\nAccidente\nAvisar'}"
 								   dataField="enCasoAccidenteAvisar"
-								   width="100"/>
+								   width="120"/>
 				<mx:DataGridColumn id="dtgConfidentialInformationColaboratorType" headerText="{'Teléfono de\nEmergencia'}"
 								   dataField="telefonoEmergencia"
-								   width="80"
+								   width="120"
 								   />
-				<mx:DataGridColumn headerText="{'Se Encuentra\nBajo\nTratamiento'}" width="80" editable="false" textAlign="center">
+				<mx:DataGridColumn headerText="{'Se Encuentra\nBajo\nTratamiento'}" width="120" editable="false" textAlign="center">
 					<mx:itemRenderer>
 						<mx:Component>
 							<mx:CheckBox selected="{data.bajoTratamiento}" enabled="false"/>
@@ -188,15 +188,15 @@
 				</mx:DataGridColumn>
 				<mx:DataGridColumn headerText="{'¿Qué\nMedicamento?'}"
 								   dataField="medicamento"
-								   width="80"
+								   width="130"
 								   />
 				<mx:DataGridColumn id="dtgAlergies" headerText="{'Alergías'}"
 								   dataField="alergias"
-								   width="80"
+								   width="100"
 								   />
 				<mx:DataGridColumn id="dtgBloodType" headerText="{'Tipo de\nSangre'}"
 								   dataField="tipoSangre"
-								   width="60"
+								   width="80"
 								   />
 				<mx:DataGridColumn headerText="{'Número\nTarjeta de\nNómina'}"
 								   dataField="numeroTarjetaNomina"
@@ -213,6 +213,7 @@
 	<mx:HBox>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"
 				   visible="{!this._readMode}"/>
+		<components:ExportButton datagrid="{this.datagrid}" visible="{!this._readMode}"/>
 	</mx:HBox>
 	<mx:RemoteObject id="informacionConfidencialColaboradorService" destination="informacionConfidencialColaboradorService" fault="informacionConfidencialColaboradorService_faultHandler(event)"
 					 showBusyCursor="true"/>

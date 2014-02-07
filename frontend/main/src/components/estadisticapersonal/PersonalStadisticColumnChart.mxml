@@ -144,9 +144,11 @@
 			</mx:horizontalAxis>
 		</mx:ColumnChart>
 		<mx:Legend dataProvider="{projectsColumnChart}"/>
+		<!--
 		<mx:ControlBar>
 			<mx:Button id="btnRefresh" label="Refrescar" click="btnRefresh_clickHandler(event)"/>
 		</mx:ControlBar>
+		-->
 	</mx:Panel>
 	<mx:Fade id="fadeEffect" duration="3000" alphaFrom="0" alphaTo="1"/>
 	<mx:Zoom id="zoomEffect" duration="3000" zoomHeightFrom="0" zoomHeightTo="1"

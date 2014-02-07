@@ -2,7 +2,7 @@
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
 		 horizontalAlign="right"
-		 creationComplete="creationCompleteHandler(event)">
+		 creationComplete="creationCompleteHandler(event)" xmlns:components="components.*">
 	<mx:Script>
 		<![CDATA[
 			import events.GenericEvent;
@@ -121,7 +121,7 @@
 		[Event(name="itemDetail", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
-		<mx:DataGrid id="datagrid" width="952" height="100%" dataProvider="{items}"
+		<mx:DataGrid id="datagrid" width="1052" height="100%" dataProvider="{items}"
 					 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 					 allowMultipleSelection="true"
 					 >
@@ -136,14 +136,19 @@
 				<mx:DataGridColumn id="dtgPosition" headerText="{'Puesto'}"
 								   dataField="contratacion.seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosPrincipalesSolicitante.puestoSolicitado"
 								   width="120"/>
-				<mx:DataGridColumn id="dtgIncidenceDate" headerText="{'Fecha\nIncidencia'}"
-								   dataField="fechaIncidencia"
+				<mx:DataGridColumn id="dtgIncidenceDateStart" headerText="{'Fecha\nIncidencia\nInicial'}"
+								   dataField="fechaIncidenciaInicial"
+								   labelFunction="{Util.labelFunctionDate}"
+								   textAlign="center"
+								   width="100"/>
+				<mx:DataGridColumn id="dtgIncidenceDateEnd" headerText="{'Fecha\nIncidencia\nFinal'}"
+								   dataField="fechaIncidenciaFinal"
 								   labelFunction="{Util.labelFunctionDate}"
 								   textAlign="center"
 								   width="100"/>
 				<mx:DataGridColumn id="dtgIncidenceClas" headerText="{'Clase\nIncidencia'}"
 								   dataField="claseIncidencia.incidencia"
-								   width="100"/>
+								   width="200"/>
 				<mx:DataGridColumn id="dtgIncapacityType" headerText="{'Tipo de\nIncapacidad'}"
 								   dataField="tipoIncapacidad.tipo"
 								   width="100"
@@ -164,6 +169,7 @@
 	<mx:HBox>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"
 				   visible="{!this._readMode}"/>
+		<components:ExportButton datagrid="{this.datagrid}" visible="{!this._readMode}"/>
 	</mx:HBox>
 	<mx:RemoteObject id="informacionPrenominaService" destination="informacionPrenominaService" fault="informacionPrenominaService_faultHandler(event)"
 					 showBusyCursor="true"/>

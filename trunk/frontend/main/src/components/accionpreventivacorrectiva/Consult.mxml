@@ -104,7 +104,7 @@
 		[Event(name="itemDetail", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
-		<mx:DataGrid id="datagrid" width="1840" height="100%" dataProvider="{items}"
+		<mx:DataGrid id="datagrid" width="1920" height="100%" dataProvider="{items}"
 					 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 					 allowMultipleSelection="true"
 					 >
@@ -113,14 +113,14 @@
 								   dataField="id"
 								   width="60"
 								   textAlign="right"/>
-				<mx:DataGridColumn id="dtgNonConformityID" headerText="{'Folio de la\nNo Conformidad'}"
+				<mx:DataGridColumn id="dtgNonConformityID" headerText="{'Folio de\nla No\nConformidad'}"
 								   dataField="noConformidad.id"
 								   textAlign="center"
-								   width="60"/>
+								   width="100"/>
 				<mx:DataGridColumn headerText="{'Folio de \nComentario\no Sugerencia'}"
 								   dataField="sugerencia.id"
 								   textAlign="center"
-								   width="60"/>
+								   width="100"/>
 				<mx:DataGridColumn id="dtgOpenDate" headerText="{'Fecha \nApertura'}"
 								   labelFunction="{Util.labelFunctionDate}"
 								   dataField="fechaApertura"

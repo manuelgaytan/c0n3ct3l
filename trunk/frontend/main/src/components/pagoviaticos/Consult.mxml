@@ -8,7 +8,6 @@
 			import events.GenericEvent;
 			
 			import model.PagoViaticos;
-			import model.ConfiguracionPruebaEntrega;
 			import model.FiltroProyecto;
 			import model.Proyecto;
 			import model.Util;
@@ -23,7 +22,6 @@
 			[Bindable]
 			private var items:ArrayCollection = null;
 			
-			private var configuracionPruebaEntrega:ConfiguracionPruebaEntrega;
 			[Bindable]
 			private var _readMode:Boolean = false;
 			
@@ -112,7 +110,7 @@
 		[Event(name="itemDetail", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
-		<mx:DataGrid id="datagrid" width="860" height="100%" dataProvider="{items}"
+		<mx:DataGrid id="datagrid" width="690" height="100%" dataProvider="{items}"
 					 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 					 allowMultipleSelection="true"
 					 >
@@ -121,13 +119,10 @@
 								   dataField="id"
 								   width="60"
 								   textAlign="right"/>
-				<mx:DataGridColumn id="dtgPerDiemCheckID" headerText="{'Folio\nComprobante\nViáticos'}"
-								   dataField="comprobacionViaticos.id"
+				<mx:DataGridColumn id="dtgPerDiemCheckID" headerText="{'Folio\nSolicitud\nViáticos'}"
+								   dataField="solicitudViaticos.id"
 								   width="130"
 								   textAlign="right"/>
-				<mx:DataGridColumn id="dtgPerDiemCheckState" headerText="{'Estado\nComprobante\nViáticos'}"
-								   dataField="comprobacionViaticos.estadoComprobacionViaticos.etiqueta"
-								   width="170"/>
 				<mx:DataGridColumn id="dtgBank" headerText="{'Banco\nConectel'}"
 								   dataField="bancoConectel.banco"
 								   width="200"/>

@@ -202,7 +202,7 @@
 				this.txtID.reset();
 				//Util.removeItems(this.diemRequest.datagrid.dataProvider);
 				this.cmbConectelBank.selectedIndex = 0;
-				this.dtfPaymentDate.reset();
+				this.dtfPaymentDate.selectedDate = new Date();
 				this.txtAmount.reset();
 				this.txtPaymentReference.reset();
 				this.comments.reset();
@@ -285,7 +285,7 @@
 								  editable="false"/>
 		</mx:FormItem>
 		<mx:FormItem required="true" label="Solicitud de Viáticos:"/>
-		<mx:VBox width="820">
+		<mx:VBox width="650">
 			<mx:VBox width="100%" height="100%" verticalGap="5">
 				<solicitudesviaticos:Consult id="diemRequestConsult" readMode="true"
 											 itemDetail="diemRequestConsult_diemRequestDetailHandler(event)"/>

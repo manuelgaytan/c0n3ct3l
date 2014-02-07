@@ -123,7 +123,7 @@
 		[Event(name="itemDetail", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
-		<mx:DataGrid id="datagrid" width="1130" height="100%" dataProvider="{items}"
+		<mx:DataGrid id="datagrid" width="1170" height="100%" dataProvider="{items}"
 					 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 					 allowMultipleSelection="true"
 					 >
@@ -152,7 +152,7 @@
 				<mx:DataGridColumn id="dtgCorrespondDays" headerText="{'Días\nCorrespondientes'}"
 								   dataField="diasCorrespondientes"
 								   textAlign="right"
-								   width="80"
+								   width="120"
 								   />
 				<mx:DataGridColumn id="dtgInitialDate" headerText="{'Fecha\nInicio\nContrato'}"
 								   dataField="contratacion.fechaInicioContrato"

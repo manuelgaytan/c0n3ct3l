@@ -109,7 +109,7 @@
 				}
 				this.dtfPaymentDate.selectedDate = this._item.fechaAbono;
 				this.txtAmount.text = this._item.monto.toString();
-				this.txtPaymentReference.text = this._item.referenciaAbono.toString();
+				this.txtPaymentReference.text = Util.numberToString( this._item.referenciaAbono, true);
 				this.comments.setCommentsIn( this._item.comentariosCobranza, "comentarioTesoreria");
 			}
 			
@@ -226,7 +226,7 @@
 				this.compIVA.reset();
 				this.txtTotal.reset();
 				this.cmbConectelBank.selectedIndex = 0;
-				this.dtfPaymentDate.reset();
+				this.dtfPaymentDate.selectedDate = new Date();
 				this.txtAmount.reset();
 				this.txtPaymentReference.reset();
 				this.comments.reset();

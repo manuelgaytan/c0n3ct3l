@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
-		   width="900" height="525"
+		   width="902" height="525"
 		   xmlns:seleccion="components.seleccion.*"
 		   creationComplete="creationCompleteHandler(event)" xmlns:informacionfacturas="components.informacionfacturas.*" xmlns:notascreditoclientes="components.notascreditoclientes.*" xmlns:facturacionproveedores="components.facturacionproveedores.*" xmlns:notascreditoproveedores="components.notascreditoproveedores.*" xmlns:comprobacionesviaticos="components.comprobacionesviaticos.*">
 	<mx:Script>
@@ -36,7 +36,7 @@
 			}
 		]]>
 	</mx:Script>
-	<mx:TabNavigator id="navigator" width="900" height="100%" creationPolicy="all">
+	<mx:TabNavigator id="navigator" width="100%" height="100%" creationPolicy="all">
 		<seleccion:Consult id="consult" itemDetail="consult_recruitmentSelectionDetailHandler(event)"/>
 		<seleccion:RecruitmentSelection id="detail" update="true" recruitmentSelectionUpdated="detail_recruitmentSelectionUpdatedHandler(event)"
 							 />

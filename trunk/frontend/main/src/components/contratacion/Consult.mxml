@@ -127,7 +127,7 @@
 		[Event(name="itemDetail", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
-		<mx:DataGrid id="datagrid" width="892" height="100%" dataProvider="{items}"
+		<mx:DataGrid id="datagrid" width="4120" height="100%" dataProvider="{items}"
 					 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 					 allowMultipleSelection="true"
 					 >
@@ -146,6 +146,51 @@
 								   dataField="sueldoInicial"
 								   textAlign="right"
 								   width="100"/>
+				<mx:DataGridColumn headerText="{'I.F.E.'}" width="80"
+								   imeMode="documentosContratacion.ife"
+								   itemRenderer="components.renderers.CheckBoxRendererIFE"/>
+				<mx:DataGridColumn headerText="{'Acta de\nNacimiento'}" width="80"
+								   imeMode="documentosContratacion.actaNacimiento"
+								   itemRenderer="components.renderers.CheckBoxRendererActaNacimiento"/>
+				<mx:DataGridColumn headerText="{'Comprobante\nde\nDomicilio'}" width="100"
+								   imeMode="documentosContratacion.comprobanteDomicilio"
+								   itemRenderer="components.renderers.CheckBoxRendererComprobanteDomicilio"/>
+				<mx:DataGridColumn headerText="{'C.U.R.P.'}" width="80"
+								   imeMode="documentosContratacion.curp"
+								   itemRenderer="components.renderers.CheckBoxRendererCURP"/>
+				<mx:DataGridColumn headerText="{'R.F.C.'}" width="80"
+								   imeMode="documentosContratacion.rfc"
+								   itemRenderer="components.renderers.CheckBoxRendererRFC"/>
+				<mx:DataGridColumn headerText="{'N.S.S.'}" width="80"
+								   imeMode="documentosContratacion.nss"
+								   itemRenderer="components.renderers.CheckBoxRendererNSS"/>
+				<mx:DataGridColumn headerText="{'Comprobante\nde\nEstudios y\nCertificaciones'}" width="100"
+								   imeMode="documentosContratacion.comprobanteEstudiosCertificacion"
+								   itemRenderer="components.renderers.CheckBoxRendererComprobanteEstudiosCertificacion"/>
+				<mx:DataGridColumn headerText="{'Cartilla\nMilitar'}" width="80"
+								   imeMode="documentosContratacion.cartaMilitar"
+								   itemRenderer="components.renderers.CheckBoxRendererCartaMilitar"/>
+				<mx:DataGridColumn headerText="{'Licencia'}" width="80"
+								   imeMode="documentosContratacion.licencia"
+								   itemRenderer="components.renderers.CheckBoxRendererDocumentoLicencia"/>
+				<mx:DataGridColumn headerText="{'Carta de\nAntecedentes\nNo Penales'}" width="100"
+								   imeMode="documentosContratacion.cartaAntecedentesNoPenales"
+								   itemRenderer="components.renderers.CheckBoxRendererCartaAntecedentesNoPenales"/>
+				<mx:DataGridColumn headerText="{'Certificado\nMédico'}" width="80"
+								   imeMode="documentosContratacion.certificadoMedico"
+								   itemRenderer="components.renderers.CheckBoxRendererCertificadoMedico"/>
+				<mx:DataGridColumn headerText="{'Cartas de\nRecomendación\nLaboral o\nPersonal'}" width="120"
+								   imeMode="documentosContratacion.cartasRecomendacion"
+								   itemRenderer="components.renderers.CheckBoxRendererCartasRecomendacion"/>
+				<mx:DataGridColumn headerText="{'Curriculum'}" width="80"
+								   imeMode="documentosContratacion.curriculum"
+								   itemRenderer="components.renderers.CheckBoxRendererCurriculum"/>
+				<mx:DataGridColumn headerText="{'FM2 FM3'}" width="80"
+								   imeMode="documentosContratacion.fm2Fm3"
+								   itemRenderer="components.renderers.CheckBoxRendererFm2Fm3"/>
+				<mx:DataGridColumn headerText="{'Fotografía'}" width="80"
+								   imeMode="documentosContratacion.fotografia"
+								   itemRenderer="components.renderers.CheckBoxRendererFotografia"/>
 				<mx:DataGridColumn headerText="{'Fecha de\nExpedición\nCertificado\nMédico'}"
 								   labelFunction="{Util.labelFunctionDate}"
 								   dataField="fechaExpedicionCertificadoMedico"
@@ -208,13 +253,13 @@
 								   textAlign="center"
 								   width="120"/>
 				<mx:DataGridColumn headerText="{'Motivo de\nTérmino de\nContrato'}"
-								   dataField="motivoTerminoContrato"
+								   dataField="motivoTerminoContrato.motivo"
 								   width="250"
 								   />
 				<mx:DataGridColumn headerText="{'Finiquito'}" width="80"
 								   imeMode="finiquito"
 								   itemRenderer="components.renderers.CheckBoxRendererFiniquito"/>
-				<mx:DataGridColumn headerText="{'Indemnización'}" width="80"
+				<mx:DataGridColumn headerText="{'Indemnización'}" width="100"
 								   imeMode="indemnizacion"
 								   itemRenderer="components.renderers.CheckBoxRendererIndemnizacion"/>
 			</mx:columns>

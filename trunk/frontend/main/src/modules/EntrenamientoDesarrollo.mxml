@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
-		   width="1150" height="525"
+		   width="1152" height="525"
 		   xmlns:entrenamientodesarrollo="components.entrenamientodesarrollo.*"
 		   creationComplete="creationCompleteHandler(event)">
 	<mx:Script>

@@ -405,7 +405,7 @@
 								  focusOut="txtRequisicionID_focusOutHandler()"/>
 		</mx:FormItem>
 		<mx:FormItem required="true" label="Fecha:">
-			<components:DateField id="dtfDate" enabled="false" creationComplete="dtfDate.selectedDate=new Date()"/>
+			<components:DateField id="dtfDate" enabled="false" creationComplete="dtfDate.selectedDate = new Date()"/>
 		</mx:FormItem>
 		<mx:FormItem required="true" label="Proveedor Maquilador:">
 			<mx:ComboBox id="cmbMaquiladoSupplier"

@@ -2,7 +2,7 @@
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
 		 label="Consulta"
 		 horizontalAlign="right"
-		 creationComplete="creationCompleteHandler(event)">
+		 creationComplete="creationCompleteHandler(event)" xmlns:components="components.*">
 	<mx:Script>
 		<![CDATA[
 			import events.GenericEvent;
@@ -122,8 +122,8 @@
 	<mx:Metadata>
 		[Event(name="itemDetail", type="events.GenericEvent")]
 	</mx:Metadata>
-	<mx:VBox id="vBox" width="100%" height="100%">
-		<mx:DataGrid id="datagrid" width="1142" height="100%" dataProvider="{items}"
+	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
+		<mx:DataGrid id="datagrid" width="2230" height="100%" dataProvider="{items}"
 					 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 					 allowMultipleSelection="true"
 					 >
@@ -138,42 +138,76 @@
 				<mx:DataGridColumn id="dtgPosition" headerText="{'Puesto'}"
 								   dataField="contratacion.seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosPrincipalesSolicitante.puestoSolicitado"
 								   width="100"/>
+				<mx:DataGridColumn headerText="{'Inducción'}" width="80"
+								   imeMode="induccion1"
+								   itemRenderer="components.renderers.CheckBoxRendererInduccion"/>
+				<mx:DataGridColumn headerText="{'ISO\n9001-2008'}" width="80"
+								   imeMode="induccion2"
+								   itemRenderer="components.renderers.CheckBoxRendererISO90012008"/>
+				<mx:DataGridColumn headerText="{'ISO\n14001-2004'}" width="80"
+								   imeMode="induccion3"
+								   itemRenderer="components.renderers.CheckBoxRendererISO140012004"/>
+				<mx:DataGridColumn headerText="{'OHSAS\n18001-2008'}" width="80"
+								   imeMode="induccion4"
+								   itemRenderer="components.renderers.CheckBoxRendererOHSAS180012008"/>
 				<mx:DataGridColumn id="dtgENCDate" headerText="{'Fecha\nEvaluación de\nNecesidades\nde\nCompetencia'}"
 								   dataField="fechaEnc"
 								   labelFunction="{Util.labelFunctionDate}"
-								   width="80"/>
+								   width="90"/>
 				<mx:DataGridColumn id="dtgENCGrade" headerText="{'Resultado\nInducción'}"
 								   dataField="resultadoEnc"
 								   textAlign="right"
 								   width="80"/>
+				<mx:DataGridColumn headerText="{'Evaluación\nde\nNecesidades\nde\nCompetencia'}" width="100"
+								   imeMode="fechaEnc"
+								   itemRenderer="components.renderers.CheckBoxRendererEvaluacion"/>
+				<mx:DataGridColumn id="dtgTechnicalCourse" headerText="{'Curso\nTécnico'}"
+								   dataField="cursoTecnico"
+								   width="100"/>
+				<mx:DataGridColumn headerText="{'Capacitador\nInterno\nCurso\nTécnico'}"
+								   dataField="capacitadorInternoCt"
+								   width="150"/>
+				<mx:DataGridColumn headerText="{'Capacitador\nExterno\nCurso\nTécnico'}"
+								   dataField="capacitadorExternoCt"
+								   width="150"/>
+				<mx:DataGridColumn headerText="{'Autorización\nCurso\nTécnico'}" width="80"
+								   imeMode="autorizacionCt"
+								   itemRenderer="components.renderers.CheckBoxRendererAutorizacionCursoTecnico"/>
 				<mx:DataGridColumn id="dtgTechnicalCourseDate" headerText="{'Fecha\nCurso\nTécnico'}"
 								   dataField="fechaCt"
 								   labelFunction="{Util.labelFunctionDate}"
 								   width="80"/>
-				<mx:DataGridColumn id="dtgTechnicalCourse" headerText="{'Curso\nTécnico'}"
-								   dataField="cursoTecnico"
-								   width="100"/>
-				<mx:DataGridColumn id="dtgTechnicalCourseGrade" headerText="{'Resultado'}"
+				<mx:DataGridColumn id="dtgTechnicalCourseGrade" headerText="{'Resultado\nCurso\nTécnico'}"
 								   dataField="resultadoCt"
 								   textAlign="right"
-								   width="80"/>
-				<mx:DataGridColumn id="dtgGeneralCourseDate" headerText="{'Fecha\nCurso\nGeneral'}"
-								   dataField="fechaCg"
-								   labelFunction="{Util.labelFunctionDate}"
 								   width="80"/>
 				<mx:DataGridColumn id="dtgGeneralCourse" headerText="{'Curso\nGeneral'}"
 								   dataField="cursoGeneral"
 								   width="100"/>
-				<mx:DataGridColumn id="dtgGeneralCourseGrade" headerText="{'Resultado'}"
+				<mx:DataGridColumn headerText="{'Capacitador\nInterno\nCurso\nGeneral'}"
+								   dataField="capacitadorInternoCg"
+								   width="150"/>
+				<mx:DataGridColumn headerText="{'Capacitador\nExterno\nCurso\nGeneral'}"
+								   dataField="capacitadorExternoCg"
+								   width="150"/>
+				<mx:DataGridColumn headerText="{'Autorización\nCurso\nGeneral'}" width="80"
+								   imeMode="autorizacionCg"
+								   itemRenderer="components.renderers.CheckBoxRendererAutorizacionCursoGeneral"/>
+				<mx:DataGridColumn id="dtgGeneralCourseDate" headerText="{'Fecha\nCurso\nGeneral'}"
+								   dataField="fechaCg"
+								   labelFunction="{Util.labelFunctionDate}"
+								   width="80"/>
+				<mx:DataGridColumn id="dtgGeneralCourseGrade" headerText="{'Resultado\nCurso\nGeneral'}"
 								   dataField="resultadoCg"
 								   textAlign="right"
 								   width="80"/>
 			</mx:columns>
 		</mx:DataGrid>
-	</mx:VBox>
+	</mx:HBox>
 	<mx:HBox>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"
 				   visible="{!this._readMode}"/>
+		<components:ExportButton datagrid="{this.datagrid}" visible="{!this._readMode}"/>
 	</mx:HBox>
 	<mx:RemoteObject id="cursoService" destination="cursoService" fault="cursoService_faultHandler(event)"
 					 showBusyCursor="true"/>

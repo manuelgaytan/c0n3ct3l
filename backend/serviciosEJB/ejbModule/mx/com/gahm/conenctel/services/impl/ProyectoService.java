@@ -2,6 +2,7 @@ package mx.com.gahm.conenctel.services.impl;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -17,6 +18,10 @@ import javax.swing.table.TableModel;
 import mx.com.gahm.conenctel.constants.EstadoProyecto;
 import mx.com.gahm.conenctel.entities.AplicaDO;
 import mx.com.gahm.conenctel.entities.CategoriaDO;
+import mx.com.gahm.conenctel.entities.ConfigPruebaEntregaDO;
+import mx.com.gahm.conenctel.entities.DatosGeneralesProyectoDO;
+import mx.com.gahm.conenctel.entities.DatosGrlsProyectoDO;
+import mx.com.gahm.conenctel.entities.DesarrolloProyectoABDO;
 import mx.com.gahm.conenctel.entities.EstadoDO;
 import mx.com.gahm.conenctel.entities.EstadoNotificacionDO;
 import mx.com.gahm.conenctel.entities.NotificacionDO;
@@ -26,6 +31,7 @@ import mx.com.gahm.conenctel.entities.ProyectoDO;
 import mx.com.gahm.conenctel.entities.RequisicionDO;
 import mx.com.gahm.conenctel.entities.UsuarioDO;
 import mx.com.gahm.conenctel.exceptions.ConectelException;
+import mx.com.gahm.conenctel.model.ConsultaGeneralOperacion;
 import mx.com.gahm.conenctel.model.FiltroProyecto;
 import mx.com.gahm.conenctel.services.IProyectoService;
 import mx.com.gahm.conenctel.util.CSVParser;
@@ -255,4 +261,51 @@ public class ProyectoService implements IProyectoService {
 		List<ProyectoDO> categoryList = query.getResultList();		
 		return categoryList;
 	}
+	
+	public List<ConsultaGeneralOperacion> getProyectosAndDerivates() throws ConectelException{
+		TypedQuery<ProyectoDO> query = entityManager.createNamedQuery(
+				"ProyectoDO.getAll", ProyectoDO.class);
+		List<ProyectoDO> proyectos = query.getResultList();
+		TypedQuery<DatosGrlsProyectoDO> queryDGP = entityManager.createNamedQuery(
+				"DatosGrlsProyectoDO.findAll", DatosGrlsProyectoDO.class);
+		List<DatosGrlsProyectoDO> datosgeneralesproyecto = queryDGP.getResultList();
+		TypedQuery<DesarrolloProyectoABDO> queryDP = entityManager.createNamedQuery(
+				"DesarrolloProyectoABDO.findAll", DesarrolloProyectoABDO.class);
+		List<DesarrolloProyectoABDO> desarrolloproyectoab = queryDP.getResultList();
+		TypedQuery<ConfigPruebaEntregaDO> queryCPE = entityManager.createNamedQuery(
+				"ConfigPruebaEntregaDO.findAll", ConfigPruebaEntregaDO.class);
+		List<ConfigPruebaEntregaDO> configpruebaentrega = queryCPE.getResultList();
+		List<ConsultaGeneralOperacion> list = new ArrayList<ConsultaGeneralOperacion>();
+		ConsultaGeneralOperacion consultaGeneralOperacion = null;
+		for (ProyectoDO proyecto : proyectos) {
+			consultaGeneralOperacion = new ConsultaGeneralOperacion();
+			consultaGeneralOperacion.setProyecto(proyecto);
+			for (DatosGrlsProyectoDO datosGeneralesProyecto : datosgeneralesproyecto) {
+				if( !(datosGeneralesProyecto == null) &&
+					!(datosGeneralesProyecto.getProyecto() == null) &&
+					datosGeneralesProyecto.getProyecto().getId() == proyecto.getId() ){
+					consultaGeneralOperacion.setDatosGeneralesProyecto(datosGeneralesProyecto);
+					break;
+				}
+			}
+			for (DesarrolloProyectoABDO desarrolloProyectoAB : desarrolloproyectoab) {
+				if( !(desarrolloProyectoAB == null) &&
+					!(desarrolloProyectoAB.getProyecto() == null) &&
+					desarrolloProyectoAB.getProyecto().getId() == proyecto.getId() ){
+					consultaGeneralOperacion.setDesarrolloProyecto(desarrolloProyectoAB);
+					break;
+				}
+			}
+			for (ConfigPruebaEntregaDO configuracionPruebaEntrega : configpruebaentrega) {
+				if( !(configuracionPruebaEntrega == null) &&
+					!(configuracionPruebaEntrega.getProyecto() == null) &&
+					configuracionPruebaEntrega.getProyecto().getId() == proyecto.getId() ){
+					consultaGeneralOperacion.setConfiguracionPruebaEntrega(configuracionPruebaEntrega);
+					break;
+				}
+			}
+			list.add(consultaGeneralOperacion);
+		}
+		return list;
+	} 
 }

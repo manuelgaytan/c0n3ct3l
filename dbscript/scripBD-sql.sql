@@ -3504,6 +3504,8 @@
 	VALUES (56, 'FichaPresentacion');
 	INSERT INTO Pantalla
 	VALUES (57, 'EstadisticaPersonal');
+	INSERT INTO Pantalla
+	VALUES (58, 'ConsultaGeneralOperacion');
 	
 	/* Perfil-Pantalla */
 	INSERT INTO PerfilPantalla
@@ -3774,6 +3776,10 @@
 	VALUES (133, 13, 56);
 	INSERT INTO PerfilPantalla
 	VALUES (134, 13, 57);
+	INSERT INTO PerfilPantalla
+	VALUES (135, 1, 58);
+	INSERT INTO PerfilPantalla
+	VALUES (136, 6, 58);
 
 	/* Usuarios */
 	INSERT INTO Usuario
@@ -4878,7 +4884,9 @@
 	INSERT INTO RangoEstadisticaPersonal
 	VALUES (3, '41 - 60');
 	INSERT INTO RangoEstadisticaPersonal
-	VALUES (4, '61 - 89');
+	VALUES (4, '61 - 80');
+	INSERT INTO RangoEstadisticaPersonal
+	VALUES (5, '81 - 100');
 
 	/*
 	INSERT INTO 

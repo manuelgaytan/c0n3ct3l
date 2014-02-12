@@ -7,6 +7,7 @@ import javax.ejb.Remote;
 import mx.com.gahm.conenctel.entities.CategoriaDO;
 import mx.com.gahm.conenctel.entities.ProyectoDO;
 import mx.com.gahm.conenctel.exceptions.ConectelException;
+import mx.com.gahm.conenctel.model.ConsultaGeneralOperacion;
 import mx.com.gahm.conenctel.model.FiltroProyecto;
 
 @Remote
@@ -26,4 +27,5 @@ public interface IProyectoService {
 	public ProyectoDO getProyecto(long idProject) throws ConectelException;
 	public List<ProyectoDO> getAllByEstado(Long idEstado) throws ConectelException;
 	public List<ProyectoDO> getAllByWithOutMaquilaRequest() throws ConectelException;
+	public List<ConsultaGeneralOperacion> getProyectosAndDerivates() throws ConectelException;
 }

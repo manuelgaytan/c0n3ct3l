@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+		 label="Consulta"
+		 horizontalAlign="right" creationComplete="creationCompleteHandler(event)" xmlns:components="components.*">
+	<mx:Script>
+		<![CDATA[
+			import events.GenericEvent;
+			
+			import model.FiltroProyecto;
+			import model.Proyecto;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			[Bindable]
+			private var projects:ArrayCollection = null;
+			
+			private var proyecto:Proyecto;
+			private var _filter:FiltroProyecto;
+			
+			[Bindable]
+			private var _consultOnly:Boolean = true;
+			
+			public function set consultOnly(value:Boolean):void{
+				this._consultOnly = value;
+			}
+			
+			public function selectedProyect():Proyecto
+			{
+				var project:Proyecto = this.datagrid.selectedItem as Proyecto;
+				return project;
+			}
+			
+			public function setDataGridData(datas:ArrayCollection):void
+			{
+				projects = datas;
+			}
+			
+			protected function responseGetAll_resultHandler(event:ResultEvent):void
+			{
+				projects = event.result as ArrayCollection;
+			}
+			
+			protected function proyectoService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+			}
+			
+			protected function datagrid_doubleClickHandler(event:MouseEvent=null):void
+			{
+				var project:Proyecto = this.datagrid.selectedItem as Proyecto;
+				if( project == null ){
+					return;
+				}
+				this.responseGetProyecto.token = this.proyectoService.getProyecto( project.id );
+				var genericEvent:GenericEvent = new GenericEvent("projectSelected");
+				genericEvent.information = project;
+				this.dispatchEvent( genericEvent );
+			}
+			
+			protected function responseGetProyecto_resultHandler(event:ResultEvent):void
+			{
+				var project:Proyecto = event.result as Proyecto;
+				if( project == null ){
+					return;
+				}
+				var genericEvent:GenericEvent = new GenericEvent("projectDetail");
+				genericEvent.information = project;
+				this.dispatchEvent( genericEvent );
+			}
+			
+			public function executeQuery(filter:FiltroProyecto = null):void
+			{
+				if( filter != null ){
+					this._filter = filter;
+				}else if( this._filter == null ){
+					return;
+				}
+				Util.showProperties( this._filter );
+				this.responseGetAllByFiltro.token = this.proyectoService.getAllByFiltro(this._filter);
+			}
+			
+			private function labelFunctionGenerico(item:Object, column:DataGridColumn):String{
+				return Util.extractToText( item, column.dataField );
+			}
+			
+			private function labelFunctionIDProyecto(item:Object, column:DataGridColumn):String{
+				return Util.getIDConectelFormat( Util.extractObject(item, column.dataField) );
+			}
+			
+			public function setDataAndSelected( data:ArrayCollection, selected:Boolean=true ):void{
+				if( data == null ){
+					return;
+				}
+				this.setDataGridData( data );
+				if( selected ){
+					this.datagrid.selectedIndex = 0;
+					this.datagrid.dispatchEvent( new ListEvent(ListEvent.CHANGE) );
+					this.datagrid.dispatchEvent( new MouseEvent(MouseEvent.DOUBLE_CLICK) );
+				}
+			}												
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="projectDetail", type="events.GenericEvent")]
+		[Event(name="projectSelected", type="events.GenericEvent")]
+	</mx:Metadata>
+	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
+	<mx:DataGrid id="datagrid" width="2250" height="100%" dataProvider="{this.projects}"
+				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)">
+		<mx:columns>
+			<mx:DataGridColumn id="dtgProjectID" headerText="{'ID\nProyecto'}"
+							   dataField="id"
+							   labelFunction="labelFunctionIDProyecto"
+							   width="150"/>
+			<mx:DataGridColumn id="dtgParentProject" headerText="{'Proyecto\nPadre'}"
+							   dataField="proyectoPadreHijo.proyectoPadre.descripcion"
+							   width="150"
+							   />
+			<mx:DataGridColumn id="dtgProjectState" headerText="{'Estado\nProyecto'}"
+							   dataField="estado.etiqueta"
+							   labelFunction="labelFunctionGenerico"
+							   width="150"/>
+			<mx:DataGridColumn id="dtgCategoria" headerText="Categoria"
+							   dataField="categoria.etiqueta"
+							   labelFunction="labelFunctionGenerico"
+							   width="150"/>
+			<mx:DataGridColumn id="dtgClient" headerText="Cliente"
+							   dataField="producto.cliente.nombreComercial"
+							   labelFunction="labelFunctionGenerico"
+							   width="150"/>
+			<mx:DataGridColumn id="dtgProjectType" headerText="{'Tipo de\nProyecto'}"
+							   dataField="producto.tipoProyecto"
+							   labelFunction="labelFunctionGenerico"
+							   width="150"/>
+			<mx:DataGridColumn id="dtgTechnology" headerText="Tecnología"
+							   dataField="producto.teconologia"
+							   labelFunction="labelFunctionGenerico"
+							   width="150"/>
+			<mx:DataGridColumn id="dtgEquipment" headerText="Equipo"
+							   dataField="producto.equipo"
+							   labelFunction="labelFunctionGenerico"
+							   width="150"/>
+			<mx:DataGridColumn id="dtgActivity" headerText="{'Actividad\na Realizar'}"
+							   dataField="producto.actividadRealizar"
+							   labelFunction="labelFunctionGenerico"
+							   width="205"/>
+			<mx:DataGridColumn id="dtgModel" headerText="Modelo"
+							   dataField="producto.modelo"
+							   labelFunction="labelFunctionGenerico"
+							   width="150"/>
+			<mx:DataGridColumn id="dtgServiceDescription" headerText="{'Descripción\ndel Servicio'}"
+							   dataField="producto.descripcionServicio"
+							   labelFunction="labelFunctionGenerico"
+							   width="205"/>
+			<mx:DataGridColumn id="dtgServiceType" headerText="{'Tipo de\nServicio'}"
+							   dataField="tipoServicio.tipo"
+							   labelFunction="labelFunctionGenerico"
+							   width="150"/>
+			<mx:DataGridColumn id="dtgLocalCost" headerText="{'Costo\nLocal'}" textAlign="right"
+							   dataField="producto.costoLocalCliente"
+							   labelFunction="{Util.labelFunctionCurrency}"
+							   width="85"/>
+			<mx:DataGridColumn id="dtgForaneoCost" headerText="{'Costo\nForaneo'}" textAlign="right"
+							   dataField="producto.costoForaneoCliente"
+							   labelFunction="{Util.labelFunctionCurrency}"
+							   width="85"/>
+			<mx:DataGridColumn id="dtgSite" headerText="{'Central\no Sitio'}" textAlign="right"
+							   dataField="centralSitio"
+							   width="150"
+							   />
+		</mx:columns>
+	</mx:DataGrid>
+	</mx:HBox>
+	<mx:HBox>
+		<components:ExportButton datagrid="{this.datagrid}"
+				   visible="{!this._consultOnly}"/>
+	</mx:HBox>
+	<mx:RemoteObject id="proyectoService" destination="proyectoService" fault="proyectoService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetProyecto" result="responseGetProyecto_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetAllByFiltro" result="responseGetAll_resultHandler(event)"/>
+</mx:VBox>

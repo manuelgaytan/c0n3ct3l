@@ -316,11 +316,9 @@ FONTS                                                              *
 *****************************************************************************************************************
 */
 @font-face {
-	src:url("fonts/arial.swf");
 	fontFamily: "Arial";
 }
 @font-face {
-	src:url("fonts/arial.swf");
 	fontFamily: "Arial";
 	fontWeight:bold;
 }

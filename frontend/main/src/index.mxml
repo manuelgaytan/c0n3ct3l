@@ -78,6 +78,7 @@
 			import model.ConceptoOtraOperacionFinanciera;
 			import model.ConfiguracionPruebaEntrega;
 			import model.Constants;
+			import model.ConsultaGeneralOperacion;
 			import model.Consumible;
 			import model.ConsumibleSolicitudAlmacen;
 			import model.Contacto;
@@ -575,6 +576,7 @@
 			private var ano:Ano;
 			private var rangoEstadisticaPersonal:RangoEstadisticaPersonal;
 			private var textInputIVA:TextInputIVA;
+			private var consultaGeneralOperacion:ConsultaGeneralOperacion;
 						
 			protected function login_readyHandler(event:ModuleEvent):void
 			{

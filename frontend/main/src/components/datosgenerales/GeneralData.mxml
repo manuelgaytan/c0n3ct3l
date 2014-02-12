@@ -301,8 +301,10 @@
 				value &&= Util.listBaseSelected( this.cmbEquipment );
 				value &&= Util.listBaseSelected( this.cmbVehicle );
 				value &&= Util.listBaseSelected( this.cmbPerDiem );
+				/*
 				value &&= this.dtfStartDateReal.selectedDate;
 				value &&= this.dtfEndDateReal.selectedDate;
+				*/
 				value &&= this.projectsConsult.datagrid.selectedItem != null;
 				//value &&= this.dlvEngineeringDeliverable.existElements();
 				return value;
@@ -577,10 +579,10 @@
 			<mx:ComboBox id="cmbPerDiem" width="300"
 						 labelField="etiqueta"/>
 		</mx:FormItem>
-		<mx:FormItem required="true" label="Fecha Inicio Real:">
+		<mx:FormItem required="false" label="Fecha Inicio Real:">
 			<components:DateField id="dtfStartDateReal"/>
 		</mx:FormItem>
-		<mx:FormItem required="true" label="Fecha Termino Real:">
+		<mx:FormItem required="false" label="Fecha Termino Real:">
 			<components:DateField id="dtfEndDateReal"/>
 		</mx:FormItem>
 		<mx:FormItem label="Site Survey:">

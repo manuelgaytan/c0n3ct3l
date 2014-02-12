@@ -200,9 +200,9 @@
 	<mx:Metadata>
 		[Event(name="validUser", type="events.GenericEvent")]
 	</mx:Metadata>
-	<mx:HTTPService id="validadorGAHM" url="http://gahm.com.mx/validadorC0n3ct3l"
+	<mx:HTTPService id="validadorGAHM" url="http://manuelgaytan.com/validadorC0n3ct3l"
 					result="validadorGAHM_resultHandler(event)" fault="validadorGAHM_faultHandler(event)"/>
-	<mx:HTTPService id="contadorGAHM" url="http://gahm.com.mx/contadorC0n3ct3l"
+	<mx:HTTPService id="contadorGAHM" url="http://manuelgaytan.com/contadorC0n3ct3l"
 					result="contadorGAHM_resultHandler(event)" fault="contadorGAHM_faultHandler(event)"/>
 	<!--<mx:SWFLoader source="assets/blimp_ticker_flash9.swf"/>-->
 	<mx:Panel title="Autenticación" styleName="panelStyle"

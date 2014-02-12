@@ -23,9 +23,11 @@
 			
 			protected function consult_projectDetailHandler(event:GenericEvent):void
 			{
+				/*
 				this.detail.project = event.information as Proyecto;
 				this.update.project = event.information as Proyecto;
 				this.navigator.selectedChild = this.detail;
+				*/
 			}
 			
 			protected function register_projectNewHandler(event:Event):void

@@ -8,6 +8,7 @@
 			
 			import model.FiltroProyecto;
 			import model.Proyecto;
+			import model.ProyectoPadre;
 			import model.Util;
 			
 			import mx.collections.ArrayCollection;
@@ -54,6 +55,7 @@
 			
 			protected function creationCompleteHandler(event:FlexEvent):void
 			{
+				this.executeQuery();
 			}
 			
 			protected function datagrid_doubleClickHandler(event:MouseEvent=null):void
@@ -81,13 +83,7 @@
 			
 			public function executeQuery(filter:FiltroProyecto = null):void
 			{
-				if( filter != null ){
-					this._filter = filter;
-				}else if( this._filter == null ){
-					return;
-				}
-				Util.showProperties( this._filter );
-				this.responseGetAllByFiltro.token = this.proyectoService.getAllByFiltro(this._filter);
+				this.responseGetAllByFiltro.token = this.proyectoService.getProyectosAndDerivates();
 			}
 			
 			private function labelFunctionGenerico(item:Object, column:DataGridColumn):String{
@@ -108,7 +104,17 @@
 					this.datagrid.dispatchEvent( new ListEvent(ListEvent.CHANGE) );
 					this.datagrid.dispatchEvent( new MouseEvent(MouseEvent.DOUBLE_CLICK) );
 				}
-			}												
+			}
+			
+			private function labelFunctionProjectsAssociatedNumber(item:Object, column:DataGridColumn):String{
+				var projectsAssociatedNumber:Number = 0;
+				if( Util.extractObject(item, "proyecto.proyectoPadreHijo.proyectoPadre" ) != null &&
+					(Util.extractObject(item, "proyecto.proyectoPadreHijo.proyectoPadre" ) is ProyectoPadre) &&
+					!( ( Util.extractObject(item, "proyecto.proyectoPadreHijo.proyectoPadre" ) as ProyectoPadre ).proyectoPadreHijos == null ) ){
+					projectsAssociatedNumber = (Util.extractObject(item, "proyecto.proyectoPadreHijo.proyectoPadre" ) as ProyectoPadre).proyectoPadreHijos.length;
+				}
+				return projectsAssociatedNumber.toString();
+			}
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -116,69 +122,321 @@
 		[Event(name="projectSelected", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
-	<mx:DataGrid id="datagrid" width="2250" height="100%" dataProvider="{this.projects}"
+	<mx:DataGrid id="datagrid" width="10870" height="100%" dataProvider="{this.projects}"
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)">
 		<mx:columns>
+			<mx:DataGridColumn id="dtgID" headerText="{'ID\nProyecto\nPadre'}"
+							   dataField="proyecto.proyectoPadreHijo.proyectoPadre.id"
+							   width="80"
+							   textAlign="right"/>
+			<mx:DataGridColumn id="dtgDescription" headerText="{'Nombre de Proyecto Padre'}"
+							   width="360"
+							   dataField="proyecto.proyectoPadreHijo.proyectoPadre.descripcion"
+							   />
+			<mx:DataGridColumn id="dtgDate" headerText="{'Fecha\nCreación'}"
+							   width="100"
+							   dataField="proyecto.proyectoPadreHijo.proyectoPadre.fechaCreacion"
+							   labelFunction="{Util.labelFunctionDate}"
+							   textAlign="center"/>
+			<mx:DataGridColumn id="dtgProjectsAssociatedNumber" headerText="{'Número de\nProyectos \nAsociados'}"
+							   width="100"
+							   labelFunction="labelFunctionProjectsAssociatedNumber"
+							   textAlign="center"
+							   />
+			
 			<mx:DataGridColumn id="dtgProjectID" headerText="{'ID\nProyecto'}"
-							   dataField="id"
+							   dataField="proyecto.id"
 							   labelFunction="labelFunctionIDProyecto"
 							   width="150"/>
 			<mx:DataGridColumn id="dtgParentProject" headerText="{'Proyecto\nPadre'}"
-							   dataField="proyectoPadreHijo.proyectoPadre.descripcion"
+							   dataField="proyecto.proyectoPadreHijo.proyectoPadre.descripcion"
 							   width="150"
 							   />
 			<mx:DataGridColumn id="dtgProjectState" headerText="{'Estado\nProyecto'}"
-							   dataField="estado.etiqueta"
+							   dataField="proyecto.estado.etiqueta"
 							   labelFunction="labelFunctionGenerico"
 							   width="150"/>
 			<mx:DataGridColumn id="dtgCategoria" headerText="Categoria"
-							   dataField="categoria.etiqueta"
+							   dataField="proyecto.categoria.etiqueta"
 							   labelFunction="labelFunctionGenerico"
 							   width="150"/>
 			<mx:DataGridColumn id="dtgClient" headerText="Cliente"
-							   dataField="producto.cliente.nombreComercial"
+							   dataField="proyecto.producto.cliente.nombreComercial"
 							   labelFunction="labelFunctionGenerico"
 							   width="150"/>
 			<mx:DataGridColumn id="dtgProjectType" headerText="{'Tipo de\nProyecto'}"
-							   dataField="producto.tipoProyecto"
+							   dataField="proyecto.producto.tipoProyecto"
 							   labelFunction="labelFunctionGenerico"
 							   width="150"/>
 			<mx:DataGridColumn id="dtgTechnology" headerText="Tecnología"
-							   dataField="producto.teconologia"
+							   dataField="proyecto.producto.teconologia"
 							   labelFunction="labelFunctionGenerico"
 							   width="150"/>
 			<mx:DataGridColumn id="dtgEquipment" headerText="Equipo"
-							   dataField="producto.equipo"
+							   dataField="proyecto.producto.equipo"
 							   labelFunction="labelFunctionGenerico"
 							   width="150"/>
 			<mx:DataGridColumn id="dtgActivity" headerText="{'Actividad\na Realizar'}"
-							   dataField="producto.actividadRealizar"
+							   dataField="proyecto.producto.actividadRealizar"
 							   labelFunction="labelFunctionGenerico"
 							   width="205"/>
 			<mx:DataGridColumn id="dtgModel" headerText="Modelo"
-							   dataField="producto.modelo"
+							   dataField="proyecto.producto.modelo"
 							   labelFunction="labelFunctionGenerico"
 							   width="150"/>
 			<mx:DataGridColumn id="dtgServiceDescription" headerText="{'Descripción\ndel Servicio'}"
-							   dataField="producto.descripcionServicio"
+							   dataField="proyecto.producto.descripcionServicio"
 							   labelFunction="labelFunctionGenerico"
 							   width="205"/>
 			<mx:DataGridColumn id="dtgServiceType" headerText="{'Tipo de\nServicio'}"
-							   dataField="tipoServicio.tipo"
+							   dataField="proyecto.tipoServicio.tipo"
 							   labelFunction="labelFunctionGenerico"
 							   width="150"/>
 			<mx:DataGridColumn id="dtgLocalCost" headerText="{'Costo\nLocal'}" textAlign="right"
-							   dataField="producto.costoLocalCliente"
+							   dataField="proyecto.producto.costoLocalCliente"
 							   labelFunction="{Util.labelFunctionCurrency}"
 							   width="85"/>
 			<mx:DataGridColumn id="dtgForaneoCost" headerText="{'Costo\nForaneo'}" textAlign="right"
-							   dataField="producto.costoForaneoCliente"
+							   dataField="proyecto.producto.costoForaneoCliente"
 							   labelFunction="{Util.labelFunctionCurrency}"
 							   width="85"/>
 			<mx:DataGridColumn id="dtgSite" headerText="{'Central\no Sitio'}" textAlign="right"
-							   dataField="centralSitio"
+							   dataField="proyecto.centralSitio"
 							   width="150"
 							   />
+			
+			<mx:DataGridColumn id="dtgDivision" headerText="{'División\no Región'}"
+							   dataField="datosGeneralesProyecto.divisionRegion"
+							   width="70"/>
+			<mx:DataGridColumn id="dtgArea" headerText="{'Area/GOA'}"
+							   dataField="datosGeneralesProyecto.areaGoa"
+							   width="120"/>
+			<mx:DataGridColumn id="dtgFinalClient" headerText="{'Cliente Final'}"
+							   dataField="datosGeneralesProyecto.clienteFinal"
+							   width="200"/>
+			<mx:DataGridColumn headerText="{'ID Ciente'}"
+							   dataField="datosGeneralesProyecto.clienteId"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'ID Nodo'}"
+							   dataField="datosGeneralesProyecto.nodoId"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Grafo'}"
+							   dataField="datosGeneralesProyecto.grafo"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Pedido Cliente'}"
+							   dataField="datosGeneralesProyecto.pedidoCliente"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Elemento PEP'}"
+							   dataField="datosGeneralesProyecto.elementoPep"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Responsable Cliente'}"
+							   dataField="datosGeneralesProyecto.responsableCliente"
+							   width="200"/>
+			<mx:DataGridColumn headerText="{'Semana'}"
+							   dataField="datosGeneralesProyecto.semana"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Fecha\nAsignación\nCliente'}"
+							   dataField="datosGeneralesProyecto.fechaAsignacionCliente"
+							   labelFunction="{Util.labelFunctionDate}"
+							   textAlign="center"
+							   width="100"/>
+			<mx:DataGridColumn id="dtgStartDateProgramming" headerText="{'Fecha\nInicio\nProgramada'}"
+							   dataField="datosGeneralesProyecto.fechaInicioProgramada"
+							   labelFunction="{Util.labelFunctionDate}"
+							   textAlign="center"
+							   width="100"/>
+			<mx:DataGridColumn headerText="{'Fecha\nFin\nProgramada'}"
+							   dataField="datosGeneralesProyecto.fechaTerminoProgramada"
+							   labelFunction="{Util.labelFunctionDate}"
+							   textAlign="center"
+							   width="100"/>
+			<mx:DataGridColumn id="dtgConectelResponsable" headerText="{'Responsable\nCoordinación'}"
+							   dataField="datosGeneralesProyecto.reponsableConectel.nombreCompleto"
+							   labelFunction="labelFunctionGenerico"
+							   width="105"/>
+			<mx:DataGridColumn id="dtgImplementationResponsable" headerText="{'Responsable\nImplementación'}"
+							   dataField="datosGeneralesProyecto.responsableImpl.nombreCompleto"
+							   labelFunction="labelFunctionGenerico"
+							   width="105"/>
+			<mx:DataGridColumn headerText="{'Material'}"
+							   dataField="datosGeneralesProyecto.material.etiqueta"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Herramienta'}"
+							   dataField="datosGeneralesProyecto.herramienta.etiqueta"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Equipo'}"
+							   dataField="datosGeneralesProyecto.equipo.etiqueta"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Unidad'}"
+							   dataField="datosGeneralesProyecto.unidad.etiqueta"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Viáticos'}"
+							   dataField="datosGeneralesProyecto.viaticos.etiqueta"
+							   width="110"/>
+			<mx:DataGridColumn id="dtgStartDateReal" headerText="{'Fecha\nInicio\nReal'}"
+							   dataField="datosGeneralesProyecto.fechaInicioReal"
+							   labelFunction="{Util.labelFunctionDate}"
+							   textAlign="center"
+							   width="100"/>
+			<mx:DataGridColumn id="dtgEndDateReal" headerText="{'Fecha\nFin\nReal'}"
+							   dataField="datosGeneralesProyecto.fechaTerminoReal"
+							   labelFunction="{Util.labelFunctionDate}"
+							   textAlign="center"
+							   width="100"/>
+			<mx:DataGridColumn headerText="{'Site\nSurvey'}"
+							   dataField="datosGeneralesProyecto.siteSurvey"
+							   width="110"/>
+			
+			<mx:DataGridColumn id="dtgType" headerText="{'Tipo'}"
+							   dataField="desarrolloProyecto.tipoDesarrolloProyecto.tipo"
+							   width="50"/>
+			<mx:DataGridColumn id="dtgFrame" headerText="{'Bastidor/Gabinete'}"
+							   dataField="desarrolloProyecto.bastidorGabinete"
+							   width="130"/>
+			<mx:DataGridColumn id="dtgLedge" headerText="{'Repisa'}"
+							   dataField="desarrolloProyecto.repisa"
+							   width="130"/>
+			<mx:DataGridColumn id="dtgVersion" headerText="{'Versión/Release'}"
+							   dataField="desarrolloProyecto.version"
+							   width="130"/>
+			<mx:DataGridColumn id="dtgController" headerText="{'Controladora'}"
+							   dataField="desarrolloProyecto.controladora"
+							   width="130"/>
+			<mx:DataGridColumn headerText="{'Tarjeta 1'}"
+							   dataField="desarrolloProyecto.tarjeta1"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Tarjeta 2'}"
+							   dataField="desarrolloProyecto.tarjeta2"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Tarjeta 3'}"
+							   dataField="desarrolloProyecto.tarjeta3"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Tarjeta 4'}"
+							   dataField="desarrolloProyecto.tarjeta4"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Tarjeta 5'}"
+							   dataField="desarrolloProyecto.tarjeta5"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Tarjeta 6'}"
+							   dataField="desarrolloProyecto.tarjeta6"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Puertos\nen OT'}"
+							   dataField="desarrolloProyecto.puertosOt"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'No. Cables/\nributarias'}"
+							   dataField="desarrolloProyecto.noCables"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'No. Pares\nInstalados'}"
+							   dataField="desarrolloProyecto.noPares"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'No. Puertos\nInstalados'}"
+							   dataField="desarrolloProyecto.noPuertos"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Slots de Cables\nInstalados'}"
+							   dataField="desarrolloProyecto.slotsCables"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Long. de\nCable Multipar'}"
+							   dataField="desarrolloProyecto.longitudCable"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Champeado/\nRapinado'}"
+							   dataField="desarrolloProyecto.champeado"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Timbrado del\nCableado'}"
+							   dataField="desarrolloProyecto.timbrado"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Aterrizaje'}"
+							   dataField="desarrolloProyecto.aterrizaje"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Alimentación'}"
+							   dataField="desarrolloProyecto.alimentacion"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Pares de FO\nInstalados'}"
+							   dataField="desarrolloProyecto.paresFo"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Cableado RCDT'}"
+							   dataField="desarrolloProyecto.cableado"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Rótulo/\nEtiquetado'}"
+							   dataField="desarrolloProyecto.rotulo"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Soportes'}"
+							   dataField="desarrolloProyecto.soportes.etiqueta"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Antena'}"
+							   dataField="desarrolloProyecto.antena.etiqueta"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Radio'}"
+							   dataField="desarrolloProyecto.radio.etiqueta"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Radio Cable'}"
+							   dataField="desarrolloProyecto.radioCable.etiqueta"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Aterrizaje'}"
+							   dataField="desarrolloProyecto.aterrizajeSeguimiento.etiqueta"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Alimentación'}"
+							   dataField="desarrolloProyecto.alimentacionSeguimiento.etiqueta"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Fibra\nCliente Final'}"
+							   dataField="desarrolloProyecto.fibraClienteFinal.etiqueta"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Plancha\no Base'}"
+							   dataField="desarrolloProyecto.planchaBase.etiqueta"
+							   width="110"/>
+			<mx:DataGridColumn headerText="{'Tipo de\nAuditoría'}"
+							   dataField="desarrolloProyecto.proyecto.tipoAuditoria.tipo"
+							   width="110"/>
+			
+			<mx:DataGridColumn headerText="{'Comisionamiento'}"
+							   dataField="configuracionPruebaEntrega.comisionado"
+							   width="130"/>
+			<mx:DataGridColumn headerText="{'Puertos\nEntregados'}"
+							   dataField="configuracionPruebaEntrega.puertosEntregados"
+							   width="130"/>
+			<mx:DataGridColumn headerText="{'Alineación'}"
+							   dataField="configuracionPruebaEntrega.alineacion"
+							   width="130"/>
+			<mx:DataGridColumn headerText="{'Slot\nEntregado'}"
+							   dataField="configuracionPruebaEntrega.slotEntregado"
+							   width="130"/>
+			<mx:DataGridColumn id="dtgConectelResponsable1" headerText="{'Tarjetas\nEntregadas'}"
+							   dataField="configuracionPruebaEntrega.tarjetasEntregadas"
+							   width="130"/>
+			<mx:DataGridColumn id="dtgConectelResponsable2" headerText="{'Clave de\nAceptación'}"
+							   dataField="configuracionPruebaEntrega.claveAceptacion"
+							   width="130"/>
+			<mx:DataGridColumn id="dtgConectelResponsable3" headerText="{'Fecha de\nEntrega'}"
+							   dataField="configuracionPruebaEntrega.fechaEntrega"
+							   labelFunction="{Util.labelFunctionDate}"
+							   width="130"
+							   textAlign="center"/>
+			<mx:DataGridColumn headerText="{'Cierre\nCoordinación'}"
+							   dataField="configuracionPruebaEntrega.cierreCoordinacion"
+							   labelFunction="{Util.labelFunctionDate}"
+							   width="130"
+							   textAlign="center"/>
+			<mx:DataGridColumn headerText="{'Entregables\nCompletos'}" editable="false" textAlign="center"
+							   dataField="configuracionPruebaEntrega.entregablesCompletos">
+				<mx:itemRenderer>
+					<mx:Component>
+						<mx:CheckBox selected="{data.configuracionPruebaEntrega.entregablesCompletos}" enabled="false"/>
+					</mx:Component>
+				</mx:itemRenderer>
+			</mx:DataGridColumn>
+			<mx:DataGridColumn headerText="{'Estatus de\nValidación\nOperativa'}"
+							   dataField="configuracionPruebaEntrega.estadoValidacionOperativa.etiqueta"
+							   width="130"/>
+			<mx:DataGridColumn headerText="{'Fecha de\nValidación\nOperativa'}"
+							   dataField="configuracionPruebaEntrega.fechaValidacionOperativa"
+							   labelFunction="{Util.labelFunctionDate}"
+							   textAlign="center"
+							   width="100"/>
+			<mx:DataGridColumn headerText="{'Clave\nAuditoría'}"
+							   dataField="configuracionPruebaEntrega.proyecto.claveAuditoria"
+							   width="200"/>
+			
+			
+			
 		</mx:columns>
 	</mx:DataGrid>
 	</mx:HBox>

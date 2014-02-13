@@ -259,7 +259,7 @@
 				}
 			}
 			
-			private function calculateOpeningBalance(event:ResultEvent){
+			private function calculateOpeningBalance(event:ResultEvent):void{
 				var items:ArrayCollection = event.result as ArrayCollection;
 				var openingBalance:Number = 0;
 				for each (var item:MovimientoFondoFijoCajaChica in items) 

@@ -14,22 +14,19 @@
     <sourceAttachmentPath/>
   </compiler>
   <applications>
-  <!--
-    <application path="testEJB.mxml"/>
-    <application path="testUtil.mxml"/>
-   -->
     <application path="index.mxml"/>
   </applications>
   <modules>
-  	<module application="src/index.mxml" destPath="modules/Login.swf" optimize="true" sourcePath="src/modules/Login.mxml"/>
+    <module application="src/index.mxml" destPath="modules/Login.swf" optimize="true" sourcePath="src/modules/Login.mxml"/>
     <module application="src/index.mxml" destPath="modules/Clientes.swf" optimize="true" sourcePath="src/modules/Clientes.mxml"/>
     <module application="src/index.mxml" destPath="modules/Productos.swf" optimize="true" sourcePath="src/modules/Productos.mxml"/>
     <module application="src/index.mxml" destPath="modules/Usuarios.swf" optimize="true" sourcePath="src/modules/Usuarios.mxml"/>
-  	<module application="src/index.mxml" destPath="modules/ProyectosPadres.swf" optimize="true" sourcePath="src/modules/ProyectosPadres.mxml"/>
+    <module application="src/index.mxml" destPath="modules/ProyectosPadres.swf" optimize="true" sourcePath="src/modules/ProyectosPadres.mxml"/>
     <module application="src/index.mxml" destPath="modules/Proyectos.swf" optimize="true" sourcePath="src/modules/Proyectos.mxml"/>
     <module application="src/index.mxml" destPath="modules/DatosGenerales.swf" optimize="true" sourcePath="src/modules/DatosGenerales.mxml"/>
-  	<module application="src/index.mxml" destPath="modules/DesarrolloProyectoAB.swf" optimize="true" sourcePath="src/modules/DesarrolloProyectoAB.mxml"/>
-  	<module application="src/index.mxml" destPath="modules/ConfiguracionPruebaEntrega.swf" optimize="true" sourcePath="src/modules/ConfiguracionPruebaEntrega.mxml"/>
+    <module application="src/index.mxml" destPath="modules/DesarrolloProyectoAB.swf" optimize="true" sourcePath="src/modules/DesarrolloProyectoAB.mxml"/>
+    <module application="src/index.mxml" destPath="modules/ConfiguracionPruebaEntrega.swf" optimize="true" sourcePath="src/modules/ConfiguracionPruebaEntrega.mxml"/>
+    <module application="src/index.mxml" destPath="modules/ConsultaGeneralOperacion.swf" optimize="true" sourcePath="src/modules/ConsultaGeneralOperacion.mxml"/>
     <module application="src/index.mxml" destPath="modules/Almacen.swf" optimize="true" sourcePath="src/modules/Almacen.mxml"/>
     <module application="src/index.mxml" destPath="modules/Consumibles.swf" optimize="true" sourcePath="src/modules/Consumibles.mxml"/>
     <module application="src/index.mxml" destPath="modules/EquipoMedicion.swf" optimize="true" sourcePath="src/modules/EquipoMedicion.mxml"/>
@@ -39,21 +36,21 @@
     <module application="src/index.mxml" destPath="modules/Materiales.swf" optimize="true" sourcePath="src/modules/Materiales.mxml"/>
     <module application="src/index.mxml" destPath="modules/SoftwareModule.swf" optimize="true" sourcePath="src/modules/SoftwareModule.mxml"/>
     <module application="src/index.mxml" destPath="modules/TelefoniaMovilModule.swf" optimize="true" sourcePath="src/modules/TelefoniaMovilModule.mxml"/>
-  	<module application="src/index.mxml" destPath="modules/SolicitudAlmacenModule.swf" optimize="true" sourcePath="src/modules/SolicitudAlmacenModule.mxml"/>
-  	<module application="src/index.mxml" destPath="modules/ProveedoresSeleccionados.swf" optimize="true" sourcePath="src/modules/ProveedoresSeleccionados.mxml"/>
+    <module application="src/index.mxml" destPath="modules/SolicitudAlmacenModule.swf" optimize="true" sourcePath="src/modules/SolicitudAlmacenModule.mxml"/>
+    <module application="src/index.mxml" destPath="modules/ProveedoresSeleccionados.swf" optimize="true" sourcePath="src/modules/ProveedoresSeleccionados.mxml"/>
     <module application="src/index.mxml" destPath="modules/ProveedoresCalificados.swf" optimize="true" sourcePath="src/modules/ProveedoresCalificados.mxml"/>
     <module application="src/index.mxml" destPath="modules/ProveedoresMaquiladores.swf" optimize="true" sourcePath="src/modules/ProveedoresMaquiladores.mxml"/>
     <module application="src/index.mxml" destPath="modules/RequisicionesCompra.swf" optimize="true" sourcePath="src/modules/RequisicionesCompra.mxml"/>
     <module application="src/index.mxml" destPath="modules/SolicitudServicioMaquilado.swf" optimize="true" sourcePath="src/modules/SolicitudServicioMaquilado.mxml"/>
-  	<module application="src/index.mxml" destPath="modules/Cotizaciones.swf" optimize="true" sourcePath="src/modules/Cotizaciones.mxml"/>
-  	<module application="src/index.mxml" destPath="modules/OrdenesCompraAlmacen.swf" optimize="true" sourcePath="src/modules/OrdenesCompraAlmacen.mxml"/>
+    <module application="src/index.mxml" destPath="modules/Cotizaciones.swf" optimize="true" sourcePath="src/modules/Cotizaciones.mxml"/>
+    <module application="src/index.mxml" destPath="modules/OrdenesCompraAlmacen.swf" optimize="true" sourcePath="src/modules/OrdenesCompraAlmacen.mxml"/>
     <module application="src/index.mxml" destPath="modules/OrdenesCompraServicioMaquilado.swf" optimize="true" sourcePath="src/modules/OrdenesCompraServicioMaquilado.mxml"/>
     <module application="src/index.mxml" destPath="modules/FacturacionCompra.swf" optimize="true" sourcePath="src/modules/FacturacionCompra.mxml"/>
     <module application="src/index.mxml" destPath="modules/PreciariosMaquiladores.swf" optimize="true" sourcePath="src/modules/PreciariosMaquiladores.mxml"/>
     <module application="src/index.mxml" destPath="modules/ValidacionesProyectos.swf" optimize="true" sourcePath="src/modules/ValidacionesProyectos.mxml"/>
-  	<module application="src/index.mxml" destPath="modules/OrdenesCompraClientes.swf" optimize="true" sourcePath="src/modules/OrdenesCompraClientes.mxml"/>
+    <module application="src/index.mxml" destPath="modules/OrdenesCompraClientes.swf" optimize="true" sourcePath="src/modules/OrdenesCompraClientes.mxml"/>
     <module application="src/index.mxml" destPath="modules/ValidacionesAdministrativas.swf" optimize="true" sourcePath="src/modules/ValidacionesAdministrativas.mxml"/>
-  	<module application="src/index.mxml" destPath="modules/ConcentradoOrdenesCompra.swf" optimize="true" sourcePath="src/modules/ConcentradoOrdenesCompra.mxml"/>
+    <module application="src/index.mxml" destPath="modules/ConcentradoOrdenesCompra.swf" optimize="true" sourcePath="src/modules/ConcentradoOrdenesCompra.mxml"/>
     <module application="src/index.mxml" destPath="modules/FacturacionProveedores.swf" optimize="true" sourcePath="src/modules/FacturacionProveedores.mxml"/>
     <module application="src/index.mxml" destPath="modules/NotasCreditoProveedores.swf" optimize="true" sourcePath="src/modules/NotasCreditoProveedores.mxml"/>
     <module application="src/index.mxml" destPath="modules/InformacionFacturas.swf" optimize="true" sourcePath="src/modules/InformacionFacturas.mxml"/>
@@ -67,9 +64,9 @@
     <module application="src/index.mxml" destPath="modules/PagoViaticos.swf" optimize="true" sourcePath="src/modules/PagoViaticos.mxml"/>
     <module application="src/index.mxml" destPath="modules/PagoPagosContablesServicios.swf" optimize="true" sourcePath="src/modules/PagoPagosContablesServicios.mxml"/>
     <module application="src/index.mxml" destPath="modules/OtrasOperacionesFinancieras.swf" optimize="true" sourcePath="src/modules/OtrasOperacionesFinancieras.mxml"/>
-  	<module application="src/index.mxml" destPath="modules/ReclutamientoSolicitudEmpleo.swf" optimize="true" sourcePath="src/modules/ReclutamientoSolicitudEmpleo.mxml"/>
+    <module application="src/index.mxml" destPath="modules/ReclutamientoSolicitudEmpleo.swf" optimize="true" sourcePath="src/modules/ReclutamientoSolicitudEmpleo.mxml"/>
     <module application="src/index.mxml" destPath="modules/Seleccion.swf" optimize="true" sourcePath="src/modules/Seleccion.mxml"/>
-	<module application="src/index.mxml" destPath="modules/Contratacion.swf" optimize="true" sourcePath="src/modules/Contratacion.mxml"/>
+    <module application="src/index.mxml" destPath="modules/Contratacion.swf" optimize="true" sourcePath="src/modules/Contratacion.mxml"/>
     <module application="src/index.mxml" destPath="modules/AdministracionColaborador.swf" optimize="true" sourcePath="src/modules/AdministracionColaborador.mxml"/>
     <module application="src/index.mxml" destPath="modules/Prenomina.swf" optimize="true" sourcePath="src/modules/Prenomina.mxml"/>
     <module application="src/index.mxml" destPath="modules/Deducciones.swf" optimize="true" sourcePath="src/modules/Deducciones.mxml"/>
@@ -81,7 +78,7 @@
     <module application="src/index.mxml" destPath="modules/EstadisticaPersonal.swf" optimize="true" sourcePath="src/modules/EstadisticaPersonal.mxml"/>
     <module application="src/index.mxml" destPath="modules/ComentariosSugerencias.swf" optimize="true" sourcePath="src/modules/ComentariosSugerencias.mxml"/>
     <module application="src/index.mxml" destPath="modules/BitacoraProductoNoConformeNoConformidades.swf" optimize="true" sourcePath="src/modules/BitacoraProductoNoConformeNoConformidades.mxml"/>
-  	<module application="src/index.mxml" destPath="modules/AccionPreventivaCorrectiva.swf" optimize="true" sourcePath="src/modules/AccionPreventivaCorrectiva.mxml"/>
+    <module application="src/index.mxml" destPath="modules/AccionPreventivaCorrectiva.swf" optimize="true" sourcePath="src/modules/AccionPreventivaCorrectiva.mxml"/>
     <module application="src/index.mxml" destPath="modules/ConcentradoCapacitacion.swf" optimize="true" sourcePath="src/modules/ConcentradoCapacitacion.mxml"/>
     <module application="src/index.mxml" destPath="modules/SistemasGestion.swf" optimize="true" sourcePath="src/modules/SistemasGestion.mxml"/>
     <module application="src/index.mxml" destPath="modules/MinutaReunion.swf" optimize="true" sourcePath="src/modules/MinutaReunion.mxml"/>

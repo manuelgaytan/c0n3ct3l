@@ -164,7 +164,7 @@ package components
 				valorTd = Util.extractObject( objeto, (columnaActual as DataGridColumn).dataField );
 			}
 			valorTd = new Boolean( valorTd );
-			valorTd = valorTd == true ? "Sí" : "No";
+			valorTd = valorTd == true ? "Si" : "No";
 			var formatoActual:Object = new Object();
 			var funcionActual:Object = new Object();
 			var align:String = "ALIGN='LEFT'";
@@ -244,6 +244,9 @@ package components
 */			
 			if( valorTd == null ){
 				return "<td></td>";
+			}
+			if( ( valorTd == "true" || valorTd == "false" ) && columnaActual.itemRenderer != null ){
+				valorTd = valorTd == "true" ? "Si" : "No"; 
 			}
 			return this.crearCelda( valorTd, columnaActual, textAlign, backgroundColor, objeto, htmlCallbackFormatter);	
 		}	

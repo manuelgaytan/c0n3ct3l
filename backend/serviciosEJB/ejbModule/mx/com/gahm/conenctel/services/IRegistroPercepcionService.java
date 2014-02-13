@@ -18,6 +18,7 @@ import mx.com.gahm.conenctel.entities.RegistroPercepcionDO;
 public interface IRegistroPercepcionService {
 	List<RegistroPercepcionDO> getAll();
 	void deleteItems( List<Integer> idsItems);
+	Boolean saveList(List<RegistroPercepcionDO> items);
 	RegistroPercepcionDO save( RegistroPercepcionDO item );
 	RegistroPercepcionDO update( RegistroPercepcionDO item );
 	RegistroPercepcionDO getItem( Integer id );	

@@ -172,7 +172,8 @@
 								   textAlign="center"
 								   width="80"
 								   />
-				<mx:DataGridColumn id="dtgInmediatlyAction" headerText="{'Prima\nVacacional'}" width="80" editable="false" textAlign="center">
+				<mx:DataGridColumn id="dtgInmediatlyAction" headerText="{'Prima\nVacacional'}" width="80" editable="false" textAlign="center"
+								   dataField="primaVacacional">
 					<mx:itemRenderer>
 						<mx:Component>
 							<mx:CheckBox selected="{data.primaVacacional}" enabled="false"/>

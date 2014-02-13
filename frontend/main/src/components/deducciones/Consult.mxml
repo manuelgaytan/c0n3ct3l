@@ -123,7 +123,7 @@
 		[Event(name="itemDetail", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
-		<mx:DataGrid id="datagrid" width="1340" height="100%" dataProvider="{items}"
+		<mx:DataGrid id="datagrid" width="1620" height="100%" dataProvider="{items}"
 					 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 					 allowMultipleSelection="true"
 					 >
@@ -160,6 +160,21 @@
 								   textAlign="right"
 								   width="100"
 								   />
+				<mx:DataGridColumn headerText="{'Fecha de\nFaltas'}"
+								   dataField="fechaFalta"
+								   textAlign="center"
+								   labelFunction="{Util.labelFunctionDate}"
+								   width="90"/>
+				<mx:DataGridColumn headerText="{'Clasificación\nde Permisos'}"
+								   dataField="clasificacionPermiso.tipo"
+								   textAlign="right"
+								   width="100"
+								   />
+				<mx:DataGridColumn headerText="{'Fecha de\nPermisos'}"
+								   dataField="fechaPermiso"
+								   textAlign="center"
+								   labelFunction="{Util.labelFunctionDate}"
+								   width="90"/>
 				<mx:DataGridColumn id="dtgSantionClass" headerText="{'Tipo de\nSanción'}"
 								   dataField="tipoSancion.tipo"
 								   width="80"

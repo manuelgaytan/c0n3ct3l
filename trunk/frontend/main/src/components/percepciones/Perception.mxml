@@ -40,6 +40,8 @@
 			private var _item:RegistroPercepcion;
 			private var validators:InicializaValidadoresEtiquetas;
 			
+			private var items:ArrayCollection = new ArrayCollection();
+			
 			public function set registrer(value:Boolean):void{
 				mode = Constants.REGISTER_MODE;
 				this.label = Constants.REGISTRAR;
@@ -127,14 +129,27 @@
 			
 			protected function btnAccept_clickHandler(event:MouseEvent):void
 			{
+				if( this.mode == Constants.REGISTER_MODE ){
+					if( this.items.length == 0 ){
+						if( this.validations() ){
+							this.btnAddItem.dispatchEvent( new MouseEvent( MouseEvent.CLICK ) );
+							var timer:Timer = new Timer( 500, 1 );
+							timer.addEventListener( TimerEvent.TIMER_COMPLETE, function():void{
+								btnAccept.dispatchEvent( new MouseEvent( MouseEvent.CLICK ) );
+								} );
+							timer.start();
+							return;
+						}
+						Util.showErrorMessage("Debe agregar elementos de la tabla.");
+						return;
+					}
+					Util.showProperties( this.items );
+					this.responseSave.token = this.registroPercepcionService.saveList( items );
+					return;
+				}
 				if( !this.validations() ){
 					Util.showMessageVerifyFields();
 					return;
-				}
-				if( this.mode == Constants.REGISTER_MODE ){
-					var perception:RegistroPercepcion = this.getPerception();
-					Util.showProperties( perception );
-					this.responseSave.token = this.registroPercepcionService.save( perception );
 				}
 				if( this.mode == Constants.UPDATE_MODE ){
 					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
@@ -165,6 +180,8 @@
 					form.removeChild( this.frmID );
 				}
 				if( this.mode == Constants.UPDATE_MODE ){
+					form.removeChild( this.frmItmAddItem );
+					form.removeChild( this.dtgPerceptions );
 				}
 			}
 			
@@ -185,16 +202,21 @@
 				this.cleanForm();
 			}
 			
-			private function cleanForm():void
+			private function cleanForm(item:Boolean=false):void
 			{
-				Util.upScroll( this );
-				this.txtID.reset();
-				this.recruitmentConsult.datagrid.selectedItem = false;
+				if( !item ){
+					Util.upScroll( this );
+					this.txtID.reset();
+					this.recruitmentConsult.datagrid.selectedItem = false;
+					Util.removeItems( this.items );
+				}
 				this.cmbPerception.selectedIndex = 0;
 				this.txtContributionAmount.reset();
 				this.cmbVariation.selectedIndex = 0;
 				this.txtCorrespondDays.reset();
-				this.dtfStartContractDate.reset();
+				if( !item ){
+					this.dtfStartContractDate.reset();
+				}
 				this.dtfInitialDate.reset();
 				this.dtfFinalDate.reset();
 				this.chkVacationPay.selected = false;
@@ -246,7 +268,7 @@
 			
 			protected function recruitmentConsult_itemDetailHandler(event:GenericEvent):void
 			{
-				if( event == null || event.information ){
+				if( event == null || event.information == null ){
 					return;
 				}
 				var item:Contratacion = event.information as Contratacion;
@@ -277,6 +299,20 @@
 					return false;
 				}
 				return (perception.id == Percepcion.ID_VACACIONES);
+			}
+			
+			protected function btnAddItem_clickHandler(event:MouseEvent):void
+			{
+				if( !this.validations() ){
+					Util.showMessageVerifyFields();
+					return;
+				}
+				if( this.mode == Constants.REGISTER_MODE ){
+					var perception:RegistroPercepcion = this.getPerception();
+					Util.showProperties( perception );
+					this.items.addItem( perception );
+					this.cleanForm( true );
+				}
 			}
 			
 		]]>
@@ -324,6 +360,62 @@
 		<mx:FormItem required="true" label="Prima Vacacional:">
 			<mx:CheckBox id="chkVacationPay"/>
 		</mx:FormItem>
+		<mx:FormItem id="frmItmAddItem">
+			<mx:Button id="btnAddItem" label="Agregar Percepción" click="btnAddItem_clickHandler(event)"/>
+		</mx:FormItem>
+		<mx:VBox width="900" id="dtgPerceptions">
+			<mx:VBox width="100%" height="100%" verticalGap="5">
+				<mx:DataGrid id="datagrid" width="900" height="100%" dataProvider="{items}"
+							 doubleClickEnabled="true"
+							 allowMultipleSelection="true"
+							 >
+					<mx:columns>
+						<mx:DataGridColumn id="dtgPerception" headerText="{'Percepción'}"
+										   dataField="percepcion.percepcion"
+										   width="150"/>
+						<mx:DataGridColumn id="dtgContributionAmount" headerText="{'Monto\nAportación'}"
+										   dataField="montoAportacion"
+										   textAlign="right"
+										   width="80"/>
+						<mx:DataGridColumn id="dtgVariation" headerText="{'Vacaciones'}"
+										   dataField="variacion.tipo"
+										   width="170"
+										   />
+						<mx:DataGridColumn id="dtgCorrespondDays" headerText="{'Días\nCorrespondientes'}"
+										   dataField="diasCorrespondientes"
+										   textAlign="right"
+										   width="120"
+										   />
+						<mx:DataGridColumn id="dtgInitialDate" headerText="{'Fecha\nInicio\nContrato'}"
+										   dataField="contratacion.fechaInicioContrato"
+										   labelFunction="{Util.labelFunctionDate}"
+										   textAlign="center"
+										   width="100"
+										   />
+						<mx:DataGridColumn headerText="{'Fecha\nInicio'}"
+										   dataField="fechaInicio"
+										   labelFunction="{Util.labelFunctionDate}"
+										   textAlign="center"
+										   width="100"
+										   />
+						<mx:DataGridColumn id="dtgFinalDate" headerText="{'Fecha\nFin'}"
+										   dataField="fechaTermino"
+										   labelFunction="{Util.labelFunctionDate}"
+										   textAlign="center"
+										   width="100"
+										   />
+						<mx:DataGridColumn id="dtgInmediatlyAction" headerText="{'Prima\nVacacional'}" width="80" editable="false" textAlign="center"
+										   dataField="primaVacacional">
+							<mx:itemRenderer>
+								<mx:Component>
+									<mx:CheckBox selected="{data.primaVacacional}" enabled="false"/>
+								</mx:Component>
+							</mx:itemRenderer>
+						</mx:DataGridColumn>
+					</mx:columns>
+				</mx:DataGrid>
+			</mx:VBox>			
+		</mx:VBox>
 		<mx:FormItem direction="horizontal">
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
 		</mx:FormItem>

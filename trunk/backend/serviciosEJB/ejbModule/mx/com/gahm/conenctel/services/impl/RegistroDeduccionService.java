@@ -11,6 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 import mx.com.gahm.conenctel.entities.RegistroDeduccionDO;
+import mx.com.gahm.conenctel.entities.RegistroPercepcionDO;
 import mx.com.gahm.conenctel.services.IRegistroDeduccionService;
 
 /**
@@ -41,6 +42,17 @@ public class RegistroDeduccionService implements IRegistroDeduccionService{
 			entityManager.remove(cotizacion);
 		}
 		
+	}
+	
+	@Override
+	public Boolean saveList(List<RegistroDeduccionDO> items) {
+		if( items == null || items.size() == 0 ){
+			return false;
+		}
+		for (RegistroDeduccionDO registroDeduccion : items) {
+			entityManager.persist( registroDeduccion );
+		}
+		return true;
 	}
 
 	@Override

@@ -17,6 +17,7 @@ import mx.com.gahm.conenctel.entities.RegistroDeduccionDO;
 public interface IRegistroDeduccionService {
 	List<RegistroDeduccionDO> getAll();
 	void deleteItems( List<Integer> idsItems);
+	Boolean saveList(List<RegistroDeduccionDO> items);
 	RegistroDeduccionDO save( RegistroDeduccionDO item );
 	RegistroDeduccionDO update( RegistroDeduccionDO item );
 	RegistroDeduccionDO getItem( Integer id );	

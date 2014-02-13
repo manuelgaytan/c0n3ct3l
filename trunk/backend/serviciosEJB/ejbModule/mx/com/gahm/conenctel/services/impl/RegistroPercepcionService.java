@@ -35,7 +35,18 @@ public class RegistroPercepcionService implements IRegistroPercepcionService{
 		}
 		
 	}
-
+	
+	@Override
+	public Boolean saveList(List<RegistroPercepcionDO> items) {
+		if( items == null || items.size() == 0 ){
+			return false;
+		}
+		for (RegistroPercepcionDO registroPercepcion : items) {
+			entityManager.persist( registroPercepcion );
+		}
+		return true;
+	}
+	
 	@Override
 	public RegistroPercepcionDO save(RegistroPercepcionDO item) {
 		entityManager.persist(item);

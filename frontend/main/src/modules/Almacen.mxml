@@ -86,7 +86,7 @@
 			
 			public static function removerSolicitudAlmacen(data:ArrayCollection):void{
 				var item:TipoAlmacen = null; 
-				for(var i=0; i<data.length; i++) 
+				for(var i:Number=0; i<data.length; i++) 
 				{
 					item = data.getItemAt( i ) as TipoAlmacen;
 					if( !(item == null) &&

@@ -400,7 +400,7 @@
 				if( !Util.listBaseSelected( this.cmbSupplier, "id", true ) ){
 					return;
 				}
-				var idSupplier:Number = null; 
+				var idSupplier:Number = NaN; 
 				if( Util.selectedId( this.cmbSupplierType ) == 1 ){
 					var proveedorCalificado:ProveedorCalificado = Util.validateCombo( this.cmbSupplier ) as ProveedorCalificado;
 					idSupplier = proveedorCalificado.id;

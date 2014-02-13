@@ -611,7 +611,7 @@ package model
 			objectType = getDefinitionByName(transformTo) as Class;
 			for each (var object:ComentarioGenerico in values) 
 			{
-				var item = new(objectType)();
+				var item:Object = new(objectType)();
 				item.tipoAlmacen = tipoAlmacen.id;
 				item.comentario = object.comentario;
 				item.fechaCaptura = object.fechaCaptura;
@@ -633,7 +633,7 @@ package model
 			objectType = getDefinitionByName(transformTo) as Class;
 			for each (var object:String in values) 
 			{
-				var item = new(objectType)();
+				var item:Object = new(objectType)();
 				item.fkTipoAlmacen = tipoAlmacen;
 				item.fkTipoEntregable = tipoEntregable;
 				item.nombreArchivo = object;
@@ -650,7 +650,7 @@ package model
 			var returnValues:ArrayCollection = new ArrayCollection();
 			for each (var object:Object in values) 
 			{
-				var item = object[propiedad];
+				var item:Object = object[propiedad];
 				returnValues.addItem( item );
 			}
 			return returnValues;

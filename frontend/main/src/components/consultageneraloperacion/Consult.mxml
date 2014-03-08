@@ -4,6 +4,16 @@
 		 horizontalAlign="right" creationComplete="creationCompleteHandler(event)" xmlns:components="components.*">
 	<mx:Script>
 		<![CDATA[
+			import model.Util;
+		]]>
+	</mx:Script>
+	<mx:Script>
+		<![CDATA[
+			import model.Util;
+		]]>
+	</mx:Script>
+	<mx:Script>
+		<![CDATA[
 			import events.GenericEvent;
 			
 			import model.FiltroProyecto;
@@ -419,7 +429,7 @@
 							   dataField="configuracionPruebaEntrega.entregablesCompletos">
 				<mx:itemRenderer>
 					<mx:Component>
-						<mx:CheckBox selected="{data.configuracionPruebaEntrega.entregablesCompletos}" enabled="false"/>
+						<mx:CheckBox selected="{Util.extractObject(data,'configuracionPruebaEntrega.entregablesCompletos')}" enabled="false"/>
 					</mx:Component>
 				</mx:itemRenderer>
 			</mx:DataGridColumn>

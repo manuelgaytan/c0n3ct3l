@@ -35,7 +35,6 @@
 			
 			import modules.SolicitudesViaticos;
 			
-			import mx.charts.chartClasses.DualStyleObject;
 			import mx.collections.ArrayCollection;
 			import mx.com.gahm.componentes.validadores.Constantes;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;

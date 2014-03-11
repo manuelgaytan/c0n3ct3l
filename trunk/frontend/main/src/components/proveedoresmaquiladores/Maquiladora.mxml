@@ -90,10 +90,12 @@
 					this.cmbTecnologia.selectedIndex = Util.selectedIndexFromCombo( this.cmbTecnologia.dataProvider as ArrayCollection, 
 						this._item.categoriaProyecto.id);
 				}
+				/*
 				if( Util.isFill( this.cmbPaymentType ) && this._item.pago != null ){
 					this.cmbPaymentType.selectedIndex = Util.selectedIndexFromCombo( this.cmbPaymentType.dataProvider as ArrayCollection, 
 						this._item.pago.id);
 				}
+				*/
 			}
 			
 			private function getProveedor():ProveedorMaquilador{
@@ -122,7 +124,7 @@
 				item.fechaContrato= this.dtfFechaContrato.selectedDate;
 				item.documentosLiderProveedorMaquilador = this.convertDocumentLeader( this.fltDlvLeaderDocuments.delivers );
 				item.categoriaProyecto = Util.validateCombo( this.cmbTecnologia ) as Categoria;
-				item.pago = Util.validateCombo( this.cmbPaymentType ) as Pago;
+				//item.pago = Util.validateCombo( this.cmbPaymentType ) as Pago;
 				return item;
 			}
 			
@@ -133,7 +135,7 @@
 				this.responseGetUnidadB.token = this.catalogoService.getUnidadB();
 				this.responseGetUbicacionC.token = this.catalogoService.getUbicacionC();
 				this.responseGetTipoContrato.token = this.catalogoService.getTipoContrato();
-				this.responseGetPago.token = this.catalogoService.getPago();
+				//this.responseGetPago.token = this.catalogoService.getPago();
 				this.responseGetCategorias.token  = this.proyectoService.getCategorias(); 
 			}
 			
@@ -223,7 +225,7 @@
 				this.dtfFechaContrato.reset();
 				this.fltDlvLeaderDocuments.reset();
 				this.cmbTecnologia.selectedIndex = 0;
-				this.cmbPaymentType.selectedIndex = 0;
+				//this.cmbPaymentType.selectedIndex = 0;
 			}
 			
 			protected function responseUpdate_resultHandler(event:ResultEvent):void
@@ -349,11 +351,13 @@
 				if( data == null ){
 					return;
 				}
+				/*
 				this.cmbPaymentType.dataProvider = Util.addEmptyCatalgo( data, "pago");
 				if( this._item != null && this._item.pago != null ){
 					this.cmbPaymentType.selectedIndex = Util.selectedIndexFromCombo( this.cmbPaymentType.dataProvider as ArrayCollection, 
 						this._item.pago.id);
 				}
+				*/
 			}
 			
 		]]>
@@ -364,11 +368,13 @@
 	</mx:Metadata>
 	<mx:Form id="form">
 		<components:Provider limitedInformation="false" creationComplete="provider_creationCompleteHandler(event)" id="provider"/>
+		<!--
 		<mx:FormItem label="Forma de Pago:">
 			<mx:ComboBox id="cmbPaymentType"
 						 labelField="pago"
 						 />
 		</mx:FormItem>
+		-->
 		<mx:FormItem required="true" label="Cuenta Bancaria:">
 			<components:TextInput id="txtCuenta"
 								  />

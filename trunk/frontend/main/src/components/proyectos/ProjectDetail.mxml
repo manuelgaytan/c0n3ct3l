@@ -68,7 +68,7 @@
 				if( this._project.tipoServicio.id == TipoServicio.ID_FORANEO ){
 					costo = "producto.costoForaneoCliente";	
 				}				
-				this.txtCost.text = Util.formatNumber( Util.extractObject( this._project, costo) );
+				this.txtCost.text = Constants.HIDDEN;//Util.formatNumber( Util.extractObject( this._project, costo) );
 				this.txtSite.text = Util.extractToText( this._project, "centralSitio");
 				this.txtParentProject.text = Util.extractToText( this._project, "proyectoPadreHijo.proyectoPadre.descripcion");
 				this.txtAuditType.text = Util.extractToText( this._project, "tipoAuditoria.tipo");

@@ -4,6 +4,7 @@
 		 label="Registrar">
 	<mx:Script>
 		<![CDATA[
+			import model.Constants;
 			import model.Catalogo;
 			import model.Categoria;
 			import model.Estado;
@@ -214,6 +215,7 @@
 				var serviceType:TipoServicio = Util.validateCombo( this.cmbServiceType ) as TipoServicio;
 				if( serviceType == null ){
 					cleanCombos( cmbServiceType.id );
+					this.lblCost.text = "";
 					return;
 				}
 				if( serviceType.id == TipoServicio.ID_LOCAL ){
@@ -377,7 +379,10 @@
 				if( data == null ){
 					return;
 				}
-				this.cmbCost.dataProvider = Util.addEmptyCatalgo( data );
+				this.cmbCost.dataProvider = data; //Util.addEmptyCatalgo( data );
+				this.cmbCost.selectedIndex = 0;
+				this.cmbCost.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
+				this.lblCost.text = Constants.HIDDEN;
 			}
 			
 			protected function responseGetAll_resultHandler(event:ResultEvent):void
@@ -440,10 +445,13 @@
 						 labelField="tipo"
 						 change="cmbServiceType_changeHandler(event)"/>
 		</mx:FormItem>
-		<mx:FormItem required="true" label="Costo:">
+		
+		<mx:FormItem required="true" label="Costo:" direction="horizontal">
+			<mx:Label id="lblCost"/>
 			<mx:ComboBox id="cmbCost" width="250" textAlign="right"
-						 labelField="etiqueta"/>
+						 labelField="etiqueta" visible="false"/>			
 		</mx:FormItem>
+		
 		<mx:FormItem label="Central o Sitio:">
 			<components:TextInput id="txtSite" width="350"/>
 		</mx:FormItem>

@@ -10,16 +10,11 @@ package model
 	import flash.utils.Timer;
 	import flash.utils.getDefinitionByName;
 	
-	import model.ComentarioGenerico;
-	import model.TipoAlmacen;
-	
 	import mx.collections.ArrayCollection;
 	import mx.collections.Sort;
 	import mx.collections.SortField;
-	import mx.com.gahm.componentes.validadores.Constantes;
 	import mx.controls.Alert;
 	import mx.controls.ComboBox;
-	import mx.controls.DataGrid;
 	import mx.controls.List;
 	import mx.controls.dataGridClasses.DataGridColumn;
 	import mx.core.Application;
@@ -27,10 +22,6 @@ package model
 	import mx.formatters.CurrencyFormatter;
 	import mx.formatters.DateFormatter;
 	import mx.formatters.NumberFormatter;
-	import mx.managers.BrowserManager;
-	import mx.managers.FocusManager;
-	import mx.managers.IBrowserManager;
-	import mx.resources.ResourceManager;
 	import mx.rpc.events.FaultEvent;
 	import mx.utils.ObjectUtil;
 	import mx.utils.StringUtil;
@@ -554,6 +545,10 @@ package model
 			}else{
 				return null;
 			}
+		}
+		
+		public static function labelFunctionHidden(object:Object, column:DataGridColumn):String{
+			return Constants.HIDDEN;
 		}
 		
 		public static function labelFunctionCurrency(object:Object, column:DataGridColumn):String{

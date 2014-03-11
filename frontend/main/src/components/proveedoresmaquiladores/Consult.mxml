@@ -99,7 +99,7 @@
 		[Event(name="proveedorDetail", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
-	<mx:DataGrid id="datagrid" width="2590" height="100%" dataProvider="{items}"
+	<mx:DataGrid id="datagrid" width="2470" height="100%" dataProvider="{items}"
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 				 allowMultipleSelection="true">
 		<mx:columns>
@@ -131,9 +131,11 @@
 							   dataField="proveedor.correo"
 							   width="150"
 							   />
+			<!--
 			<mx:DataGridColumn headerText="{'Forma\nde Pago'}"
 							   dataField="pago.pago"
 							   width="120"/>
+			-->				   
 			<mx:DataGridColumn headerText="Cuenta Bancaria"
 							   dataField="datoBancario.cuentaBancaria"
 							   width="120"/>

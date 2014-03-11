@@ -39,6 +39,8 @@ package model
 		public static var ID_MAQUILADORES:Number = 2;
 		public static var ID_CALIFICADOS:Number = 1;
 		
+		public static const HIDDEN:String = "-------";
+		
 		public static function getAMPM():ArrayCollection{
 			var data:ArrayCollection = new ArrayCollection();
 			var item:Catalogo = null;

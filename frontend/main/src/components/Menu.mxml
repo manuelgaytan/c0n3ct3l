@@ -145,7 +145,7 @@
 		<mx:LinkButton label="Pagos Contables y Servicios" id="PagosContablesServicios" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/pagoscontables.png')"/>
 	</mx:VBox>
-	<mx:VBox label="Tesorerí­a" width="100%" height="100%">
+	<mx:VBox label="Tesorería" width="100%" height="100%">
 		<mx:LinkButton label="Cobranza" id="Cobranza" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/cobranza.png')"/>
 		<mx:LinkButton label="Pago a Proveedores" id="PagoProveedores" click="clickMenuHandler(event)"

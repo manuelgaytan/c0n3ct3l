@@ -44,14 +44,6 @@
 		]]>
 	</mx:Script>
 	<mx:TabNavigator id="navigator" width="100%" height="100%" creationPolicy="all">
-	<!--
-		<consultageneraloperacion:Filter id="filtro" filterCommand="filtro_filterCommandHandler(event)"/>
-	-->
 		<consultageneraloperacion:Consult id="consult" projectDetail="consult_projectDetailHandler(event)" consultOnly="false"/>
-	<!--
-		<consultageneraloperacion:Project id="register" projectNew="detail_projectUpdatedHandler(event)"/>
-		<consultageneraloperacion:ProjectDetail id="detail" projectCancelled="detail_projectUpdatedHandler(event)"/>
-		<consultageneraloperacion:ProjectUpdate id="update" projectUpdated="detail_projectUpdatedHandler(event)"/>
-	-->
 	</mx:TabNavigator>
 </mx:Module>

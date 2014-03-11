@@ -14,6 +14,11 @@
 	</mx:Script>
 	<mx:Script>
 		<![CDATA[
+			import model.Util;
+		]]>
+	</mx:Script>
+	<mx:Script>
+		<![CDATA[
 			import events.GenericEvent;
 			
 			import model.FiltroProyecto;
@@ -425,11 +430,16 @@
 							   labelFunction="{Util.labelFunctionDate}"
 							   width="130"
 							   textAlign="center"/>
-			<mx:DataGridColumn headerText="{'Entregables\nCompletos'}" editable="false" textAlign="center"
-							   dataField="configuracionPruebaEntrega.entregablesCompletos">
+			<mx:DataGridColumn headerText="{'Entregables\nCompletos'}" editable="false" textAlign="center">
 				<mx:itemRenderer>
-					<mx:Component>
-						<mx:CheckBox selected="{Util.extractObject(data,'configuracionPruebaEntrega.entregablesCompletos')}" enabled="false"/>
+					<mx:Component>						
+						<mx:CheckBox selected="{model.Util.extractObject(data,'configuracionPruebaEntrega.entregablesCompletos')}" enabled="false">
+							<mx:Script>
+								<![CDATA[
+									import model.Util;
+								]]>
+							</mx:Script>
+						</mx:CheckBox>
 					</mx:Component>
 				</mx:itemRenderer>
 			</mx:DataGridColumn>

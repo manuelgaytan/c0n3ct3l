@@ -256,6 +256,7 @@ BrowserHistory = (function() {
     }
 
     function handleBackButton() {
+    	return;// deshabilitando el back button.
         //The "current" page is always at the top of the history stack.
         var current = backStack.pop();
         if (!current) { return; }

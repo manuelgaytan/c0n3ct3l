@@ -16,8 +16,10 @@ import javax.persistence.TypedQuery;
 import mx.com.gahm.conenctel.entities.ComentarioComprasDO;
 import mx.com.gahm.conenctel.entities.ComentarioPantallaValidacionAdministrativaDO;
 import mx.com.gahm.conenctel.entities.ComentarioRequisicionDO;
+import mx.com.gahm.conenctel.entities.ComentarioSugerenciaDO;
 import mx.com.gahm.conenctel.entities.ComentarioValidacionAdministrativaDO;
 import mx.com.gahm.conenctel.entities.RequisicionCompraDO;
+import mx.com.gahm.conenctel.entities.SugerenciaDO;
 import mx.com.gahm.conenctel.entities.ValidacionAdministrativaDO;
 import mx.com.gahm.conenctel.exceptions.ConectelException;
 import mx.com.gahm.conenctel.services.IValidacionAdministrativaService;
@@ -73,12 +75,36 @@ public class ValidacionAdministrativaService implements IValidacionAdministrativ
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public ValidacionAdministrativaDO update(ValidacionAdministrativaDO item) {
-		this.updateComentarios(item, item.getComentariosPantallaValidacionAdministrativa());
+	public ValidacionAdministrativaDO update(ValidacionAdministrativaDO item) throws ConectelException {
+		deleteComentarios(item.getId());
+		List<ComentarioPantallaValidacionAdministrativaDO> comentarios = item.getComentariosPantallaValidacionAdministrativa();
+		item.setComentariosPantallaValidacionAdministrativa(null);
 		entityManager.merge(item);
+		saveComentarios(item, comentarios);
 		return item;
 	}
+	
+	private void deleteComentarios(Long id) throws ConectelException{
+		ValidacionAdministrativaDO item = getItem(id);
+		List<ComentarioPantallaValidacionAdministrativaDO> comentarios = item.getComentariosPantallaValidacionAdministrativa();
+		if( comentarios != null ){
+			for (ComentarioPantallaValidacionAdministrativaDO comentario : comentarios) {
+				entityManager.remove(comentario);
+			}
+		}
+	}
 
+	private void saveComentarios(ValidacionAdministrativaDO item,List<ComentarioPantallaValidacionAdministrativaDO> comentarios){
+		if( comentarios != null ){
+			for (ComentarioPantallaValidacionAdministrativaDO comentario : comentarios) {
+				entityManager.persist(comentario.getComentarioValidacionAdministrativa());
+				comentario.setValidacionAdministrativa(item);
+				entityManager.persist(comentario);
+			}
+		}
+		item.setComentariosPantallaValidacionAdministrativa(comentarios);
+	}
+	
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public ValidacionAdministrativaDO getItem(Long id) throws ConectelException {
 		ValidacionAdministrativaDO validacionProyecto = entityManager.find(ValidacionAdministrativaDO.class, id);
@@ -86,28 +112,5 @@ public class ValidacionAdministrativaService implements IValidacionAdministrativ
 			throw new ConectelException("El Solicitud Almacen no existe");
 		}
 		return validacionProyecto;
-	}
-
-	private void saveComentarios(ValidacionAdministrativaDO validacionAdministrativaDO,List<ComentarioPantallaValidacionAdministrativaDO> datos){
-		if( datos == null ){
-			return;
-		}
-		for (ComentarioPantallaValidacionAdministrativaDO dato : datos) {
-			ComentarioValidacionAdministrativaDO comentarioValidacionAdministrativaDO = dato.getComentarioValidacionAdministrativa();
-			entityManager.persist(comentarioValidacionAdministrativaDO);
-			dato.setComentarioValidacionAdministrativa(comentarioValidacionAdministrativaDO);
-			dato.setValidacionAdministrativa(validacionAdministrativaDO);
-			entityManager.persist(dato);
-		}
-		
-	}
-	
-	private void updateComentarios(ValidacionAdministrativaDO validacionAdministrativaDO,List<ComentarioPantallaValidacionAdministrativaDO> datos){
-		if( datos == null ){
-			return;
-		}
-		for (ComentarioPantallaValidacionAdministrativaDO dato : datos) {
-			dato.setValidacionAdministrativa(validacionAdministrativaDO);
-		}
 	}
 }

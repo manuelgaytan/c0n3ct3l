@@ -68,7 +68,6 @@ public class OrdenCompraMaquiladoDO implements java.io.Serializable {
 	@Column(name="finiquito", precision=10, scale=0)
 	private Double finiquito;
 	
-	public static Double OC_QUANTITY = 0.5;
 	public static String OC_UNIT = "PROYECTO";
 	public static String OC_SITE = "SITIO";
 	public static String OC_ADVANCE = "ANTICIPO";
@@ -127,7 +126,7 @@ public class OrdenCompraMaquiladoDO implements java.io.Serializable {
 		PartidaOrdenCompraSolicitudServicioMaquilado entry = null;
 		entry = new PartidaOrdenCompraSolicitudServicioMaquilado();
 		entry.setPartida( i );
-		entry.setCantidad( OC_QUANTITY );
+		entry.setCantidad( this.getAnticipo() );
 		entry.setUnidad( OC_UNIT );
 		entry.setDescripcion( OC_ADVANCE + " " + proyecto.getProducto().getModelo() + 
 							"\n" + proyecto.getProducto().getActividadRealizar() + ", " + proyecto.getProducto().getEquipo() + 
@@ -143,7 +142,7 @@ public class OrdenCompraMaquiladoDO implements java.io.Serializable {
 		i++;
 		entry = new PartidaOrdenCompraSolicitudServicioMaquilado();
 		entry.setPartida( i );
-		entry.setCantidad( OC_QUANTITY );
+		entry.setCantidad( this.getFiniquito() );
 		entry.setUnidad( OC_UNIT );
 		entry.setDescripcion( OC_SETTLEMENT + " " + proyecto.getProducto().getModelo() + 
 			"\n" + proyecto.getProducto().getActividadRealizar() + ", " + proyecto.getProducto().getEquipo() + 

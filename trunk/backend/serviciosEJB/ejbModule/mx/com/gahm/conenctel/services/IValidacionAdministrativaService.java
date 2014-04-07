@@ -23,7 +23,7 @@ public interface IValidacionAdministrativaService {
 
 	public ValidacionAdministrativaDO save(ValidacionAdministrativaDO item);
 
-	public ValidacionAdministrativaDO update(ValidacionAdministrativaDO item);
+	public ValidacionAdministrativaDO update(ValidacionAdministrativaDO item) throws ConectelException;
 
 	public ValidacionAdministrativaDO getItem(Long id) throws ConectelException;
 

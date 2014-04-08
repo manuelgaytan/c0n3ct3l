@@ -13,6 +13,7 @@
 			import model.Colaborador;
 			import model.ComprobacionViaticos;
 			import model.Constants;
+			import model.Contratacion;
 			import model.DocumentoComprobacionViaticos;
 			import model.Estado;
 			import model.EstadoComprobacionViaticos;
@@ -287,14 +288,21 @@
 				}
 			}
 			
-			protected function setResponsibleData(colaborator:Colaborador):void
-			{
-				if( colaborator == null ){
+			private function responseGetContratacionByIdColaborador_resultHandler(event:ResultEvent):void{
+				if( event == null ){
 					return;
 				}
-				this.txtCardNumber.text = colaborator.numeroTarjeta;
-				this.txtMail.text = colaborator.correoElectronico;
-				this.txtPhone.text = colaborator.telefono;
+				var contrataciones:ArrayCollection = event.result as ArrayCollection;
+				if( contrataciones == null || 
+					contrataciones.length == 0 ||
+					contrataciones.getItemAt(0) == null || 
+					!(contrataciones.getItemAt(0) is Contratacion) ){
+					return;
+				}
+				var contratacion:Contratacion = contrataciones.getItemAt( 0 ) as Contratacion;
+				this.txtCardNumber.text = contratacion.colaborador.numeroTarjeta;
+				this.txtMail.text = contratacion.colaborador.correoElectronico;
+				this.txtPhone.text = contratacion.colaborador.telefono;
 			}
 			
 			protected function descargarFormato_clickHandler(event:MouseEvent):void
@@ -306,7 +314,10 @@
 			protected function lstApplicantsNames_changeHandler(event:ListEvent):void
 			{
 				var colaborator:Colaborador = this.lstApplicantsNames.selectedItem as Colaborador;
-				this.setResponsibleData( colaborator );
+				if( colaborator == null ){
+					return;
+				}
+				this.responseGetContratacionByIdColaborador.token = this.contratacionService.getContratacionByIdColaborador( colaborator.id );
 			}
 			
 			private function labelFunctionSolicitante( item:Object ):String{
@@ -461,4 +472,7 @@
 	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="comprobacionViaticosService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetEstadoComprobacionViaticos" result="responseGetEstadoComprobacionViaticos_resultHandler(event)"/>
+	<mx:RemoteObject id="contratacionService" destination="contratacionService" fault="comprobacionViaticosService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetContratacionByIdColaborador" result="responseGetContratacionByIdColaborador_resultHandler(event)"/>
 </mx:VBox>

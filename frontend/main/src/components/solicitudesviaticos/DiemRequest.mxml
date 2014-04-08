@@ -305,7 +305,7 @@
 				if( colaborator == null ){
 					return;
 				}
-				this.contratacionService.getContratacionByIdColaborador( colaborator.id );
+				this.responseGetContratacionByIdColaborador.token = this.contratacionService.getContratacionByIdColaborador( colaborator.id );
 			}
 			
 			private function responseGetContratacionByIdColaborador_resultHandler(event:ResultEvent):void{

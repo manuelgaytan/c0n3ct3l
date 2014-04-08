@@ -344,10 +344,10 @@
 					return;
 				}
 				if( project.tipoServicio.id == TipoServicio.ID_LOCAL ){
-					this.txtCostSupplier.text = Util.currencyFormatter.format(project.producto.costoLocalCliente);
+					this.txtCostSupplier.text = Util.currencyFormatter.format(project.producto.costoLocalProveedor);
 				}
 				if( project.tipoServicio.id == TipoServicio.ID_FORANEO ){
-					this.txtCostSupplier.text = Util.currencyFormatter.format(project.producto.costoForaneoCliente);
+					this.txtCostSupplier.text = Util.currencyFormatter.format(project.producto.costoForaneoProveedor);
 				}
 			}
 			

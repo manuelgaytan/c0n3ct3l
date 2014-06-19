@@ -6,6 +6,7 @@
 				creationComplete="creationCompleteHandler(event)">
 	<mx:Script>
 		<![CDATA[
+			import mx.core.UITextField;
 			import components.ComboList;
 			import components.Comments;
 			import components.DateField;
@@ -619,6 +620,29 @@
 				modelInstance.repositoryPath = event.result["repositoryPath"];
 			}
 			
+			private function mostrarOcultarMenu(event:MouseEvent):void{
+				if( event == null ){
+					return;
+				}
+				var panel:Panel = event.currentTarget as Panel;
+				var text:UITextField = event.target as UITextField;
+				if( panel == null ){
+					return;
+				}
+				if( text != null && text.text == "<" ){
+					panel.width = 10;
+					return;
+				}
+				var widthPanel:int = panel.width;
+				var limitWidth:int = 285;
+				var limitHeight:int = 25;
+				if( event.localX > limitWidth && event.localX < widthPanel &&
+					event.localY < limitHeight && event.localY > 0 ){
+					panel.width = 10;
+				}else{
+					panel.width = 320;
+				}
+			}			
 		]]>
 	</mx:Script>
 	<mx:Style source="assets/css/styles.css"/>
@@ -635,14 +659,14 @@
 	<mx:HBox id="body" width="100%" height="100%"
 			 verticalAlign="middle" horizontalAlign="center">
 		<mx:HBox verticalAlign="top">
-			<mx:Panel title="Menú Principal">
+			<mx:Panel id="pnlMenu" title="Menú Principal" status="&lt;" click="mostrarOcultarMenu(event)">
 				<components:Menu id="menu" menuItemClick="menuItemClickHandler(event)"/>
 			</mx:Panel>
 			<components:WorkSpace id="workSpace"/>
 		</mx:HBox>
 	</mx:HBox>
 	<mx:HTTPService id="httpService"
-					url="properties.xml"
+					url="main.properties"
 					resultFormat="flashvars"
 					fault="httpService_fault(event)"
 					result="httpService_result(event)"/>

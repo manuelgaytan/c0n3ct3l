@@ -4,12 +4,12 @@
 		 >
 	<mx:Script>
 		<![CDATA[
+			import model.InformacionConfidencialColaborador;
 			import events.GenericEvent;
 			
 			import model.Catalogo;
 			import model.Colaborador;
 			import model.Constants;
-			import model.Contratacion;
 			import model.Estado;
 			import model.EstadoOrdenCompra;
 			import model.EstadoValidacionCosto;
@@ -303,26 +303,36 @@
 			{
 				var colaborator:Colaborador = this.cmbApplicantsNames.selectedItem as Colaborador;
 				if( colaborator == null ){
+					this.cleanColaboratorData();
 					return;
 				}
-				this.responseGetContratacionByIdColaborador.token = this.contratacionService.getContratacionByIdColaborador( colaborator.id );
+				this.responseGetInformacionConfidencialColaboradorByIdColaborador.token = this.informacionConfidencialColaboradorService.getInformacionConfidencialColaboradorByIdColaborador( colaborator.id );
 			}
 			
-			private function responseGetContratacionByIdColaborador_resultHandler(event:ResultEvent):void{
+			private function cleanColaboratorData():void{
+				this.txtCardNumber.reset();
+				this.txtMail.reset();
+				this.txtPhone.reset();
+			}
+			
+			private function responseGetInformacionConfidencialColaboradorByIdColaborador_resultHandler(event:ResultEvent):void{
 				if( event == null ){
 					return;
 				}
-				var contrataciones:ArrayCollection = event.result as ArrayCollection;
-				if( contrataciones == null || 
-					contrataciones.length == 0 ||
-					contrataciones.getItemAt(0) == null || 
-					!(contrataciones.getItemAt(0) is Contratacion) ){
+				var informacionesConfidencialColaborador:ArrayCollection = event.result as ArrayCollection;
+				if( informacionesConfidencialColaborador == null || 
+					informacionesConfidencialColaborador.length == 0 ||
+					informacionesConfidencialColaborador.getItemAt(0) == null || 
+					!(informacionesConfidencialColaborador.getItemAt(0) is InformacionConfidencialColaborador) ){
 					return;
 				}
-				var contratacion:Contratacion = contrataciones.getItemAt( 0 ) as Contratacion;
-				this.txtCardNumber.text = contratacion.colaborador.numeroTarjeta;
-				this.txtMail.text = contratacion.colaborador.correoElectronico;
-				this.txtPhone.text = contratacion.colaborador.telefono;
+				var informacionConfidencialColaborador:InformacionConfidencialColaborador = informacionesConfidencialColaborador.getItemAt( 0 ) as InformacionConfidencialColaborador;
+				if( informacionConfidencialColaborador == null ){
+					return;
+				}
+				this.txtCardNumber.text = informacionConfidencialColaborador.numeroTarjetaNomina;
+				this.txtMail.text = informacionConfidencialColaborador.correoElectronico;
+				this.txtPhone.text = Util.extractToText(informacionConfidencialColaborador,"contratacion.seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosGeneralesSolicitante.telefono");
 			}
 			
 			private function sum():void{
@@ -550,7 +560,7 @@
 	<mx:RemoteObject id="proyectoService" destination="proyectoService" fault="solicitudViaticosService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetAllByFiltro" result="responseGetAll_resultHandler(event)"/>
-	<mx:RemoteObject id="contratacionService" destination="contratacionService" fault="solicitudViaticosService_faultHandler(event)"
+	<mx:RemoteObject id="informacionConfidencialColaboradorService" destination="informacionConfidencialColaboradorService" fault="solicitudViaticosService_faultHandler(event)"
 					 showBusyCursor="true"/>
-	<mx:CallResponder id="responseGetContratacionByIdColaborador" result="responseGetContratacionByIdColaborador_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetInformacionConfidencialColaboradorByIdColaborador" result="responseGetInformacionConfidencialColaboradorByIdColaborador_resultHandler(event)"/>
 </mx:VBox>

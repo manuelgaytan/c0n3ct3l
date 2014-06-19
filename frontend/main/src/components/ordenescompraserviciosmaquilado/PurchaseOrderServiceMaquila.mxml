@@ -239,6 +239,7 @@
 			
 			private function cleanForm():void
 			{
+				Util.upScroll( this );
 				this.txtID.reset();
 				this.txtRequisicionID.reset();
 				this.dtfDate.selectedDate = new Date();

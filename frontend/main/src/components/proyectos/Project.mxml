@@ -401,6 +401,13 @@
 	</mx:Metadata>
 	<mx:Form 
 		verticalScrollPolicy="off" horizontalScrollPolicy="off">
+		<mx:FormItem label="Proyecto Padre:">
+			<mx:ComboBox id="cmbParentProject" width="450"
+						 labelField="descripcion"/>
+		</mx:FormItem>
+		<mx:FormItem label="Central o Sitio:">
+			<components:TextInput id="txtSite" width="350"/>
+		</mx:FormItem>
 		<mx:FormItem required="true" label="Categoria:">
 			<mx:ComboBox id="cmbCategory" width="400"
 						 labelField="etiqueta"/>
@@ -445,19 +452,10 @@
 						 labelField="tipo"
 						 change="cmbServiceType_changeHandler(event)"/>
 		</mx:FormItem>
-		
 		<mx:FormItem required="true" label="Costo:" direction="horizontal">
 			<mx:Label id="lblCost"/>
 			<mx:ComboBox id="cmbCost" width="250" textAlign="right"
 						 labelField="etiqueta" visible="false"/>			
-		</mx:FormItem>
-		
-		<mx:FormItem label="Central o Sitio:">
-			<components:TextInput id="txtSite" width="350"/>
-		</mx:FormItem>
-		<mx:FormItem label="Proyecto Padre:">
-			<mx:ComboBox id="cmbParentProject" width="450"
-						 labelField="descripcion"/>
 		</mx:FormItem>
 		<proyectos:ProjectUpdate id="complement" asComplement="true"/>
 		<mx:FormItem>

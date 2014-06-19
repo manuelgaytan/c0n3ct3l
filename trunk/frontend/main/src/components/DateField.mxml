@@ -3,13 +3,34 @@
 			  initialize="initializeHandler(event)"
 			  creationComplete="creationCompleteHandler(event)"
 			  width="100"
-			  yearNavigationEnabled="true">
+			  yearNavigationEnabled="true"
+			  focusIn="dfFocusIn()"
+			  keyDown="fechaEnter(event)">
+			  <!--
+			  focusOut="formatearFecha()"
+			  toolTip="DD/MM/AAAA">
+			  -->
 	<mx:Script>
 		<![CDATA[
 			import model.Constants;
 			
 			import mx.events.FlexEvent;
-
+			/*
+			import mx.events.ValidationResultEvent;
+			
+			private var vResult:ValidationResultEvent;
+			[Bindable]
+			public var limiteFecha:Date = new Date();
+			[Bindable]
+			public var requerido:Boolean = true;
+			[Bindable]
+			public var indiceTab:int;
+			[Bindable]
+			public var valido:Boolean = false;
+			private var dateStr:String = '';
+			private var fechaIntroducida:Date;
+			private var fechaValidar:Date;
+			*/
 			public function reset():void{
 				textInput.text = "";
 				errorString = "";
@@ -47,10 +68,96 @@
 			
 			protected function creationCompleteHandler(event:FlexEvent):void
 			{
-				// TODO Auto-generated method stub
 				
 			}
 			
+			public function dfFocusIn():void
+			{
+				textInput.selectionBeginIndex = 0;
+				textInput.selectionEndIndex = textInput.text.length;
+			}
+			
+			public function fechaEnter(e:KeyboardEvent):void
+	        {
+	        	if(text.length == 0 || text == ""){
+		        	if( e.keyCode == Keyboard.ENTER || e.keyCode == Keyboard.SPACE ){
+		            	open();
+		            }            	
+	        	}else if(text.length > 0 || text != ""){
+	        		if( e.keyCode == Keyboard.DELETE || e.keyCode == Keyboard.BACKSPACE ){
+	        			text = "";
+	        			selectedDate = null;
+	        		}
+	        	}
+	        }
+	        		/*
+	        		if (e.keyCode == Keyboard.ENTER || e.keyCode == Keyboard.TAB)
+	        		{
+			            formatearFecha();
+			            
+			            if(e.keyCode == Keyboard.ENTER)
+			            {
+			            	Keyboard.TAB;
+			            	mx.controls.DateField(e.currentTarget).dispatchEvent(new FocusEvent(FocusEvent.KEY_FOCUS_CHANGE,true,false,null,false,Keyboard.TAB) );
+			            }
+	        		}
+	        		else
+	        		{
+	        			if(e.keyCode != Keyboard.UP && e.keyCode != Keyboard.DOWN && e.keyCode != Keyboard.LEFT && e.keyCode != Keyboard.RIGHT)
+	        				close();
+	        		}
+	        	}
+	        }
+	        */
+	        /*
+	        private function formatearFecha():void
+	        {
+	        	dateVal.enabled = true;
+	            vResult = dateVal.validate();
+	            dateStr = text;
+	            if (vResult.type==ValidationResultEvent.VALID) 
+	            {
+	                var splitTemp:Array = text.split('/');
+	                var diaTemp:int = splitTemp[0];
+	                var mesTemp:int = splitTemp[1];
+	                var anoTemp:int = splitTemp[2];
+	                dateStr = splitTemp[1] + '/' + splitTemp[0] + '/' + splitTemp[2];
+	                fechaIntroducida = new Date(dateStr);
+	                fechaValidar = new Date(limiteFecha.getFullYear(), limiteFecha.getMonth(), limiteFecha.getDate()-1)
+	                if(fechaIntroducida <= fechaValidar && fechaIntroducida.getFullYear() >= 1900)
+	                {
+	            		valido = true;
+	                	errorString = "";
+	                	text = dateFormatter.format(dateStr);
+	                }
+	            	else
+	            	{
+	            		valido = false;
+	            		errorString = resourceManager.getString('recursos','aper.lbl.fechaincorrecta');
+	            	}
+	            }
+	            else
+	            {
+	            	valido = false;
+	            }
+	        }
+	        */
 		]]>
 	</mx:Script>
+	<!--
+	<mx:DateFormatter id="dateFormatter" formatString="DD/MM/YYYY"/>
+	<mx:DateValidator id="dateVal" 
+					  source="{this}" 
+					  property="text" 
+					  inputFormat="DD/MM/YYYY" 
+					  required="{requerido}" 
+					  wrongDayError="{resourceManager.getString('recursos','aper.lbl.diasincorrectos')}"
+					  wrongMonthError="{resourceManager.getString('recursos','aper.lbl.mesincorrecto')}"
+					  wrongYearError="{resourceManager.getString('recursos','aper.lbl.anoincorrecto')}"
+					  wrongLengthError="{resourceManager.getString('recursos','aper.lbl.fechaincorrecta')}"
+					  invalidCharError="{resourceManager.getString('recursos','aper.lbl.formatoincorrecto')}"
+					  requiredFieldError="{resourceManager.getString('recursos','aper.lbl.camporequerido')}"
+					  formatError="DD/MM/AAAA"
+					  />
+	-->
 </mx:DateField>

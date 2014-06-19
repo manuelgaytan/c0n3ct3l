@@ -127,6 +127,10 @@
 							   dataField="proyectoPadreHijo.proyectoPadre.descripcion"
 							   width="150"
 							   />
+			<mx:DataGridColumn id="dtgSite" headerText="{'Central\no Sitio'}" textAlign="right"
+							   dataField="centralSitio"
+							   width="150"
+							   />
 			<mx:DataGridColumn id="dtgProjectState" headerText="{'Estado\nProyecto'}"
 							   dataField="estado.etiqueta"
 							   labelFunction="labelFunctionGenerico"
@@ -175,10 +179,6 @@
 							   dataField="producto.costoForaneoCliente"
 							   labelFunction="{Util.labelFunctionHidden}"
 							   width="85"/>
-			<mx:DataGridColumn id="dtgSite" headerText="{'Central\no Sitio'}" textAlign="right"
-							   dataField="centralSitio"
-							   width="150"
-							   />
 		</mx:columns>
 	</mx:DataGrid>
 	</mx:HBox>

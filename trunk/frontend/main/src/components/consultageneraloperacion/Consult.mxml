@@ -167,6 +167,9 @@
 							   dataField="proyecto.proyectoPadreHijo.proyectoPadre.descripcion"
 							   width="150"
 							   />
+			<mx:DataGridColumn headerText="{'Site\nSurvey'}"
+							   dataField="datosGeneralesProyecto.siteSurvey"
+							   width="110"/>
 			<mx:DataGridColumn id="dtgProjectState" headerText="{'Estado\nProyecto'}"
 							   dataField="proyecto.estado.etiqueta"
 							   labelFunction="labelFunctionGenerico"
@@ -215,10 +218,6 @@
 							   dataField="proyecto.producto.costoForaneoCliente"
 							   labelFunction="{Util.labelFunctionCurrency}"
 							   width="85"/>
-			<mx:DataGridColumn id="dtgSite" headerText="{'Central\no Sitio'}" textAlign="right"
-							   dataField="proyecto.centralSitio"
-							   width="150"
-							   />
 			
 			<mx:DataGridColumn id="dtgDivision" headerText="{'División\no Región'}"
 							   dataField="datosGeneralesProyecto.divisionRegion"

@@ -197,6 +197,7 @@ public class ProyectoService implements IProyectoService {
 		}
 		project.setRequisiciones(requisiciones);
 		project.setObservaciones(observaciones);
+		entityManager.merge(project);
 		return project;
 	}
 

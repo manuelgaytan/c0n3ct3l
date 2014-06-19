@@ -7,6 +7,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,6 +20,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
+import javax.persistence.TypedQuery;
 
 /**
  * @author MHDolores
@@ -27,7 +29,8 @@ import javax.persistence.Temporal;
 @Entity
 @Table(name = "InformacionConfidencialColaborador")
 @NamedQueries({
-	@NamedQuery(name = "InformacionConfidencialColaboradorDO.findAll", query = "select rc from InformacionConfidencialColaboradorDO rc")
+	@NamedQuery(name = "InformacionConfidencialColaboradorDO.findAll", query = "select rc from InformacionConfidencialColaboradorDO rc"),
+	@NamedQuery(name = "InformacionConfidencialColaboradorDO.getInformacionConfidencialColaboradorByIdColaborador", query = "select rc from InformacionConfidencialColaboradorDO rc where rc.contratacion.colaborador.id=:idColaborador")
 	})
 public class InformacionConfidencialColaboradorDO implements Serializable{
 
@@ -423,15 +426,4 @@ public class InformacionConfidencialColaboradorDO implements Serializable{
 	public void setCorreoElectronico(String correoElectronico) {
 		this.correoElectronico = correoElectronico;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }

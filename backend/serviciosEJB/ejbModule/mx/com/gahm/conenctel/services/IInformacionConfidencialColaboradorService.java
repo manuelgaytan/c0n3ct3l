@@ -20,6 +20,5 @@ public interface IInformacionConfidencialColaboradorService {
 	InformacionConfidencialColaboradorDO save( InformacionConfidencialColaboradorDO item );
 	InformacionConfidencialColaboradorDO update( InformacionConfidencialColaboradorDO item );
 	InformacionConfidencialColaboradorDO getItem( Integer id );	
-	
-	
+	List<InformacionConfidencialColaboradorDO> getInformacionConfidencialColaboradorByIdColaborador(Integer idColaborador );
 }

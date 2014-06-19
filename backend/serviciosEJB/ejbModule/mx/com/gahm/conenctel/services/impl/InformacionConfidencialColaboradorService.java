@@ -10,6 +10,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
+import mx.com.gahm.conenctel.entities.ContratacionDO;
 import mx.com.gahm.conenctel.entities.InformacionConfidencialColaboradorDO;
 import mx.com.gahm.conenctel.services.IInformacionConfidencialColaboradorService;
 
@@ -60,4 +61,14 @@ public class InformacionConfidencialColaboradorService implements IInformacionCo
 		return cotizacion;
 	}
 
+	@Override
+	public List<InformacionConfidencialColaboradorDO> getInformacionConfidencialColaboradorByIdColaborador(Integer idColaborador ){
+		List<InformacionConfidencialColaboradorDO> datos= null;
+		TypedQuery<InformacionConfidencialColaboradorDO>  query =null;
+		query = entityManager.createNamedQuery("InformacionConfidencialColaboradorDO.getInformacionConfidencialColaboradorByIdColaborador",InformacionConfidencialColaboradorDO.class);
+		query.setParameter("idColaborador", idColaborador);
+		datos = query.getResultList();
+		
+		return datos;
+	}
 }

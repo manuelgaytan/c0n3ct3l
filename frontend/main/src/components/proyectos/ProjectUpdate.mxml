@@ -87,7 +87,17 @@
 			public function cleanForm():void
 			{
 				Util.upScroll( this );
-				this.cleanCombos( cmbCategory.id );
+				this.cmbCategory.selectedIndex = 0;
+				this.cmbClient.selectedIndex = 0;
+				Util.freeDataProvider( this.cmbProjectType );
+				Util.freeDataProvider( this.cmbTechnology );
+				Util.freeDataProvider( this.cmbEquipment );
+				Util.freeDataProvider( this.cmbActivity );
+				Util.freeDataProvider( this.cmbModel );
+				Util.freeDataProvider( this.cmbServiceDescription );
+				Util.freeDataProvider( this.cmbServiceType );
+				Util.freeDataProvider( this.cmbCost );
+				this.cmbParentProject.selectedIndex = 0;
 				this.txtSite.reset();
 				this.requirements.reset();
 				this.observations.reset();
@@ -152,6 +162,17 @@
 				if( idEstado != Estado.ID_CANCELADO ){
 					value = true;
 				}
+				this.cmbParentProject.enabled = value;
+				this.txtSite.enabled = value;
+				this.cmbCategory.enabled = value;
+				this.cmbClient.enabled = value;
+				this.cmbProjectType.enabled = value;
+				this.cmbTechnology.enabled = value;
+				this.cmbEquipment.enabled = value;
+				this.cmbActivity.enabled = value;
+				this.cmbModel.enabled = value;
+				this.cmbServiceDescription.enabled = value;
+				this.cmbServiceType.enabled = value;
 				this.requirements.enabledButton = value;
 				this.btnAccept.visible = value;
 			}

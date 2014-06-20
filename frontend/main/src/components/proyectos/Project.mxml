@@ -66,7 +66,8 @@
 				project.proyectoPadreHijo = new ProyectoPadreHijo();
 				project.proyectoPadreHijo.proyectoPadre = Util.validateCombo( this.cmbParentProject ) as ProyectoPadre;
 				project.tipoServicio = Util.validateCombo( this.cmbServiceType ) as TipoServicio;
-				this.complement.getProjectValue = project;
+				project.requisiciones = this.requirements.requirements;
+				project.observaciones = this.observations.observations;
 				return project;
 			}
 			
@@ -85,7 +86,8 @@
 				Util.freeDataProvider( this.cmbCost );
 				this.cmbParentProject.selectedIndex = 0;
 				this.txtSite.reset();
-				this.complement.cleanForm();
+				this.requirements.reset();
+				this.observations.reset();
 			}
 
 			protected function responseSave_resultHandler(event:ResultEvent):void
@@ -457,7 +459,8 @@
 			<mx:ComboBox id="cmbCost" width="250" textAlign="right"
 						 labelField="etiqueta" visible="false"/>			
 		</mx:FormItem>
-		<proyectos:ProjectUpdate id="complement" asComplement="true"/>
+		<proyectos:FormRequirements id="requirements"/>
+ 		<components:Observations id="observations" fase="{Estado.createEstado(Estado.ID_ALTA, Estado.ALTA)}"/>
 		<mx:FormItem>
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
 		</mx:FormItem>

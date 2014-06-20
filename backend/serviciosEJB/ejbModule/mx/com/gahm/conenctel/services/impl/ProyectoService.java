@@ -123,21 +123,37 @@ public class ProyectoService implements IProyectoService {
 		project.setObservaciones(null);
 		
 		project.getProyectoPadreHijo().setProyecto(project);
+		
 		entityManager.persist(project);
+		if (requisiciones != null) {
+			for (RequisicionDO current:requisiciones) {
+				current.setProyecto(project);
+				entityManager.persist(current);
+			}
+		}
+		if (observaciones != null) {
+			for (ObservacionDO current:observaciones) {
+				current.setProyecto(project);
+				current.setEstado(project.getEstado());
+				entityManager.persist(current);
+			}
+		}
+		/*
 		entityManager.flush();
 		System.out.println("-> proyecto id: "+project.getId());
 		this.validarEnvioNotificaciones( project );
 		
 		project.setRequisiciones(requisiciones);
 		project.setObservaciones(observaciones);
-		this.update(project);
 		
+		this.update(project);
+		*/
 		/*
 		entityManager.persist(project.getProyectoPadreHijo());
 		*//*
 		 * 	entityManager.persist(project);
 		 */
-		return null;
+		return project;
 	}
 	
 	private void validarEnvioNotificaciones(ProyectoDO project) {
@@ -181,6 +197,9 @@ public class ProyectoService implements IProyectoService {
 				entityManager.remove(current);
 			}
 		}
+		if( regProject.getProyectoPadreHijo() != null ){
+			entityManager.remove( regProject.getProyectoPadreHijo() );
+		}
 		// guarda las nuevas
 		if (requisiciones != null) {
 			for (RequisicionDO current:requisiciones) {
@@ -197,6 +216,7 @@ public class ProyectoService implements IProyectoService {
 		}
 		project.setRequisiciones(requisiciones);
 		project.setObservaciones(observaciones);
+		project.getProyectoPadreHijo().setProyecto(project);
 		entityManager.merge(project);
 		return project;
 	}

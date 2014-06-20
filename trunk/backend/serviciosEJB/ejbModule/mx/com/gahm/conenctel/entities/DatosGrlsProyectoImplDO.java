@@ -1,5 +1,7 @@
 package mx.com.gahm.conenctel.entities;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 import java.io.Serializable;
 import javax.persistence.*;
 
@@ -15,7 +17,8 @@ public class DatosGrlsProyectoImplDO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "id", unique = true, nullable = false)
 	private long id;
 
 	@ManyToOne

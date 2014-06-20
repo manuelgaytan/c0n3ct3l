@@ -1,5 +1,7 @@
 package mx.com.gahm.conenctel.entities;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 import java.io.Serializable;
 import javax.persistence.*;
 
@@ -22,7 +24,8 @@ public class DatosGrlsProyectoDO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "id", unique = true, nullable = false)
 	private long id;
 
 	@Column(name="area_goa")
@@ -93,9 +96,6 @@ public class DatosGrlsProyectoDO implements Serializable {
 
 	@JoinColumn(name="id_responsable_conectel")
 	private ColaboradorDO reponsableConectel;
-
-	@JoinColumn(name="id_responsable_implementacion")
-	private ColaboradorDO responsableImpl;
 
 	@JoinColumn(name="id_material")
 	private AplicaDO material;
@@ -290,14 +290,6 @@ public class DatosGrlsProyectoDO implements Serializable {
 
 	public void setReponsableConectel(ColaboradorDO reponsableConectel) {
 		this.reponsableConectel = reponsableConectel;
-	}
-
-	public ColaboradorDO getResponsableImpl() {
-		return responsableImpl;
-	}
-
-	public void setResponsableImpl(ColaboradorDO responsableImpl) {
-		this.responsableImpl = responsableImpl;
 	}
 
 	public AplicaDO getMaterial() {

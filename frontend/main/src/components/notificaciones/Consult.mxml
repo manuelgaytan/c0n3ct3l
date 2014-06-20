@@ -72,26 +72,40 @@
 				this.executeQuery();
 			}
 			
+			private function buildToolTip(item:Object):String{
+				var myString:String = "";
+				if(item != null){
+					myString = item.notificacion;
+				}
+				return myString;
+			}
 		]]>
 	</mx:Script>
 	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
-	<mx:DataGrid id="datagrid" width="790" height="100%" dataProvider="{items}">
+	<mx:DataGrid id="datagrid" width="790" height="100%" dataProvider="{items}"
+		 dataTipFunction="buildToolTip">
 		<mx:columns>
 			<mx:DataGridColumn id="dtgCreationDate" headerText="Fecha" width="100"
 							   dataField="fechaHoraCreacion"
 							   labelFunction="{Util.labelFunctionDate}"
-							   textAlign="center"/>
+							   textAlign="center"
+							   wordWrap="true"/>
 			<mx:DataGridColumn id="dtgUserOriginated" headerText="{'Usuario\nCreación'}" width="100"
-							   dataField="usuarioCreacion.usuario"/>
+							   dataField="usuarioCreacion.usuario"
+							   wordWrap="true"/>
 			<mx:DataGridColumn id="dtgAction" headerText="Notificación" width="270"
 							   dataField="notificacion"
-							   wordWrap="true"/>
+							   wordWrap="true"
+							   showDataTips="true"/>
 			<mx:DataGridColumn id="dtgPerfil" headerText="{'Dirigido a'}" width="120"
-							   dataField="perfil.etiqueta"/>
+							   dataField="perfil.etiqueta"
+							   wordWrap="true"/>
 			<mx:DataGridColumn id="dtgUserUpdated" headerText="{'Usuario\nModificación'}" width="100"
-							   dataField="usuarioModificacion.usuario"/>
+							   dataField="usuarioModificacion.usuario"
+							   wordWrap="true"/>
 			<mx:DataGridColumn id="dtgUpdatedDate" headerText="{'Estado'}" width="100"
-							   dataField="estado.estado"/>
+							   dataField="estado.estado"
+							   wordWrap="true"/>
 		</mx:columns>
 	</mx:DataGrid>
 	</mx:HBox>

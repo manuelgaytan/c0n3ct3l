@@ -34,8 +34,8 @@ public class CotizacionDO implements java.io.Serializable {
 	private String descripcion;
 	private String emisor;
 	private Date fecha;
-	private String nombreArchivo;
 	private List<ComentarioCotizacionDO> comentariosCotizacion;
+	private List<ArchivoCotizacionDO> archivosCotizacion;
 	
 	public CotizacionDO() {
 	}
@@ -45,7 +45,6 @@ public class CotizacionDO implements java.io.Serializable {
 		this.descripcion = descripcion;
 		this.emisor = emisor;
 		this.fecha = fecha;
-		this.nombreArchivo = nombreArchivo;
 	}
 
 	@Id
@@ -87,15 +86,6 @@ public class CotizacionDO implements java.io.Serializable {
 		this.fecha = fecha;
 	}
 
-	@Column(name = "nombre_archivo", nullable = false)
-	public String getNombreArchivo() {
-		return this.nombreArchivo;
-	}
-
-	public void setNombreArchivo(String nombreArchivo) {
-		this.nombreArchivo = nombreArchivo;
-	}
-
 	@OneToMany(mappedBy="cotizacion", fetch = FetchType.EAGER,cascade=CascadeType.REMOVE)	
 	public List<ComentarioCotizacionDO> getComentariosCotizacion() {
 		return comentariosCotizacion;
@@ -104,6 +94,15 @@ public class CotizacionDO implements java.io.Serializable {
 	public void setComentariosCotizacion(
 			List<ComentarioCotizacionDO> comentariosCotizacion) {
 		this.comentariosCotizacion = comentariosCotizacion;
+	}
+
+	@OneToMany(mappedBy="cotizacion", fetch = FetchType.EAGER,cascade=CascadeType.REMOVE)
+	public List<ArchivoCotizacionDO> getArchivosCotizacion() {
+		return archivosCotizacion;
+	}
+
+	public void setArchivosCotizacion(List<ArchivoCotizacionDO> archivosCotizacion) {
+		this.archivosCotizacion = archivosCotizacion;
 	}
 
 }

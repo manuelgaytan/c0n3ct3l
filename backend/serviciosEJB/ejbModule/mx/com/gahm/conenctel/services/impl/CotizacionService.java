@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
+import mx.com.gahm.conenctel.entities.ArchivoCotizacionDO;
 import mx.com.gahm.conenctel.entities.ComentarioCotizacionDO;
 import mx.com.gahm.conenctel.entities.ComentarioProveedorDO;
 import mx.com.gahm.conenctel.entities.CotizacionDO;
@@ -35,16 +36,21 @@ public class CotizacionService implements ICotizacionService{
 			CotizacionDO item = new CotizacionDO();
 			item.setId(id);
 			deleteComentarios(item);
+			deleteArchivosCotizacion(item);
 		}
 	}
 
 	@Override
 	public CotizacionDO save(CotizacionDO item) {
-		List<ComentarioCotizacionDO> comentarios= item.getComentariosCotizacion();
+		List<ComentarioCotizacionDO> comentarios = item.getComentariosCotizacion();
 		item.setComentariosCotizacion(null);
+		List<ArchivoCotizacionDO> archivosCotizacion = item.getArchivosCotizacion();
+		item.setArchivosCotizacion( null );
 		entityManager.persist(item);
 		item.setComentariosCotizacion(comentarios);
+		item.setArchivosCotizacion(archivosCotizacion);
 		saveComentarios(item);
+		saveArchivosCotizacion(item);
 		return item;
 	}
 
@@ -58,6 +64,15 @@ public class CotizacionService implements ICotizacionService{
 		}
 	}
 	
+	private void saveArchivosCotizacion(CotizacionDO item){
+		List<ArchivoCotizacionDO> archivosCotizacion = item.getArchivosCotizacion();
+		if(archivosCotizacion!=null)
+		for (ArchivoCotizacionDO archivo : archivosCotizacion) {
+			archivo.setCotizacion(item);
+			entityManager.persist(archivo);
+		}
+	}
+	
 	private void deleteComentarios(CotizacionDO cotizacion){
 		CotizacionDO item = getItem( cotizacion.getId() );
 		List<ComentarioCotizacionDO> comentarios= item.getComentariosCotizacion();
@@ -68,10 +83,20 @@ public class CotizacionService implements ICotizacionService{
 		}
 	}
 	
+	private void deleteArchivosCotizacion(CotizacionDO cotizacion){
+		CotizacionDO item = getItem( cotizacion.getId() );
+		List<ArchivoCotizacionDO> archivosCotizacion= item.getArchivosCotizacion();
+		if(archivosCotizacion!=null){
+			for (ArchivoCotizacionDO archivoCotizacion : archivosCotizacion) {
+				entityManager.remove(archivoCotizacion);
+			}
+		}
+	}
 	
 	@Override
 	public CotizacionDO update(CotizacionDO item) {
 		deleteComentarios(item);
+		deleteArchivosCotizacion(item);
 		this.colocarCotizacion( item );
 		entityManager.merge(item);
 		return null;
@@ -84,8 +109,14 @@ public class CotizacionService implements ICotizacionService{
 				comentario.setCotizacion(item);
 			}
 		}
+		List<ArchivoCotizacionDO> archivosCotizacion = item.getArchivosCotizacion();
+		if(archivosCotizacion!=null){
+			for (ArchivoCotizacionDO archivoCotizacion: archivosCotizacion) {
+				archivoCotizacion.setCotizacion(item);
+			}
+		}
 	}
-
+	
 	@Override
 	public CotizacionDO getItem(Integer id) {
 		CotizacionDO cotizacion = entityManager.find(CotizacionDO.class,id);

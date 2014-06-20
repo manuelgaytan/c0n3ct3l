@@ -237,7 +237,6 @@
 	fecha_inicio_programada DATE,
 	fecha_termino_programada DATE,
 	id_responsable_conectel INT(11) UNSIGNED,
-	id_responsable_implementacion INT(11) UNSIGNED,
 	id_material INT(11) NOT NULL,
 	id_herramienta INT(11) NOT NULL,
 	id_equipo INT(11) NOT NULL,
@@ -2695,9 +2694,7 @@
 
 	ALTER TABLE DatosGeneralesProyecto ADD FOREIGN KEY id_proyecto_idxfk_3 (id_proyecto) REFERENCES Proyecto (id);
 
-	ALTER TABLE DatosGeneralesProyecto ADD FOREIGN KEY id_responsable_conectel_idxfk (id_responsable_conectel) REFERENCES Colaborador (id);
-
-	ALTER TABLE DatosGeneralesProyecto ADD FOREIGN KEY id_responsable_implementacion_idxfk (id_responsable_implementacion) REFERENCES Colaborador (id);
+	ALTER TABLE DatosGeneralesProyecto ADD FOREIGN KEY id_responsable_conectel_idxfk (id_responsable_conectel) REFERENCES Colaborador (id);	
 
 	ALTER TABLE DatosGeneralesProyectoImplementacion ADD FOREIGN KEY id_datos_generales_idxfk (id_datos_generales) REFERENCES DatosGeneralesProyecto (id);
 

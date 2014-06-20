@@ -4,6 +4,9 @@
 		 >
 	<mx:Script>
 		<![CDATA[
+			import model.DatosGrlsProyectoImpl;
+			import components.AMClsFocusViewportWatcher;
+			import mx.controls.dataGridClasses.DataGridColumn;
 			import events.GenericEvent;
 			
 			import model.Aplica;
@@ -57,6 +60,7 @@
 			
 			protected function creationCompleteHandler(event:FlexEvent):void
 			{
+				new AMClsFocusViewportWatcher(this);
 				this.modeValidation();
 				this.initializeValidators();
 				this.fillCombos();
@@ -96,11 +100,7 @@
 					this.cmbConectelResponsable.selectedIndex = Util.selectedIndexFromCombo( this.cmbConectelResponsable.dataProvider as ArrayCollection, 
 					this._generalDataProject.reponsableConectel.id);
 				}
-				if( Util.isFill( this.cmbColaboratorType ) && Util.extractObject(this._generalDataProject,"responsableImpl.tipoColaborador") != null ){
-					this.cmbColaboratorType.selectedIndex = Util.selectedIndexFromCombo( this.cmbColaboratorType.dataProvider as ArrayCollection, 
-						this._generalDataProject.responsableImpl.tipoColaborador.id);
-					this.cmbColaboratorType.dispatchEvent( new ListEvent(ListEvent.CHANGE) );
-				}
+				this.lstImplementationResponsable.dataProvider = this._generalDataProject.datosGrlsProyectoImplList;
 				/*
 				if( Util.isFill( this.cmbImplementationResponsable ) && !(this._generalDataProject.responsableImpl == null) ){
 					this.cmbImplementationResponsable.selectedIndex = Util.selectedIndexFromCombo( this.cmbImplementationResponsable.dataProvider as ArrayCollection, 
@@ -163,7 +163,7 @@
 				generalDataProject.fechaInicioProgramada = this.dtfStartDateProgramming.selectedDate;
 				generalDataProject.fechaTerminoProgramada = this.dtfEndDateProgramming.selectedDate;
 				generalDataProject.reponsableConectel = this.cmbConectelResponsable.selectedItem as Colaborador;
-				generalDataProject.responsableImpl = this.cmbImplementationResponsable.selectedItem as Colaborador;
+				generalDataProject.datosGrlsProyectoImplList = this.lstImplementationResponsable.dataProvider as ArrayCollection;
 				generalDataProject.material = this.cmbMaterial.selectedItem as Aplica;
 				generalDataProject.herramienta = this.cmbTool.selectedItem as Aplica;
 				generalDataProject.equipo = this.cmbEquipment.selectedItem as Aplica;
@@ -203,10 +203,6 @@
 					return;
 				}
 				this.cmbImplementationResponsable.dataProvider = Util.addEmptyCatalgo( data, "nombreCompleto" );
-				if( Util.extractObject(this._generalDataProject,"responsableImpl") != null ){
-					this.cmbImplementationResponsable.selectedIndex = Util.selectedIndexFromCombo( this.cmbImplementationResponsable.dataProvider as ArrayCollection, 
-						this._generalDataProject.responsableImpl.id);
-				}
 			}
 			protected function responseGetMaterial_resultHandler(data:ArrayCollection):void
 			{
@@ -294,8 +290,10 @@
 				value &&= this.dtfAsignDateClient.selectedDate;
 				value &&= this.dtfStartDateProgramming.selectedDate;
 				value &&= this.dtfEndDateProgramming.selectedDate;
-				value &&= Util.listBaseSelected( this.cmbConectelResponsable );
-				value &&= Util.listBaseSelected( this.cmbImplementationResponsable );
+				value &&= Util.listBaseSelected( this.cmbConectelResponsable, "id", true );
+				value &&= ( this.lstImplementationResponsable.dataProvider != null &&
+						    (this.lstImplementationResponsable.dataProvider is ArrayCollection) &&
+						    (this.lstImplementationResponsable.dataProvider as ArrayCollection).length > 0 );
 				value &&= Util.listBaseSelected( this.cmbMaterial );
 				value &&= Util.listBaseSelected( this.cmbTool );
 				value &&= Util.listBaseSelected( this.cmbEquipment );
@@ -372,6 +370,7 @@
 				this.dtfStartDateProgramming.reset();
 				this.dtfEndDateProgramming.reset();
 				this.cmbConectelResponsable.selectedIndex = 0;
+				this.cmbColaboratorType.selectedIndex = 0;
 				this.cmbImplementationResponsable.selectedIndex = 0;
 				this.cmbMaterial.selectedIndex = 0;
 				this.cmbTool.selectedIndex = 0;
@@ -434,10 +433,6 @@
 					return;
 				}
 				this.cmbColaboratorType.dataProvider = Util.addEmptyCatalgo( data, "tipo" );
-				if( Util.extractObject(this._generalDataProject,"responsableImpl") != null ){
-					this.cmbColaboratorType.selectedIndex = Util.selectedIndexFromCombo( this.cmbColaboratorType.dataProvider as ArrayCollection, 
-						this._generalDataProject.responsableImpl.tipoColaborador.id);
-				}
 			}
 			
 			protected function cmbColaboratorType_changeHandler(event:ListEvent):void
@@ -488,6 +483,54 @@
 				}
 				this.btnAccept.enabled = value;
 				this.btnDone.enabled = value;
+			}
+			
+			protected function btnAdd_clickHandler(event:MouseEvent):void
+			{
+				if( this.cmbColaboratorType.selectedItem == null ||
+					this.cmbImplementationResponsable.selectedItem == null ){
+					return;
+				}
+				if( ( this.lstImplementationResponsable.dataProvider is ArrayCollection ) &&
+					( this.lstImplementationResponsable.dataProvider as ArrayCollection ).length == 10 ){
+					Util.showErrorMessage("No puede agregar más de " + ( this.lstImplementationResponsable.dataProvider as ArrayCollection ).length + " elementos.");
+					return;
+				}
+				if( this.lstImplementationResponsable.dataProvider == null ){
+					this.lstImplementationResponsable.dataProvider = new ArrayCollection();
+				}
+				var implementationResponsable:DatosGrlsProyectoImpl = new DatosGrlsProyectoImpl();
+				implementationResponsable.colaborador = this.cmbImplementationResponsable.selectedItem as Colaborador;
+				(this.lstImplementationResponsable.dataProvider as ArrayCollection).addItem( implementationResponsable );
+				(this.lstImplementationResponsable.dataProvider as ArrayCollection).refresh();
+				this.cmbColaboratorType.selectedIndex = 0;
+				this.cmbColaboratorType.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
+			}
+			
+			private function labelFunctionResponsableImplementacion(item:Object):String{
+				return Util.extractToText(item,"colaborador.tipoColaborador.tipo") + ": " + Util.extractToText(item,"colaborador.nombreCompleto");
+			}
+			
+			protected function lstDelivers_doubleClickHandler(event:MouseEvent):void
+			{
+				if( this.lstImplementationResponsable.selectedItem != null ){
+					Alert.show("Confirme si desea eliminar los elementos.","Advertencia",Alert.YES+Alert.NO,this, deleteItem);
+				}
+			}
+			
+			protected function lstDelivers_changeHandler(event:ListEvent):void
+			{
+				this.dispatchEvent(new Event("listChanged") );
+			}
+			
+			private function deleteItem(event:CloseEvent):void
+			{
+				if( event.detail == Alert.NO || 
+					this.lstImplementationResponsable.dataProvider == null || 
+					!(this.lstImplementationResponsable.dataProvider is ArrayCollection) ){
+					return;
+				}
+				(this.lstImplementationResponsable.dataProvider as ArrayCollection).removeItemAt( this.lstImplementationResponsable.selectedIndex );
 			}
 		]]>
 	</mx:Script>
@@ -552,12 +595,20 @@
 						 labelField="nombreCompleto"/>
 		</mx:FormItem>
 		<mx:FormItem required="true" label="Responsable Implementación:"
-					 direction="horizontal">
-			<mx:ComboBox id="cmbColaboratorType" width="200"
-						 labelField="tipo"
-						 change="cmbColaboratorType_changeHandler(event)"/>
-			<mx:ComboBox id="cmbImplementationResponsable" width="400"
-						 labelField="nombreCompleto"/>
+					 direction="vertical">
+			<mx:HBox>
+				<mx:ComboBox id="cmbColaboratorType" width="200"
+							 labelField="tipo"
+							 change="cmbColaboratorType_changeHandler(event)"/>
+				<mx:ComboBox id="cmbImplementationResponsable" width="400"
+							 labelField="nombreCompleto"/>
+				<mx:Button id="btnAdd" label="Agregar" click="btnAdd_clickHandler(event)"/>
+			</mx:HBox>
+			<mx:List id="lstImplementationResponsable" width="400" height="160"
+			 doubleClickEnabled="true" 
+			 doubleClick="lstDelivers_doubleClickHandler(event)"
+			 change="lstDelivers_changeHandler(event)"
+			 labelFunction="{this.labelFunctionResponsableImplementacion}"/>
 		</mx:FormItem>
 		<mx:FormItem required="true" label="Material:">
 			<mx:ComboBox id="cmbMaterial" width="300"

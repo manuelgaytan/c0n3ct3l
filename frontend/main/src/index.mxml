@@ -6,6 +6,7 @@
 				creationComplete="creationCompleteHandler(event)">
 	<mx:Script>
 		<![CDATA[
+			import model.DatosGrlsProyectoImpl;
 			import mx.core.UITextField;
 			import components.ComboList;
 			import components.Comments;
@@ -578,6 +579,7 @@
 			private var rangoEstadisticaPersonal:RangoEstadisticaPersonal;
 			private var textInputIVA:TextInputIVA;
 			private var consultaGeneralOperacion:ConsultaGeneralOperacion;
+			private var datosGrlsProyectoImpl:DatosGrlsProyectoImpl;
 						
 			protected function login_readyHandler(event:ModuleEvent):void
 			{

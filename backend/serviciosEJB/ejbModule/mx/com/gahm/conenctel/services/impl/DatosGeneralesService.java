@@ -142,6 +142,13 @@ public class DatosGeneralesService implements IDatosGeneralesService {
 			mensaje = NotificacionDO.PROYECTO_VIATICOS + dataProject.getProyecto().getId();
 			this.enviarNotificacion(PerfilDO.ID_TESORERIA, mensaje);
 		}
+		if( dataProject.getDatosGrlsProyectoImplList() != null ){
+			for( DatosGrlsProyectoImplDO item : dataProject.getDatosGrlsProyectoImplList() ) {
+				mensaje = NotificacionDO.PROYECTO_COMPRAS + item.getColaborador().getTipoColaborador().getTipo() + " - " + 
+							item.getColaborador().getNombreCompleto() + NotificacionDO.PROYECTO_COMPRAS_2 + dataProject.getProyecto().getId();
+				this.enviarNotificacion(PerfilDO.ID_COMPRAS, mensaje);
+			}
+		}
 		//}catch(Exception e){
 			//System.out.println("No se logro leer el properties de Notificaciones");
 		//}

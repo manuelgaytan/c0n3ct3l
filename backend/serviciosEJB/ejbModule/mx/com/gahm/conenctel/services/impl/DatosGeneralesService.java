@@ -14,7 +14,9 @@ import javax.persistence.TypedQuery;
 
 import mx.com.gahm.conenctel.constants.EstadoProyecto;
 import mx.com.gahm.conenctel.entities.AplicaDO;
+import mx.com.gahm.conenctel.entities.ComentarioCotizacionDO;
 import mx.com.gahm.conenctel.entities.DatosGrlsProyectoDO;
+import mx.com.gahm.conenctel.entities.DatosGrlsProyectoImplDO;
 import mx.com.gahm.conenctel.entities.EstadoDO;
 import mx.com.gahm.conenctel.entities.EstadoNotificacionDO;
 import mx.com.gahm.conenctel.entities.NotificacionDO;
@@ -86,6 +88,7 @@ public class DatosGeneralesService implements IDatosGeneralesService {
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public DatosGrlsProyectoDO save(
 			DatosGrlsProyectoDO dataProject) throws ConectelException {
+		List<DatosGrlsProyectoImplDO> responsablesImplementacion = dataProject.getDatosGrlsProyectoImplList();
 		/*try {
 			DatosGrlsProyectoDO current = transformacionService
 					.map(dataProject, DatosGrlsProyectoDO.class);*/
@@ -103,12 +106,20 @@ public class DatosGeneralesService implements IDatosGeneralesService {
 					entityManager.persist(current);
 				}
 			}
+			dataProject.setDatosGrlsProyectoImplList( null );
 			entityManager.persist(dataProject);
+			dataProject.setDatosGrlsProyectoImplList( responsablesImplementacion );
+			if (dataProject.getDatosGrlsProyectoImplList() != null) {
+				for (DatosGrlsProyectoImplDO current:dataProject.getDatosGrlsProyectoImplList()) {
+					current.setDatosgeneralesproyecto(dataProject);
+					entityManager.persist(current);
+				}
+			}
 		/*} catch (ConectelMappingException e) {
 			throw new ConectelException("Error de sistema.");
 		}*/
 		this.validarEnvioNotificaciones( dataProject );
-		return null;
+		return dataProject;
 	}
 
 	private void validarEnvioNotificaciones(DatosGrlsProyectoDO dataProject) {
@@ -152,6 +163,7 @@ public class DatosGeneralesService implements IDatosGeneralesService {
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public DatosGrlsProyectoDO update(
 			DatosGrlsProyectoDO dataProject) throws ConectelException {
+		List<DatosGrlsProyectoImplDO> responsablesImplementacion = dataProject.getDatosGrlsProyectoImplList();
 		/*try {
 			DatosGrlsProyectoDO current = transformacionService
 					.map(dataProject, DatosGrlsProyectoDO.class);*/
@@ -177,11 +189,21 @@ public class DatosGeneralesService implements IDatosGeneralesService {
 					entityManager.persist(current);
 				}
 			}
-			
+			if( regDataProject.getDatosGrlsProyectoImplList() != null ) {
+				for(DatosGrlsProyectoImplDO current:regDataProject.getDatosGrlsProyectoImplList() ){
+					entityManager.remove(current);
+				}
+			}
+			dataProject.setDatosGrlsProyectoImplList( null );
 			boolean cambioParaNotificacion = this.cambioParaNotificacion(regDataProject, dataProject);
-			
 			entityManager.merge(dataProject);
-			
+			dataProject.setDatosGrlsProyectoImplList( responsablesImplementacion );
+			if (dataProject.getDatosGrlsProyectoImplList() != null) {
+				for (DatosGrlsProyectoImplDO current:dataProject.getDatosGrlsProyectoImplList()) {
+					current.setDatosgeneralesproyecto(dataProject);
+					entityManager.persist(current);
+				}
+			}
 			if( cambioParaNotificacion ){
 				this.validarEnvioNotificaciones( dataProject );
 			}

@@ -21,7 +21,6 @@ package model
 		public var fechaInicioProgramada:Date;
 		public var fechaTerminoProgramada:Date;
 		public var reponsableConectel:Colaborador;
-		public var responsableImpl:Colaborador;
 		public var material:Aplica;
 		public var herramienta:Aplica;
 		public var equipo:Aplica;

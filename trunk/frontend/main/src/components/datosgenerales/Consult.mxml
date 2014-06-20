@@ -146,10 +146,6 @@
 							   dataField="reponsableConectel.nombreCompleto"
 							   labelFunction="labelFunctionGenerico"
 							   width="105"/>
-			<mx:DataGridColumn id="dtgImplementationResponsable" headerText="{'Responsable\nImplementación'}"
-							   dataField="responsableImpl.nombreCompleto"
-							   labelFunction="labelFunctionGenerico"
-							   width="105"/>
 			<mx:DataGridColumn headerText="{'Material'}"
 							   dataField="material.etiqueta"
 							   width="110"/>

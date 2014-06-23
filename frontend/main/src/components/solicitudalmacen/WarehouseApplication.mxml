@@ -47,6 +47,23 @@
 			private var _item:SolicitudAlmacen;
 			private var validators:InicializaValidadoresEtiquetas;
 			private var validatorsEntry:InicializaValidadoresEtiquetas;
+			private var defaultLegend:String = "CONFIRMO QUE LA " + 
+											   "HERRAMIENTA Y/O EQUIPO ARRIBA " + 
+											   "DESCRITO ESTA BAJO MI CUSTODIA " + 
+											   "PARA TRABAJAR EN LOS PROYECTOS " + 
+											   "QUE SE ME ASIGNEN Y SOY " + 
+											   "RESPONSABLE DEL BUEN USO Y " + 
+											   "CUIDADO DEL (LOS) MISMO(S) " + 
+											   "DEBIENDO REPORTAR CUALQUIER " + 
+											   "CAMBIO Ó ANOMALIA QUE PUDIESE OCURRIR.\n" + 
+											   "ME COMPROMETO A REGRESAR EN " + 
+											   "BUEN ESTADO LAS HERRAMIENTAS Y/O " + 
+											   "EQUIPO QUE ME SON ASIGNADOS PARA " + 
+											   "ESTOS TRABAJOS EN EL MOMENTO QUE " + 
+											   "TERMINE LOS PROYECTOS, Ó DEJE DE " + 
+											   "PRESTAR MIS SERVICIOS PARA " + 
+											   "CONECTEL, Ó CUANDO SEAN " + 
+											   "REQUIERIDOS POR LA EMPRESA.";
 			
 			public function set registrer(value:Boolean):void{
 				mode = Constants.REGISTER_MODE;
@@ -207,7 +224,9 @@
 					form.removeChild( this.frmItmCode );
 					this.btnPrint.visible = false;
 					this.btnBought.visible = false;
-					form.removeChild( this.frmAreaCordinator );
+					if( this.contains( this.frmAreaCordinator ) ){
+						form.removeChild( this.frmAreaCordinator );
+					}
 				}
 				if( this.mode == Constants.UPDATE_MODE ){
 					this.btnBought.visible = Model.getInstance().user.allowedPerfil( Perfil.ID_COMPRAS );
@@ -222,7 +241,8 @@
 				validators.setRestrictor(txtSite, "generic");
 				validators.setValidador(txtApplicantName, "generic");
 				validators.setValidador(txtReceives, "generic");
-				validators.setRestrictor(txtLegend, "generic");
+				validators.crearValidadorRestrictor("text",ValidadorCadenaCualquierCaracter.nombre, 0, 1024);
+				validators.setRestrictor(txtLegend, "text");
 				this.validatorsEntry = new InicializaValidadoresEtiquetas();
 				validatorsEntry.crearValidadorRestrictor("generic",ValidadorCadenaCualquierCaracter.nombre, 0, 255);
 				//validatorsEntry.setRestrictor(txtStockType, "generic");
@@ -263,6 +283,7 @@
 				this.txtReceives.reset();
 				this.dtfReturnDate.reset();
 				this.txtLegend.reset();
+				this.txtLegend.text = this.defaultLegend;
 			}
 			
 			protected function responseUpdate_resultHandler(event:ResultEvent):void
@@ -316,7 +337,7 @@
 					this.cmbDeliver.selectedIndex = Util.selectedIndexFromCombo( this.cmbDeliver.dataProvider as ArrayCollection, 
 						this._item.entrega.id);
 				}
-				this.cmbAreaCordinator.dataProvider = Util.addEmptyCatalgo( data, "nombreCompleto" );
+				this.cmbAreaCordinator.dataProvider = data;//Util.addEmptyCatalgo( data, "nombreCompleto" );
 				if( Util.isFill( this.cmbAreaCordinator ) && Util.propertyOfObject( this._item, "autorizaFinal" ) != null ){
 					this.cmbAreaCordinator.selectedIndex = Util.selectedIndexFromCombo( this.cmbAreaCordinator.dataProvider as ArrayCollection, 
 						this._item.autorizaFinal.id);
@@ -580,6 +601,7 @@
 		<mx:State name="estadoPublico">
 			<mx:RemoveChild target="{this.frmItmApplicantState}"/>
 			<mx:RemoveChild target="{this.frmItmAuthorizedBy}"/>
+			<mx:RemoveChild target="{this.frmAreaCordinator}"/>
 			<mx:RemoveChild target="{this.frmItmDeliver}"/>
 			<mx:RemoveChild target="{this.frmItmLegend}"/>
 		</mx:State>
@@ -716,7 +738,7 @@
 			<components:DateField id="dtfReturnDate"/>
 		</mx:FormItem>
 		<mx:FormItem id="frmItmLegend" label="Leyenda:">
-			<components:TextArea id="txtLegend" width="750"/>
+			<components:TextArea id="txtLegend" width="750" text="{this.defaultLegend}"/>
 		</mx:FormItem>
 		<mx:FormItem direction="horizontal">
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>

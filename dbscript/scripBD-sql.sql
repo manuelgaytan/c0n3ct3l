@@ -877,7 +877,6 @@
 	descripcion VARCHAR(255) NOT NULL,
 	emisor VARCHAR(255) NOT NULL,
 	fecha DATE NOT NULL,
-	nombre_archivo VARCHAR(255) NOT NULL,
 	PRIMARY KEY (id)
 	);
 
@@ -2654,6 +2653,22 @@
 	PRIMARY KEY (id)
 	);
 
+	/*************************************************************************************************************************************
+	CAMBIOS
+	/************************************************************************************************************************************/
+	
+	CREATE TABLE ArchivoCotizacion
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	fk_cotizacion INT(11) UNSIGNED NOT NULL,
+	nombre_archivo VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
+	/*************************************************************************************************************************************
+	FIN CAMBIOS
+	/************************************************************************************************************************************/
+
 	ALTER TABLE Cliente ADD FOREIGN KEY id_contacto_idxfk (id_contacto) REFERENCES Contacto (id);
 
 	ALTER TABLE Proyecto ADD FOREIGN KEY id_categoria_proyecto_idxfk (id_categoria_proyecto) REFERENCES CategoriaProyecto (id);
@@ -3353,6 +3368,16 @@
 	ALTER TABLE EstadisticaPersonal ADD FOREIGN KEY fk_rango_estadistica_personal_rotacion_idxfk (fk_rango_estadistica_personal_rotacion) REFERENCES RangoEstadisticaPersonal (id);
 
 	ALTER TABLE EstadisticaPersonal ADD FOREIGN KEY fk_rango_estadistica_personal_retardo_idxfk (fk_rango_estadistica_personal_retardo) REFERENCES RangoEstadisticaPersonal (id);
+
+	/*************************************************************************************************************************************
+	CAMBIOS
+	/************************************************************************************************************************************/
+
+	ALTER TABLE ComentarioCotizacion ADD FOREIGN KEY fk_cotizacion_idxfk_2 (fk_cotizacion) REFERENCES Cotizacion (id);
+
+	/*************************************************************************************************************************************
+	FIN CAMBIOS
+	/************************************************************************************************************************************/
 
 	/* Perfiles */
 	INSERT INTO Perfil

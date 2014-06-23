@@ -194,7 +194,7 @@
 			<components:DateField id="dtfDate"/>
 		</mx:FormItem>
 		<mx:FormItem required="true" label="Nombre Archivo:">
-			<components:FlatDeliver id="dlvFileName" limitedTo="1"/>
+			<components:FlatDeliver id="dlvFileName" limitedTo="5"/>
 		</mx:FormItem>
 		<components:Comments id="comments"/>
 		<mx:FormItem>

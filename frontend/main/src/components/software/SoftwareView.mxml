@@ -4,6 +4,7 @@
 		 >
 	<mx:Script>
 		<![CDATA[
+			import model.TipoColaborador;
 			import model.Catalogo;
 			import model.Colaborador;
 			import model.Constants;
@@ -120,7 +121,7 @@
 			private function fillCombos():void
 			{
 				this.responseGetUbicacionB.token = this.catalogoService.getUbicacionB();
-				this.responseGetColaborador.token = this.catalogoService.getColaborador();
+				this.responseGetColaborador.token = this.catalogoService.getColaboradorByTipoColaborador( TipoColaborador.ID_NOMINA );
 			}
 			
 			protected function softwareService_faultHandler(event:FaultEvent):void

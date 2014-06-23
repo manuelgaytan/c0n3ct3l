@@ -4,6 +4,7 @@
 		 >
 	<mx:Script>
 		<![CDATA[
+			import model.TipoColaborador;
 			import model.Catalogo;
 			import model.Colaborador;
 			import model.ComentarioGenerico;
@@ -161,7 +162,7 @@
 				this.responseGetGrupoFamiliaA.token = this.catalogoService.getGrupoFamiliaA();
 				this.responseGetUnidadA.token = this.catalogoService.getUnidadA();
 				this.responseGetUbicacionA.token = this.catalogoService.getUbicacionA();
-				this.responseGetColaborador.token = this.catalogoService.getColaborador();
+				this.responseGetColaborador.token = this.catalogoService.getColaboradorByTipoColaborador( TipoColaborador.ID_NOMINA );
 				this.responseGetEstatusA.token = this.catalogoService.getEstatusA();
 				this.responseGetTipoMantenimiento.token = this.catalogoService.getTipoMantenimiento();
 			}

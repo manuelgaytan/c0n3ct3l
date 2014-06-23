@@ -149,7 +149,8 @@
 				}
 				this.dtfOperationalValidationDate.selectedDate = this._configurationTestingDelivery.fechaValidacionOperativa;
 				this.observations.observations = this._configurationTestingDelivery.proyecto.observaciones;
-				this.txtAuditKey.text = this._configurationTestingDelivery.proyecto.claveAuditoria;
+				//this.txtAuditKey.text = this._configurationTestingDelivery.proyecto.claveAuditoria;
+				this.txtAuditKey.text = this._configurationTestingDelivery.proyecto.tipoAuditoria.tipo;
 			}
 			
 			private function getGeneralDataProject():ConfiguracionPruebaEntrega{
@@ -166,7 +167,7 @@
 				configurationTestingDelivery.proyecto = this.projectsConsult.datagrid.selectedItem as Proyecto;
 				configurationTestingDelivery.proyecto.estado = new Estado();
 				configurationTestingDelivery.proyecto.estado.id = Estado.ID_CONFIGURACION_PRUEBA_Y_ENTREGA;
-				configurationTestingDelivery.proyecto.claveAuditoria = Util.validateEmpty( this.txtAuditKey.text );
+				//configurationTestingDelivery.proyecto.claveAuditoria = Util.validateEmpty( this.txtAuditKey.text );
 				configurationTestingDelivery.comisionado = Util.validateEmpty( this.txtCommissioner.text );
 				configurationTestingDelivery.puertosEntregados = Util.validateEmpty( this.txtPortsDelivered.text );
 				configurationTestingDelivery.alineacion = Util.validateEmpty( this.txtAlign.text );
@@ -328,19 +329,23 @@
 					Util.showMessageVerifyFields();
 					return;
 				}
+				/*
 				if( !this.auditValidations() ){
 					Util.showErrorMessage( "La clave de auditoria es requerida, para el proyecto seleccionado." );
 					return;
 				}
+				*/
 				var proyecto:Proyecto = this.projectsConsult.datagrid.selectedItem as Proyecto;
 				if( proyecto == null ){
 					Util.showErrorMessage( "Debe estar seleccionado un proyecto." );
 				}
+				/*
 				if(	proyecto.tipoAuditoria != null &&
 					Util.validateEmpty( this.txtAuditKey.text ) == null ){
 					Util.showErrorMessage( "Requiere la Clave de Auditoría para dar por terminado el proyecto." );
 					return;
-				}			
+				}
+				*/			
 				if( this.mode == Constants.UPDATE_MODE ){
 					Alert.show("Confirme si desea dar por terminado el proyecto.","Advertencia",Alert.YES+Alert.NO,this, faseDone);
 				}
@@ -399,7 +404,8 @@
 				if( project == null ){
 					return;
 				}
-				this.txtAuditKey.text = project.claveAuditoria;
+				//this.txtAuditKey.text = project.claveAuditoria;
+				this.txtAuditKey.text = project.tipoAuditoria.tipo;
 				this.cleanSecondaryGrid();
 				this.responseGetDesarrolloProyectoAB.token = this.desarrolloProyectoABService.getByIdProyecto( project.id );
 			}
@@ -541,8 +547,8 @@
 			<components:DateField id="dtfOperationalValidationDate"/>
 		</mx:FormItem>
 		<components:Observations id="observations" fase="{Estado.createEstado(Estado.ID_CONFIGURACION_PRUEBA_Y_ENTREGA, Estado.CONFIGURACION_PRUEBA_Y_ENTREGA)}"/>
-		<mx:FormItem label="Clave Auditoría:">
-			<components:TextInput id="txtAuditKey" width="300"/>
+		<mx:FormItem label="Notificación de Auditoría:">
+			<components:TextInput id="txtAuditKey" width="300" editable="false"/>
 		</mx:FormItem>
 		<mx:FormItem direction="horizontal">
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>

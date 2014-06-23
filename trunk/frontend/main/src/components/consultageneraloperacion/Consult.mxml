@@ -163,10 +163,6 @@
 							   dataField="proyecto.id"
 							   labelFunction="labelFunctionIDProyecto"
 							   width="150"/>
-			<mx:DataGridColumn id="dtgParentProject" headerText="{'Proyecto\nPadre'}"
-							   dataField="proyecto.proyectoPadreHijo.proyectoPadre.descripcion"
-							   width="150"
-							   />
 			<mx:DataGridColumn headerText="{'Site\nSurvey'}"
 							   dataField="datosGeneralesProyecto.siteSurvey"
 							   width="110"/>
@@ -174,6 +170,9 @@
 							   dataField="proyecto.estado.etiqueta"
 							   labelFunction="labelFunctionGenerico"
 							   width="150"/>
+			<mx:DataGridColumn headerText="{'Notificación\nde Auditoría'}"
+							   dataField="proyecto.tipoAuditoria.tipo"
+							   width="110"/>
 			<mx:DataGridColumn id="dtgCategoria" headerText="Categoria"
 							   dataField="proyecto.categoria.etiqueta"
 							   labelFunction="labelFunctionGenerico"
@@ -210,14 +209,6 @@
 							   dataField="proyecto.tipoServicio.tipo"
 							   labelFunction="labelFunctionGenerico"
 							   width="150"/>
-			<mx:DataGridColumn id="dtgLocalCost" headerText="{'Costo\nLocal'}" textAlign="right"
-							   dataField="proyecto.producto.costoLocalCliente"
-							   labelFunction="{Util.labelFunctionCurrency}"
-							   width="85"/>
-			<mx:DataGridColumn id="dtgForaneoCost" headerText="{'Costo\nForaneo'}" textAlign="right"
-							   dataField="proyecto.producto.costoForaneoCliente"
-							   labelFunction="{Util.labelFunctionCurrency}"
-							   width="85"/>
 			
 			<mx:DataGridColumn id="dtgDivision" headerText="{'División\no Región'}"
 							   dataField="datosGeneralesProyecto.divisionRegion"
@@ -393,9 +384,6 @@
 			<mx:DataGridColumn headerText="{'Plancha\no Base'}"
 							   dataField="desarrolloProyecto.planchaBase.etiqueta"
 							   width="110"/>
-			<mx:DataGridColumn headerText="{'Tipo de\nAuditoría'}"
-							   dataField="desarrolloProyecto.proyecto.tipoAuditoria.tipo"
-							   width="110"/>
 			
 			<mx:DataGridColumn headerText="{'Comisionamiento'}"
 							   dataField="configuracionPruebaEntrega.comisionado"
@@ -446,11 +434,11 @@
 							   labelFunction="{Util.labelFunctionDate}"
 							   textAlign="center"
 							   width="100"/>
+			<!--
 			<mx:DataGridColumn headerText="{'Clave\nAuditoría'}"
 							   dataField="configuracionPruebaEntrega.proyecto.claveAuditoria"
 							   width="200"/>
-			
-			
+			-->			
 			
 		</mx:columns>
 	</mx:DataGrid>

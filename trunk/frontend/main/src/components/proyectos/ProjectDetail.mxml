@@ -72,7 +72,7 @@
 				this.txtSite.text = Util.extractToText( this._project, "centralSitio");
 				this.txtParentProject.text = Util.extractToText( this._project, "proyectoPadreHijo.proyectoPadre.descripcion");
 				this.txtAuditType.text = Util.extractToText( this._project, "tipoAuditoria.tipo");
-				this.txtAuditKey.text = Util.extractToText( this._project, "claveAuditoria");
+				//this.txtAuditKey.text = Util.extractToText( this._project, "claveAuditoria");
 				this.txtState.text = Util.extractToText( this._project, "estado.etiqueta");
 				this.validateStatus( Number( Util.extractObject( this._project, "estado.id") ) );
 			}
@@ -162,11 +162,13 @@
 			<components:TextInput id="txtParentProject" width="450"
 								  editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Auditoría:" direction="horizontal">
+		<mx:FormItem label="Notificación de Auditoría:" direction="horizontal">
 			<components:TextInput id="txtAuditType" width="150"
 								  editable="false"/>
+			<!--					  
 			<components:TextInput id="txtAuditKey" width="300"
 								  editable="false"/>
+			-->
 		</mx:FormItem>
 		<mx:FormItem label="Estado:">
 			<components:TextInput id="txtState" width="250"

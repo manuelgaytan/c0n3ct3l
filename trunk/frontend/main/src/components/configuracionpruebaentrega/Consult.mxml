@@ -140,8 +140,13 @@
 							   labelFunction="labelFunctionDate"
 							   textAlign="center"
 							   width="100"/>
+			<!--
 			<mx:DataGridColumn headerText="{'Clave\nAuditoría'}"
 							   dataField="proyecto.claveAuditoria"
+							   width="200"/>
+			-->
+			<mx:DataGridColumn headerText="{'Notificación\nde Auditoría'}"
+							   dataField="proyecto.tipoAuditoria.tipo"
 							   width="200"/>
 		</mx:columns>
 	</mx:DataGrid>

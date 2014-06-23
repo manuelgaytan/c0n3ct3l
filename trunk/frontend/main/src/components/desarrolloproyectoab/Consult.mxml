@@ -185,7 +185,7 @@
 			<mx:DataGridColumn headerText="{'Plancha\no Base'}"
 							   dataField="planchaBase.etiqueta"
 							   width="110"/>
-			<mx:DataGridColumn headerText="{'Tipo de\nAuditoría'}"
+			<mx:DataGridColumn headerText="{'Notificación\nde Auditoría'}"
 							   dataField="proyecto.tipoAuditoria.tipo"
 							   width="110"/>
 		</mx:columns>

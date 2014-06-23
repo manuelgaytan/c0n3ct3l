@@ -61,6 +61,23 @@
 				this.setDevelopmentProjectAB(); 
 			}
 			
+			private function setAuditType():void{
+				if( Util.isFill( this.cmbAuditType ) && this._developmentProjectAB != null &&
+					this._developmentProjectAB.proyecto != null &&
+					this._developmentProjectAB.proyecto.tipoAuditoria != null ){
+					this.cmbAuditType.selectedIndex = Util.selectedIndexFromCombo( this.cmbAuditType.dataProvider as ArrayCollection, 
+						this._developmentProjectAB.proyecto.tipoAuditoria.id);
+				}
+			}
+			
+			private function setAuditTypeFromProject( project:Proyecto ):void{
+				if( Util.isFill( this.cmbAuditType ) && project != null &&
+					project.tipoAuditoria != null ){
+					this.cmbAuditType.selectedIndex = Util.selectedIndexFromCombo( this.cmbAuditType.dataProvider as ArrayCollection, 
+						project.tipoAuditoria.id);
+				}
+			}
+			
 			private function setDevelopmentProjectAB():void
 			{
 				if( this._developmentProjectAB == null ){
@@ -69,12 +86,7 @@
 				this.stateValidation();
 				//this.txtConectelID.text = Util.numberToString( this._developmentProjectAB.proyecto.id );
 				this.projectsConsult.setDataAndSelected( Util.asArrayCollection( this._developmentProjectAB.proyecto ) );
-				if( Util.isFill( this.cmbAuditType ) && this._developmentProjectAB != null &&
-					this._developmentProjectAB.proyecto != null &&
-					this._developmentProjectAB.proyecto.tipoAuditoria != null ){
-					this.cmbAuditType.selectedIndex = Util.selectedIndexFromCombo( this.cmbAuditType.dataProvider as ArrayCollection, 
-						this._developmentProjectAB.proyecto.tipoAuditoria.id);
-				}
+				this.setAuditType();
 				this.txtFrame.text = this._developmentProjectAB.bastidorGabinete;
 				this.txtLedge.text = this._developmentProjectAB.repisa;
 				this.txtVersion.text = this._developmentProjectAB.version;
@@ -519,6 +531,7 @@
 					return;
 				}
 				this.cleanSecondaryGrid();
+				this.setAuditTypeFromProject( project );
 				this.responseGetDatosGeneralesProyecto.token = this.datosGeneralesService.getByIdProyecto( project.id );
 			}
 			
@@ -677,9 +690,9 @@
 						 labelField="etiqueta"/>
 		</mx:FormItem>
 		<components:Observations id="observations" fase="{Estado.createEstado(Estado.ID_DESARROLLO_PROYECTO_A_Y_B, Estado.DESARROLLO_PROYECTO_A_Y_B)}"/>
-		<mx:FormItem label="Tipo de Auditoría:">
+		<mx:FormItem label="Notificación de Auditoría:">
 			<mx:ComboBox id="cmbAuditType" width="150"
-						 labelField="tipo"
+						 labelField="tipo" enabled="false"
 						 />
 		</mx:FormItem>
 		<mx:FormItem direction="horizontal">

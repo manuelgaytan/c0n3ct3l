@@ -3851,13 +3851,13 @@
 	
 	/* EstadoProyecto */
 	INSERT INTO EstadoProyecto
-	VALUES (1, 'Alta');
+	VALUES (1, 'Registro de Servicios');
 	INSERT INTO EstadoProyecto
-	VALUES (2, 'Datos Generales');
+	VALUES (2, 'Planeación y Datos del Proyecto');
 	INSERT INTO EstadoProyecto
-	VALUES (3, 'Desarrollo Proyecto A y B');
+	VALUES (3, 'Ejecucción del Proyecto A y B');
 	INSERT INTO EstadoProyecto
-	VALUES (4, 'Configuración Prueba y Entrega');
+	VALUES (4, 'Entrega, Revisión y Validacion Operativa');
 	INSERT INTO EstadoProyecto
 	VALUES (5, 'Cerrado');
 	INSERT INTO EstadoProyecto

@@ -157,7 +157,7 @@ public class ConfiguracionPruebaEntregaService implements IConfiguracionPruebaEn
 			}
 		}
 		
-		actualizarClaveAuditoria(config);
+		//actualizarClaveAuditoria(config);
 		
 		entityManager.persist(config);
 		return null;
@@ -287,7 +287,7 @@ public class ConfiguracionPruebaEntregaService implements IConfiguracionPruebaEn
 			}
 		}
 		
-		actualizarClaveAuditoria(config);
+		//actualizarClaveAuditoria(config);
 		
 		entityManager.merge(config);
 		return null;

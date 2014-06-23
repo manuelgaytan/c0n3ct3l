@@ -200,6 +200,9 @@
 			
 			private function modeValidation():void
 			{
+				if( !Model.getInstance().user.allowedPerfil( Perfil.ID_ALMACEN ) ){
+					this.currentState = "estadoPublico"; 
+				}
 				if( this.mode == Constants.REGISTER_MODE ){
 					form.removeChild( this.frmItmCode );
 					this.btnPrint.visible = false;
@@ -573,6 +576,14 @@
 		[Event(name="warehouseApplicationNew", type="flash.events.Event")]
 		[Event(name="warehouseApplicationUpdated", type="flash.events.Event")]
 	</mx:Metadata>
+	<mx:states>
+		<mx:State name="estadoPublico">
+			<mx:RemoveChild target="{this.frmItmApplicantState}"/>
+			<mx:RemoveChild target="{this.frmItmAuthorizedBy}"/>
+			<mx:RemoveChild target="{this.frmItmDeliver}"/>
+			<mx:RemoveChild target="{this.frmItmLegend}"/>
+		</mx:State>
+	</mx:states>
 	<mx:Form id="form">
 		<mx:FormItem required="true" id="frmItmCode" label="Folio:">
 			<components:TextInput id="txtFolio"
@@ -677,14 +688,14 @@
 			<mx:Button id="btnAddItem" label="Agregar Partida" click="btnAddItem_clickHandler(event)"/>
 		</mx:FormItem>
 		<solicitudalmacen:ItemsManagement id="itemsManagement"/>
-		<mx:FormItem required="true" label="Estado de la Solicitud:">
+		<mx:FormItem id="frmItmApplicantState" required="true" label="Estado de la Solicitud:">
 			<mx:ComboBox id="cmbApplicantState"
 						 labelField="etiqueta"/>
 		</mx:FormItem>
 		<mx:FormItem required="true" label="Nombre del Solicitante:">
 			<components:TextInput id="txtApplicantName" width="400"/>
 		</mx:FormItem>
-		<mx:FormItem required="true" label="Autorizado por:">
+		<mx:FormItem id="frmItmAuthorizedBy" required="true" label="Autorizado por:">
 			<mx:ComboBox id="cmbAuthorizedBy"
 						 labelField="nombreCompleto"
 						 />
@@ -694,7 +705,7 @@
 						 labelField="nombreCompleto"
 						 />
 		</mx:FormItem>
-		<mx:FormItem required="true" label="Entrega:">
+		<mx:FormItem id="frmItmDeliver" required="true" label="Entrega:">
 			<mx:ComboBox id="cmbDeliver"
 									  labelField="nombreCompleto"/>
 		</mx:FormItem>
@@ -704,7 +715,7 @@
 		<mx:FormItem label="Fecha de Retorno:">
 			<components:DateField id="dtfReturnDate"/>
 		</mx:FormItem>
-		<mx:FormItem label="Leyenda:">
+		<mx:FormItem id="frmItmLegend" label="Leyenda:">
 			<components:TextArea id="txtLegend" width="750"/>
 		</mx:FormItem>
 		<mx:FormItem direction="horizontal">

@@ -24,6 +24,7 @@ import mx.com.gahm.conenctel.entities.ObservacionDO;
 import mx.com.gahm.conenctel.entities.PerfilDO;
 import mx.com.gahm.conenctel.entities.ProyectoDO;
 import mx.com.gahm.conenctel.entities.ProyectoEntregableDO;
+import mx.com.gahm.conenctel.entities.TipoColaboradorDO;
 import mx.com.gahm.conenctel.entities.UsuarioDO;
 import mx.com.gahm.conenctel.exceptions.ConectelException;
 import mx.com.gahm.conenctel.services.IDatosGeneralesService;
@@ -143,11 +144,28 @@ public class DatosGeneralesService implements IDatosGeneralesService {
 			this.enviarNotificacion(PerfilDO.ID_TESORERIA, mensaje);
 		}
 		if( dataProject.getDatosGrlsProyectoImplList() != null ){
+			mensaje = NotificacionDO.PROYECTO_COMPRAS;
+			boolean nomina = false;
+			boolean proveedores = false;
 			for( DatosGrlsProyectoImplDO item : dataProject.getDatosGrlsProyectoImplList() ) {
-				mensaje = NotificacionDO.PROYECTO_COMPRAS + item.getColaborador().getTipoColaborador().getTipo() + " - " + 
-							item.getColaborador().getNombreCompleto() + NotificacionDO.PROYECTO_COMPRAS_2 + dataProject.getProyecto().getId();
-				this.enviarNotificacion(PerfilDO.ID_COMPRAS, mensaje);
+				if( item.getColaborador().getTipoColaborador().getId() == TipoColaboradorDO.NOMINA ){
+					nomina = true;
+				}
+				if( item.getColaborador().getTipoColaborador().getId() == TipoColaboradorDO.PROVEEDORES ){
+					proveedores = true;
+				}
 			}
+			if( nomina ){
+				mensaje += TipoColaboradorDO.STR_NOMINA;
+			}
+			if( nomina && proveedores ){
+				mensaje += " y " + TipoColaboradorDO.STR_PROVEEDORES;
+			}
+			if( !nomina && proveedores ){
+				mensaje += TipoColaboradorDO.STR_PROVEEDORES;
+			}
+			mensaje += NotificacionDO.PROYECTO_COMPRAS_2 + dataProject.getProyecto().getId();
+			this.enviarNotificacion(PerfilDO.ID_COMPRAS, mensaje);
 		}
 		//}catch(Exception e){
 			//System.out.println("No se logro leer el properties de Notificaciones");
@@ -227,6 +245,7 @@ public class DatosGeneralesService implements IDatosGeneralesService {
 		noCambio = noCambio && ( anterior.getEquipo().getId() == nuevo.getEquipo().getId() );
 		noCambio = noCambio && ( anterior.getUnidad().getId() == nuevo.getUnidad().getId() );
 		noCambio = noCambio && ( anterior.getViaticos().getId() == nuevo.getViaticos().getId() );
+		noCambio = noCambio && ( anterior.getDatosGrlsProyectoImplList().size() == nuevo.getDatosGrlsProyectoImplList().size() );
 		return !noCambio;
 	}
 

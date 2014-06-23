@@ -28,6 +28,11 @@ public class TipoColaboradorDO implements Serializable {
 	public static long PROVEEDORES = 1;
 	@Transient
 	public static long NOMINA = 2;
+	@Transient
+	public static String STR_NOMINA = "Nómina";
+	@Transient
+	public static String STR_PROVEEDORES = "Proveedores";
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;

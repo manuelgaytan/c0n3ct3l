@@ -368,7 +368,7 @@
 	fk_entrega INT(11) UNSIGNED NOT NULL,
 	recibe VARCHAR(255) NOT NULL,
 	fk_autoriza_final INT(11) UNSIGNED,
-	leyenda VARCHAR(255),
+	leyenda TEXT,
 	fecha_retorno DATE,
 	PRIMARY KEY (id)
 	);

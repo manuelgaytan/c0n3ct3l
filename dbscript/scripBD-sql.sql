@@ -2656,7 +2656,7 @@
 	/*************************************************************************************************************************************
 	CAMBIOS
 	/************************************************************************************************************************************/
-	
+
 	CREATE TABLE ArchivoCotizacion
 	(
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
@@ -4031,6 +4031,8 @@
 	VALUES (5, 'Renta');
 	INSERT INTO UbicacionA
 	VALUES (6, 'Calibración');
+	INSERT INTO UbicacionA
+	VALUES (7, 'Almacén');
 	
 	/* Ubicacion B */
 	INSERT INTO UbicacionB
@@ -4057,6 +4059,8 @@
 	VALUES (4, 'Mantenimiento');
 	INSERT INTO UbicacionC
 	VALUES (5, 'Resguardo');
+	INSERT INTO UbicacionC
+	VALUES (6, 'Almacén');
 	
 	/* Tipo Almacen */
 	INSERT INTO TipoAlmacen

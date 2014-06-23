@@ -51,10 +51,19 @@ public class SistemaGestionService implements ISistemaGestionService{
 	@Override
 	public SistemaGestionDO save(SistemaGestionDO item) {
 		entityManager.persist(item);
+		this.actualizarClaveAuditoria(item);
 		this.validarEnvioNotificaciones(item);
 		return item;
 	}
 	
+	private void actualizarClaveAuditoria(SistemaGestionDO item) {
+		if( item != null ){
+			ProyectoDO proyectoDO = entityManager.find(ProyectoDO.class, item.getProyecto().getId());
+			proyectoDO.setTipoAuditoria( item.getTipoAuditoria() );
+			entityManager.merge( proyectoDO );
+		}
+	}
+
 	private void validarEnvioNotificaciones(SistemaGestionDO sistemaGestion) {
 		if( sistemaGestion == null ||
 			!sistemaGestion.getAplicacionAuditoria() ){
@@ -81,6 +90,7 @@ public class SistemaGestionService implements ISistemaGestionService{
 	@Override
 	public SistemaGestionDO update(SistemaGestionDO item) {
 		entityManager.merge(item);
+		actualizarClaveAuditoria(item);
 		return item;
 	}
 

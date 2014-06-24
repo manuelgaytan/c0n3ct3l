@@ -2,12 +2,13 @@
 <mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
 		   width="950" height="500"
 		   xmlns:ordenescompraserviciosmaquilado="components.ordenescompraserviciosmaquilado.*"
-		   creationComplete="creationCompleteHandler(event)">
+		   creationComplete="creationCompleteHandler(event)" xmlns:solicitudesserviciomaquilado="components.solicitudesserviciomaquilado.*">
 	<mx:Script>
 		<![CDATA[
 			import events.GenericEvent;
 			
 			import model.OrdenCompraMaquilado;
+			import model.SolicitudServicioMaquilado;
 			
 			import mx.events.FlexEvent;
 			
@@ -34,11 +35,26 @@
 				this.consult.executeQuery();
 			}
 			
+			protected function detail_maquiladoraServiceRequestSelectedHandler(event:GenericEvent):void
+			{
+				if( event == null ){
+					return;
+				}
+				var item:model.SolicitudServicioMaquilado = event.information as model.SolicitudServicioMaquilado;
+				if( item == null ){
+					return;
+				}
+				this.maquiladoraServiceRequestDetail.maquiladoraServiceRequest = item;
+				this.navigator.selectedChild = this.maquiladoraServiceRequestDetail;
+			}
 		]]>
 	</mx:Script>
 	<mx:TabNavigator id="navigator" width="100%" height="100%" creationPolicy="all">
 		<ordenescompraserviciosmaquilado:Consult id="consult" purchaseOrderMaquiladoDetail="consult_purchaseOrderMaquiladoDetailHandler(event)"/>
-		<ordenescompraserviciosmaquilado:PurchaseOrderServiceMaquila id="detail" update="true" purchaseOrderMaquiladoUpdated="detail_purchaseOrderMaquiladoUpdatedHandler(event)"/>
-		<ordenescompraserviciosmaquilado:PurchaseOrderServiceMaquila id="register" registrer="true" purchaseOrderMaquiladoNew="register_purchaseOrderMaquiladoNewHandler(event)"/>
+		<ordenescompraserviciosmaquilado:PurchaseOrderServiceMaquila id="detail" update="true" purchaseOrderMaquiladoUpdated="detail_purchaseOrderMaquiladoUpdatedHandler(event)"
+			maquiladoraServiceRequestSelected="detail_maquiladoraServiceRequestSelectedHandler(event)"/>
+		<ordenescompraserviciosmaquilado:PurchaseOrderServiceMaquila id="register" registrer="true" purchaseOrderMaquiladoNew="register_purchaseOrderMaquiladoNewHandler(event)"
+			maquiladoraServiceRequestSelected="detail_maquiladoraServiceRequestSelectedHandler(event)"/>
+		<solicitudesserviciomaquilado:MaquiladoraServiceRequest id="maquiladoraServiceRequestDetail" readOnly="true"/>
 	</mx:TabNavigator>
 </mx:Module>

@@ -26,8 +26,8 @@
 		ex.printStackTrace();
 	}
    File file ;
-   int maxFileSize = 5000 * 1024;
-   int maxMemSize = 5000 * 1024;
+   int maxFileSize = 20000 * 1024;
+   int maxMemSize = 20000 * 1024;
    ServletContext context = pageContext.getServletContext();
    String filePath = repository;
    String prefix = request.getParameter("prefix");

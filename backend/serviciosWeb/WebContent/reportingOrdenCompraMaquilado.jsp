@@ -1,3 +1,4 @@
+<%@page import="net.sf.jasperreports.engine.util.JRLoader"%>
 <%@page import="mx.com.gahm.conenctel.services.IOrdenCompraMaquiladoService"%>
 <%@page import="mx.com.gahm.conenctel.entities.OrdenCompraMaquiladoDO"%>
 <%@page import="mx.com.gahm.conenctel.entities.PartidaRequisicionCompraDO"%>
@@ -70,7 +71,7 @@
 		JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(list);
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("contexto",this.getServletContext().getRealPath("/"));
-		parameters.put("title", "Orden de Compra Servicio Maquilado");
+		parameters.put("title", "Orden de Compra");
 	    parameters.put("confidence", "Esta información es confidencial y exclusiva para el uso de Conectel.");
 	    parameters.put("legalName", "CONECTIVIDAD EN EQUIPOS DE TELECOMUNICACIONES S.A. DE C.V.");
 	    parameters.put("rfc", "CET0506085AA");

@@ -9,7 +9,7 @@ package model
 		public var descripcion:String;
 		public var emisor:String;
 		public var fecha:Date;
-		public var nombreArchivo:String;
+		public var archivosCotizacion:ArrayCollection;
 		public var comentariosCotizacion:ArrayCollection;
 	}
 }

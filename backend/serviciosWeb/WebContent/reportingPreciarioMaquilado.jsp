@@ -1,3 +1,4 @@
+<%@page import="net.sf.jasperreports.engine.util.JRLoader"%>
 <%@page import="mx.com.gahm.conenctel.model.FiltroProducto"%>
 <%@page import="mx.com.gahm.conenctel.entities.ProductoDO"%>
 <%@page import="mx.com.gahm.conenctel.services.IProductoService"%>
@@ -96,8 +97,7 @@
 	    parameters.put("website","www.conectel.com.mx");
 	    parameters.put("area","COMPRAS");
 	    parameters.put("phonesContact","58 51 93 42 , 58 51 93 43 EXT 115");
-	    JasperReport report = JasperCompileManager.compileReport(
-	          application.getRealPath("/reports/PreciarioMaquilador.jrxml") );
+	    JasperReport report = (JasperReport) JRLoader.loadObject( this.getServletContext().getResourceAsStream("/reports/PreciarioMaquilador.jasper") );
 	    JasperPrint print = JasperFillManager.fillReport(report, parameters, beanCollectionDataSource);
 	      
       	response.setContentType("application/pdf");

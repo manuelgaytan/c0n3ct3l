@@ -27,6 +27,7 @@
 			import mx.events.ListEvent;
 			import mx.rpc.events.FaultEvent;
 			import mx.rpc.events.ResultEvent;
+			import mx.utils.ObjectUtil;
 			
 			private var mode:String = null;
 			private var _configurationTestingDelivery:ConfiguracionPruebaEntrega;
@@ -146,11 +147,12 @@
 				if( Util.isFill( this.cmbOperationalValidationStatus ) && this._configurationTestingDelivery.estadoValidacionOperativa != null ){
 					this.cmbOperationalValidationStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbOperationalValidationStatus.dataProvider as ArrayCollection, 
 						this._configurationTestingDelivery.estadoValidacionOperativa.id);
+					this.validateProjectDone();
 				}
 				this.dtfOperationalValidationDate.selectedDate = this._configurationTestingDelivery.fechaValidacionOperativa;
 				this.observations.observations = this._configurationTestingDelivery.proyecto.observaciones;
 				//this.txtAuditKey.text = this._configurationTestingDelivery.proyecto.claveAuditoria;
-				this.txtAuditKey.text = this._configurationTestingDelivery.proyecto.tipoAuditoria.tipo;
+				this.txtAuditKey.text = Util.extractToText(this._configurationTestingDelivery,"proyecto.tipoAuditoria.tipo");
 			}
 			
 			private function getGeneralDataProject():ConfiguracionPruebaEntrega{
@@ -245,7 +247,7 @@
 			private function modeValidation():void
 			{
 				if( this.mode == Constants.REGISTER_MODE ){
-					this.btnProjectDone.visible = false;
+					//this.btnProjectDone.visible = false;
 					//this.txtConectelID.editable = true;
 					this.executeProjectQuery();
 				}
@@ -405,7 +407,9 @@
 					return;
 				}
 				//this.txtAuditKey.text = project.claveAuditoria;
-				this.txtAuditKey.text = project.tipoAuditoria.tipo;
+				if( project.tipoAuditoria != null ){
+					this.txtAuditKey.text = project.tipoAuditoria.tipo;
+				}
 				this.cleanSecondaryGrid();
 				this.responseGetDesarrolloProyectoAB.token = this.desarrolloProyectoABService.getByIdProyecto( project.id );
 			}
@@ -453,6 +457,20 @@
 			{
 				Util.removeItems( this.secondaryConsult.datagrid.dataProvider );
 			}
+			
+			protected function validateProjectDone():void
+			{
+				var item:EstadoValidacionOperativa = this.cmbOperationalValidationStatus.selectedItem as EstadoValidacionOperativa;
+				if( item == null ){
+					return;
+				}
+				if( item.id == EstadoValidacionOperativa.ID_RECHAZADO || item.id == EstadoValidacionOperativa.ID_PENDIENTE ){
+					this.btnProjectDone.visible = true;
+				}else{
+					this.btnProjectDone.visible = false;
+				}
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -552,7 +570,8 @@
 		</mx:FormItem>
 		<mx:FormItem direction="horizontal">
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
-			<mx:Button id="btnProjectDone" label="Terminar Proyecto" click="btnProjectDone_clickHandler(event)"/>
+			<mx:Button id="btnProjectDone" label="Terminar Proyecto" click="btnProjectDone_clickHandler(event)"
+					   visible="false"/>
 		</mx:FormItem>
 	</mx:Form>
 	<mx:RemoteObject id="configuracionPruebaEntregaService" destination="configuracionPruebaEntregaService" fault="datosGeneralesProyectoService_faultHandler(event)"

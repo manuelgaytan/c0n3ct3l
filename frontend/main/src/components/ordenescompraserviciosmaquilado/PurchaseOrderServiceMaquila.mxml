@@ -4,6 +4,7 @@
 		 >
 	<mx:Script>
 		<![CDATA[
+			import events.GenericEvent;
 			import model.Catalogo;
 			import model.Colaborador;
 			import model.Constants;
@@ -390,11 +391,24 @@
 				total += Util.stringToNumber( this.txtOtherTaxes.text, true );
 				this.txtTotal.text = Util.truncateToString(total);
 			}
+			
+			protected function btnViewMaquiladoraServiceRequest_clickHandler(event:MouseEvent):void
+			{
+				var item:SolicitudServicioMaquilado = this.maquiladoraServiceRequest;
+				if( item == null ){
+					Util.showErrorMessage("Primero debe seleccionar un elemento.");
+					return;
+				}
+				var genericEvent:GenericEvent = new GenericEvent("maquiladoraServiceRequestSelected");
+				genericEvent.information = item;
+				this.dispatchEvent( genericEvent );
+			}
 		]]>
 	</mx:Script>
 	<mx:Metadata>
 		[Event(name="purchaseOrderMaquiladoNew", type="flash.events.Event")]
 		[Event(name="purchaseOrderMaquiladoUpdated", type="flash.events.Event")]
+		[Event(name="maquiladoraServiceRequestSelected", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:Form id="form">
 		<mx:FormItem required="true" label="ID:" id="frmID">
@@ -404,6 +418,8 @@
 			<components:TextInput id="txtRequisicionID" textAlign="right"
 								  enter="txtRequisicionID_enterHandler()"
 								  focusOut="txtRequisicionID_focusOutHandler()"/>
+			<mx:Button label="Ver Requisición Servicios TELECOM" id="btnViewMaquiladoraServiceRequest"
+				click="btnViewMaquiladoraServiceRequest_clickHandler(event)"/>
 		</mx:FormItem>
 		<mx:FormItem required="true" label="Fecha:">
 			<components:DateField id="dtfDate" enabled="false" creationComplete="dtfDate.selectedDate = new Date()"/>

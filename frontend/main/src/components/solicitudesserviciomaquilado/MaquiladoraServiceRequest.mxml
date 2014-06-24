@@ -26,7 +26,14 @@
 			private var mode:String = null;
 			private var _item:SolicitudServicioMaquilado;
 			private var validators:InicializaValidadoresEtiquetas;
+			[Bindable]
+			private var _readOnly:Boolean = false;
 			
+			public function set readOnly(value:Boolean):void{
+				this._readOnly = value;
+				this.label = Constants.DETALLE;
+			}
+						
 			public function set registrer(value:Boolean):void{
 				mode = Constants.REGISTER_MODE;
 				this.label = Constants.REGISTRAR;
@@ -222,7 +229,8 @@
 		</mx:VBox>
 		<components:Comments id="comments" includeInLayout="false" visible="false"/>
 		<mx:FormItem>
-			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
+			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"
+				visible="{!this._readOnly}"/>
 		</mx:FormItem>
 	</mx:Form>
 	<mx:RemoteObject id="solicitudServicioMaquiladoService" destination="solicitudServicioMaquiladoService" fault="SolicitudServicioMaquiladoService_faultHandler(event)"

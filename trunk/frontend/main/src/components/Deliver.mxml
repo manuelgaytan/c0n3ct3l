@@ -18,7 +18,7 @@
 			[Bindable]
 			protected var _delivers:ArrayCollection;
 			
-			private var textTypes:FileFilter = new FileFilter("Archivos (*.doc, *.docx, *.xls, *.xlsx, *.pdf, *.jpg, *.png, *.gif)", "*.doc; *.docx; *.xls; *.xlsx; *.pdf; *.jpg; *.png; *.gif");
+			private var textTypes:FileFilter = new FileFilter("Archivos (*.doc, *.docx, *.xls, *.xlsx, *.pdf, *.jpg, *.png, *.gif, *.rar, *.zip)", "*.doc; *.docx; *.xls; *.xlsx; *.pdf; *.jpg; *.png; *.gif; *.rar; *.zip");
 			private var allTypes:Array = new Array(textTypes);
 			private var fileRef:FileReference = null;
 			
@@ -53,8 +53,8 @@
 				var request:URLRequest = new URLRequest( urlRequest );
 				
 				if( !sizeValidation( event.currentTarget as FileReference ) ){
-					Util.showErrorMessage( "Archivo mayor a 5 MB no se puede cargar" );
-					trace("Unable to upload file for sizing greater than 5 MB.");
+					Util.showErrorMessage( "Archivo mayor a 20 MB no se puede cargar" );
+					trace("Unable to upload file for sizing greater than 20 MB.");
 					return;
 				}
 				
@@ -160,7 +160,7 @@
 				if( currentTarget == null ){
 					return false;
 				}
-				return currentTarget.size <= 5120000;
+				return currentTarget.size <= 20480000;
 			}
 			
 			protected function btnDelete_clickHandler(event:MouseEvent):void

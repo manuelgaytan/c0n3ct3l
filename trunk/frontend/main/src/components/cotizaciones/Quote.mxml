@@ -4,13 +4,13 @@
 		 >
 	<mx:Script>
 		<![CDATA[
+			import model.ArchivoCotizacion;
 			import model.Constants;
 			import model.Cotizacion;
 			import model.Util;
 			
 			import mx.collections.ArrayCollection;
 			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
-			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
 			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
 			import mx.com.gahm.componentes.validadores.ValidadorNumerico;
@@ -63,8 +63,22 @@
 				this.txtDescription.text = this._item.descripcion;
 				this.txtTransmitter.text = this._item.emisor;
 				this.dtfDate.selectedDate = this._item.fecha;
-				this.dlvFileName.delivers = new ArrayCollection([this._item.nombreArchivo]);
+				this.dlvFileName.delivers = getEntregables( this._item.archivosCotizacion );
 				this.comments.setCommentsIn( this._item.comentariosCotizacion, "comentarioCompras");
+			}
+			
+			public static function getEntregables(entregables:ArrayCollection):ArrayCollection{
+				if( entregables == null || entregables.length == 0 ){
+					return null;
+				}
+				var filterEntregables:ArrayCollection = new ArrayCollection();
+				for each (var entregable:ArchivoCotizacion in entregables) 
+				{
+					if( !(entregable == null) ){
+						filterEntregables.addItem( entregable.nombreArchivo );
+					}
+				}
+				return filterEntregables;
 			}
 			
 			private function getQuote():Cotizacion{
@@ -79,10 +93,26 @@
 				item.fecha = this.dtfDate.selectedDate;
 				if( !(this.dlvFileName.delivers == null) &&
 					(this.dlvFileName.delivers.length > 0) ){
-					item.nombreArchivo = this.dlvFileName.delivers.getItemAt(0) as String;
+					item.archivosCotizacion = setEntregables( this.dlvFileName.delivers );
 				}
 				item.comentariosCotizacion = this.comments.getCommentsAsInWith("model.ComentarioCompras","model.ComentarioCotizacion","comentarioCompras")
 				return item;
+			}
+			
+			public static function setEntregables( filesName:ArrayCollection ):ArrayCollection{
+				if( filesName == null || 
+					filesName.length == 0 ){
+					return null;
+				}
+				var archivoCotizacion:ArchivoCotizacion = null;
+				var archivosCotizacion:ArrayCollection = new ArrayCollection();
+				for each (var fileName:String in filesName) 
+				{
+					archivoCotizacion = new ArchivoCotizacion();
+					archivoCotizacion.nombreArchivo = fileName;
+					archivosCotizacion.addItem( archivoCotizacion );
+				}
+				return archivosCotizacion;
 			}
 			
 			private function fillCombos():void

@@ -42,8 +42,8 @@ package components
 			var request:URLRequest = new URLRequest( urlRequest );
 			
 			if( !sizeValidation( event.currentTarget as FileReference ) ){
-				Util.showErrorMessage( "Archivo mayor a 5 MB no se puede cargar" );
-				trace("Unable to upload file for sizing greater than 5 MB.");
+				Util.showErrorMessage( "Archivo mayor a 20 MB no se puede cargar" );
+				trace("Unable to upload file for sizing greater than 20 MB.");
 				return;
 			}
 			
@@ -68,7 +68,7 @@ package components
 			if( currentTarget == null ){
 				return false;
 			}
-			return currentTarget.size <= 5120000;
+			return currentTarget.size <= 20480000;
 		}
 	}
 }

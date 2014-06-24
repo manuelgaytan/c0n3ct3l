@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="MinutaAcuerdos_Items" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="4c53b276-62f2-4290-a0b4-1c0de831ee09">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="MinutaAcuerdos_Items" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="4c53b276-62f2-4290-a0b4-1c0de831ee09">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -13,52 +13,50 @@
 	<columnHeader>
 		<band height="46" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="09e4beeb-e28f-44d3-a741-1e3290e77bd2" x="0" y="10" width="106" height="20"/>
+				<reportElement x="0" y="10" width="106" height="20" uuid="09e4beeb-e28f-44d3-a741-1e3290e77bd2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[RESPONSABLE]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="6c221910-bc4f-4736-95d2-c5eae7648273" x="107" y="10" width="207" height="20"/>
+				<reportElement x="107" y="10" width="207" height="20" uuid="6c221910-bc4f-4736-95d2-c5eae7648273"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[ACUERDO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="6d36d12d-d22e-4846-8101-d5aa0469c486" x="315" y="10" width="100" height="20"/>
+				<reportElement x="315" y="10" width="100" height="20" uuid="6d36d12d-d22e-4846-8101-d5aa0469c486"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[FECHA COMP.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="84464cdb-92be-4252-a299-d9a2b451872e" x="416" y="10" width="134" height="20"/>
+				<reportElement x="416" y="10" width="134" height="20" uuid="84464cdb-92be-4252-a299-d9a2b451872e"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[FIRMA]]></text>
 			</staticText>
 			<line>
-				<reportElement uuid="0433f230-dd6e-48f6-b61c-810a2f75cfdf" x="0" y="41" width="555" height="1"/>
+				<reportElement x="0" y="41" width="555" height="1" uuid="0433f230-dd6e-48f6-b61c-810a2f75cfdf"/>
 			</line>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="88" splitType="Stretch">
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="18371edc-6aad-4b15-ab14-32e6ee430c5d" x="0" y="0" width="106" height="84"/>
-				<textElement/>
+				<reportElement x="0" y="0" width="106" height="84" uuid="18371edc-6aad-4b15-ab14-32e6ee430c5d"/>
 				<textFieldExpression><![CDATA[$F{responsable}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement uuid="a71e3f11-cd01-4dd8-b825-2ec3a3ab5f70" x="315" y="0" width="100" height="84"/>
-				<textElement/>
+				<reportElement x="315" y="0" width="100" height="84" uuid="a71e3f11-cd01-4dd8-b825-2ec3a3ab5f70"/>
 				<textFieldExpression><![CDATA[$F{fechaCompromiso}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="b5e766e5-34aa-4340-b144-75f6d706634c" x="107" y="0" width="207" height="84"/>
+				<reportElement x="107" y="0" width="207" height="84" uuid="b5e766e5-34aa-4340-b144-75f6d706634c"/>
 				<textElement textAlignment="Left"/>
 				<textFieldExpression><![CDATA[$F{acuerdo}]]></textFieldExpression>
 			</textField>

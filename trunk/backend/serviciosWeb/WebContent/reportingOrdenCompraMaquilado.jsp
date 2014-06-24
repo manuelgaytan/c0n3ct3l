@@ -82,8 +82,7 @@
 	    parameters.put("website","www.conectel.com.mx");
 	    parameters.put("area","COMPRAS");
 	    parameters.put("phonesContact","58 51 93 42 , 58 51 93 43 EXT 115");
-	    JasperReport report = JasperCompileManager.compileReport(
-	          application.getRealPath("/reports/OrdenCompraMaquilado.jrxml") );
+	    JasperReport report = (JasperReport) JRLoader.loadObject( this.getServletContext().getResourceAsStream("/reports/OrdenCompraMaquilado.jasper") );
 	    JasperPrint print = JasperFillManager.fillReport(report, parameters, beanCollectionDataSource);
 	      
       	response.setContentType("application/pdf");

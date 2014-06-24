@@ -1,3 +1,4 @@
+<%@page import="net.sf.jasperreports.engine.util.JRLoader"%>
 <%@page import="mx.com.gahm.conenctel.entities.InformacionConfidencialColaboradorDO"%>
 <%@page import="mx.com.gahm.conenctel.services.IInformacionConfidencialColaboradorService"%>
 <%@page import="mx.com.gahm.conenctel.entities.MinutaDO"%>
@@ -70,8 +71,7 @@
 		parameters.put("fecha",new Date());
 		parameters.put("salidaFotos", "output/" );
 	    parameters.put("confidence", "Esta información es confidencial y exclusiva para el uso de Conectel.");
-	    JasperReport report = JasperCompileManager.compileReport(
-	          application.getRealPath("/reports/FichaPresentacion.jrxml") );
+	    JasperReport report = (JasperReport) JRLoader.loadObject( this.getServletContext().getResourceAsStream("/reports/FichaPresentacion.jasper") );
 	    JasperPrint print = JasperFillManager.fillReport(report, parameters, beanCollectionDataSource);
 	      
       	response.setContentType("application/pdf");

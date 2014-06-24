@@ -1,3 +1,4 @@
+<%@page import="net.sf.jasperreports.engine.util.JRLoader"%>
 <%@page import="mx.com.gahm.conenctel.entities.MinutaDO"%>
 <%@page import="mx.com.gahm.conenctel.services.IMinutaService"%>
 <%@page import="mx.com.gahm.conenctel.services.ISolicitudAlmacenService"%>
@@ -70,8 +71,7 @@
 		parameters.put("revision", "01");
 		parameters.put("codigo", "R-5.6-001");
 	    parameters.put("confidence", "Esta información es confidencial y exclusiva para el uso de Conectel.");
-	    JasperReport report = JasperCompileManager.compileReport(
-	          application.getRealPath("/reports/MinutaReunion.jrxml") );
+	    JasperReport report = (JasperReport) JRLoader.loadObject( this.getServletContext().getResourceAsStream("/reports/MinutaReunion.jasper") );
 	    JasperPrint print = JasperFillManager.fillReport(report, parameters, beanCollectionDataSource);
 	      
       	response.setContentType("application/pdf");

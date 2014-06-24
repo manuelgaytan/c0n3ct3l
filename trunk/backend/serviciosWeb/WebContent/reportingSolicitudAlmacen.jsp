@@ -1,3 +1,4 @@
+<%@page import="net.sf.jasperreports.engine.util.JRLoader"%>
 <%@page import="mx.com.gahm.conenctel.services.ISolicitudAlmacenService"%>
 <%@page import="javax.naming.Context"%>
 <%@page import="mx.com.gahm.conenctel.services.impl.SolicitudAlmacenService"%>
@@ -64,8 +65,7 @@
 		parameters.put("contexto",this.getServletContext().getRealPath("/"));
 		parameters.put("title", "Solicitud Almacén");
 	    parameters.put("confidence", "Esta información es confidencial y exclusiva para el uso de Conectel.");
-	    JasperReport report = JasperCompileManager.compileReport(
-	          application.getRealPath("/reports/SolicitudAlmacen.jrxml") );
+	    JasperReport report = (JasperReport) JRLoader.loadObject( this.getServletContext().getResourceAsStream("/reports/SolicitudAlmacen.jasper") ); 
 	    JasperPrint print = JasperFillManager.fillReport(report, parameters, beanCollectionDataSource);
 	      
       	response.setContentType("application/pdf");

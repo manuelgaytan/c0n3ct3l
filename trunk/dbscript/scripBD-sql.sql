@@ -3373,7 +3373,7 @@
 	CAMBIOS
 	/************************************************************************************************************************************/
 
-	ALTER TABLE ComentarioCotizacion ADD FOREIGN KEY fk_cotizacion_idxfk_2 (fk_cotizacion) REFERENCES Cotizacion (id);
+	ALTER TABLE ArchivoCotizacion ADD FOREIGN KEY fk_cotizacion_idxfk_2 (fk_cotizacion) REFERENCES Cotizacion (id);
 
 	/*************************************************************************************************************************************
 	FIN CAMBIOS

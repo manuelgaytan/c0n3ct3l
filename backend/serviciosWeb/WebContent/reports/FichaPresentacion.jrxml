@@ -32,7 +32,7 @@
 	<parameter name="fecha" class="java.util.Date"/>
 	<parameter name="contexto" class="java.lang.String"/>
 	<parameter name="salidaFotos" class="java.lang.String"/>
-	<field name="id" class="java.lang.Long"/>
+	<field name="id" class="java.lang.Integer"/>
 	<field name="contratacion.seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosGeneralesSolicitante.nombres" class="java.lang.String"/>
 	<field name="contratacion.seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosGeneralesSolicitante.apellidoPaterno" class="java.lang.String"/>
 	<field name="contratacion.seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosGeneralesSolicitante.apellidoMaterno" class="java.lang.String"/>
@@ -174,7 +174,7 @@ $F{contratacion.seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosGener
 			</staticText>
 			<image>
 				<reportElement x="168" y="162" width="400" height="345" uuid="39fda7af-b9bd-4d14-a3c4-3d9fbe01ea4d"/>
-				<imageExpression><![CDATA[$P{contexto}.toString()+ $P{salidaFotos} + $F{foto}]]></imageExpression>
+				<imageExpression><![CDATA[$F{foto} == null ? null : $P{contexto}.toString()+ $P{salidaFotos} + $F{foto}]]></imageExpression>
 			</image>
 		</band>
 	</detail>

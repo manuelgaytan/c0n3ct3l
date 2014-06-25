@@ -3629,21 +3629,21 @@
 	INSERT INTO PerfilPantalla
 	VALUES (49, 1, 26);
 	INSERT INTO PerfilPantalla
-	VALUES (50, 1, 26);
+	VALUES (50, 2, 26);
 	INSERT INTO PerfilPantalla
-	VALUES (51, 2, 26);
+	VALUES (51, 3, 26);
 	INSERT INTO PerfilPantalla
-	VALUES (52, 3, 26);
+	VALUES (52, 4, 26);
 	INSERT INTO PerfilPantalla
-	VALUES (53, 4, 26);
+	VALUES (53, 5, 26);
 	INSERT INTO PerfilPantalla
-	VALUES (54, 5, 26);
+	VALUES (54, 6, 26);
 	INSERT INTO PerfilPantalla
-	VALUES (55, 6, 26);
+	VALUES (55, 7, 26);
 	INSERT INTO PerfilPantalla
-	VALUES (56, 7, 26);
+	VALUES (56, 8, 26);
 	INSERT INTO PerfilPantalla
-	VALUES (57, 8, 26);
+	VALUES (57, 9, 26);
 	INSERT INTO PerfilPantalla
 	VALUES (58, 9, 23);
 	INSERT INTO PerfilPantalla
@@ -3802,6 +3802,20 @@
 	VALUES (135, 1, 58);
 	INSERT INTO PerfilPantalla
 	VALUES (136, 6, 58);
+	INSERT INTO PerfilPantalla
+	VALUES (137, 10, 26);
+	INSERT INTO PerfilPantalla
+	VALUES (138, 11, 26);
+	INSERT INTO PerfilPantalla
+	VALUES (139, 12, 26);
+	INSERT INTO PerfilPantalla
+	VALUES (140, 13, 26);
+	INSERT INTO PerfilPantalla
+	VALUES (141, 14, 26);
+	INSERT INTO PerfilPantalla
+	VALUES (142, 15, 26);
+	INSERT INTO PerfilPantalla
+	VALUES (143, 2, 8);
 
 	/* Usuarios */
 	INSERT INTO Usuario
@@ -4825,6 +4839,10 @@
 	VALUES (1, 'A');
 	INSERT INTO TipoDesarrolloProyecto
 	VALUES (2, 'B');
+	INSERT INTO TipoDesarrolloProyecto
+	VALUES (3, 'C');
+	INSERT INTO TipoDesarrolloProyecto
+	VALUES (4, 'D');
 
 	INSERT INTO Calibracion
 	VALUES (1, 'Aplica');

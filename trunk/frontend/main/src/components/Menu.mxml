@@ -40,9 +40,16 @@
 					if( category == null ){
 						continue;
 					}
+					var existAnything:Boolean = false;
 					for each (var button:LinkButton in category.getChildren()) 
 					{
 						button.visible = user.allowed( button.id );
+						if( button.visible ){
+							existAnything = true;
+						}
+					}
+					if( !existAnything ){
+						this.removeChild( category );
 					}
 				}
 			}
@@ -86,10 +93,10 @@
 					   icon="@Embed(source='assets/images/notificacionessistema.png')"/>
 	</mx:VBox>
 	<mx:VBox label="Almacén" width="100%" height="100%">
-		<mx:LinkButton label="Manejo Almacén" id="Almacen" click="clickMenuHandler(event)"
-					   icon="@Embed(source='assets/images/manejoalmacen.png')"/>
 		<mx:LinkButton label="Solicitud Almacén" id="SolicitudAlmacenModule" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/solicitudalmacen.png')"/>
+		<mx:LinkButton label="Manejo Almacén" id="Almacen" click="clickMenuHandler(event)"
+					   icon="@Embed(source='assets/images/manejoalmacen.png')"/>
 	</mx:VBox>
 	<mx:VBox label="Compras" width="100%" height="100%">
 		<mx:LinkButton label="Proveedores Seleccionados" id="ProveedoresSeleccionados" click="clickMenuHandler(event)"
@@ -199,7 +206,7 @@
 		<mx:LinkButton label="Gráfica de Evaluación de Facturación de Proyectos de Conectel" id="GraficaEvaluacionFacturacionProyectosConectel" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/graficas.png')"/>
 	</mx:VBox>
-	<mx:VBox id="empty">
+	<mx:VBox id="empty" label="Notificaciones">
 		<mx:LinkButton label="Notificaciones" id="Notificaciones" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/notificacionessistema.png')"/>
 	</mx:VBox>

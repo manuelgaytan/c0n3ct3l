@@ -14,6 +14,7 @@ import javax.persistence.TypedQuery;
 
 import com.sun.faces.config.DocumentOrderingWrapper;
 
+import mx.com.gahm.conenctel.entities.AyudanteDO;
 import mx.com.gahm.conenctel.entities.ColaboradorDO;
 import mx.com.gahm.conenctel.entities.ComentarioProveedorDO;
 import mx.com.gahm.conenctel.entities.DocumentoLiderProveedorMaquiladorDO;
@@ -68,9 +69,9 @@ public class ProveedorMaquiladorService implements IProveedorMaquiladorService {
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public ProveedorMaquiladorDO saveProveedorMaquilador(
 			ProveedorMaquiladorDO proveedor) throws ConectelException {
-		// TODO Auto-generated method stub
 		List<DocumentoLiderProveedorMaquiladorDO> documentos = proveedor.getDocumentosLiderProveedorMaquilador();
-		
+		List<AyudanteDO> ayudantes = proveedor.getAyudantes();
+		proveedor.setAyudantes(null);
 		if( documentos != null ){
 			for (DocumentoLiderProveedorMaquiladorDO documento : documentos) {
 				documento.setProveedorMaquilador(proveedor);
@@ -78,8 +79,18 @@ public class ProveedorMaquiladorService implements IProveedorMaquiladorService {
 		}
 		entityManager.persist(proveedor);
 		this.saveColaborador( proveedor );
-		
+		this.saveAyudantes( proveedor, ayudantes );
 		return null;
+	}
+
+	private void saveAyudantes(ProveedorMaquiladorDO proveedorMaquilador,
+			List<AyudanteDO> ayudantes) {
+		if( !(ayudantes == null) ){
+			for (AyudanteDO ayudanteDO : ayudantes) {
+				ayudanteDO.setProveedorMaquilador(proveedorMaquilador);
+				entityManager.persist( ayudanteDO );
+			}
+		}
 	}
 
 	private void saveColaborador(ProveedorMaquiladorDO proveedor) {
@@ -117,11 +128,25 @@ public class ProveedorMaquiladorService implements IProveedorMaquiladorService {
 	public ProductoDO updateProveedorMaquilador(ProveedorMaquiladorDO proveedor)
 			throws ConectelException {
 		this.deleteDocumentos(proveedor);
+		this.deleteAyudantes(proveedor);
+		List<AyudanteDO> ayudantes = proveedor.getAyudantes();
+		proveedor.setAyudantes(null);
 		this.colocarProveedorMaquilador(proveedor);
 		entityManager.merge(proveedor);
+		this.saveAyudantes(proveedor, ayudantes);
 		return null;
 	}
 	
+	private void deleteAyudantes(ProveedorMaquiladorDO proveedor) {
+		ProveedorMaquiladorDO proveedorMaquilador = entityManager.find( ProveedorMaquiladorDO.class,  proveedor.getId() ); 
+		List<AyudanteDO> items = proveedorMaquilador.getAyudantes();
+		if(items!=null){
+			for (AyudanteDO item : items) {
+				entityManager.remove( item );
+			}
+		}
+	}
+
 	private void colocarProveedorMaquilador(ProveedorMaquiladorDO proveedorMaquilador){
 		List<DocumentoLiderProveedorMaquiladorDO> documentos = proveedorMaquilador.getDocumentosLiderProveedorMaquilador();
 		if(documentos!=null){

@@ -1,7 +1,5 @@
 package model
 {
-	import flash.external.ExternalInterface;
-	
 	import mx.collections.ArrayCollection;
 
 	[RemoteClass(alias="mx.com.gahm.conenctel.entities.ProveedorMaquiladorDO")]
@@ -27,7 +25,9 @@ package model
 		
 		public var nss:String;
 		
-		public var documentosLiderProveedorMaquilador:ArrayCollection; 
+		public var documentosLiderProveedorMaquilador:ArrayCollection;
+		
+		public var ayudantes:ArrayCollection; 
 		
 		public function ProveedorMaquilador()
 		{

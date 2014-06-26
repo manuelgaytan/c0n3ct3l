@@ -24,7 +24,7 @@
 				this._readOnly = value;
 			}
 			
-			public function getItems():ArrayCollection{
+			public function get items():ArrayCollection{
 				return this.dtgItems.dataProvider as ArrayCollection;
 			}
 			
@@ -35,11 +35,15 @@
 			}
 			
 			public function reset():void{
+				this.cleanForm();
+				Util.removeItems( this.dtgItems.dataProvider );
+			}
+			
+			private function cleanForm():void{
 				this.txtName.reset();
 				this.txtRFC.reset();
 				this.txtCURP.reset();
 				this.txtNSS.reset();
-				Util.removeItems( this.dtgItems.dataProvider );
 			}
 			
 			private function btnAddItem_clickHandler(event:MouseEvent):void{
@@ -52,6 +56,7 @@
 					return;
 				}
 				(this.dtgItems.dataProvider as ArrayCollection).addItem( entry );
+				this.cleanForm();
 			}
 			
 			private function getItem():Ayudante{

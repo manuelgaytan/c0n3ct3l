@@ -55,9 +55,11 @@ public class ProveedorMaquiladorDO  implements Serializable{
 	@Column(name="nss")
 	private String nss;
 	
-	
 	@OneToMany(mappedBy="proveedorMaquilador", fetch = FetchType.EAGER,cascade=CascadeType.ALL)
 	private List<DocumentoLiderProveedorMaquiladorDO> documentosLiderProveedorMaquilador;
+	
+	@OneToMany(mappedBy="proveedorMaquilador", fetch = FetchType.EAGER,cascade=CascadeType.ALL)
+	private List<AyudanteDO> ayudantes;
 
 	public ProveedorMaquiladorDO() {
 	}
@@ -204,4 +206,12 @@ public class ProveedorMaquiladorDO  implements Serializable{
 	}
 
 
+	public List<AyudanteDO> getAyudantes() {
+		return ayudantes;
+	}
+
+
+	public void setAyudantes(List<AyudanteDO> ayudantes) {
+		this.ayudantes = ayudantes;
+	}
 }

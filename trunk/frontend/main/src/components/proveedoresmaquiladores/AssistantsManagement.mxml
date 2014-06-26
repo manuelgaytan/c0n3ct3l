@@ -51,6 +51,11 @@
 					Util.showMessageVerifyFields();
 					return;
 				}
+				if( ( this.dtgItems.dataProvider is ArrayCollection ) &&
+					( this.dtgItems.dataProvider as ArrayCollection ).length == 10 ){
+					Util.showErrorMessage("No puede agregar más de " + ( this.dtgItems.dataProvider as ArrayCollection ).length + " elementos.");
+					return;
+				}
 				var entry:Ayudante = this.getItem();
 				if( entry == null ){
 					return;
@@ -137,14 +142,14 @@
 					   visible="{!this._readOnly}"/>
 		</mx:FormItem>
 	</mx:Form>
-	<mx:DataGrid id="dtgItems" width="100%" height="250"
+	<mx:DataGrid id="dtgItems" width="100%" height="150"
 				 doubleClickEnabled="true"
 				 doubleClick="dtgItems_doubleClickHandler(event)"
 				dataProvider="{new ArrayCollection()}">
 		<mx:columns>
 			<mx:DataGridColumn id="dtgName" headerText="Nombre"
 							   dataField="nombre"
-							   width="100"/>
+							   width="270"/>
 			<mx:DataGridColumn id="dtgRFC" headerText="R.F.C."
 							   dataField="rfc"
 							   width="120"

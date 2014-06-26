@@ -96,6 +96,7 @@
 						this._item.pago.id);
 				}
 				*/
+				this.assistantsManagement.items = this._item.ayudantes;
 			}
 			
 			private function getProveedor():ProveedorMaquilador{
@@ -125,6 +126,7 @@
 				item.documentosLiderProveedorMaquilador = this.convertDocumentLeader( this.fltDlvLeaderDocuments.delivers );
 				item.categoriaProyecto = Util.validateCombo( this.cmbTecnologia ) as Categoria;
 				//item.pago = Util.validateCombo( this.cmbPaymentType ) as Pago;
+				item.ayudantes = this.assistantsManagement.items;
 				return item;
 			}
 			
@@ -226,6 +228,7 @@
 				this.fltDlvLeaderDocuments.reset();
 				this.cmbTecnologia.selectedIndex = 0;
 				//this.cmbPaymentType.selectedIndex = 0;
+				this.assistantsManagement.reset();
 			}
 			
 			protected function responseUpdate_resultHandler(event:ResultEvent):void

@@ -329,6 +329,7 @@ package model
 			}
 			if( dataProvider is ArrayCollection ){
 				(dataProvider as ArrayCollection).removeAll();
+				(dataProvider as ArrayCollection).refresh();
 			}
 		}
 		
@@ -464,7 +465,6 @@ package model
 				return;
 			}
 			(list.dataProvider as ArrayCollection).removeAll();
-			//list.dataProvider = null;
 		}
 		
 		public static function getIDConectelFormat(value:*):String{
@@ -719,6 +719,18 @@ package model
 				return "";
 			}else{
 				return result.toString();
+			}
+		}
+		
+		public static function copyArrayCollectionToArrayCollection(source:ArrayCollection, destiny:ArrayCollection):void{
+			if( destiny == null ){
+				return;
+			}
+			if( source == null ){
+				source = new ArrayCollection();
+			}
+			for each (var i:Object in destiny){
+				source.addItem( i );
 			}
 		}
 	}

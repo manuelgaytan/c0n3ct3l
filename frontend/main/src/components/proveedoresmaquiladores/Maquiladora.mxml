@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
-		 creationComplete="creationCompleteHandler(event)"
+		 creationComplete="creationCompleteHandler(event)" xmlns:proveedoresmaquiladores="components.proveedoresmaquiladores.*"
 		 >
 	<mx:Script>
 		<![CDATA[
@@ -414,6 +414,7 @@
 		<mx:FormItem label="Documentos del Proveedor:">
 			<components:FlatDeliver id="fltDlvLeaderDocuments"/>
 		</mx:FormItem>
+		<proveedoresmaquiladores:AssistantsManagement id="assistantsManagement"/>
 		<mx:FormItem>
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
 		</mx:FormItem>

@@ -6,8 +6,6 @@
 				creationComplete="creationCompleteHandler(event)">
 	<mx:Script>
 		<![CDATA[
-			import model.DatosGrlsProyectoImpl;
-			import mx.core.UITextField;
 			import components.ComboList;
 			import components.Comments;
 			import components.DateField;
@@ -28,8 +26,10 @@
 			import model.AcuerdoMinuta;
 			import model.Ano;
 			import model.Aplica;
+			import model.ArchivoCotizacion;
 			import model.AreaLevantaNoConformidad;
 			import model.AreaSolicitante;
+			import model.Ayudante;
 			import model.BancoConectel;
 			import model.Calibracion;
 			import model.CartaAntecedentesPenales;
@@ -92,6 +92,7 @@
 			import model.DatosFamiliaresSolicitante;
 			import model.DatosGeneralesProyecto;
 			import model.DatosGeneralesSolicitante;
+			import model.DatosGrlsProyectoImpl;
 			import model.DatosPrincipalesSolicitante;
 			import model.DatosSobreConectelSolicitante;
 			import model.DatosUltimoEmpleoSolicitante;
@@ -291,6 +292,7 @@
 			import mx.controls.TextArea;
 			import mx.controls.TextInput;
 			import mx.controls.dataGridClasses.DataGridColumn;
+			import mx.core.UITextField;
 			import mx.events.FlexEvent;
 			import mx.events.ModuleEvent;
 			import mx.modules.Module;
@@ -580,6 +582,8 @@
 			private var textInputIVA:TextInputIVA;
 			private var consultaGeneralOperacion:ConsultaGeneralOperacion;
 			private var datosGrlsProyectoImpl:DatosGrlsProyectoImpl;
+			private var archivoCotizacion:ArchivoCotizacion;
+			private var ayudante:Ayudante;
 						
 			protected function login_readyHandler(event:ModuleEvent):void
 			{

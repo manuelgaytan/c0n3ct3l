@@ -212,12 +212,12 @@
 				 backgroundAlpha="0.5">
 			<mx:FormItem required="true" label="Usuario:">
 				<components:TextInput id="txtUser"
-									  text=""/>
+									  text="DIRECTOR"/>
 			</mx:FormItem>
 			<mx:FormItem required="true" label="Contraseña:">
 				<components:TextInput id="txtPassword" displayAsPassword="true"
 									  enter="enterButton_clickHandler(event)"
-									  text=""/>
+									  text="NOTIENE"/>
 			</mx:FormItem>
 			<mx:FormItem>
 				<mx:Button label="Entrar" id="enterButton" click="enterButton_clickHandler(event)" enabled="false"/>

@@ -4224,6 +4224,8 @@
 	VALUES (2, 'Efectivo');
 	INSERT INTO TipoPago
 	VALUES (3, 'Transferencia');
+	INSERT INTO TipoPago
+	VALUES (4, 'Crédito');
 	
 	INSERT INTO Pago
 	VALUES (1, '50% anticipo');

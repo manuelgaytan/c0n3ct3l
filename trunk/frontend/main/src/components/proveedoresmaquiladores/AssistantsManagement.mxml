@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" 
+		 xmlns:components="components.*"
+		 width="100%"
+		 creationComplete="creationCompleteHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import model.Ayudante;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorAlfanumericoNumerico;
+			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			
+			private var validators:InicializaValidadoresEtiquetas;
+			
+			private var _readOnly:Boolean = false;
+			
+			private function set readOnly(value:Boolean):void{
+				this._readOnly = value;
+			}
+			
+			public function getItems():ArrayCollection{
+				return this.dtgItems.dataProvider as ArrayCollection;
+			}
+			
+			public function set items(value:ArrayCollection):void{
+				Util.removeItems( this.dtgItems.dataProvider );
+				Util.copyArrayCollectionToArrayCollection( this.dtgItems.dataProvider as ArrayCollection,
+															value );
+			}
+			
+			public function reset():void{
+				this.txtName.reset();
+				this.txtRFC.reset();
+				this.txtCURP.reset();
+				this.txtNSS.reset();
+				Util.removeItems( this.dtgItems.dataProvider );
+			}
+			
+			private function btnAddItem_clickHandler(event:MouseEvent):void{
+				if( !this.validations() ){
+					Util.showMessageVerifyFields();
+					return;
+				}
+				var entry:Ayudante = this.getItem();
+				if( entry == null ){
+					return;
+				}
+				(this.dtgItems.dataProvider as ArrayCollection).addItem( entry );
+			}
+			
+			private function getItem():Ayudante{
+				var item:Ayudante = new Ayudante();
+				item.nombre = Util.validateEmpty( this.txtName.text );
+				item.rfc = Util.validateEmpty( this.txtRFC.text );
+				item.curp = Util.validateEmpty( this.txtCURP.text );
+				item.nss = Util.validateEmpty( this.txtNSS.text );
+				return item;
+			}
+			
+			private function validations():Boolean
+			{
+				var value:Boolean = true;
+				value &&= this.validators.validarFormulario();
+				return value;
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.initializeValidators();
+			}
+			
+			private function initializeValidators():void
+			{
+				this.validators = new InicializaValidadoresEtiquetas();
+				validators.crearValidadorRestrictor("generic",ValidadorCadenaCualquierCaracter.nombre, 0, 255);
+				validators.setValidador(txtName, "generic");
+				validators.crearValidadorRestrictor("generic",ValidadorAlfanumericoNumerico.nombre, 0, 255);
+				validators.setRestrictor(txtRFC, "generic");
+				validators.setRestrictor(txtCURP, "generic");
+				validators.setRestrictor(txtNSS, "generic");
+			}
+			
+			private function dtgItems_doubleClickHandler(event:MouseEvent):void{
+				if( this._readOnly ){
+					return;
+				}
+				if( this.dtgItems.selectedItems == null ||
+					this.dtgItems.selectedItems.length == 0 ){
+					Util.showErrorMessage("Debe seleccionar elementos de la tabla.");
+					return;
+				}
+				Alert.show("Confirme si desea eliminar los elementos.","Advertencia",Alert.YES+Alert.NO,this, deleteItems);
+			}
+			
+			private function deleteItems(event:CloseEvent):void
+			{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				if( this.dtgItems.dataProvider == null || 
+					!(this.dtgItems.dataProvider is ArrayCollection) ||
+					(this.dtgItems.dataProvider as ArrayCollection) == null || 
+					(this.dtgItems.dataProvider as ArrayCollection).length == 0 ){
+					return;					
+				}
+				(this.dtgItems.dataProvider as ArrayCollection).removeItemAt( this.dtgItems.selectedIndex );
+			}
+		]]>
+	</mx:Script>
+	<mx:Form>
+		<mx:FormHeading label="Ayudantes"/>
+		<mx:FormItem required="true" label="Nombre:">
+			<components:TextInput id="txtName" width="500"/>
+		</mx:FormItem>
+		<mx:FormItem required="false" label="R.F.C.:">
+			<components:TextInput id="txtRFC" width="120"/>
+		</mx:FormItem>
+		<mx:FormItem required="false" label="C.U.R.P.:">
+			<components:TextInput id="txtCURP" width="180"/>
+		</mx:FormItem>
+		<mx:FormItem required="false" label="N.S.S.:">
+			<components:TextInput id="txtNSS" width="120"/>
+		</mx:FormItem>
+		<mx:FormItem>
+			<mx:Button id="btnAddItem" label="Agregar Partida" click="btnAddItem_clickHandler(event)"
+					   visible="{!this._readOnly}"/>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:DataGrid id="dtgItems" width="100%" height="250"
+				 doubleClickEnabled="true"
+				 doubleClick="dtgItems_doubleClickHandler(event)"
+				dataProvider="{new ArrayCollection()}">
+		<mx:columns>
+			<mx:DataGridColumn id="dtgName" headerText="Nombre"
+							   dataField="nombre"
+							   width="100"/>
+			<mx:DataGridColumn id="dtgRFC" headerText="R.F.C."
+							   dataField="rfc"
+							   width="120"
+							   textAlign="center"/>
+			<mx:DataGridColumn id="dtgCURP" headerText="C.U.R.P."
+							   dataField="curp"
+							   width="180"
+							   textAlign="center"/>
+			<mx:DataGridColumn id="dtgNSS" headerText="N.S.S."
+							   dataField="nss"
+							   width="120"
+							   textAlign="center"/>
+		</mx:columns>
+	</mx:DataGrid>
+</mx:VBox>

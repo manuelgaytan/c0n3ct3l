@@ -5,6 +5,7 @@
 		 creationComplete="creationCompleteHandler(event)">
 	<mx:Script>
 		<![CDATA[
+			import model.DocumentoAyudante;
 			import model.Ayudante;
 			import model.Util;
 			
@@ -43,6 +44,7 @@
 				this.txtRFC.reset();
 				this.txtCURP.reset();
 				this.txtNSS.reset();
+				this.fltDlvDocuments.reset();
 				this.btnAddItem.label = "Agregar";
 			}
 			
@@ -93,6 +95,7 @@
 				this.txtRFC.text = item.rfc;
 				this.txtCURP.text = item.curp;
 				this.txtNSS.text = item.nss;
+				this.fltDlvDocuments.delivers = this.convertAssitantDocumentToList( this._item.documentosAyudante );
 			}
 			
 			private function getItem():Ayudante{
@@ -101,7 +104,41 @@
 				item.rfc = Util.validateEmpty( this.txtRFC.text );
 				item.curp = Util.validateEmpty( this.txtCURP.text );
 				item.nss = Util.validateEmpty( this.txtNSS.text );
+				item.documentosAyudante = this.convertAssitantDocument( this.fltDlvLeaderDocuments.delivers );
 				return item;
+			}
+			
+			private function convertAssitantDocument(documentosAyudante:ArrayCollection):ArrayCollection
+			{
+				if( documentosAyudante == null ||
+					documentosAyudante.length == 0 ){
+					return null;
+				}
+				var documentsConverted:ArrayCollection = new ArrayCollection();
+				var document:DocumentoAyudante;
+				for each (var documento:String in documentosAyudante) 
+				{
+					document = new DocumentoAyudante();
+					document.documento = documento;
+					documentsConverted.addItem( document );
+				}				
+				return documentsConverted;
+			}
+			
+			private function convertAssitantDocumentToList(documentosAyudante:ArrayCollection):ArrayCollection
+			{
+				if( documentosAyudante == null ||
+					documentosAyudante.length == 0 ){
+					return null;
+				}
+				var documentsConverted:ArrayCollection = new ArrayCollection();
+				var document:String;
+				for each (var documento:DocumentoAyudante in documentosAyudante) 
+				{
+					document = documento.documento;
+					documentsConverted.addItem( document );
+				}				
+				return documentsConverted;
 			}
 			
 			private function validations():Boolean
@@ -167,6 +204,9 @@
 		</mx:FormItem>
 		<mx:FormItem required="false" label="N.S.S.:">
 			<components:TextInput id="txtNSS" width="120"/>
+		</mx:FormItem>
+		<mx:FormItem required="false" label="Documentos:">
+			<components:FlatDeliver id="fltDlvDocuments" limitedTo="1"/>
 		</mx:FormItem>
 		<mx:FormItem>
 			<mx:Button id="btnAddItem" label="Agregar" click="btnAddItem_clickHandler(event)"

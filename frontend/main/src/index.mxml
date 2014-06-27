@@ -6,6 +6,7 @@
 				creationComplete="creationCompleteHandler(event)">
 	<mx:Script>
 		<![CDATA[
+			import model.DocumentoAyudante;
 			import components.ComboList;
 			import components.Comments;
 			import components.DateField;
@@ -584,6 +585,7 @@
 			private var datosGrlsProyectoImpl:DatosGrlsProyectoImpl;
 			private var archivoCotizacion:ArchivoCotizacion;
 			private var ayudante:Ayudante;
+			private var documentoAyudante:DocumentoAyudante;
 						
 			protected function login_readyHandler(event:ModuleEvent):void
 			{

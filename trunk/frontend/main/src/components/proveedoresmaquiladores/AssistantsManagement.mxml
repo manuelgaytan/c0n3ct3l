@@ -17,7 +17,6 @@
 			import mx.events.FlexEvent;
 			
 			private var validators:InicializaValidadoresEtiquetas;
-			
 			private var _readOnly:Boolean = false;
 			
 			private function set readOnly(value:Boolean):void{
@@ -44,6 +43,7 @@
 				this.txtRFC.reset();
 				this.txtCURP.reset();
 				this.txtNSS.reset();
+				this.btnAddItem.label = "Agregar";
 			}
 			
 			private function btnAddItem_clickHandler(event:MouseEvent):void{
@@ -60,8 +60,39 @@
 				if( entry == null ){
 					return;
 				}
+				if( this.btnAddItem.label == "Aceptar" ){
+					this.removeItemSelected();
+				}
 				(this.dtgItems.dataProvider as ArrayCollection).addItem( entry );
 				this.cleanForm();
+			}
+			
+			private function removeItemSelected():void{
+				if( !(this.dtgItems.selectedItem == null) &&
+					( this.dtgItems.dataProvider is ArrayCollection ) &&
+					( this.dtgItems.dataProvider as ArrayCollection ).length > 0 ){
+					(this.dtgItems.dataProvider as ArrayCollection).removeItemAt( this.dtgItems.selectedIndex );
+				}
+			}
+			
+			private function btnUpdateItem_clickHandler(event:MouseEvent):void{
+				var item:Ayudante = this.dtgItems.selectedItem as Ayudante;
+				if( item == null ){
+					Util.showErrorMessage("Debe seleccionar un elemento de la tabla");
+					return;
+				}
+				this.btnAddItem.label = "Aceptar";
+				this.setItem( item );
+			}
+			
+			private function setItem(item:Ayudante):void{
+				if( item == null ){
+					return;
+				}
+				this.txtName.text = item.nombre;
+				this.txtRFC.text = item.rfc;
+				this.txtCURP.text = item.curp;
+				this.txtNSS.text = item.nss;
 			}
 			
 			private function getItem():Ayudante{
@@ -138,7 +169,7 @@
 			<components:TextInput id="txtNSS" width="120"/>
 		</mx:FormItem>
 		<mx:FormItem>
-			<mx:Button id="btnAddItem" label="Agregar Partida" click="btnAddItem_clickHandler(event)"
+			<mx:Button id="btnAddItem" label="Agregar" click="btnAddItem_clickHandler(event)"
 					   visible="{!this._readOnly}"/>
 		</mx:FormItem>
 	</mx:Form>
@@ -164,4 +195,8 @@
 							   textAlign="center"/>
 		</mx:columns>
 	</mx:DataGrid>
+	<mx:HBox width="100%">
+		<mx:Spacer width="100%"/>
+		<mx:Button label="Modificar Ayudante" id="btnUpdateItem" click="btnUpdateItem_clickHandler(event)"/>
+	</mx:HBox>
 </mx:VBox>

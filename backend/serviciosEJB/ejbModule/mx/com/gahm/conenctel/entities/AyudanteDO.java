@@ -6,15 +6,19 @@ package mx.com.gahm.conenctel.entities;
 import static javax.persistence.GenerationType.IDENTITY;
 
 import java.io.Serializable;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -54,6 +58,9 @@ public class AyudanteDO implements Serializable{
 	@JoinColumn(name = "fk_proveedor_maquilador", nullable = false)
 	private ProveedorMaquiladorDO proveedorMaquilador;
 
+	@OneToMany(mappedBy="ayudante", fetch = FetchType.EAGER,cascade=CascadeType.ALL)
+	private List<DocumentoAyudanteDO> documentosAyudante;
+	
 	public AyudanteDO() {
 		super();
 	}
@@ -119,5 +126,13 @@ public class AyudanteDO implements Serializable{
 
 	public void setProveedorMaquilador(ProveedorMaquiladorDO proveedorMaquilador) {
 		this.proveedorMaquilador = proveedorMaquilador;
+	}
+
+	public List<DocumentoAyudanteDO> getDocumentosAyudante() {
+		return documentosAyudante;
+	}
+
+	public void setDocumentosAyudante(List<DocumentoAyudanteDO> documentosAyudante) {
+		this.documentosAyudante = documentosAyudante;
 	}
 }

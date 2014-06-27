@@ -17,6 +17,7 @@ import com.sun.faces.config.DocumentOrderingWrapper;
 import mx.com.gahm.conenctel.entities.AyudanteDO;
 import mx.com.gahm.conenctel.entities.ColaboradorDO;
 import mx.com.gahm.conenctel.entities.ComentarioProveedorDO;
+import mx.com.gahm.conenctel.entities.DocumentoAyudanteDO;
 import mx.com.gahm.conenctel.entities.DocumentoLiderProveedorMaquiladorDO;
 import mx.com.gahm.conenctel.entities.ProductoDO;
 import mx.com.gahm.conenctel.entities.ProveedorCalificadoDO;
@@ -88,9 +89,23 @@ public class ProveedorMaquiladorService implements IProveedorMaquiladorService {
 		if( !(ayudantes == null) ){
 			for (AyudanteDO ayudanteDO : ayudantes) {
 				ayudanteDO.setProveedorMaquilador(proveedorMaquilador);
+				List<DocumentoAyudanteDO> documentosAyudante = ayudanteDO.getDocumentosAyudante();
+				ayudanteDO.setDocumentosAyudante( null );
 				entityManager.persist( ayudanteDO );
+				this.saveDocumentosAyudante( ayudanteDO, documentosAyudante );
 			}
 		}
+	}
+
+	private void saveDocumentosAyudante(AyudanteDO ayudanteDO,
+			List<DocumentoAyudanteDO> documentosAyudante) {
+		if( !(documentosAyudante == null) ){
+			for (DocumentoAyudanteDO documentoAyudante : documentosAyudante) {
+				documentoAyudante.setAyudante( ayudanteDO );
+				entityManager.persist( documentoAyudante );
+			}
+		}
+
 	}
 
 	private void saveColaborador(ProveedorMaquiladorDO proveedor) {
@@ -142,7 +157,18 @@ public class ProveedorMaquiladorService implements IProveedorMaquiladorService {
 		List<AyudanteDO> items = proveedorMaquilador.getAyudantes();
 		if(items!=null){
 			for (AyudanteDO item : items) {
+				this.deleteDocumentosAyudante(item);
 				entityManager.remove( item );
+			}
+		}
+	}
+
+	private void deleteDocumentosAyudante(AyudanteDO item) {
+		AyudanteDO ayudante = entityManager.find( AyudanteDO.class,  item.getId() ); 
+		List<DocumentoAyudanteDO> items = ayudante.getDocumentosAyudante();
+		if(items!=null){
+			for (DocumentoAyudanteDO documento : items) {
+				entityManager.remove( documento );
 			}
 		}
 	}

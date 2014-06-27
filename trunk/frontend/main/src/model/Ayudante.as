@@ -1,5 +1,7 @@
 package model
 {
+	import mx.collections.ArrayCollection;
+	
 	[RemoteClass(alias="mx.com.gahm.conenctel.entities.AyudanteDO")]
 	public class Ayudante
 	{
@@ -9,6 +11,7 @@ package model
 		public var rfc:String;
 		public var curp:String;
 		public var nss:String;
+		public var documentosAyudante:ArrayCollection;
 		
 		public function Ayudante()
 		{

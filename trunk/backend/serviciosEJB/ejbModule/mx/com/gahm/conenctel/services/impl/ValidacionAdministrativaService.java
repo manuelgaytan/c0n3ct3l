@@ -66,11 +66,12 @@ public class ValidacionAdministrativaService implements IValidacionAdministrativ
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public ValidacionAdministrativaDO save(ValidacionAdministrativaDO item) {
-		if (item != null) 
-		entityManager.persist(item);
-	
-		this.saveComentarios(item, item.getComentariosPantallaValidacionAdministrativa());
-		
+		List <ComentarioPantallaValidacionAdministrativaDO> comentarios = item.getComentariosPantallaValidacionAdministrativa();
+		item.setComentariosPantallaValidacionAdministrativa(null);
+		if (item != null){
+			entityManager.persist(item);
+		}
+		this.saveComentarios(item, comentarios);		
 		return item;
 	}
 

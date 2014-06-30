@@ -787,7 +787,7 @@
 	PRIMARY KEY (id)
 	);
 
-	CREATE TABLE DocumentoProveedorMaquilador
+	CREATE TABLE DocumentoLiderProveedorMaquilador
 	(
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
 	fk_proveedor_maquilador INT(11) UNSIGNED NOT NULL,
@@ -806,10 +806,10 @@
 	PRIMARY KEY (id)
 	);
 
-	CREATE TABLE DocumentoLiderProveedorMaquilador
+	CREATE TABLE DocumentoAyudante
 	(
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
-	fk_proveedor_maquilador INT(11) UNSIGNED NOT NULL,
+	fk_ayudante INT(11) UNSIGNED NOT NULL,
 	documento VARCHAR(255) NOT NULL,
 	PRIMARY KEY (id)
 	);
@@ -2881,7 +2881,7 @@
 
 	ALTER TABLE ProveedorMaquilador ADD FOREIGN KEY fk_tipo_contrato_idxfk (fk_tipo_contrato) REFERENCES TipoContrato (id);
 
-	ALTER TABLE DocumentoProveedorMaquilador ADD FOREIGN KEY fk_proveedor_maquilador_idxfk (fk_proveedor_maquilador) REFERENCES ProveedorMaquilador (id);
+	ALTER TABLE DocumentoAyudante ADD FOREIGN KEY fk_ayudante_idxfk (fk_ayudante) REFERENCES Ayudante (id);
 
 	ALTER TABLE Ayudante ADD FOREIGN KEY fk_proveedor_maquilador_idxfk_1 (fk_proveedor_maquilador) REFERENCES ProveedorMaquilador (id);
 

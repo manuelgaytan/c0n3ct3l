@@ -95,7 +95,7 @@
 				this.txtRFC.text = item.rfc;
 				this.txtCURP.text = item.curp;
 				this.txtNSS.text = item.nss;
-				this.fltDlvDocuments.delivers = this.convertAssitantDocumentToList( this._item.documentosAyudante );
+				this.fltDlvDocuments.delivers = this.convertAssitantDocumentToList( item.documentosAyudante );
 			}
 			
 			private function getItem():Ayudante{
@@ -104,7 +104,7 @@
 				item.rfc = Util.validateEmpty( this.txtRFC.text );
 				item.curp = Util.validateEmpty( this.txtCURP.text );
 				item.nss = Util.validateEmpty( this.txtNSS.text );
-				item.documentosAyudante = this.convertAssitantDocument( this.fltDlvLeaderDocuments.delivers );
+				item.documentosAyudante = this.convertAssitantDocument( this.fltDlvDocuments.delivers );
 				return item;
 			}
 			
@@ -206,7 +206,7 @@
 			<components:TextInput id="txtNSS" width="120"/>
 		</mx:FormItem>
 		<mx:FormItem required="false" label="Documentos:">
-			<components:FlatDeliver id="fltDlvDocuments" limitedTo="1"/>
+			<components:FlatDeliver id="fltDlvDocuments" limitedTo="10"/>
 		</mx:FormItem>
 		<mx:FormItem>
 			<mx:Button id="btnAddItem" label="Agregar" click="btnAddItem_clickHandler(event)"

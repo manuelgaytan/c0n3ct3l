@@ -328,5 +328,12 @@ public class ProyectoService implements IProyectoService {
 			list.add(consultaGeneralOperacion);
 		}
 		return list;
-	} 
+	}
+	
+	public List<ProyectoDO> getAllByWithOutCustomerPurchaseOrder() throws ConectelException{
+		TypedQuery<ProyectoDO> query = entityManager.createNamedQuery(
+				"ProyectoDO.getAllByWithOutCustomerPurchaseOrder", ProyectoDO.class);
+		List<ProyectoDO> categoryList = query.getResultList();		
+		return categoryList;
+	}
 }

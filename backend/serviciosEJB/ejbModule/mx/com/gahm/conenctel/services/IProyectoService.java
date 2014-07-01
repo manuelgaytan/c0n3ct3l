@@ -28,4 +28,5 @@ public interface IProyectoService {
 	public List<ProyectoDO> getAllByEstado(Long idEstado) throws ConectelException;
 	public List<ProyectoDO> getAllByWithOutMaquilaRequest() throws ConectelException;
 	public List<ConsultaGeneralOperacion> getProyectosAndDerivates() throws ConectelException;
+	public List<ProyectoDO> getAllByWithOutCustomerPurchaseOrder() throws ConectelException;
 }

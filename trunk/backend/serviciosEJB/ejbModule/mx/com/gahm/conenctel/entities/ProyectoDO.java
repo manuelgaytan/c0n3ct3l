@@ -30,7 +30,8 @@ import java.util.List;
 			@NamedQuery(name = "ProyectoDO.getCantidadProyectosByEstado", query = "select new mx.com.gahm.conenctel.model.ItemEstatusProyecto( p.id, ep.etiqueta, count(p.id) ) from ProyectoDO p, EstadoDO ep where p.estado.id = ep.id and ep.id = :idEstadoProyecto group by ep.etiqueta"),
 			@NamedQuery(name = "ProyectoDO.getProyectosAndDerivates", query = "select new mx.com.gahm.conenctel.model.ConsultaGeneralOperacion( p, dgp, dpab, cpe ) from ProyectoDO p, DatosGrlsProyectoDO dgp, DesarrolloProyectoABDO dpab, ConfigPruebaEntregaDO cpe where (p.id = dgp.proyecto.id or p.id = dpab.proyecto.id or p.id = cpe.proyecto.id ) group by p.id"),
 			@NamedQuery(name = "ProyectoDO.getAll", query = "select c from ProyectoDO c"),
-			@NamedQuery(name = "ProyectoDO.getAllByWithOutMaquilaRequest", query = "select p from ProyectoDO p where p.id not in (select s.proyecto.id from SolicitudServicioMaquiladoDO s)")
+			@NamedQuery(name = "ProyectoDO.getAllByWithOutMaquilaRequest", query = "select p from ProyectoDO p where p.id not in (select s.proyecto.id from SolicitudServicioMaquiladoDO s)"),
+			@NamedQuery(name = "ProyectoDO.getAllByWithOutCustomerPurchaseOrder", query = "select p from ProyectoDO p where p.id not in (select s.proyecto.id from OrdenCompraClienteDO s)")
 })
 @Table(name = "proyecto")
 public class ProyectoDO implements Serializable {

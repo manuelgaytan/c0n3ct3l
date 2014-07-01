@@ -896,7 +896,7 @@
 	fk_cotizacion INT(11) UNSIGNED,
 	fecha DATE NOT NULL,
 	fk_proveedor_calificado INT(11) UNSIGNED NOT NULL,
-	fk_proyecto INT(11) UNSIGNED NOT NULL,
+	fk_proyecto INT(11) UNSIGNED,
 	fk_requisicion_compra INT(11) UNSIGNED,
 	subtotal DECIMAL(11,2) NOT NULL,
 	iva DECIMAL(11,2) NOT NULL,

@@ -47,6 +47,13 @@
 			private var validators:InicializaValidadoresEtiquetas;
 			private var validatorsEntry:InicializaValidadoresEtiquetas;
 			
+			[Bindable]
+			private var _readOnly:Boolean = false;
+			
+			public function set readOnly(value:Boolean):void{
+				this._readOnly = value;
+			}
+			
 			public function set registrer(value:Boolean):void{
 				mode = Constants.REGISTER_MODE;
 				this.label = Constants.REGISTRAR;
@@ -573,7 +580,8 @@
 		</mx:FormItem>
 		<mx:Spacer height="28"/>
 		<mx:FormItem label="">
-			<mx:Button id="btnAddItem" label="Agregar Partida" click="btnAddItem_clickHandler(event)"/>
+			<mx:Button id="btnAddItem" label="Agregar Partida" click="btnAddItem_clickHandler(event)"
+				visible="{!this._readOnly}"/>
 		</mx:FormItem>
 		<requisicionescompra:ItemsManagement id="itemsManagement" purchaseOrderMode="false"/>
 		<mx:FormItem required="true" label="Estatus:">
@@ -586,7 +594,8 @@
 		</mx:FormItem>
 		<components:Comments id="comments"/>
 		<mx:FormItem>
-			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
+			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"
+				visible="{!this._readOnly}"/>
 		</mx:FormItem>
 	</mx:Form>
 	<mx:RemoteObject id="requisicionService" destination="requisicionCompraService" fault="requisicionService_faultHandler(event)"

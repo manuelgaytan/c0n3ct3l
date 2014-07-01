@@ -25,6 +25,13 @@
 			private var _item:Cotizacion;
 			private var validators:InicializaValidadoresEtiquetas;
 			
+			[Bindable]
+			private var _readOnly:Boolean = false;
+			
+			public function set readOnly(value:Boolean):void{
+				this._readOnly = value;
+			}
+			
 			public function set registrer(value:Boolean):void{
 				mode = Constants.REGISTER_MODE;
 				this.label = Constants.REGISTRAR;
@@ -228,7 +235,8 @@
 		</mx:FormItem>
 		<components:Comments id="comments"/>
 		<mx:FormItem>
-			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
+			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"
+				visible="{!this._readOnly}"/>
 		</mx:FormItem>
 	</mx:Form>
 	<mx:RemoteObject id="cotizacionService" destination="cotizacionService" fault="cotizacionService_faultHandler(event)"

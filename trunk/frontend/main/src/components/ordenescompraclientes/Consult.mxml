@@ -102,7 +102,6 @@
 				</mx:DataGridColumn>
 				<mx:DataGridColumn headerText="{'Número de\nOrden de\nCompra'}"
 								   dataField="numeroOrdenCompra"
-								   labelFunction="labelFunctionIDProyecto"
 								   width="90"
 								   textAlign="right"/>
 				<mx:DataGridColumn id="dtgDate" headerText="{'Fecha de\nOrden de\nCompra'}"

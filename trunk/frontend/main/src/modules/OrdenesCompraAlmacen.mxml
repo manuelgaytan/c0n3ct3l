@@ -2,9 +2,12 @@
 <mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
 		   width="820" height="500"
 		   xmlns:ordenescompraalmacen="components.ordenescompraalmacen.*"
-		   creationComplete="creationCompleteHandler(event)">
+		   creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*" xmlns:cotizaciones="components.cotizaciones.*" xmlns:requisicionescompra="components.requisicionescompra.*">
 	<mx:Script>
 		<![CDATA[
+			import model.Proyecto;
+			import model.RequisicionCompra;
+			import model.Cotizacion;
 			import events.GenericEvent;
 			
 			import model.OrdenCompraAlmacen;
@@ -34,11 +37,58 @@
 				this.consult.executeQuery();
 			}
 			
+			protected function projectSelectedHandler(event:GenericEvent):void
+			{
+				if( event == null ){
+					return;
+				}
+				var project:Proyecto = event.information as Proyecto;
+				if( project == null ){
+					return;
+				}
+				this.projectDetail.project = project;
+				this.navigator.selectedChild = this.projectDetail;
+			}
+			
+			protected function purchaseRequisitionSelectedHandler(event:GenericEvent):void
+			{
+				if( event == null ){
+					return;
+				}
+				var purchaseRequisition:RequisicionCompra = event.information as RequisicionCompra;
+				if( purchaseRequisition == null ){
+					return;
+				}
+				this.purchaseRequisitionDetail.purchaseRequisition = purchaseRequisition;
+				this.navigator.selectedChild = this.purchaseRequisitionDetail;
+			}
+			
+			protected function quoteSelectedHandler(event:GenericEvent):void
+			{
+				if( event == null ){
+					return;
+				}
+				var quote:Cotizacion = event.information as Cotizacion;
+				if( quote == null ){
+					return;
+				}
+				this.quoteDetail.quote = quote;
+				this.navigator.selectedChild = this.quoteDetail;
+			}
 		]]>
 	</mx:Script>
 	<mx:TabNavigator id="navigator" width="100%" height="100%" creationPolicy="all">
 		<ordenescompraalmacen:Consult id="consult" purchaseOrderDetail="consult_purchaseOrderDetailHandler(event)"/>
-		<ordenescompraalmacen:PurchaseOrder id="detail" update="true" purchaseOrderUpdated="detail_purchaseOrderUpdatedHandler(event)"/>
-		<ordenescompraalmacen:PurchaseOrder id="register" registrer="true" purchaseOrderNew="register_purchaseOrderNewHandler(event)"/>
+		<ordenescompraalmacen:PurchaseOrder id="detail" update="true" purchaseOrderUpdated="detail_purchaseOrderUpdatedHandler(event)"
+			projectSelected="projectSelectedHandler(event)"
+			purchaseRequisitionSelected="purchaseRequisitionSelectedHandler(event)"
+			quoteSelected="quoteSelectedHandler(event)"/>
+		<ordenescompraalmacen:PurchaseOrder id="register" registrer="true" purchaseOrderNew="register_purchaseOrderNewHandler(event)"
+			projectSelected="projectSelectedHandler(event)"
+			purchaseRequisitionSelected="purchaseRequisitionSelectedHandler(event)"
+			quoteSelected="quoteSelectedHandler(event)"/>
+		<proyectos:ProjectDetail id="projectDetail" label="Detalle Proyecto"/>
+		<requisicionescompra:PurchaseRequisition id="purchaseRequisitionDetail" readOnly="true" label="Detalle Requisición de Compra"/>
+		<cotizaciones:Quote id="quoteDetail" readOnly="true" label="Detalle Cotización"/> 
 	</mx:TabNavigator>
 </mx:Module>

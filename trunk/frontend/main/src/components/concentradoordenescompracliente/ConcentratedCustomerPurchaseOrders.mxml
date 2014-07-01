@@ -202,11 +202,11 @@
 				validators.setRestrictor(txtPayCondition, "generic");
 				this.validatorsEntry = new InicializaValidadoresEtiquetas();
 				validatorsEntry.crearValidadorRestrictor("generic",ValidadorCadenaCualquierCaracter.nombre, 0, 255);
+				validatorsEntry.crearValidadorRestrictor("genericEntero",ValidadorEntero.nombre, 99);
+				validatorsEntry.crearValidadorRestrictor("genericDecimal",ValidadorDecimal.nombre, 9, 2);
+				validatorsEntry.setValidador(txtItem, "genericEntero");
 				validatorsEntry.setValidador(txtCode, "generic");
 				validatorsEntry.setValidador(txtDescription, "generic");
-				validatorsEntry.crearValidadorRestrictor("genericEntero",ValidadorEntero.nombre, 99);
-				validatorsEntry.setValidador(txtItem, "genericEntero");
-				validatorsEntry.crearValidadorRestrictor("genericDecimal",ValidadorDecimal.nombre, 9, 2);
 				validatorsEntry.setValidador(txtPrice, "genericDecimal");
 			}
 			
@@ -249,7 +249,7 @@
 			protected function btnAddItem_clickHandler(event:MouseEvent):void
 			{
 				var entry:PartidaConcentradoOrdenCompraCliente = this.getValidEntry();
-				if( entry == false ){
+				if( entry == null ){
 					Util.showErrorMessage("Valide los campos de la Partida");
 					return;
 				}
@@ -323,6 +323,7 @@
 			<components:TextInput id="txtRequisitionNumber"
 								  />
 		</mx:FormItem>
+		<mx:FormHeading label="Datos Partida"/>
 		<mx:FormItem required="true" label="Ítem:">
 			<components:TextInput id="txtItem"
 								  width="60"

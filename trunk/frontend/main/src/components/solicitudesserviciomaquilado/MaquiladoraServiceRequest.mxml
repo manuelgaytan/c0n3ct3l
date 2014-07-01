@@ -163,6 +163,7 @@
 				this.parentProjectsConsult.datagrid.selectedItem = null;
 				this.projectsConsult.datagrid.selectedItem = null;
 				this.comments.reset();
+				this.executeProjectQuery();
 			}
 			
 			protected function responseUpdate_resultHandler(event:ResultEvent):void

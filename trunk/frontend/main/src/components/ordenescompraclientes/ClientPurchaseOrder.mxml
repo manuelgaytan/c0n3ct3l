@@ -192,7 +192,7 @@
 				Util.upScroll( this );
 				this.txtID.reset();
 				Util.removeItems(this.projectsConsult.datagrid.dataProvider);
-				this,chbPurchaseOrder.selected = false;
+				this.chbPurchaseOrder.selected = false;
 				this.txtPurchaseOrderNumber.reset();
 				this.dtfPurchaseOrderDate.reset();
 				this.txtItem.reset();
@@ -203,6 +203,7 @@
 				this.cmbPurchaseOrderStatus.selectedIndex = 0;
 				this.txtLegend.reset();
 				this.commentsPurchaseOrderStatus.reset();
+				this.executeProjectQuery();
 			}
 			
 			protected function responseUpdate_resultHandler(event:ResultEvent):void
@@ -242,6 +243,7 @@
 			
 			private function executeProjectQuery():void
 			{
+				/*
 				var filter:FiltroProyecto = new FiltroProyecto();
 				filter.idConectel = null;
 				filter.idCategoria = undefined;
@@ -254,6 +256,8 @@
 				filter.descripcionServicio = undefined;
 				filter.tipoServicio = undefined;
 				this.responseGetAllByFiltro.token = this.proyectoService.getAllByFiltro(filter);
+				*/
+				this.responseGetAllByFiltro.token = this.proyectoService.getAllByWithOutCustomerPurchaseOrder();
 			}
 			
 			protected function responseGetAll_resultHandler(event:ResultEvent):void

@@ -4,6 +4,7 @@
 		 >
 	<mx:Script>
 		<![CDATA[
+			import events.GenericEvent;
 			import model.Catalogo;
 			import model.Colaborador;
 			import model.Constants;
@@ -237,7 +238,7 @@
 				validators.setValidador(txtTotal, "number");
 				
 				validators.crearValidadorRestrictor("id",ValidadorEntero.nombre, 11);
-				validators.setValidador(txtProjectID, "id");
+				validators.setRestrictor(txtProjectID, "id");
 				validators.setRestrictor(txtRequisicionID, "id");
 				validators.setRestrictor(txtQuotationID, "id");
 			}
@@ -383,29 +384,93 @@
 				total += Util.stringToNumber( this.txtOtherTaxes.text, true );
 				this.txtTotal.text = Util.truncateToString( total );
 			}
+			
+			protected function btnViewProject_clickHandler(event:MouseEvent):void{
+				var id:* = Util.stringToNumber( this.txtProjectID.text );
+				if( id == undefined ){
+					Util.showErrorMessage("No es un ID válido.");
+					return;
+				}
+				this.responseGetProyecto.token = this.proyectoService.getProyecto( id );
+			}
+			
+			private function responseGetProyecto_resultHandler(event:ResultEvent):void{
+				var item:Proyecto = event.result as Proyecto;
+				if( item == null ){
+					Util.showErrorMessage("No es un ID válido.");
+					return;
+				}
+				var genericEvent:GenericEvent = new GenericEvent("projectSelected");
+				genericEvent.information = item;
+				this.dispatchEvent( genericEvent );
+			}
+			
+			protected function btnViewRequisition_clickHandler(event:MouseEvent):void{
+				var id:* = Util.stringToNumber(this.txtRequisicionID.text);
+				if( id == undefined ){
+					return;
+				}
+				this.responseGetRequisicionCompraButton.token = this.requisicionCompraService.getItem( id );
+			}
+			
+			private function responseGetRequisicion_resultHandler(event:ResultEvent):void{
+				var item:RequisicionCompra = event.result as RequisicionCompra;
+				if( item == null ){
+					Util.showErrorMessage("No es un ID válido.");
+					return;
+				}
+				var genericEvent:GenericEvent = new GenericEvent("purchaseRequisitionSelected");
+				genericEvent.information = item;
+				this.dispatchEvent( genericEvent );
+			}
+			
+			protected function btnViewQuote_clickHandler(event:MouseEvent):void{
+				var id:* = Util.stringToNumber(this.txtQuotationID.text);
+				if( id == undefined ){
+					return;
+				}
+				this.responseGetItem.token = this.cotizacionService.getItem( id );
+			}
+			
+			private function responseGetCotizacion_resultHandler(event:ResultEvent):void{
+				var item:Cotizacion = event.result as Cotizacion;
+				if( item == null ){
+					Util.showErrorMessage("No es un ID válido.");
+					return;
+				}
+				var genericEvent:GenericEvent = new GenericEvent("quoteSelected");
+				genericEvent.information = item;
+				this.dispatchEvent( genericEvent );
+			}
 		]]>
 	</mx:Script>
 	<mx:Metadata>
 		[Event(name="purchaseOrderNew", type="flash.events.Event")]
 		[Event(name="purchaseOrderUpdated", type="flash.events.Event")]
+		[Event(name="projectSelected", type="events.GenericEvent")]
+		[Event(name="purchaseRequisitionSelected", type="events.GenericEvent")]
+		[Event(name="quoteSelected", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:Form id="form">
 		<mx:FormItem required="true" label="ID:" id="frmID">
 			<components:TextInput id="txtID" textAlign="right" editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem required="true" label="ID Proyecto:" direction="horizontal">
+		<mx:FormItem required="false" label="ID Proyecto:" direction="horizontal">
 			<components:TextInput id="txtProjectID" textAlign="right"/>
-			<!--<mx:Button label="Ver Proyecto" id="btnProjectID"/>-->
+			<mx:Button label="Ver Proyecto" id="btnProjectID"
+				click="btnViewProject_clickHandler(event)"/>
 		</mx:FormItem>
 		<mx:FormItem label="ID Requisición:" direction="horizontal">
 			<components:TextInput id="txtRequisicionID" textAlign="right"
 								  enter="txtRequisicionID_enterHandler()"
 								  focusOut="txtRequisicionID_focusOutHandler()"/>
-			<!--<mx:Button label="Ver Requisición" id="btnRequisicionID"/>-->
+			<mx:Button label="Ver Requisición" id="btnRequisicionID"
+				click="btnViewRequisition_clickHandler(event)"/>
 		</mx:FormItem>
 		<mx:FormItem label="ID Cotización:" direction="horizontal">
 			<components:TextInput id="txtQuotationID" textAlign="right"/>
-			<!--<mx:Button label="Ver Cotización" id="btnQuotationID"/>-->
+			<mx:Button label="Ver Cotización" id="btnQuotationID"
+				click="btnViewQuote_clickHandler(event)"/>
 		</mx:FormItem>
 		<mx:FormItem required="true" label="Fecha:">
 			<components:DateField id="dtfDate" enabled="false" creationComplete="dtfDate.selectedDate = new Date()"/>
@@ -514,4 +579,11 @@
 	<mx:RemoteObject id="requisicionCompraService" destination="requisicionCompraService" fault="ordenCompraService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetRequisicionCompra" result="responseGetRequisicionCompra_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetRequisicionCompraButton" result="responseGetRequisicion_resultHandler(event)"/>
+	<mx:RemoteObject id="proyectoService" destination="proyectoService" fault="ordenCompraService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetProyecto" result="responseGetProyecto_resultHandler(event)"/>
+	<mx:RemoteObject id="cotizacionService" destination="cotizacionService" fault="ordenCompraService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetItem" result="responseGetCotizacion_resultHandler(event)"/>
 </mx:VBox>

@@ -957,6 +957,8 @@
 	importe_letra VARCHAR(255),
 	anticipo DECIMAL(11,2),
 	finiquito DECIMAL(11,2),
+	anticipo_facturado BOOLEAN,
+	finiquito_facturado BOOLEAN,
 	PRIMARY KEY (id)
 	);
 
@@ -1194,7 +1196,7 @@
 	fk_estado_validacion_cobro_3 INT(11) UNSIGNED,
 	porcentaje_total_cobro DECIMAL(12,5),
 	fk_estado_final_validacion INT(11) UNSIGNED NOT NULL,
-	fk_imputable INT(11) UNSIGNED NOT NULL,
+	fk_imputable INT(11) UNSIGNED,
 	fk_proyecto INT(11) UNSIGNED,
 	fk_proyecto_padre INT(11) UNSIGNED,
 	PRIMARY KEY (id)

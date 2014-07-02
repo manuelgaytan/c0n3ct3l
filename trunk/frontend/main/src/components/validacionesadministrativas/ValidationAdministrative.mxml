@@ -350,7 +350,7 @@
 				if( data == null ){
 					return;
 				}
-				this.cmbAttributable.dataProvider = data;
+				this.cmbAttributable.dataProvider = Util.addEmptyCatalgo( data );
 				if( this._item != null && this._item.imputable != null ){
 					this.cmbAttributable.selectedIndex = Util.selectedIndexFromCombo( this.cmbAttributable.dataProvider as ArrayCollection, 
 						this._item.imputable.id);
@@ -484,7 +484,7 @@
 						 labelField="etiqueta"
 						 />
 		</mx:FormItem>
-		<mx:FormItem required="true" label="Imputabilidad:">
+		<mx:FormItem required="false" label="Imputabilidad:">
 			<mx:ComboBox id="cmbAttributable"
 						 labelField="etiqueta"
 						 />

@@ -78,10 +78,9 @@ public class OrdenCompraDO  implements java.io.Serializable {
     public OrdenCompraDO() {
     }
 
-	public OrdenCompraDO(Date fecha,ProveedorCalificadoDO proveedorCalificado, ProyectoDO proyecto, RequisicionCompraDO requisicionCompra, Double subtotal, Double iva, Double total, Date fechaEntregaAlmacen) {
+	public OrdenCompraDO(Date fecha,ProveedorCalificadoDO proveedorCalificado, RequisicionCompraDO requisicionCompra, Double subtotal, Double iva, Double total, Date fechaEntregaAlmacen) {
         this.fecha = fecha;
         this.proveedorCalificado = proveedorCalificado;
-        this.proyecto = proyecto;
         this.requisicionCompra = requisicionCompra;
         this.subtotal = subtotal;
         this.iva = iva;

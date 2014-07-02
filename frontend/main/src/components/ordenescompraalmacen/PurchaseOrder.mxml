@@ -82,7 +82,9 @@
 					return;
 				}
 				this.txtID.text = Util.numberToString( this._item.id );
-				this.txtProjectID.text = Util.numberToString( this._item.proyecto.id );
+				if( !(this._item.proyecto == null) ){
+					this.txtProjectID.text = Util.numberToString( this._item.proyecto.id );
+				}
 				if( !(this._item.requisicionCompra == null) ){
 					this.txtRequisicionID.text = Util.numberToString( this._item.requisicionCompra.id );
 					this.txtRequisicionID.dispatchEvent( new FocusEvent(FocusEvent.FOCUS_OUT) );
@@ -134,8 +136,12 @@
 				}else{
 					item = this._item;
 				}
-				item.proyecto = new Proyecto();
-				item.proyecto.id = Util.stringToNumber( this.txtProjectID.text );
+				if( !(Util.validateEmpty( this.txtProjectID.text ) == null) ){ 
+					item.proyecto = new Proyecto();
+					item.proyecto.id = Util.stringToNumber( this.txtProjectID.text );
+				}else{
+					item.proyecto = null;
+				}
 				if( !(Util.validateEmpty( this.txtRequisicionID.text ) == null) ){ 
 					item.requisicionCompra = new RequisicionCompra();
 					item.requisicionCompra.id = Util.stringToNumber( this.txtRequisicionID.text );

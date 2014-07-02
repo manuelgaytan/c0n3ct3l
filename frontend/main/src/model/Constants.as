@@ -54,5 +54,22 @@ package model
 			data.addItem( item );
 			return data;
 		}
+		
+		public static function getPayableItem():ArrayCollection{
+			var data:ArrayCollection = new ArrayCollection();
+			var item:Catalogo = null;
+			item = new Catalogo();
+			item.id = 1;
+			item.etiqueta = "COMPLETA";
+			data.addItem( item );
+			item = new Catalogo();
+			item.id = 2;
+			item.etiqueta = OC_ADVANCE;
+			data.addItem( item );
+			item.id = 3;
+			item.etiqueta = OC_SETTLEMENT;
+			data.addItem( item );
+			return data;
+		}
 	}
 }

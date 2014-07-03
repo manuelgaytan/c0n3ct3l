@@ -248,9 +248,7 @@
 				this.txtDate.reset();
 				Util.removeItems(this.projectsConsult.datagrid.dataProvider);
 				Util.removeItems( this.lstApplicantsNames.dataProvider );
-				this.txtCardNumber.reset();
-				this.txtMail.reset();
-				this.txtPhone.reset();
+				this.cleanColaboratorData();
 				this.txtConveyance.reset();
 				this.txtNumberOfVehicle.reset();
 				//this.txtInitialMileage.reset();

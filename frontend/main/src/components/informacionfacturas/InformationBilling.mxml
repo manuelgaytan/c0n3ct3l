@@ -276,8 +276,9 @@
 			{
 				Util.upScroll( this );
 				this.txtID.reset();
-				this.responseGetAllNoFacturadas.token = this.validacionAdministrativaService.getAllByWithOutInvoice();
-				this.validacionesAdministrativas.datagrid.selectedItem = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					this.responseGetAllNoFacturadas.token = this.validacionAdministrativaService.getAllByWithOutInvoice();
+				}
 				this.txtFolio1.reset();
 				this.txtSubtotal1.reset();
 				this.txtIVA1.reset();

@@ -228,7 +228,7 @@
 				this.dtfReviewDate.reset();
 				this.dtfPaymentDate.reset();
 				this.comments.reset();
-				this.cmbPayableItem.selectedIndex  = 0;
+				//this.cmbPayableItem.selectedIndex  = 0;
 			}
 			
 			private function cleanSuppplierForm():void
@@ -380,11 +380,11 @@
 				var catalogo:Catalogo = null;
 				catalogo = new Catalogo();
 				catalogo.id = 1;
-				catalogo.etiqueta = "Calificados";
+				catalogo.etiqueta = "Bienes y Servicios";
 				datas.addItem( catalogo );
 				catalogo = new Catalogo();
 				catalogo.id = 2;
-				catalogo.etiqueta = "Maquiladores";
+				catalogo.etiqueta = "Servicios de Implementación";
 				datas.addItem( catalogo );
 				return Util.addEmptyCatalgo( datas );
 			}
@@ -409,14 +409,14 @@
 					this.responseGetAllProveedorCalificado.token = this.proveedorCalificadoService.getProveedoresCalificados();
 					this.loadPurchaseOrderAlmacen();
 					this.frmODCAlmacen.required = true;
-					this.cmbPayableItem.visible = false;
+					//this.cmbPayableItem.visible = false;
 				}else{	//Maquiladores
 					this.cmbSupplier.labelField = null;
 					this.cmbSupplier.labelFunction = maquiladorSupplier;
 					this.responseGetAllProveedorMaquilador.token = this.proveedorMaquiladorService.getProveedoresMaquiladores();
 					this.loadPurchaseOrderMaquilado();
 					this.frmODCMaquilado.required = true;
-					this.cmbPayableItem.visible = true;
+					//this.cmbPayableItem.visible = true;
 				}
 			}
 			
@@ -562,7 +562,7 @@
 		</mx:FormItem>
 		<mx:FormItem label="Costo Unitario:" direction="horizontal">
 			<components:TextInput id="txtCostSupplier" editable="false" textAlign="right"/>
-			<mx:ComboBox id="cmbPayableItem" dataProvider="{Constants.getPayableItem()}"/>
+			<!--<mx:ComboBox id="cmbPayableItem" dataProvider="{Constants.getPayableItem()}"/>-->
 		</mx:FormItem>
 		<mx:FormItem label="Número de Orden de Compra:">
 			<components:TextInput id="txtPurchaseOrderNumber" editable="false" textAlign="right"/>

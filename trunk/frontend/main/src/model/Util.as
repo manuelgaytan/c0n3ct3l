@@ -492,9 +492,9 @@ package model
 			return value;
 		}
 		
-		public static function validateCombo(comboBox:ComboBox,property:String="id"):Object
+		public static function validateCombo(comboBox:ComboBox,property:String="id",cero:Boolean=false):Object
 		{
-			if( !listBaseSelected(comboBox, property) ){
+			if( !listBaseSelected(comboBox, property, cero) ){
 				return null;
 			}
 			return comboBox.selectedItem;

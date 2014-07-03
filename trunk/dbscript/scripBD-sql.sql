@@ -1631,6 +1631,7 @@
 	fecha_abono DATE NOT NULL,
 	monto DECIMAL(11,2) NOT NULL,
 	referencia_abono INT(11) UNSIGNED,
+	observaciones VARCHAR(255),
 	PRIMARY KEY (id)
 	);
 

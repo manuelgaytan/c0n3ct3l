@@ -383,6 +383,7 @@
 					return;
 				}
 				this.setDiemRequest( perDiemPayment.solicitudViaticos );
+				this.txtTotalAuthorized.text = Util.numberToString(perDiemPayment.monto);
 			}
 		]]>
 	</mx:Script>

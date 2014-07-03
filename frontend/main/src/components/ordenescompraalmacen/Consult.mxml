@@ -46,7 +46,9 @@
 			
 			protected function creationCompleteHandler(event:FlexEvent):void
 			{
-				this.executeQuery();
+				if( !this._readOnly ){
+					this.executeQuery();
+				}
 			}
 			
 			protected function datagrid_doubleClickHandler(event:MouseEvent):void

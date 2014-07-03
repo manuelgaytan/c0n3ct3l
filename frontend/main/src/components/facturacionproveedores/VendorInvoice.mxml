@@ -120,7 +120,7 @@
 				}
 				vendorInvoice.fechaFactura = this.dtfVendorInvoiceDate.selectedDate;
 				vendorInvoice.estadoInvestigacionCalidad = Util.validateCombo( this.cmbQualityResearchStatus ) as EstadoInvestigacionCalidad;
-				vendorInvoice.estadoTesoreria = Util.validateCombo( this.cmbTreasuryStatus ) as EstadoTesoreria;
+				vendorInvoice.estadoTesoreria = Util.validateCombo( this.cmbTreasuryStatus, "id", true ) as EstadoTesoreria;
 				vendorInvoice.semana = Util.stringToNumber( this.txtWeek.text );
 				if( Util.selectedId(this.cmbSupplierType) == 1 ){ //Calificados
 					vendorInvoice.proveedorCalificado = Util.validateCombo( this.cmbSupplier ) as ProveedorCalificado;
@@ -181,7 +181,7 @@
 				value &&= this.dtfVendorInvoiceDate.selectedDate != null;
 				value &&= (this.odcAlmacen.datagrid.selectedItem != null || this.odcMaquilado.datagrid.selectedItem != null);
 				value &&= Util.listBaseSelected( this.cmbQualityResearchStatus );
-				value &&= Util.listBaseSelected( this.cmbTreasuryStatus );
+				//value &&= Util.listBaseSelected( this.cmbTreasuryStatus );
 				return value;
 			}
 			
@@ -218,8 +218,12 @@
 				this.txtID.reset();
 				this.cmbQualityResearchStatus.selectedIndex = 0;
 				this.cmbTreasuryStatus.selectedIndex = 0;
-				Util.removeItems( this.odcAlmacen.datagrid.dataProvider );
-				Util.removeItems( this.odcMaquilado.datagrid.dataProvider );
+				if( !(Util.extractObject(this.odcAlmacen,"datagrid.dataProvider") == null) ){
+					Util.removeItems( this.odcAlmacen.datagrid.dataProvider );
+				}
+				if( !(Util.extractObject(this.odcMaquilado,"datagrid.dataProvider") == null) ){
+					Util.removeItems( this.odcMaquilado.datagrid.dataProvider );
+				}
 				this.txtWeek.reset();
 				this.cleanSuppplierForm();
 				this.dtfVendorInvoiceDate.reset();
@@ -228,6 +232,8 @@
 				this.dtfReviewDate.reset();
 				this.dtfPaymentDate.reset();
 				this.comments.reset();
+				this.cmbSupplierType.selectedIndex = 0;
+				this.cmbSupplierType.dispatchEvent( new ListEvent(ListEvent.CHANGE) );
 				//this.cmbPayableItem.selectedIndex  = 0;
 			}
 			
@@ -367,7 +373,7 @@
 				if( data == null ){
 					return;
 				}
-				this.cmbTreasuryStatus.dataProvider = data;
+				this.cmbTreasuryStatus.dataProvider = Util.addEmptyCatalgo(data);
 				if( Util.isFill( this.cmbTreasuryStatus ) && this._item 
 					&& this._item.estadoTesoreria != null ){
 					this.cmbTreasuryStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbTreasuryStatus.dataProvider as ArrayCollection, 
@@ -502,7 +508,7 @@
 		<mx:FormItem required="true" label="Estado de Investigación de Calidad:">
 			<mx:ComboBox id="cmbQualityResearchStatus" labelField="etiqueta"/>
 		</mx:FormItem>
-		<mx:FormItem required="true" label="Estado de Tesorería:">
+		<mx:FormItem required="false" label="Estado de Tesorería:">
 			<mx:ComboBox id="cmbTreasuryStatus" labelField="etiqueta"/>
 		</mx:FormItem>
 		<mx:FormItem label="Semana:">

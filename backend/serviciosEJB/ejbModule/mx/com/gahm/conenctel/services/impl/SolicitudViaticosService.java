@@ -32,7 +32,18 @@ public class SolicitudViaticosService implements ISolicitudViaticosService{
 
 		return datos;
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<SolicitudViaticosDO> getAllByWithOutPayment() {
+		List<SolicitudViaticosDO> datos = null;
+		Query query = null;
+		query = entityManager.createNamedQuery("SolicitudViaticosDO.getAllByWithOutPayment");
+		datos = query.getResultList();
 
+		return datos;
+	}
+	
 	@Override
 	public void deleteItems(List<Integer> idsItems) {
 		SolicitudViaticosDO solicitudViaticosDO = null;

@@ -15,6 +15,7 @@ package model
 		public var fechaAbono:Date;
 		public var monto:Number;
 		public var referenciaAbono:*;
+		public var observaciones:String;
 		public var comentariosPagoOtraOperacionFinanciera:ArrayCollection;
 		
 		public function PagoOtraOperacionFinanciera(){

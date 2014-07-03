@@ -158,6 +158,9 @@
 								   textAlign="right"
 								   width="120"
 								   />
+				<mx:DataGridColumn id="dtgObservations" headerText="{'Observaciones'}"
+								   dataField="observaciones"
+								   width="270"/>
 			</mx:columns>
 		</mx:DataGrid>
 	</mx:HBox>

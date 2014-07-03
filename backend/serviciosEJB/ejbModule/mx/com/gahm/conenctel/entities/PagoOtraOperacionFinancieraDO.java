@@ -69,7 +69,8 @@ public class PagoOtraOperacionFinancieraDO implements Serializable {
 	@OneToMany(mappedBy="pagoOtraOperacionFinanciera", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<ComentarioPagoOtraOperacionFinancieraDO> comentariosPagoOtraOperacionFinanciera;
 	
-	
+	@Column(name = "observaciones", nullable = true)
+	private String observaciones;
 	
 	public PagoOtraOperacionFinancieraDO() {
 		super();
@@ -80,7 +81,7 @@ public class PagoOtraOperacionFinancieraDO implements Serializable {
 			ConceptoOtraOperacionFinancieraDO conceptoOtraOperacionFinanciera,
 			String razonSocial, Double subtotal, Double iva, Double total,
 			BancoConectelDO bancoConectel, Date fechaAbono, Double monto,
-			Integer referenciaAbono) {
+			Integer referenciaAbono, String observaciones) {
 		super();
 		this.id = id;
 		this.conceptoOtraOperacionFinanciera = conceptoOtraOperacionFinanciera;
@@ -92,6 +93,7 @@ public class PagoOtraOperacionFinancieraDO implements Serializable {
 		this.fechaAbono = fechaAbono;
 		this.monto = monto;
 		this.referenciaAbono = referenciaAbono;
+		this.observaciones = observaciones;
 	}
 
 	/**
@@ -258,6 +260,14 @@ public class PagoOtraOperacionFinancieraDO implements Serializable {
 	public void setComentariosPagoOtraOperacionFinanciera(
 			List<ComentarioPagoOtraOperacionFinancieraDO> comentariosPagoOtraOperacionFinanciera) {
 		this.comentariosPagoOtraOperacionFinanciera = comentariosPagoOtraOperacionFinanciera;
+	}
+
+	public String getObservaciones() {
+		return observaciones;
+	}
+
+	public void setObservaciones(String observaciones) {
+		this.observaciones = observaciones;
 	}
 
 }

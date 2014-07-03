@@ -235,6 +235,7 @@
 				Util.upScroll( this );
 				this.dtfDate.selectedDate = new Date();
 				this.cmbOperationType.selectedIndex = 0;
+				this.cmbOperationType.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
 				this.cmbDescription.selectedIndex = 0;
 				this.cmbSupplierType.selectedIndex = 0;
 				this.cmbSupplierType.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );

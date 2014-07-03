@@ -221,9 +221,14 @@
 			
 			private function cleanForm():void
 			{
+				Util.upScroll( this );
 				this.txtID.reset();
 				this.dtfDate.selectedDate = new Date();
-				Util.removeItems(this.projectsConsult.datagrid.dataProvider);
+				if( this.mode == Constants.REGISTER_MODE ){
+					if( !(this.projectsConsult.datagrid == null) ){
+						this.projectsConsult.datagrid.selectedItem = null;
+					}
+				}
 				this.cmbApplicantsNames.reset();
 				this.cmbConveyance.selectedIndex = 0;
 				this.cmbConveyance.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
@@ -237,6 +242,7 @@
 				this.txtMaterialsAndOrTool.reset();
 				this.txtOthers.reset();
 				this.txtTotalRequested.reset();
+				this.cleanColaboratorData();
 			}
 			
 			protected function responseUpdate_resultHandler(event:ResultEvent):void

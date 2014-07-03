@@ -95,7 +95,7 @@
 					return;
 				}
 				this.txtID.text = this._item.id.toString();
-				this.diemRequestConsult.datagrid.dataProvider = Util.asArrayCollection( this._item.solicitudViaticos );
+				this.diemRequestConsult.setDataGridData( Util.asArrayCollection( this._item.solicitudViaticos ) );
 				this.diemRequestConsult.datagrid.selectedIndex = 0;
 				//this.setDiemRequest( this._item.solicitudViaticos );
 				if( Util.isFill( this.cmbConectelBank ) && this._item.bancoConectel != null ){
@@ -127,6 +127,7 @@
 			private function fillCombos():void
 			{
 				this.responseGetBancoConectel.token = this.bancoConectelService.getAll();
+				this.responseGetAllByWithOutPayment.token = this.solicitudViaticosService.getAllByWithOutPayment();
 			}
 			
 			
@@ -199,7 +200,9 @@
 			{
 				Util.upScroll( this );
 				this.txtID.reset();
-				//Util.removeItems(this.diemRequest.datagrid.dataProvider);
+				if( this.mode == Constants.REGISTER_MODE ){
+					this.responseGetAllByWithOutPayment.token = this.solicitudViaticosService.getAllByWithOutPayment();
+				}
 				this.cmbConectelBank.selectedIndex = 0;
 				this.dtfPaymentDate.selectedDate = new Date();
 				this.txtAmount.reset();
@@ -269,6 +272,11 @@
 					return;
 				}
 			}
+			
+			protected function responseGetAllByWithOutPayment_resultHandler(event:ResultEvent):void
+			{
+				this.diemRequestConsult.setDataGridData( event.result as ArrayCollection );
+			}
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -318,4 +326,7 @@
 	<mx:RemoteObject id="bancoConectelService" destination="bancoConectelService" fault="pagoViaticosService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetBancoConectel" result="responseGetBancoConectel_resultHandler(event)"/>
+	<mx:RemoteObject id="solicitudViaticosService" destination="solicitudViaticosService" fault="pagoViaticosService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetAllByWithOutPayment" result="responseGetAllByWithOutPayment_resultHandler(event)"/>
 </mx:VBox>

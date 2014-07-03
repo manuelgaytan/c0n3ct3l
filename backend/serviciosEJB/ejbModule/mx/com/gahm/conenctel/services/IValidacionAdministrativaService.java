@@ -26,5 +26,6 @@ public interface IValidacionAdministrativaService {
 	public ValidacionAdministrativaDO update(ValidacionAdministrativaDO item) throws ConectelException;
 
 	public ValidacionAdministrativaDO getItem(Long id) throws ConectelException;
-
+	
+	public List<ValidacionAdministrativaDO> getAllByWithOutInvoice() throws ConectelException;
 }

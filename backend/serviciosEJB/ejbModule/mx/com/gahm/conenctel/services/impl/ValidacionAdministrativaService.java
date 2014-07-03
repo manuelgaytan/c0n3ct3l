@@ -47,6 +47,19 @@ public class ValidacionAdministrativaService implements IValidacionAdministrativ
 		}
 		return solicitudAlmacenList;
 	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<ValidacionAdministrativaDO> getAllByWithOutInvoice() throws ConectelException {
+		TypedQuery<ValidacionAdministrativaDO> query = entityManager.createNamedQuery(
+				"ValidacionAdministrativaDO.getAllByWithOutInvoice", ValidacionAdministrativaDO.class);
+		List<ValidacionAdministrativaDO> solicitudAlmacenList;
+		try {
+			solicitudAlmacenList = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existe Validación Administrativa.");
+		}
+		return solicitudAlmacenList;
+	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public boolean deleteItems(List<Long> idsItems) {

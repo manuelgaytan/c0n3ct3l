@@ -24,7 +24,8 @@ import javax.persistence.TemporalType;
 
 @Entity
 @NamedQueries({
-	@NamedQuery(name = "ValidacionAdministrativaDO.findAll", query = "select c from ValidacionAdministrativaDO c") })
+	@NamedQuery(name = "ValidacionAdministrativaDO.findAll", query = "select c from ValidacionAdministrativaDO c"),
+	@NamedQuery(name = "ValidacionAdministrativaDO.getAllByWithOutInvoice", query = "select v from ValidacionAdministrativaDO v where v.id not in (select i.validacionAdministrativa.id from InformacionFacturacionDO i)")})
 @Table(name="ValidacionAdministrativa")
 public class ValidacionAdministrativaDO implements Serializable{
 

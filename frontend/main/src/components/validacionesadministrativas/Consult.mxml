@@ -29,7 +29,11 @@
 			
 			protected function responseGetAll_resultHandler(event:ResultEvent):void
 			{
-				items = event.result as ArrayCollection;
+				this.setData( event.result as ArrayCollection );
+			}
+			
+			public function setData( data:ArrayCollection ):void{
+				this.items = data;
 			}
 			
 			protected function requisicionService_faultHandler(event:FaultEvent):void
@@ -64,7 +68,9 @@
 			
 			public function executeQuery():void
 			{
-				this.responseGetAll.token = this.validacionAdministrativaService.getAll();
+				if( !this._readMode ){
+					this.responseGetAll.token = this.validacionAdministrativaService.getAll();
+				}
 			}
 			
 			protected function btnDelete_clickHandler(event:MouseEvent):void

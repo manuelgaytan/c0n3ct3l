@@ -187,6 +187,7 @@
 			private function fillCombos():void
 			{
 				this.responseGetAllImputable.token = this.catalogoService.getImputable();
+				this.responseGetAllNoFacturadas.token = this.validacionAdministrativaService.getAllByWithOutInvoice();
 			}
 			
 			protected function requisicionService_faultHandler(event:FaultEvent):void
@@ -275,6 +276,7 @@
 			{
 				Util.upScroll( this );
 				this.txtID.reset();
+				this.responseGetAllNoFacturadas.token = this.validacionAdministrativaService.getAllByWithOutInvoice();
 				this.validacionesAdministrativas.datagrid.selectedItem = null;
 				this.txtFolio1.reset();
 				this.txtSubtotal1.reset();
@@ -348,6 +350,11 @@
 			private function calculateIVA3():void
 			{
 				Util.calculateIVA(txtSubtotal3, txtIVA3, txtTotal3, this.IVApercent3);
+			}
+			
+			protected function responseGetAll_resultHandler(event:ResultEvent):void
+			{
+				this.validacionesAdministrativas.setData( event.result as ArrayCollection ); 
 			}
 		]]>
 	</mx:Script>
@@ -508,4 +515,7 @@
 	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="requisicionService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetAllImputable" result="responseGetAllImputable_resultHandler(event)"/>
+	<mx:RemoteObject id="validacionAdministrativaService" destination="validacionAdministrativaService" fault="requisicionService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetAllNoFacturadas" result="responseGetAll_resultHandler(event)"/>
 </mx:VBox>

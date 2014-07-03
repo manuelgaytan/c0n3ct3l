@@ -1266,7 +1266,7 @@
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
 	fecha_factura DATE NOT NULL,
 	fk_estado_investigacion_calidad INT(11) UNSIGNED NOT NULL,
-	fk_estado_tesoreria INT(11) UNSIGNED NOT NULL,
+	fk_estado_tesoreria INT(11) UNSIGNED,
 	semana DECIMAL,
 	fk_proveedor_calificado INT(11) UNSIGNED,
 	fk_orden_compra INT(11) UNSIGNED,

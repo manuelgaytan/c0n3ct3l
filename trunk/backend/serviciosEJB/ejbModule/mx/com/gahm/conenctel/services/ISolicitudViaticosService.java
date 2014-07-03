@@ -21,4 +21,5 @@ public interface ISolicitudViaticosService {
 	SolicitudViaticosDO update( SolicitudViaticosDO item );
 	SolicitudViaticosDO getItem( Integer id );
 	long getSiguienteId();
+	List<SolicitudViaticosDO> getAllByWithOutPayment();
 }

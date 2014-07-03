@@ -30,7 +30,8 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name = "SolicitudViaticos")
 @NamedQueries({
-	@NamedQuery(name = "SolicitudViaticosDO.findAll", query = "select rc from SolicitudViaticosDO rc")
+	@NamedQuery(name = "SolicitudViaticosDO.findAll", query = "select rc from SolicitudViaticosDO rc"),
+	@NamedQuery(name = "SolicitudViaticosDO.getAllByWithOutPayment", query = "select s from SolicitudViaticosDO s where s.id not in (select p.solicitudViaticos.id from PagoViaticosDO p)")
 	})
 public class SolicitudViaticosDO implements Serializable{
 	

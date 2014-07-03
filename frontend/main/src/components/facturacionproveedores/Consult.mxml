@@ -253,6 +253,30 @@
 					return Util.formatCurrency( Util.extractToText(invoice, "ordenCompraMaquilado.total") );		
 				}
 			}
+			
+			protected function btnDelete_clickHandler(event:MouseEvent):void
+			{
+				if( this.datagrid.selectedItems == null ||
+					this.datagrid.selectedItems.length == 0 ){
+					Util.showErrorMessage("Debe seleccionar elementos de la tabla.");
+					return;
+				}
+				Alert.show("Confirme si desea eliminar los elementos.","Advertencia",Alert.YES+Alert.NO,this, deleteItems);
+			}
+			
+			private function deleteItems(event:CloseEvent):void
+			{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var items:ArrayCollection = Util.selectedIDs( this.datagrid.selectedItems ); 
+				this.responseDeleteItems.token = this.facturaProveedorService.deleteItems( items );
+			}
+			
+			protected function responseDeleteItems_resultHandler(event:ResultEvent):void
+			{
+				this.executeQuery();
+			}
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -389,11 +413,12 @@
 		</mx:DataGrid>
 	</mx:HBox>
 	<mx:HBox>
-		<!--<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>-->
+		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>
 		<components:ExportButton datagrid="{this.datagrid}" visible="{!this._readOnly}"/>
 	</mx:HBox>
 	<mx:RemoteObject id="facturaProveedorService" destination="facturaProveedorService" fault="datosGeneralesProyectoService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetAll" result="responseGetAll_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetProyecto" result="responseGetItem_resultHandler(event)"/>
+	<mx:CallResponder id="responseDeleteItems" result="responseDeleteItems_resultHandler(event)"/>
 </mx:VBox>

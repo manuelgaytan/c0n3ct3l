@@ -204,7 +204,7 @@
 				value &&= Util.listBaseSelected( this.cmbHealthState );
 				value &&= Util.listBaseSelected( this.cmbHobby );
 				value &&= this.requestAddress.validations();
-				//value &&= this.driverLicense.validations(); Se remueven los campos de licencia para que no sean obligatorios.
+				value &&= this.driverLicense.validations(); //Se remueven los campos de licencia para que no sean obligatorios.
 				if( this.isChronicDisease() ){
 					value &&= Util.validateEmpty( this.txtChronicDisease.text ) != null;
 				}

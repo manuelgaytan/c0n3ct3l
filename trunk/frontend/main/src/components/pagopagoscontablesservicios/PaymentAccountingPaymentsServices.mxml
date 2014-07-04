@@ -93,7 +93,7 @@
 				}
 				this.dtfPaymentDate.selectedDate = this._item.fechaAbono;
 				this.txtAmount.text = this._item.monto.toString();
-				this.txtPaymentReference.text = Util.numberToString( this._item.referenciaAbono, true );
+				this.txtPaymentReference.text = this._item.referenciaAbono;
 				this.comments.setCommentsIn( this._item.comentariosPagoMovimientoPagoContableServicio, "comentarioTesoreria");
 			}
 			
@@ -173,8 +173,8 @@
 				this.validators = new InicializaValidadoresEtiquetas();
 				this.validators.crearValidadorRestrictor("genericDecimal", ValidadorDecimal.nombre, 9, 2);
 				this.validators.setValidador( this.txtAmount, "genericDecimal" );
-				this.validators.crearValidadorRestrictor("genericInteger", ValidadorEntero.nombre, 14);
-				this.validators.setRestrictor( this.txtPaymentReference, "genericInteger");
+				this.validators.crearValidadorRestrictor("generic",ValidadorCadenaCualquierCaracter.nombre, 0, 255);
+				this.validators.setRestrictor( this.txtPaymentReference, "generic");
 			}
 			
 			protected function responseSave_resultHandler(event:ResultEvent):void
@@ -276,8 +276,8 @@
 		<mx:FormItem required="true" label="Monto:">
 			<components:TextInput id="txtAmount" textAlign="right" width="100"/>
 		</mx:FormItem>
-		<mx:FormItem label="Referencia:">
-			<components:TextInput id="txtPaymentReference" textAlign="right" width="160"/>
+		<mx:FormItem label="Referencia de Pago:">
+			<components:TextInput id="txtPaymentReference" textAlign="right" width="260"/>
 		</mx:FormItem>
 		<components:Comments id="comments"/>
 		<mx:FormItem direction="horizontal">

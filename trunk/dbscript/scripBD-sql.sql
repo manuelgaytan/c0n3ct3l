@@ -1615,7 +1615,7 @@
 	fk_banco_conectel INT(11) UNSIGNED NOT NULL,
 	fecha_abono DATE NOT NULL,
 	monto DECIMAL(11,2) NOT NULL,
-	referencia_abono INT(11) UNSIGNED,
+	referencia_abono VARCHAR(255),
 	PRIMARY KEY (id)
 	);
 

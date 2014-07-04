@@ -2218,7 +2218,7 @@
 	fk_clasificacion_permiso INT(11) UNSIGNED,
 	fk_tipo_sancion INT(11) UNSIGNED NOT NULL,
 	fk_forma_pago_prenomina INT(11) UNSIGNED NOT NULL,
-	monto_total_descuento DECIMAL(11,2) NOT NULL,
+	monto_total_descuento DECIMAL(11,2),
 	descuento_parcial DECIMAL(11,2),
 	fecha_inicio DATE,
 	fecha_termino DATE,

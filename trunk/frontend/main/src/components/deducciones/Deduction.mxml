@@ -104,7 +104,9 @@
 					this.cmbSantionClass.selectedIndex = Util.selectedIndexFromCombo( this.cmbSantionClass.dataProvider as ArrayCollection, 
 						this._item.tipoSancion.id);
 				}
-				this.txtTotalAmountDiscount.text = this._item.montoTotalDescuento.toString();
+				if( this._item.montoTotalDescuento != undefined ){
+					this.txtTotalAmountDiscount.text = this._item.montoTotalDescuento.toString();
+				}
 				if( Util.isFill( this.cmbPaymentForm ) && this._item 
 					&& this._item.formaPagoPrenomina != null ){
 					this.cmbPaymentForm.selectedIndex = Util.selectedIndexFromCombo( this.cmbPaymentForm.dataProvider as ArrayCollection, 
@@ -220,7 +222,7 @@
 				this.validators = new InicializaValidadoresEtiquetas();
 				//validators.crearValidadorRestrictor("generic",ValidadorCadenaCualquierCaracter.nombre, 0, 255);
 				this.validators.crearValidadorRestrictor("genericDecimal", ValidadorDecimal.nombre, 9, 2);
-				this.validators.setValidador( this.txtTotalAmountDiscount, "genericDecimal" );
+				this.validators.setRestrictor( this.txtTotalAmountDiscount, "genericDecimal" );
 				this.validators.setRestrictor( this.txtPartialDiscount, "genericDecimal" );
 				validators.crearValidadorRestrictor("genericInteger",ValidadorEntero.nombre, 5);
 				this.validators.setRestrictor( this.txtRetards, "genericInteger" );
@@ -492,7 +494,7 @@
 			<mx:ComboBox id="cmbSantionClass" width="200"
 						 labelField="tipo"/>
 		</mx:FormItem>
-		<mx:FormItem required="true" label="Monto Total Descuento:">
+		<mx:FormItem required="false" label="Monto Total Descuento:">
 			<components:TextInput id="txtTotalAmountDiscount" width="150"
 								  textAlign="right"/>
 		</mx:FormItem>

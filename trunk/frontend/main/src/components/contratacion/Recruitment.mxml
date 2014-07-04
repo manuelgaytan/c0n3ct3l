@@ -139,7 +139,7 @@
 					recruitment.colaborador = new Colaborador();
 					recruitment.colaborador.nombreCompleto = Util.extractToText( seleccionSolicitudEmpleo, "reclutamientoSolicitudEmpleo.datosGeneralesSolicitante.nombres" ) + " " +
 															 Util.extractToText( seleccionSolicitudEmpleo, "reclutamientoSolicitudEmpleo.datosGeneralesSolicitante.apellidoPaterno" ) + " " +
-															 Util.extractToText( recruitment, "seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosGeneralesSolicitante.apellidoMaterno" );
+															 Util.extractToText( seleccionSolicitudEmpleo, "reclutamientoSolicitudEmpleo.datosGeneralesSolicitante.apellidoMaterno" );
 					recruitment.colaborador.tipoColaborador = new TipoColaborador();
 					recruitment.colaborador.tipoColaborador.id = TipoColaborador.ID_NOMINA;
 				}else{

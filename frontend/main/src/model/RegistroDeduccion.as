@@ -15,7 +15,7 @@ package model
 		public var clasificacionPermiso:ClasificacionPermiso;
 		public var tipoSancion:TipoSancion;
 		public var formaPagoPrenomina:FormaPagoPrenomina;
-		public var montoTotalDescuento:Number;
+		public var montoTotalDescuento:*;
 		public var descuentoParcial:*;
 		public var fechaInicio:Date;
 		public var fechaTermino:Date;

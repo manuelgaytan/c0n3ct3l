@@ -118,6 +118,11 @@
 			{
 				var value:Boolean = true;
 				value &&= this.validators.validarFormulario();
+				if( this.hasLicense() ){
+					value &&= this.dtfExpire.selectedDate != null;
+					value &&= Util.validateEmpty( this.txtLicenseNumber.text) != null;
+					value &&= Util.listBaseSelected( this.cmbLicenseType, "id", true);
+				}
 				return value;
 			}
 			
@@ -160,11 +165,15 @@
 			
 			protected function cmbLicense_changeHandler(event:ListEvent):void
 			{
-				var hasLicense:Boolean = this.cmbLicense.selectedIndex == 0;
+				var hasLicense:Boolean = this.hasLicense();
 				this.enabledComponents = hasLicense;
 				this.frmItmExpire.required = hasLicense;
 				this.frmItmLicenseNumber.required = hasLicense;
 				this.frmItmLicenseType.required = hasLicense;
+			}
+			
+			private function hasLicense():Boolean{
+				return this.cmbLicense.selectedIndex == 0;
 			}
 			
 		]]>

@@ -108,8 +108,8 @@
 			
 			private function modeValidation():void
 			{
+				this.removeChild( this.frmID );
 				if( this.mode == Constants.REGISTER_MODE ){
-					this.removeChild( this.frmID );
 				}
 				if( this.mode == Constants.UPDATE_MODE ){
 				}

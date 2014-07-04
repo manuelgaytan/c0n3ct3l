@@ -119,7 +119,7 @@
 					return "";
 				}else{
 					var datosGenerales:DatosGeneralesSolicitante = seleccion.reclutamientoSolicitudEmpleo.datosGeneralesSolicitante;
-					return datosGenerales.apellidoPaterno + " " + datosGenerales.nombres;
+					return datosGenerales.apellidoPaterno + " " + datosGenerales.apellidoMaterno + " " + datosGenerales.nombres;
 				}
 			}
 		]]>

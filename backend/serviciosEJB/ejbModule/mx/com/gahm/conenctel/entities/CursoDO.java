@@ -42,7 +42,7 @@ public class CursoDO implements Serializable{
 	
 	@OneToOne
 	@JoinColumn(name = "fk_contratacion", nullable = false)
-	private ContratacionDO contratacion;
+	private InformacionConfidencialColaboradorDO contratacion;
 	
 	@Column(name = "induccion1", nullable = false)
 	private Boolean induccion1;
@@ -110,7 +110,7 @@ public class CursoDO implements Serializable{
 		// TODO Auto-generated constructor stub
 	}
 
-	public CursoDO(Integer id, ContratacionDO contratacion, Date fechaEnc,
+	public CursoDO(Integer id, InformacionConfidencialColaboradorDO contratacion, Date fechaEnc,
 			Double resultadoEnc, Boolean enc, String cursoTecnico,
 			String capacitadorInternoCt, String capacitadorExternoCt,
 			Boolean autorizacionCt, Date fechaCt, Double resultadoCt,
@@ -154,14 +154,14 @@ public class CursoDO implements Serializable{
 	/**
 	 * @return the contratacion
 	 */
-	public ContratacionDO getContratacion() {
+	public InformacionConfidencialColaboradorDO getContratacion() {
 		return contratacion;
 	}
 
 	/**
 	 * @param contratacion the contratacion to set
 	 */
-	public void setContratacion(ContratacionDO contratacion) {
+	public void setContratacion(InformacionConfidencialColaboradorDO contratacion) {
 		this.contratacion = contratacion;
 	}
 

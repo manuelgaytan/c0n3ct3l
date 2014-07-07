@@ -34,7 +34,7 @@ public class SolicitudPermisoDO implements Serializable {
 	
 	@ManyToOne
 	@JoinColumn(name = "fk_contratacion", nullable = false)
-	private ContratacionDO contratacion;
+	private InformacionConfidencialColaboradorDO contratacion;
 	
 	@Column(name = "fecha", nullable = false)
 	@Temporal(TemporalType.DATE)
@@ -72,7 +72,7 @@ public class SolicitudPermisoDO implements Serializable {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public SolicitudPermisoDO(Integer id, ContratacionDO contratacion,
+	public SolicitudPermisoDO(Integer id, InformacionConfidencialColaboradorDO contratacion,
 			Date fecha, FormaPagoPrenominaDO formaPagoPrenomina,
 			Date fechaHoraSalida, Date fechaHoraRetorno,
 			PermisoSinGoceSueldoDO permisoSinGoceSueldo,
@@ -98,10 +98,10 @@ public class SolicitudPermisoDO implements Serializable {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public ContratacionDO getContratacion() {
+	public InformacionConfidencialColaboradorDO getContratacion() {
 		return contratacion;
 	}
-	public void setContratacion(ContratacionDO contratacion) {
+	public void setContratacion(InformacionConfidencialColaboradorDO contratacion) {
 		this.contratacion = contratacion;
 	}
 	public Date getFecha() {

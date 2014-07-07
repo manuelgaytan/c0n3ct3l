@@ -4,7 +4,7 @@ package model
 	public class RegistroPercepcion
 	{
 		public var id:*;
-		public var contratacion:Contratacion;
+		public var contratacion:InformacionConfidencialColaborador;
 		public var percepcion:Percepcion;
 		public var montoAportacion:*;
 		public var variacion:Variacion;

@@ -44,7 +44,7 @@ public class RegistroDeduccionDO implements Serializable{
 	
 	@OneToOne
 	@JoinColumn(name = "fk_contratacion", nullable = false)
-	private ContratacionDO contratacion;
+	private InformacionConfidencialColaboradorDO contratacion;
 	
 	@ManyToOne
 	@JoinColumn(name = "fk_deduccion", nullable = false)
@@ -103,7 +103,7 @@ public class RegistroDeduccionDO implements Serializable{
 		// TODO Auto-generated constructor stub
 	}
 
-	public RegistroDeduccionDO(Integer id, ContratacionDO contratacion,
+	public RegistroDeduccionDO(Integer id, InformacionConfidencialColaboradorDO contratacion,
 			DeduccionDO deduccion, Integer retardos, Date fechaRetardo,
 			Integer faltas, Date fechaFalta,
 			ClasificacionFaltaDO clasificacionFalta,
@@ -146,14 +146,14 @@ public class RegistroDeduccionDO implements Serializable{
 	/**
 	 * @return the contratacion
 	 */
-	public ContratacionDO getContratacion() {
+	public InformacionConfidencialColaboradorDO getContratacion() {
 		return contratacion;
 	}
 
 	/**
 	 * @param contratacion the contratacion to set
 	 */
-	public void setContratacion(ContratacionDO contratacion) {
+	public void setContratacion(InformacionConfidencialColaboradorDO contratacion) {
 		this.contratacion = contratacion;
 	}
 

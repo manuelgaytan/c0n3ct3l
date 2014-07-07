@@ -85,8 +85,8 @@
 					this.cmbIncapacityType.selectedIndex = Util.selectedIndexFromCombo( this.cmbIncapacityType.dataProvider as ArrayCollection, 
 						this._item.tipoIncapacidad.id);
 				}
-				this.txtIMSSAmount.text = this._item.montoImss.toString();
-				this.txtConectelAmount.text = this._item.montoConectel.toString();
+				this.txtIMSSAmount.text = Util.extractToText(this._item,"montoImss");
+				this.txtConectelAmount.text = Util.extractToText(this._item,"montoConectel");
 			}
 			
 			private function getPrenomina():InformacionPrenomina{
@@ -148,8 +148,10 @@
 				value &&= this.validators.validarFormulario();
 				value &&= collaboratorConsult.datagrid.selectedItem != null;
 				value &&= dtfInitialIncidenceDate.selectedDate != null;
+				/*
 				value &&= Util.listBaseSelected( this.cmbIncidenceClass );
 				value &&= Util.listBaseSelected( this.cmbIncapacityType );
+				*/
 				value &&= dtfFinalIncidenceDate.selectedDate != null;
 				return value;
 			}
@@ -168,8 +170,8 @@
 				this.validators = new InicializaValidadoresEtiquetas();
 				//validators.crearValidadorRestrictor("generic",ValidadorCadenaCualquierCaracter.nombre, 0, 255);
 				this.validators.crearValidadorRestrictor("genericDecimal", ValidadorDecimal.nombre, 9, 2);
-				validators.setValidador( this.txtIMSSAmount, "genericDecimal" );
-				validators.setValidador( this.txtConectelAmount, "genericDecimal");
+				validators.setRestrictor( this.txtIMSSAmount, "genericDecimal" );
+				validators.setRestrictor( this.txtConectelAmount, "genericDecimal");
 				//validators.crearValidadorRestrictor("email",ValidadorEmail.nombre);
 			}
 			
@@ -206,7 +208,7 @@
 				if( data == null ){
 					return;
 				}
-				this.cmbIncidenceClass.dataProvider = data;
+				this.cmbIncidenceClass.dataProvider = Util.addEmptyCatalgo(data,"incidencia");
 				if( Util.isFill( this.cmbIncidenceClass ) && this._item 
 					&& this._item.claseIncidencia != null ){
 					this.cmbIncidenceClass.selectedIndex = Util.selectedIndexFromCombo( this.cmbIncidenceClass.dataProvider as ArrayCollection, 
@@ -220,7 +222,7 @@
 				if( data == null ){
 					return;
 				}
-				this.cmbIncapacityType.dataProvider = data;
+				this.cmbIncapacityType.dataProvider = Util.addEmptyCatalgo(data,"tipo");
 				if( Util.isFill( this.cmbIncapacityType ) && this._item 
 					&& this._item.tipoIncapacidad != null ){
 					this.cmbIncapacityType.selectedIndex = Util.selectedIndexFromCombo( this.cmbIncidenceClass.dataProvider as ArrayCollection, 
@@ -258,18 +260,18 @@
 			<mx:Label text="-"/>
 			<components:DateField id="dtfFinalIncidenceDate"/>
 		</mx:FormItem>
-		<mx:FormItem required="true" label="Clase de Incidencia:">
+		<mx:FormItem required="false" label="Clase de Incidencia:">
 			<mx:ComboBox id="cmbIncidenceClass" width="300"
 						 labelField="incidencia"/>
 		</mx:FormItem>
-		<mx:FormItem required="true" label="Tipo de Incapacidad:">
+		<mx:FormItem required="false" label="Tipo de Incapacidad:">
 			<mx:ComboBox id="cmbIncapacityType" width="200"
 						 labelField="tipo"/>
 		</mx:FormItem>
-		<mx:FormItem required="true" label="Monto I.M.S.S.:">
+		<mx:FormItem required="false" label="Monto I.M.S.S.:">
 			<components:TextInput id="txtIMSSAmount" textAlign="right"/>
 		</mx:FormItem>
-		<mx:FormItem required="true" label="Monto Conectel:">
+		<mx:FormItem required="false" label="Monto Conectel:">
 			<components:TextInput id="txtConectelAmount" textAlign="right"/>
 		</mx:FormItem>
 		<mx:FormItem direction="horizontal">

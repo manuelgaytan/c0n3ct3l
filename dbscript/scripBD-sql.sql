@@ -2197,10 +2197,10 @@
 	fk_contratacion INT(11) UNSIGNED NOT NULL,
 	fecha_incidencia_inicial DATE NOT NULL,
 	fecha_incidencia_final DATE NOT NULL,
-	fk_clase_incidencia INT(11) UNSIGNED NOT NULL,
-	fk_tipo_incapacidad INT(11) UNSIGNED NOT NULL,
-	monto_imss DECIMAL(11,2) NOT NULL,
-	monto_conectel DECIMAL(11,2) NOT NULL,
+	fk_clase_incidencia INT(11) UNSIGNED,
+	fk_tipo_incapacidad INT(11) UNSIGNED,
+	monto_imss DECIMAL(11,2),
+	monto_conectel DECIMAL(11,2),
 	PRIMARY KEY (id)
 	);
 

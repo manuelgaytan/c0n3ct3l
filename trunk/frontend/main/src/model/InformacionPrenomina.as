@@ -9,8 +9,8 @@ package model
 		public var fechaIncidenciaFinal:Date;
 		public var claseIncidencia:ClaseIncidencia;
 		public var tipoIncapacidad:TipoIncapacidad;
-		public var montoImss:Number;
-		public var montoConectel:Number;
+		public var montoImss:*;
+		public var montoConectel:*;
 		
 		public function InformacionPrenomina()
 		{

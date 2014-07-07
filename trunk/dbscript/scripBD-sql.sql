@@ -3221,7 +3221,7 @@
 
 	ALTER TABLE Curso ADD FOREIGN KEY fk_contratacion_idxfk (fk_contratacion) REFERENCES Contratacion (id);
 
-	ALTER TABLE RegistroPercepcion ADD FOREIGN KEY fk_contratacion_idxfk_1 (fk_contratacion) REFERENCES Contratacion (id);
+	ALTER TABLE RegistroPercepcion ADD FOREIGN KEY fk_contratacion_idxfk_1 (fk_contratacion) REFERENCES InformacionConfidencialColaborador (id);
 
 	ALTER TABLE RegistroPercepcion ADD FOREIGN KEY fk_percepcion_idxfk (fk_percepcion) REFERENCES Percepcion (id);
 
@@ -3233,7 +3233,7 @@
 
 	ALTER TABLE InformacionPrenomina ADD FOREIGN KEY fk_tipo_incapacidad_idxfk (fk_tipo_incapacidad) REFERENCES TipoIncapacidad (id);
 
-	ALTER TABLE RegistroDeduccion ADD FOREIGN KEY fk_contratacion_idxfk_5 (fk_contratacion) REFERENCES Contratacion (id);
+	ALTER TABLE RegistroDeduccion ADD FOREIGN KEY fk_contratacion_idxfk_5 (fk_contratacion) REFERENCES InformacionConfidencialColaborador (id);
 
 	ALTER TABLE RegistroDeduccion ADD FOREIGN KEY fk_deduccion_idxfk (fk_deduccion) REFERENCES Deduccion (id);
 
@@ -3244,8 +3244,6 @@
 	ALTER TABLE RegistroDeduccion ADD FOREIGN KEY fk_tipo_sancion_idxfk (fk_tipo_sancion) REFERENCES TipoSancion (id);
 
 	ALTER TABLE RegistroDeduccion ADD FOREIGN KEY fk_forma_pago_prenomina_idxfk (fk_forma_pago_prenomina) REFERENCES FormaPagoPrenomina (id);
-
-	ALTER TABLE Curso ADD FOREIGN KEY fk_contratacion_idxfk_1 (fk_contratacion) REFERENCES Contratacion (id);
 
 	/* Sistema de Gestion */
 	ALTER TABLE SistemaGestion ADD FOREIGN KEY fk_proyecto_idxfk_2 (fk_proyecto) REFERENCES Proyecto (id);
@@ -3344,7 +3342,7 @@
 
 	ALTER TABLE ComentarioSolicitudPermiso ADD FOREIGN KEY fk_comentario_recursos_humanos_idxfk (fk_comentario_recursos_humanos) REFERENCES ComentarioRecursosHumanos (id);
 
-	ALTER TABLE SolicitudPermiso ADD FOREIGN KEY fk_contratacion_idxfk_6 (fk_contratacion) REFERENCES Contratacion (id);
+	ALTER TABLE SolicitudPermiso ADD FOREIGN KEY fk_contratacion_idxfk_6 (fk_contratacion) REFERENCES InformacionConfidencialColaborador (id);
 
 	ALTER TABLE SolicitudPermiso ADD FOREIGN KEY fk_forma_pago_prenomina_idxfk_2 (fk_forma_pago_prenomina) REFERENCES FormaPagoPrenomina (id);
 
@@ -3352,7 +3350,7 @@
 
 	ALTER TABLE SolicitudPermiso ADD FOREIGN KEY fk_permiso_con_goce_sueldo_idxfk (fk_permiso_con_goce_sueldo) REFERENCES PermisoConGoceSueldo (id);
 
-	ALTER TABLE SolicitudVacaciones ADD FOREIGN KEY fk_contratacion_idxfk_7 (fk_contratacion) REFERENCES Contratacion (id);
+	ALTER TABLE SolicitudVacaciones ADD FOREIGN KEY fk_contratacion_idxfk_7 (fk_contratacion) REFERENCES InformacionConfidencialColaborador (id);
 
 	ALTER TABLE SolicitudVacaciones ADD FOREIGN KEY fk_variacion_idxfk (fk_variacion) REFERENCES Variacion (id);
 	

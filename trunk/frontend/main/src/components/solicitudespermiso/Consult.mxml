@@ -96,7 +96,7 @@
 				if( solicitudPermiso == null ){
 					return "";
 				}
-				var contratacion:Contratacion = solicitudPermiso.contratacion;
+				var contratacion:Contratacion = solicitudPermiso.contratacion.contratacion;
 				if( contratacion == null ){
 					return "";
 				}

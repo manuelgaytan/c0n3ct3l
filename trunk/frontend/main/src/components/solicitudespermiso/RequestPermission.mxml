@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)" xmlns:solicitudespermiso="components.solicitudespermiso.*"
-		 xmlns:contratacion="components.contratacion.*">
+		 xmlns:informacionConfidencialColaborador="components.informacionConfidencialColaborador.*">
 	<mx:Script>
 		<![CDATA[
+			import model.InformacionConfidencialColaborador;
 			import components.equiposmedicion.Consult;
 			import components.equipostransporte.Consult;
 			import components.hardware.Consult;
@@ -20,7 +21,6 @@
 			import model.Catalogo;
 			import model.Colaborador;
 			import model.Constants;
-			import model.Contratacion;
 			import model.FormaPagoPrenomina;
 			import model.Perfil;
 			import model.PermisoConGoceSueldo;
@@ -141,7 +141,7 @@
 					item = this._item;
 				}
 				item.fecha= this.dtfPermissionDate.selectedDate;
-				item.contratacion = this.recruitmentConsult.datagrid.selectedItem as Contratacion;
+				item.contratacion = this.recruitmentConsult.datagrid.selectedItem as InformacionConfidencialColaborador;
 				item.formaPagoPrenomina = Util.validateCombo( this.cmbPaymentForm ) as FormaPagoPrenomina;
 				item.fechaHoraSalida = new Date( item.fecha.fullYear, item.fecha.month, item.fecha.date );
 				item.fechaHoraSalida.hours = this.cmbAMPMGoOut.selectedItem.id == 2 ? this.nstHourGoOut.value + 12 : this.nstHourGoOut.value;
@@ -264,8 +264,8 @@
 				if( event == null || event.information == null ){
 					return;
 				}
-				var item:Contratacion = event.information as Contratacion;
-				this.txtEmployeeName.text = getEmployeeWholeName( item );
+				var item:InformacionConfidencialColaborador = event.information as InformacionConfidencialColaborador;
+				this.txtEmployeeName.text = getEmployeeWholeName( item.contratacion );
 				//this.dtfStartContractDate.selectedDate = item.fechaInicioContrato;
 			}
 			
@@ -352,10 +352,10 @@
 			<components:TextInput id="txtID" editable="false"
 								  textAlign="right"/>
 		</mx:FormItem>
-		<mx:FormItem required="true" label="Contratación:"/>
+		<mx:FormItem required="true" label="Colaborador:"/>
 		<mx:VBox width="730">
 			<mx:VBox width="100%" height="100%" verticalGap="5">
-				<contratacion:Consult id="recruitmentConsult" readMode="true" itemDetail="recruitmentConsult_itemDetailHandler(event)"/>
+				<informacionConfidencialColaborador:Consult id="recruitmentConsult" readMode="true" itemDetail="recruitmentConsult_itemDetailHandler(event)"/>
 			</mx:VBox>
 		</mx:VBox>
 		<mx:FormItem required="true" label="Nombre del Empleado:">

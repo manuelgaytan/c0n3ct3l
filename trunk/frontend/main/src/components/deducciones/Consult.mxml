@@ -108,12 +108,13 @@
 				var registroDeduccion:RegistroDeduccion = item as RegistroDeduccion;
 				if( registroDeduccion == null ||
 					registroDeduccion.contratacion == null ||
-					registroDeduccion.contratacion.seleccionSolicitudEmpleo == null ||
-					registroDeduccion.contratacion.seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo == null ||
-					registroDeduccion.contratacion.seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosGeneralesSolicitante == null ){
+					registroDeduccion.contratacion.contratacion == null ||
+					registroDeduccion.contratacion.contratacion.seleccionSolicitudEmpleo == null ||
+					registroDeduccion.contratacion.contratacion.seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo == null ||
+					registroDeduccion.contratacion.contratacion.seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosGeneralesSolicitante == null ){
 					return "";
 				}else{
-					var datosGenerales:DatosGeneralesSolicitante = registroDeduccion.contratacion.seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosGeneralesSolicitante;
+					var datosGenerales:DatosGeneralesSolicitante = registroDeduccion.contratacion.contratacion.seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosGeneralesSolicitante;
 					return datosGenerales.apellidoPaterno + " " + datosGenerales.nombres;
 				}
 			}
@@ -136,7 +137,7 @@
 								   labelFunction="labelFunctionNombre"
 								   width="250"/>
 				<mx:DataGridColumn id="dtgPosition" headerText="{'Puesto'}"
-								   dataField="contratacion.seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosPrincipalesSolicitante.puestoSolicitado"
+								   dataField="contratacion.contratacion.seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosPrincipalesSolicitante.puestoSolicitado"
 								   width="120"/>
 				<mx:DataGridColumn id="dtgDeduction" headerText="{'Deducción'}"
 								   dataField="deduccion.deduccion"

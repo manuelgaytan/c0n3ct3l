@@ -96,7 +96,7 @@
 				if( solicitudVacaciones == null ){
 					return "";
 				}
-				var contratacion:Contratacion = solicitudVacaciones.contratacion;
+				var contratacion:Contratacion = solicitudVacaciones.contratacion.contratacion;
 				if( contratacion == null ){
 					return "";
 				}

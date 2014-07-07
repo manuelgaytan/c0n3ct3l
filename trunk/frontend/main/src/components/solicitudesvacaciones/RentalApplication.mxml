@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)" xmlns:solicitudesvacaciones="components.solicitudesvacaciones.*"
-		 xmlns:contratacion="components.contratacion.*">
+		 xmlns:informacionConfidencialColaborador="components.informacionConfidencialColaborador.*">
 	<mx:Script>
 		<![CDATA[
+			import model.InformacionConfidencialColaborador;
 			import components.equiposmedicion.Consult;
 			import components.equipostransporte.Consult;
 			import components.hardware.Consult;
@@ -19,7 +20,6 @@
 			import model.Catalogo;
 			import model.Colaborador;
 			import model.Constants;
-			import model.Contratacion;
 			import model.Perfil;
 			import model.Prioridad;
 			import model.SolicitudVacaciones;
@@ -107,7 +107,7 @@
 					item = this._item;
 				}
 				item.fecha= this.dtfApplicationDate.selectedDate;
-				item.contratacion = this.recruitmentConsult.datagrid.selectedItem as Contratacion;
+				item.contratacion = this.recruitmentConsult.datagrid.selectedItem as InformacionConfidencialColaborador;
 				item.variacion = Util.validateCombo( this.cmbVariation ) as Variacion;
 				item.diasCorrespondientes = Util.validateEmpty( this.txtCorrespondDays.text );
 				item.fechaInicio = this.dtfStartDate.selectedDate;
@@ -221,9 +221,9 @@
 				if( event == null || event.information == null ){
 					return;
 				}
-				var item:Contratacion = event.information as Contratacion;
-				this.txtEmployeeName.text = getEmployeeWholeName( item );
-				this.dtfStartContractDate.selectedDate = item.fechaInicioContrato;
+				var item:InformacionConfidencialColaborador = event.information as InformacionConfidencialColaborador;
+				this.txtEmployeeName.text = getEmployeeWholeName( item.contratacion );
+				this.dtfStartContractDate.selectedDate = item.contratacion.fechaInicioContrato;
 			}
 			
 			public static function getEmployeeWholeName( item:Contratacion ):String{
@@ -259,10 +259,10 @@
 		<mx:FormItem required="true" label="Fecha de Solicitud:">
 			<components:DateField id="dtfApplicationDate" enabled="false" creationComplete="dtfApplicationDate.selectedDate = new Date()"/>
 		</mx:FormItem>
-		<mx:FormItem required="true" label="Contratación:"/>
+		<mx:FormItem required="true" label="Colaborador:"/>
 		<mx:VBox width="730">
 			<mx:VBox width="100%" height="100%" verticalGap="5">
-				<contratacion:Consult id="recruitmentConsult" readMode="true" itemDetail="recruitmentConsult_itemDetailHandler(event)"/>
+				<informacionConfidencialColaborador:Consult id="recruitmentConsult" readMode="true" itemDetail="recruitmentConsult_itemDetailHandler(event)"/>
 			</mx:VBox>
 		</mx:VBox>
 		<mx:FormItem required="true" label="Nombre del Empleado:">

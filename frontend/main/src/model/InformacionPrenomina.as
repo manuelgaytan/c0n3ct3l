@@ -4,7 +4,7 @@ package model
 	public class InformacionPrenomina
 	{
 		public var id:*;
-		public var contratacion:Contratacion;
+		public var contratacion:InformacionConfidencialColaborador;
 		public var fechaIncidenciaInicial:Date;
 		public var fechaIncidenciaFinal:Date;
 		public var claseIncidencia:ClaseIncidencia;

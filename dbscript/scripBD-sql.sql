@@ -3227,7 +3227,7 @@
 
 	ALTER TABLE RegistroPercepcion ADD FOREIGN KEY fk_variaciones_idxfk (fk_variaciones) REFERENCES Variacion (id);
 
-	ALTER TABLE InformacionPrenomina ADD FOREIGN KEY fk_contratacion_idxfk_3 (fk_contratacion) REFERENCES Contratacion (id);
+	ALTER TABLE InformacionPrenomina ADD FOREIGN KEY fk_contratacion_idxfk_4 (fk_contratacion) REFERENCES InformacionConfidencialColaborador (id);
 
 	ALTER TABLE InformacionPrenomina ADD FOREIGN KEY fk_clase_incidencia_idxfk (fk_clase_incidencia) REFERENCES ClaseIncidencia (id);
 

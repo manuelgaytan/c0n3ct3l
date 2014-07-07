@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
-		 label="Consulta Facturación Proyectos"
+		 label="Gráfica Trimestral de Personal"
 		 horizontalAlign="right"
 		 creationComplete="creationCompleteHandler(event)">
 	<mx:Script>
@@ -125,7 +125,7 @@
 			
 		]]>
 	</mx:Script>
-	<mx:Panel title="Gráfico de Columnas, que expone la Estadística del Personas por Trimestre"
+	<mx:Panel title="Gráfica Trimestral de Personal, que expone la Estadística del Personas por Trimestre"
 			  width="100%" height="100%">
 		<mx:ColumnChart id="projectsColumnChart" showDataTips="true"
 						width="100%" height="100%"

@@ -137,7 +137,7 @@
 								   labelFunction="labelFunctionNombre"
 								   width="250"/>
 				<mx:DataGridColumn id="dtgPosition" headerText="{'Puesto'}"
-								   dataField="contratacion.seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosPrincipalesSolicitante.puestoSolicitado"
+								   dataField="contratacion.contratacion.seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosPrincipalesSolicitante.puestoSolicitado"
 								   width="120"/>
 				<mx:DataGridColumn id="dtgIncidenceDateStart" headerText="{'Fecha\nIncidencia\nInicial'}"
 								   dataField="fechaIncidenciaInicial"

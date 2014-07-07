@@ -6,7 +6,7 @@ package model
 	public class SolicitudVacaciones
 	{
 		public var id:*;
-		public var contratacion:Contratacion;
+		public var contratacion:InformacionConfidencialColaborador;
 		public var fecha:Date;
 		public var variacion:Variacion;
 		public var diasCorrespondientes:*;		

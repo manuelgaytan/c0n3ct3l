@@ -4,7 +4,7 @@ package model
 	public class RegistroDeduccion
 	{
 		public var id:*;
-		public var contratacion:Contratacion;
+		public var contratacion:InformacionConfidencialColaborador;
 		public var deduccion:Deduccion;
 		public var retardos:*;
 		public var fechaRetardo:Date;

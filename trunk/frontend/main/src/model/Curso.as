@@ -4,7 +4,7 @@ package model
 	public class Curso
 	{
 		public var id:*;
-		public var contratacion:Contratacion;
+		public var contratacion:InformacionConfidencialColaborador;
 		public var induccion1:Boolean;
 		public var induccion2:Boolean;
 		public var induccion3:Boolean;

@@ -108,12 +108,13 @@
 				var registroPercepcion:RegistroPercepcion = item as RegistroPercepcion;
 				if( registroPercepcion == null ||
 					registroPercepcion.contratacion == null ||
-					registroPercepcion.contratacion.seleccionSolicitudEmpleo == null ||
-					registroPercepcion.contratacion.seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo == null ||
-					registroPercepcion.contratacion.seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosGeneralesSolicitante == null ){
+					registroPercepcion.contratacion.contratacion == null ||
+					registroPercepcion.contratacion.contratacion.seleccionSolicitudEmpleo == null ||
+					registroPercepcion.contratacion.contratacion.seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo == null ||
+					registroPercepcion.contratacion.contratacion.seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosGeneralesSolicitante == null ){
 					return "";
 				}else{
-					var datosGenerales:DatosGeneralesSolicitante = registroPercepcion.contratacion.seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosGeneralesSolicitante;
+					var datosGenerales:DatosGeneralesSolicitante = registroPercepcion.contratacion.contratacion.seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosGeneralesSolicitante;
 					return datosGenerales.apellidoPaterno + " " + datosGenerales.nombres;
 				}
 			}
@@ -136,7 +137,7 @@
 								   labelFunction="labelFunctionNombre"
 								   width="250"/>
 				<mx:DataGridColumn id="dtgPosition" headerText="{'Puesto'}"
-								   dataField="contratacion.seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosPrincipalesSolicitante.puestoSolicitado"
+								   dataField="contratacion.contratacion.seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosPrincipalesSolicitante.puestoSolicitado"
 								   width="120"/>
 				<mx:DataGridColumn id="dtgPerception" headerText="{'Percepción'}"
 								   dataField="percepcion.percepcion"

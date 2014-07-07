@@ -108,12 +108,13 @@
 				var curso:Curso = item as Curso;
 				if( curso == null ||
 					curso.contratacion == null ||
-					curso.contratacion.seleccionSolicitudEmpleo == null ||
-					curso.contratacion.seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo == null ||
-					curso.contratacion.seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosGeneralesSolicitante == null ){
+					curso.contratacion.contratacion == null ||
+					curso.contratacion.contratacion.seleccionSolicitudEmpleo == null ||
+					curso.contratacion.contratacion.seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo == null ||
+					curso.contratacion.contratacion.seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosGeneralesSolicitante == null ){
 					return "";
 				}else{
-					var datosGenerales:DatosGeneralesSolicitante = curso.contratacion.seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosGeneralesSolicitante;
+					var datosGenerales:DatosGeneralesSolicitante = curso.contratacion.contratacion.seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosGeneralesSolicitante;
 					return datosGenerales.apellidoPaterno + " " + datosGenerales.nombres;
 				}
 			}
@@ -136,7 +137,7 @@
 								   labelFunction="labelFunctionNombre"
 								   width="200"/>
 				<mx:DataGridColumn id="dtgPosition" headerText="{'Puesto'}"
-								   dataField="contratacion.seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosPrincipalesSolicitante.puestoSolicitado"
+								   dataField="contratacion.contratacion.seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosPrincipalesSolicitante.puestoSolicitado"
 								   width="100"/>
 				<mx:DataGridColumn headerText="{'Inducción'}" width="80"
 								   imeMode="induccion1"

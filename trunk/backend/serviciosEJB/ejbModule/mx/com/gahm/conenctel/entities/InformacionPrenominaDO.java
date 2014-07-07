@@ -45,7 +45,7 @@ public class InformacionPrenominaDO implements Serializable{
 	
 	@OneToOne
 	@JoinColumn(name = "fk_contratacion", nullable = false)
-	private ContratacionDO contratacion;
+	private InformacionConfidencialColaboradorDO contratacion;
 	
 	@Temporal(TemporalType.DATE)
 	@Column(name="fecha_incidencia_inicial")
@@ -74,7 +74,7 @@ public class InformacionPrenominaDO implements Serializable{
 		// TODO Auto-generated constructor stub
 	}
 
-	public InformacionPrenominaDO(Integer id, ContratacionDO contratacion,
+	public InformacionPrenominaDO(Integer id, InformacionConfidencialColaboradorDO contratacion,
 			ClaseIncidenciaDO claseIncidencia,
 			TipoIncapacidadDO tipoIncapacidad, Double montoImss,
 			Double montoConectel) {
@@ -105,14 +105,14 @@ public class InformacionPrenominaDO implements Serializable{
 	/**
 	 * @return the contratacion
 	 */
-	public ContratacionDO getContratacion() {
+	public InformacionConfidencialColaboradorDO getContratacion() {
 		return contratacion;
 	}
 
 	/**
 	 * @param contratacion the contratacion to set
 	 */
-	public void setContratacion(ContratacionDO contratacion) {
+	public void setContratacion(InformacionConfidencialColaboradorDO contratacion) {
 		this.contratacion = contratacion;
 	}
 

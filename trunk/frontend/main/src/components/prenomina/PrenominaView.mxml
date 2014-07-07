@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*" xmlns:notascreditoclientes="components.notascreditoclientes.*" xmlns:informacionfacturas="components.informacionfacturas.*" xmlns:notascreditoproveedores="components.notascreditoproveedores.*" xmlns:facturacionproveedores="components.facturacionproveedores.*" xmlns:comprobacionesviaticos="components.comprobacionesviaticos.*" xmlns:seleccion="components.seleccion.*"
-		 initialize="initializeHandler(event)" xmlns:reclutamientosolicitudempleo="components.reclutamientosolicitudempleo.*" xmlns:informacionPrenomina="components.informacionPrenomina.*" xmlns:contratacion="components.contratacion.*"
+		 initialize="initializeHandler(event)" xmlns:reclutamientosolicitudempleo="components.reclutamientosolicitudempleo.*" xmlns:informacionPrenomina="components.informacionPrenomina.*" xmlns:informacionConfidencialColaborador="components.informacionConfidencialColaborador.*"
 		 >
 	<mx:Script>
 		<![CDATA[
@@ -12,6 +12,7 @@
 			import model.ClaseIncidencia;
 			import model.Constants;
 			import model.Contratacion;
+			import model.InformacionConfidencialColaborador;
 			import model.InformacionPrenomina;
 			import model.TipoIncapacidad;
 			import model.Util;
@@ -70,8 +71,8 @@
 					return;
 				}
 				this.txtID.text = this._item.id.toString();
-				this.recruitmentConsult.datagrid.dataProvider = Util.asArrayCollection( this._item.contratacion );
-				this.recruitmentConsult.datagrid.selectedIndex = 0;
+				this.collaboratorConsult.datagrid.dataProvider = Util.asArrayCollection( this._item.contratacion );
+				this.collaboratorConsult.datagrid.selectedIndex = 0;
 				this.dtfInitialIncidenceDate.selectedDate = this._item.fechaIncidenciaInicial;
 				this.dtfFinalIncidenceDate.selectedDate = this._item.fechaIncidenciaFinal;
 				if( Util.isFill( this.cmbIncidenceClass ) && this._item 
@@ -95,7 +96,7 @@
 				}else{
 					prenomina = this._item;
 				}
-				prenomina.contratacion = this.recruitmentConsult.datagrid.selectedItem as Contratacion;
+				prenomina.contratacion = this.collaboratorConsult.datagrid.selectedItem as InformacionConfidencialColaborador;
 				prenomina.fechaIncidenciaInicial = this.dtfInitialIncidenceDate.selectedDate;
 				prenomina.fechaIncidenciaFinal = this.dtfFinalIncidenceDate.selectedDate;
 				prenomina.claseIncidencia = Util.validateCombo( this.cmbIncidenceClass ) as ClaseIncidencia;
@@ -145,7 +146,7 @@
 			{
 				var value:Boolean = true;
 				value &&= this.validators.validarFormulario();
-				value &&= recruitmentConsult.datagrid.selectedItem != null;
+				value &&= collaboratorConsult.datagrid.selectedItem != null;
 				value &&= dtfInitialIncidenceDate.selectedDate != null;
 				value &&= Util.listBaseSelected( this.cmbIncidenceClass );
 				value &&= Util.listBaseSelected( this.cmbIncapacityType );
@@ -183,7 +184,7 @@
 			{
 				Util.upScroll( this );
 				this.txtID.reset();
-				this.recruitmentConsult.datagrid.selectedItem = false;
+				this.collaboratorConsult.datagrid.selectedItem = false;
 				this.dtfInitialIncidenceDate.reset();
 				this.dtfFinalIncidenceDate.reset();
 				this.cmbIncidenceClass.selectedIndex = 0;
@@ -246,10 +247,10 @@
 			<components:TextInput id="txtID" width="80" textAlign="right"
 								  editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem required="true" label="Contratación:"/>
+		<mx:FormItem required="true" label="Colaborador:"/>
 		<mx:VBox width="910">
 			<mx:VBox width="100%" height="100%" verticalGap="5">
-				<contratacion:Consult id="recruitmentConsult" readMode="true"/>
+				<informacionConfidencialColaborador:Consult id="collaboratorConsult" readMode="true"/>
 			</mx:VBox>
 		</mx:VBox>
 		<mx:FormItem required="true" label="Fecha de Incidencia:" direction="horizontal">

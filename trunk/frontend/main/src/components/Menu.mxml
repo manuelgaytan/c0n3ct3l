@@ -171,7 +171,7 @@
 					   icon="@Embed(source='assets/images/seleccion.png')"/>
 		<mx:LinkButton label="Contratación" id="Contratacion" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/contratacion.png')"/>
-		<mx:LinkButton label="Administación del Colaborador" id="AdministracionColaborador" click="clickMenuHandler(event)"
+		<mx:LinkButton label="Administración del Colaborador" id="AdministracionColaborador" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/administracioncolaborador.png')"/>
 		<mx:LinkButton label="Prenómina" id="Prenomina" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/prenomina.png')"/>

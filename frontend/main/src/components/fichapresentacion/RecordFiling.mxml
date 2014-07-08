@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*" xmlns:notascreditoclientes="components.notascreditoclientes.*" xmlns:informacionfacturas="components.informacionfacturas.*" xmlns:notascreditoproveedores="components.notascreditoproveedores.*" xmlns:facturacionproveedores="components.facturacionproveedores.*" xmlns:comprobacionesviaticos="components.comprobacionesviaticos.*" xmlns:seleccion="components.seleccion.*"
-		 initialize="initializeHandler(event)" xmlns:reclutamientosolicitudempleo="components.reclutamientosolicitudempleo.*" xmlns:informacionConfidencialColaborador="components.informacionConfidencialColaborador.*" xmlns:contratacion="components.contratacion.*"
+		 initialize="initializeHandler(event)" xmlns:reclutamientosolicitudempleo="components.reclutamientosolicitudempleo.*" xmlns:informacionConfidencialColaborador="components.informacionConfidencialColaborador.*"
 		 >
 	<mx:Script>
 		<![CDATA[
@@ -19,7 +19,6 @@
 			import model.ComprobacionViaticos;
 			import model.ConceptoOtraOperacionFinanciera;
 			import model.Constants;
-			import model.Contratacion;
 			import model.Estado;
 			import model.EstadoColaborador;
 			import model.EstadoOrdenCompra;
@@ -102,7 +101,7 @@
 					return;
 				}
 				this.txtID.text = this._item.id.toString();
-				this.recruitmentConsult.datagrid.dataProvider = Util.asArrayCollection( this._item.contratacion );
+				this.recruitmentConsult.datagrid.dataProvider = Util.asArrayCollection( this._item );
 				this.recruitmentConsult.datagrid.selectedIndex = 0;
 				this.downloadFile( this._item.foto );
 				// this.fltDlvPhoto.source = this.downloadFile( this._item.foto ); // en espera de la exposicion del archivo.
@@ -258,10 +257,10 @@
 			<components:TextInput id="txtID" width="80" textAlign="right"
 								  editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Contratación:"/>
+		<mx:FormItem label="Colaborador:"/>
 		<mx:VBox width="730">
 			<mx:VBox width="100%" height="100%" verticalGap="5">
-				<contratacion:Consult id="recruitmentConsult" readMode="true"/>
+				<informacionConfidencialColaborador:Consult id="recruitmentConsult" readMode="true"/>
 			</mx:VBox>
 		</mx:VBox>
 		<mx:FormItem label="Foto:">

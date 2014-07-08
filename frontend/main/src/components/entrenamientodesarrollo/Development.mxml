@@ -83,19 +83,19 @@
 				this.chkInduction3.selected = this._item.induccion3;
 				this.chkInduction4.selected = this._item.induccion4;
 				this.dtfENCDate.selectedDate = this._item.fechaEnc;
-				this.txtENCGrade.text = this._item.resultadoEnc.toString();
+				this.txtENCGrade.text = Util.extractToText(this._item,"resultadoEnc");
 				this.chkENC.selected = this._item.enc;
 				this.txtTechnicalCourse.text = this._item.cursoTecnico;
 				this.txtTechnicalCourseInternalCoach.text = this._item.capacitadorInternoCt;
 				this.txtTechnicalCourseExternalCoach.text = this._item.capacitadorExternoCt;
 				this.chkApproveTechnicalCourse.selected = this._item.autorizacionCt;
-				this.txtTechnicalCourseGrade.text = this._item.resultadoCt.toString();
+				this.txtTechnicalCourseGrade.text = Util.extractToText(this._item,"resultadoCt");
 				this.dtfTechnicalCourseDate.selectedDate = this._item.fechaCt;
 				this.txtGeneralCourse.text = this._item.cursoGeneral;
 				this.txtGeneralCourseInternalCoach.text = this._item.capacitadorInternoCg;
 				this.txtGeneralCourseExternalCoach.text = this._item.capacitadorExternoCg;
 				this.chkApproveGeneralCourse.selected = this._item.autorizacionCg;
-				this.txtGeneralCourseGrade.text = this._item.resultadoCg.toString();
+				this.txtGeneralCourseGrade.text = Util.extractToText(this._item,"resultadoCg");
 				this.dtfGeneralCourseDate.selectedDate = this._item.fechaCg;
 			}
 			

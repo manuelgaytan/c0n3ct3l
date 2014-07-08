@@ -4,6 +4,7 @@
 		 xmlns:informacionConfidencialColaborador="components.informacionConfidencialColaborador.*">
 	<mx:Script>
 		<![CDATA[
+			import model.Contratacion;
 			import model.InformacionConfidencialColaborador;
 			import components.equiposmedicion.Consult;
 			import components.equipostransporte.Consult;
@@ -199,6 +200,7 @@
 				var value:Boolean = true;
 				value &&= this.validators.validarFormulario();
 				value &&= this.recruitmentConsult.datagrid.selectedItem != null;
+				value &&= this.dtfPermissionDate.selectedDate != null;
 				value &&= Util.listBaseSelected( this.cmbPaymentForm );
 				value &&= Util.listBaseSelected( this.cmbPermitWithoutPay );
 				value &&= Util.listBaseSelected( this.cmbPermitWithPay );
@@ -367,7 +369,7 @@
 		</mx:FormItem>
 		-->
 		<mx:FormItem required="true" label="Fecha de Permiso:">
-			<components:DateField id="dtfPermissionDate"/>
+			<components:DateField id="dtfPermissionDate" creationComplete="dtfPermissionDate.selectedDate = new Date()"/>
 		</mx:FormItem>
 		<mx:FormItem required="true" label="Tipo:">
 			<mx:ComboBox id="cmbPaymentForm" width="200"

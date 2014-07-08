@@ -4,6 +4,7 @@
 		 xmlns:informacionConfidencialColaborador="components.informacionConfidencialColaborador.*">
 	<mx:Script>
 		<![CDATA[
+			import model.Contratacion;
 			import model.InformacionConfidencialColaborador;
 			import components.equiposmedicion.Consult;
 			import components.equipostransporte.Consult;

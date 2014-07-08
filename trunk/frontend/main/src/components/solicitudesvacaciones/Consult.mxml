@@ -126,7 +126,7 @@
 							   width="280"/>
 			<mx:DataGridColumn headerText="{'Fecha\nInicio\nContrato'}"
 							   width="80"
-							   dataField="contratacion.fechaInicioContrato"
+							   dataField="contratacion.contratacion.fechaInicioContrato"
 							   labelFunction="{Util.labelFunctionDate}"
 							   textAlign="center"/>
 			<mx:DataGridColumn headerText="Vacaciones"

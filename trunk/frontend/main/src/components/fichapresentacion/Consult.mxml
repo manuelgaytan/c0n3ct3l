@@ -109,6 +109,7 @@
 			private function labelFunctionNombre( item:Object, column:DataGridColumn ):String{
 				var informacionConfidencialColaborador:InformacionConfidencialColaborador = item as InformacionConfidencialColaborador;
 				if( informacionConfidencialColaborador == null ||
+					informacionConfidencialColaborador.contratacion == null ||
 					informacionConfidencialColaborador.contratacion.seleccionSolicitudEmpleo == null ||
 					informacionConfidencialColaborador.contratacion.seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo == null ||
 					informacionConfidencialColaborador.contratacion.seleccionSolicitudEmpleo.reclutamientoSolicitudEmpleo.datosGeneralesSolicitante == null ){

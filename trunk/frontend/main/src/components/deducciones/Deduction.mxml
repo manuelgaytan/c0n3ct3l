@@ -330,7 +330,7 @@
 				if( data == null ){
 					return;
 				}
-				this.cmbPaymentForm.dataProvider = data;
+				this.cmbPaymentForm.dataProvider = Util.addEmptyCatalgo( data, "tipo" );
 				if( Util.isFill( this.cmbPaymentForm ) && this._item 
 					&& this._item.formaPagoPrenomina != null ){
 					this.cmbPaymentForm.selectedIndex = Util.selectedIndexFromCombo( this.cmbPaymentForm.dataProvider as ArrayCollection, 
@@ -498,7 +498,7 @@
 			<components:TextInput id="txtTotalAmountDiscount" width="150"
 								  textAlign="right"/>
 		</mx:FormItem>
-		<mx:FormItem required="true" label="Forma de Pago:">
+		<mx:FormItem required="false" label="Forma de Pago:">
 			<mx:ComboBox id="cmbPaymentForm" width="200"
 						 labelField="tipo" change="cmbPaymentForm_changeHandler(event)"/>
 		</mx:FormItem>

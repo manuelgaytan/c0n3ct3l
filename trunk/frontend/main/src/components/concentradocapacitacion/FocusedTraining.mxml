@@ -353,7 +353,7 @@
 			<components:TextInput id="txtPosition" textAlign="right"
 								  editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem required="true" label="Tipo de Información:">
+		<mx:FormItem required="true" label="Tipo de Formación:">
 			<mx:ComboBox id="cmbFormationType" width="200"
 						 labelField="tipo"/>
 		</mx:FormItem>

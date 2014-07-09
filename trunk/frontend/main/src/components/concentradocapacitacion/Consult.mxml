@@ -159,7 +159,7 @@
 				<mx:DataGridColumn id="dtgColaboratorName" headerText="{'Nombre Colaborador'}"
 								   dataField="colaborador.nombreCompleto"
 								   width="250"/>
-				<mx:DataGridColumn id="dtgFormationType" headerText="{'Tipo\nInformación'}"
+				<mx:DataGridColumn id="dtgFormationType" headerText="{'Tipo\nFormación'}"
 								   dataField="tipoFormacion.tipo"
 								   width="100"/>
 				<mx:DataGridColumn id="dtgTrainingType" headerText="{'Tipo\nCapacitación'}"

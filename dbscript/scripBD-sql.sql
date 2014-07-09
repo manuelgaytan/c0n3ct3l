@@ -2070,7 +2070,7 @@
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
 	fk_contratacion INT(11) UNSIGNED NOT NULL,
 	foto VARCHAR(255),
-	sueldo DECIMAL(11,2) NOT NULL,
+	sueldo DECIMAL(11,2),
 	tiene_imss BOOLEAN NOT NULL,
 	nss VARCHAR(255),
 	alta_imss DATE,

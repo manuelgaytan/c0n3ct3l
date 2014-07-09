@@ -303,7 +303,11 @@
 				if( data == null ){
 					return;
 				}
-				this.cmbSuspension.dataProvider = data;
+				if( this.mode == Constants.REGISTER_MODE ){
+					this.cmbSuspension.dataProvider = Util.addEmptyCatalgo( data, "suspension" );
+				}else{
+					this.cmbSuspension.dataProvider = data;	
+				}
 				if( Util.isFill( this.cmbSuspension ) && this._item 
 					&& this._item.suspension != null ){
 					this.cmbSuspension.selectedIndex = Util.selectedIndexFromCombo( this.cmbSuspension.dataProvider as ArrayCollection, 
@@ -317,7 +321,11 @@
 				if( data == null ){
 					return;
 				}
-				this.cmbReasonTerminationContract.dataProvider = data;
+				if( this.mode == Constants.REGISTER_MODE ){
+					this.cmbReasonTerminationContract.dataProvider = Util.addEmptyCatalgo( data, "motivo" );
+				}else{
+					this.cmbReasonTerminationContract.dataProvider = data;
+				}
 				if( Util.isFill( this.cmbReasonTerminationContract ) && this._item 
 					&& this._item.motivoTerminoContrato != null ){
 					this.cmbReasonTerminationContract.selectedIndex = Util.selectedIndexFromCombo( this.cmbReasonTerminationContract.dataProvider as ArrayCollection, 

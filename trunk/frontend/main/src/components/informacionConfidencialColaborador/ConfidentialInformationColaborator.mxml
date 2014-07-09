@@ -99,7 +99,7 @@
 				this.recruitmentConsult.datagrid.dataProvider = Util.asArrayCollection( this._item.contratacion );
 				this.recruitmentConsult.datagrid.selectedIndex = 0;
 				this.fltDlvPhoto.delivers = Util.asArrayCollection( this._item.foto );
-				this.txtSalary.text = this._item.sueldo.toString();
+				this.txtSalary.text = Util.extractToText( this._item, "sueldo" );
 				this.chkIMSS.selected = this._item.tieneImss;
 				this.chkIMSS.dispatchEvent( new Event( Event.CHANGE ) );
 				this.dtfDateIssueIMSS.selectedDate = this._item.altaImss;
@@ -207,7 +207,7 @@
 				validators.setValidador( this.txtAccidentCaseNotify, "generic");
 				validators.setValidador( this.txtEmergencyNumber, "generic");
 				this.validators.crearValidadorRestrictor("genericDecimal", ValidadorDecimal.nombre, 9, 2);
-				this.validators.setValidador( this.txtSalary, "genericDecimal" );
+				this.validators.setRestrictor( this.txtSalary, "genericDecimal" );
 				validators.crearValidadorRestrictor("email",ValidadorEmail.nombre);
 				this.validators.setValidador( this.txtConectelEmail, "email" );
 			}
@@ -310,7 +310,7 @@
 		<mx:FormItem label="Foto:">
 			<components:FlatDeliver id="fltDlvPhoto" limitedTo="1"/>
 		</mx:FormItem>
-		<mx:FormItem required="true" label="Sueldo Posterior:">
+		<mx:FormItem required="false" label="Sueldo Posterior:">
 			<components:TextInput id="txtSalary" textAlign="right"/>
 		</mx:FormItem>
 		<mx:FormItem required="true" label="I.M.S.S.:">

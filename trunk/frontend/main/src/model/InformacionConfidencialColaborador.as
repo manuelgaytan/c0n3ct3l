@@ -6,7 +6,7 @@ package model
 		public var id:*;
 		public var contratacion:Contratacion;
 		public var foto:String;
-		public var sueldo:Number;
+		public var sueldo:*;
 		public var tieneImss:Boolean;
 		public var nss:String;
 		public var altaImss:Date;

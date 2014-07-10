@@ -435,6 +435,7 @@
 				this.txtCode.text = Util.extractToText(item,"codigo");
 				this.txtFamily.text = this.findGrupoFamilia(item);
 				this.txtDescription.text = Util.extractToText(item,"descripcion");
+				this.lblExistence.text = Util.extractToText(item,"existencia");
 				this.txtUnit.text = this.findUnidad(item);
 			}
 			
@@ -485,6 +486,13 @@
 					Util.showErrorMessage("Valide los campos de la Partida");
 					return;
 				}
+				if( !this.validateExistence( entry ) ){
+					return;
+				}
+				if( this.itemsManagement.existIn( entry ) ){
+					Util.showErrorMessage( "Ya exite la Partida." );
+					return;
+				}
 				this.itemsManagement.addItem( entry );
 				this.resetEntry();
 			}
@@ -502,10 +510,28 @@
 				entry.grupoFamilia = Util.validateEmpty( this.txtFamily.text );
 				entry.descripcion = Util.validateEmpty( this.txtDescription.text );
 				entry.cantidad = Util.stringToNumber( this.txtQuantity.text );
+				entry.existencia = Util.stringToNumber( this.lblExistence.text );
 				entry.unidad = Util.validateEmpty( this.txtUnit.text );
 				entry.regresoAlmacen = this.chkStockReturn.selected;
 				entry.observacion = Util.validateEmpty( this.txtObservation.text );
 				return entry;
+			}
+			
+			private function validateExistence( entry:PartidaSolicitudAlmacen ):Boolean{
+				var quantity:Number = entry.cantidad;
+				var existence:Number = entry.existencia;
+				if( isNaN(quantity) ){
+					return true;
+				}
+				if( isNaN(existence) ){
+					return true;
+				}
+				if( quantity > existence ){
+					Util.showErrorMessage( "No puede superar la existencia." );
+					return false;
+				}else{
+					return true;
+				}
 			}
 			
 			private function isValidEntry():Boolean
@@ -534,6 +560,7 @@
 				this.txtFamily.reset();
 				this.txtDescription.reset();
 				this.txtQuantity.reset();
+				this.lblExistence.text = "";
 				this.txtUnit.reset();
 				this.chkStockReturn.selected = false;
 				this.txtObservation.reset();
@@ -687,11 +714,13 @@
 								  width="400"
 								  editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Cantidad:">
+		<mx:FormItem label="Cantidad:" direction="horizontal" required="true">
 			<components:TextInput id="txtQuantity"
 								  textAlign="right"
 								  width="90"
 								  />
+			<mx:Label text="Existencia:" paddingTop="2"/>
+			<mx:Label id="lblExistence" width="90" paddingTop="2"/>
 		</mx:FormItem>
 		<mx:FormItem label="Unidad:">
 			<components:TextInput id="txtUnit"

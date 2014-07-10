@@ -244,6 +244,20 @@
 				}
 			}
 			
+			public function existIn( entry:PartidaSolicitudAlmacen ):Boolean{
+				var value:Boolean = false;
+				if( this._items == null ){
+					return value;
+				}
+				for each( var item:PartidaSolicitudAlmacen in this._items ){
+					if( item.idAlmacen == entry.idAlmacen && item.tipoAlmacen == entry.tipoAlmacen ){
+						value = true;
+						break;
+					}
+				}
+				return value;
+			}
+			
 			private function createList(warehouseApplication:SolicitudAlmacen, item:PartidaSolicitudAlmacen, property:String, listProperty:String, ItemSolicitudAlmacen:String, Item:String ):void{
 				var objectTypeSolicitudAlmacen:Class = null;
 				objectTypeSolicitudAlmacen = getDefinitionByName( ItemSolicitudAlmacen ) as Class;

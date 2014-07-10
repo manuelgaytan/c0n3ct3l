@@ -14,6 +14,7 @@ package model
 		public var unidad:String;
 		public var regresoAlmacen:Boolean;
 		public var observacion:String;
+		public var existencia:Number;
 		
 		public function PartidaSolicitudAlmacen()
 		{

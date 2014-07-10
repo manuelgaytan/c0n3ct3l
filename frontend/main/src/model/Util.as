@@ -559,6 +559,10 @@ package model
 			return Util.formatDateToString( Util.extractObject(object,column.dataField) as Date );
 		}
 		
+		public static function labelFunctionGeneric(object:Object, column:DataGridColumn):String{
+			return Util.extractToText(object,column.dataField);
+		}
+		
 		public static function labelFunctionDateHour(object:Object, column:DataGridColumn):String{
 			return Util.formatDateTimeToString( Util.extractObject(object,column.dataField) as Date );
 		}

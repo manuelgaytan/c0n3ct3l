@@ -95,6 +95,8 @@
 	<mx:VBox label="Almacén" width="100%" height="100%">
 		<mx:LinkButton label="Solicitud Almacén" id="SolicitudAlmacenModule" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/solicitudalmacen.png')"/>
+		<mx:LinkButton label="Vale de Devoluciones" id="ValesDevoluciones" click="clickMenuHandler(event)"
+					   icon="@Embed(source='assets/images/solicitudalmacen.png')"/>
 		<mx:LinkButton label="Manejo Almacén" id="Almacen" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/manejoalmacen.png')"/>
 	</mx:VBox>

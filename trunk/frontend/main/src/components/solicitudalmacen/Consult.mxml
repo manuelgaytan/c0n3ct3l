@@ -22,6 +22,13 @@
 			
 			private var solicitudAlmacen:SolicitudAlmacen;
 			
+			[Bindable]
+			private var _refundVouchersWiew:Boolean = false;
+			
+			public function set refundVouchersView(value:Boolean):void{
+				this._refundVouchersWiew = value;
+			}
+						
 			protected function responseGetAll_resultHandler(event:ResultEvent):void
 			{
 				items = event.result as ArrayCollection;
@@ -99,21 +106,24 @@
 		[Event(name="warehouseApplicationDetail", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
-	<mx:DataGrid id="datagrid" width="2340" height="100%" dataProvider="{items}"
+	<mx:DataGrid id="datagrid" width="{this._refundVouchersWiew? 1235 : 2340}" height="100%" dataProvider="{items}"
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 				 allowMultipleSelection="true">
 		<mx:columns>
 			<mx:DataGridColumn id="dtgCode" headerText="Código"
 							   dataField="id"
 							   width="100"/>
-			<mx:DataGridColumn id="dtgMotive" headerText="Motivo"
+			<mx:DataGridColumn headerText="{'Responsable'}" visible="{this._refundVouchersWiew}"
+							   dataField="recibe"
+							   width="200"/>
+			<mx:DataGridColumn id="dtgMotive" headerText="Motivo" visible="{!this._refundVouchersWiew}"
 							   dataField="motivo"
 							   width="120"/>
-			<mx:DataGridColumn id="dtgPriority" headerText="Prioridad"
+			<mx:DataGridColumn id="dtgPriority" headerText="Prioridad" visible="{!this._refundVouchersWiew}"
 							   width="120"
 							   dataField="prioridad.etiqueta"
 							   labelFunction="labelFunctionGenerico"/>
-			<mx:DataGridColumn id="dtgApplicantArea" headerText="{'Área\nSolicitante'}"
+			<mx:DataGridColumn id="dtgApplicantArea" headerText="{'Área\nSolicitante'}" visible="{!this._refundVouchersWiew}"
 							   width="120"
 							   dataField="areaSolicitante.etiqueta"
 							   labelFunction="labelFunctionGenerico"/>
@@ -122,25 +132,25 @@
 							   labelFunction="labelFunctionDate"
 							   width="120"
 							   textAlign="center"/>
-			<mx:DataGridColumn headerText="{'Central\no Sitio'}"
+			<mx:DataGridColumn headerText="{'Central\no Sitio'}" visible="{!this._refundVouchersWiew}"
 							   dataField="centralSitio"
 							   width="120"/>
-			<mx:DataGridColumn headerText="{'Estado de\nla Solicitud'}"
+			<mx:DataGridColumn headerText="{'Estado de\nla Solicitud'}" visible="{!this._refundVouchersWiew}"
 							   dataField="estadoSolicitudAlmacen.etiqueta"
 							   width="120"/>
-			<mx:DataGridColumn headerText="{'Nombre del\nSolicitante'}"
+			<mx:DataGridColumn headerText="{'Nombre del\nSolicitante'}" visible="{!this._refundVouchersWiew}"
 							   dataField="nombreSolicitante"
 							   width="200"/>
-			<mx:DataGridColumn headerText="{'Autorizado por'}"
+			<mx:DataGridColumn headerText="{'Autorizado por'}" visible="{!this._refundVouchersWiew}"
 							   dataField="autoriza.nombreCompleto"
 							   width="200"/>
-			<mx:DataGridColumn headerText="{'Coordinador de Área'}"
+			<mx:DataGridColumn headerText="{'Coordinador de Área'}" visible="{!this._refundVouchersWiew}"
 							   dataField="autorizaFinal.nombreCompleto"
 							   width="200"/>
-			<mx:DataGridColumn headerText="{'Entrega'}"
+			<mx:DataGridColumn headerText="{'Entrega'}" visible="{!this._refundVouchersWiew}"
 							   dataField="entrega.nombreCompleto"
 							   width="200"/>
-			<mx:DataGridColumn headerText="{'Recibe'}"
+			<mx:DataGridColumn headerText="{'Recibe'}" visible="{!this._refundVouchersWiew}"
 							   dataField="recibe"
 							   width="200"/>
 			<mx:DataGridColumn id="dtgReturnDate" headerText="{'Fecha de\nRetorno'}"
@@ -148,7 +158,7 @@
 							   labelFunction="labelFunctionDate"
 							   width="120"
 							   textAlign="center"/>
-			<mx:DataGridColumn headerText="{'Leyenda'}"
+			<mx:DataGridColumn headerText="{'Leyenda'}" visible="{!this._refundVouchersWiew}"
 							   dataField="leyenda"
 							   width="400"/>
 		</mx:columns>

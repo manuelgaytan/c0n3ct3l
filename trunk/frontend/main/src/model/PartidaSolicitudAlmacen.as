@@ -15,12 +15,19 @@ package model
 		public var regresoAlmacen:Boolean;
 		public var observacion:String;
 		public var existencia:Number;
+		public var cantidadDevuelta:*;
+		public var estatusDevolucion:EstatusDevolucion;
+		public var fechaDevolucion:Date;
 		
 		public function PartidaSolicitudAlmacen()
 		{
 		}
 		
-		public static function createPartidaSolicitudAlmacen(id:*, tipoAlmacen:TipoAlmacen, idAlmacen:*, codigo:String, grupoFamilia:String, descripcion:String, cantidad:Number, unidad:String, regresoAlmacen:Boolean, observacion:String):PartidaSolicitudAlmacen
+		public static function createPartidaSolicitudAlmacen(id:*, tipoAlmacen:TipoAlmacen, idAlmacen:*, codigo:String, 
+																grupoFamilia:String, descripcion:String, cantidad:Number, 
+																unidad:String, regresoAlmacen:Boolean, observacion:String,
+																cantidadDevuelta:*, estatusDevolucion:EstatusDevolucion,
+																fechaDevolucion:Date):PartidaSolicitudAlmacen
 		{
 			var item:PartidaSolicitudAlmacen = new PartidaSolicitudAlmacen();
 			item.id = id;
@@ -33,6 +40,9 @@ package model
 			item.unidad = unidad;
 			item.regresoAlmacen = regresoAlmacen;
 			item.observacion = observacion;
+			item.cantidadDevuelta = cantidadDevuelta;
+			item.estatusDevolucion = estatusDevolucion;
+			item.fechaDevolucion = fechaDevolucion;
 			return item;
 		}
 	}

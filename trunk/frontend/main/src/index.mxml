@@ -6,6 +6,7 @@
 				creationComplete="creationCompleteHandler(event)">
 	<mx:Script>
 		<![CDATA[
+			import model.EstatusDevolucion;
 			import model.DocumentoAyudante;
 			import components.ComboList;
 			import components.Comments;
@@ -586,6 +587,7 @@
 			private var archivoCotizacion:ArchivoCotizacion;
 			private var ayudante:Ayudante;
 			private var documentoAyudante:DocumentoAyudante;
+			private var estatusDevolucion:EstatusDevolucion;
 						
 			protected function login_readyHandler(event:ModuleEvent):void
 			{

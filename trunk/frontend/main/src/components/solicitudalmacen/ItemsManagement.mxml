@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:DataGrid xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="250"
 			 dataProvider="{this._items}" doubleClick="doubleClickHandler(event)"
-			 doubleClickEnabled="true">
+			 doubleClickEnabled="{!this._refundVouchersWiew}"
+			 editable="true"
+			 creationComplete="creationCompleteHandler(event)">
 	<mx:Script>
 		<![CDATA[
+			import mx.events.CollectionEvent;
+			import mx.events.FlexEvent;
 			import model.Consumible;
 			import model.ConsumibleSolicitudAlmacen;
 			import model.EquipoMedicion;
@@ -32,6 +36,17 @@
 			[Bindable]
 			private var _items:ArrayCollection = new ArrayCollection();
 			
+			[Bindable]
+			private var _refundVouchersWiew:Boolean = false;
+			
+			private function creationCompleteHandler(event:FlexEvent):void{
+				//this._items.addEventListener( CollectionEvent.COLLECTION_CHANGE,function():void{new Event("itemsChanged")} );
+			}
+			
+			public function set refundVouchersView(value:Boolean):void{
+				this._refundVouchersWiew = value;
+			}
+			
 			public function addItem(entry:PartidaSolicitudAlmacen):void{
 				if( entry == null ){
 					return;
@@ -59,7 +74,10 @@
 																						 itemC.cantidadSolicitada, 
 																						 itemC.consumible.unidadB.etiqueta, 
 																						 itemC.regresoAlmacen, 
-																						 itemC.observacion ) );
+																						 itemC.observacion,
+																						 itemC.cantidadDevuelta,
+																						 itemC.estatusDevolucion,
+																						 itemC.fechaDevolucion ) );
 				}
 				for each ( var itemEM:EquipoMedicionSolicitudAlmacen in warehouseApplication.equipoMedicionSolicitudAlmacen ) 
 				{
@@ -72,7 +90,10 @@
 																						 itemEM.cantidadSolicitada, 
 																						 "", 
 																						 itemEM.regresoAlmacen, 
-																						 itemEM.observacion ) );
+																						 itemEM.observacion,
+																						 itemEM.cantidadDevuelta,
+																						 itemEM.estatusDevolucion,
+																						 itemEM.fechaDevolucion ) );
 				}
 				for each ( var itemET:EquipoTransporteSolicitudAlmacen in warehouseApplication.equipoTransporteSolicitudAlmacen ) 
 				{
@@ -85,7 +106,10 @@
 																						itemET.cantidadSolicitada, 
 																						"", 
 																						itemET.regresoAlmacen, 
-																						itemET.observacion ) );
+																						itemET.observacion,
+																						itemET.cantidadDevuelta,
+																						itemET.estatusDevolucion,
+																						itemET.fechaDevolucion ) );
 				}
 				for each ( var itemM:MaterialSolicitudAlmacen in warehouseApplication.materialesSolicitudAlmacen ) 
 				{
@@ -98,7 +122,10 @@
 																						itemM.cantidadSolicitada, 
 																						itemM.material.unidadB.etiqueta, 
 																						itemM.regresoAlmacen, 
-																						itemM.observacion ) );
+																						itemM.observacion,
+																						itemM.cantidadDevuelta,
+																						itemM.estatusDevolucion,
+																						itemM.fechaDevolucion ) );
 				}
 				for each ( var itemTM:TelefoniaMovilSolicitudAlmacen in warehouseApplication.telefoniaMovilSolicitudAlmacen ) 
 				{
@@ -111,7 +138,10 @@
 																						itemTM.cantidadSolicitada, 
 																						"", 
 																						itemTM.regresoAlmacen, 
-																						itemTM.observacion ) );
+																						itemTM.observacion,
+																						itemTM.cantidadDevuelta,
+																						itemTM.estatusDevolucion,
+																						itemTM.fechaDevolucion ) );
 				}
 				for each ( var itemH:HardwareSolicitudAlmacen in warehouseApplication.hardwareSolicitudAlmacen ) 
 				{
@@ -124,7 +154,10 @@
 																						itemH.cantidadSolicitada, 
 																						itemH.hardware.unidadC.etiqueta, 
 																						itemH.regresoAlmacen, 
-																						itemH.observacion ) );
+																						itemH.observacion,
+																						itemH.cantidadDevuelta,
+																						itemH.estatusDevolucion,
+																						itemH.fechaDevolucion ) );
 				}
 				for each ( var itemS:SoftwareSolicitudAlmacen in warehouseApplication.softwareSolicitudAlmacen ) 
 				{
@@ -137,7 +170,10 @@
 																						itemS.cantidadSolicitada, 
 																						itemS.software.unidad, 
 																						itemS.regresoAlmacen, 
-																						itemS.observacion ) );
+																						itemS.observacion,
+																						itemS.cantidadDevuelta,
+																						itemS.estatusDevolucion,
+																						itemS.fechaDevolucion ) );
 				}
 				for each ( var itemHe:HerramientaSolicitudAlmacen in warehouseApplication.herramientasSolicitudAlmacen ) 
 				{
@@ -150,7 +186,10 @@
 																						itemHe.cantidadSolicitada, 
 																						itemHe.herramienta.unidadA.etiqueta, 
 																						itemHe.regresoAlmacen, 
-																						itemHe.observacion ) );
+																						itemHe.observacion,
+																						itemHe.cantidadDevuelta,
+																						itemHe.estatusDevolucion,
+																						itemHe.fechaDevolucion ) );
 				}
 			}
 			
@@ -250,7 +289,7 @@
 					return value;
 				}
 				for each( var item:PartidaSolicitudAlmacen in this._items ){
-					if( item.idAlmacen == entry.idAlmacen && item.tipoAlmacen == entry.tipoAlmacen ){
+					if( item.idAlmacen == entry.idAlmacen && item.tipoAlmacen.id == entry.tipoAlmacen.id ){
 						value = true;
 						break;
 					}
@@ -282,6 +321,9 @@
 			
 			protected function doubleClickHandler(event:MouseEvent):void
 			{
+				if( this._refundVouchersWiew ){
+					return;
+				}
 				if( this.selectedItems == null ||
 					this.selectedItems.length == 0 ){
 					Util.showErrorMessage("Debe seleccionar elementos de la tabla.");
@@ -319,36 +361,73 @@
 				list = null;
 			}
 			
+			private function labelFunctionEstatusDevolucion(item:Object, column:DataGridColumn):String{
+				return Util.extractToText( item, "estatusDevolucion.estatus" );
+			}
 		]]>
 	</mx:Script>
+	<mx:Metadata>
+		[Event(name="itemsChanged")]
+	</mx:Metadata>
 	<mx:columns>
 		<mx:DataGridColumn id="dtgStockType" headerText="{'Tipo \nAlmacén'}"
 						   width="100"
-						   dataField="tipoAlmacen.etiqueta"/>
+						   dataField="tipoAlmacen.etiqueta"
+						   editable="false"/>
 		<mx:DataGridColumn id="dtgItemCode" headerText="Código"
 						   dataField="codigo"
-						   width="80"/>
+						   width="80"
+						   editable="false"/>
 		<mx:DataGridColumn id="dtgItemFamily" headerText="{'Grupo o\nFamilia'}"
 						   width="100"
-						   dataField="grupoFamilia"/>
+						   dataField="grupoFamilia"
+						   editable="false"/>
 		<mx:DataGridColumn id="dtgItemDescription" headerText="Descripción"
 						   dataField="descripcion"
-						   width="160"/>
+						   width="160"
+						   editable="false"/>
 		<mx:DataGridColumn id="dtgItemQuantity" headerText="Cantidad"
 						   dataField="cantidad"
 						   width="60"
-						   textAlign="right"/>
+						   textAlign="right"
+						   editable="false"/>
 		<mx:DataGridColumn id="dtgItemUnit" headerText="Unidad"
 						   dataField="unidad"
 						   width="60"
-						   textAlign="right"/>
+						   textAlign="right"
+						   editable="false"/>
 		<mx:DataGridColumn id="dtgItemValidation" headerText="{'Regreso al\nAlmacén'}"
 						   dataField="regresoAlmacen"
 						   width="80"
 						   itemRenderer="mx.controls.CheckBox"
-						   textAlign="center"/>
+						   textAlign="center"
+						   editable="false"/>
 		<mx:DataGridColumn id="dtgItemEstatus" headerText="Observación"
 						   dataField="observacion"
-						   width="250"/>
+						   width="250"
+						   editable="false"/>
+		<mx:DataGridColumn id="dtgItemManyReturn" headerText="{'Cantidad\nDevuelta'}"
+						   dataField="cantidadDevuelta"
+						   itemEditor="mx.controls.TextInput"
+						   editorDataField="text"
+						   editable="true" textAlign="right"
+						   width="100"
+						   visible="{this._refundVouchersWiew}"/>
+		<mx:DataGridColumn id="dtgItemReturnStatus" headerText="{'Estatus de\nDevolución'}"
+						   labelFunction="labelFunctionEstatusDevolucion"						   
+						   dataField="estatusDevolucion"
+						   itemEditor="components.renderers.EstatusDevolucionRenderer"
+						   editorDataField="selectedItem"
+						   editable="true" textAlign="center"
+						   width="110"
+						   visible="{this._refundVouchersWiew}"/>
+		<mx:DataGridColumn id="dtgItemReturnDate" headerText="{'Fecha de\nDevolución'}"
+						   labelFunction="{Util.labelFunctionDate}"
+						   dataField="fechaDevolucion"
+						   itemEditor="components.DateField"
+						   editorDataField="selectedDate"
+						   editable="true" textAlign="center"
+						   width="90"
+						   visible="{this._refundVouchersWiew}"/>
 	</mx:columns>
 </mx:DataGrid>	

@@ -3410,7 +3410,7 @@
 	INSERT INTO Perfil
 	VALUES (14, 'Sistemas Gestión');
 	INSERT INTO Perfil
-	VALUES (15, 'Validación Administrativa');
+	VALUES (15, 'Validación Administrativa');	
 
 	/* Pantallas */
 	INSERT INTO Pantalla
@@ -3529,6 +3529,8 @@
 	VALUES (57, 'EstadisticaPersonal');
 	INSERT INTO Pantalla
 	VALUES (58, 'ConsultaGeneralOperacion');
+	INSERT INTO Pantalla
+	VALUES (59, 'ValesDevoluciones');
 	
 	/* Perfil-Pantalla */
 	INSERT INTO PerfilPantalla
@@ -3817,6 +3819,10 @@
 	VALUES (142, 15, 26);
 	INSERT INTO PerfilPantalla
 	VALUES (143, 2, 8);
+	INSERT INTO PerfilPantalla
+	VALUES (144, 1, 59);
+	INSERT INTO PerfilPantalla
+	VALUES (145, 3, 59);
 
 	/* Usuarios */
 	INSERT INTO Usuario

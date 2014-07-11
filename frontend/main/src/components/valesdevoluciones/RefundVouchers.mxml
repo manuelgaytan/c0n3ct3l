@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
+		 creationComplete="creationCompleteHandler(event)" xmlns:solicitudalmacen="components.solicitudalmacen.*"
+		 width="100%"
+		 >
+	<mx:Script>
+		<![CDATA[
+			import model.HerramientaSolicitudAlmacen;
+			import model.SoftwareSolicitudAlmacen;
+			import model.HardwareSolicitudAlmacen;
+			import model.TelefoniaMovilSolicitudAlmacen;
+			import model.MaterialSolicitudAlmacen;
+			import model.EquipoTransporteSolicitudAlmacen;
+			import model.EquipoMedicionSolicitudAlmacen;
+			import model.ConsumibleSolicitudAlmacen;
+			import model.EstatusDevolucion;
+			import flash.net.navigateToURL;
+			
+			import model.AreaSolicitante;
+			import model.Catalogo;
+			import model.Colaborador;
+			import model.Constants;
+			import model.DescripcionAlmacen;
+			import model.EstadoSolicitudAlmacen;
+			import model.GrupoFamiliaA;
+			import model.Model;
+			import model.Notificacion;
+			import model.PartidaRequisicionCompra;
+			import model.PartidaSolicitudAlmacen;
+			import model.Perfil;
+			import model.Prioridad;
+			import model.Reportes;
+			import model.ServicioSolicitado;
+			import model.SolicitudAlmacen;
+			import model.TipoAlmacen;
+			import model.TipoColaborador;
+			import model.UnidadB;
+			import model.Util;
+			
+			import modules.Almacen;
+			
+			import mx.collections.ArrayCollection;
+			import mx.com.gahm.componentes.validadores.InicializaValidadoresEtiquetas;
+			import mx.com.gahm.componentes.validadores.ValidadorCadenaCualquierCaracter;
+			import mx.com.gahm.componentes.validadores.ValidadorDecimal;
+			import mx.com.gahm.componentes.validadores.ValidadorNumerico;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.utils.object_proxy;
+			
+			private var mode:String = null;
+			private var _item:SolicitudAlmacen;
+			private var validators:InicializaValidadoresEtiquetas;
+			
+			public function set registrer(value:Boolean):void{
+				mode = Constants.REGISTER_MODE;
+				this.label = Constants.REGISTRAR;
+			}
+			
+			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set enabledComponents(value:Boolean):void{
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				this.modeValidation();
+				this.initializeValidators();
+				this.fillCombos();
+			}
+			
+			public function set warehouseApplication(value:SolicitudAlmacen):void{
+				if( value == null ){
+					return;
+				}
+				this.cleanForm();
+				this._item = value;
+				this.setWarehouseApplication(); 
+			}
+			
+			private function setWarehouseApplication():void
+			{
+				if( this._item == null ){
+					return;
+				}
+				this.stateValidation();
+				this.txtFolio.text = Util.numberToString( this._item.id );
+				this.dtfApplicationDate.selectedDate = this._item.fechaSolicitud;
+				itemsManagement.setEntries( this._item );
+				this.setApplicantState();
+				this.txtReceives.text = this._item.recibe;
+				this.dtfReturnDate.selectedDate = this._item.fechaRetorno;
+			}
+			
+			private function setApplicantState():void{
+				this.lblApplicantState.text = this.getApplicantState( this._item );
+			}
+			
+			private function isClosed( item:Object ):Boolean{
+				var id:Number = Util.extractObject( item, "estatusDevolucion.id" ) as Number;
+				if( isNaN( id ) ){
+					return false;
+				}
+				return ( id == EstatusDevolucion.ID_CERRADO || id == EstatusDevolucion.ID_NA );
+			}
+			
+			private function getApplicantState( warehouseApplication:SolicitudAlmacen ):String{
+				var applicantState:String = "Abierto";
+				if( warehouseApplication == null ){
+					return applicantState;
+				}
+				var closed:Boolean = true;
+				for each ( var itemC:ConsumibleSolicitudAlmacen in warehouseApplication.consumiblesSolicitudAlmacen ) 
+				{
+					closed &&= this.isClosed( itemC );
+				}
+				for each ( var itemEM:EquipoMedicionSolicitudAlmacen in warehouseApplication.equipoMedicionSolicitudAlmacen ) 
+				{
+					closed &&= this.isClosed( itemEM );
+				}
+				for each ( var itemET:EquipoTransporteSolicitudAlmacen in warehouseApplication.equipoTransporteSolicitudAlmacen ) 
+				{
+					closed &&= this.isClosed( itemET );
+				}
+				for each ( var itemM:MaterialSolicitudAlmacen in warehouseApplication.materialesSolicitudAlmacen ) 
+				{
+					closed &&= this.isClosed( itemM );
+				}
+				for each ( var itemTM:TelefoniaMovilSolicitudAlmacen in warehouseApplication.telefoniaMovilSolicitudAlmacen ) 
+				{
+					closed &&= this.isClosed( itemTM );
+				}
+				for each ( var itemH:HardwareSolicitudAlmacen in warehouseApplication.hardwareSolicitudAlmacen ) 
+				{
+					closed &&= this.isClosed( itemH );
+				}
+				for each ( var itemS:SoftwareSolicitudAlmacen in warehouseApplication.softwareSolicitudAlmacen ) 
+				{
+					closed &&= this.isClosed( itemS );
+				}
+				for each ( var itemHe:HerramientaSolicitudAlmacen in warehouseApplication.herramientasSolicitudAlmacen ) 
+				{
+					closed &&= this.isClosed( itemHe );
+				}
+				if( closed ){
+					applicantState = "Cerrrado"; 
+				}
+				return applicantState;
+			}
+			
+			private function getWarehouseApplication():SolicitudAlmacen{
+				var item:SolicitudAlmacen = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					item = new SolicitudAlmacen();
+				}else{
+					item = this._item;
+				}
+				itemsManagement.getEntries( item );
+				return item;
+			}
+			
+			private function fillCombos():void
+			{
+			}
+			
+			protected function solicitudAlmacenService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			protected function btnAccept_clickHandler(event:MouseEvent):void
+			{
+				if( !this.validations() ){
+					Util.showMessageVerifyFields();
+					return;
+				}
+				if( this.mode == Constants.REGISTER_MODE ){
+					var warehouseApplication:SolicitudAlmacen = this.getWarehouseApplication();
+					Util.showProperties( warehouseApplication );
+					this.responseSave.token = this.solicitudAlmacenService.save( warehouseApplication );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+					Alert.show("Confirme si desea actualizar el elemento.","Advertencia",Alert.YES+Alert.NO,this, updateItem);
+				}
+			}
+			
+			private function updateItem(event:CloseEvent):void{
+				if( event.detail == Alert.NO ){
+					return;
+				}
+				var warehouseApplication:SolicitudAlmacen = this.getWarehouseApplication();
+				Util.showProperties( warehouseApplication );
+				this.responseUpdate.token = this.solicitudAlmacenService.update( warehouseApplication );
+			}
+			
+			private function validations():Boolean
+			{
+				var value:Boolean = true;
+				return value;
+			}
+			
+			private function modeValidation():void
+			{
+				if( !Model.getInstance().user.allowedPerfil( Perfil.ID_ALMACEN ) ){
+				}
+				if( this.mode == Constants.REGISTER_MODE ){
+					form.removeChild( this.frmItmCode );
+				}
+				if( this.mode == Constants.UPDATE_MODE ){
+				}
+			}
+			
+			private function initializeValidators():void
+			{
+			}
+			
+			protected function responseSave_resultHandler(event:ResultEvent):void
+			{
+				var eventWarehouseApplicationNew:Event = new Event("warehouseApplicationNew");
+				this.dispatchEvent( eventWarehouseApplicationNew );
+				this.cleanForm();
+			}
+			
+			private function cleanForm():void
+			{
+				Util.upScroll( this );
+				this.txtFolio.reset();
+				this.dtfApplicationDate.selectedDate = new Date();
+				this.itemsManagement.reset();
+				this.lblApplicantState.text = "";
+				this.txtReceives.reset();
+				this.dtfReturnDate.reset();
+			}
+			
+			protected function responseUpdate_resultHandler(event:ResultEvent):void
+			{
+				var eventWarehouseApplicationUpdated:Event = new Event("warehouseApplicationUpdated");
+				this.dispatchEvent( eventWarehouseApplicationUpdated );
+				this.cleanForm();
+			}
+			
+			protected function responseGetUnidadB_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				/*
+				this.cmbUnit.dataProvider = data;//Util.addEmptyCatalgo( data );
+				if( this._item != null && this._item.unidadB != null ){
+					this.cmbUnit.selectedIndex = Util.selectedIndexFromCombo( this.cmbUnit.dataProvider as ArrayCollection, 
+						this._item.unidadB.id);
+				}
+				*/
+			}
+			
+			protected function catalogoService_faultHandler(event:FaultEvent):void
+			{
+				Util.showErrorMessage( Util.splitException( event.fault.faultString ) );
+			}
+			
+			private function findGrupoFamilia(item:Object):String{
+				if( item == null ){
+					return "";
+				}
+				var grupoFamilia:String = "";
+				if( item.hasOwnProperty("grupoFamilia") ){
+					grupoFamilia = item["grupoFamilia"];
+				}else if( item.hasOwnProperty("grupoFamiliaA") ){
+					grupoFamilia = item["grupoFamiliaA"]["etiqueta"];
+				}else if( item.hasOwnProperty("grupoFamiliab") ){
+					grupoFamilia = item["grupoFamiliab"]["etiqueta"];
+				}else if( item.hasOwnProperty("grupoFamiliaC") ){
+					grupoFamilia = item["grupoFamiliaC"]["etiqueta"];
+				}else if( item.hasOwnProperty("grupoFamiliaD") ){
+					grupoFamilia = item["grupoFamiliaD"]["etiqueta"];
+				}else if( item.hasOwnProperty("grupoFamiliaE") ){
+					grupoFamilia = item["grupoFamiliaE"]["etiqueta"];
+				}else if( item.hasOwnProperty("grupoFamiliaF") ){
+					grupoFamilia = item["grupoFamiliaF"]["etiqueta"];
+				}
+				return grupoFamilia;
+			}
+			
+			private function findUnidad(item:Object):String{
+				if( item == null ){
+					return "";
+				}
+				var unidad:String = "";
+				if( item.hasOwnProperty("unidad") ){
+					unidad = item["unidad"];
+				}else if( item.hasOwnProperty("unidadA") ){
+					unidad = item["unidadA"]["etiqueta"];
+				}else if( item.hasOwnProperty("unidadB") ){
+					unidad = item["unidadB"]["etiqueta"];
+				}else if( item.hasOwnProperty("unidadC") ){
+					unidad = item["unidadC"]["etiqueta"];
+				}
+				return unidad;
+			}
+			
+			protected function btnPrint_clickHandler(event:MouseEvent):void
+			{
+				var params:Array = [{key:"id", value:this._item.id}];
+				Util.launchReport( Reportes.SOLICITUD_ALMANCEN, params );
+			}
+			
+			private function stateValidation():void
+			{
+				var value:Boolean = true;
+				if( this._item.estadoSolicitudAlmacen.id == EstadoSolicitudAlmacen.ID_AUTORIZADO ){
+					value = false;
+				}
+				this.itemsManagement.doubleClickEnabled = value;
+				this.btnAccept.enabled = value;
+			}
+			
+			protected function responseSaveMySelfNotificacion_resultHandler(event:ResultEvent):void
+			{
+				
+			}
+			
+			protected function responseSaveNotificacion_resultHandler(event:ResultEvent):void
+			{
+				Util.showInfoMessage("Se ha notificado al área de Álmacen." );
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[Event(name="warehouseApplicationNew", type="flash.events.Event")]
+		[Event(name="warehouseApplicationUpdated", type="flash.events.Event")]
+	</mx:Metadata>
+	<mx:Form id="form">
+		<mx:FormItem required="false" id="frmItmCode" label="Folio:">
+			<components:TextInput id="txtFolio"
+								  width="70"
+								  textAlign="right"
+								  editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem required="false" label="Responsable:">
+			<components:TextInput id="txtReceives" width="400"
+								  editable="false"/>
+		</mx:FormItem>
+		<mx:FormItem required="false" label="Fecha de Solicitud:">
+			<components:DateField selectedDate="{new Date()}"
+								  id="dtfApplicationDate"
+								  enabled="false"/>
+		</mx:FormItem>
+		<mx:FormItem label="Fecha de Retorno:">
+			<components:DateField id="dtfReturnDate"
+								  enabled="false"/>
+		</mx:FormItem>
+		<solicitudalmacen:ItemsManagement id="itemsManagement" refundVouchersView="true" itemsChanged="this.setApplicantState()"/>
+		<mx:FormItem id="frmItmApplicantState" required="false" label="Estado del Vale:"
+			direction="horizontal">
+			<mx:Label id="lblApplicantState"/>
+			<mx:Button label="Validar Estado" click="this.setApplicantState()"/>
+		</mx:FormItem>
+		<mx:FormItem direction="horizontal">
+			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:RemoteObject id="solicitudAlmacenService" destination="solicitudAlmacenService" fault="solicitudAlmacenService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>
+	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
+</mx:VBox>

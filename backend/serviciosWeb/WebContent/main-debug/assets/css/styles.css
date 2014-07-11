@@ -185,7 +185,7 @@ ComboBox{
 ComboBox, Tree, List
 {
 	selectionColor:#4385d9;
-	rollOverColor:#4385d9;
+	rollOverColor:#7ab8ef;
 	textRollOverColor:#ffffff;
 	textSelectedColor:#ffffff;
 }
@@ -311,16 +311,25 @@ FILTERS                                                            *
 	inner: true;
 }
 
+.labelDateField
+{
+	disabled-color: red;
+	background-disabled-color: yellow;
+}
+
+DateField
+{
+	label-style-name: labelDateField; 
+}
+
 /****************************************************************************************************************
 FONTS                                                              *
 *****************************************************************************************************************
 */
 @font-face {
-	src:url("fonts/arial.swf");
 	fontFamily: "Arial";
 }
 @font-face {
-	src:url("fonts/arial.swf");
 	fontFamily: "Arial";
 	fontWeight:bold;
 }

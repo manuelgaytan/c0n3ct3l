@@ -14,7 +14,8 @@ import java.util.List;
  */
 @Entity
 @NamedQueries({
-	@NamedQuery(name = "ConfigPruebaEntregaDO.findAll", query = "select c from ConfigPruebaEntregaDO c where c.proyecto.estado.id=3") })
+	@NamedQuery(name = "ConfigPruebaEntregaDO.findAll", query = "select c from ConfigPruebaEntregaDO c where c.proyecto.estado.id=3"),
+	@NamedQuery(name = "ConfigPruebaEntregaDO.findAllAll", query = "select c from ConfigPruebaEntregaDO c") })
 @Table(name="configuracionpruebaentrega")
 public class ConfigPruebaEntregaDO implements Serializable {
 	private static final long serialVersionUID = 1L;

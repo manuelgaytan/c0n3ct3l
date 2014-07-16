@@ -288,13 +288,13 @@ public class ProyectoService implements IProyectoService {
 				"ProyectoDO.getAll", ProyectoDO.class);
 		List<ProyectoDO> proyectos = query.getResultList();
 		TypedQuery<DatosGrlsProyectoDO> queryDGP = entityManager.createNamedQuery(
-				"DatosGrlsProyectoDO.findAll", DatosGrlsProyectoDO.class);
+				"DatosGrlsProyectoDO.findAllAll", DatosGrlsProyectoDO.class);
 		List<DatosGrlsProyectoDO> datosgeneralesproyecto = queryDGP.getResultList();
 		TypedQuery<DesarrolloProyectoABDO> queryDP = entityManager.createNamedQuery(
-				"DesarrolloProyectoABDO.findAll", DesarrolloProyectoABDO.class);
+				"DesarrolloProyectoABDO.findAllAll", DesarrolloProyectoABDO.class);
 		List<DesarrolloProyectoABDO> desarrolloproyectoab = queryDP.getResultList();
 		TypedQuery<ConfigPruebaEntregaDO> queryCPE = entityManager.createNamedQuery(
-				"ConfigPruebaEntregaDO.findAll", ConfigPruebaEntregaDO.class);
+				"ConfigPruebaEntregaDO.findAllAll", ConfigPruebaEntregaDO.class);
 		List<ConfigPruebaEntregaDO> configpruebaentrega = queryCPE.getResultList();
 		List<ConsultaGeneralOperacion> list = new ArrayList<ConsultaGeneralOperacion>();
 		ConsultaGeneralOperacion consultaGeneralOperacion = null;

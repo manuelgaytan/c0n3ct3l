@@ -240,6 +240,7 @@
 		<class>mx.com.gahm.conenctel.entities.RangoEstadisticaPersonalDO</class>
 		<class>mx.com.gahm.conenctel.entities.ArchivoCotizacionDO</class>
 		<class>mx.com.gahm.conenctel.entities.DocumentoAyudanteDO</class>
+		<class>mx.com.gahm.conenctel.entities.EstatusDevolucionDO</class>
 		<properties>
 			<property name="eclipselink.logging.level" value="FINE"/> 
 			<property name="eclipselink.logging.parameters" value="true"/>

@@ -100,7 +100,7 @@
 			}
 			
 			private function setApplicantState():void{
-				this.lblApplicantState.text = this.getApplicantState( this._item );
+				this.lblApplicantState.text = this.getApplicantState( this.getWarehouseApplication() );
 			}
 			
 			private function isClosed( item:Object ):Boolean{

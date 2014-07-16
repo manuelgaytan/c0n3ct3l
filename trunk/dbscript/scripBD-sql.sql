@@ -1009,6 +1009,9 @@
 	cantidad_solicitada DECIMAL(12,5) NOT NULL,
 	regreso_almacen BOOLEAN,
 	observacion VARCHAR(255),
+	cantidad_devuelta DECIMAL(12,5),
+	fk_estatus_devolucion INT(11) UNSIGNED,
+	fecha_devolucion DATE,
 	PRIMARY KEY (id)
 	);
 
@@ -1020,6 +1023,9 @@
 	cantidad_solicitada DECIMAL(12,5) NOT NULL,
 	regreso_almacen BOOLEAN,
 	observacion VARCHAR(255),
+	cantidad_devuelta DECIMAL(12,5),
+	fk_estatus_devolucion INT(11) UNSIGNED,
+	fecha_devolucion DATE,
 	PRIMARY KEY (id)
 	);
 
@@ -1031,6 +1037,9 @@
 	cantidad_solicitada DECIMAL(12,5) NOT NULL,
 	regreso_almacen BOOLEAN,
 	observacion VARCHAR(255),
+	cantidad_devuelta DECIMAL(12,5),
+	fk_estatus_devolucion INT(11) UNSIGNED,
+	fecha_devolucion DATE,
 	PRIMARY KEY (id)
 	);
 
@@ -1042,6 +1051,9 @@
 	cantidad_solicitada DECIMAL(12,5) NOT NULL,
 	regreso_almacen BOOLEAN,
 	observacion VARCHAR(255),
+	cantidad_devuelta DECIMAL(12,5),
+	fk_estatus_devolucion INT(11) UNSIGNED,
+	fecha_devolucion DATE,
 	PRIMARY KEY (id)
 	);
 
@@ -1053,6 +1065,9 @@
 	cantidad_solicitada DECIMAL(12,5) NOT NULL,
 	regreso_almacen BOOLEAN,
 	observacion VARCHAR(255),
+	cantidad_devuelta DECIMAL(12,5),
+	fk_estatus_devolucion INT(11) UNSIGNED,
+	fecha_devolucion DATE,
 	PRIMARY KEY (id)
 	);
 
@@ -1064,6 +1079,9 @@
 	cantidad_solicitada DECIMAL(12,5) NOT NULL,
 	regreso_almacen BOOLEAN,
 	observacion VARCHAR(255),
+	cantidad_devuelta DECIMAL(12,5),
+	fk_estatus_devolucion INT(11) UNSIGNED,
+	fecha_devolucion DATE,
 	PRIMARY KEY (id)
 	);
 
@@ -1075,6 +1093,9 @@
 	cantidad_solicitada DECIMAL(12,5) NOT NULL,
 	regreso_almacen BOOLEAN,
 	observacion VARCHAR(255),
+	cantidad_devuelta DECIMAL(12,5),
+	fk_estatus_devolucion INT(11) UNSIGNED,
+	fecha_devolucion DATE,
 	PRIMARY KEY (id)
 	);
 
@@ -1086,6 +1107,9 @@
 	cantidad_solicitada DECIMAL(12,5) NOT NULL,
 	regreso_almacen BOOLEAN,
 	observacion VARCHAR(255),
+	cantidad_devuelta DECIMAL(12,5),
+	fk_estatus_devolucion INT(11) UNSIGNED,
+	fecha_devolucion DATE,
 	PRIMARY KEY (id)
 	);
 
@@ -2668,6 +2692,13 @@
 	PRIMARY KEY (id)
 	);
 
+	CREATE TABLE EstatusDevolucion
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	estatus VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+	);
+
 	/*************************************************************************************************************************************
 	FIN CAMBIOS
 	/************************************************************************************************************************************/
@@ -3369,6 +3400,22 @@
 	ALTER TABLE EstadisticaPersonal ADD FOREIGN KEY fk_rango_estadistica_personal_rotacion_idxfk (fk_rango_estadistica_personal_rotacion) REFERENCES RangoEstadisticaPersonal (id);
 
 	ALTER TABLE EstadisticaPersonal ADD FOREIGN KEY fk_rango_estadistica_personal_retardo_idxfk (fk_rango_estadistica_personal_retardo) REFERENCES RangoEstadisticaPersonal (id);
+
+	ALTER TABLE ConsumibleSolicitudAlmacen ADD FOREIGN KEY fk_estatus_devolucion_idxfk (fk_estatus_devolucion) REFERENCES EstatusDevolucion (id);
+
+	ALTER TABLE EquipoMedicionSolicitudAlmacen ADD FOREIGN KEY fk_estatus_devolucion_idxfk_2 (fk_estatus_devolucion) REFERENCES EstatusDevolucion (id);
+
+	ALTER TABLE EquipoTransporteSolicitudAlmacen ADD FOREIGN KEY fk_estatus_devolucion_idxfk_3 (fk_estatus_devolucion) REFERENCES EstatusDevolucion (id);
+
+	ALTER TABLE HardwareSolicitudAlmacen ADD FOREIGN KEY fk_estatus_devolucion_idxfk_4 (fk_estatus_devolucion) REFERENCES EstatusDevolucion (id);
+
+	ALTER TABLE HerramientaSolicitudAlmacen ADD FOREIGN KEY fk_estatus_devolucion_idxfk_5 (fk_estatus_devolucion) REFERENCES EstatusDevolucion (id);
+
+	ALTER TABLE MaterialSolicitudAlmacen ADD FOREIGN KEY fk_estatus_devolucion_idxfk_6 (fk_estatus_devolucion) REFERENCES EstatusDevolucion (id);
+
+	ALTER TABLE SoftwareSolicitudAlmacen ADD FOREIGN KEY fk_estatus_devolucion_idxfk_7 (fk_estatus_devolucion) REFERENCES EstatusDevolucion (id);
+
+	ALTER TABLE TelefoniaMovilSolicitudAlmacen ADD FOREIGN KEY fk_estatus_devolucion_idxfk_8 (fk_estatus_devolucion) REFERENCES EstatusDevolucion (id);
 
 	/*************************************************************************************************************************************
 	CAMBIOS
@@ -4942,6 +4989,13 @@
 	VALUES (4, '61 - 80');
 	INSERT INTO RangoEstadisticaPersonal
 	VALUES (5, '81 - 100');
+	
+	INSERT INTO EstatusDevolucion
+	VALUES (1, 'Pendiente');
+	INSERT INTO EstatusDevolucion
+	VALUES (2, 'N/A');
+	INSERT INTO EstatusDevolucion
+	VALUES (3, 'Cerrado');
 
 	/*
 	INSERT INTO 

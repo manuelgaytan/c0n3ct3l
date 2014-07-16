@@ -313,6 +313,9 @@
 				itemSolicitudAlmacen.cantidadSolicitada = item.cantidad;
 				itemSolicitudAlmacen.regresoAlmacen = item.regresoAlmacen;
 				itemSolicitudAlmacen.observacion = item.observacion;
+				itemSolicitudAlmacen.cantidadDevuelta = item.cantidadDevuelta;
+				itemSolicitudAlmacen.estatusDevolucion = item.estatusDevolucion;
+				itemSolicitudAlmacen.fechaDevolucion = item.fechaDevolucion;
 				if( warehouseApplication[listProperty] == null ){
 					warehouseApplication[listProperty] = new ArrayCollection();
 				}
@@ -399,7 +402,7 @@
 		<mx:DataGridColumn id="dtgItemValidation" headerText="{'Regreso al\nAlmacén'}"
 						   dataField="regresoAlmacen"
 						   width="80"
-						   itemRenderer="mx.controls.CheckBox"
+						   itemRenderer="components.renderers.CheckBoxRendererStockReturn"
 						   textAlign="center"
 						   editable="false"/>
 		<mx:DataGridColumn id="dtgItemEstatus" headerText="Observación"

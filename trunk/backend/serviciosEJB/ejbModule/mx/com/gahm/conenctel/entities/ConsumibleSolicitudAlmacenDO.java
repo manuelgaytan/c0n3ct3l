@@ -4,6 +4,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="ConsumibleSolicitudAlmacen")
@@ -42,7 +45,14 @@ public class ConsumibleSolicitudAlmacenDO implements Serializable {
 	private Boolean regresoAlmacen;
 	@Column(name="observacion")
 	private String observacion;
-
+	@Column(name="cantidad_devuelta")
+	private BigDecimal cantidadDevuelta;
+	@JoinColumn(name="fk_estatus_devolucion")
+	private EstatusDevolucionDO estatusDevolucion;
+	@Temporal(TemporalType.DATE)
+	@Column(name="fecha_devolucion")
+	private Date fechaDevolucion;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -90,6 +100,30 @@ public class ConsumibleSolicitudAlmacenDO implements Serializable {
 
 	public void setConsumible(ConsumibleDO consumible) {
 		this.consumible = consumible;
+	}
+
+	public BigDecimal getCantidadDevuelta() {
+		return cantidadDevuelta;
+	}
+
+	public void setCantidadDevuelta(BigDecimal cantidadDevuelta) {
+		this.cantidadDevuelta = cantidadDevuelta;
+	}
+
+	public EstatusDevolucionDO getEstatusDevolucion() {
+		return estatusDevolucion;
+	}
+
+	public void setEstatusDevolucion(EstatusDevolucionDO estatusDevolucion) {
+		this.estatusDevolucion = estatusDevolucion;
+	}
+
+	public Date getFechaDevolucion() {
+		return fechaDevolucion;
+	}
+
+	public void setFechaDevolucion(Date fechaDevolucion) {
+		this.fechaDevolucion = fechaDevolucion;
 	}
 
 }

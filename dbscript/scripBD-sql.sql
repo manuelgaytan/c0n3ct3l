@@ -1012,6 +1012,7 @@
 	cantidad_devuelta DECIMAL(12,5),
 	fk_estatus_devolucion INT(11) UNSIGNED,
 	fecha_devolucion DATE,
+	devuelto BOOLEAN,
 	PRIMARY KEY (id)
 	);
 
@@ -1026,6 +1027,7 @@
 	cantidad_devuelta DECIMAL(12,5),
 	fk_estatus_devolucion INT(11) UNSIGNED,
 	fecha_devolucion DATE,
+	devuelto BOOLEAN,
 	PRIMARY KEY (id)
 	);
 
@@ -1040,6 +1042,7 @@
 	cantidad_devuelta DECIMAL(12,5),
 	fk_estatus_devolucion INT(11) UNSIGNED,
 	fecha_devolucion DATE,
+	devuelto BOOLEAN,
 	PRIMARY KEY (id)
 	);
 
@@ -1054,6 +1057,7 @@
 	cantidad_devuelta DECIMAL(12,5),
 	fk_estatus_devolucion INT(11) UNSIGNED,
 	fecha_devolucion DATE,
+	devuelto BOOLEAN,
 	PRIMARY KEY (id)
 	);
 
@@ -1068,6 +1072,7 @@
 	cantidad_devuelta DECIMAL(12,5),
 	fk_estatus_devolucion INT(11) UNSIGNED,
 	fecha_devolucion DATE,
+	devuelto BOOLEAN,
 	PRIMARY KEY (id)
 	);
 
@@ -1082,6 +1087,7 @@
 	cantidad_devuelta DECIMAL(12,5),
 	fk_estatus_devolucion INT(11) UNSIGNED,
 	fecha_devolucion DATE,
+	devuelto BOOLEAN,
 	PRIMARY KEY (id)
 	);
 
@@ -1096,6 +1102,7 @@
 	cantidad_devuelta DECIMAL(12,5),
 	fk_estatus_devolucion INT(11) UNSIGNED,
 	fecha_devolucion DATE,
+	devuelto BOOLEAN,
 	PRIMARY KEY (id)
 	);
 
@@ -1110,6 +1117,7 @@
 	cantidad_devuelta DECIMAL(12,5),
 	fk_estatus_devolucion INT(11) UNSIGNED,
 	fecha_devolucion DATE,
+	devuelto BOOLEAN,
 	PRIMARY KEY (id)
 	);
 

@@ -19,6 +19,7 @@ import mx.com.gahm.conenctel.entities.EquipoMedicionSolicitudAlmacenDO;
 import mx.com.gahm.conenctel.entities.EquipoTransporteDO;
 import mx.com.gahm.conenctel.entities.EquipoTransporteSolicitudAlmacenDO;
 import mx.com.gahm.conenctel.entities.EstadoSolicitudAlmacenDO;
+import mx.com.gahm.conenctel.entities.EstatusDevolucionDO;
 import mx.com.gahm.conenctel.entities.HardwareDO;
 import mx.com.gahm.conenctel.entities.HardwareSolicitudAlmacenDO;
 import mx.com.gahm.conenctel.entities.HerramientaDO;
@@ -237,6 +238,181 @@ public class SolicitudAlmacenService implements ISolicitudAlmacenService {
 		return item;
 	}
 
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public SolicitudAlmacenDO updateValeDevolucion(SolicitudAlmacenDO item) {
+		this.colocarSolicitudAlmacenAListas(item);
+		
+		SolicitudAlmacenDO dato=null;
+		try {
+			dato = getItem(item.getId());
+		} catch (ConectelException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+
+		HerramientaDO herramienta = null;
+		SoftwareDO    software = null;
+		ConsumibleDO consumible = null;
+		HardwareDO hardware = null;
+		TelefoniaMovilDO telefonia = null;
+		EquipoMedicionDO equipoMedicion = null;
+		EquipoTransporteDO equipoTransporte = null;
+		MaterialDO material = null;
+		Double cantidadDevuelta = 0.0;	
+		
+		if(dato!=null && dato.getEstadoSolicitudAlmacen()!=null 
+				&& item.getEstadoSolicitudAlmacen().getId()==EstadoSolicitudAlmacenDO.ID_AUTORIZADO){
+			if(item.getHerramientasSolicitudAlmacen()!=null && 
+					!item.getHerramientasSolicitudAlmacen().isEmpty()){
+					for (HerramientaSolicitudAlmacenDO datoAlmacen : item.getHerramientasSolicitudAlmacen()) {
+						if( !(datoAlmacen == null) && 
+								!(datoAlmacen.getEstatusDevolucion() == null ) &&
+								( datoAlmacen.getDevuelto() == null || datoAlmacen.getDevuelto() == false ) &&
+								( datoAlmacen.getEstatusDevolucion().getId() == EstatusDevolucionDO.ID_NA || 
+								  datoAlmacen.getEstatusDevolucion().getId() == EstatusDevolucionDO.ID_CERRADO ) && 
+								!(datoAlmacen.getCantidadDevuelta() == null) ){
+							cantidadDevuelta = datoAlmacen.getCantidadDevuelta().doubleValue(); 
+							herramienta = entityManager.find(HerramientaDO.class, datoAlmacen.getHerramienta().getId());
+							herramienta.setExistencia(herramienta.getExistencia()+cantidadDevuelta);
+							entityManager.merge(herramienta);
+							datoAlmacen.setDevuelto(true);
+						}
+						entityManager.merge(datoAlmacen);
+					}
+			}
+			if(item.getSoftwareSolicitudAlmacen()!=null && 
+					!item.getSoftwareSolicitudAlmacen().isEmpty()){
+					for (SoftwareSolicitudAlmacenDO datoAlmacen : item.getSoftwareSolicitudAlmacen()) {
+						if( !(datoAlmacen == null) && 
+								!(datoAlmacen.getEstatusDevolucion() == null ) &&
+								( datoAlmacen.getDevuelto() == null || datoAlmacen.getDevuelto() == false ) &&
+								( datoAlmacen.getEstatusDevolucion().getId() == EstatusDevolucionDO.ID_NA || 
+								  datoAlmacen.getEstatusDevolucion().getId() == EstatusDevolucionDO.ID_CERRADO ) && 
+								!(datoAlmacen.getCantidadDevuelta() == null) ){
+							cantidadDevuelta = datoAlmacen.getCantidadDevuelta().doubleValue(); 
+							software = entityManager.find(SoftwareDO.class, datoAlmacen.getSoftware().getId());
+							software.setExistencia(software.getExistencia()+cantidadDevuelta);
+							entityManager.merge(software);
+							datoAlmacen.setDevuelto(true);
+						}
+						entityManager.merge(datoAlmacen);
+					}
+			}
+			if(item.getConsumiblesSolicitudAlmacen()!=null && 
+					!item.getConsumiblesSolicitudAlmacen().isEmpty()){
+					for (ConsumibleSolicitudAlmacenDO datoAlmacen : item.getConsumiblesSolicitudAlmacen()) {
+						if( !(datoAlmacen == null) && 
+								!(datoAlmacen.getEstatusDevolucion() == null ) &&
+								( datoAlmacen.getDevuelto() == null || datoAlmacen.getDevuelto() == false ) &&
+								( datoAlmacen.getEstatusDevolucion().getId() == EstatusDevolucionDO.ID_NA || 
+								  datoAlmacen.getEstatusDevolucion().getId() == EstatusDevolucionDO.ID_CERRADO ) && 
+									!(datoAlmacen.getCantidadDevuelta() == null) ){
+							cantidadDevuelta = datoAlmacen.getCantidadDevuelta().doubleValue(); 
+							consumible = entityManager.find(ConsumibleDO.class, datoAlmacen.getConsumible().getId());
+							consumible.setExistencia(consumible.getExistencia()+cantidadDevuelta);
+							entityManager.merge(consumible);
+							datoAlmacen.setDevuelto(true);
+						}
+						entityManager.merge(datoAlmacen);
+					}
+			}
+			if(item.getHardwareSolicitudAlmacen()!=null && 
+					!item.getHardwareSolicitudAlmacen().isEmpty()){
+					for (HardwareSolicitudAlmacenDO datoAlmacen : item.getHardwareSolicitudAlmacen()) {
+						if( !(datoAlmacen == null) && 
+								!(datoAlmacen.getEstatusDevolucion() == null ) &&
+								( datoAlmacen.getDevuelto() == null || datoAlmacen.getDevuelto() == false ) &&
+								( datoAlmacen.getEstatusDevolucion().getId() == EstatusDevolucionDO.ID_NA || 
+								  datoAlmacen.getEstatusDevolucion().getId() == EstatusDevolucionDO.ID_CERRADO ) && 
+									!(datoAlmacen.getCantidadDevuelta() == null) ){
+							cantidadDevuelta = datoAlmacen.getCantidadDevuelta().doubleValue(); 
+							hardware = entityManager.find(HardwareDO.class, datoAlmacen.getHardware().getId());
+							hardware.setExistencia(hardware.getExistencia()+cantidadDevuelta);
+							entityManager.merge(hardware);
+							datoAlmacen.setDevuelto(true);
+						}
+						entityManager.merge(datoAlmacen);
+					}
+			}
+			if(item.getTelefoniaMovilSolicitudAlmacen()!=null && 
+					!item.getTelefoniaMovilSolicitudAlmacen().isEmpty()){
+					for (TelefoniaMovilSolicitudAlmacenDO datoAlmacen : item.getTelefoniaMovilSolicitudAlmacen()) {
+						if( !(datoAlmacen == null) && 
+								!(datoAlmacen.getEstatusDevolucion() == null ) &&
+								( datoAlmacen.getDevuelto() == null || datoAlmacen.getDevuelto() == false ) &&
+								( datoAlmacen.getEstatusDevolucion().getId() == EstatusDevolucionDO.ID_NA || 
+								  datoAlmacen.getEstatusDevolucion().getId() == EstatusDevolucionDO.ID_CERRADO ) && 
+									!(datoAlmacen.getCantidadDevuelta() == null) ){
+							cantidadDevuelta = datoAlmacen.getCantidadDevuelta().doubleValue(); 
+							telefonia = entityManager.find(TelefoniaMovilDO.class, datoAlmacen.getTelefoniaMovil().getId());
+							telefonia.setExistencia(telefonia.getExistencia()+cantidadDevuelta);
+							entityManager.merge(telefonia);
+							datoAlmacen.setDevuelto(true);
+						}
+						entityManager.merge(datoAlmacen);
+					}
+			}
+			if(item.getEquipoMedicionSolicitudAlmacen()!=null && 
+					!item.getEquipoMedicionSolicitudAlmacen().isEmpty()){
+					for (EquipoMedicionSolicitudAlmacenDO datoAlmacen : item.getEquipoMedicionSolicitudAlmacen()) {
+						/*
+						if( !(datoAlmacen == null) && 
+							!(datoAlmacen.getEstatusDevolucion() == null ) &&
+							( datoAlmacen.getDevuelto() == null || datoAlmacen.getDevuelto() == false ) &&
+							( datoAlmacen.getEstatusDevolucion().getId() == EstatusDevolucionDO.ID_NA || 
+							  datoAlmacen.getEstatusDevolucion().getId() == EstatusDevolucionDO.ID_CERRADO ) && 
+									!(datoAlmacen.getCantidadDevuelta() == null) ){
+							cantidadDevuelta = datoAlmacen.getCantidadDevuelta().doubleValue(); 
+							equipoMedicion = entityManager.find(EquipoMedicionDO.class, datoAlmacen.getEquipoMedicion().getId());
+							equipoMedicion.setExistencia(equipoMedicion.getExistencia()+cantidadDevuelta);
+							entityManager.merge(equipoMedicion);
+							datoAlmacen.setDevuelto(true);
+						}
+						*/
+						entityManager.merge(datoAlmacen);
+					}
+			}
+			if(item.getEquipoTransporteSolicitudAlmacen()!=null && 
+					!item.getEquipoTransporteSolicitudAlmacen().isEmpty()){
+					for (EquipoTransporteSolicitudAlmacenDO datoAlmacen : item.getEquipoTransporteSolicitudAlmacen()) {
+						/*
+						if( !(datoAlmacen == null) && 
+							!(datoAlmacen.getEstatusDevolucion() == null ) &&
+							( datoAlmacen.getDevuelto() == null || datoAlmacen.getDevuelto() == false ) &&
+							( datoAlmacen.getEstatusDevolucion().getId() == EstatusDevolucionDO.ID_NA || 
+							  datoAlmacen.getEstatusDevolucion().getId() == EstatusDevolucionDO.ID_CERRADO ) && 
+									!(datoAlmacen.getCantidadDevuelta() == null) ){
+							cantidadDevuelta = datoAlmacen.getCantidadDevuelta().doubleValue(); 
+							equipoTransporte = entityManager.find(EquipoTransporteDO.class, datoAlmacen.getEquipoTransporte().getId());
+							equipoTransporte.setExistencia(equipoTransporte.getExistencia()+cantidadDevuelta);
+							entityManager.merge(equipoTransporte);
+							datoAlmacen.setDevuelto(true);
+						}
+						*/
+						entityManager.merge(datoAlmacen);
+					}
+			}
+			if(item.getMaterialesSolicitudAlmacen()!=null && 
+					!item.getMaterialesSolicitudAlmacen().isEmpty()){
+					for (MaterialSolicitudAlmacenDO datoAlmacen : item.getMaterialesSolicitudAlmacen()) {
+						if( !(datoAlmacen == null) && 
+								!(datoAlmacen.getEstatusDevolucion() == null ) &&
+								( datoAlmacen.getDevuelto() == null || datoAlmacen.getDevuelto() == false ) &&
+								( datoAlmacen.getEstatusDevolucion().getId() == EstatusDevolucionDO.ID_NA || 
+								  datoAlmacen.getEstatusDevolucion().getId() == EstatusDevolucionDO.ID_CERRADO ) && 
+									!(datoAlmacen.getCantidadDevuelta() == null) ){
+							cantidadDevuelta = datoAlmacen.getCantidadDevuelta().doubleValue(); 
+							material = entityManager.find(MaterialDO.class, datoAlmacen.getMaterial().getId());
+							material.setExistencia(material.getExistencia()+cantidadDevuelta);
+							entityManager.merge(material);
+							datoAlmacen.setDevuelto(true);
+						}
+						entityManager.merge(datoAlmacen);
+					}
+			}
+		}
+		return item;
+	}	
 	
 	private void eliminarListasViejas(SolicitudAlmacenDO item,
 			SolicitudAlmacenDO nuevo) {

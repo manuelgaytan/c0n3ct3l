@@ -52,6 +52,8 @@ public class HardwareSolicitudAlmacenDO implements Serializable {
 	@Temporal(TemporalType.DATE)
 	@Column(name="fecha_devolucion")
 	private Date fechaDevolucion;
+	@Column(name="devuelto")
+	private Boolean devuelto;
 
 	public Integer getId() {
 		return id;
@@ -123,6 +125,14 @@ public class HardwareSolicitudAlmacenDO implements Serializable {
 
 	public void setFechaDevolucion(Date fechaDevolucion) {
 		this.fechaDevolucion = fechaDevolucion;
+	}
+
+	public Boolean getDevuelto() {
+		return devuelto;
+	}
+
+	public void setDevuelto(Boolean devuelto) {
+		this.devuelto = devuelto;
 	}
 
 }

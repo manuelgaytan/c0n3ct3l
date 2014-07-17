@@ -23,6 +23,10 @@ import javax.persistence.Table;
 public class EstatusDevolucionDO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	public static final Long ID_PENDIENTE = 1l;
+	public static final Long ID_NA = 2l;
+	public static final Long ID_CERRADO = 3l;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;

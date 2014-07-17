@@ -21,5 +21,6 @@ public interface ISolicitudAlmacenService {
 	public boolean enviarCompras(SolicitudAlmacenDO item);
 
 	public SolicitudAlmacenDO getItem(Long id) throws ConectelException;
-
+	
+	public SolicitudAlmacenDO updateValeDevolucion(SolicitudAlmacenDO item);
 }

@@ -197,7 +197,7 @@
 				}
 				var warehouseApplication:SolicitudAlmacen = this.getWarehouseApplication();
 				Util.showProperties( warehouseApplication );
-				this.responseUpdate.token = this.solicitudAlmacenService.update( warehouseApplication );
+				this.responseUpdate.token = this.solicitudAlmacenService.updateValeDevolucion( warehouseApplication );
 			}
 			
 			private function validations():Boolean
@@ -318,8 +318,8 @@
 				if( this._item.estadoSolicitudAlmacen.id == EstadoSolicitudAlmacen.ID_AUTORIZADO ){
 					value = false;
 				}
-				this.itemsManagement.doubleClickEnabled = value;
-				this.btnAccept.enabled = value;
+				this.itemsManagement.doubleClickEnabled = false;
+				this.btnAccept.enabled = !value;
 			}
 			
 			protected function responseSaveMySelfNotificacion_resultHandler(event:ResultEvent):void

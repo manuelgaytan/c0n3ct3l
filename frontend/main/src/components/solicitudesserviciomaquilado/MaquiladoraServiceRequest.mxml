@@ -218,7 +218,7 @@
 		<mx:FormItem label="Proyectos Padre:">
 		<mx:VBox width="850">
 			<mx:VBox width="100%" height="100%" verticalGap="5">
-				<proyectospadres:Consult id="parentProjectsConsult" width="500" consultOnly="true"/>
+				<proyectospadres:Consult id="parentProjectsConsult" width="500" readOnly="true"/>
 			</mx:VBox>
 		</mx:VBox>
 		</mx:FormItem>

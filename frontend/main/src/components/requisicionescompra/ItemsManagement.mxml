@@ -4,7 +4,8 @@
 			 editable="{this._purchaseOrderMode}"
 			 variableRowHeight="true"
 			 doubleClick="doubleClickHandler(event)"
-			 doubleClickEnabled="true">
+			 doubleClickEnabled="true"
+			 allowMultipleSelection="{this._purchaseOrderMode}">
 	<mx:Script>
 		<![CDATA[
 			import model.Constants;
@@ -21,6 +22,13 @@
 			import mx.events.CloseEvent;
 			
 			private var _purchaseOrderMode:Boolean = false;
+
+			[Bindable]
+			private var _readOnly:Boolean = false;
+			
+			public function set readOnly(value:Boolean):void{
+				this._readOnly = value;
+			}
 			
 			public function set purchaseOrderMode(value:Boolean):void{
 				this._purchaseOrderMode = value;
@@ -51,66 +59,13 @@
 				}
 				return returnValue;
 			}
-			/*
-			public function set maquiladoraServiceRequest(value:SolicitudServicioMaquilado):void{
-				if( value == null ){
-					return;
-				}
-				this.reset();
-				var i:Number = 1;
-				if( value.proyectoPadre == null ){
-					this.divideProject(i, value.proyecto);
-				}else{
-					for each (var proyectoPadreHijo:ProyectoPadreHijo in (value.proyectoPadre.proyectoPadreHijos) )
-					{
-						this.divideProject(i, proyectoPadreHijo.proyecto);
-						i+=2;
-					}
-				}
-			}
-			
-			private function divideProject(i:Number, proyecto:Proyecto):void
-			{
-				if( proyecto == null ){
-					return;
-				}
-				var entry:PartidaRequisicionCompra = null;
-				entry = new PartidaRequisicionCompra();
-				entry.partida = i.toString();
-				entry.cantidad = Constants.OC_QUANTITY.toString();
-				entry.unidad = Constants.OC_UNIT;
-				entry.descripcion = Constants.OC_ADVANCE + " " + proyecto.producto.modelo + 
-					"\n" + proyecto.producto.actividadRealizar + ", " + proyecto.producto.equipo + 
-					"\n" + proyecto.producto.tipoServicio + " " + Constants.OC_SITE + " " + proyecto.centralSitio;
-				if( proyecto.producto.tipoServicio == Producto.TIPO_SERVICIO_LOCAL ){
-					entry.costo = proyecto.producto.costoLocalProveedor;
-				}
-				if( proyecto.producto.tipoServicio == Producto.TIPO_SERVICIO_FORANEO ){
-					entry.costo = proyecto.producto.costoForaneoProveedor;
-				}
-				entry.importe = Number(entry.cantidad) * entry.costo;
-				this.addItem( entry );
-				i++;
-				entry = new PartidaRequisicionCompra();
-				entry.partida = i.toString();
-				entry.cantidad = Constants.OC_QUANTITY.toString();
-				entry.unidad = Constants.OC_UNIT;
-				entry.descripcion = Constants.OC_SETTLEMENT + " " + proyecto.producto.modelo + 
-					"\n" + proyecto.producto.actividadRealizar + ", " + proyecto.producto.equipo + 
-					"\n" + proyecto.producto.tipoServicio + " " + Constants.OC_SITE + " " + proyecto.centralSitio;
-				if( proyecto.producto.tipoServicio == Producto.TIPO_SERVICIO_LOCAL ){
-					entry.costo = proyecto.producto.costoLocalProveedor;
-				}
-				if( proyecto.producto.tipoServicio == Producto.TIPO_SERVICIO_FORANEO ){
-					entry.costo = proyecto.producto.costoForaneoProveedor;
-				}
-				entry.importe = Number(entry.cantidad) * entry.costo;
-				this.addItem( entry );
-			}
-			*/
+
 			protected function doubleClickHandler(event:MouseEvent):void
 			{
 				if( this._purchaseOrderMode ){
+					return;
+				}
+				if( this._readOnly ){
 					return;
 				}
 				if( this.selectedItems == null ||

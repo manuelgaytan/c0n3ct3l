@@ -201,6 +201,9 @@
 					form.removeChild( this.frmID );
 					this.dtfStatusDate.selectedDate = new Date();
 				}
+				if( this._readOnly ){
+					this.currentState = "readOnly";
+				}
 			}
 			
 			private function initializeValidators():void
@@ -483,6 +486,21 @@
 		[Event(name="purchaseRequisitionNew", type="flash.events.Event")]
 		[Event(name="purchaseRequisitionUpdated", type="flash.events.Event")]
 	</mx:Metadata>
+	<mx:states>
+		<mx:State name="readOnly">
+			<mx:RemoveChild target="{this.frmItmProductServiceRequested}"/>
+			<mx:RemoveChild target="{this.dtgProducts}"/>
+			<mx:RemoveChild target="{this.frmItmCode}"/>
+			<mx:RemoveChild target="{this.frmItmFamily}"/>
+			<mx:RemoveChild target="{this.frmItmDescription}"/>
+			<mx:RemoveChild target="{this.frmItmQuantity}"/>
+			<mx:RemoveChild target="{this.frmItmUnit}"/>
+			<mx:RemoveChild target="{this.frmItmValidation}"/>
+			<mx:RemoveChild target="{this.frmItmCost}"/>
+			<mx:RemoveChild target="{this.spcSpace}"/>
+			<mx:RemoveChild target="{this.frmItmAddItem}"/>
+		</mx:State>
+	</mx:states>
 	<mx:Form id="form">
 		<mx:FormItem required="true" id="frmID" label="Folio:">
 			<components:TextInput id="txtID" editable="false"
@@ -513,7 +531,7 @@
 			<components:TextInput id="txtSite"
 								  />
 		</mx:FormItem>
-		<mx:FormItem label="Producto o Servicio Solicitado:" direction="horizontal">
+		<mx:FormItem id="frmItmProductServiceRequested" label="Producto o Servicio Solicitado:" direction="horizontal">
 			<mx:ComboBox id="cmbProduct"
 						 labelField="etiqueta"
 						 change="cmbProduct_changeHandler(event)"
@@ -543,47 +561,47 @@
 								   labelFunction="labelFunctionUnidad"/>
 			</mx:columns>
 		</mx:DataGrid>
-		<mx:FormItem label="Código:">
+		<mx:FormItem id="frmItmCode" label="Código:">
 			<components:TextInput id="txtCode"
 								  editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Grupo o Familia:">
+		<mx:FormItem id="frmItmFamily" label="Grupo o Familia:">
 			<components:TextInput id="txtFamily"
 								  editable="false"
 								  />
 		</mx:FormItem>
-		<mx:FormItem required="true" label="Descripción:">
+		<mx:FormItem id="frmItmDescription" required="true" label="Descripción:">
 			<components:TextInput id="txtDescription"
 								  width="400"
 								  />
 		</mx:FormItem>
-		<mx:FormItem required="true" label="Cantidad:">
+		<mx:FormItem id="frmItmQuantity" required="true" label="Cantidad:">
 			<components:TextInput id="txtQuantity"
 								  textAlign="right"
 								  width="90"
 								  />
 		</mx:FormItem>
-		<mx:FormItem required="true" label="Unidad:">
+		<mx:FormItem id="frmItmUnit" required="true" label="Unidad:">
 			<components:TextInput id="txtUnit"
 								  width="200"
 								  />
 		</mx:FormItem>
-		<mx:FormItem label="Validación:">
+		<mx:FormItem id="frmItmValidation" label="Validación:">
 			<mx:ComboBox id="cmbValidation"
 						 labelField="nombreCompleto"
 						 />
 		</mx:FormItem>
-		<mx:FormItem required="true" label="Costo:" includeInLayout="false" direction="vertical">
+		<mx:FormItem id="frmItmCost" required="true" label="Costo:" includeInLayout="false" direction="vertical">
 			<components:TextInput id="txtCost"
 								  width="200" textAlign="right"
 								  />
 		</mx:FormItem>
-		<mx:Spacer height="28"/>
-		<mx:FormItem label="">
+		<mx:Spacer id="spcSpace" height="28"/>
+		<mx:FormItem id="frmItmAddItem" label="">
 			<mx:Button id="btnAddItem" label="Agregar Partida" click="btnAddItem_clickHandler(event)"
 				visible="{!this._readOnly}"/>
 		</mx:FormItem>
-		<requisicionescompra:ItemsManagement id="itemsManagement" purchaseOrderMode="false"/>
+		<requisicionescompra:ItemsManagement id="itemsManagement" purchaseOrderMode="false" readOnly="{this._readOnly}"/>
 		<mx:FormItem required="true" label="Estatus:">
 			<mx:ComboBox id="cmbStatus"
 						 labelField="estatus"

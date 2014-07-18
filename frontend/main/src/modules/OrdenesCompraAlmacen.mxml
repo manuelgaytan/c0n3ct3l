@@ -87,7 +87,7 @@
 			projectSelected="projectSelectedHandler(event)"
 			purchaseRequisitionSelected="purchaseRequisitionSelectedHandler(event)"
 			quoteSelected="quoteSelectedHandler(event)"/>
-		<proyectos:ProjectDetail id="projectDetail" label="Detalle Proyecto"/>
+		<proyectos:ProjectDetail id="projectDetail" readOnly="true" label="Detalle Proyecto"/>
 		<requisicionescompra:PurchaseRequisition id="purchaseRequisitionDetail" readOnly="true" label="Detalle Requisición de Compra"/>
 		<cotizaciones:Quote id="quoteDetail" readOnly="true" label="Detalle Cotización"/> 
 	</mx:TabNavigator>

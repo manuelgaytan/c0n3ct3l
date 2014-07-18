@@ -5,6 +5,7 @@
 		 creationComplete="creationCompleteHandler(event)" xmlns:components="components.*">
 	<mx:Script>
 		<![CDATA[
+			import mx.events.ListEvent;
 			import events.GenericEvent;
 			
 			import model.Cotizacion;
@@ -22,6 +23,20 @@
 			
 			private var cotizacion:Cotizacion;
 			
+			[Bindable]
+			private var _readOnly:Boolean = true;
+			
+			[Bindable]
+			private var _noExecuteQuery:Boolean = false;
+			
+			public function set readOnly(value:Boolean):void{
+				this._readOnly = value;
+			}
+			
+			public function set noExecuteQuery(value:Boolean):void{
+				this._noExecuteQuery = value;
+			}
+			
 			protected function responseGetAll_resultHandler(event:ResultEvent):void
 			{
 				items = event.result as ArrayCollection;
@@ -34,7 +49,12 @@
 			
 			protected function creationCompleteHandler(event:FlexEvent):void
 			{
-				this.executeQuery();
+				if( !this._noExecuteQuery ){
+					this.executeQuery();
+				}
+				if( this._readOnly ){
+					this.currentState = "readOnly";
+				}
 			}
 			
 			protected function datagrid_doubleClickHandler(event:MouseEvent):void
@@ -93,11 +113,45 @@
 			private function labelFunctionDate(object:Object, column:DataGridColumn):String{
 				return Util.formatDateToString( object[column.dataField] );
 			}
+			
+			public function setDataGridData(datas:ArrayCollection):void
+			{
+				this.items = datas;
+			}
+			
+			public function setDataAndSelected( data:ArrayCollection, selected:Boolean=true ):void{
+				if( data == null ){
+					return;
+				}
+				this.setDataGridData( data );
+				if( selected ){
+					this.datagrid.selectedIndex = 0;
+					this.datagrid.dispatchEvent( new ListEvent(ListEvent.CHANGE) );
+					this.datagrid.dispatchEvent( new MouseEvent(MouseEvent.DOUBLE_CLICK) );
+				}
+			}
+			
+			public function selectedQuote():Cotizacion{
+				return this.datagrid.selectedItem as Cotizacion;
+			}
+			
+			public function deselect():void{
+				this.datagrid.selectedIndex = -1;
+			}
+			
+			public function cleanList():void{
+				Util.cleanList( this.datagrid );
+			}
 		]]>
 	</mx:Script>
 	<mx:Metadata>
 		[Event(name="quoteDetail", type="events.GenericEvent")]
 	</mx:Metadata>
+	<mx:states>
+		<mx:State name="readOnly">
+			<mx:RemoveChild target="{this.hBoxButtonsBar}"/>
+		</mx:State>
+	</mx:states>
 	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
 	<mx:DataGrid id="datagrid" width="700" height="100%" dataProvider="{items}"
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
@@ -125,9 +179,11 @@
 		</mx:columns>
 	</mx:DataGrid>
 	</mx:HBox>
-	<mx:HBox>
-		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"/>
-		<components:ExportButton datagrid="{this.datagrid}"/>
+	<mx:HBox id="hBoxButtonsBar">
+		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"
+			visible="{!this._readOnly}"/>
+		<components:ExportButton datagrid="{this.datagrid}"
+			visible="{!this._readOnly}"/>
 	</mx:HBox>
 	<mx:RemoteObject id="cotizacionService" destination="cotizacionService" fault="cotizacionService_faultHandler(event)"
 					 showBusyCursor="true"/>

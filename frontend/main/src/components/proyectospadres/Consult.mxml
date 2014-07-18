@@ -23,10 +23,10 @@
 			private var proyectoPadre:ProyectoPadre;
 			
 			[Bindable]
-			private var _consultOnly:Boolean = false;
+			private var _readOnly:Boolean = false;
 			
-			public function set consultOnly(value:Boolean):void{
-				this._consultOnly = value;
+			public function set readOnly(value:Boolean):void{
+				this._readOnly = value;
 			}
 			
 			public function selectedParentProyect():ProyectoPadre
@@ -53,6 +53,9 @@
 			protected function creationCompleteHandler(event:FlexEvent):void
 			{
 				this.executeQuery();
+				if( this._readOnly ){
+					this.currentState = "readOnly";
+				}
 			}
 			
 			protected function datagrid_doubleClickHandler(event:MouseEvent):void
@@ -121,6 +124,11 @@
 	<mx:Metadata>
 		[Event(name="parentProjectDetail", type="events.GenericEvent")]
 	</mx:Metadata>
+	<mx:states>
+		<mx:State name="readOnly">
+			<mx:RemoveChild target="{this.hBoxButtonsBar}"/>
+		</mx:State>
+	</mx:states>
 	<mx:DataGrid id="datagrid" width="100%" height="100%" dataProvider="{items}"
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 				 allowMultipleSelection="true">
@@ -145,11 +153,11 @@
 							   />
 		</mx:columns>
 	</mx:DataGrid>
-	<mx:HBox>
+	<mx:HBox id="hBoxButtonsBar">
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"
-				   visible="{!this._consultOnly}"/>
+				   visible="{!this._readOnly}"/>
 		<components:ExportButton datagrid="{this.datagrid}"
-								 visible="{!this._consultOnly}"/>
+								 visible="{!this._readOnly}"/>
 	</mx:HBox>
 	<mx:RemoteObject id="proyectoPadreService" destination="proyectoPadreService" fault="proyectoPadreService_faultHandler(event)"
 					 showBusyCursor="true"/>

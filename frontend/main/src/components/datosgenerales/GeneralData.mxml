@@ -352,9 +352,9 @@
 				Util.upScroll( this );
 				//this.txtConectelID.reset();
 				if( this.mode == Constants.REGISTER_MODE ){
-					this.projectsConsult.datagrid.selectedIndex = -1;
+					this.projectsConsult.deselect();
 				}else{
-					Util.cleanList( this.projectsConsult.datagrid );
+					this.projectsConsult.cleanList();
 				}
 				this.txtDivision.reset();
 				this.txtArea.reset();

@@ -41,10 +41,10 @@
 			private var _filter:FiltroProyecto;
 			
 			[Bindable]
-			private var _consultOnly:Boolean = true;
+			private var _readOnly:Boolean = true;
 			
-			public function set consultOnly(value:Boolean):void{
-				this._consultOnly = value;
+			public function set readOnly(value:Boolean):void{
+				this._readOnly = value;
 			}
 			
 			public function selectedProyect():Proyecto
@@ -71,6 +71,9 @@
 			protected function creationCompleteHandler(event:FlexEvent):void
 			{
 				this.executeQuery();
+				if( this._readOnly ){
+					this.currentState = "readOnly";
+				}
 			}
 			
 			protected function datagrid_doubleClickHandler(event:MouseEvent=null):void
@@ -136,6 +139,11 @@
 		[Event(name="projectDetail", type="events.GenericEvent")]
 		[Event(name="projectSelected", type="events.GenericEvent")]
 	</mx:Metadata>
+	<mx:states>
+		<mx:State name="readOnly">
+			<mx:RemoveChild target="{this.hBoxButtonsBar}"/>
+		</mx:State>
+	</mx:states>
 	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
 	<mx:DataGrid id="datagrid" width="10870" height="100%" dataProvider="{this.projects}"
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)">
@@ -443,9 +451,9 @@
 		</mx:columns>
 	</mx:DataGrid>
 	</mx:HBox>
-	<mx:HBox>
+	<mx:HBox id="hBoxButtonsBar">
 		<components:ExportButton datagrid="{this.datagrid}"
-				   visible="{!this._consultOnly}"/>
+				   visible="{!this._readOnly}"/>
 	</mx:HBox>
 	<mx:RemoteObject id="proyectoService" destination="proyectoService" fault="proyectoService_faultHandler(event)"
 					 showBusyCursor="true"/>

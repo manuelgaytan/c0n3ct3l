@@ -44,6 +44,6 @@
 		]]>
 	</mx:Script>
 	<mx:TabNavigator id="navigator" width="100%" height="100%" creationPolicy="all">
-		<consultageneraloperacion:Consult id="consult" projectDetail="consult_projectDetailHandler(event)" consultOnly="false"/>
+		<consultageneraloperacion:Consult id="consult" projectDetail="consult_projectDetailHandler(event)" readOnly="false"/>
 	</mx:TabNavigator>
 </mx:Module>

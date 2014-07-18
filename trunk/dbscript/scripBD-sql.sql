@@ -850,6 +850,7 @@
 	fk_estatus INT(11) UNSIGNED NOT NULL,
 	costo DECIMAL(11,2),
 	importe DECIMAL(11,2),
+	fk_orden_compra INT(11) UNSIGNED,
 	PRIMARY KEY (id)
 	);
 
@@ -3430,6 +3431,8 @@
 	/************************************************************************************************************************************/
 
 	ALTER TABLE ArchivoCotizacion ADD FOREIGN KEY fk_cotizacion_idxfk_2 (fk_cotizacion) REFERENCES Cotizacion (id);
+
+	ALTER TABLE PartidaRequisicionCompra ADD FOREIGN KEY fk_orden_compra_idxfk_3 (fk_orden_compra) REFERENCES OrdenCompra (id);	
 
 	/*************************************************************************************************************************************
 	FIN CAMBIOS

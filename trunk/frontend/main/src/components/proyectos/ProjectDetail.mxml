@@ -22,8 +22,18 @@
 			
 			private var _project:Proyecto;
 			
+			[Bindable]
+			private var _readOnly:Boolean = false;
+			
+			public function set readOnly(value:Boolean):void{
+				this._readOnly = value;
+			}
+			
 			protected function creationCompleteHandler(event:FlexEvent):void
 			{
+				if( this._readOnly ){
+					this.currentState = "readOnly";
+				}
 			}
 			
 			protected function btnCancel_clickHandler(event:MouseEvent):void
@@ -109,6 +119,11 @@
 	<mx:Metadata>
 		[Event(name="projectCancelled", type="flash.events.Event")]
 	</mx:Metadata>
+	<mx:states>
+		<mx:State name="readOnly">
+			<mx:RemoveChild target="{this.frmItmCancel}"/>
+		</mx:State>
+	</mx:states>
 	<mx:Form>
 		<mx:FormItem label="ID Conectel:" direction="horizontal">
 			<components:TextInput id="txtConectelID" width="150" textAlign="right"
@@ -174,9 +189,10 @@
 			<components:TextInput id="txtState" width="250"
 								  editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem>
+		<mx:FormItem id="frmItmCancel">
 			<mx:Button id="btnCancel" label="Cancelar Proyecto"
-					   click="btnCancel_clickHandler(event)"/>
+					   click="btnCancel_clickHandler(event)"
+					   visible="{!this._readOnly}"/>
 		</mx:FormItem>
 	</mx:Form>
 	<mx:RemoteObject id="proyectoService" destination="proyectoService" fault="proyectoServicio_faultHandler(event)"

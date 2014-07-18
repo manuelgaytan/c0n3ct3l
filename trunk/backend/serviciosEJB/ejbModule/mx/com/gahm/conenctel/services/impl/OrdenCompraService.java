@@ -59,9 +59,8 @@ public class OrdenCompraService  implements IOrdenCompraService{
 	    	item.setFecha( new Date() );
 	    	entityManager.persist(item);
 	    	if( !(item.getRequisicionCompra() == null) ){
-	    		RequisicionCompraDO requisicionCompra = entityManager.find(RequisicionCompraDO.class, item.getRequisicionCompra().getId());
-	    		this.deletePartidasRequisicionCompra( requisicionCompra );
-	    		this.savePartidasRequisicionCompra( item.getRequisicionCompra() );
+	    		this.deletePartidasRequisicionCompra( item.getRequisicionCompra() );
+	    		this.savePartidasRequisicionCompra( item, item.getRequisicionCompra() );
 	    	}
 	    	entityManager.flush();
 		} catch (Exception e) {
@@ -98,17 +97,22 @@ public class OrdenCompraService  implements IOrdenCompraService{
 		List<PartidaRequisicionCompraDO> list = requisicionCompra.getPartidasRequisicionCompra();
 		if( list != null ){
 			for (PartidaRequisicionCompraDO partidaRequisicionCompraDO : list) {
-				entityManager.remove(partidaRequisicionCompraDO);
+				for( PartidaRequisicionCompraDO actual : item.getPartidasRequisicionCompra() ){
+					if( partidaRequisicionCompraDO.getId().equals( actual.getId() ) ){
+						entityManager.remove(partidaRequisicionCompraDO);
+					}
+				}
 			}
 		}
 	}
 	
-	private void savePartidasRequisicionCompra( RequisicionCompraDO item ){
+	private void savePartidasRequisicionCompra( OrdenCompraDO ordenCompra, RequisicionCompraDO item ){
 		List<PartidaRequisicionCompraDO> list = item.getPartidasRequisicionCompra();
 		if( list != null ){
 			for (PartidaRequisicionCompraDO partidaRequisicionCompraDO : list) {
 				partidaRequisicionCompraDO.setId(null);
 				partidaRequisicionCompraDO.setRequisicionCompra(item);
+				partidaRequisicionCompraDO.setOrdenCompra(ordenCompra);
 				entityManager.persist(partidaRequisicionCompraDO);
 			}
 		}
@@ -118,9 +122,8 @@ public class OrdenCompraService  implements IOrdenCompraService{
 	public OrdenCompraDO update(OrdenCompraDO item) {
 		entityManager.merge(item);
 		if( !(item.getRequisicionCompra() == null) ){
-			RequisicionCompraDO requisicionCompra = entityManager.find(RequisicionCompraDO.class, item.getRequisicionCompra().getId());
-			this.deletePartidasRequisicionCompra( requisicionCompra );
-			this.savePartidasRequisicionCompra( item.getRequisicionCompra() );
+			this.deletePartidasRequisicionCompra( item.getRequisicionCompra() );
+			this.savePartidasRequisicionCompra( item, item.getRequisicionCompra() );
 		}
 		return item;
 	}

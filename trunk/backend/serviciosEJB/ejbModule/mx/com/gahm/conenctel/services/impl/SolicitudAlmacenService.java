@@ -157,7 +157,7 @@ public class SolicitudAlmacenService implements ISolicitudAlmacenService {
 		Double cantidadPedido = 0.0;	
 		
 		if(dato!=null && dato.getEstadoSolicitudAlmacen()!=null 
-				&& item.getEstadoSolicitudAlmacen().getId()==EstadoSolicitudAlmacenDO.ID_AUTORIZADO){
+				&& item.getEstadoSolicitudAlmacen().getId().equals( EstadoSolicitudAlmacenDO.ID_AUTORIZADO ) ){
 			if(item.getHerramientasSolicitudAlmacen()!=null && 
 					!item.getHerramientasSolicitudAlmacen().isEmpty()){
 					for (HerramientaSolicitudAlmacenDO datoAlmacen : item.getHerramientasSolicitudAlmacen()) {
@@ -261,15 +261,15 @@ public class SolicitudAlmacenService implements ISolicitudAlmacenService {
 		Double cantidadDevuelta = 0.0;	
 		
 		if(dato!=null && dato.getEstadoSolicitudAlmacen()!=null 
-				&& item.getEstadoSolicitudAlmacen().getId()==EstadoSolicitudAlmacenDO.ID_AUTORIZADO){
+				&& item.getEstadoSolicitudAlmacen().getId().equals( EstadoSolicitudAlmacenDO.ID_AUTORIZADO ) ){
 			if(item.getHerramientasSolicitudAlmacen()!=null && 
 					!item.getHerramientasSolicitudAlmacen().isEmpty()){
 					for (HerramientaSolicitudAlmacenDO datoAlmacen : item.getHerramientasSolicitudAlmacen()) {
 						if( !(datoAlmacen == null) && 
 								!(datoAlmacen.getEstatusDevolucion() == null ) &&
 								( datoAlmacen.getDevuelto() == null || datoAlmacen.getDevuelto() == false ) &&
-								( datoAlmacen.getEstatusDevolucion().getId() == EstatusDevolucionDO.ID_NA || 
-								  datoAlmacen.getEstatusDevolucion().getId() == EstatusDevolucionDO.ID_CERRADO ) && 
+								( datoAlmacen.getEstatusDevolucion().getId().equals( EstatusDevolucionDO.ID_NA ) || 
+								  datoAlmacen.getEstatusDevolucion().getId().equals( EstatusDevolucionDO.ID_CERRADO ) ) && 
 								!(datoAlmacen.getCantidadDevuelta() == null) ){
 							cantidadDevuelta = datoAlmacen.getCantidadDevuelta().doubleValue(); 
 							herramienta = entityManager.find(HerramientaDO.class, datoAlmacen.getHerramienta().getId());
@@ -286,8 +286,8 @@ public class SolicitudAlmacenService implements ISolicitudAlmacenService {
 						if( !(datoAlmacen == null) && 
 								!(datoAlmacen.getEstatusDevolucion() == null ) &&
 								( datoAlmacen.getDevuelto() == null || datoAlmacen.getDevuelto() == false ) &&
-								( datoAlmacen.getEstatusDevolucion().getId() == EstatusDevolucionDO.ID_NA || 
-								  datoAlmacen.getEstatusDevolucion().getId() == EstatusDevolucionDO.ID_CERRADO ) && 
+								( datoAlmacen.getEstatusDevolucion().getId().equals( EstatusDevolucionDO.ID_NA ) || 
+								  datoAlmacen.getEstatusDevolucion().getId().equals( EstatusDevolucionDO.ID_CERRADO ) ) &&
 								!(datoAlmacen.getCantidadDevuelta() == null) ){
 							cantidadDevuelta = datoAlmacen.getCantidadDevuelta().doubleValue(); 
 							software = entityManager.find(SoftwareDO.class, datoAlmacen.getSoftware().getId());
@@ -304,8 +304,8 @@ public class SolicitudAlmacenService implements ISolicitudAlmacenService {
 						if( !(datoAlmacen == null) && 
 								!(datoAlmacen.getEstatusDevolucion() == null ) &&
 								( datoAlmacen.getDevuelto() == null || datoAlmacen.getDevuelto() == false ) &&
-								( datoAlmacen.getEstatusDevolucion().getId() == EstatusDevolucionDO.ID_NA || 
-								  datoAlmacen.getEstatusDevolucion().getId() == EstatusDevolucionDO.ID_CERRADO ) && 
+								( datoAlmacen.getEstatusDevolucion().getId().equals( EstatusDevolucionDO.ID_NA ) || 
+								  datoAlmacen.getEstatusDevolucion().getId().equals( EstatusDevolucionDO.ID_CERRADO ) ) &&
 									!(datoAlmacen.getCantidadDevuelta() == null) ){
 							cantidadDevuelta = datoAlmacen.getCantidadDevuelta().doubleValue(); 
 							consumible = entityManager.find(ConsumibleDO.class, datoAlmacen.getConsumible().getId());
@@ -322,8 +322,8 @@ public class SolicitudAlmacenService implements ISolicitudAlmacenService {
 						if( !(datoAlmacen == null) && 
 								!(datoAlmacen.getEstatusDevolucion() == null ) &&
 								( datoAlmacen.getDevuelto() == null || datoAlmacen.getDevuelto() == false ) &&
-								( datoAlmacen.getEstatusDevolucion().getId() == EstatusDevolucionDO.ID_NA || 
-								  datoAlmacen.getEstatusDevolucion().getId() == EstatusDevolucionDO.ID_CERRADO ) && 
+								( datoAlmacen.getEstatusDevolucion().getId().equals( EstatusDevolucionDO.ID_NA ) || 
+								  datoAlmacen.getEstatusDevolucion().getId().equals( EstatusDevolucionDO.ID_CERRADO ) ) &&
 									!(datoAlmacen.getCantidadDevuelta() == null) ){
 							cantidadDevuelta = datoAlmacen.getCantidadDevuelta().doubleValue(); 
 							hardware = entityManager.find(HardwareDO.class, datoAlmacen.getHardware().getId());
@@ -340,8 +340,8 @@ public class SolicitudAlmacenService implements ISolicitudAlmacenService {
 						if( !(datoAlmacen == null) && 
 								!(datoAlmacen.getEstatusDevolucion() == null ) &&
 								( datoAlmacen.getDevuelto() == null || datoAlmacen.getDevuelto() == false ) &&
-								( datoAlmacen.getEstatusDevolucion().getId() == EstatusDevolucionDO.ID_NA || 
-								  datoAlmacen.getEstatusDevolucion().getId() == EstatusDevolucionDO.ID_CERRADO ) && 
+								( datoAlmacen.getEstatusDevolucion().getId().equals( EstatusDevolucionDO.ID_NA ) || 
+								  datoAlmacen.getEstatusDevolucion().getId().equals( EstatusDevolucionDO.ID_CERRADO ) ) &&
 									!(datoAlmacen.getCantidadDevuelta() == null) ){
 							cantidadDevuelta = datoAlmacen.getCantidadDevuelta().doubleValue(); 
 							telefonia = entityManager.find(TelefoniaMovilDO.class, datoAlmacen.getTelefoniaMovil().getId());
@@ -359,8 +359,8 @@ public class SolicitudAlmacenService implements ISolicitudAlmacenService {
 						if( !(datoAlmacen == null) && 
 							!(datoAlmacen.getEstatusDevolucion() == null ) &&
 							( datoAlmacen.getDevuelto() == null || datoAlmacen.getDevuelto() == false ) &&
-							( datoAlmacen.getEstatusDevolucion().getId() == EstatusDevolucionDO.ID_NA || 
-							  datoAlmacen.getEstatusDevolucion().getId() == EstatusDevolucionDO.ID_CERRADO ) && 
+							( datoAlmacen.getEstatusDevolucion().getId().equals( EstatusDevolucionDO.ID_NA ) || 
+							  datoAlmacen.getEstatusDevolucion().getId().equals( EstatusDevolucionDO.ID_CERRADO ) ) &&
 									!(datoAlmacen.getCantidadDevuelta() == null) ){
 							cantidadDevuelta = datoAlmacen.getCantidadDevuelta().doubleValue(); 
 							equipoMedicion = entityManager.find(EquipoMedicionDO.class, datoAlmacen.getEquipoMedicion().getId());
@@ -379,8 +379,8 @@ public class SolicitudAlmacenService implements ISolicitudAlmacenService {
 						if( !(datoAlmacen == null) && 
 							!(datoAlmacen.getEstatusDevolucion() == null ) &&
 							( datoAlmacen.getDevuelto() == null || datoAlmacen.getDevuelto() == false ) &&
-							( datoAlmacen.getEstatusDevolucion().getId() == EstatusDevolucionDO.ID_NA || 
-							  datoAlmacen.getEstatusDevolucion().getId() == EstatusDevolucionDO.ID_CERRADO ) && 
+							( datoAlmacen.getEstatusDevolucion().getId().equals( EstatusDevolucionDO.ID_NA ) || 
+							  datoAlmacen.getEstatusDevolucion().getId().equals( EstatusDevolucionDO.ID_CERRADO ) ) &&
 									!(datoAlmacen.getCantidadDevuelta() == null) ){
 							cantidadDevuelta = datoAlmacen.getCantidadDevuelta().doubleValue(); 
 							equipoTransporte = entityManager.find(EquipoTransporteDO.class, datoAlmacen.getEquipoTransporte().getId());
@@ -398,8 +398,8 @@ public class SolicitudAlmacenService implements ISolicitudAlmacenService {
 						if( !(datoAlmacen == null) && 
 								!(datoAlmacen.getEstatusDevolucion() == null ) &&
 								( datoAlmacen.getDevuelto() == null || datoAlmacen.getDevuelto() == false ) &&
-								( datoAlmacen.getEstatusDevolucion().getId() == EstatusDevolucionDO.ID_NA || 
-								  datoAlmacen.getEstatusDevolucion().getId() == EstatusDevolucionDO.ID_CERRADO ) && 
+								( datoAlmacen.getEstatusDevolucion().getId().equals( EstatusDevolucionDO.ID_NA ) || 
+								  datoAlmacen.getEstatusDevolucion().getId().equals( EstatusDevolucionDO.ID_CERRADO ) ) &&
 									!(datoAlmacen.getCantidadDevuelta() == null) ){
 							cantidadDevuelta = datoAlmacen.getCantidadDevuelta().doubleValue(); 
 							material = entityManager.find(MaterialDO.class, datoAlmacen.getMaterial().getId());

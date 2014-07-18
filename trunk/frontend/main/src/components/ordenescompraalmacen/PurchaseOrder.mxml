@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)" xmlns:requisicionescompra="components.requisicionescompra.*"
-		 >
+		 xmlns:proyectos="components.proyectos.*" xmlns:cotizaciones="components.cotizaciones.*">
 	<mx:Script>
 		<![CDATA[
+			import model.Estado;
 			import events.GenericEvent;
 			import model.Catalogo;
 			import model.Colaborador;
@@ -83,14 +84,13 @@
 				}
 				this.txtID.text = Util.numberToString( this._item.id );
 				if( !(this._item.proyecto == null) ){
-					this.txtProjectID.text = Util.numberToString( this._item.proyecto.id );
+					this.projectsConsult.setDataAndSelected( Util.asArrayCollection( this._item.proyecto ) );
 				}
 				if( !(this._item.requisicionCompra == null) ){
-					this.txtRequisicionID.text = Util.numberToString( this._item.requisicionCompra.id );
-					this.txtRequisicionID.dispatchEvent( new FocusEvent(FocusEvent.FOCUS_OUT) );
+					this.requisitionsConsult.setDataAndSelected( Util.asArrayCollection( this._item.requisicionCompra ) );
 				}
 				if( !(this._item.cotizacion == null) ){
-					this.txtQuotationID.text = Util.numberToString( this._item.cotizacion.id );
+					this.quotesConsult.setDataAndSelected( Util.asArrayCollection( this._item.cotizacion ) );
 				}
 				this.dtfDate.selectedDate = this._item.fecha;
 				if( Util.isFill( this.cmbQualifiedSupplier ) && this._item.proveedorCalificado != null ){
@@ -136,22 +136,19 @@
 				}else{
 					item = this._item;
 				}
-				if( !(Util.validateEmpty( this.txtProjectID.text ) == null) ){ 
-					item.proyecto = new Proyecto();
-					item.proyecto.id = Util.stringToNumber( this.txtProjectID.text );
+				if( !(this.projectsConsult.selectedProyect() == null) ){ 
+					item.proyecto = this.projectsConsult.selectedProyect();
 				}else{
 					item.proyecto = null;
 				}
-				if( !(Util.validateEmpty( this.txtRequisicionID.text ) == null) ){ 
-					item.requisicionCompra = new RequisicionCompra();
-					item.requisicionCompra.id = Util.stringToNumber( this.txtRequisicionID.text );
-					item.requisicionCompra.partidasRequisicionCompra = this.itemsManagement.dataProvider as ArrayCollection;
+				if( !(this.requisitionsConsult.selectedPurchaseRequisition() == null) ){ 
+					item.requisicionCompra = this.requisitionsConsult.selectedPurchaseRequisition();
+					item.requisicionCompra.partidasRequisicionCompra = new ArrayCollection( this.itemsManagement.selectedItems );
 				}else{
 					item.requisicionCompra = null;
 				}
-				if( !(Util.validateEmpty( this.txtQuotationID.text ) == null) ){
-					item.cotizacion = new Cotizacion();
-					item.cotizacion.id = Util.stringToNumber( this.txtQuotationID.text );
+				if( !(this.quotesConsult.selectedQuote() == null) ){
+					item.cotizacion = this.quotesConsult.selectedQuote();
 				}else{
 					item.cotizacion = null;
 				}
@@ -173,6 +170,9 @@
 			
 			private function fillCombos():void
 			{
+				if( this.mode == Constants.REGISTER_MODE ){
+					this.responseGetAllByFiltro.token = this.proyectoService.getAllByEstado( Estado.ID_ALTA );
+				}
 				this.responseGetProveedoresCalificados.token = this.proveedorCalificadoService.getProveedoresCalificadosCombo();
 			}
 			
@@ -244,9 +244,6 @@
 				validators.setValidador(txtTotal, "number");
 				
 				validators.crearValidadorRestrictor("id",ValidadorEntero.nombre, 11);
-				validators.setRestrictor(txtProjectID, "id");
-				validators.setRestrictor(txtRequisicionID, "id");
-				validators.setRestrictor(txtQuotationID, "id");
 			}
 			
 			protected function responseSave_resultHandler(event:ResultEvent):void
@@ -260,9 +257,16 @@
 			{
 				Util.upScroll( this );
 				this.txtID.reset();
-				this.txtProjectID.reset();
-				this.txtRequisicionID.reset();
-				this.txtQuotationID.reset();
+				if( this.mode == Constants.REGISTER_MODE ){
+					this.projectsConsult.deselect();
+					this.requisitionsConsult.deselect();
+					this.quotesConsult.deselect();
+				}else{
+					this.projectsConsult.cleanList();
+					this.requisitionsConsult.cleanList();
+					this.quotesConsult.cleanList();
+				}
+				Util.removeItems( this.itemsManagement.dataProvider );
 				this.dtfDate.selectedDate = new Date();
 				this.cmbQualifiedSupplier.selectedIndex = 0; 
 				this.txtSubtotal.reset();
@@ -341,32 +345,59 @@
 				this.setQualifiedSupplier( event.result as ProveedorCalificado );
 			}
 			
-			protected function txtRequisicionID_enterHandler():void
+			protected function txtRequisicionID_enterHandler(event:GenericEvent):void
 			{
 				this.itemsManagement.reset();
-				var idRequisicion:* = Util.stringToNumber(this.txtRequisicionID.text);
-				if( idRequisicion == undefined ){
-					return;
-				}
-				this.responseGetRequisicionCompra.token = this.requisicionCompraService.getItem(idRequisicion);
+				this.responseGetRequisicionCompra_resultHandler(event);
 			}
 			
-			protected function txtRequisicionID_focusOutHandler():void
-			{
-				this.txtRequisicionID_enterHandler();
-			}
-			
-			protected function responseGetRequisicionCompra_resultHandler(event:ResultEvent):void
+			protected function responseGetRequisicionCompra_resultHandler(event:GenericEvent):void
 			{
 				if( event != null &&
-					event.result != null ){
-					itemsManagement.dataProvider = event.result.partidasRequisicionCompra;
+					event.information != null && 
+					event.information is RequisicionCompra ){
+					if( this.mode == Constants.REGISTER_MODE ){
+						this.itemsManagement.dataProvider = this.removeAsignedItems( (event.information as RequisicionCompra).partidasRequisicionCompra );
+						this.btnUpdate.dispatchEvent( new MouseEvent( MouseEvent.CLICK ) );
+					}else{
+						itemsManagement.dataProvider = this.onlyAsignedTo( this._item, (event.information as RequisicionCompra).partidasRequisicionCompra );
+						this.itemsManagement.selectedItems = (this.itemsManagement.dataProvider as ArrayCollection).source;
+					}
 				}
+			}
+			
+			private function removeAsignedItems( items:ArrayCollection ):ArrayCollection{
+				var filteredItems:ArrayCollection = null;
+				if( items == null ){
+					return filteredItems;
+				}
+				filteredItems = new ArrayCollection();
+				for each(var item:PartidaRequisicionCompra in items){
+					if( item.ordenCompra == null ){
+						filteredItems.addItem( item );
+					}
+				}
+				return filteredItems;
+			}
+			
+			private function onlyAsignedTo( purchaseOrder:OrdenCompraAlmacen, items:ArrayCollection ):ArrayCollection{
+				var filteredItems:ArrayCollection = null;
+				if( items == null ){
+					return filteredItems;
+				}
+				filteredItems = new ArrayCollection();
+				for each(var item:PartidaRequisicionCompra in items){
+					if( !(item.ordenCompra == null) &&
+						item.ordenCompra.id == purchaseOrder.id ){
+						filteredItems.addItem( item );
+					}
+				}
+				return filteredItems;
 			}
 			
 			protected function btnUpdate_clickHandler(event:MouseEvent = null):void
 			{
-				var datas:ArrayCollection = this.itemsManagement.dataProvider as ArrayCollection;
+				var datas:ArrayCollection = new ArrayCollection( this.itemsManagement.selectedItems );
 				var subtotal:Number = 0;
 				for each (var i:PartidaRequisicionCompra in datas) 
 				{
@@ -392,18 +423,9 @@
 			}
 			
 			protected function btnViewProject_clickHandler(event:MouseEvent):void{
-				var id:* = Util.stringToNumber( this.txtProjectID.text );
-				if( id == undefined ){
-					Util.showErrorMessage("No es un ID válido.");
-					return;
-				}
-				this.responseGetProyecto.token = this.proyectoService.getProyecto( id );
-			}
-			
-			private function responseGetProyecto_resultHandler(event:ResultEvent):void{
-				var item:Proyecto = event.result as Proyecto;
+				var item:Proyecto = this.projectsConsult.selectedProyect();
 				if( item == null ){
-					Util.showErrorMessage("No es un ID válido.");
+					Util.showErrorMessage("No es un Proyecto válido.");
 					return;
 				}
 				var genericEvent:GenericEvent = new GenericEvent("projectSelected");
@@ -412,17 +434,9 @@
 			}
 			
 			protected function btnViewRequisition_clickHandler(event:MouseEvent):void{
-				var id:* = Util.stringToNumber(this.txtRequisicionID.text);
-				if( id == undefined ){
-					return;
-				}
-				this.responseGetRequisicionCompraButton.token = this.requisicionCompraService.getItem( id );
-			}
-			
-			private function responseGetRequisicion_resultHandler(event:ResultEvent):void{
-				var item:RequisicionCompra = event.result as RequisicionCompra;
+				var item:RequisicionCompra = this.requisitionsConsult.selectedPurchaseRequisition();
 				if( item == null ){
-					Util.showErrorMessage("No es un ID válido.");
+					Util.showErrorMessage("No es una Requisión de Compra válida.");
 					return;
 				}
 				var genericEvent:GenericEvent = new GenericEvent("purchaseRequisitionSelected");
@@ -431,22 +445,19 @@
 			}
 			
 			protected function btnViewQuote_clickHandler(event:MouseEvent):void{
-				var id:* = Util.stringToNumber(this.txtQuotationID.text);
-				if( id == undefined ){
-					return;
-				}
-				this.responseGetItem.token = this.cotizacionService.getItem( id );
-			}
-			
-			private function responseGetCotizacion_resultHandler(event:ResultEvent):void{
-				var item:Cotizacion = event.result as Cotizacion;
+				var item:Cotizacion = this.quotesConsult.selectedQuote();
 				if( item == null ){
-					Util.showErrorMessage("No es un ID válido.");
+					Util.showErrorMessage("No es una Cotización válida.");
 					return;
 				}
 				var genericEvent:GenericEvent = new GenericEvent("quoteSelected");
 				genericEvent.information = item;
 				this.dispatchEvent( genericEvent );
+			}
+			
+			protected function responseGetAll_resultHandler(event:ResultEvent):void
+			{
+				this.projectsConsult.setDataGridData( event.result as ArrayCollection );
 			}
 		]]>
 	</mx:Script>
@@ -461,23 +472,31 @@
 		<mx:FormItem required="true" label="ID:" id="frmID">
 			<components:TextInput id="txtID" textAlign="right" editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem required="false" label="ID Proyecto:" direction="horizontal">
-			<components:TextInput id="txtProjectID" textAlign="right"/>
-			<mx:Button label="Ver Proyecto" id="btnProjectID"
-				click="btnViewProject_clickHandler(event)"/>
-		</mx:FormItem>
-		<mx:FormItem label="ID Requisición:" direction="horizontal">
-			<components:TextInput id="txtRequisicionID" textAlign="right"
-								  enter="txtRequisicionID_enterHandler()"
-								  focusOut="txtRequisicionID_focusOutHandler()"/>
-			<mx:Button label="Ver Requisición" id="btnRequisicionID"
-				click="btnViewRequisition_clickHandler(event)"/>
-		</mx:FormItem>
-		<mx:FormItem label="ID Cotización:" direction="horizontal">
-			<components:TextInput id="txtQuotationID" textAlign="right"/>
-			<mx:Button label="Ver Cotización" id="btnQuotationID"
-				click="btnViewQuote_clickHandler(event)"/>
-		</mx:FormItem>
+		<mx:FormItem required="false" label="ID Proyecto:" direction="horizontal"/>
+		<mx:VBox width="770">
+			<mx:VBox width="100%" height="100%" verticalGap="5">
+				<proyectos:Consult id="projectsConsult"/>
+			</mx:VBox>
+		</mx:VBox>
+		<mx:Button label="Ver Proyecto" id="btnProjectID"
+			click="btnViewProject_clickHandler(event)"/>
+		<mx:FormItem label="ID Requisición:" direction="horizontal"/>
+		<mx:VBox width="770">
+			<mx:VBox width="100%" height="100%" verticalGap="5">
+				<requisicionescompra:Consult id="requisitionsConsult" purchaseRequisitionDetail="this.txtRequisicionID_enterHandler(event)"
+					 noExecuteQuery="{this.mode == Constants.UPDATE_MODE}"/>
+			</mx:VBox>
+		</mx:VBox>
+		<mx:Button label="Ver Requisición" id="btnRequisicionID"
+			click="btnViewRequisition_clickHandler(event)"/>
+		<mx:FormItem label="ID Cotización:" direction="horizontal"/>
+		<mx:VBox width="770">
+			<mx:VBox width="100%" height="100%" verticalGap="5">
+				<cotizaciones:Consult id="quotesConsult" noExecuteQuery="{this.mode == Constants.UPDATE_MODE}"/>
+			</mx:VBox>
+		</mx:VBox>
+		<mx:Button label="Ver Cotización" id="btnQuotationID"
+			click="btnViewQuote_clickHandler(event)"/>
 		<mx:FormItem required="true" label="Fecha:">
 			<components:DateField id="dtfDate" enabled="false" creationComplete="dtfDate.selectedDate = new Date()"/>
 		</mx:FormItem>
@@ -529,7 +548,7 @@
 		<!-- Fin Campos de Seleccion Automatica por el Proveedor Calificado -->
 		<mx:VBox>
 			<requisicionescompra:ItemsManagement id="itemsManagement" purchaseOrderMode="true"/>
-			<mx:Button id="btnUpdate" label="Actualiazar" click="btnUpdate_clickHandler(event)"/>
+			<mx:Button id="btnUpdate" label="Actualizar" click="btnUpdate_clickHandler(event)"/>
 		</mx:VBox>
 		<mx:FormItem required="true" label="Subtotal:">
 			<components:TextInput id="txtSubtotal" textAlign="right" width="110"
@@ -582,14 +601,7 @@
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetProveedoresCalificados" result="responseGetProveedoresCalificados_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetProveedorCalificado" result="responseGetProveedorCalificado_resultHandler(event)"/>
-	<mx:RemoteObject id="requisicionCompraService" destination="requisicionCompraService" fault="ordenCompraService_faultHandler(event)"
-					 showBusyCursor="true"/>
-	<mx:CallResponder id="responseGetRequisicionCompra" result="responseGetRequisicionCompra_resultHandler(event)"/>
-	<mx:CallResponder id="responseGetRequisicionCompraButton" result="responseGetRequisicion_resultHandler(event)"/>
 	<mx:RemoteObject id="proyectoService" destination="proyectoService" fault="ordenCompraService_faultHandler(event)"
 					 showBusyCursor="true"/>
-	<mx:CallResponder id="responseGetProyecto" result="responseGetProyecto_resultHandler(event)"/>
-	<mx:RemoteObject id="cotizacionService" destination="cotizacionService" fault="ordenCompraService_faultHandler(event)"
-					 showBusyCursor="true"/>
-	<mx:CallResponder id="responseGetItem" result="responseGetCotizacion_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetAllByFiltro" result="responseGetAll_resultHandler(event)"/>
 </mx:VBox>

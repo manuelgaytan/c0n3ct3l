@@ -46,6 +46,9 @@ public class PartidaRequisicionCompraDO implements java.io.Serializable {
 	private Double costo;
 	@Column(name = "importe", nullable = true)
 	private Double importe;
+	@ManyToOne
+	@JoinColumn(name="fk_orden_compra")
+	private OrdenCompraDO ordenCompra;
 
 	public PartidaRequisicionCompraDO() {
 	}
@@ -160,5 +163,13 @@ public class PartidaRequisicionCompraDO implements java.io.Serializable {
 
 	public void setImporte(Double importe) {
 		this.importe = importe;
+	}
+
+	public OrdenCompraDO getOrdenCompra() {
+		return ordenCompra;
+	}
+
+	public void setOrdenCompra(OrdenCompraDO ordenCompra) {
+		this.ordenCompra = ordenCompra;
 	}
 }

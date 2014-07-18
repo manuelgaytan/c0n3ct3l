@@ -17,6 +17,7 @@ package model
 		public var costo:*;
 		public var importe:*;
 		//public var estatusRequisicionCompra:EstatusRequisicionCompra;
+		public var ordenCompra:OrdenCompraAlmacen;
 		
 		public var partida:String;
 		

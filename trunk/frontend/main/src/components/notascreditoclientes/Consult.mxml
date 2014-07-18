@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+		 xmlns:components="components.*"
 		 label="Consulta"
 		 horizontalAlign="right"
 		 creationComplete="creationCompleteHandler(event)">
@@ -42,6 +43,9 @@
 			protected function creationCompleteHandler(event:FlexEvent):void
 			{
 				this.executeQuery();
+				if( this._readOnly ){
+					this.currentState = "readOnly";
+				}
 			}
 			
 			protected function datagrid_doubleClickHandler(event:MouseEvent):void
@@ -111,6 +115,11 @@
 	<mx:Metadata>
 		[Event(name="creditNoteDetail", type="events.GenericEvent")]
 	</mx:Metadata>
+	<mx:states>
+		<mx:State name="readOnly">
+			<mx:RemoveChild target="{this.hBoxButtonsBar}"/>
+		</mx:State>
+	</mx:states>
 	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
 	<mx:DataGrid id="datagrid" width="870" height="100%" dataProvider="{items}"
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
@@ -158,9 +167,10 @@
 		</mx:columns>
 	</mx:DataGrid>
 	</mx:HBox>
-	<mx:HBox>
+	<mx:HBox id="hBoxButtonsBar">
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"
 				   visible="{!this._readOnly}"/>
+		<components:ExportButton datagrid="{this.datagrid}" visible="{!this._readOnly}"/>
 	</mx:HBox>
 	<mx:RemoteObject id="notaCreditoClienteService" destination="notaCreditoClienteService" fault="notaCreditoClienteService_faultHandler(event)"
 					 showBusyCursor="true"/>

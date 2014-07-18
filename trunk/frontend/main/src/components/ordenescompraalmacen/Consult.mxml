@@ -49,6 +49,9 @@
 				if( !this._readOnly ){
 					this.executeQuery();
 				}
+				if( this._readOnly ){
+					this.currentState = "readOnly";
+				}
 			}
 			
 			protected function datagrid_doubleClickHandler(event:MouseEvent):void
@@ -128,6 +131,11 @@
 	<mx:Metadata>
 		[Event(name="purchaseOrderDetail", type="events.GenericEvent")]
 	</mx:Metadata>
+	<mx:states>
+		<mx:State name="readOnly">
+			<!--<mx:RemoveChild target="{this.hBoxButtonsBar}"/>-->
+		</mx:State>
+	</mx:states>
 	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
 	<mx:DataGrid id="datagrid" width="3590" height="100%" dataProvider="{items}"
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
@@ -249,7 +257,7 @@
 		</mx:columns>
 	</mx:DataGrid>
 	</mx:HBox>
-	<mx:HBox>
+	<mx:HBox id="hBoxButtonsBar">
 		<mx:Button id="btnViewFormat" label="Visualizar Formato" click="btnViewFormat_clickHandler(event)"/>
 		<mx:Button id="btnDelete" label="Eliminar" click="btnDelete_clickHandler(event)"
 				   visible="{!this._readOnly}"/>

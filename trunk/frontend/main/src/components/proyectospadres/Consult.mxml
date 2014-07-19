@@ -5,6 +5,7 @@
 		 creationComplete="creationCompleteHandler(event)" xmlns:components="components.*">
 	<mx:Script>
 		<![CDATA[
+			import mx.events.ListEvent;
 			import events.GenericEvent;
 			
 			import model.ProyectoPadre;
@@ -118,6 +119,26 @@
 					projectsAssociatedNumber = (item as ProyectoPadre).proyectoPadreHijos.length;
 				}
 				return projectsAssociatedNumber.toString();
+			}
+			
+			public function setDataAndSelected( data:ArrayCollection, selected:Boolean=true ):void{
+				if( data == null ){
+					return;
+				}
+				this.setDataGridData( data );
+				if( selected ){
+					this.datagrid.selectedIndex = 0;
+					this.datagrid.dispatchEvent( new ListEvent(ListEvent.CHANGE) );
+					this.datagrid.dispatchEvent( new MouseEvent(MouseEvent.DOUBLE_CLICK) );
+				}
+			}	
+			
+			public function deselect():void{
+				this.datagrid.selectedIndex = -1;
+			}
+			
+			public function cleanList():void{
+				Util.cleanList( this.datagrid );
 			}
 		]]>
 	</mx:Script>

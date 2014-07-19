@@ -847,7 +847,7 @@
 	cantidad VARCHAR(255) NOT NULL,
 	unidad VARCHAR(255) NULL,
 	fk_validacion INT(11) UNSIGNED,
-	fk_estatus INT(11) UNSIGNED NOT NULL,
+	fk_estatus INT(11) UNSIGNED,
 	costo DECIMAL(11,2),
 	importe DECIMAL(11,2),
 	fk_orden_compra INT(11) UNSIGNED,

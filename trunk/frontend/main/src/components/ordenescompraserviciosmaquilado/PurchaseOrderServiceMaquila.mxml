@@ -95,9 +95,7 @@
 					return;
 				}
 				this.txtID.text = Util.numberToString( this._item.id );
-				this.txtRequisicionID.text = Util.numberToString( this._item.solicitudServicioMaquilado.id );
-				this.txtRequisicionID.dispatchEvent( new FocusEvent(FocusEvent.FOCUS_OUT) );
-				this.dtfDate.selectedDate = this._item.fecha;
+				this.maquiladoraServiceRequestConsult.setDataAndSelected( Util.asArrayCollection( this._item.solicitudServicioMaquilado ) );
 				if( Util.isFill( this.cmbMaquiladoSupplier ) && this._item.proveedorMaquilador != null ){
 					this.cmbMaquiladoSupplier.selectedIndex = Util.selectedIndexFromCombo( this.cmbMaquiladoSupplier.dataProvider as ArrayCollection, 
 						this._item.proveedorMaquilador.id);
@@ -137,8 +135,7 @@
 				}else{
 					item = this._item;
 				}
-				item.solicitudServicioMaquilado = new SolicitudServicioMaquilado();
-				item.solicitudServicioMaquilado.id = Util.stringToNumber( this.txtRequisicionID.text );
+				item.solicitudServicioMaquilado = this.maquiladoraServiceRequestConsult.selectedMaquiladoraServiceRequest();
 				item.fecha = this.dtfDate.selectedDate;
 				item.proveedorMaquilador = new ProveedorMaquilador(); 
 				item.proveedorMaquilador.id = (Util.validateCombo( this.cmbMaquiladoSupplier ) as ProveedorMaquilador).id;
@@ -195,6 +192,7 @@
 			private function validations():Boolean
 			{
 				var value:Boolean = true;
+				value &&= this.maquiladoraServiceRequestConsult.selectedMaquiladoraServiceRequest() != null;
 				value &&= this.validators.validarFormulario();
 				value &&= Util.listBaseSelected(this.cmbMaquiladoSupplier, "id", true);
 				value &&= this.dtfDate.selectedDate != null;
@@ -226,9 +224,6 @@
 				validators.setRestrictor(txtIVARetention, "number");
 				validators.setRestrictor(txtOtherTaxes, "number");
 				validators.setValidador(txtTotal, "number");
-				
-				validators.crearValidadorRestrictor("id",ValidadorEntero.nombre, 11);
-				validators.setValidador(txtRequisicionID, "id");
 			}
 			
 			protected function responseSave_resultHandler(event:ResultEvent):void
@@ -242,7 +237,11 @@
 			{
 				Util.upScroll( this );
 				this.txtID.reset();
-				this.txtRequisicionID.reset();
+				if( this.mode == Constants.REGISTER_MODE ){
+					this.maquiladoraServiceRequestConsult.deselect();
+				}else{
+					this.maquiladoraServiceRequestConsult.cleanList();
+				}
 				this.dtfDate.selectedDate = new Date();
 				this.cmbMaquiladoSupplier.selectedIndex = 0; 
 				this.cleanFormQualifiedSupplier();
@@ -319,29 +318,14 @@
 				this.setMaquiladorSupplier( event.result as ProveedorMaquilador );
 			}
 			
-			protected function txtRequisicionID_enterHandler():void
+			protected function txtRequisicionID_enterHandler(event:GenericEvent):void
 			{
 				this.itemsManagement.reset();
-				var idRequisicion:* = Util.stringToNumber(this.txtRequisicionID.text);
-				if( idRequisicion == undefined ){
-					return;
-				}
-				this.responseGetItem.token = this.solicitudServicioMaquiladoService.getItem(idRequisicion);
-			}
-			
-			protected function txtRequisicionID_focusOutHandler():void
-			{
-				this.txtRequisicionID_enterHandler();
-			}
-			
-			protected function responseGetItem_resultHandler(event:ResultEvent):void
-			{
 				if( event != null &&
-					event.result != null ){
-					this.maquiladoraServiceRequest = event.result as SolicitudServicioMaquilado;
+					event.information != null && 
+					event.information is SolicitudServicioMaquilado ){
+					this.maquiladoraServiceRequest = event.information as SolicitudServicioMaquilado;
 					this.setMaquiladoraServiceRequest();
-				}else{
-					itemsManagement.reset();
 				}
 			}
 			
@@ -394,7 +378,7 @@
 			
 			protected function btnViewMaquiladoraServiceRequest_clickHandler(event:MouseEvent):void
 			{
-				var item:SolicitudServicioMaquilado = this.maquiladoraServiceRequest;
+				var item:SolicitudServicioMaquilado = this.maquiladoraServiceRequestConsult.selectedMaquiladoraServiceRequest();
 				if( item == null ){
 					Util.showErrorMessage("Primero debe seleccionar un elemento.");
 					return;
@@ -414,13 +398,15 @@
 		<mx:FormItem required="true" label="ID:" id="frmID">
 			<components:TextInput id="txtID" textAlign="right" editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem required="true" label="ID Requisición Servicios TELECOM:" direction="horizontal">
-			<components:TextInput id="txtRequisicionID" textAlign="right"
-								  enter="txtRequisicionID_enterHandler()"
-								  focusOut="txtRequisicionID_focusOutHandler()"/>
-			<mx:Button label="Ver Requisición Servicios TELECOM" id="btnViewMaquiladoraServiceRequest"
-				click="btnViewMaquiladoraServiceRequest_clickHandler(event)"/>
-		</mx:FormItem>
+		<mx:FormItem required="true" label="ID Requisición Servicios TELECOM:" direction="horizontal"/>
+		<mx:VBox width="900">
+			<mx:VBox width="100%" height="100%" verticalGap="5">
+				<solicitudesserviciomaquilado:Consult id="maquiladoraServiceRequestConsult" readOnly="true"
+					maquiladoraServiceRequestDetail="this.txtRequisicionID_enterHandler(event)"/>
+			</mx:VBox>
+		</mx:VBox>
+		<mx:Button label="Ver Requisición Servicios TELECOM" id="btnViewMaquiladoraServiceRequest"
+			click="btnViewMaquiladoraServiceRequest_clickHandler(event)"/>
 		<mx:FormItem required="true" label="Fecha:">
 			<components:DateField id="dtfDate" enabled="false" creationComplete="dtfDate.selectedDate = new Date()"/>
 		</mx:FormItem>
@@ -516,9 +502,6 @@
 	<mx:CallResponder id="responseUpdate" result="responseUpdate_resultHandler(event)"/>
 	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="catalogoService_faultHandler(event)"
 					 showBusyCursor="true"/>
-	<mx:RemoteObject id="solicitudServicioMaquiladoService" destination="solicitudServicioMaquiladoService" fault="ordenCompraService_faultHandler(event)"
-					 showBusyCursor="true"/>
-	<mx:CallResponder id="responseGetItem" result="responseGetItem_resultHandler(event)" fault="responseGetItem_faultHandler(event)"/>
 	<mx:RemoteObject id="proveedorMaquiladorService" destination="proveedorMaquiladorService" fault="ordenCompraService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetProveedoresMaquiladores" result="responseGetProveedoresMaquiladores_resultHandler(event)"/>

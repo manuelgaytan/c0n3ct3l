@@ -149,7 +149,7 @@
 		</mx:State>
 	</mx:states>
 	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
-	<mx:DataGrid id="datagrid" width="840" height="100%" dataProvider="{items}"
+	<mx:DataGrid id="datagrid" width="940" height="100%" dataProvider="{items}"
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 				 allowMultipleSelection="true">
 		<mx:columns>

@@ -70,10 +70,8 @@
 				}
 				this.txtID.text = String(this._item.id);
 				this.dtfDate.selectedDate = this._item.fecha;
-				this.parentProjectsConsult.setDataGridData( Util.asArrayCollection(this._item.proyectoPadre) );
-				this.parentProjectsConsult.datagrid.selectedIndex = 0;
-				this.projectsConsult.setDataGridData( Util.asArrayCollection(this._item.proyecto) );
-				this.projectsConsult.datagrid.selectedIndex = 0;
+				this.parentProjectsConsult.setDataAndSelected( Util.asArrayCollection(this._item.proyectoPadre) );
+				this.projectsConsult.setDataAndSelected( Util.asArrayCollection(this._item.proyecto) );
 				this.comments.comments = this._item.comentariosSolicitudServicioMaquilado;
 			}
 			
@@ -93,7 +91,9 @@
 			
 			private function fillCombos():void
 			{
-				this.executeProjectQuery();
+				if( this.mode == Constants.REGISTER_MODE ){
+					this.executeProjectQuery();
+				}
 			}
 			
 			protected function SolicitudServicioMaquiladoService_faultHandler(event:FaultEvent):void
@@ -160,10 +160,14 @@
 				Util.upScroll( this );
 				this.txtID.reset();
 				this.dtfDate.reset();
-				this.parentProjectsConsult.datagrid.selectedItem = null;
-				this.projectsConsult.datagrid.selectedItem = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					this.parentProjectsConsult.deselect();
+					this.projectsConsult.deselect();
+				}else{
+					this.parentProjectsConsult.cleanList();
+					this.projectsConsult.cleanList();
+				}
 				this.comments.reset();
-				this.executeProjectQuery();
 			}
 			
 			protected function responseUpdate_resultHandler(event:ResultEvent):void
@@ -215,13 +219,12 @@
 		<mx:FormItem required="true" label="Fecha:">
 			<components:DateField id="dtfDate"/>
 		</mx:FormItem>
-		<mx:FormItem label="Proyectos Padre:">
+		<mx:FormItem label="Proyectos Padre:"/>
 		<mx:VBox width="850">
 			<mx:VBox width="100%" height="100%" verticalGap="5">
 				<proyectospadres:Consult id="parentProjectsConsult" width="500" readOnly="true"/>
 			</mx:VBox>
 		</mx:VBox>
-		</mx:FormItem>
 		<mx:FormItem label="Proyectos:"/>
 		<mx:VBox width="850">
 			<mx:VBox width="100%" height="100%" verticalGap="5">

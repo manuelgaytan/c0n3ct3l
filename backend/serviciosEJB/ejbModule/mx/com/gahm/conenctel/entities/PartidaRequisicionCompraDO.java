@@ -40,8 +40,9 @@ public class PartidaRequisicionCompraDO implements java.io.Serializable {
 	@ManyToOne
 	@JoinColumn(name="fk_validacion")
 	private ColaboradorDO validacion;
-	@Column(name = "fk_estatus", nullable = false)
-	private Integer fkEstatus;
+	@ManyToOne
+	@JoinColumn(name = "fk_estatus", nullable = false)
+	private EstatusRequisicionCompraDO estatusRequisicionCompra;
 	@Column(name = "costo", nullable = true)
 	private Double costo;
 	@Column(name = "importe", nullable = true)
@@ -54,17 +55,17 @@ public class PartidaRequisicionCompraDO implements java.io.Serializable {
 	}
 
 	public PartidaRequisicionCompraDO(String descripcion, String cantidad,
-			String unidad, ColaboradorDO validacion, Integer fkEstatus) {
+			String unidad, ColaboradorDO validacion, EstatusRequisicionCompraDO estatusRequisicionCompra) {
 		this.descripcion = descripcion;
 		this.cantidad = cantidad;
 		this.unidad = unidad;
 		this.validacion = validacion;
-		this.fkEstatus = fkEstatus;
+		this.setEstatusRequisicionCompra(estatusRequisicionCompra);
 	}
 	
 	public PartidaRequisicionCompraDO(RequisicionCompraDO requisicionCompra,
 			String codigo, String grupoFamilia, String descripcion,
-			String cantidad, String unidad, ColaboradorDO validacion, Integer fkEstatus, Double costo, Double importe) {
+			String cantidad, String unidad, ColaboradorDO validacion, EstatusRequisicionCompraDO estatusRequisicionCompra, Double costo, Double importe) {
 		this.requisicionCompra = requisicionCompra;
 		this.codigo = codigo;
 		this.grupoFamilia = grupoFamilia;
@@ -72,7 +73,7 @@ public class PartidaRequisicionCompraDO implements java.io.Serializable {
 		this.cantidad = cantidad;
 		this.unidad = unidad;
 		this.validacion = validacion;
-		this.fkEstatus = fkEstatus;
+		this.setEstatusRequisicionCompra(estatusRequisicionCompra);
 		this.costo = costo;
 		this.importe = importe;
 	}
@@ -141,14 +142,6 @@ public class PartidaRequisicionCompraDO implements java.io.Serializable {
 		this.validacion = validacion;
 	}
 
-	public Integer getFkEstatus() {
-		return fkEstatus;
-	}
-
-	public void setFkEstatus(Integer fkEstatus) {
-		this.fkEstatus = fkEstatus;
-	}
-
 	public Double getCosto() {
 		return costo;
 	}
@@ -171,5 +164,13 @@ public class PartidaRequisicionCompraDO implements java.io.Serializable {
 
 	public void setOrdenCompra(OrdenCompraDO ordenCompra) {
 		this.ordenCompra = ordenCompra;
+	}
+
+	public EstatusRequisicionCompraDO getEstatusRequisicionCompra() {
+		return estatusRequisicionCompra;
+	}
+
+	public void setEstatusRequisicionCompra(EstatusRequisicionCompraDO estatusRequisicionCompra) {
+		this.estatusRequisicionCompra = estatusRequisicionCompra;
 	}
 }

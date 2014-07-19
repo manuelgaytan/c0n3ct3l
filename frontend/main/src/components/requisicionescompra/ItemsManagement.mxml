@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:DataGrid xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="250"
 			 dataProvider="{new ArrayCollection()}"
-			 editable="{this._purchaseOrderMode}"
+			 editable="{true}"
 			 variableRowHeight="true"
 			 doubleClick="doubleClickHandler(event)"
 			 doubleClickEnabled="true"
 			 allowMultipleSelection="{this._purchaseOrderMode}">
 	<mx:Script>
 		<![CDATA[
+			import model.Perfil;
+			import model.Model;
 			import model.Constants;
 			import model.PartidaRequisicionCompra;
 			import model.Producto;
@@ -89,6 +91,14 @@
 				}
 				(this.dataProvider as ArrayCollection).removeItemAt( this.selectedIndex );
 			}
+			
+			private function labelFunctionEstatusRequisicionCompra(item:Object, column:DataGridColumn):String{
+				return Util.extractToText( item, "estatusRequisicionCompra.estatus" );
+			}
+			
+			private function estaAutorizado():Boolean{
+				return !this._purchaseOrderMode && Model.getInstance().user.allowedPerfil( Perfil.ID_DIRECTOR_GENERAL ) || Model.getInstance().user.allowedPerfil( Perfil.ID_COMPRAS );  
+			}
 		]]>
 	</mx:Script>
 	<mx:columns>
@@ -135,6 +145,14 @@
 						   labelFunction="labelFunctionImporte"
 						   textAlign="right"
 						   editable="false"
-						   visible="{this._purchaseOrderMode}"/>
+						   visible="{!this._purchaseOrderMode}"/>
+		<mx:DataGridColumn id="dtgItemStatus" headerText="{'Estatus'}"
+						   labelFunction="labelFunctionEstatusRequisicionCompra"						   
+						   dataField="estatusRequisicionCompra"
+						   itemEditor="components.renderers.EstatusPartidaRequisicionCompraRenderer"
+						   editorDataField="selectedItem"
+						   editable="{this.estaAutorizado()}" textAlign="center"
+						   width="110"
+						   visible="{this.estaAutorizado()}"/>
 	</mx:columns>
 </mx:DataGrid>	

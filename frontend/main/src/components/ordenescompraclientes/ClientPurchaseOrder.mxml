@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:components="components.*"
 		 creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*"
-		 >
+		 xmlns:consultageneraloperacion="components.consultageneraloperacion.*">
 	<mx:Script>
 		<![CDATA[
 			import events.GenericEvent;
@@ -70,8 +70,7 @@
 					return;
 				}
 				this.txtID.text = this._item.id.toString();
-				this.projectsConsult.datagrid.dataProvider = Util.asArrayCollection( this._item.proyecto );
-				this.projectsConsult.datagrid.selectedIndex = 0;
+				this.projectsConsult.setDataAndSelected( Util.asArrayCollection( this._item.proyecto ) );
 				this.chbPurchaseOrder.selected = this._item.ordenCompra;
 				this.txtPurchaseOrderNumber.text = this._item.numeroOrdenCompra;
 				this.dtfPurchaseOrderDate.selectedDate = this._item.fechaOrdenCompra;
@@ -98,7 +97,7 @@
 				}else{
 					clientPurchaseOrder = this._item;
 				}
-				clientPurchaseOrder.proyecto = this.projectsConsult.datagrid.selectedItem as Proyecto;
+				clientPurchaseOrder.proyecto = this.projectsConsult.selectedProyect();
 				clientPurchaseOrder.ordenCompra = this.chbPurchaseOrder.selected;
 				clientPurchaseOrder.numeroOrdenCompra = Util.validateEmpty( this.txtPurchaseOrderNumber.text );
 				clientPurchaseOrder.fechaOrdenCompra = this.dtfPurchaseOrderDate.selectedDate;
@@ -191,7 +190,13 @@
 			{
 				Util.upScroll( this );
 				this.txtID.reset();
-				Util.removeItems(this.projectsConsult.datagrid.dataProvider);
+				if( this.mode == Constants.REGISTER_MODE ){
+					this.projectsConsult.deselect();
+					this.projectsConsultAndDerivates.cleanList();
+				}else{
+					this.projectsConsult.cleanList();
+					this.projectsConsultAndDerivates.cleanList();
+				}
 				this.chbPurchaseOrder.selected = false;
 				this.txtPurchaseOrderNumber.reset();
 				this.dtfPurchaseOrderDate.reset();
@@ -203,7 +208,6 @@
 				this.cmbPurchaseOrderStatus.selectedIndex = 0;
 				this.txtLegend.reset();
 				this.commentsPurchaseOrderStatus.reset();
-				this.executeProjectQuery();
 			}
 			
 			protected function responseUpdate_resultHandler(event:ResultEvent):void
@@ -265,6 +269,11 @@
 				projectsConsult.setDataGridData( event.result as ArrayCollection );
 			}
 			
+			protected function responseGetProyectosAndDerivatesByID_resultHandler(event:ResultEvent):void
+			{
+				projectsConsultAndDerivates.setDataGridData( event.result as ArrayCollection );
+			}
+			
 			protected function projectsConsult_projectSelectedHandler(event:GenericEvent):void
 			{
 				var project:Proyecto = event.information as Proyecto;
@@ -279,6 +288,7 @@
 					commercialCost = project.producto.costoForaneoCliente.toString();
 				}
 				this.txtCommercialCost.text = commercialCost;
+				this.responseGetProyectosAndDerivatesByID.token = this.proyectoService.getProyectosAndDerivatesByID( project.id );
 			}
 			
 			private function setCommercialCost(project:Proyecto):void{
@@ -322,7 +332,12 @@
 		<mx:FormItem required="true" label="Datos de Proyecto"/>
 		<mx:VBox width="800">
 			<mx:VBox width="100%" height="100%" verticalGap="5">
-				<proyectos:Consult id="projectsConsult" projectSelected="projectsConsult_projectSelectedHandler(event)"/>
+				<proyectos:Consult id="projectsConsult" projectSelected="projectsConsult_projectSelectedHandler(event)" readOnly="true"/>
+			</mx:VBox>
+		</mx:VBox>
+		<mx:VBox width="800">
+			<mx:VBox width="100%" height="100%" verticalGap="5">
+				<consultageneraloperacion:Consult id="projectsConsultAndDerivates" readOnly="true" noExecuteQuery="true"/>
 			</mx:VBox>
 		</mx:VBox>
 		<mx:FormItem label="Orden de Compra:">
@@ -378,4 +393,5 @@
 	<mx:RemoteObject id="proyectoService" destination="proyectoService" fault="datosGeneralesOrdenCompraClienteService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetAllByFiltro" result="responseGetAll_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetProyectosAndDerivatesByID" result="responseGetProyectosAndDerivatesByID_resultHandler(event)"/>
 </mx:VBox>

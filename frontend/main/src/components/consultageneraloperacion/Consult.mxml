@@ -43,8 +43,15 @@
 			[Bindable]
 			private var _readOnly:Boolean = true;
 			
+			[Bindable]
+			private var _noExecuteQuery:Boolean = false;
+			
 			public function set readOnly(value:Boolean):void{
 				this._readOnly = value;
+			}
+			
+			public function set noExecuteQuery(value:Boolean):void{
+				this._noExecuteQuery = value;
 			}
 			
 			public function selectedProyect():Proyecto
@@ -70,7 +77,9 @@
 			
 			protected function creationCompleteHandler(event:FlexEvent):void
 			{
-				this.executeQuery();
+				if( !this._noExecuteQuery ){
+					this.executeQuery();
+				}
 				if( this._readOnly ){
 					this.currentState = "readOnly";
 				}
@@ -132,6 +141,14 @@
 					projectsAssociatedNumber = (Util.extractObject(item, "proyecto.proyectoPadreHijo.proyectoPadre" ) as ProyectoPadre).proyectoPadreHijos.length;
 				}
 				return projectsAssociatedNumber.toString();
+			}
+			
+			public function deselect():void{
+				this.datagrid.selectedIndex = -1;
+			}
+			
+			public function cleanList():void{
+				Util.cleanList( this.datagrid );
 			}
 		]]>
 	</mx:Script>
@@ -421,19 +438,8 @@
 							   labelFunction="{Util.labelFunctionDate}"
 							   width="130"
 							   textAlign="center"/>
-			<mx:DataGridColumn headerText="{'Entregables\nCompletos'}" editable="false" textAlign="center">
-				<mx:itemRenderer>
-					<mx:Component>						
-						<mx:CheckBox selected="{model.Util.extractObject(data,'configuracionPruebaEntrega.entregablesCompletos')}" enabled="false">
-							<mx:Script>
-								<![CDATA[
-									import model.Util;
-								]]>
-							</mx:Script>
-						</mx:CheckBox>
-					</mx:Component>
-				</mx:itemRenderer>
-			</mx:DataGridColumn>
+			<mx:DataGridColumn headerText="{'Entregables\nCompletos'}" width="80"
+							   itemRenderer="components.renderers.CheckBoxRendererEntregablesCompletos"/>
 			<mx:DataGridColumn headerText="{'Estatus de\nValidación\nOperativa'}"
 							   dataField="configuracionPruebaEntrega.estadoValidacionOperativa.etiqueta"
 							   width="130"/>

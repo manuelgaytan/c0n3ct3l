@@ -283,10 +283,24 @@ public class ProyectoService implements IProyectoService {
 		return categoryList;
 	}
 	
+	public List<ConsultaGeneralOperacion> getProyectosAndDerivatesByID( Long idProyecto) throws ConectelException{
+		ProyectoDO proyectoDO = this.getProyecto( idProyecto );
+		if( proyectoDO == null ){
+			return null;
+		}
+		List<ProyectoDO> proyectos = new ArrayList<ProyectoDO>();
+		proyectos.add( proyectoDO );
+		return this.getDerivates( proyectos );
+	}
+	
 	public List<ConsultaGeneralOperacion> getProyectosAndDerivates() throws ConectelException{
 		TypedQuery<ProyectoDO> query = entityManager.createNamedQuery(
 				"ProyectoDO.getAll", ProyectoDO.class);
 		List<ProyectoDO> proyectos = query.getResultList();
+		return this.getDerivates( proyectos );
+	}
+	
+	private List<ConsultaGeneralOperacion> getDerivates(List<ProyectoDO> proyectos){
 		TypedQuery<DatosGrlsProyectoDO> queryDGP = entityManager.createNamedQuery(
 				"DatosGrlsProyectoDO.findAllAll", DatosGrlsProyectoDO.class);
 		List<DatosGrlsProyectoDO> datosgeneralesproyecto = queryDGP.getResultList();

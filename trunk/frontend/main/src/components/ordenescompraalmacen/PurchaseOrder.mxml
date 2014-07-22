@@ -84,15 +84,9 @@
 					return;
 				}
 				this.txtID.text = Util.numberToString( this._item.id );
-				if( !(this._item.proyecto == null) ){
-					this.projectsConsult.setDataAndSelected( Util.asArrayCollection( this._item.proyecto ) );
-				}
-				if( !(this._item.requisicionCompra == null) ){
-					this.requisitionsConsult.setDataAndSelected( Util.asArrayCollection( this._item.requisicionCompra ) );
-				}
-				if( !(this._item.cotizacion == null) ){
-					this.quotesConsult.setDataAndSelected( Util.asArrayCollection( this._item.cotizacion ) );
-				}
+				this.projectsConsult.setDataAndSelected( Util.asArrayCollection( this._item.proyecto ) );
+				this.requisitionsConsult.setDataAndSelected( Util.asArrayCollection( this._item.requisicionCompra ) );
+				this.quotesConsult.setDataAndSelected( Util.asArrayCollection( this._item.cotizacion ) );
 				this.dtfDate.selectedDate = this._item.fecha;
 				if( Util.isFill( this.cmbQualifiedSupplier ) && this._item.proveedorCalificado != null ){
 					this.cmbQualifiedSupplier.selectedIndex = Util.selectedIndexFromCombo( this.cmbQualifiedSupplier.dataProvider as ArrayCollection, 
@@ -137,22 +131,14 @@
 				}else{
 					item = this._item;
 				}
-				if( !(this.projectsConsult.selectedProyect() == null) ){ 
-					item.proyecto = this.projectsConsult.selectedProyect();
-				}else{
-					item.proyecto = null;
-				}
+				item.proyecto = this.projectsConsult.selectedProyect();
 				if( !(this.requisitionsConsult.selectedPurchaseRequisition() == null) ){ 
 					item.requisicionCompra = this.requisitionsConsult.selectedPurchaseRequisition();
 					item.requisicionCompra.partidasRequisicionCompra = new ArrayCollection( this.itemsManagement.selectedItems );
 				}else{
 					item.requisicionCompra = null;
 				}
-				if( !(this.quotesConsult.selectedQuote() == null) ){
-					item.cotizacion = this.quotesConsult.selectedQuote();
-				}else{
-					item.cotizacion = null;
-				}
+				item.cotizacion = this.quotesConsult.selectedQuote();
 				item.fecha = this.dtfDate.selectedDate;
 				item.proveedorCalificado = new ProveedorCalificado(); 
 				item.proveedorCalificado.id = (Util.validateCombo( this.cmbQualifiedSupplier ) as ProveedorCalificadoCombo).id;

@@ -469,7 +469,8 @@
 		<mx:Button label="Ver Proyecto" id="btnProjectID"
 			click="btnViewProject_clickHandler(event)"/>
 		<mx:FormItem label="ID Requisición:" direction="horizontal">
-			<mx:Label fontSize="11" text="(doble clic en el registro para cargar la información)"/>
+			<mx:Label fontSize="11" text="(doble clic en el registro para cargar la información)"
+				visible="{this.mode == Constants.REGISTER_MODE}"/>
 		</mx:FormItem>
 		<mx:VBox width="770">
 			<mx:VBox width="100%" height="100%" verticalGap="5">
@@ -540,7 +541,8 @@
 			<requisicionescompra:ItemsManagement id="itemsManagement" purchaseOrderMode="true"/>
 			<mx:HBox>
 				<mx:Button id="btnUpdate" label="Actualizar" click="btnUpdate_clickHandler(event)"/>
-				<mx:Label fontSize="11" text="(seleccionar los registros a trabajar, con la tecla Ctrl presionada para seleccionar varios registros)"/>
+				<mx:Label fontSize="11" text="(seleccionar los registros a trabajar, con la tecla Ctrl presionada para seleccionar varios registros)"
+					visible="{this.mode == Constants.REGISTER_MODE}"/>
 			</mx:HBox>
 		</mx:VBox>
 		<mx:FormItem required="true" label="Subtotal:">

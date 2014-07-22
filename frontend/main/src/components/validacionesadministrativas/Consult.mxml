@@ -110,15 +110,15 @@
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 				 allowMultipleSelection="true">
 		<mx:columns>
-			<mx:DataGridColumn id="dtgProjectID" headerText="{'ID\nProyecto'}"
-							   dataField="id"
-							   labelFunction="labelFunctionIDProyecto"
-							   visible="false"
-							   width="90"/>
 			<mx:DataGridColumn id="dtgID" headerText="ID"
 							   dataField="id"
 							   width="80"
 							   textAlign="right"/>
+			<mx:DataGridColumn id="dtgProjectID" headerText="{'ID\nProyecto'}"
+							   dataField="proyecto.id"
+							   labelFunction="labelFunctionIDProyecto"
+							   visible="true"
+							   width="90"/>
 			<mx:DataGridColumn id="dtgOperationalValidationStatus" headerText="{'Revisión y\nValidación\nAdministrativa'}"
 							   width="150"
 							   dataField="estadoValidacionAdministrativa.etiqueta"

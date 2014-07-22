@@ -11,6 +11,10 @@ package model
 		public var codigo:String;
 		public var descripcion:String;
 		public var precioUnitario:Number;
+		public var centralSitio:String;
+		public var idSitio:String;
+		public var localForaneo:String;
+		public var condicionPago:String;
 		
 		public function PartidaConcentradoOrdenCompraCliente()
 		{

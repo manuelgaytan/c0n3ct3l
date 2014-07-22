@@ -86,29 +86,13 @@
 			{
 				this.executeQuery();
 			}
-			
-			private function labelFunctionLocalForaneo(object:Object, column:DataGridColumn):String{
-				var item:ConcentradoOrdenCompraCliente = object as ConcentradoOrdenCompraCliente;
-				var tipoServicio:String = "";
-				if( item == null || 
-					item.localForaneo == null ){
-					return tipoServicio;
-				}
-				if( Number(item.localForaneo) == TipoServicio.ID_LOCAL ){
-					tipoServicio = TipoServicio.LOCAL;
-				}
-				if( Number(item.localForaneo) == TipoServicio.ID_FORANEO ){
-					tipoServicio = TipoServicio.FORANEO;
-				}
-				return tipoServicio;
-			}
 		]]>
 	</mx:Script>
 	<mx:Metadata>
 		[Event(name="concentratedCustomerPurchaseOrdersDetail", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
-	<mx:DataGrid id="datagrid" width="1325" height="100%" dataProvider="{items}"
+	<mx:DataGrid id="datagrid" width="725" height="100%" dataProvider="{items}"
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 				 allowMultipleSelection="true">
 		<mx:columns>
@@ -133,22 +117,6 @@
 							   width="100"
 							   textAlign="right"
 							   />
-			<mx:DataGridColumn id="dtgSite" headerText="{'Sitio'}"
-							   dataField="centralSitio"
-							   width="100"
-							   />
-			<mx:DataGridColumn headerText="{'ID Sitio'}"
-							   dataField="idSitio"
-							   width="100"
-							   />
-			<mx:DataGridColumn id="dtgStatus" headerText="{'Local/\nForáneo'}"
-							   dataField="localForaneo"
-							   labelFunction="labelFunctionLocalForaneo"
-							   width="100"
-							   textAlign="center"/>
-			<mx:DataGridColumn headerText="{'Condiciones\nde Pago'}"
-							   dataField="condicionPago"
-							   width="300"/>
 		</mx:columns>
 	</mx:DataGrid>
 	</mx:HBox>

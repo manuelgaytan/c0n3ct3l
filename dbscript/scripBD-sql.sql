@@ -1183,11 +1183,7 @@
 	fk_cliente INT(11) UNSIGNED NOT NULL,
 	orden_compra VARCHAR(255) NOT NULL,
 	fecha_orden_compra DATE NOT NULL,
-	num_requisicion VARCHAR(255),
-	central_sitio VARCHAR(255),
-	id_sitio VARCHAR(255),
-	local_foraneo VARCHAR(255),
-	condicion_pago VARCHAR(255),
+	num_requisicion VARCHAR(255),	
 	PRIMARY KEY (id)
 	);
 
@@ -1199,6 +1195,10 @@
 	codigo VARCHAR(255) NOT NULL,
 	descripcion VARCHAR(255) NOT NULL,
 	precio_unitario DECIMAL(11,2) NOT NULL,
+	central_sitio VARCHAR(255),
+	id_sitio VARCHAR(255),
+	local_foraneo VARCHAR(255),
+	condicion_pago VARCHAR(255),
 	PRIMARY KEY (id)
 	);
 

@@ -42,6 +42,15 @@ public class PartidaConcentradoOrdenCompraClienteDO implements Serializable {
 
 	@Column(name = "precio_unitario")
 	private Integer precioUnitario;
+	
+	@Column(name = "central_sitio")
+	private String centralSitio;
+	@Column(name = "id_sitio")
+	private String idSitio;
+	@Column(name = "local_foraneo")
+	private String localForaneo;
+	@Column(name = "condicion_pago")
+	private String condicionPago;
 
 	public PartidaConcentradoOrdenCompraClienteDO() {
 		super();
@@ -51,7 +60,7 @@ public class PartidaConcentradoOrdenCompraClienteDO implements Serializable {
 	public PartidaConcentradoOrdenCompraClienteDO(long id,
 			ConcentradoOrdenCompraClienteDO concentradoOrdenCompraCliente,
 			Integer item, String codigo, String descripcion,
-			Integer precioUnitario) {
+			Integer precioUnitario, String centralSitio, String idSitio, String localForaneo, String condicionPago) {
 		super();
 		this.id = id;
 		this.concentradoOrdenCompraCliente = concentradoOrdenCompraCliente;
@@ -59,6 +68,10 @@ public class PartidaConcentradoOrdenCompraClienteDO implements Serializable {
 		this.codigo = codigo;
 		this.descripcion = descripcion;
 		this.precioUnitario = precioUnitario;
+		this.centralSitio = centralSitio;
+		this.idSitio = idSitio;
+		this.localForaneo = localForaneo;
+		this.condicionPago = condicionPago;
 	}
 
 	public long getId() {
@@ -108,6 +121,38 @@ public class PartidaConcentradoOrdenCompraClienteDO implements Serializable {
 
 	public void setPrecioUnitario(Integer precioUnitario) {
 		this.precioUnitario = precioUnitario;
+	}
+
+	public String getCentralSitio() {
+		return centralSitio;
+	}
+
+	public void setCentralSitio(String centralSitio) {
+		this.centralSitio = centralSitio;
+	}
+
+	public String getIdSitio() {
+		return idSitio;
+	}
+
+	public void setIdSitio(String idSitio) {
+		this.idSitio = idSitio;
+	}
+
+	public String getLocalForaneo() {
+		return localForaneo;
+	}
+
+	public void setLocalForaneo(String localForaneo) {
+		this.localForaneo = localForaneo;
+	}
+
+	public String getCondicionPago() {
+		return condicionPago;
+	}
+
+	public void setCondicionPago(String condicionPago) {
+		this.condicionPago = condicionPago;
 	}
 
 	

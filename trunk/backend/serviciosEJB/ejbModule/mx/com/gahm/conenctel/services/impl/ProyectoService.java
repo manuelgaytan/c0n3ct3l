@@ -350,4 +350,11 @@ public class ProyectoService implements IProyectoService {
 		List<ProyectoDO> categoryList = query.getResultList();		
 		return categoryList;
 	}
+	
+	public List<ProyectoDO> getAllByWithCustomerPurchaseOrder() throws ConectelException{
+		TypedQuery<ProyectoDO> query = entityManager.createNamedQuery(
+				"ProyectoDO.getAllByWithCustomerPurchaseOrder", ProyectoDO.class);
+		List<ProyectoDO> categoryList = query.getResultList();		
+		return categoryList;
+	}
 }

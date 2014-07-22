@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<mx:ComboBox xmlns:mx="http://www.adobe.com/2006/mxml"
+			 dataProvider="{EstatusRequisicionCompra.getAll()}"
+			 labelField="estatus"
+			 change="this.comboBox_changeHandler(event)"
+			 >
+	<mx:Script>
+		<![CDATA[
+			import mx.events.ListEvent;
+			import model.EstatusRequisicionCompra;
+			
+			protected function comboBox_changeHandler(event:ListEvent):void
+			{
+				// set focus out event on datagrid. Its like clicking outside the datagrid
+//				event.target.parent.parent.parent.dispatchEvent( new FocusEvent(FocusEvent.FOCUS_OUT) );
+			}
+		]]>
+	</mx:Script>
+</mx:ComboBox>
+<!--
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml"
+		 verticalScrollPolicy="off"
+		 horizontalScrollPolicy="off"
+		 width="315"
+		 horizontalGap="0">
+	<mx:Script>
+		<![CDATA[
+			import model.EstatusDevolucion;
+			import model.ProyectoEntregable;
+			import model.Util;
+			
+			import mx.collections.ArrayCollection;
+			import mx.events.ListEvent;
+			
+			protected function formatFile( item:Object ):String{
+				var currentItem:String = this.getFileName(item);
+				var index:int = currentItem.indexOf("_");
+				if( index == -1 ){
+					return currentItem;
+				}else{
+					index++;
+					return currentItem.substring( index );
+				}
+			}
+			
+			public function getFileName(item:Object=null):String
+			{
+				if( !(item == null) ){
+					return (item as ProyectoEntregable).entregable.nombreArchivo;
+				}
+				return "";
+			}
+			
+			public override function set data(value:Object):void{
+				if( value == null ){
+					return;
+				}
+				super.data = value;
+				var item:ProyectoEntregable = value as ProyectoEntregable;
+				if( item == null ){
+					return;
+				}
+				this.cmbStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbStatus.dataProvider as ArrayCollection, item.estatus);
+			}
+			
+			protected function cmbStatus_changeHandler(event:ListEvent):void
+			{
+				this.data.estatus = Util.selectedId( this.cmbStatus );
+				if( this.data.estatus == undefined ){
+					this.data.estatus = EstatusDevolucion.ID_PENDIENTE;
+				}
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:ComboBox id="cmbStatus" dataProvider="{EstatusDevolucion.getComboList()}"
+				 labelField="estatus"
+				 width="110"
+				 change="cmbStatus_changeHandler(event)"/>
+</mx:HBox>-->

@@ -88,10 +88,11 @@
 					return;
 				}
 				this.txtID.text = this._item.id;
+				/*
 				this.parentProjectsConsult.setDataGridData( Util.asArrayCollection(this._item.proyectoPadre) );
 				this.parentProjectsConsult.datagrid.selectedIndex = 0;
-				this.projectsConsult.setDataGridData( Util.asArrayCollection(this._item.proyecto) );
-				this.projectsConsult.datagrid.selectedIndex = 0;
+				*/
+				this.projectsConsult.setDataAndSelected( Util.asArrayCollection(this._item.proyecto) );
 				if( Util.isFill( this.cmbAdministrativeValidationStatus ) && this._item.estadoValidacionAdministrativa != null ){
 					this.cmbAdministrativeValidationStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbAdministrativeValidationStatus.dataProvider as ArrayCollection, 
 						this._item.estadoValidacionAdministrativa.id);
@@ -143,7 +144,7 @@
 				}else{
 					item = this._item;
 				}
-				item.proyectoPadre = this.parentProjectsConsult.selectedParentProyect();
+				//item.proyectoPadre = this.parentProjectsConsult.selectedParentProyect();
 				item.proyecto = this.projectsConsult.selectedProyect();
 				item.estadoValidacionAdministrativa = Util.validateCombo( this.cmbAdministrativeValidationStatus ) as EstadoValidacionAdministrativa;
 				item.tipoValidacionAdministrativa = Util.validateCombo( this.cmbTypeValidationAdministrative ) as TipoValidacionAdministrativa;
@@ -209,8 +210,9 @@
 			private function validations():Boolean
 			{
 				var value:Boolean = true;
-				value &&= ( !(this.parentProjectsConsult.selectedParentProyect() == null) ||
-							!(this.projectsConsult.selectedProyect() == null) );
+				//value &&= ( !(this.parentProjectsConsult.selectedParentProyect() == null) ||
+				//			!(this.projectsConsult.selectedProyect() == null) );
+				value &&= !( this.projectsConsult.selectedProyect() == null );
 				value &&= this.validators.validarFormulario();
 				return value;
 			}
@@ -247,8 +249,13 @@
 			{
 				Util.upScroll( this );
 				this.txtID.reset();
-				this.parentProjectsConsult.datagrid.selectedItem = null;
-				this.projectsConsult.datagrid.selectedItem = null;
+				if( this.mode == Constants.REGISTER_MODE ){
+					//this.parentProjectsConsult.deselect();
+					this.projectsConsult.deselect();
+				}else{
+					//this.parentProjectsConsult.cleanList();
+					this.projectsConsult.cleanList();
+				}
 				this.cmbAdministrativeValidationStatus.selectedIndex = 0;
 				this.cmbTypeValidationAdministrative.selectedIndex = 0;
 				this.txtPorcentage1.reset();
@@ -359,6 +366,7 @@
 			
 			private function executeProjectQuery():void
 			{
+				/*
 				var filter:FiltroProyecto = new FiltroProyecto();
 				filter.idConectel = null;
 				filter.idCategoria = undefined;
@@ -370,7 +378,8 @@
 				filter.modelo = undefined;
 				filter.descripcionServicio = undefined;
 				filter.tipoServicio = undefined;
-				this.responseGetAllByFiltro.token = this.proyectoService.getAllByFiltro(filter);
+				*/
+				this.responseGetAllByFiltro.token = this.proyectoService.getAllByWithCustomerPurchaseOrder();
 			}
 			
 			protected function responseGetAll_resultHandler(event:ResultEvent):void
@@ -399,12 +408,14 @@
 			<components:TextInput id="txtID" editable="false"
 								  textAlign="right"/>
 		</mx:FormItem>
+		<!--
 		<mx:FormItem label="Proyectos Padre:"/>
 		<mx:VBox width="850">
 			<mx:VBox width="100%" height="100%" verticalGap="5">
 				<proyectospadres:Consult id="parentProjectsConsult" width="500" readOnly="true"/>
 			</mx:VBox>
 		</mx:VBox>
+		-->
 		<mx:FormItem label="Proyectos:"/>
 		<mx:VBox width="850">
 			<mx:VBox width="100%" height="100%" verticalGap="5">

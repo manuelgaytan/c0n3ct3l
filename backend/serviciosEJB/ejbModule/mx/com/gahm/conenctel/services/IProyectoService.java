@@ -30,4 +30,5 @@ public interface IProyectoService {
 	public List<ConsultaGeneralOperacion> getProyectosAndDerivates() throws ConectelException;
 	public List<ProyectoDO> getAllByWithOutCustomerPurchaseOrder() throws ConectelException;
 	public List<ConsultaGeneralOperacion> getProyectosAndDerivatesByID( Long idProyecto) throws ConectelException;
+	public List<ProyectoDO> getAllByWithCustomerPurchaseOrder() throws ConectelException;
 }

@@ -74,6 +74,13 @@
 				this.chbPurchaseOrder.selected = this._item.ordenCompra;
 				this.txtPurchaseOrderNumber.text = this._item.numeroOrdenCompra;
 				this.dtfPurchaseOrderDate.selectedDate = this._item.fechaOrdenCompra;
+				this.txtOffer.text = this._item.oferta;
+				this.txtSalesOrder.text = this._item.ordenesVenta;
+				this.txtPR.text = this._item.pr;
+				this.txtMR.text = this._item.mr;
+				this.txtRequest.text = this._item.peticion;
+				this.txtNetwork.text = this._item.red;
+				this.txtQuote.text = this._item.cotizacion;
 				this.txtItem.text = Util.extractToText( this._item, "partida" );
 				this.txtPurchaseOrderCost.text = Util.numberToString( this._item.costoOrdenCompra, true );
 				this.setCommercialCost(this._item.proyecto);
@@ -101,6 +108,13 @@
 				clientPurchaseOrder.ordenCompra = this.chbPurchaseOrder.selected;
 				clientPurchaseOrder.numeroOrdenCompra = Util.validateEmpty( this.txtPurchaseOrderNumber.text );
 				clientPurchaseOrder.fechaOrdenCompra = this.dtfPurchaseOrderDate.selectedDate;
+				clientPurchaseOrder.oferta = Util.validateEmpty( this.txtOffer.text );
+				clientPurchaseOrder.ordenesVenta = Util.validateEmpty( this.txtSalesOrder.text );
+				clientPurchaseOrder.pr = Util.validateEmpty( this.txtPR.text );
+				clientPurchaseOrder.mr = Util.validateEmpty( this.txtMR.text );
+				clientPurchaseOrder.peticion = Util.validateEmpty( this.txtRequest.text );
+				clientPurchaseOrder.red = Util.validateEmpty( this.txtNetwork.text );
+				clientPurchaseOrder.cotizacion = Util.validateEmpty( this.txtQuote.text );
 				clientPurchaseOrder.partida = Util.validateEmpty( this.txtItem.text );
 				clientPurchaseOrder.costoOrdenCompra = Util.stringToNumber( this.txtPurchaseOrderCost.text );
 				clientPurchaseOrder.validacionCosto = Util.validateCombo( this.cmbCostValidationStatus ) as EstadoValidacionCosto;
@@ -176,6 +190,13 @@
 				this.validators.crearValidadorRestrictor("generic",ValidadorCadenaCualquierCaracter.nombre, 0, 255);
 				this.validators.setRestrictor( this.txtLegend, "generic");
 				this.validators.setRestrictor( this.txtPurchaseOrderNumber, "generic");
+				this.validators.setRestrictor( this.txtOffer, "generic");
+				this.validators.setRestrictor( this.txtSalesOrder, "generic");
+				this.validators.setRestrictor( this.txtPR, "generic");
+				this.validators.setRestrictor( this.txtMR, "generic");
+				this.validators.setRestrictor( this.txtRequest, "generic");
+				this.validators.setRestrictor( this.txtNetwork, "generic");
+				this.validators.setRestrictor( this.txtQuote, "generic");
 				this.validators.setRestrictor( this.txtItem, "generic");
 			}
 			
@@ -200,6 +221,13 @@
 				this.chbPurchaseOrder.selected = false;
 				this.txtPurchaseOrderNumber.reset();
 				this.dtfPurchaseOrderDate.reset();
+				this.txtOffer.reset();
+				this.txtSalesOrder.reset();
+				this.txtPR.reset();
+				this.txtMR.reset();
+				this.txtRequest.reset();
+				this.txtNetwork.reset();
+				this.txtQuote.reset();
 				this.txtItem.reset();
 				this.txtPurchaseOrderCost.reset();
 				this.txtCommercialCost.reset();
@@ -349,6 +377,27 @@
 		</mx:FormItem>
 		<mx:FormItem label="Fecha de Orden de Compra:">
 			<components:DateField id="dtfPurchaseOrderDate"/>
+		</mx:FormItem>
+		<mx:FormItem label="Oferta:">
+			<components:TextInput id="txtOffer" width="100"/>
+		</mx:FormItem>
+		<mx:FormItem label="Sales Order:">
+			<components:TextInput id="txtSalesOrder" width="100"/>
+		</mx:FormItem>
+		<mx:FormItem label="PR:">
+			<components:TextInput id="txtPR" width="100"/>
+		</mx:FormItem>
+		<mx:FormItem label="MR:">
+			<components:TextInput id="txtMR" width="100"/>
+		</mx:FormItem>
+		<mx:FormItem label="Petición:">
+			<components:TextInput id="txtRequest" width="100"/>
+		</mx:FormItem>
+		<mx:FormItem label="Network:">
+			<components:TextInput id="txtNetwork" width="100"/>
+		</mx:FormItem>
+		<mx:FormItem label="Cotización:">
+			<components:TextInput id="txtQuote" width="100"/>
 		</mx:FormItem>
 		<mx:FormItem label="Partida, Línea o Ítem:">
 			<components:TextInput id="txtItem" width="90"

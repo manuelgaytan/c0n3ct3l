@@ -42,6 +42,20 @@ public class OrdenCompraClienteDO implements java.io.Serializable {
 	@Temporal(TemporalType.DATE)
 	@Column(name = "fecha_orden_compra", nullable = false, length = 10)
 	private Date fechaOrdenCompra;
+	@Column(name = "oferta", nullable = false)
+	private String oferta;
+	@Column(name = "ordenesVenta", nullable = false)
+	private String ordenesVenta;
+	@Column(name = "pr", nullable = false)
+	private String pr;
+	@Column(name = "mr", nullable = false)
+	private String mr;
+	@Column(name = "peticion", nullable = false)
+	private String peticion;
+	@Column(name = "red", nullable = false)
+	private String red;
+	@Column(name = "cotizacion", nullable = false)
+	private String cotizacion;
 	@Column(name = "item", nullable = false)
 	private String partida;
 	@Column(name = "costo_orden_compra", nullable = false)
@@ -81,6 +95,9 @@ public class OrdenCompraClienteDO implements java.io.Serializable {
 	 */
 	public OrdenCompraClienteDO(Long id, ProyectoDO proyecto,
 			Boolean ordenCompra, String numeroOrdenCompra, Date fechaOrdenCompra,
+			String oferta, String ordenesVenta, String pr, 
+			String mr, String peticion, String red, 
+			String cotizacion, 
 			String partida, 
 			Double costoOrdenCompra, ValidacionCostoDO validacionCosto,
 			EstadoOrdenCompraDO estadoOrdenCompra) {
@@ -90,6 +107,13 @@ public class OrdenCompraClienteDO implements java.io.Serializable {
 		this.ordenCompra = ordenCompra;
 		this.numeroOrdenCompra = numeroOrdenCompra;
 		this.fechaOrdenCompra = fechaOrdenCompra;
+		this.oferta = oferta;
+		this.ordenesVenta = ordenesVenta;
+		this.pr = pr;
+		this.mr = mr;
+		this.peticion = peticion;
+		this.red = red;
+		this.cotizacion = cotizacion;
 		this.partida = partida;
 		this.costoOrdenCompra = costoOrdenCompra;
 		this.validacionCosto = validacionCosto;
@@ -192,6 +216,62 @@ public class OrdenCompraClienteDO implements java.io.Serializable {
 
 	public void setPartida(String partida) {
 		this.partida = partida;
+	}
+
+	public String getOferta() {
+		return oferta;
+	}
+
+	public void setOferta(String oferta) {
+		this.oferta = oferta;
+	}
+
+	public String getOrdenesVenta() {
+		return ordenesVenta;
+	}
+
+	public void setOrdenesVenta(String ordenesVenta) {
+		this.ordenesVenta = ordenesVenta;
+	}
+
+	public String getPr() {
+		return pr;
+	}
+
+	public void setPr(String pr) {
+		this.pr = pr;
+	}
+
+	public String getMr() {
+		return mr;
+	}
+
+	public void setMr(String mr) {
+		this.mr = mr;
+	}
+
+	public String getPeticion() {
+		return peticion;
+	}
+
+	public void setPeticion(String peticion) {
+		this.peticion = peticion;
+	}
+
+	public String getRed() {
+		return red;
+	}
+
+	public void setRed(String red) {
+		this.red = red;
+	}
+
+	public String getCotizacion() {
+		return cotizacion;
+	}
+
+	public void setCotizacion(String cotizacion) {
+		this.cotizacion = cotizacion;
 	}
 
 }

@@ -82,7 +82,7 @@
 		[Event(name="itemDetail", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
-		<mx:DataGrid id="datagrid" width="1100" height="100%" dataProvider="{items}"
+		<mx:DataGrid id="datagrid" width="1730" height="100%" dataProvider="{items}"
 					 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 					 allowMultipleSelection="true"
 					 >
@@ -109,6 +109,27 @@
 								   labelFunction="{Util.labelFunctionDate}"
 								   textAlign="center"
 								   width="130"/>
+				<mx:DataGridColumn headerText="{'Oferta'}"
+								   dataField="oferta"
+								   width="90"/>
+				<mx:DataGridColumn headerText="{'Sales\nOrder'}"
+								   dataField="ordenesVenta"
+								   width="90"/>
+				<mx:DataGridColumn headerText="{'PR'}"
+								   dataField="pr"
+								   width="90"/>
+				<mx:DataGridColumn headerText="{'MR'}"
+								   dataField="mr"
+								   width="90"/>
+				<mx:DataGridColumn headerText="{'Petición'}"
+								   dataField="peticion"
+								   width="90"/>
+				<mx:DataGridColumn headerText="{'Network'}"
+								   dataField="red"
+								   width="90"/>
+				<mx:DataGridColumn headerText="{'Cotización'}"
+								   dataField="cotizacion"
+								   width="90"/>				   
 				<mx:DataGridColumn headerText="{'Partida,\nLínea\no Ítem'}"
 								   dataField="partida"
 								   textAlign="right"

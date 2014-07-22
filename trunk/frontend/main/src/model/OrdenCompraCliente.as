@@ -10,6 +10,13 @@ package model
 		public var ordenCompra:Boolean;
 		public var numeroOrdenCompra:String;
 		public var fechaOrdenCompra:Date;
+		public var oferta:String;
+		public var ordenesVenta:String;
+		public var pr:String;
+		public var mr:String;
+		public var peticion:String;
+		public var red:String;
+		public var cotizacion:String;
 		public var partida:String;
 		public var costoOrdenCompra:*;
 		public var validacionCosto:EstadoValidacionCosto;

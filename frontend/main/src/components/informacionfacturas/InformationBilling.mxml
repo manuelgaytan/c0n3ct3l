@@ -358,13 +358,29 @@
 				this.validacionesAdministrativas.setData( event.result as ArrayCollection ); 
 			}
 			
-			protected function dtfPaymentDate1_changeHandler(event:Event):void
+			protected function dtfScheduledDate1_changeHandler(event:Event):void
 			{
-				if( this._item == null ){
-					var date:Date = this.dtfVendorInvoiceDate.selectedDate;
+				this.calculate( this.dtfAdmissionDate1, this.txtCreditDays1, this.dtfScheduled1 );			
+			}
+			
+			protected function dtfScheduledDate2_changeHandler(event:Event):void
+			{
+				this.calculate( this.dtfAdmissionDate2, this.txtCreditDays2, this.dtfScheduled2 );			
+			}
+			
+			protected function dtfScheduledDate3_changeHandler(event:Event):void
+			{
+				this.calculate( this.dtfAdmissionDate3, this.txtCreditDays3, this.dtfScheduled3 );			
+			}
+			
+			private function calculate( admissionDateField:DateField, creditDaysTextField:TextInput, scheduledDateField:DateField ):void{ 
+				if( this._item == null && !(admissionDateField == null) && !(creditDaysTextField == null) && !(scheduledDateField == null) && 
+					!(admissionDateField.selectedDate == null) ){
+					var date:Date = Util.createDateFromAnother( admissionDateField.selectedDate );
 					if( !(date == null ) ){
-						date.date += this.creditDays;
-						this.dtfPaymentDate.selectedDate = date;
+						var days:Number = Util.stringToNumber( creditDaysTextField.text, true );
+						date.date = date.date + days;
+						scheduledDateField.selectedDate = date; 
 					} 
 				}
 			}
@@ -412,11 +428,11 @@
 								  />
 		</mx:FormItem>
 		<mx:FormItem label="Fecha Ingreso 1:">
-			<components:DateField id="dtfAdmissionDate1"/>
+			<components:DateField id="dtfAdmissionDate1" change="this.dtfScheduledDate1_changeHandler(event)"/>
 		</mx:FormItem>
 		<mx:FormItem label="Días Crédito 1:">
 			<components:TextInput id="txtCreditDays1"
-								  textAlign="right"/>
+								  textAlign="right" change="this.dtfScheduledDate1_changeHandler(event)"/>
 		</mx:FormItem>
 		<mx:FormItem label="Fecha Programada 1:">
 			<components:DateField id="dtfScheduled1"
@@ -452,11 +468,11 @@
 								  />
 		</mx:FormItem>
 		<mx:FormItem label="Fecha Ingreso 2:">
-			<components:DateField id="dtfAdmissionDate2"/>
+			<components:DateField id="dtfAdmissionDate2" change="this.dtfScheduledDate2_changeHandler(event)"/>
 		</mx:FormItem>
 		<mx:FormItem label="Días Crédito 2:">
 			<components:TextInput id="txtCreditDays2"
-								  textAlign="right"/>
+								  textAlign="right" change="this.dtfScheduledDate2_changeHandler(event)"/>
 		</mx:FormItem>
 		<mx:FormItem label="Fecha Programada 2:">
 			<components:DateField id="dtfScheduled2"
@@ -492,11 +508,11 @@
 								  />
 		</mx:FormItem>
 		<mx:FormItem label="Fecha Ingreso 3:">
-			<components:DateField id="dtfAdmissionDate3"/>
+			<components:DateField id="dtfAdmissionDate3" change="this.dtfScheduledDate3_changeHandler(event)"/>
 		</mx:FormItem>
 		<mx:FormItem label="Días Crédito 3:">
 			<components:TextInput id="txtCreditDays3"
-								  textAlign="right"/>
+								  textAlign="right" change="this.dtfScheduledDate3_changeHandler(event)"/>
 		</mx:FormItem>
 		<mx:FormItem label="Fecha Programada 3:">
 			<components:DateField id="dtfScheduled3"

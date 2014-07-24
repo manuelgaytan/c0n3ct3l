@@ -737,5 +737,14 @@ package model
 				source.addItem( i );
 			}
 		}
+		
+		public static function createDateFromAnother( dateSource:Date ):Date{
+			var date:Date = null;
+			if( dateSource == null ){
+				return date;
+			}
+			date = new Date( dateSource.fullYear, dateSource.month, dateSource.date, dateSource.hours, dateSource.minutes, dateSource.seconds, dateSource.milliseconds );
+			return date;
+		}
 	}
 }

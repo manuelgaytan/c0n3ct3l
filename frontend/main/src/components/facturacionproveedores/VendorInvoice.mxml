@@ -504,11 +504,11 @@
 			protected function dtfVendorInvoiceDate_changeHandler(event:Event):void
 			{
 				if( this._item == null ){
-					var date:Date = this.dtfVendorInvoiceDate.selectedDate;
+					var date:Date = Util.createDateFromAnother( this.dtfVendorInvoiceDate.selectedDate );
 					if( !(date == null ) ){
-						date.date += this.creditDays;
-						this.dtfPaymentDate.selectedDate = date;
-					} 
+						date.date = date.date + this.creditDays;
+						this.dtfPaymentDate.selectedDate = date; 
+					}
 				}
 			}
 		]]>

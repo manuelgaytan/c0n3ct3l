@@ -79,7 +79,7 @@
 					   icon="@Embed(source='assets/images/usuarios.png')"/>
 	</mx:VBox>
 	<mx:VBox label="Operación" width="100%" height="100%">
-		<mx:LinkButton label="Registro del Proyecto" id="ProyectosPadres" click="clickMenuHandler(event)"
+		<mx:LinkButton label="Registro de Proyectos" id="ProyectosPadres" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/proyectospadre.png')"/>
 		<mx:LinkButton label="Registro de Servicios" id="Proyectos" click="clickMenuHandler(event)"
 					   icon="@Embed(source='assets/images/altaservicios.png')"/>

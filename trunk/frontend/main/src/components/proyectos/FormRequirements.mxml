@@ -105,5 +105,5 @@
 			
 		]]>
 	</mx:Script>
-	<mx:Button id="btnAddRequirement" label="Agregar Requisición" click="addItem()"/>
+	<mx:Button id="btnAddRequirement" label="Agregar Requisición del Cliente" click="addItem()"/>
 </mx:VBox>

@@ -357,6 +357,17 @@
 			{
 				this.validacionesAdministrativas.setData( event.result as ArrayCollection ); 
 			}
+			
+			protected function dtfPaymentDate1_changeHandler(event:Event):void
+			{
+				if( this._item == null ){
+					var date:Date = this.dtfVendorInvoiceDate.selectedDate;
+					if( !(date == null ) ){
+						date.date += this.creditDays;
+						this.dtfPaymentDate.selectedDate = date;
+					} 
+				}
+			}
 		]]>
 	</mx:Script>
 	<mx:Metadata>

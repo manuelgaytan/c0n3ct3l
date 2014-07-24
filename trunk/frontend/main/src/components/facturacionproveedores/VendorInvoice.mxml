@@ -504,10 +504,10 @@
 			protected function dtfVendorInvoiceDate_changeHandler(event:Event):void
 			{
 				if( this._item == null ){
-					var fecha:Date = this.dtfVendorInvoiceDate.selectedDate;
-					if( !(fecha == null ) ){
-						fecha.date += this.creditDays;
-						this.dtfPaymentDate.selectedDate = fecha;
+					var date:Date = this.dtfVendorInvoiceDate.selectedDate;
+					if( !(date == null ) ){
+						date.date += this.creditDays;
+						this.dtfPaymentDate.selectedDate = date;
 					} 
 				}
 			}

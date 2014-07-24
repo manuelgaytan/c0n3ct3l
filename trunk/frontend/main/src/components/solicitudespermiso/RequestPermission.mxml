@@ -4,6 +4,7 @@
 		 xmlns:informacionConfidencialColaborador="components.informacionConfidencialColaborador.*">
 	<mx:Script>
 		<![CDATA[
+			import model.Model;
 			import model.Contratacion;
 			import model.InformacionConfidencialColaborador;
 			import components.equiposmedicion.Consult;
@@ -95,29 +96,34 @@
 					&& this._item.formaPagoPrenomina != null ){
 					this.cmbPaymentForm.selectedIndex = Util.selectedIndexFromCombo( this.cmbPaymentForm.dataProvider as ArrayCollection, 
 						this._item.formaPagoPrenomina.id);
+					this.cmbPaymentForm.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
 				}
-				this.nstHourGoOut.value = this._item.fechaHoraSalida.hours > 12 ? this._item.fechaHoraSalida.hours - 12 : this._item.fechaHoraSalida.hours;
-				this.nstMinutesGoOut.value = this._item.fechaHoraSalida.minutes;
-				var index:int = NaN;
-				if( Util.isFill( this.cmbAMPMGoOut ) && this._item 
-					&& this._item.fechaHoraSalida != null ){
-					index = 2;
-					if( this._item.fechaHoraSalida.hours < 12 ){
-						index = 1;
+				if( !( this._item.fechaHoraSalida == null ) ){ 
+					this.nstHourGoOut.value = this._item.fechaHoraSalida.hours > 12 ? this._item.fechaHoraSalida.hours - 12 : this._item.fechaHoraSalida.hours;
+					this.nstMinutesGoOut.value = this._item.fechaHoraSalida.minutes;
+					var index:int = NaN;
+					if( Util.isFill( this.cmbAMPMGoOut ) && this._item 
+						&& this._item.fechaHoraSalida != null ){
+						index = 2;
+						if( this._item.fechaHoraSalida.hours < 12 ){
+							index = 1;
+						}
+						this.cmbAMPMGoOut.selectedIndex = Util.selectedIndexFromCombo( this.cmbAMPMGoOut.dataProvider as ArrayCollection, 
+							index);
 					}
-					this.cmbAMPMGoOut.selectedIndex = Util.selectedIndexFromCombo( this.cmbAMPMGoOut.dataProvider as ArrayCollection, 
-						index);
 				}
-				this.nstHourArrive.value = this._item.fechaHoraRetorno.hours > 12 ? this._item.fechaHoraRetorno.hours - 12 : this._item.fechaHoraRetorno.hours;
-				this.nstMinutesArrive.value = this._item.fechaHoraRetorno.minutes;
-				if( Util.isFill( this.cmbAMPMArrive ) && this._item 
-					&& this._item.fechaHoraRetorno != null ){
-					index = 2;
-					if( this._item.fechaHoraRetorno.hours < 12 ){
-						index = 1;
+				if( !( this._item.fechaHoraRetorno == null ) ){
+					this.nstHourArrive.value = this._item.fechaHoraRetorno.hours > 12 ? this._item.fechaHoraRetorno.hours - 12 : this._item.fechaHoraRetorno.hours;
+					this.nstMinutesArrive.value = this._item.fechaHoraRetorno.minutes;
+					if( Util.isFill( this.cmbAMPMArrive ) && this._item 
+						&& this._item.fechaHoraRetorno != null ){
+						index = 2;
+						if( this._item.fechaHoraRetorno.hours < 12 ){
+							index = 1;
+						}
+						this.cmbAMPMArrive.selectedIndex = Util.selectedIndexFromCombo( this.cmbAMPMArrive.dataProvider as ArrayCollection, 
+							index);
 					}
-					this.cmbAMPMArrive.selectedIndex = Util.selectedIndexFromCombo( this.cmbAMPMArrive.dataProvider as ArrayCollection, 
-						index);
 				}
 				if( Util.isFill( this.cmbPermitWithoutPay ) && this._item 
 					&& this._item.permisoSinGoceSueldo != null ){
@@ -144,12 +150,20 @@
 				item.fecha= this.dtfPermissionDate.selectedDate;
 				item.contratacion = this.recruitmentConsult.datagrid.selectedItem as InformacionConfidencialColaborador;
 				item.formaPagoPrenomina = Util.validateCombo( this.cmbPaymentForm ) as FormaPagoPrenomina;
-				item.fechaHoraSalida = new Date( item.fecha.fullYear, item.fecha.month, item.fecha.date );
-				item.fechaHoraSalida.hours = this.cmbAMPMGoOut.selectedItem.id == 2 ? this.nstHourGoOut.value + 12 : this.nstHourGoOut.value;
-				item.fechaHoraSalida.minutes = this.nstMinutesGoOut.value;
-				item.fechaHoraRetorno = new Date( item.fecha.fullYear, item.fecha.month, item.fecha.date );
-				item.fechaHoraRetorno.hours = this.cmbAMPMArrive.selectedItem.id == 2 ? this.nstHourArrive.value + 12 : this.nstHourArrive.value;
-				item.fechaHoraRetorno.minutes = this.nstMinutesArrive.value;
+				if( this.frmItmStartHour.enabled ){
+					item.fechaHoraSalida = new Date( item.fecha.fullYear, item.fecha.month, item.fecha.date );
+					item.fechaHoraSalida.hours = this.cmbAMPMGoOut.selectedItem.id == 2 ? this.nstHourGoOut.value + 12 : this.nstHourGoOut.value;
+					item.fechaHoraSalida.minutes = this.nstMinutesGoOut.value;
+				}else{
+					item.fechaHoraSalida = null;
+				}
+				if( this.frmItmReturnHour.enabled ){
+					item.fechaHoraRetorno = new Date( item.fecha.fullYear, item.fecha.month, item.fecha.date );
+					item.fechaHoraRetorno.hours = this.cmbAMPMArrive.selectedItem.id == 2 ? this.nstHourArrive.value + 12 : this.nstHourArrive.value;
+					item.fechaHoraRetorno.minutes = this.nstMinutesArrive.value;
+				}else{
+					item.fechaHoraRetorno = null;
+				}
 				item.permisoSinGoceSueldo = Util.validateCombo( this.cmbPermitWithoutPay ) as PermisoSinGoceSueldo;
 				item.permisoConGoceSueldo = Util.validateCombo( this.cmbPermitWithPay ) as PermisoConGoceSueldo;
 				item.vistoBuenoJefeInmediato = this.chkImmediateSupervisorApproval.selected;
@@ -236,9 +250,11 @@
 				this.dtfPermissionDate.selectedDate = new Date();
 				this.txtEmployeeName.reset();
 				this.cmbPaymentForm.selectedIndex = 0;
+				this.frmItmStartHour.enabled = true;
 				this.nstHourGoOut.value = 1;
 				this.nstMinutesGoOut.value = 0;
 				this.cmbAMPMGoOut.selectedIndex = 0;
+				this.frmItmReturnHour.enabled = true;
 				this.nstHourArrive.value = 1;
 				this.nstMinutesArrive.value = 0;
 				this.cmbAMPMArrive.selectedIndex = 0;
@@ -343,6 +359,24 @@
 				}
 			}
 			
+			private function cmbPaymentForm_changeHandler( event:ListEvent ):void{
+				var paymentForm:FormaPagoPrenomina = this.cmbPaymentForm.selectedItem as FormaPagoPrenomina;
+				if( paymentForm == null ){
+					return;
+				}
+				var value:Boolean = this.isAllowed();
+				if( paymentForm.id == FormaPagoPrenomina.ID_TOTAL ){
+					value = false;
+				}
+				this.frmItmStartHour.enabled = value;
+				this.frmItmReturnHour.enabled = value;
+			}
+			
+			private function isAllowed():Boolean{
+				//TODO: Permitir de acuerdo al perfil.
+				//return Model.getInstance().user.allowedPerfil( Perfil.ID_HORARIOS );
+				return true;
+			}
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -373,15 +407,15 @@
 		</mx:FormItem>
 		<mx:FormItem required="true" label="Tipo:">
 			<mx:ComboBox id="cmbPaymentForm" width="200"
-						 labelField="tipo"/>
+						 labelField="tipo" change="cmbPaymentForm_changeHandler(event)"/>
 		</mx:FormItem>
-		<mx:FormItem required="true" label="Hora de Salida:" direction="horizontal">
+		<mx:FormItem required="true" label="Hora de Salida:" direction="horizontal" id="frmItmStartHour">
 			<mx:NumericStepper id="nstHourGoOut" minimum="1" maximum="12" textAlign="right"/>
 			<mx:NumericStepper id="nstMinutesGoOut" minimum="0" maximum="59" textAlign="right"/>
 			<mx:ComboBox id="cmbAMPMGoOut" dataProvider="{Constants.getAMPM()}"
 						 labelField="etiqueta"/>
 		</mx:FormItem>
-		<mx:FormItem required="true" label="Hora de Retorno:" direction="horizontal">
+		<mx:FormItem required="true" label="Hora de Retorno:" direction="horizontal" id="frmItmReturnHour">
 			<mx:NumericStepper id="nstHourArrive" minimum="1" maximum="12" textAlign="right"/>
 			<mx:NumericStepper id="nstMinutesArrive" minimum="0" maximum="59" textAlign="right"/>
 			<mx:ComboBox id="cmbAMPMArrive" dataProvider="{Constants.getAMPM()}"

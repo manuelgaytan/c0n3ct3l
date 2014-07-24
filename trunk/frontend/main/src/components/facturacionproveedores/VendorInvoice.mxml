@@ -45,6 +45,8 @@
 			private var _item:FacturaProveedor;
 			private var validators:InicializaValidadoresEtiquetas;
 			
+			private var creditDays:Number = 0;
+			
 			[Bindable]
 			private var _readOnly:Boolean = false;
 			
@@ -244,11 +246,13 @@
 				this.txtContact.reset();
 				this.txtMail.reset();
 				this.txtBank.reset();
+				this.creditDays = 0;
 				this.frmODCAlmacen.required = false;
 				Util.removeItems(this.odcAlmacen.datagrid.dataProvider);
 				this.frmODCMaquilado.required = false;
 				Util.removeItems(this.odcMaquilado.datagrid.dataProvider);
 				this.cleanPurchaseOrderForm();
+				this.currentState = "";
 			}
 			
 			private function cleanPurchaseOrderForm():void
@@ -308,10 +312,12 @@
 			
 			protected function purchaseOrderSelectedHandler(event:GenericEvent):void
 			{
+				this.creditDays = 0;
 				var purchaseOrder:OrdenCompraAlmacen = event.information as OrdenCompraAlmacen;
 				if( purchaseOrder == null ){
 					return;
 				}
+				this.creditDays = Util.extractObject(purchaseOrder,"proveedorCalificado.diasCredito") as Number;
 				this.cleanPurchaseOrderForm();
 				this.setProject( purchaseOrder.proyecto );
 				this.setPurchaseOrder( purchaseOrder );
@@ -416,6 +422,7 @@
 					this.loadPurchaseOrderAlmacen();
 					this.frmODCAlmacen.required = true;
 					//this.cmbPayableItem.visible = false;
+					this.currentState = "qualifiedSupplier";
 				}else{	//Maquiladores
 					this.cmbSupplier.labelField = null;
 					this.cmbSupplier.labelFunction = maquiladorSupplier;
@@ -423,6 +430,7 @@
 					this.loadPurchaseOrderMaquilado();
 					this.frmODCMaquilado.required = true;
 					//this.cmbPayableItem.visible = true;
+					this.currentState = "maquilaSupplier";
 				}
 			}
 			
@@ -493,6 +501,16 @@
 				this.setSupplier( supplier );
 			}
 			
+			protected function dtfVendorInvoiceDate_changeHandler(event:Event):void
+			{
+				if( this._item == null ){
+					var fecha:Date = this.dtfVendorInvoiceDate.selectedDate;
+					if( !(fecha == null ) ){
+						fecha.date += this.creditDays;
+						this.dtfPaymentDate.selectedDate = fecha;
+					} 
+				}
+			}
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -500,6 +518,16 @@
 		[Event(name="vendorInvoiceUpdated", type="flash.events.Event")]
 		[Event(name="vendorInvoiceProjectDone", type="flash.events.Event")]
 	</mx:Metadata>
+	<mx:states>
+		<mx:State name="qualifiedSupplier">
+			<mx:RemoveChild target="{this.frmODCMaquilado}"/>
+			<mx:RemoveChild target="{this.vBoxODCMaquilado}"/>
+		</mx:State>
+		<mx:State name="maquilaSupplier">
+			<mx:RemoveChild target="{this.frmODCAlmacen}"/>
+			<mx:RemoveChild target="{this.vBoxODCAlmacen}"/>
+		</mx:State>
+	</mx:states>
 	<mx:Form id="form">
 		<mx:FormItem required="true" id="frmID" label="ID:" direction="horizontal">
 			<components:TextInput id="txtID" width="80" textAlign="right"
@@ -535,14 +563,14 @@
 			<components:TextInput id="txtMail" editable="false"/>
 		</mx:FormItem>
 		<mx:FormItem id="frmODCAlmacen" label="Orden Compra Almacén:"/>
-		<mx:VBox width="1050">
+		<mx:VBox width="1050" id="vBoxODCAlmacen">
 			<mx:VBox width="100%" height="100%" verticalGap="5">
 				<ordenescompraalmacen:Consult id="odcAlmacen" purchaseOrderDetail="purchaseOrderSelectedHandler(event)"
 									  readOnly="true"/>
 			</mx:VBox>
 		</mx:VBox>	
 		<mx:FormItem id="frmODCMaquilado" label="Orden Compra Maquilado:"/>
-		<mx:VBox width="1050">
+		<mx:VBox width="1050" id="vBoxODCMaquilado">
 			<mx:VBox width="100%" height="100%" verticalGap="5">
 				<ordenescompraserviciosmaquilado:Consult id="odcMaquilado" purchaseOrderMaquiladoDetail="purchaseOrderMaquiladoSelectedHandler(event)"
 												 readOnly="true"/>
@@ -586,7 +614,7 @@
 			<components:TextInput id="txtQuantity" textAlign="right"/>
 		</mx:FormItem>
 		<mx:FormItem required="true" label="Fecha Factura:">
-			<components:DateField id="dtfVendorInvoiceDate"/>
+			<components:DateField id="dtfVendorInvoiceDate" change="dtfVendorInvoiceDate_changeHandler(event)"/>
 		</mx:FormItem>
 		<mx:FormItem required="true" label="Número Factura Proveedor:">
 			<components:TextInput id="txtVendorInvoiceNumber" textAlign="right"/>

@@ -466,7 +466,7 @@
 			<components:FlatDeliver id="fltDlvUpFormat" limitedTo="1"/>
 			<mx:LinkButton id="descargarFormato" label="Descargar Formato" click="descargarFormato_clickHandler(event)"/>
 		</mx:FormItem>
-		<mx:FormItem label="Archivos de Comprobación Revisada:">
+		<mx:FormItem label="Archivos de Comprobación Viáticos:">
 			<components:FlatDeliver id="fltDlvUpDocuments"/>
 		</mx:FormItem>
 		<mx:FormItem label="Fecha de Subida de Documentos:">

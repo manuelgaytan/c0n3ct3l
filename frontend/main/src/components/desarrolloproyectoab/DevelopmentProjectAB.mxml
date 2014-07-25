@@ -697,7 +697,7 @@
 		</mx:FormItem>
 		<mx:FormItem direction="horizontal">
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
-			<mx:Button id="btnDone" label="Hecho" click="btnHecho_clickHandler(event)"/>
+			<mx:Button id="btnDone" label="Siguiente Fase" click="btnHecho_clickHandler(event)"/>
 		</mx:FormItem>
 	</mx:Form>
 	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="utilService_faultHandler(event)"

@@ -301,11 +301,11 @@
 			<components:TextInput id="txtFinalClient" width="350"
 								  editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem required="true" label="Estatus de Validación Operativa:">
+		<mx:FormItem required="true" label="Estatus de Validación Administrativa:">
 			<mx:ComboBox id="cmbOperationalValidationStatus" width="400"
 						 labelField="etiqueta"/>
 		</mx:FormItem>
-		<mx:FormItem required="true" label="Fecha de Estatus de Validación Operativa:">
+		<mx:FormItem required="true" label="Fecha de Estatus de Validación Administrativa:">
 			<components:DateField id="dtfOperativeValidationStatus"/>
 		</mx:FormItem>
 		<mx:FormItem direction="horizontal">

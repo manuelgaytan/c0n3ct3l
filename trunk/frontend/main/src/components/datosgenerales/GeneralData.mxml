@@ -639,7 +639,7 @@
 		<mx:FormItem label="Site Survey:">
 			<components:TextInput id="txtSite" width="350"/>
 		</mx:FormItem>
-		<mx:FormItem label="Entregable Ingeniería:">
+		<mx:FormItem label="Documentos del Proyecto:">
 			<components:Deliver id="dlvEngineeringDeliverable" deliveryType="{TipoEntregable.ENTREGABLE_INGENIERIA}"/>
 		</mx:FormItem>
 		<components:Observations id="observations" fase="{Estado.createEstado(Estado.ID_DATOS_GENERALES, Estado.DATOS_GENERALES)}"/>

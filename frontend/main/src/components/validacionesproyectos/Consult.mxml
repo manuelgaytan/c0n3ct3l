@@ -132,11 +132,11 @@
 							   dataField="proyecto.proyectoPadreHijo.proyectoPadre.descripcion"
 							   width="150"
 							   />
-			<mx:DataGridColumn headerText="{'Estatus de\nValidación\nOperativa'}"
+			<mx:DataGridColumn headerText="{'Estatus de\nValidación\nAdministrativa'}"
 							   dataField="proyecto.validacionProyecto.estadoValidacionOperativa.etiqueta"
 							   width="150"
 							   />
-			<mx:DataGridColumn headerText="{'Fecha de\nEstatus de\nValidación\nOperativa'}"
+			<mx:DataGridColumn headerText="{'Fecha de\nEstatus de\nValidación\nAdministrativa'}"
 							   dataField="proyecto.validacionProyecto.fecha"
 							   width="90"
 							   labelFunction="{Util.labelFunctionDate}"

@@ -4595,6 +4595,8 @@
 	VALUES (4, 'Otros');
 	INSERT INTO Dependientes
 	VALUES (5, 'Nadie');
+	INSERT INTO Dependientes
+	VALUES (6, 'Esposo (a)');
 
 	INSERT INTO UltimoGradoEstudios
 	VALUES (1, 'Primaria');

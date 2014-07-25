@@ -158,7 +158,7 @@
 	<mx:FormItem label="Comentario:" direction="vertical">
 		<mx:HBox>			
 			<components:TextArea id="txtObservation" width="400"/>
-			<mx:Button label="+" id="btnAddObservation" click="btnAddObservation_clickHandler(event)"/>
+			<mx:Button label="Agregar Comentario" id="btnAddObservation" click="btnAddObservation_clickHandler(event)"/>
 		</mx:HBox>
 		<mx:DataGrid dataProvider="{this._comments}" variableRowHeight="true">
 			<mx:columns>

@@ -151,7 +151,7 @@
 				<mx:DataGridColumn headerText="{'OHSAS\n18001-2008'}" width="80"
 								   imeMode="induccion4"
 								   itemRenderer="components.renderers.CheckBoxRendererOHSAS180012008"/>
-				<mx:DataGridColumn id="dtgENCDate" headerText="{'Fecha\nEvaluación de\nNecesidades\nde\nCompetencia'}"
+				<mx:DataGridColumn id="dtgENCDate" headerText="{'Fecha de\nInducción'}"
 								   dataField="fechaEnc"
 								   labelFunction="{Util.labelFunctionDate}"
 								   width="90"/>

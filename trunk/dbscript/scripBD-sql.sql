@@ -4853,6 +4853,19 @@
 	VALUES (7, 'Otra');
 	INSERT INTO FuenteNoConformidad
 	VALUES (8, 'Auditoría Externa');
+	INSERT INTO FuenteNoConformidad
+	VALUES (9, 'Correo Electrónico');
+	INSERT INTO FuenteNoConformidad
+	VALUES (10, 'Accidente');
+	INSERT INTO FuenteNoConformidad
+	VALUES (11, 'Incidente');
+	INSERT INTO FuenteNoConformidad
+	VALUES (12, 'Negligencia');
+	INSERT INTO FuenteNoConformidad
+	VALUES (13, 'Desacato');
+	INSERT INTO FuenteNoConformidad
+	VALUES (14, 'Insubordinación');
+
 
 	INSERT INTO EstadoAccionPreventivaCorrectiva
 	VALUES (1, 'Cerrada');

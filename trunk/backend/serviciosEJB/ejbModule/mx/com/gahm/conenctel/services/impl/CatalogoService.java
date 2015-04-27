@@ -109,7 +109,7 @@ public class CatalogoService implements ICatalogoService {
 		try {
 			ubicacionAList = query.getResultList();
 		} catch (NoResultException e) {
-			throw new ConectelException("No existen Ubicación A registrados.");
+			throw new ConectelException("No existen Ubicaciï¿½n A registrados.");
 		}
 		return ubicacionAList;
 	}
@@ -163,7 +163,7 @@ public class CatalogoService implements ICatalogoService {
 		try {
 			ubicacionBList = query.getResultList();
 		} catch (NoResultException e) {
-			throw new ConectelException("No existen Ubicación B registrados.");
+			throw new ConectelException("No existen Ubicaciï¿½n B registrados.");
 		}
 		return ubicacionBList;
 	}
@@ -309,7 +309,7 @@ public class CatalogoService implements ICatalogoService {
 		try {
 			companiaList = query.getResultList();
 		} catch (NoResultException e) {
-			throw new ConectelException("No existen Compañias registradas.");
+			throw new ConectelException("No existen Compaï¿½ias registradas.");
 		}
 		return companiaList;
 	}
@@ -364,7 +364,7 @@ public class CatalogoService implements ICatalogoService {
 		try {
 			descripcionAlmacenList = query.getResultList();
 		} catch (NoResultException e) {
-			throw new ConectelException("No existen Descripción Almacen registrados.");
+			throw new ConectelException("No existen Descripciï¿½n Almacen registrados.");
 		}
 		return descripcionAlmacenList;
 	}
@@ -394,7 +394,7 @@ public class CatalogoService implements ICatalogoService {
 		try {
 			datos = query.getResultList();
 		} catch (NoResultException e) {
-			throw new ConectelException("No existen informaci˜n para mostrar.");
+			throw new ConectelException("No existen informaciï¿½n para mostrar.");
 		}
 		return datos;
 	}
@@ -411,7 +411,7 @@ public class CatalogoService implements ICatalogoService {
 		try {
 			datos = query.getResultList();
 		} catch (NoResultException e) {
-			throw new ConectelException("No existen informaci˜n para mostrar.");
+			throw new ConectelException("No existen informaciï¿½n para mostrar.");
 		}
 		return datos;
 	}
@@ -428,7 +428,7 @@ public class CatalogoService implements ICatalogoService {
 		try {
 			datos = query.getResultList();
 		} catch (NoResultException e) {
-			throw new ConectelException("No existen informaci˜n para mostrar.");
+			throw new ConectelException("No existen informaciï¿½n para mostrar.");
 		}
 		return datos;
 	}
@@ -445,7 +445,7 @@ public class CatalogoService implements ICatalogoService {
 		try {
 			datos = query.getResultList();
 		} catch (NoResultException e) {
-			throw new ConectelException("No existen informaci˜n para mostrar.");
+			throw new ConectelException("No existen informaciï¿½n para mostrar.");
 		}
 		return datos;
 	}
@@ -462,7 +462,7 @@ public class CatalogoService implements ICatalogoService {
 		try {
 			datos = query.getResultList();
 		} catch (NoResultException e) {
-			throw new ConectelException("No existen informaci˜n para mostrar.");
+			throw new ConectelException("No existen informaciï¿½n para mostrar.");
 		}
 		return datos;
 	}
@@ -478,7 +478,7 @@ public class CatalogoService implements ICatalogoService {
 		try {
 			datos = query.getResultList();
 		} catch (NoResultException e) {
-			throw new ConectelException("No existen informaci˜n para mostrar.");
+			throw new ConectelException("No existen informaciï¿½n para mostrar.");
 		}
 		return datos;
 	}
@@ -494,7 +494,7 @@ public class CatalogoService implements ICatalogoService {
 		try {
 			datos = query.getResultList();
 		} catch (NoResultException e) {
-			throw new ConectelException("No existen informaci˜n para mostrar.");
+			throw new ConectelException("No existen informaciï¿½n para mostrar.");
 		}
 		return datos;
 	}
@@ -510,7 +510,7 @@ public class CatalogoService implements ICatalogoService {
 		try {
 			datos = query.getResultList();
 		} catch (NoResultException e) {
-			throw new ConectelException("No existen informaci˜n para mostrar.");
+			throw new ConectelException("No existen informaciï¿½n para mostrar.");
 		}
 		return datos;
 	}
@@ -526,7 +526,7 @@ public class CatalogoService implements ICatalogoService {
 		try {
 			datos = query.getResultList();
 		} catch (NoResultException e) {
-			throw new ConectelException("No existen informaci˜n para mostrar.");
+			throw new ConectelException("No existen informaciï¿½n para mostrar.");
 		}
 		return datos;
 	}
@@ -541,7 +541,7 @@ public class CatalogoService implements ICatalogoService {
 		try {
 			datos = query.getResultList();
 		} catch (NoResultException e) {
-			throw new ConectelException("No existen informaci˜n para mostrar.");
+			throw new ConectelException("No existen informaciï¿½n para mostrar.");
 		}
 		return datos;
 	}
@@ -1414,7 +1414,7 @@ public class CatalogoService implements ICatalogoService {
 		try {
 			datos = query.getResultList();
 		} catch (NoResultException e) {
-			throw new ConectelException("No existen informaci—n para mostrar.");
+			throw new ConectelException("No existen informaciï¿½n para mostrar.");
 		}
 		return datos;
 	}
@@ -1495,6 +1495,20 @@ public class CatalogoService implements ICatalogoService {
 				"RangoEstadisticaPersonalDO.findAll", RangoEstadisticaPersonalDO.class);
 		
 		List<RangoEstadisticaPersonalDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<EstadoConcentradoCapacitacionDO> getEstadoConcentradoCapacitacion() throws ConectelException {
+		TypedQuery<EstadoConcentradoCapacitacionDO> query = entityManager.createNamedQuery(
+				"EstadoConcentradoCapacitacionDO.findAll", EstadoConcentradoCapacitacionDO.class);
+		
+		List<EstadoConcentradoCapacitacionDO> list;
 		try {
 			list = query.getResultList();
 		} catch (NoResultException e) {

@@ -293,12 +293,14 @@ public class ConfiguracionPruebaEntregaService implements IConfiguracionPruebaEn
 		return null;
 	}
 
+	/*
 	private void actualizarClaveAuditoria(ConfigPruebaEntregaDO config) {
 		ProyectoDO proyectoDO = entityManager.find(ProyectoDO.class, config.getProyecto().getId());
 		proyectoDO.setClaveAuditoria( config.getProyecto().getClaveAuditoria() );
 		entityManager.merge( proyectoDO );
 	}
-
+	*/
+	
 	private void agregarProyectoEntregable(
 			List<ProyectoEntregableDO> entregableList, ProyectoDO proyecto) {
 		if (entregableList != null) {

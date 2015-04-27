@@ -33,7 +33,6 @@ public class ConsumibleSolicitudAlmacenService implements
 
 	@Override
 	public void deleteItems(List<Integer> idsItems) {
-		Query query = null;
 		ConsumibleSolicitudAlmacenDO ConsumibleSolicitudAlmacenDO = null;
 		for (Integer id : idsItems) {
 

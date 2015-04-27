@@ -11,7 +11,6 @@ import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
 import mx.com.gahm.conenctel.constants.EstadoProyecto;
-import mx.com.gahm.conenctel.entities.DatosGrlsProyectoDO;
 import mx.com.gahm.conenctel.entities.DesarrolloProyectoABDO;
 import mx.com.gahm.conenctel.entities.EstadoDO;
 import mx.com.gahm.conenctel.entities.ObservacionDO;

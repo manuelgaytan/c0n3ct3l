@@ -33,6 +33,10 @@ import javax.persistence.TemporalType;
 @Table(name = "ConcentradoOrdenCompraCliente")
 public class ConcentradoOrdenCompraClienteDO implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;

@@ -11,7 +11,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 import mx.com.gahm.conenctel.entities.AcuerdoMinutaDO;
-import mx.com.gahm.conenctel.entities.ComentarioPagoViaticosDO;
 import mx.com.gahm.conenctel.entities.MinutaDO;
 import mx.com.gahm.conenctel.entities.ParticipanteMinutaDO;
 import mx.com.gahm.conenctel.services.IMinutaService;

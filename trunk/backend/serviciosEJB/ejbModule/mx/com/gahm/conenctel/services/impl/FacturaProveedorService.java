@@ -3,7 +3,6 @@
  */
 package mx.com.gahm.conenctel.services.impl;
 
-import java.io.Serializable;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -11,13 +10,9 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import mx.com.gahm.conenctel.entities.ComentarioConcentradoOrdenCompraClienteDO;
 import mx.com.gahm.conenctel.entities.ComentarioCuentasPagarFacturacionDO;
 import mx.com.gahm.conenctel.entities.ComentarioFacturaProveedorDO;
-import mx.com.gahm.conenctel.entities.ComentarioValidacionAdministrativaDO;
-import mx.com.gahm.conenctel.entities.ConcentradoOrdenCompraClienteDO;
 import mx.com.gahm.conenctel.entities.FacturaProveedorDO;
-import mx.com.gahm.conenctel.entities.PartidaConcentradoOrdenCompraClienteDO;
 import mx.com.gahm.conenctel.services.IFacturaProveedorService;
 
 /**

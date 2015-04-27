@@ -14,7 +14,6 @@ import javax.persistence.TypedQuery;
 
 import mx.com.gahm.conenctel.constants.EstadoProyecto;
 import mx.com.gahm.conenctel.entities.AplicaDO;
-import mx.com.gahm.conenctel.entities.ComentarioCotizacionDO;
 import mx.com.gahm.conenctel.entities.DatosGrlsProyectoDO;
 import mx.com.gahm.conenctel.entities.DatosGrlsProyectoImplDO;
 import mx.com.gahm.conenctel.entities.EstadoDO;

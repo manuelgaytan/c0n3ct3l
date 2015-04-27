@@ -9,9 +9,7 @@ import javax.persistence.TypedQuery;
 
 import mx.com.gahm.conenctel.entities.ArchivoCotizacionDO;
 import mx.com.gahm.conenctel.entities.ComentarioCotizacionDO;
-import mx.com.gahm.conenctel.entities.ComentarioProveedorDO;
 import mx.com.gahm.conenctel.entities.CotizacionDO;
-import mx.com.gahm.conenctel.entities.ProveedorCalificadoDO;
 import mx.com.gahm.conenctel.services.ICotizacionService;
 
 @Stateless(mappedName = "ejb/CotizacionService")

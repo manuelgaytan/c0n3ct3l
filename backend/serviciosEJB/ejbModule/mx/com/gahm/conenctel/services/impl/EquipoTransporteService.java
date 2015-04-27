@@ -13,7 +13,6 @@ import javax.persistence.TypedQuery;
 
 import mx.com.gahm.conenctel.entities.ComentariosDO;
 import mx.com.gahm.conenctel.entities.DocumentoAlmacenDO;
-import mx.com.gahm.conenctel.entities.EquipoMedicionDO;
 import mx.com.gahm.conenctel.entities.EquipoTransporteDO;
 import mx.com.gahm.conenctel.entities.TipoAlmacenDO;
 import mx.com.gahm.conenctel.entities.TipoDocumentoAlmacenDO;

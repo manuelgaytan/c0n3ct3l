@@ -10,9 +10,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
-import mx.com.gahm.conenctel.entities.ColaboradorDO;
 import mx.com.gahm.conenctel.entities.ContratacionDO;
-import mx.com.gahm.conenctel.entities.DocumentosContratacionDO;
 import mx.com.gahm.conenctel.services.IContratacionService;
 
 /**

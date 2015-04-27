@@ -26,6 +26,11 @@ import javax.persistence.Table;
 @NamedQueries({ @NamedQuery(name = "ComentarioValidacionCostoOrdenCompraClienteDO.findAll", query = "select rc from ComentarioValidacionCostoOrdenCompraClienteDO rc") })
 public class ComentarioValidacionCostoOrdenCompraClienteDO implements Serializable{
  	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id", unique = true, nullable = false)

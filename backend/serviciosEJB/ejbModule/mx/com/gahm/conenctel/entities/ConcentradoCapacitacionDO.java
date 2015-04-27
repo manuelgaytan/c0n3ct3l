@@ -48,6 +48,10 @@ public class ConcentradoCapacitacionDO implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "fk_tipo_formacion", nullable = false)
 	private TipoFormacionDO tipoFormacion;
+	
+	@ManyToOne
+	@JoinColumn(name = "fk_estado_concentrado_capacitacion", nullable = false)
+	private EstadoConcentradoCapacitacionDO estado;
 
 	@ManyToOne
 	@JoinColumn(name = "fk_tipo_capacitacion", nullable = false)
@@ -208,6 +212,14 @@ public class ConcentradoCapacitacionDO implements Serializable {
 
 	public void setResultadoSeguimiento(String resultadoSeguimiento) {
 		this.resultadoSeguimiento = resultadoSeguimiento;
+	}
+
+	public EstadoConcentradoCapacitacionDO getEstado() {
+		return estado;
+	}
+
+	public void setEstado(EstadoConcentradoCapacitacionDO estado) {
+		this.estado = estado;
 	}
 
 }

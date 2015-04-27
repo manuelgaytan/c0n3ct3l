@@ -2362,7 +2362,8 @@
 	(
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
 	fk_colaborador INT(11) UNSIGNED NOT NULL,
-	fk_tipo_formacion INT(11) UNSIGNED NOT NULL,
+        fk_tipo_formacion INT(11) UNSIGNED NOT NULL,
+        fk_estado_concentrado_capacitacion INT(11) UNSIGNED NULL,
 	fk_tipo_capacitacion INT(11) UNSIGNED NOT NULL,
 	nombre_capacitacion VARCHAR(255) NOT NULL,
 	fecha_inicio_capacitacion DATE NOT NULL,
@@ -2715,6 +2716,12 @@
 	PRIMARY KEY (id)
 	);
 
+    CREATE TABLE EstadoConcentradoCapacitacion
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	estado VARCHAR(100) NOT NULL UNIQUE,
+	PRIMARY KEY (id)
+	);
 	/*************************************************************************************************************************************
 	FIN CAMBIOS
 	/************************************************************************************************************************************/
@@ -3303,7 +3310,9 @@
 
 	ALTER TABLE ConcentradoCapacitacion ADD FOREIGN KEY fk_colaborador_idxfk (fk_colaborador) REFERENCES Colaborador (id);
 
-	ALTER TABLE ConcentradoCapacitacion ADD FOREIGN KEY fk_tipo_formacion_idxfk (fk_tipo_formacion) REFERENCES TipoFormacion (id);
+	ALTER TABLE ConcentradoCapacitacion ADD FOREIGN KEY fk_estado_concentrado_capacitacion_idxfk (fk_estado_concentrado_capacitacion) REFERENCES EstadoConcentradoCapacitacion (id);
+
+    ALTER TABLE ConcentradoCapacitacion ADD FOREIGN KEY fk_tipo_formacion_idxfk (fk_tipo_formacion) REFERENCES TipoFormacion (id);
 
 	ALTER TABLE ConcentradoCapacitacion ADD FOREIGN KEY fk_tipo_capacitacion_idxfk (fk_tipo_capacitacion) REFERENCES TipoCapacitacion (id);
 
@@ -4866,11 +4875,21 @@
 	INSERT INTO FuenteNoConformidad
 	VALUES (14, 'Insubordinación');
 
-
 	INSERT INTO EstadoAccionPreventivaCorrectiva
 	VALUES (1, 'Cerrada');
 	INSERT INTO EstadoAccionPreventivaCorrectiva
 	VALUES (2, 'Pendiente');
+
+    INSERT INTO EstadoConcentradoCapacitacion
+	VALUES (1, 'Titulado');
+	INSERT INTO EstadoConcentradoCapacitacion
+	VALUES (2, 'En Proceso');
+    INSERT INTO EstadoConcentradoCapacitacion
+	VALUES (3, 'Trunco');
+    INSERT INTO EstadoConcentradoCapacitacion
+	VALUES (4, 'Pendiente');
+    INSERT INTO EstadoConcentradoCapacitacion
+	VALUES (5, 'N/A');
 
 	INSERT INTO EstadoSistemaGestion
 	VALUES (1, 'Con Desviaciones');

@@ -7,7 +7,6 @@ import java.util.List;
 
 import javax.naming.InitialContext;
 
-import mx.com.gahm.conenctel.exceptions.ConectelException;
 import mx.com.gahm.conenctel.model.Cliente;
 import mx.com.gahm.conenctel.model.Contacto;
 import mx.com.gahm.conenctel.services.IClienteService;

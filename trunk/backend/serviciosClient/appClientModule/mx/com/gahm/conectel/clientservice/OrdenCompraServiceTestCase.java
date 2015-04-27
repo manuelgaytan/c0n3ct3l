@@ -31,8 +31,6 @@ public class OrdenCompraServiceTestCase {
 	public void testGetItem(){
 		
 		OrdenCompraDO item= bean.getItem(13);
-		if(item!=null)
-		System.out.println("orden compra"+ item.getDescripcion()); 
 	}
 	
 	//@Test
@@ -49,9 +47,6 @@ public class OrdenCompraServiceTestCase {
 	public void save(){
 		
 		OrdenCompraDO ordenCompra= new OrdenCompraDO();
-		ordenCompra.setCantidad(10L);
-		ordenCompra.setCostoUnitario(10L);
-		ordenCompra.setDescripcion("Prueba");
 		ordenCompra.setFecha(new Date());
 		ordenCompra.setFechaEntregaAlmacen(new Date());
 		ordenCompra.setCotizacion(new CotizacionDO());
@@ -59,19 +54,8 @@ public class OrdenCompraServiceTestCase {
 		ordenCompra.setProveedorCalificado(new ProveedorCalificadoDO());
 		ordenCompra.getProveedorCalificado().setId(1);
 		ordenCompra.setProyecto(new ProyectoDO());
-		ordenCompra.getProyecto().setId(1);
 		ordenCompra.setRequisicionCompra(new RequisicionCompraDO());
 		ordenCompra.getRequisicionCompra().setId(1);
-		ordenCompra.setUnidadOrdenCompra(new UnidadOrdenCompraDO());
-		ordenCompra.getUnidadOrdenCompra().setId(1);
-		ordenCompra.setIeps(10L);
-		ordenCompra.setImporte(100L);
-		ordenCompra.setIva(10L);
-		ordenCompra.setOtrosImpuestos(1L);
-		ordenCompra.setRetencionIsr(1L);
-		ordenCompra.setTotal(10L);
-		ordenCompra.setSubtotal(10L);
-		ordenCompra.setRetencionIsr(1L);
 		
 		OrdenCompraDO g=bean.save(ordenCompra);
 		System.out.println("ID : "+g.getId());
@@ -83,7 +67,6 @@ public class OrdenCompraServiceTestCase {
 		List<OrdenCompraDO> items= bean.getAll();
 		
 		for (OrdenCompraDO item : items) {
-			System.out.println("orden compra"+ item.getDescripcion());
 		}
 		 
 	}

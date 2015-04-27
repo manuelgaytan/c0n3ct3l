@@ -162,6 +162,9 @@
 				<mx:DataGridColumn id="dtgFormationType" headerText="{'Tipo\nFormación'}"
 								   dataField="tipoFormacion.tipo"
 								   width="100"/>
+				<mx:DataGridColumn id="dtgStatus" headerText="{'Estado de\nFormación'}"
+								   dataField="estado.estado"
+								   width="100"/>
 				<mx:DataGridColumn id="dtgTrainingType" headerText="{'Tipo\nCapacitación'}"
 								   dataField="tipoCapacitacion.tipo"
 								   width="100"/>

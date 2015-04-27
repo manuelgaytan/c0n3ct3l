@@ -4,14 +4,15 @@
 		 xmlns:proyectos="components.proyectos.*" xmlns:cotizaciones="components.cotizaciones.*">
 	<mx:Script>
 		<![CDATA[
-			import model.EstatusRequisicionCompra;
-			import model.Estado;
 			import events.GenericEvent;
+			
 			import model.Catalogo;
 			import model.Colaborador;
 			import model.Constants;
 			import model.Cotizacion;
+			import model.Estado;
 			import model.EstatusC;
+			import model.EstatusRequisicionCompra;
 			import model.GrupoFamiliaD;
 			import model.OrdenCompraAlmacen;
 			import model.PartidaRequisicionCompra;

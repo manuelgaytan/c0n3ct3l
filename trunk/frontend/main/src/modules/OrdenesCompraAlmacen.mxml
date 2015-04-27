@@ -5,18 +5,17 @@
 		   creationComplete="creationCompleteHandler(event)" xmlns:proyectos="components.proyectos.*" xmlns:cotizaciones="components.cotizaciones.*" xmlns:requisicionescompra="components.requisicionescompra.*">
 	<mx:Script>
 		<![CDATA[
-			import model.Proyecto;
-			import model.RequisicionCompra;
-			import model.Cotizacion;
 			import events.GenericEvent;
 			
+			import model.Cotizacion;
 			import model.OrdenCompraAlmacen;
+			import model.Proyecto;
+			import model.RequisicionCompra;
 			
 			import mx.events.FlexEvent;
 			
 			protected function creationCompleteHandler(event:FlexEvent):void
 			{
-				
 			}
 			
 			protected function consult_purchaseOrderDetailHandler(event:GenericEvent):void

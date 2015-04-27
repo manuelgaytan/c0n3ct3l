@@ -19,7 +19,7 @@
 		<link>
 			<name>bin-debug</name>
 			<type>2</type>
-			<location>/Applications/glassfish3/glassfish/domains/domain1/eclipseApps/servicios/serviciosWeb_war/main-debug</location>
+			<location>/Applications/glassfish4/glassfish/domains/domain1/eclipseApps/servicios/serviciosWeb_war/main-debug</location>
 		</link>
 		<link>
 			<name>bin-release</name>

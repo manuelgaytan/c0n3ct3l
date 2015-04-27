@@ -6,6 +6,7 @@ package model
 		public var id:*;
 		public var colaborador:Colaborador;
 		public var tipoFormacion:TipoFormacion;
+		public var estado:EstadoConcentradoCapacitacion;
 		public var tipoCapacitacion:TipoCapacitacion;
 		public var nombreCapacitacion:String;
 		public var fechaInicioCapacitacion:Date;

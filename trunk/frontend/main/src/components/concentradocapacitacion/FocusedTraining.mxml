@@ -13,6 +13,7 @@
 			import model.ConcentradoCapacitacion;
 			import model.Constants;
 			import model.Contratacion;
+			import model.EstadoConcentradoCapacitacion;
 			import model.TipoCapacitacion;
 			import model.TipoFormacion;
 			import model.Util;
@@ -84,6 +85,13 @@
 					this.cmbFormationType.selectedIndex = Util.selectedIndexFromCombo( this.cmbFormationType.dataProvider as ArrayCollection, 
 						this._item.tipoFormacion.id);
 				}
+				if( Util.isFill( this.cmbStatus ) && this._item 
+					&& this._item.estado != null ){
+					this.cmbStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbStatus.dataProvider as ArrayCollection, 
+						this._item.estado.id);
+				}else{
+					this.cmbStatus.selectedIndex = 0;
+				}
 				if( Util.isFill( this.cmbTrainingType ) && this._item 
 					&& this._item.tipoCapacitacion != null ){
 					this.cmbTrainingType.selectedIndex = Util.selectedIndexFromCombo( this.cmbTrainingType.dataProvider as ArrayCollection, 
@@ -109,6 +117,7 @@
 				}
 				focusedTraining.colaborador = this.cmbColaboratorName.selectedItem as Colaborador;
 				focusedTraining.tipoFormacion = Util.validateCombo( this.cmbFormationType ) as TipoFormacion;
+				focusedTraining.estado = Util.validateCombo( this.cmbStatus ) as EstadoConcentradoCapacitacion;
 				focusedTraining.tipoCapacitacion = Util.validateCombo( this.cmbTrainingType ) as TipoCapacitacion;
 				focusedTraining.nombreCapacitacion = Util.validateEmpty( this.txtTrainingName.text );
 				focusedTraining.fechaInicioCapacitacion = this.dtfDateTrainingStart.selectedDate;
@@ -126,6 +135,7 @@
 			{
 				this.responseGetTipoColaborador.token = this.catalogoService.getTipoColaborador();
 				this.responseGetTipoFormacion.token = this.catalogoService.getTipoFormacion();
+				this.responseGetEstadoConcentradoCapacitacion.token = this.catalogoService.getEstadoConcentradoCapacitacion();
 				this.responseGetTipoCapacitacion.token = this.catalogoService.getTipoCapacitacion();
 			}
 			
@@ -206,6 +216,7 @@
 				this.cmbColaboratorName.selectedIndex = 0;
 				this.txtPosition.reset();
 				this.cmbFormationType.selectedIndex = 0;
+				this.cmbStatus.selectedIndex = 0;
 				this.cmbTrainingType.selectedIndex = 0;
 				this.txtTrainingName.reset();
 				this.dtfDateTrainingStart.reset();
@@ -250,6 +261,22 @@
 					&& this._item.tipoFormacion != null ){
 					this.cmbFormationType.selectedIndex = Util.selectedIndexFromCombo( this.cmbFormationType.dataProvider as ArrayCollection, 
 						this._item.tipoFormacion.id);
+				}
+			}
+			
+			protected function responseGetEstadoConcentradoCapacitacion_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbStatus.dataProvider = Util.addEmptyCatalgo( data, "estado" );
+				if( Util.isFill( this.cmbStatus ) && this._item 
+					&& this._item.estado != null ){
+					this.cmbStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbStatus.dataProvider as ArrayCollection, 
+						this._item.estado.id);
+				}else{
+					this.cmbStatus.selectedIndex = 0;
 				}
 			}
 			
@@ -357,6 +384,10 @@
 			<mx:ComboBox id="cmbFormationType" width="200"
 						 labelField="tipo"/>
 		</mx:FormItem>
+		<mx:FormItem required="false" label="Estado de Formación:">
+			<mx:ComboBox id="cmbStatus" width="200"
+						 labelField="estado"/>
+		</mx:FormItem>
 		<mx:FormItem required="true" label="Tipo de Capacitación:">
 			<mx:ComboBox id="cmbTrainingType" width="200"
 						 labelField="tipo"/>
@@ -400,6 +431,7 @@
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetTipoColaborador" result="responseGetTipoColaborador_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetTipoFormacion" result="responseGetTipoFormacion_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetEstadoConcentradoCapacitacion" result="responseGetEstadoConcentradoCapacitacion_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetTipoCapacitacion" result="responseGetTipoCapacitacion_resultHandler(event)"/>
 	<mx:RemoteObject id="colaboradorService" destination="colaboradorService" fault="concentradoCapacitacionService_faultHandler(event)"
 					 showBusyCursor="true"/>

@@ -6,8 +6,6 @@
 				creationComplete="creationCompleteHandler(event)">
 	<mx:Script>
 		<![CDATA[
-			import model.EstatusDevolucion;
-			import model.DocumentoAyudante;
 			import components.ComboList;
 			import components.Comments;
 			import components.DateField;
@@ -107,6 +105,7 @@
 			import model.DireccionSolicitante;
 			import model.DocumentacionExtranjeros;
 			import model.DocumentoAlmacen;
+			import model.DocumentoAyudante;
 			import model.DocumentoComprobacionViaticos;
 			import model.DocumentoLiderProveedorMaquilador;
 			import model.Entregable;
@@ -122,6 +121,7 @@
 			import model.EstadoCivil;
 			import model.EstadoColaborador;
 			import model.EstadoComprobacionViaticos;
+			import model.EstadoConcentradoCapacitacion;
 			import model.EstadoFinalValidacion;
 			import model.EstadoInvestigacionCalidad;
 			import model.EstadoNotificacion;
@@ -138,6 +138,7 @@
 			import model.EstatusA;
 			import model.EstatusB;
 			import model.EstatusC;
+			import model.EstatusDevolucion;
 			import model.EstatusProyectoEntregable;
 			import model.EstatusRequisicionCompra;
 			import model.ExamenPsicometrico;
@@ -588,6 +589,7 @@
 			private var ayudante:Ayudante;
 			private var documentoAyudante:DocumentoAyudante;
 			private var estatusDevolucion:EstatusDevolucion;
+			private var estadoConcentradoCapacitacion:EstadoConcentradoCapacitacion;
 						
 			protected function login_readyHandler(event:ModuleEvent):void
 			{

@@ -133,7 +133,7 @@
 	</mx:Script>
 	<mx:Metadata>
 		[Event(name="itemDetail", type="events.GenericEvent")]
-	</mx:Metadata>hBoxButtonsBar
+	</mx:Metadata>
 	<mx:states>
 		<mx:State name="readOnly">
 			<mx:RemoveChild target="{this.hBoxButtonsBar}"/>

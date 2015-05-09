@@ -5,8 +5,6 @@
 		 >
 	<mx:Script>
 		<![CDATA[
-			import model.SolicitanteSolicitudViaticos;
-			import model.InformacionConfidencialColaborador;
 			import events.GenericEvent;
 			
 			import flash.net.navigateToURL;
@@ -23,10 +21,12 @@
 			import model.EstadoValidacionCosto;
 			import model.EstadoValidacionOperativa;
 			import model.FiltroProyecto;
+			import model.InformacionConfidencialColaborador;
 			import model.MedioTransporte;
 			import model.PagoViaticos;
 			import model.Producto;
 			import model.Proyecto;
+			import model.SolicitanteSolicitudViaticos;
 			import model.SolicitudAlmacen;
 			import model.SolicitudViaticos;
 			import model.TipoColaborador;
@@ -263,7 +263,7 @@
 				this.txtTotalAuthorized.reset();
 				this.fltDlvUpFormat.reset();
 				this.fltDlvUpDocuments.reset();
-				this.dtfDateUploadedDocuments.reset();
+				this.dtfDateUploadedDocuments.selectedDate = new Date();
 				this.cmbStatus.selectedIndex = 0;
 			}
 			
@@ -470,7 +470,8 @@
 			<components:FlatDeliver id="fltDlvUpDocuments"/>
 		</mx:FormItem>
 		<mx:FormItem label="Fecha de Subida de Documentos:">
-			<components:DateField id="dtfDateUploadedDocuments"/>
+			<components:DateField id="dtfDateUploadedDocuments"
+								  creationComplete="this.dtfDateUploadedDocuments.selectedDate = new Date()"/>
 		</mx:FormItem>
 		<mx:FormItem required="true" label="Estado:">
 			<mx:ComboBox id="cmbStatus" width="200"

@@ -9,7 +9,7 @@ package model
 		public var fechaSolicitud:Date;
 		public var motivo:String;
 		public var prioridad:Prioridad;
-		public var areaSolicitante:AreaSolicitante;
+		public var areaSolicitante:Perfil;
 		public var centralSitio:String;
 		public var estatusRequisicionCompra:EstatusRequisicionCompra;
 		public var solicitantesRequisicion:ArrayCollection;

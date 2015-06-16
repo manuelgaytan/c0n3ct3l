@@ -2949,7 +2949,7 @@
 	/* Requisicion Compras */
 	ALTER TABLE RequisicionCompra ADD FOREIGN KEY fk_prioridad_idxfk (fk_prioridad) REFERENCES Prioridad (id);
 
-	ALTER TABLE RequisicionCompra ADD FOREIGN KEY fk_area_solicitante_idxfk (fk_area_solicitante) REFERENCES AreaSolicitante (id);
+	ALTER TABLE RequisicionCompra ADD FOREIGN KEY fk_area_solicitante_idxfk (fk_area_solicitante) REFERENCES Perfil (id);
 
 	ALTER TABLE RequisicionCompra ADD FOREIGN KEY fk_estatus_idxfk (fk_estatus) REFERENCES EstatusRequisicionCompra (id);
 

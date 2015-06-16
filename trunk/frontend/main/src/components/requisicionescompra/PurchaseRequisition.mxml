@@ -120,7 +120,7 @@
 				item.fechaSolicitud= this.dtfApplicationDate.selectedDate;
 				item.motivo= Util.validateEmpty( this.txtReason.text );
 				item.prioridad = Util.validateCombo( this.cmbPriority ) as Prioridad;
-				item.areaSolicitante = Util.validateCombo( this.cmbApplicantArea ) as AreaSolicitante;
+				item.areaSolicitante = Util.validateCombo( this.cmbApplicantArea ) as Perfil;
 				item.centralSitio = Util.validateEmpty( this.txtSite.text );
 				item.estatusRequisicionCompra = Util.validateCombo( this.cmbStatus ) as EstatusRequisicionCompra;
 				item.fechaEstatusRequisicion = this.dtfStatusDate.selectedDate;
@@ -134,7 +134,7 @@
 			{
 				this.responseGetPrioridad.token = this.catalogoService.getPrioridad();
 				this.responseGetColaborador.token = this.catalogoService.getColaborador();
-				this.responseGetAreaSolicitante.token = this.catalogoService.getAreaSolicitante();
+				this.responseGetPerfiles.token = this.catalogoService.getPerfiles();
 				this.responseGetAlmacen.token = this.catalogoService.getTipoAlmacen();
 				this.responseGetEstatusRequisicionCompra.token = this.catalogoService.getEstadoRequiscionCompra();
 				this.responseGetColaboradorByTipoColaborador.token = this.catalogoService.getColaboradorByTipoColaborador( TipoColaborador.ID_NOMINA );
@@ -272,7 +272,7 @@
 				this.cmbApplicantsNames.comboList = Util.addEmptyCatalgo( data, "nombreCompleto" );
 			}
 			
-			protected function responseGetAreaSolicitante_resultHandler(event:ResultEvent):void
+			protected function responseGetPerfiles_resultHandler(event:ResultEvent):void
 			{
 				var data:ArrayCollection = event.result as ArrayCollection;
 				if( data == null ){
@@ -624,7 +624,7 @@
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetPrioridad" result="responseGetPrioridad_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetColaborador" result="responseGetColaborador_resultHandler(event)"/>
-	<mx:CallResponder id="responseGetAreaSolicitante" result="responseGetAreaSolicitante_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetPerfiles" result="responseGetPerfiles_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetAlmacen" result="responseGetAlmacen_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetEstatusRequisicionCompra" result="responseGetEstatusRequisicionCompra_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetColaboradorByTipoColaborador" result="responseGetColaboradorByTipoColaborador_resultHandler(event)"/>

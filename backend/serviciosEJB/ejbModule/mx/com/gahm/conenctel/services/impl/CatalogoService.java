@@ -1516,4 +1516,18 @@ public class CatalogoService implements ICatalogoService {
 		}
 		return list;
 	}
+
+	@Override
+	public List<PerfilDO> getPerfiles() throws ConectelException {
+		TypedQuery<PerfilDO> query = entityManager.createNamedQuery(
+				"PerfilDO.findAll", PerfilDO.class);
+		
+		List<PerfilDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
 }

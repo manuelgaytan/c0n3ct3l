@@ -168,4 +168,5 @@ public interface ICatalogoService extends Serializable {
 	public List<AnoDO> getAno() throws ConectelException;
 	public List<RangoEstadisticaPersonalDO> getRangoEstadisticaPersonal() throws ConectelException;
 	public List<EstadoConcentradoCapacitacionDO> getEstadoConcentradoCapacitacion() throws ConectelException;
+	public List<PerfilDO> getPerfiles() throws ConectelException;
 }

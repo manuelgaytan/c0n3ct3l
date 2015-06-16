@@ -44,7 +44,7 @@ public class RequisicionCompraDO implements java.io.Serializable {
 	private PrioridadDO prioridad;
 	@ManyToOne
 	@JoinColumn(name = "fk_area_solicitante", nullable = false)
-	private AreaSolicitanteDO areaSolicitante;
+	private PerfilDO areaSolicitante;
 	@Column(name = "central_sitio", nullable = false)
 	private String centralSitio;
 	@ManyToOne
@@ -65,7 +65,7 @@ public class RequisicionCompraDO implements java.io.Serializable {
 
 	/** full constructor */
 	public RequisicionCompraDO(Integer id, Date fechaSolicitud, String motivo,
-			PrioridadDO prioridad, AreaSolicitanteDO areaSolicitante,
+			PrioridadDO prioridad, PerfilDO areaSolicitante,
 			String centralSitio,
 			EstatusRequisicionCompraDO estatusRequisicionCompra,
 			List<SolicitanteRequisicionDO> solicitantesRequisicion,
@@ -83,7 +83,7 @@ public class RequisicionCompraDO implements java.io.Serializable {
 	}
 
 	public RequisicionCompraDO(Date fechaSolicitud, String motivo,
-			PrioridadDO prioridad, AreaSolicitanteDO areaSolicitante,
+			PrioridadDO prioridad, PerfilDO areaSolicitante,
 			String centralSitio, String codigo, String grupoFamilia,
 			String descripcion, String cantidad, String validacion,
 			EstatusRequisicionCompraDO estatusRequisicionCompra) {
@@ -127,11 +127,11 @@ public class RequisicionCompraDO implements java.io.Serializable {
 		this.prioridad = prioridad;
 	}
 
-	public AreaSolicitanteDO getAreaSolicitante() {
+	public PerfilDO getAreaSolicitante() {
 		return this.areaSolicitante;
 	}
 
-	public void setAreaSolicitante(AreaSolicitanteDO areaSolicitante) {
+	public void setAreaSolicitante(PerfilDO areaSolicitante) {
 		this.areaSolicitante = areaSolicitante;
 	}
 

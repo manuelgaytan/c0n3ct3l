@@ -72,7 +72,9 @@
 		<cobranza:Collection id="register" registrer="true" collectionNew="register_collectionNewHandler(event)"
 							 informationBillingSelected="detail_informationBillingSelectedHandler(event)"
 							 creditNoteSelected="detail_creditNoteSelectedHandler(event)"/>
-		<informacionfacturas:InformationBilling id="informationBillingDetail" readOnly="true"/>
-		<notascreditoclientes:CreditNote id="creditNoteDetail" readOnly="true"/>
+		<informacionfacturas:InformationBilling id="informationBillingDetail" readOnly="true"
+												label="Detalle Información Facturación"/>
+		<notascreditoclientes:CreditNote id="creditNoteDetail" readOnly="true"
+										 label="Detalle Nota de Crédito"/>
 	</mx:TabNavigator>
 </mx:Module>

@@ -73,7 +73,9 @@
 		<accionpreventivacorrectiva:CorrectivePreventiveAction id="register" registrer="true" correctivePreventiveActionNew="register_correctivePreventiveActionNewHandler(event)"
 															   	nonConformitySelected="detail_nonConformitySelectedHandler(event)"
 																adviceSelected="detail_adviceSelectedHandler(event)"/>
-		<bitacoraproductonoconformenoconformidades:NonConformity id="nonConformityDetail" readOnly="true"/>
-		<comentariossugerencias:Advice id="adviceDetail" readOnly="true"/>
+		<bitacoraproductonoconformenoconformidades:NonConformity id="nonConformityDetail" readOnly="true"
+																 label="Detalle Bitácora de Producto No Conforme o No Conformidad"/>
+		<comentariossugerencias:Advice id="adviceDetail" readOnly="true"
+									   label="Detalle Comentario y/o Sugerencia"/>
 	</mx:TabNavigator>
 </mx:Module>

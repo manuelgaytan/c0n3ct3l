@@ -55,6 +55,7 @@
 			maquiladoraServiceRequestSelected="detail_maquiladoraServiceRequestSelectedHandler(event)"/>
 		<ordenescompraserviciosmaquilado:PurchaseOrderServiceMaquila id="register" registrer="true" purchaseOrderMaquiladoNew="register_purchaseOrderMaquiladoNewHandler(event)"
 			maquiladoraServiceRequestSelected="detail_maquiladoraServiceRequestSelectedHandler(event)"/>
-		<solicitudesserviciomaquilado:MaquiladoraServiceRequest id="maquiladoraServiceRequestDetail" readOnly="true"/>
+		<solicitudesserviciomaquilado:MaquiladoraServiceRequest id="maquiladoraServiceRequestDetail" readOnly="true"
+																label="Detalle Requisición de Servicios de Telecomunicación"/>
 	</mx:TabNavigator>
 </mx:Module>

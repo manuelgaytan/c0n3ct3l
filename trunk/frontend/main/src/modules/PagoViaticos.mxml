@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
 		   width="700" height="525"
-		   xmlns:pagoviaticos="components.pagoviaticos.*"
+		   xmlns:pagoviaticos="components.pagoviaticos.*" xmlns:datosgenerales="components.datosgenerales.*"
 		   creationComplete="creationCompleteHandler(event)" xmlns:informacionfacturas="components.informacionfacturas.*" xmlns:notascreditoclientes="components.notascreditoclientes.*" xmlns:facturacionproveedores="components.facturacionproveedores.*" xmlns:notascreditoproveedores="components.notascreditoproveedores.*" xmlns:comprobacionesviaticos="components.comprobacionesviaticos.*" xmlns:solicitudesviaticos="components.solicitudesviaticos.*">
 	<mx:Script>
 		<![CDATA[
 			import events.GenericEvent;
 			
 			import model.ComprobacionViaticos;
+			import model.DatosGeneralesProyecto;
 			import model.InformacionFacturacion;
 			import model.NotaCreditoCliente;
 			import model.NotaCreditoProveedor;
@@ -52,6 +53,19 @@
 				diemRequestDetail.diemRequest = diemRequest;
 				this.navigator.selectedChild = this.diemRequestDetail;
 			}
+
+			protected function detail_generalDataSelectedHandler(event:GenericEvent):void
+			{
+				if( event == null ){
+						return;
+					}
+					var item:model.DatosGeneralesProyecto = event.information as model.DatosGeneralesProyecto;
+				if( item == null ){
+						return;
+					}
+				this.generalDataDetail.generalDataProject = item;
+				this.navigator.selectedChild = this.generalDataDetail;
+			}
 		]]>
 	</mx:Script>
 	<mx:TabNavigator id="navigator" width="100%" height="100%" creationPolicy="all">
@@ -62,6 +76,9 @@
 		<pagoviaticos:PerDiemPayment id="register" registrer="true" providerPaymentNew="register_providerPaymentNewHandler(event)"
 							diemRequestSelected="detail_diemRequestSelectedHandler(event)"
 							 />
-		<solicitudesviaticos:DiemRequest id="diemRequestDetail" readOnly="true"/>
+		<solicitudesviaticos:DiemRequest id="diemRequestDetail" readOnly="true" generalDataSelected="detail_generalDataSelectedHandler(event)"
+										 label="Detalle Solicitud de Viáticos"/>
+		<datosgenerales:GeneralData id="generalDataDetail" readOnly="true" 
+									label="Detalle Datos Generales Proyecto"/>
 	</mx:TabNavigator>
 </mx:Module>

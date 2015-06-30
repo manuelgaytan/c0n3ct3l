@@ -57,6 +57,7 @@
 										 generalDataSelected="detail_generalDataSelectedHandler(event)" />
 		<solicitudesviaticos:DiemRequest id="register" registrer="true" diemRequestNew="register_diemRequestNewHandler(event)"
 										 generalDataSelected="detail_generalDataSelectedHandler(event)" />
-		<datosgenerales:GeneralData id="generalDataDetail" readOnly="true"/>
+		<datosgenerales:GeneralData id="generalDataDetail" readOnly="true"
+									label="Detalle Datos Generales Proyecto"/>
 	</mx:TabNavigator>
 </mx:Module>

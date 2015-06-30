@@ -61,6 +61,7 @@
 		<pagopagoscontablesservicios:PaymentAccountingPaymentsServices id="register" registrer="true" providerPaymentNew="register_providerPaymentNewHandler(event)"
 							 accountingPaymentsServicesSelected="detail_accountingPaymentsServicesSelectedHandler(event)"
 							 />
-		<pagoscontablesservicios:AccountingPaymentsServices id="accountingPaymentsServicesDetail" readOnly="true"/>
+		<pagoscontablesservicios:AccountingPaymentsServices id="accountingPaymentsServicesDetail" readOnly="true"
+															label="Detalle Programación de Pago Contable y Servicios"/>
 	</mx:TabNavigator>
 </mx:Module>

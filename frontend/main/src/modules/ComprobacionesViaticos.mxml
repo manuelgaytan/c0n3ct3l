@@ -57,6 +57,7 @@
 											 perDiemPaymentSelected="detail_perDiemPaymentSelectedHandler(event)"/>
 		<comprobacionesviaticos:PerDiemCheck id="register" registrer="true" perDiemCheckNew="register_perDiemCheckNewHandler(event)"
 											 perDiemPaymentSelected="detail_perDiemPaymentSelectedHandler(event)"/>
-		<pagoviaticos:PerDiemPayment id="perDiemPaymentDetail" readOnly="true"/>
+		<pagoviaticos:PerDiemPayment id="perDiemPaymentDetail" readOnly="true"
+									 label="Detalle Pago Viáticos"/>
 	</mx:TabNavigator>
 </mx:Module>

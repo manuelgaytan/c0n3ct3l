@@ -2,11 +2,12 @@
 <mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
 		   width="850" height="525"
 		   xmlns:solicitudesviaticos="components.solicitudesviaticos.*"
-		   creationComplete="creationCompleteHandler(event)">
+		   creationComplete="creationCompleteHandler(event)" xmlns:datosgenerales="components.datosgenerales.*">
 	<mx:Script>
 		<![CDATA[
 			import events.GenericEvent;
 			
+			import model.DatosGeneralesProyecto;
 			import model.SolicitudViaticos;
 			import model.Usuario;
 			
@@ -34,11 +35,28 @@
 				this.navigator.selectedChild = this.consult;
 				this.consult.executeQuery();
 			}
+			
+			protected function detail_generalDataSelectedHandler(event:GenericEvent):void
+			{
+				if( event == null ){
+					return;
+				}
+				var item:model.DatosGeneralesProyecto = event.information as model.DatosGeneralesProyecto;
+				if( item == null ){
+					return;
+				}
+				this.generalDataDetail.generalDataProject = item;
+				this.navigator.selectedChild = this.generalDataDetail;
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:TabNavigator id="navigator" width="850" height="100%" creationPolicy="all">
 		<solicitudesviaticos:Consult id="consult" itemDetail="consult_diemRequestDetailHandler(event)"/>
-		<solicitudesviaticos:DiemRequest id="detail" update="true" diemRequestUpdated="detail_diemRequestUpdatedHandler(event)"/>
-		<solicitudesviaticos:DiemRequest id="register" registrer="true" diemRequestNew="register_diemRequestNewHandler(event)"/>
+		<solicitudesviaticos:DiemRequest id="detail" update="true" diemRequestUpdated="detail_diemRequestUpdatedHandler(event)"
+										 generalDataSelected="detail_generalDataSelectedHandler(event)" />
+		<solicitudesviaticos:DiemRequest id="register" registrer="true" diemRequestNew="register_diemRequestNewHandler(event)"
+										 generalDataSelected="detail_generalDataSelectedHandler(event)" />
+		<datosgenerales:GeneralData id="generalDataDetail" readOnly="true"/>
 	</mx:TabNavigator>
 </mx:Module>

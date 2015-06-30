@@ -4,7 +4,6 @@
 		 >
 	<mx:Script>
 		<![CDATA[
-			import model.InformacionConfidencialColaborador;
 			import events.GenericEvent;
 			
 			import model.Catalogo;
@@ -15,6 +14,7 @@
 			import model.EstadoValidacionCosto;
 			import model.EstadoValidacionOperativa;
 			import model.FiltroProyecto;
+			import model.InformacionConfidencialColaborador;
 			import model.MedioTransporte;
 			import model.Producto;
 			import model.Proyecto;
@@ -303,6 +303,7 @@
 				if( project == null ){
 					return;
 				}
+				this.responseGetDatosGeneralesProyecto.token = this.datosGeneralesService.getByIdProyecto( project.id );
 			}
 			
 			protected function cmbResponsibleViaticum_changeHandler(event:Event):void
@@ -473,12 +474,26 @@
 				this.txtMaterialsAndOrTool.enabled = isSelected;
 				this.txtOthers.enabled = isSelected;
 			}
+			
+			protected function responseGetDatosGeneralesProyecto_resultHandler(event:ResultEvent):void
+			{
+				var item:Proyecto = this.projectsConsult.selectedProyect();
+				if( item == null ){
+					Util.showErrorMessage("Primero debe seleccionar un elemento.");
+					return;
+				}
+				var genericEvent:GenericEvent = new GenericEvent("generalDataSelected");
+				genericEvent.information = event.result;
+				this.dispatchEvent( genericEvent );
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:Metadata>
 		[Event(name="diemRequestNew", type="flash.events.Event")]
 		[Event(name="diemRequestUpdated", type="flash.events.Event")]
 		[Event(name="diemRequestProjectDone", type="flash.events.Event")]
+		[Event(name="generalDataSelected", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:Form id="form">
 		<mx:FormItem required="true" id="frmID" label="ID:" direction="horizontal">
@@ -569,4 +584,7 @@
 	<mx:RemoteObject id="informacionConfidencialColaboradorService" destination="informacionConfidencialColaboradorService" fault="solicitudViaticosService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetInformacionConfidencialColaboradorByIdColaborador" result="responseGetInformacionConfidencialColaboradorByIdColaborador_resultHandler(event)"/>
+	<mx:RemoteObject id="datosGeneralesService" destination="datosGeneralesService" fault="solicitudViaticosService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetDatosGeneralesProyecto" result="responseGetDatosGeneralesProyecto_resultHandler(event)"/>
 </mx:VBox>

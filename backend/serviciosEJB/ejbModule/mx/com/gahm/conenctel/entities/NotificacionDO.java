@@ -36,16 +36,20 @@ public class NotificacionDO implements Serializable{
 	 */
 	private static final long serialVersionUID = 9129720797707900471L;
 	
-	public static final String PROYECTO_ALMACEN = "Se ha requerido Material, Herramienta, Equipo � Unidad en el Proyecto con id: ";
-	public static final String PROYECTO_VIATICOS = "Se ha requerido Vi�ticos en el Proyecto con id: ";
+	public static final String PROYECTO_ALMACEN = "Se ha requerido Material, Herramienta, Equipo ó Unidad en el Proyecto con id: ";
+	public static final String PROYECTO_VIATICOS = "Se ha requerido Viáticos en el Proyecto con id: ";
 	public static final String PROYECTO_CREACION = "Se ha creado un Proyecto con id: ";
 	public static final String PROYECTO_TERMINO = "Se ha terminado el Proyecto con id: ";
-	public static final String PROYECTO_COMPRAS = "Se ha generado un nuevo responsable de implementaci�n: ";
+	public static final String PROYECTO_COMPRAS = "Se ha generado un nuevo responsable de implementación: ";
 	public static final String PROYECTO_COMPRAS_2 = ", Proyecto con id: "; 
-	public static final String REQUISICION_COMPRA_CREACION = "Se ha creado una Requisici�n de Compra con id: ";
+	public static final String REQUISICION_COMPRA_CREACION = "Se ha creado una Requisición de Compra con id: ";
 	public static final String SOLICITUD_SERVICIO_MAQUILADO_CREACION = "Se ha creado una Solicitud Servicio Maquilado con id: ";
 	public static final String ORDEN_COMPRA_ALMACEN_CREACION = "Se ha creado una Orden de Compra con id: ";
-	public static final String AUDITORIA_PROYECTO_APLICAR = "Se aplicar� Auditor�a al Proyecto con id: ";
+	public static final String AUDITORIA_PROYECTO_APLICAR = "Tendrá una auditoría interna (o externa, según corresponda) el Proyecto con id: ";
+	public static final String FACTURA_PROVEEDOR_BIENES_SERVICIOS_TESORERIA = "Se efectuará el pago a Proveedor de Bienes y Servicios con id: ";
+	public static final String FACTURA_PROVEEDOR_MAQUILADO_TESORERIA = "Se efectuará el pago a Proveedor de Servicios de Implementación con id: ";
+	public static final String NOTA_CREDITO_PROVEEDOR_BIENES_SERVICIOS_TESORERIA = "Se efectuó una nota de crédito a Proveedor de Bienes y Servicios con id: ";
+	public static final String NOTA_CREDITO_PROVEEDOR_MAQUILADO_TESORERIA = "Se efectuó una nota de crédito a Proveedor de Servicios de Implementación con id: ";
 	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)

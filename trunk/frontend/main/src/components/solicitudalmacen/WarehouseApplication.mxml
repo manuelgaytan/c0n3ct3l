@@ -240,7 +240,7 @@
 				validators.setRestrictor(txtMotive, "generic");
 				validators.setRestrictor(txtSite, "generic");
 				validators.setValidador(txtApplicantName, "generic");
-				validators.setValidador(txtReceives, "generic");
+				validators.setRestrictor(txtReceives, "generic");
 				validators.crearValidadorRestrictor("text",ValidadorCadenaCualquierCaracter.nombre, 0, 1024);
 				validators.setRestrictor(txtLegend, "text");
 				this.validatorsEntry = new InicializaValidadoresEtiquetas();
@@ -760,7 +760,7 @@
 			<mx:ComboBox id="cmbDeliver"
 									  labelField="nombreCompleto"/>
 		</mx:FormItem>
-		<mx:FormItem required="true" label="Recibe:">
+		<mx:FormItem required="false" label="Recibe Externo:">
 			<components:TextInput id="txtReceives" width="400"/>
 		</mx:FormItem>
 		<mx:FormItem label="Fecha de Retorno:">

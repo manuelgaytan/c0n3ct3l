@@ -113,7 +113,7 @@
 			<mx:DataGridColumn id="dtgCode" headerText="Código"
 							   dataField="id"
 							   width="100"/>
-			<mx:DataGridColumn headerText="{'Responsable'}" visible="{this._refundVouchersWiew}"
+			<mx:DataGridColumn headerText="{'Recibe Externo'}" visible="{this._refundVouchersWiew}"
 							   dataField="recibe"
 							   width="200"/>
 			<mx:DataGridColumn id="dtgMotive" headerText="Motivo" visible="{!this._refundVouchersWiew}"
@@ -150,7 +150,7 @@
 			<mx:DataGridColumn headerText="{'Entrega'}" visible="{!this._refundVouchersWiew}"
 							   dataField="entrega.nombreCompleto"
 							   width="200"/>
-			<mx:DataGridColumn headerText="{'Recibe'}" visible="{!this._refundVouchersWiew}"
+			<mx:DataGridColumn headerText="{'Recibe Externo'}" visible="{!this._refundVouchersWiew}"
 							   dataField="recibe"
 							   width="200"/>
 			<mx:DataGridColumn id="dtgReturnDate" headerText="{'Fecha de\nRetorno'}"

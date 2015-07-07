@@ -135,11 +135,11 @@
 	<mx:DataGrid id="datagrid" width="2250" height="100%" dataProvider="{this.projects}"
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)">
 		<mx:columns>
-			<mx:DataGridColumn id="dtgProjectID" headerText="{'ID\nProyecto'}"
+			<mx:DataGridColumn id="dtgProjectID" headerText="{'ID\nServicio'}"
 							   dataField="id"
 							   labelFunction="labelFunctionIDProyecto"
 							   width="150"/>
-			<mx:DataGridColumn id="dtgParentProject" headerText="{'Proyecto\nPadre'}"
+			<mx:DataGridColumn id="dtgParentProject" headerText="{'Nombre de\nProyecto'}"
 							   dataField="proyectoPadreHijo.proyectoPadre.descripcion"
 							   width="150"
 							   />

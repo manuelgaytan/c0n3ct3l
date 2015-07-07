@@ -165,11 +165,11 @@
 	<mx:DataGrid id="datagrid" width="10870" height="100%" dataProvider="{this.projects}"
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)">
 		<mx:columns>
-			<mx:DataGridColumn id="dtgID" headerText="{'ID\nProyecto\nPadre'}"
+			<mx:DataGridColumn id="dtgID" headerText="{'ID\nProyecto'}"
 							   dataField="proyecto.proyectoPadreHijo.proyectoPadre.id"
 							   width="80"
 							   textAlign="right"/>
-			<mx:DataGridColumn id="dtgDescription" headerText="{'Nombre de Proyecto Padre'}"
+			<mx:DataGridColumn id="dtgDescription" headerText="{'Nombre de Proyecto'}"
 							   width="360"
 							   dataField="proyecto.proyectoPadreHijo.proyectoPadre.descripcion"
 							   />
@@ -178,13 +178,13 @@
 							   dataField="proyecto.proyectoPadreHijo.proyectoPadre.fechaCreacion"
 							   labelFunction="{Util.labelFunctionDate}"
 							   textAlign="center"/>
-			<mx:DataGridColumn id="dtgProjectsAssociatedNumber" headerText="{'Número de\nProyectos \nAsociados'}"
+			<mx:DataGridColumn id="dtgProjectsAssociatedNumber" headerText="{'Número de\nServicios \nAsociados'}"
 							   width="100"
 							   labelFunction="labelFunctionProjectsAssociatedNumber"
 							   textAlign="center"
 							   />
 			
-			<mx:DataGridColumn id="dtgProjectID" headerText="{'ID\nProyecto'}"
+			<mx:DataGridColumn id="dtgProjectID" headerText="{'ID\nServicio'}"
 							   dataField="proyecto.id"
 							   labelFunction="labelFunctionIDProyecto"
 							   width="150"/>

@@ -149,12 +149,12 @@
 							   dataField="solicitudServicioMaquilado.id"
 							   width="100"
 							   textAlign="right"/>
-			<mx:DataGridColumn id="dtgProjectID" headerText="{'ID \nProyecto'}"
+			<mx:DataGridColumn id="dtgProjectID" headerText="{'ID Servicio'}"
 							   width="90"
 							   dataField="solicitudServicioMaquilado.proyecto.id"
 							   labelFunction="labelFunctionGenerico"
 							   textAlign="right"/>
-			<mx:DataGridColumn id="dtgProjectParentID" headerText="{'ID \nProyecto\nPadre'}"
+			<mx:DataGridColumn id="dtgProjectParentID" headerText="{'ID Proyecto'}"
 							   width="90"
 							   dataField="solicitudServicioMaquilado.proyectoPadre.id"
 							   labelFunction="labelFunctionGenerico"

@@ -294,7 +294,7 @@
 		[Event(name="filterCommand", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:Form>
-		<mx:FormItem label="Proyecto Padre:">
+		<mx:FormItem label="Proyecto:">
 			<components:TextInput id="txtParentProject" width="250"/>
 		</mx:FormItem>
 		<mx:HRule width="100%"/>

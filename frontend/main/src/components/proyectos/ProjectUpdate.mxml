@@ -498,7 +498,7 @@
 	</mx:Metadata>
 	<mx:Form 
 		verticalScrollPolicy="off" horizontalScrollPolicy="off">
-		<mx:FormItem label="Proyecto Padre:">
+		<mx:FormItem label="Nombre de Proyecto:">
 			<mx:ComboBox id="cmbParentProject" width="450"
 						 labelField="descripcion"/>
 		</mx:FormItem>

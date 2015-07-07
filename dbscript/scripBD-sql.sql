@@ -366,7 +366,7 @@
 	nombre_solicitante VARCHAR(255) NOT NULL,
 	fk_autoriza INT(11) UNSIGNED NOT NULL,
 	fk_entrega INT(11) UNSIGNED NOT NULL,
-	recibe VARCHAR(255) NOT NULL,
+	recibe VARCHAR(255),
 	fk_autoriza_final INT(11) UNSIGNED,
 	leyenda TEXT,
 	fecha_retorno DATE,

@@ -171,10 +171,10 @@
 							   labelFunction="{Util.labelFunctionDate}"
 							   width="80"
 							   textAlign="center"/>
-			<mx:DataGridColumn id="dtgParentProject" headerText="{'Proyecto\nPadre'}"
+			<mx:DataGridColumn id="dtgParentProject" headerText="{'Proyecto'}"
 							   dataField="proyectoPadre.descripcion"
 							   width="130"/>
-			<mx:DataGridColumn id="dtgProjectID" headerText="{'ID\nProyecto'}"
+			<mx:DataGridColumn id="dtgProjectID" headerText="{'ID\nServicio'}"
 							   dataField="proyecto.id"
 							   labelFunction="labelFunctionIDProyecto"
 							   width="130"/>

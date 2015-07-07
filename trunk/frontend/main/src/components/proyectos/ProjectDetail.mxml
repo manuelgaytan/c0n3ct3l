@@ -173,7 +173,7 @@
 			<components:TextInput id="txtSite" width="350"
 								  editable="false"/>
 		</mx:FormItem>
-		<mx:FormItem label="Proyecto Padre:">
+		<mx:FormItem label="Nombre de Proyecto:">
 			<components:TextInput id="txtParentProject" width="450"
 								  editable="false"/>
 		</mx:FormItem>

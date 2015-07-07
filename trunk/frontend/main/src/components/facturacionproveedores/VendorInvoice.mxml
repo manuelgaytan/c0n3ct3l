@@ -334,7 +334,7 @@
 					this.setProject( purchaseOrder.solicitudServicioMaquilado.proyecto );
 				}
 				if( purchaseOrder.solicitudServicioMaquilado.proyectoPadre != null ){
-					Alert.show( "Se omiten los datos de Cliente dado que la Orden de Compra Maquilado está asociada a un Proyecto Padre, le cuál tiene uno o más Proyectos hijos. Para ver el detalle del Proyecto Padre, por favor consulte el Catálogo de Proyectos Padre.", "Información" );
+					Alert.show( "Se omiten los datos de Cliente dado que la Orden de Compra Maquilado está asociada a un Proyecto, le cuál tiene uno o más Servicios. Para ver el detalle del Proyecto, por favor consulte el Catálogo de Proyectos.", "Información" );
 				}
 				this.setPurchaseOrder( purchaseOrder );
 			}

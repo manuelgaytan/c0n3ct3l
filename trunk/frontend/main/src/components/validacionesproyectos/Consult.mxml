@@ -82,7 +82,7 @@
 				 allowMultipleSelection="true"
 				 >
 		<mx:columns>
-			<mx:DataGridColumn id="dtgProjectID" headerText="{'ID\nProyecto'}"
+			<mx:DataGridColumn id="dtgProjectID" headerText="{'ID\nServicio'}"
 							   dataField="proyecto.id"
 							   labelFunction="labelFunctionIDProyecto"
 							   width="150"/>
@@ -128,7 +128,7 @@
 							   dataField="proyecto.centralSitio"
 							   width="150"
 							   />
-			<mx:DataGridColumn headerText="{'Proyecto\nPadre'}"
+			<mx:DataGridColumn headerText="{'Proyecto'}"
 							   dataField="proyecto.proyectoPadreHijo.proyectoPadre.descripcion"
 							   width="150"
 							   />

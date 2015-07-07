@@ -167,7 +167,7 @@
 							   dataField="fechaCreacion"
 							   labelFunction="{Util.labelFunctionDate}"
 							   textAlign="center"/>
-			<mx:DataGridColumn id="dtgProjectsAssociatedNumber" headerText="{'Número de\nProyectos \nAsociados'}"
+			<mx:DataGridColumn id="dtgProjectsAssociatedNumber" headerText="{'Número de\nServicios \nAsociados'}"
 							   width="100"
 							   labelFunction="labelFunctionProjectsAssociatedNumber"
 							   textAlign="center"

@@ -219,13 +219,13 @@
 		<mx:FormItem required="true" label="Fecha:">
 			<components:DateField id="dtfDate"/>
 		</mx:FormItem>
-		<mx:FormItem label="Proyectos Padre:"/>
+		<mx:FormItem label="Proyectos:"/>
 		<mx:VBox width="850">
 			<mx:VBox width="100%" height="100%" verticalGap="5">
 				<proyectospadres:Consult id="parentProjectsConsult" width="500" readOnly="true"/>
 			</mx:VBox>
 		</mx:VBox>
-		<mx:FormItem label="Proyectos:"/>
+		<mx:FormItem label="Servicios:"/>
 		<mx:VBox width="850">
 			<mx:VBox width="100%" height="100%" verticalGap="5">
 				<proyectos:Consult id="projectsConsult"/>

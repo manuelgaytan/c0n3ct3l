@@ -835,6 +835,7 @@
 	central_sitio VARCHAR(255) NOT NULL,
 	fk_estatus INT(11) UNSIGNED NOT NULL,
 	fecha_estatus_requisicion DATE,
+    fk_perfil INT(11) UNSIGNED NOT NULL,
 	PRIMARY KEY (id)
 	);
 
@@ -3451,6 +3452,10 @@
 
 	ALTER TABLE PartidaRequisicionCompra ADD FOREIGN KEY fk_orden_compra_idxfk_3 (fk_orden_compra) REFERENCES OrdenCompra (id);	
 
+    ALTER TABLE SolicitudAlmacen ADD FOREIGN KEY fk_perfil_idxfk_1 (fk_perfil) REFERENCES Perfil (id);
+
+    ALTER TABLE RequisicionCompra ADD FOREIGN KEY fk_perfil_idxfk_2 (fk_perfil) REFERENCES Perfil (id);
+
 	/*************************************************************************************************************************************
 	FIN CAMBIOS
 	/************************************************************************************************************************************/
@@ -3898,6 +3903,32 @@
 	VALUES (144, 1, 59);
 	INSERT INTO PerfilPantalla
 	VALUES (145, 3, 59);
+    INSERT INTO PerfilPantalla
+	VALUES (146, 2, 13);
+    INSERT INTO PerfilPantalla
+	VALUES (147, 3, 13);
+    INSERT INTO PerfilPantalla
+	VALUES (148, 4, 13);
+    INSERT INTO PerfilPantalla
+	VALUES (149, 5, 13);
+    INSERT INTO PerfilPantalla
+	VALUES (150, 6, 13);
+    INSERT INTO PerfilPantalla
+	VALUES (151, 8, 13);
+    INSERT INTO PerfilPantalla
+	VALUES (152, 9, 13);
+    INSERT INTO PerfilPantalla
+	VALUES (153, 10, 13);
+    INSERT INTO PerfilPantalla
+	VALUES (154, 11, 13);
+    INSERT INTO PerfilPantalla
+	VALUES (155, 12, 13);
+    INSERT INTO PerfilPantalla
+	VALUES (156, 13, 13);
+    INSERT INTO PerfilPantalla
+	VALUES (157, 14, 13);
+    INSERT INTO PerfilPantalla
+	VALUES (158, 15, 13);
 
 	/* Usuarios */
 	INSERT INTO Usuario

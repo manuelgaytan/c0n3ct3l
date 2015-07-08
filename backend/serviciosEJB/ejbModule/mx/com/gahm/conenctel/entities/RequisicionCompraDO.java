@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+
 import static javax.persistence.GenerationType.IDENTITY;
 
 import javax.persistence.CascadeType;
@@ -22,7 +23,8 @@ import javax.persistence.Temporal;
 @Entity
 @Table(name = "RequisicionCompra")
 @NamedQueries({
-	@NamedQuery(name = "RequisicionCompraDO.findAll", query = "select rc from RequisicionCompraDO rc")
+	@NamedQuery(name = "RequisicionCompraDO.findAll", query = "select rc from RequisicionCompraDO rc"),
+	@NamedQuery(name = "RequisicionCompraDO.findAllByPerfil", query = "select s from RequisicionCompraDO s where s.perfil.id = :idPerfil")
 	})
 public class RequisicionCompraDO implements java.io.Serializable {
 
@@ -59,6 +61,9 @@ public class RequisicionCompraDO implements java.io.Serializable {
 	@Column(name = "fecha_estatus_requisicion", nullable = false, length = 10)
 	@Temporal(javax.persistence.TemporalType.DATE)
 	private Date fechaEstatusRequisicion;
+	@ManyToOne
+	@JoinColumn(name="fk_perfil")
+	private PerfilDO perfil;
 
 	public RequisicionCompraDO() {
 	}
@@ -69,7 +74,8 @@ public class RequisicionCompraDO implements java.io.Serializable {
 			String centralSitio,
 			EstatusRequisicionCompraDO estatusRequisicionCompra,
 			List<SolicitanteRequisicionDO> solicitantesRequisicion,
-			List<PartidaRequisicionCompraDO> partidasRequisicionCompra
+			List<PartidaRequisicionCompraDO> partidasRequisicionCompra,
+			PerfilDO perfil
 			) {
 		this.id = id;
 		this.fechaSolicitud = fechaSolicitud;
@@ -80,19 +86,22 @@ public class RequisicionCompraDO implements java.io.Serializable {
 		this.estatusRequisicionCompra = estatusRequisicionCompra;
 		this.solicitantesRequisicion = solicitantesRequisicion;
 		this.partidasRequisicionCompra = partidasRequisicionCompra;
+		this.perfil = perfil;
 	}
 
 	public RequisicionCompraDO(Date fechaSolicitud, String motivo,
 			PrioridadDO prioridad, PerfilDO areaSolicitante,
 			String centralSitio, String codigo, String grupoFamilia,
 			String descripcion, String cantidad, String validacion,
-			EstatusRequisicionCompraDO estatusRequisicionCompra) {
+			EstatusRequisicionCompraDO estatusRequisicionCompra,
+			PerfilDO perfil) {
 		this.fechaSolicitud = fechaSolicitud;
 		this.motivo = motivo;
 		this.prioridad = prioridad;
 		this.areaSolicitante = areaSolicitante;
 		this.centralSitio = centralSitio;
 		this.estatusRequisicionCompra = estatusRequisicionCompra;
+		this.perfil = perfil;
 	}
 
 	public Integer getId() {
@@ -185,5 +194,13 @@ public class RequisicionCompraDO implements java.io.Serializable {
 
 	public void setFechaEstatusRequisicion(Date fechaEstatusRequisicion) {
 		this.fechaEstatusRequisicion = fechaEstatusRequisicion;
+	}
+
+	public PerfilDO getPerfil() {
+		return perfil;
+	}
+
+	public void setPerfil(PerfilDO perfil) {
+		this.perfil = perfil;
 	}
 }

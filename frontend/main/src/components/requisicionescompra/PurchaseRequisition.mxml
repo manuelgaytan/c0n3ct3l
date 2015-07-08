@@ -18,6 +18,7 @@
 			import model.Colaborador;
 			import model.Constants;
 			import model.EstatusRequisicionCompra;
+			import model.Model;
 			import model.PartidaRequisicionCompra;
 			import model.Perfil;
 			import model.Prioridad;
@@ -127,6 +128,7 @@
 				item.solicitantesRequisicion = this.cmbApplicantsNames.getListsAsInWith("model.Colaborador","model.SolicitanteRequisicion","colaborador");
 				item.partidasRequisicionCompra = this.itemsManagement.dataProvider as ArrayCollection;
 				item.comentariosRequisicion = this.comments.getCommentsAsInWith("model.ComentarioCompras","model.ComentarioRequisicion","comentarioCompras");
+				item.perfil = Model.getInstance().user.perfil;
 				return item;
 			}
 			
@@ -203,6 +205,9 @@
 				}
 				if( this._readOnly ){
 					this.currentState = "readOnly";
+				}
+				if( Model.getInstance().user.perfil.id != Perfil.ID_COMPRAS ){
+					this.form.removeChild( this.frmItmStatusDate );
 				}
 			}
 			
@@ -607,7 +612,7 @@
 						 labelField="estatus"
 						 />
 		</mx:FormItem>
-		<mx:FormItem label="Fecha del Estatus de Requisición:">
+		<mx:FormItem label="Fecha del Estatus de Requisición:" id="frmItmStatusDate">
 			<components:DateField id="dtfStatusDate" enabled="false"/>
 		</mx:FormItem>
 		<components:Comments id="comments"/>

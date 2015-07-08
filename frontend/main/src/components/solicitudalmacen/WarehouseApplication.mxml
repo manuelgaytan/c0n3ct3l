@@ -232,6 +232,9 @@
 				if( this.mode == Constants.UPDATE_MODE ){
 					this.btnBought.visible = Model.getInstance().user.allowedPerfil( Perfil.ID_COMPRAS );
 				}
+				if( Model.getInstance().user.perfil.id != Perfil.ID_ALMACEN ){
+					this.form.removeChild( this.ftmItmReturnDate );
+				}
 			}
 			
 			private function initializeValidators():void
@@ -764,7 +767,7 @@
 		<mx:FormItem required="false" label="Recibe Externo:">
 			<components:TextInput id="txtReceives" width="400"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha de Retorno:" visible="{Model.getInstance().user.perfil.id == Perfil.ID_ALMACEN}">
+		<mx:FormItem label="Fecha de Retorno:" id="ftmItmReturnDate">
 			<components:DateField id="dtfReturnDate"/>
 		</mx:FormItem>
 		<mx:FormItem id="frmItmLegend" label="Leyenda:">

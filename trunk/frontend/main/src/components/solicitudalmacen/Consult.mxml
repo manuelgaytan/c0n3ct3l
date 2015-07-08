@@ -7,6 +7,7 @@
 		<![CDATA[
 			import events.GenericEvent;
 			
+			import model.Model;
 			import model.SolicitudAlmacen;
 			import model.Util;
 			
@@ -66,7 +67,7 @@
 			
 			public function executeQuery():void
 			{
-				this.responseGetAll.token = this.solicitudAlmacenService.getAll();
+				this.responseGetAll.token = this.solicitudAlmacenService.getAllByPerfil( Model.getInstance().user.perfil.id );
 			}
 			
 			protected function btnDelete_clickHandler(event:MouseEvent):void

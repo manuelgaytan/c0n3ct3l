@@ -370,6 +370,7 @@
 	fk_autoriza_final INT(11) UNSIGNED,
 	leyenda TEXT,
 	fecha_retorno DATE,
+    fk_perfil INT(11) UNSIGNED NOT NULL,
 	PRIMARY KEY (id)
 	);
 

@@ -53,6 +53,20 @@ public class SolicitudAlmacenService implements ISolicitudAlmacenService {
 		}
 		return solicitudAlmacenList;
 	}
+	
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+	public List<SolicitudAlmacenDO> getAllByPerfil( long idPerfil ) throws ConectelException {
+		TypedQuery<SolicitudAlmacenDO> query = entityManager.createNamedQuery(
+				"SolicitudAlmacenDO.findAllByPerfil", SolicitudAlmacenDO.class );
+		query.setParameter("idPerfil",idPerfil);
+		List<SolicitudAlmacenDO> solicitudAlmacenList;
+		try {
+			solicitudAlmacenList = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existe Solicitud Almacen registrado.");
+		}
+		return solicitudAlmacenList;
+	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public boolean deleteItems(List<Long> idsItems) {

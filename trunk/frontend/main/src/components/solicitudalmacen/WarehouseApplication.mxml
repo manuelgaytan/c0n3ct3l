@@ -157,6 +157,7 @@
 				item.leyenda = Util.validateEmpty( this.txtLegend.text );
 				item.usuario = Model.getInstance().user;
 				itemsManagement.getEntries( item );
+				item.perfil = Model.getInstance().user.perfil;
 				return item;
 			}
 			
@@ -763,7 +764,7 @@
 		<mx:FormItem required="false" label="Recibe Externo:">
 			<components:TextInput id="txtReceives" width="400"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha de Retorno:">
+		<mx:FormItem label="Fecha de Retorno:" visible="{Model.getInstance().user.perfil.id == Perfil.ID_ALMACEN}">
 			<components:DateField id="dtfReturnDate"/>
 		</mx:FormItem>
 		<mx:FormItem id="frmItmLegend" label="Leyenda:">

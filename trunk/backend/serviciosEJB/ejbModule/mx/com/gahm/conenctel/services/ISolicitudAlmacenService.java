@@ -11,6 +11,8 @@ import mx.com.gahm.conenctel.exceptions.ConectelException;
 public interface ISolicitudAlmacenService {
 
 	public List<SolicitudAlmacenDO> getAll() throws ConectelException;
+	
+	public List<SolicitudAlmacenDO> getAllByPerfil( long idPerfil ) throws ConectelException;
 
 	public boolean deleteItems(List<Long> idsItems);
 

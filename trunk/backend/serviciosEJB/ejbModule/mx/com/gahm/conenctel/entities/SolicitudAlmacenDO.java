@@ -29,7 +29,8 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @NamedQueries({
-	@NamedQuery(name = "SolicitudAlmacenDO.findAll", query = "select s from SolicitudAlmacenDO s") })
+	@NamedQuery(name = "SolicitudAlmacenDO.findAll", query = "select s from SolicitudAlmacenDO s"),
+	@NamedQuery(name = "SolicitudAlmacenDO.findAllByPerfil", query = "select s from SolicitudAlmacenDO s where s.perfil.id = :idPerfil")})
 @Table(name="solicitudalmacen")
 public class SolicitudAlmacenDO implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -90,6 +91,10 @@ public class SolicitudAlmacenDO implements Serializable {
 	@Column(name="fecha_retorno")
 	private Date fechaRetorno;
 	
+	@ManyToOne
+	@JoinColumn(name="fk_perfil")
+	private PerfilDO perfil;
+	
 	@OneToMany(mappedBy="solicitudAlmacen", fetch = FetchType.EAGER,cascade=CascadeType.ALL)
 	private List<HerramientaSolicitudAlmacenDO> herramientasSolicitudAlmacen;
 
@@ -127,7 +132,7 @@ public class SolicitudAlmacenDO implements Serializable {
 			String nombreSolicitante, ColaboradorDO autoriza,
 			ColaboradorDO autorizaFinal,
 			ColaboradorDO entrega, String recibe, String leyenda,
-			Date fechaRetorno) {
+			Date fechaRetorno, PerfilDO perfil) {
 		super();
 		this.id = id;
 		this.usuario = usuario;
@@ -144,6 +149,7 @@ public class SolicitudAlmacenDO implements Serializable {
 		this.recibe = recibe;
 		this.leyenda = leyenda;
 		this.fechaRetorno = fechaRetorno;
+		this.perfil = perfil;
 	}
 
 	public List<PartidaSolicitudAlmacen> getListaPlana(){
@@ -490,6 +496,14 @@ public class SolicitudAlmacenDO implements Serializable {
 
 	public void setAutorizaFinal(ColaboradorDO autorizaFinal) {
 		this.autorizaFinal = autorizaFinal;
+	}
+
+	public PerfilDO getPerfil() {
+		return perfil;
+	}
+
+	public void setPerfil(PerfilDO perfil) {
+		this.perfil = perfil;
 	}
 	
 	

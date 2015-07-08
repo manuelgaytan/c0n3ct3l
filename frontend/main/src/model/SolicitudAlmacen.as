@@ -20,6 +20,7 @@ package model
 		public var recibe:String;
 		public var leyenda:String;
 		public var fechaRetorno:Date;
+		public var perfil:Perfil;
 		public var consumiblesSolicitudAlmacen:ArrayCollection;
 		public var equipoMedicionSolicitudAlmacen:ArrayCollection;
 		public var equipoTransporteSolicitudAlmacen:ArrayCollection;

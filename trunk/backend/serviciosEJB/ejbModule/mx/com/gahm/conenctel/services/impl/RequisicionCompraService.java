@@ -38,6 +38,18 @@ public class RequisicionCompraService  implements IRequisicionCompraService{
 		
 		return datos;
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<RequisicionCompraDO> getAllByPerfil( long idPerfil ) {
+		List<RequisicionCompraDO> datos= null;
+		Query query =null;
+		query = entityManager.createNamedQuery("RequisicionCompraDO.findAllByPerfil");
+		query.setParameter("idPerfil",idPerfil);
+		datos = query.getResultList();
+		
+		return datos;
+	}
 
 	@Override
 	public void deleteItems(List<Integer> idsItems) {

@@ -9,6 +9,7 @@ import mx.com.gahm.conenctel.entities.RequisicionCompraDO;
 @Remote
 public interface IRequisicionCompraService {
 	List<RequisicionCompraDO> getAll();
+	List<RequisicionCompraDO> getAllByPerfil( long idPerfil );
 	void deleteItems(List<Integer> idsItems);
 	RequisicionCompraDO save(RequisicionCompraDO item);
 	RequisicionCompraDO update(RequisicionCompraDO item);

@@ -1,18 +1,87 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="MaestroOrdenCompraMaquilado" pageWidth="572" pageHeight="752" columnWidth="532" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="af2c3afe-a3fe-4327-b299-5edb747e7ea7">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="MaestroOrdenCompraMaquilado" pageWidth="612" pageHeight="792" columnWidth="612" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="af2c3afe-a3fe-4327-b299-5edb747e7ea7">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="1065"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["/Users/manuel/Projects/conectel/backend/serviciosWeb/WebContent/reports/"]]></defaultValueExpression>
 	</parameter>
+	<parameter name="contexto" class="java.lang.String"/>
+	<parameter name="title" class="java.lang.String"/>
+	<parameter name="confidence" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR_1" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{contexto}.toString()+"reports/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="legalName" class="java.lang.String"/>
+	<parameter name="rfc" class="java.lang.String"/>
+	<parameter name="address1" class="java.lang.String"/>
+	<parameter name="address2" class="java.lang.String"/>
+	<parameter name="phones" class="java.lang.String"/>
+	<parameter name="maker" class="java.lang.String"/>
+	<parameter name="authorizer" class="java.lang.String"/>
+	<parameter name="website" class="java.lang.String"/>
+	<parameter name="area" class="java.lang.String"/>
+	<parameter name="phonesContact" class="java.lang.String"/>
+	<field name="listaOrdenesCompraMaquilado" class="java.util.List"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
-	<title>
-		<band height="10"/>
-	</title>
 	<detail>
-		<band height="138" splitType="Stretch"/>
+		<band height="712" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="0" width="200" height="100" uuid="b38ab025-0916-42b5-8188-b73a1dd62267"/>
+				<subreportParameter name="legalName">
+					<subreportParameterExpression><![CDATA[$P{legalName}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="phonesContact">
+					<subreportParameterExpression><![CDATA[$P{phonesContact}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="website">
+					<subreportParameterExpression><![CDATA[$P{website}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="maker">
+					<subreportParameterExpression><![CDATA[$P{maker}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="address1">
+					<subreportParameterExpression><![CDATA[$P{address1}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="address2">
+					<subreportParameterExpression><![CDATA[$P{address2}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="confidence">
+					<subreportParameterExpression><![CDATA[$P{confidence}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="rfc">
+					<subreportParameterExpression><![CDATA[$P{rfc}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="phones">
+					<subreportParameterExpression><![CDATA[$P{phones}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="authorizer">
+					<subreportParameterExpression><![CDATA[$P{authorizer}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="title">
+					<subreportParameterExpression><![CDATA[$P{title}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="area">
+					<subreportParameterExpression><![CDATA[$P{area}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="contexto">
+					<subreportParameterExpression><![CDATA[$P{contexto}]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{listaOrdenesCompraMaquilado})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "OrdenCompraMaquilado.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="712">
+			<subreport>
+				<reportElement x="0" y="0" width="200" height="100" backcolor="#99FFFF" uuid="bc5b5a08-0f1a-469e-8bef-0a34294f3859"/>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{listaOrdenesCompraMaquilado})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "adendum.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
 	</detail>
 </jasperReport>

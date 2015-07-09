@@ -2,14 +2,14 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="adendum" pageWidth="612" pageHeight="712" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5e80fa89-4f7f-446d-83be-7283a4834b6a">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="338"/>
+	<property name="ireport.y" value="301"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<detail>
-		<band height="672" splitType="Stretch">
+		<band height="620" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="0" width="572" height="672" uuid="1dbec957-b7cf-4a13-98d5-e1232788142d"/>
+				<reportElement x="0" y="0" width="572" height="620" uuid="1dbec957-b7cf-4a13-98d5-e1232788142d"/>
 				<textElement>
 					<font size="7"/>
 				</textElement>

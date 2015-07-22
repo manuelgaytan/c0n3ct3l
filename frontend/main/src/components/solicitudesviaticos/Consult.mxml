@@ -9,6 +9,7 @@
 			
 			import model.ConfiguracionPruebaEntrega;
 			import model.FiltroProyecto;
+			import model.Model;
 			import model.Proyecto;
 			import model.SolicitudViaticos;
 			import model.Util;
@@ -75,7 +76,7 @@
 			public function executeQuery():void
 			{
 				if( !this._readMode ){
-					this.responseGetAll.token = this.solicitudViaticosService.getAll();
+					this.responseGetAll.token = this.solicitudViaticosService.getAllByPerfil( Model.getInstance().user.perfil.id );
 				}
 			}
 			

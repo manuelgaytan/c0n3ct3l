@@ -1306,16 +1306,16 @@
 	CREATE TABLE FacturaProveedor
 	(
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
-	fecha_factura DATE NOT NULL,
+	fecha_factura DATE,
 	fk_estado_investigacion_calidad INT(11) UNSIGNED NOT NULL,
 	fk_estado_tesoreria INT(11) UNSIGNED,
-	semana DECIMAL,
+	semana DECIMAL(11,2),
 	fk_proveedor_calificado INT(11) UNSIGNED,
 	fk_orden_compra INT(11) UNSIGNED,
 	fk_proveedor_maquilador INT(11) UNSIGNED,
 	fk_orden_compra_maquilado INT(11) UNSIGNED,
 	cantidad DECIMAL(11,2) NOT NULL,
-	numero_factura VARCHAR(255) NOT NULL,
+	numero_factura VARCHAR(255),
 	fecha_revision DATE,
 	fecha_pago DATE,
 	PRIMARY KEY (id)
@@ -1442,6 +1442,7 @@
 	materiales_herramienta DECIMAL(11,2),
 	otros DECIMAL(11,2),
 	total_solicitado DECIMAL(11,2),
+    fk_perfil INT(11) UNSIGNED NOT NULL,
 	PRIMARY KEY (id)
 	);
 
@@ -3456,7 +3457,8 @@
 
     ALTER TABLE RequisicionCompra ADD FOREIGN KEY fk_perfil_idxfk_2 (fk_perfil) REFERENCES Perfil (id);
 
-	/*************************************************************************************************************************************
+    ALTER TABLE SolicitudViaticos ADD FOREIGN KEY fk_perfil_idxfk_3 (fk_perfil) REFERENCES Perfil (id);
+/*************************************************************************************************************************************
 	FIN CAMBIOS
 	/************************************************************************************************************************************/
 

@@ -171,7 +171,7 @@ public class SolicitudAlmacenService implements ISolicitudAlmacenService {
 		Double cantidadPedido = 0.0;	
 		
 		if(dato!=null && dato.getEstadoSolicitudAlmacen()!=null 
-				&& item.getEstadoSolicitudAlmacen().getId().equals( EstadoSolicitudAlmacenDO.ID_AUTORIZADO ) ){
+				&& item.getEstadoSolicitudAlmacen().getId() == EstadoSolicitudAlmacenDO.ID_AUTORIZADO ){
 			if(item.getHerramientasSolicitudAlmacen()!=null && 
 					!item.getHerramientasSolicitudAlmacen().isEmpty()){
 					for (HerramientaSolicitudAlmacenDO datoAlmacen : item.getHerramientasSolicitudAlmacen()) {

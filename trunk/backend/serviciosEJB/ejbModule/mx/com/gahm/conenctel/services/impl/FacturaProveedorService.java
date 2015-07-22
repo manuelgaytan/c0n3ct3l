@@ -3,6 +3,7 @@
  */
 package mx.com.gahm.conenctel.services.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -64,11 +65,73 @@ public class FacturaProveedorService implements  IFacturaProveedorService{
 	    	item.setComentariosFacturaProveedor(null);
 	    	entityManager.persist(item);
 	    	saveComentariosFacturaProveedor(item,comentariosFacturaProveedor);
+	    	FacturaProveedorDO secondItem = null;
+	    	if( this.esProveedorImplementacion( item ) ){
+	    		secondItem = this.dividir( item );
+	    		entityManager.persist( secondItem );
+	    		List<ComentarioFacturaProveedorDO> duplicadoComentariosFacturaProveedor = this.duplicarComentarios( comentariosFacturaProveedor );
+	    		saveComentariosFacturaProveedor(secondItem,duplicadoComentariosFacturaProveedor);
+	    	}
 	    	this.validarEnvioNotificaciones(item);
 		}
 		return item;
 	}
 	
+	private List<ComentarioFacturaProveedorDO> duplicarComentarios(
+			List<ComentarioFacturaProveedorDO> comentariosFacturaProveedor) {
+		List<ComentarioFacturaProveedorDO> comentariosDuplicadosFacturaProveedor = null;
+		if( comentariosFacturaProveedor == null ){
+			return comentariosDuplicadosFacturaProveedor;
+		}
+		comentariosDuplicadosFacturaProveedor = new ArrayList<ComentarioFacturaProveedorDO>();
+    	for (ComentarioFacturaProveedorDO dato : comentariosFacturaProveedor) {
+    		ComentarioFacturaProveedorDO comentarioDuplicadoFacturaProveedorDO = new ComentarioFacturaProveedorDO();
+    		
+    		ComentarioCuentasPagarFacturacionDO comentarioCuentasPagarFacturacion = dato.getComentarioCuentasPagarFacturacion();
+    		ComentarioCuentasPagarFacturacionDO comentarioDuplicadoCuentasPagarFacturacion = new ComentarioCuentasPagarFacturacionDO();
+    		comentarioDuplicadoCuentasPagarFacturacion.setComentario(comentarioCuentasPagarFacturacion.getComentario());
+    		comentarioDuplicadoCuentasPagarFacturacion.setFechaCaptura(comentarioCuentasPagarFacturacion.getFechaCaptura());
+    		//comentarioDuplicadoCuentasPagarFacturacion.setId(comentarioCuentasPagarFacturacion.getId());
+    		comentarioDuplicadoCuentasPagarFacturacion.setUsuario(comentarioCuentasPagarFacturacion.getUsuario());
+			
+    		comentarioDuplicadoFacturaProveedorDO.setComentarioCuentasPagarFacturacion( comentarioDuplicadoCuentasPagarFacturacion );
+			//comentarioDuplicadoFacturaProveedorDO.setFacturaProveedor(dato.getFacturaProveedor());
+			//comentarioDuplicadoFacturaProveedorDO.setId(dato.getId());
+			
+			comentariosDuplicadosFacturaProveedor.add(comentarioDuplicadoFacturaProveedorDO);
+		}
+		return comentariosDuplicadosFacturaProveedor;
+	}
+
+	private FacturaProveedorDO dividir(FacturaProveedorDO item) {
+		FacturaProveedorDO secondItem = null;
+		if( !(item == null) ){
+			secondItem = new FacturaProveedorDO();
+			secondItem.setFechaFactura(null);
+			secondItem.setEstadoInvestigacionCalidad( item.getEstadoInvestigacionCalidad() );
+			secondItem.setEstadoTesoreria( item.getEstadoTesoreria() );
+			secondItem.setSemana( item.getSemana() );
+			secondItem.setProveedorCalificado( item.getProveedorCalificado() );
+			secondItem.setOrdenCompra( item.getOrdenCompra() );
+			secondItem.setProveedorMaquilador( item.getProveedorMaquilador() );
+			secondItem.setOrdenCompraMaquilado( item.getOrdenCompraMaquilado() );
+			secondItem.setCantidad( item.getCantidad() );
+			secondItem.setNumeroFactura( null );
+			secondItem.setFechaRevision( null );
+			secondItem.setFechaPago( null );
+			secondItem.setComentariosFacturaProveedor(null);
+		}
+		return secondItem;
+	}
+
+	private boolean esProveedorImplementacion(FacturaProveedorDO item) {
+		boolean proveedorImplementacion = false;
+		if( !(item == null) ){
+			proveedorImplementacion = !( item.getProveedorMaquilador() == null );
+		}
+		return proveedorImplementacion;
+	}
+
 	private void saveComentariosFacturaProveedor(FacturaProveedorDO item,List<ComentarioFacturaProveedorDO> comentariosFacturaProveedor) {
 		if( comentariosFacturaProveedor == null ){
 			return;

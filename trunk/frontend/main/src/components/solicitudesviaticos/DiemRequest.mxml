@@ -16,6 +16,7 @@
 			import model.FiltroProyecto;
 			import model.InformacionConfidencialColaborador;
 			import model.MedioTransporte;
+			import model.Model;
 			import model.Producto;
 			import model.Proyecto;
 			import model.SolicitudViaticos;
@@ -125,6 +126,7 @@
 				diemRequest.materialesHerramienta = Util.stringToNumber( this.txtMaterialsAndOrTool.text );
 				diemRequest.otros = Util.stringToNumber( this.txtOthers.text );
 				diemRequest.totalSolicitado = Util.stringToNumber( this.txtTotalRequested.text );
+				diemRequest.perfil = Model.getInstance().user.perfil;
 				return diemRequest;
 			}
 			

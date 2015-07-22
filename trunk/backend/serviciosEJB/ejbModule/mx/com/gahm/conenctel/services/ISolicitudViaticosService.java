@@ -16,6 +16,7 @@ import mx.com.gahm.conenctel.entities.SolicitudViaticosDO;
 @Remote
 public interface ISolicitudViaticosService {
 	List<SolicitudViaticosDO> getAll();
+	List<SolicitudViaticosDO> getAllByPerfil( long idPerfil );
 	void deleteItems( List<Integer> idsItems);
 	SolicitudViaticosDO save( SolicitudViaticosDO item );
 	SolicitudViaticosDO update( SolicitudViaticosDO item );

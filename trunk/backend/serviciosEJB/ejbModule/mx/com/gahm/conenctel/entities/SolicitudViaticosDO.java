@@ -31,7 +31,8 @@ import javax.persistence.TemporalType;
 @Table(name = "SolicitudViaticos")
 @NamedQueries({
 	@NamedQuery(name = "SolicitudViaticosDO.findAll", query = "select rc from SolicitudViaticosDO rc"),
-	@NamedQuery(name = "SolicitudViaticosDO.getAllByWithOutPayment", query = "select s from SolicitudViaticosDO s where s.id not in (select p.solicitudViaticos.id from PagoViaticosDO p)")
+	@NamedQuery(name = "SolicitudViaticosDO.getAllByWithOutPayment", query = "select s from SolicitudViaticosDO s where s.id not in (select p.solicitudViaticos.id from PagoViaticosDO p)"),
+	@NamedQuery(name = "SolicitudViaticosDO.findAllByPerfil", query = "select s from SolicitudViaticosDO s where s.perfil.id = :idPerfil")
 	})
 public class SolicitudViaticosDO implements Serializable{
 	
@@ -89,6 +90,10 @@ public class SolicitudViaticosDO implements Serializable{
 	@Temporal(TemporalType.DATE)
 	@Column(name = "fecha", nullable = false, length = 10)
 	private Date fecha;
+	
+	@ManyToOne
+	@JoinColumn(name="fk_perfil")
+	private PerfilDO perfil;
 
 	public SolicitudViaticosDO() {
 		super();
@@ -321,6 +326,14 @@ public class SolicitudViaticosDO implements Serializable{
 	 */
 	public void setFecha(Date fecha) {
 		this.fecha = fecha;
+	}
+
+	public PerfilDO getPerfil() {
+		return perfil;
+	}
+
+	public void setPerfil(PerfilDO perfil) {
+		this.perfil = perfil;
 	}
 	
 	

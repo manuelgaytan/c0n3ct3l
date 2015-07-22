@@ -20,5 +20,6 @@ package model
 		public var materialesHerramienta:*;
 		public var otros:*;
 		public var totalSolicitado:Number;
+		public var perfil:Perfil;
 	}
 }

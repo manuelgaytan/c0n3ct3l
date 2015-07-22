@@ -202,7 +202,7 @@
 				this.validators.crearValidadorRestrictor("genericString", ValidadorCadenaCualquierCaracter.nombre, 0, 100);
 				validators.setValidador(txtVendorInvoiceNumber, "genericString");
 				this.validators.crearValidadorRestrictor("genericDecimal", ValidadorDecimal.nombre, 7,2);
-				validators.setRestrictor(txtWeek, "genericString");
+				validators.setRestrictor(txtWeek, "genericDecimal");
 				this.validators.crearValidadorRestrictor("number",ValidadorDecimal.nombre, 9, 2);
 				validators.setValidador(txtQuantity, "number");
 			}

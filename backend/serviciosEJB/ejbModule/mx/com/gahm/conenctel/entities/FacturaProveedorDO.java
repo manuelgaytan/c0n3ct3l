@@ -40,7 +40,7 @@ public class FacturaProveedorDO implements Serializable{
 	@Column(name = "id", unique = true, nullable = false)
 	private Integer id;
 	
-	@Column(name = "fecha_factura", nullable = false, length = 10)
+	@Column(name = "fecha_factura", nullable = true, length = 10)
 	@Temporal(TemporalType.DATE)
 	private Date fechaFactura;
 	
@@ -75,7 +75,7 @@ public class FacturaProveedorDO implements Serializable{
 	@Column(name = "cantidad", nullable = false)
 	private Double cantidad;
 	
-	@Column(name = "numero_factura", nullable = false)
+	@Column(name = "numero_factura", nullable = true)
 	private String numeroFactura;
 	
 	@Column(name = "fecha_revision", nullable = false, length = 10)

@@ -257,6 +257,11 @@
 				}
 			}
 			
+			private function labelFunctionCantidad(item:Object, column:DataGridColumn):String{
+				var invoice:FacturaProveedor = item as FacturaProveedor;
+				return Util.formatCurrency( Util.extractToText(invoice, "cantidad") );
+			}
+			
 			protected function btnDelete_clickHandler(event:MouseEvent):void
 			{
 				if( this.datagrid.selectedItems == null ||
@@ -391,6 +396,7 @@
 								   width="80"
 								   />
 				<mx:DataGridColumn id="dtgQuantity" headerText="{'Cantidad'}"
+								   labelFunction="labelFunctionCantidad"
 								   dataField="cantidad"
 								   textAlign="right"
 								   width="80"

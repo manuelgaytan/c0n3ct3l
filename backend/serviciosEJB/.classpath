@@ -2,15 +2,8 @@
 <classpath>
 	<classpathentry kind="src" path="ejbModule"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
-	<classpathentry kind="lib" path="/Users/manuel/Projects/conectel/backend/serviciosEJB/ejbModule/APP-INF/lib/antlr-2.7.5H3.jar"/>
-	<classpathentry kind="lib" path="/Users/manuel/Projects/conectel/backend/serviciosEJB/ejbModule/APP-INF/lib/commons-beanutils-1.8.0.jar"/>
-	<classpathentry kind="lib" path="/Users/manuel/Projects/conectel/backend/serviciosEJB/ejbModule/APP-INF/lib/commons-collections-2.1.jar"/>
-	<classpathentry kind="lib" path="/Users/manuel/Projects/conectel/backend/serviciosEJB/ejbModule/APP-INF/lib/commons-digester-1.7.jar"/>
-	<classpathentry kind="lib" path="/Users/manuel/Projects/conectel/backend/serviciosEJB/ejbModule/APP-INF/lib/commons-logging-1.0.2.jar"/>
-	<classpathentry kind="lib" path="/Users/manuel/Projects/conectel/backend/serviciosEJB/ejbModule/APP-INF/lib/itext-2.1.7.jar"/>
-	<classpathentry kind="lib" path="/Users/manuel/Projects/conectel/backend/serviciosEJB/ejbModule/APP-INF/lib/jasperreports-3.7.2.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="/Users/manuel/Projects/conectel/backend/libraries/eclipselink/jlib/eclipselink.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/GlassFish System Libraries"/>
+	<classpathentry kind="lib" path="/Users/manuel/Projects/c0n3ct3l/backend/libraries/eclipselink/jlib/eclipselink.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/GlassFish System Library"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

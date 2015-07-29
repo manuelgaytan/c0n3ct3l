@@ -13,6 +13,5 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry combineaccessrules="false" kind="src" path="/serviciosEJB"/>
-	<classpathentry kind="lib" path="/Users/manuel/Projects/conectel/backend/serviciosEJB/ejbModule/APP-INF/lib/jasperreports-3.7.2.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

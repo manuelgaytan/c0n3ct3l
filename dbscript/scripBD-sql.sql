@@ -2375,7 +2375,7 @@
 	nombre_instructor VARCHAR(255),
 	calificacion DECIMAL(12,5),
 	constancia VARCHAR(255),
-	aprobado BOOLEAN,
+	fk_estatus_concentrado_capacitacion INT(11) UNSIGNED NOT NULL,
 	resultado_seguimiento VARCHAR(255),
 	PRIMARY KEY (id)
 	);
@@ -2723,6 +2723,13 @@
 	(
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
 	estado VARCHAR(100) NOT NULL UNIQUE,
+	PRIMARY KEY (id)
+	);
+
+	CREATE TABLE EstatusConcentradoCapacitacion
+	(
+	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+	estatus VARCHAR(255) NOT NULL,
 	PRIMARY KEY (id)
 	);
 	/*************************************************************************************************************************************
@@ -3318,6 +3325,8 @@
     ALTER TABLE ConcentradoCapacitacion ADD FOREIGN KEY fk_tipo_formacion_idxfk (fk_tipo_formacion) REFERENCES TipoFormacion (id);
 
 	ALTER TABLE ConcentradoCapacitacion ADD FOREIGN KEY fk_tipo_capacitacion_idxfk (fk_tipo_capacitacion) REFERENCES TipoCapacitacion (id);
+
+	ALTER TABLE ConcentradoCapacitacion ADD FOREIGN KEY fk_estatus_concentrado_capacitacion_idxfk (fk_estatus_concentrado_capacitacion) REFERENCES EstatusConcentradoCapacitacion (id);
 
 	ALTER TABLE Sugerencia ADD FOREIGN KEY fk_colaborador_idxfk_1 (fk_colaborador) REFERENCES Colaborador (id);
 
@@ -5083,6 +5092,17 @@
 	INSERT INTO EstatusDevolucion
 	VALUES (3, 'Cerrado');
 
+	INSERT INTO EstatusConcentradoCapacitacion
+	VALUES (1, 'Pendiente');
+	INSERT INTO EstatusConcentradoCapacitacion
+	VALUES (2, 'No Aplica');
+	INSERT INTO EstatusConcentradoCapacitacion
+	VALUES (3, 'En Proceso');
+	INSERT INTO EstatusConcentradoCapacitacion
+	VALUES (4, 'Aprobado');
+	INSERT INTO EstatusConcentradoCapacitacion
+	VALUES (5, 'No Aprobado');
+	
 	/*
 	INSERT INTO 
 	VALUES (1, '');

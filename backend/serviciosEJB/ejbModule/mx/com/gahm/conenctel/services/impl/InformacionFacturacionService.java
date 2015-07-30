@@ -46,7 +46,23 @@ public class InformacionFacturacionService implements IInformacionFacturacionSer
 			}
 			Collections.sort(datos, new Comparator<InformacionFacturacionDO>() {
 			    public int compare(InformacionFacturacionDO object1, InformacionFacturacionDO object2) {
-			    	return ( object1.getFechaMayor().before( object2.getFechaMayor() ) ) ? -1 : 1;
+			    	int mayor = 1;
+			    	+			    	int menor = -1;
+			    	+			    	int igual = 0;
+			    	+			    	int respuesta = 0;
+			    	+			    	if( ( object1 == null || object1.getFechaMayor() == null ) && ( object2 != null || object2.getFechaMayor() != null ) ){
+			    	+			    		respuesta = menor;
+			    	+			    	}
+			    	+			    	if( ( object1 != null || object1.getFechaMayor() != null ) && ( object2 == null || object2.getFechaMayor() == null ) ){
+			    	+			    		respuesta = mayor;
+			    	+			    	}
+			    	+			    	if( ( object1 == null || object1.getFechaMayor() == null ) && ( object2 == null || object2.getFechaMayor() == null ) ){
+			    	+			    		respuesta = igual;
+			    	+			    	}
+			    	+			    	if( ( object1 != null && object1.getFechaMayor() != null ) && ( object2 != null && object2.getFechaMayor() != null ) ){
+			    	+			    		respuesta = ( object1.getFechaMayor().before( object2.getFechaMayor() ) ) ? menor : mayor;
+			    	+			    	}
+			    	+			    	return respuesta;
 			    }
 			});
 		}

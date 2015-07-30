@@ -80,11 +80,13 @@ public class ConcentradoCapacitacionDO implements Serializable {
 	@Column(name = "constancia", nullable = false)
 	private String constancia;
 	
-	@Column(name = "aprobado", nullable = false)
-	private Boolean aprobado;
 	
 	@Column(name = "resultado_seguimiento", nullable = false)
 	private String resultadoSeguimiento;
+	
+	@ManyToOne
+	@JoinColumn(name = "fk_estatus_concentrado_capacitacion", nullable = false)
+	private EstatusConcentradoCapacitacionDO estatusConcentradoCapacitacion;
 
 	public ConcentradoCapacitacionDO() {
 		super();
@@ -198,14 +200,6 @@ public class ConcentradoCapacitacionDO implements Serializable {
 		this.constancia = constancia;
 	}
 
-	public Boolean getAprobado() {
-		return aprobado;
-	}
-
-	public void setAprobado(Boolean aprobado) {
-		this.aprobado = aprobado;
-	}
-
 	public String getResultadoSeguimiento() {
 		return resultadoSeguimiento;
 	}
@@ -220,6 +214,15 @@ public class ConcentradoCapacitacionDO implements Serializable {
 
 	public void setEstado(EstadoConcentradoCapacitacionDO estado) {
 		this.estado = estado;
+	}
+	
+	public EstatusConcentradoCapacitacionDO getEstatusConcentradoCapacitacion() {
+		return estatusConcentradoCapacitacion;
+	}
+
+	public void setEstatusConcentradoCapacitacion(
+			EstatusConcentradoCapacitacionDO estatusConcentradoCapacitacion) {
+		this.estatusConcentradoCapacitacion = estatusConcentradoCapacitacion;
 	}
 
 }

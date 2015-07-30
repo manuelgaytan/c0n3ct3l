@@ -104,7 +104,11 @@
 				this.txtTrainerName.text = this._item.nombreInstructor;
 				this.txtTrainingGrade.text = Util.numberToString( this._item.calificacion, true );
 				this.fltDlvEvidence.delivers = Util.asArrayCollection( this._item.constancia );
-				this.cmbTrainingStatus.selectedIndex = ( this._item.aprobado ) ? 0 : 1;
+				if( Util.isFill( this.cmbTrainingStatus ) && this._item 
+					&& this._item.estatusConcentradoCapacitacion != null ){
+					this.cmbTrainingStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbTrainingStatus.dataProvider as ArrayCollection, 
+						this._item.estatusConcentradoCapacitacion.id);
+				}
 				this.txtTraceResult.text = this._item.resultadoSeguimiento;
 			}
 			
@@ -137,6 +141,7 @@
 				this.responseGetTipoFormacion.token = this.catalogoService.getTipoFormacion();
 				this.responseGetEstadoConcentradoCapacitacion.token = this.catalogoService.getEstadoConcentradoCapacitacion();
 				this.responseGetTipoCapacitacion.token = this.catalogoService.getTipoCapacitacion();
+				this.responseGetEstatusConcentradoCapacitacion.token = this.catalogoService.getEstatusConcentradoCapacitacion();
 			}
 			
 			protected function concentradoCapacitacionService_faultHandler(event:FaultEvent):void
@@ -294,6 +299,20 @@
 				}
 			}
 			
+			protected function responseGetEstatusConcentradoCapacitacion_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbTrainingStatus.dataProvider = data;
+				if( Util.isFill( this.cmbTrainingStatus ) && this._item 
+					&& this._item.estatusConcentradoCapacitacion != null ){
+					this.cmbTrainingStatus.selectedIndex = Util.selectedIndexFromCombo( this.cmbTrainingStatus.dataProvider as ArrayCollection, 
+						this._item.estatusConcentradoCapacitacion.id);
+				}
+			}
+			
 			protected function initializeHandler(event:FlexEvent):void
 			{
 				if( this.mode == Constants.REGISTER_MODE ){
@@ -414,7 +433,7 @@
 			<components:FlatDeliver id="fltDlvEvidence" limitedTo="1"/>
 		</mx:FormItem>
 		<mx:FormItem label="Estatus de la Capacitación:">
-			<mx:ComboBox id="cmbTrainingStatus" dataProvider="{[APROBADO, NO_APROBADO]}" change="cmbTrainingStatus_changeHandler(event)"/>
+			<mx:ComboBox id="cmbTrainingStatus" labelField="estatus" change="cmbTrainingStatus_changeHandler(event)"/>
 		</mx:FormItem>
 		<mx:FormItem label="Resultado de Seguimiento:">
 			<components:TextInput id="txtTraceResult" width="300"/>
@@ -433,6 +452,7 @@
 	<mx:CallResponder id="responseGetTipoFormacion" result="responseGetTipoFormacion_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetEstadoConcentradoCapacitacion" result="responseGetEstadoConcentradoCapacitacion_resultHandler(event)"/>
 	<mx:CallResponder id="responseGetTipoCapacitacion" result="responseGetTipoCapacitacion_resultHandler(event)"/>
+	<mx:CallResponder id="responseGetEstatusConcentradoCapacitacion" result="responseGetEstatusConcentradoCapacitacion_resultHandler(event)"/>
 	<mx:RemoteObject id="colaboradorService" destination="colaboradorService" fault="concentradoCapacitacionService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetColaborador" result="responseGetColaborador_resultHandler(event)"/>

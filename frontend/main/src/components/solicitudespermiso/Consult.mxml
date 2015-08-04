@@ -8,6 +8,7 @@
 			import events.GenericEvent;
 			
 			import model.Contratacion;
+			import model.Model;
 			import model.SolicitudPermiso;
 			import model.Util;
 			
@@ -60,7 +61,7 @@
 			
 			public function executeQuery():void
 			{
-				this.responseGetAll.token = this.requisicionService.getAll();
+				this.responseGetAll.token = this.requisicionService.getAllByPerfil( Model.getInstance().user.perfil.id );
 			}
 			
 			protected function btnDelete_clickHandler(event:MouseEvent):void

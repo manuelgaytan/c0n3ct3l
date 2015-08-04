@@ -2611,6 +2611,7 @@
 	fk_permiso_con_goce_sueldo INT(11) UNSIGNED NOT NULL,
 	visto_bueno_jefe_inmediato BOOLEAN NOT NULL,
 	autorizacion BOOLEAN NOT NULL,
+    fk_perfil INT(11) UNSIGNED NOT NULL,
 	PRIMARY KEY (id)
 	);
 
@@ -2656,6 +2657,7 @@
 	fecha_fin DATE NOT NULL,
 	visto_bueno_jefe_inmediato BOOLEAN NOT NULL,
 	autorizacion BOOLEAN NOT NULL,
+    fk_perfil INT(11) UNSIGNED NOT NULL,
 	PRIMARY KEY (id)
 	);
 
@@ -3467,6 +3469,10 @@
     ALTER TABLE RequisicionCompra ADD FOREIGN KEY fk_perfil_idxfk_2 (fk_perfil) REFERENCES Perfil (id);
 
     ALTER TABLE SolicitudViaticos ADD FOREIGN KEY fk_perfil_idxfk_3 (fk_perfil) REFERENCES Perfil (id);
+
+    ALTER TABLE SolicitudPermiso ADD FOREIGN KEY fk_perfil_idxfk_4 (fk_perfil) REFERENCES Perfil (id);
+
+    ALTER TABLE SolicitudVacaciones ADD FOREIGN KEY fk_perfil_idxfk_5 (fk_perfil) REFERENCES Perfil (id);
 /*************************************************************************************************************************************
 	FIN CAMBIOS
 	/************************************************************************************************************************************/
@@ -3940,6 +3946,84 @@
 	VALUES (157, 14, 13);
     INSERT INTO PerfilPantalla
 	VALUES (158, 15, 13);
+    INSERT INTO PerfilPantalla
+	VALUES (159, 2, 33);
+    INSERT INTO PerfilPantalla
+	VALUES (160, 3, 33);
+    INSERT INTO PerfilPantalla
+	VALUES (161, 4, 33);
+    INSERT INTO PerfilPantalla
+	VALUES (162, 5, 33);
+    INSERT INTO PerfilPantalla
+	VALUES (163, 6, 33);
+    INSERT INTO PerfilPantalla
+	VALUES (164, 7, 33);
+    INSERT INTO PerfilPantalla
+	VALUES (165, 8, 33);
+    INSERT INTO PerfilPantalla
+	VALUES (166, 9, 33);
+    INSERT INTO PerfilPantalla
+	VALUES (167, 10, 33);
+    INSERT INTO PerfilPantalla
+	VALUES (168, 12, 33);
+    INSERT INTO PerfilPantalla
+	VALUES (169, 13, 33);
+    INSERT INTO PerfilPantalla
+	VALUES (170, 14, 33);
+    INSERT INTO PerfilPantalla
+	VALUES (171, 15, 33);
+    INSERT INTO PerfilPantalla
+	VALUES (172, 2, 54);
+    INSERT INTO PerfilPantalla
+	VALUES (173, 3, 54);
+    INSERT INTO PerfilPantalla
+	VALUES (174, 4, 54);
+    INSERT INTO PerfilPantalla
+	VALUES (175, 5, 54);
+    INSERT INTO PerfilPantalla
+	VALUES (176, 6, 54);
+    INSERT INTO PerfilPantalla
+	VALUES (177, 7, 54);
+    INSERT INTO PerfilPantalla
+	VALUES (178, 8, 54);
+    INSERT INTO PerfilPantalla
+	VALUES (179, 9, 54);
+    INSERT INTO PerfilPantalla
+	VALUES (180, 10, 54);
+    INSERT INTO PerfilPantalla
+	VALUES (181, 11, 54);
+    INSERT INTO PerfilPantalla
+	VALUES (182, 12, 54);
+    INSERT INTO PerfilPantalla
+	VALUES (183, 14, 54);
+    INSERT INTO PerfilPantalla
+	VALUES (184, 15, 54);
+    INSERT INTO PerfilPantalla
+	VALUES (185, 2, 55);
+    INSERT INTO PerfilPantalla
+	VALUES (186, 3, 55);
+    INSERT INTO PerfilPantalla
+	VALUES (187, 4, 55);
+    INSERT INTO PerfilPantalla
+	VALUES (188, 5, 55);
+    INSERT INTO PerfilPantalla
+	VALUES (189, 6, 55);
+    INSERT INTO PerfilPantalla
+	VALUES (190, 7, 55);
+    INSERT INTO PerfilPantalla
+	VALUES (191, 8, 55);
+    INSERT INTO PerfilPantalla
+	VALUES (192, 9, 55);
+    INSERT INTO PerfilPantalla
+	VALUES (193, 10, 55);
+    INSERT INTO PerfilPantalla
+	VALUES (194, 11, 55);
+    INSERT INTO PerfilPantalla
+	VALUES (195, 12, 55);
+    INSERT INTO PerfilPantalla
+	VALUES (196, 14, 55);
+    INSERT INTO PerfilPantalla
+	VALUES (197, 15, 55);
 
 	/* Usuarios */
 	INSERT INTO Usuario

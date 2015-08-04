@@ -8,15 +8,11 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
-import mx.com.gahm.conenctel.entities.CobranzaDO;
-import mx.com.gahm.conenctel.entities.ComentarioCobranzaDO;
 import mx.com.gahm.conenctel.entities.ComentarioSolicitudPermisoDO;
-import mx.com.gahm.conenctel.entities.InformacionFacturacionDO;
-import mx.com.gahm.conenctel.entities.NotaCreditoClienteDO;
 import mx.com.gahm.conenctel.entities.SolicitudPermisoDO;
-import mx.com.gahm.conenctel.services.ICobranzaService;
 import mx.com.gahm.conenctel.services.ISolicitudPermisoService;
 
 /**
@@ -35,6 +31,17 @@ public class SolicitudPermisoService implements ISolicitudPermisoService{
 		query = entityManager.createNamedQuery("SolicitudPermisoDO.findAll",SolicitudPermisoDO.class);
 		datos = query.getResultList();
 		
+		return datos;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<SolicitudPermisoDO> getAllByPerfil( long idPerfil ) {
+		List<SolicitudPermisoDO> datos= null;
+		Query query = null;
+		query = entityManager.createNamedQuery("SolicitudPermisoDO.findAllByPerfil");
+		query.setParameter("idPerfil",idPerfil);
+		datos = query.getResultList();
 		return datos;
 	}
 

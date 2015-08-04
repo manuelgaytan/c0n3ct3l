@@ -23,7 +23,8 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name = "SolicitudVacaciones")
 @NamedQueries({
-	@NamedQuery(name = "SolicitudVacacionesDO.findAll", query = "select rc from SolicitudVacacionesDO rc")
+	@NamedQuery(name = "SolicitudVacacionesDO.findAll", query = "select rc from SolicitudVacacionesDO rc"),
+	@NamedQuery(name = "SolicitudVacacionesDO.findAllByPerfil", query = "select s from SolicitudVacacionesDO s where s.perfil.id = :idPerfil")
 	})
 public class SolicitudVacacionesDO implements Serializable{
 	
@@ -63,6 +64,10 @@ public class SolicitudVacacionesDO implements Serializable{
 	
 	@OneToMany(mappedBy="solicitudVacaciones", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	private List<ComentarioSolicitudVacacionesDO> comentarios;
+	
+	@ManyToOne
+	@JoinColumn(name="fk_perfil")
+	private PerfilDO perfil;
 	
 	public SolicitudVacacionesDO() {
 		super();
@@ -142,6 +147,12 @@ public class SolicitudVacacionesDO implements Serializable{
 	}
 	public void setComentarios(List<ComentarioSolicitudVacacionesDO> comentarios) {
 		this.comentarios = comentarios;
+	}
+	public PerfilDO getPerfil() {
+		return perfil;
+	}
+	public void setPerfil(PerfilDO perfil) {
+		this.perfil = perfil;
 	}
 	
 	

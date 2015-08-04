@@ -8,16 +8,11 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
-import mx.com.gahm.conenctel.entities.CobranzaDO;
-import mx.com.gahm.conenctel.entities.ComentarioCobranzaDO;
 import mx.com.gahm.conenctel.entities.ComentarioSolicitudVacacionesDO;
-import mx.com.gahm.conenctel.entities.InformacionFacturacionDO;
-import mx.com.gahm.conenctel.entities.NotaCreditoClienteDO;
 import mx.com.gahm.conenctel.entities.SolicitudVacacionesDO;
-import mx.com.gahm.conenctel.services.ICobranzaService;
-import mx.com.gahm.conenctel.services.ISolicitudPermisoService;
 import mx.com.gahm.conenctel.services.ISolicitudVacacionesService;
 
 /**
@@ -36,6 +31,17 @@ public class SolicitudVacacionesService implements ISolicitudVacacionesService{
 		query = entityManager.createNamedQuery("SolicitudVacacionesDO.findAll",SolicitudVacacionesDO.class);
 		datos = query.getResultList();
 		
+		return datos;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<SolicitudVacacionesDO> getAllByPerfil( long idPerfil ) {
+		List<SolicitudVacacionesDO> datos = null;
+		Query query = null;
+		query = entityManager.createNamedQuery("SolicitudVacacionesDO.findAllByPerfil");
+		query.setParameter("idPerfil",idPerfil);
+		datos = query.getResultList();
 		return datos;
 	}
 

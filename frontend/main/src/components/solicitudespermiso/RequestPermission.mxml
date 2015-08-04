@@ -4,9 +4,6 @@
 		 xmlns:informacionConfidencialColaborador="components.informacionConfidencialColaborador.*">
 	<mx:Script>
 		<![CDATA[
-			import model.Model;
-			import model.Contratacion;
-			import model.InformacionConfidencialColaborador;
 			import components.equiposmedicion.Consult;
 			import components.equipostransporte.Consult;
 			import components.hardware.Consult;
@@ -23,7 +20,10 @@
 			import model.Catalogo;
 			import model.Colaborador;
 			import model.Constants;
+			import model.Contratacion;
 			import model.FormaPagoPrenomina;
+			import model.InformacionConfidencialColaborador;
+			import model.Model;
 			import model.Perfil;
 			import model.PermisoConGoceSueldo;
 			import model.PermisoSinGoceSueldo;
@@ -169,6 +169,7 @@
 				item.vistoBuenoJefeInmediato = this.chkImmediateSupervisorApproval.selected;
 				item.autorizacion = this.chkAuthorization.selected;				
 				item.comentarios = this.comments.getCommentsAsInWith("model.ComentarioRecursosHumanos","model.ComentarioSolicitudPermiso","comentarioRecursosHumanos");
+				item.perfil = Model.getInstance().user.perfil;
 				return item;
 			}
 			

@@ -23,7 +23,8 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name = "SolicitudPermiso")
 @NamedQueries({
-	@NamedQuery(name = "SolicitudPermisoDO.findAll", query = "select rc from SolicitudPermisoDO rc")
+	@NamedQuery(name = "SolicitudPermisoDO.findAll", query = "select rc from SolicitudPermisoDO rc"),
+	@NamedQuery(name = "SolicitudPermisoDO.findAllByPerfil", query = "select s from SolicitudPermisoDO s where s.perfil.id = :idPerfil")
 	})
 public class SolicitudPermisoDO implements Serializable {
 
@@ -65,6 +66,10 @@ public class SolicitudPermisoDO implements Serializable {
 	
 	@Column(name = "autorizacion")
 	private Boolean autorizacion;
+	
+	@ManyToOne
+	@JoinColumn(name="fk_perfil")
+	private PerfilDO perfil;
 	
 	@OneToMany(mappedBy="solicitudPermiso", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	private List<ComentarioSolicitudPermisoDO> comentarios;
@@ -157,5 +162,11 @@ public class SolicitudPermisoDO implements Serializable {
 	}
 	public void setComentarios(List<ComentarioSolicitudPermisoDO> comentarios) {
 		this.comentarios = comentarios;
+	}
+	public PerfilDO getPerfil() {
+		return perfil;
+	}
+	public void setPerfil(PerfilDO perfil) {
+		this.perfil = perfil;
 	}
 }

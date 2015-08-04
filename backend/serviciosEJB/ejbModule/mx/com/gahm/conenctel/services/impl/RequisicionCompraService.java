@@ -10,13 +10,10 @@ import javax.persistence.Query;
 
 import mx.com.gahm.conenctel.entities.ComentarioComprasDO;
 import mx.com.gahm.conenctel.entities.ComentarioRequisicionDO;
-import mx.com.gahm.conenctel.entities.DocumentoLiderProveedorMaquiladorDO;
 import mx.com.gahm.conenctel.entities.EstadoNotificacionDO;
 import mx.com.gahm.conenctel.entities.NotificacionDO;
 import mx.com.gahm.conenctel.entities.PartidaRequisicionCompraDO;
 import mx.com.gahm.conenctel.entities.PerfilDO;
-import mx.com.gahm.conenctel.entities.ProveedorMaquiladorDO;
-import mx.com.gahm.conenctel.entities.ProyectoDO;
 import mx.com.gahm.conenctel.entities.RequisicionCompraDO;
 import mx.com.gahm.conenctel.entities.SolicitanteRequisicionDO;
 import mx.com.gahm.conenctel.entities.UsuarioDO;

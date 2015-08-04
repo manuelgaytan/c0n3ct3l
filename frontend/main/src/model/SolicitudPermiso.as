@@ -16,6 +16,7 @@ package model
 		public var vistoBuenoJefeInmediato:Boolean;
 		public var autorizacion:Boolean;		
 		public var comentarios:ArrayCollection;
+		public var perfil:Perfil;
 				
 		public function SolicitudPermiso()
 		{

@@ -21,6 +21,7 @@ import mx.com.gahm.conenctel.entities.SolicitudVacacionesDO;
 public interface ISolicitudVacacionesService {
 
 	List<SolicitudVacacionesDO> getAll();
+	List<SolicitudVacacionesDO> getAllByPerfil( long idPerfil );
 	void deleteItems( List<Integer> idsItems);
 	SolicitudVacacionesDO save( SolicitudVacacionesDO item );
 	SolicitudVacacionesDO update( SolicitudVacacionesDO item );

@@ -2657,6 +2657,7 @@
 	fecha_fin DATE NOT NULL,
 	visto_bueno_jefe_inmediato BOOLEAN NOT NULL,
 	autorizacion BOOLEAN NOT NULL,
+    fk_perfil INT(11) UNSIGNED NOT NULL,
 	PRIMARY KEY (id)
 	);
 
@@ -3461,6 +3462,8 @@
     ALTER TABLE SolicitudViaticos ADD FOREIGN KEY fk_perfil_idxfk_3 (fk_perfil) REFERENCES Perfil (id);
 
     ALTER TABLE SolicitudPermiso ADD FOREIGN KEY fk_perfil_idxfk_4 (fk_perfil) REFERENCES Perfil (id);
+
+    ALTER TABLE SolicitudVacaciones ADD FOREIGN KEY fk_perfil_idxfk_5 (fk_perfil) REFERENCES Perfil (id);
 /*************************************************************************************************************************************
 	FIN CAMBIOS
 	/************************************************************************************************************************************/
@@ -3986,7 +3989,32 @@
 	VALUES (183, 14, 54);
     INSERT INTO PerfilPantalla
 	VALUES (184, 15, 54);
-
+    INSERT INTO PerfilPantalla
+	VALUES (185, 2, 55);
+    INSERT INTO PerfilPantalla
+	VALUES (186, 3, 55);
+    INSERT INTO PerfilPantalla
+	VALUES (187, 4, 55);
+    INSERT INTO PerfilPantalla
+	VALUES (188, 5, 55);
+    INSERT INTO PerfilPantalla
+	VALUES (189, 6, 55);
+    INSERT INTO PerfilPantalla
+	VALUES (190, 7, 55);
+    INSERT INTO PerfilPantalla
+	VALUES (191, 8, 55);
+    INSERT INTO PerfilPantalla
+	VALUES (192, 9, 55);
+    INSERT INTO PerfilPantalla
+	VALUES (193, 10, 55);
+    INSERT INTO PerfilPantalla
+	VALUES (194, 11, 55);
+    INSERT INTO PerfilPantalla
+	VALUES (195, 12, 55);
+    INSERT INTO PerfilPantalla
+	VALUES (196, 14, 55);
+    INSERT INTO PerfilPantalla
+	VALUES (197, 15, 55);
 
 	/* Usuarios */
 	INSERT INTO Usuario

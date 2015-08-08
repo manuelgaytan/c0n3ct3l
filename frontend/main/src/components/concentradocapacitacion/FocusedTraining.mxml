@@ -130,7 +130,6 @@
 				focusedTraining.nombreInstructor = Util.validateEmpty( this.txtTrainerName.text );
 				focusedTraining.calificacion = Util.validateEmpty( this.txtTrainingGrade.text );
 				focusedTraining.constancia = this.fltDlvEvidence.firstDeliver as String;
-				focusedTraining.aprobado = (this.cmbTrainingStatus.selectedIndex == 0 );
 				focusedTraining.resultadoSeguimiento = Util.validateEmpty( this.txtTraceResult.text );
 				return focusedTraining;
 			}

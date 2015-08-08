@@ -127,17 +127,6 @@
 				}
 			}
 			
-			private function labelFunctionEstatusCapacitacion( item:Object, column:DataGridColumn ):String{
-				var concentradoCapacitacion:ConcentradoCapacitacion = item as ConcentradoCapacitacion;
-				if( concentradoCapacitacion == null ){
-					return "";
-				}
-				if( concentradoCapacitacion.aprobado ){
-					return FocusedTraining.APROBADO;
-				}else{
-					return FocusedTraining.NO_APROBADO;
-				}
-			}
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -202,8 +191,7 @@
 								   width="250"
 								   />
 				<mx:DataGridColumn headerText="{'Estatus de\nla Capacitación'}"
-								   labelFunction="labelFunctionEstatusCapacitacion"
-								   dataField="aprobado"
+								   dataField="estatusConcentradoCapacitacion.estatus"
 								   width="120"
 								   />
 				<mx:DataGridColumn headerText="{'Resultado de\nSeguimiento'}"

@@ -120,7 +120,8 @@
 				nonConformity.causas = Util.validateEmpty( this.txtCauses.text );
 				nonConformity.correccion = Util.validateEmpty( this.txtEstablished.text );
 				nonConformity.observaciones = Util.validateEmpty( this.txtObservations.text );
-				nonConformity.requiereAccionCorrectiva = this.chkCorrectiveAction.selected;;
+				nonConformity.requiereAccionCorrectiva = this.chkCorrectiveAction.selected;
+				nonConformity.perfil = Model.getInstance().user.perfil;
 				return nonConformity;
 			}
 			

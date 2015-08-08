@@ -7,6 +7,7 @@
 		<![CDATA[
 			import events.GenericEvent;
 			
+			import model.Model;
 			import model.NoConformidad;
 			import model.Util;
 			
@@ -64,7 +65,7 @@
 			
 			public function executeQuery():void
 			{
-				this.responseGetAll.token = this.noConformidadService.getAll();
+				this.responseGetAll.token = this.noConformidadService.getAllByPerfil( Model.getInstance().user.perfil.id );
 			}
 			
 			private function labelFunctionDate(object:Object, column:DataGridColumn):String{

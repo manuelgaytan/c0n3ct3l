@@ -2412,6 +2412,7 @@
 	correccion VARCHAR(255) NOT NULL,
 	observaciones VARCHAR(255) NOT NULL,
 	requiere_accion_correctiva BOOLEAN NOT NULL,
+	fk_perfil INT(11) UNSIGNED NOT NULL,
 	PRIMARY KEY (id)
 	);
 
@@ -3473,7 +3474,10 @@
     ALTER TABLE SolicitudPermiso ADD FOREIGN KEY fk_perfil_idxfk_4 (fk_perfil) REFERENCES Perfil (id);
 
     ALTER TABLE SolicitudVacaciones ADD FOREIGN KEY fk_perfil_idxfk_5 (fk_perfil) REFERENCES Perfil (id);
-/*************************************************************************************************************************************
+    
+    ALTER TABLE NoConformidad ADD FOREIGN KEY fk_perfil_idxfk_6 (fk_perfil) REFERENCES Perfil (id);
+    
+	/*************************************************************************************************************************************
 	FIN CAMBIOS
 	/************************************************************************************************************************************/
 
@@ -4024,6 +4028,32 @@
 	VALUES (196, 14, 55);
     INSERT INTO PerfilPantalla
 	VALUES (197, 15, 55);
+	INSERT INTO PerfilPantalla
+	VALUES (198, 2, 48);
+    INSERT INTO PerfilPantalla
+	VALUES (199, 3, 48);
+    INSERT INTO PerfilPantalla
+	VALUES (200, 4, 48);
+    INSERT INTO PerfilPantalla
+	VALUES (201, 5, 48);
+    INSERT INTO PerfilPantalla
+	VALUES (202, 6, 48);
+    INSERT INTO PerfilPantalla
+	VALUES (203, 7, 48);
+    INSERT INTO PerfilPantalla
+	VALUES (204, 8, 48);
+    INSERT INTO PerfilPantalla
+	VALUES (205, 9, 48);
+    INSERT INTO PerfilPantalla
+	VALUES (206, 10, 48);
+    INSERT INTO PerfilPantalla
+	VALUES (207, 11, 48);
+    INSERT INTO PerfilPantalla
+	VALUES (208, 12, 48);
+    INSERT INTO PerfilPantalla
+	VALUES (209, 13, 48);
+    INSERT INTO PerfilPantalla
+	VALUES (210, 15, 48);
 
 	/* Usuarios */
 	INSERT INTO Usuario

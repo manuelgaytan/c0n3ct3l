@@ -16,6 +16,7 @@ import mx.com.gahm.conenctel.entities.NoConformidadDO;
 @Remote
 public interface INoConformidadService {
 	List<NoConformidadDO> getAll();
+	List<NoConformidadDO> getAllByPerfil( long idPerfil );
 	void deleteItems( List<Integer> idsItems);
 	NoConformidadDO save( NoConformidadDO item );
 	NoConformidadDO update( NoConformidadDO item );

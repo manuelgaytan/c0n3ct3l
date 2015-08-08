@@ -15,6 +15,7 @@ package model
 		public var correccion:String;
 		public var observaciones:String;
 		public var requiereAccionCorrectiva:Boolean;
+		public var perfil:Perfil;
 		
 		public function NoConformidad()
 		{

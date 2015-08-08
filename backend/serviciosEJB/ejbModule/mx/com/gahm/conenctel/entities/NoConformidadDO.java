@@ -27,7 +27,8 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name = "NoConformidad")
 @NamedQueries({
-	@NamedQuery(name = "NoConformidadDO.findAll", query = "select rc from NoConformidadDO rc")
+	@NamedQuery(name = "NoConformidadDO.findAll", query = "select rc from NoConformidadDO rc"),
+	@NamedQuery(name = "NoConformidadDO.findAllByPerfil", query = "select s from NoConformidadDO s where s.perfil.id = :idPerfil")
 	})
 public class NoConformidadDO implements Serializable{
 
@@ -69,6 +70,11 @@ public class NoConformidadDO implements Serializable{
 	private String observaciones;
 	@Column(name = "requiere_accion_correctiva", nullable = false)
 	private Boolean requiereAccionCorrectiva;
+	
+	@ManyToOne
+	@JoinColumn(name="fk_perfil")
+	private PerfilDO perfil;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -141,6 +147,12 @@ public class NoConformidadDO implements Serializable{
 	}
 	public void setRequiereAccionCorrectiva(Boolean requiereAccionCorrectiva) {
 		this.requiereAccionCorrectiva = requiereAccionCorrectiva;
+	}
+	public PerfilDO getPerfil() {
+		return perfil;
+	}
+	public void setPerfil(PerfilDO perfil) {
+		this.perfil = perfil;
 	}
 
 }

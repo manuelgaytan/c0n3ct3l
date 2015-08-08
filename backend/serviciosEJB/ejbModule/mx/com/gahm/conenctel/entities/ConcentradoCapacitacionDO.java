@@ -27,7 +27,8 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name = "ConcentradoCapacitacion")
 @NamedQueries({
-	@NamedQuery(name = "ConcentradoCapacitacionDO.findAll", query = "select rc from ConcentradoCapacitacionDO rc")
+	@NamedQuery(name = "ConcentradoCapacitacionDO.findAll", query = "select rc from ConcentradoCapacitacionDO rc"),
+	@NamedQuery(name = "ConcentradoCapacitacionDO.findAllByPerfil", query = "select s from ConcentradoCapacitacionDO s where s.perfil.id = :idPerfil")
 	})
 public class ConcentradoCapacitacionDO implements Serializable {
 
@@ -88,6 +89,10 @@ public class ConcentradoCapacitacionDO implements Serializable {
 	@JoinColumn(name = "fk_estatus_concentrado_capacitacion", nullable = false)
 	private EstatusConcentradoCapacitacionDO estatusConcentradoCapacitacion;
 
+	@ManyToOne
+	@JoinColumn(name="fk_perfil")
+	private PerfilDO perfil;
+	
 	public ConcentradoCapacitacionDO() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -223,6 +228,14 @@ public class ConcentradoCapacitacionDO implements Serializable {
 	public void setEstatusConcentradoCapacitacion(
 			EstatusConcentradoCapacitacionDO estatusConcentradoCapacitacion) {
 		this.estatusConcentradoCapacitacion = estatusConcentradoCapacitacion;
+	}
+
+	public PerfilDO getPerfil() {
+		return perfil;
+	}
+
+	public void setPerfil(PerfilDO perfil) {
+		this.perfil = perfil;
 	}
 
 }

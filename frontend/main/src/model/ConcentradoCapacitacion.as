@@ -17,6 +17,7 @@ package model
 		public var constancia:String;
 		public var estatusConcentradoCapacitacion:EstatusConcentradoCapacitacion;
 		public var resultadoSeguimiento:String;
+		public var perfil:Perfil;
 		
 		public function ConcentradoCapacitacion()
 		{

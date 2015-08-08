@@ -8,6 +8,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import mx.com.gahm.conenctel.entities.ConcentradoCapacitacionDO;
@@ -27,6 +28,18 @@ public class ConcentradoCapacitacionService implements IConcentradoCapacitacionS
 		List<ConcentradoCapacitacionDO> datos= null;
 		TypedQuery<ConcentradoCapacitacionDO>  query =null;
 		query = entityManager.createNamedQuery("ConcentradoCapacitacionDO.findAll",ConcentradoCapacitacionDO.class);
+		datos = query.getResultList();
+		
+		return datos;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ConcentradoCapacitacionDO> getAllByPerfil( long idPerfil ) {
+		List<ConcentradoCapacitacionDO> datos= null;
+		Query query =null;
+		query = entityManager.createNamedQuery("ConcentradoCapacitacionDO.findAll");
+		query.setParameter("idPerfil",idPerfil);
 		datos = query.getResultList();
 		
 		return datos;

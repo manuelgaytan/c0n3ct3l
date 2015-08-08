@@ -11,6 +11,7 @@
 			import model.ConfiguracionPruebaEntrega;
 			import model.DatosGeneralesSolicitante;
 			import model.FiltroProyecto;
+			import model.Model;
 			import model.Proyecto;
 			import model.Util;
 			
@@ -69,7 +70,7 @@
 			
 			public function executeQuery():void
 			{
-				this.responseGetAll.token = this.concentradoCapacitacionService.getAll();
+				this.responseGetAll.token = this.concentradoCapacitacionService.getAllByPerfil( Model.getInstance().user.perfil.id );
 			}
 			
 			private function labelFunctionDate(object:Object, column:DataGridColumn):String{

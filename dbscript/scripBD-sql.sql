@@ -2377,6 +2377,7 @@
 	constancia VARCHAR(255),
 	fk_estatus_concentrado_capacitacion INT(11) UNSIGNED NOT NULL,
 	resultado_seguimiento VARCHAR(255),
+	fk_perfil INT(11) UNSIGNED NOT NULL,
 	PRIMARY KEY (id)
 	);
 	
@@ -3480,6 +3481,8 @@
     
     ALTER TABLE Sugerencia ADD FOREIGN KEY fk_perfil_idxfk_7 (fk_perfil) REFERENCES Perfil (id);
     
+    ALTER TABLE ConcentradoCapacitacion ADD FOREIGN KEY fk_perfil_idxfk_8 (fk_perfil) REFERENCES Perfil (id);
+    
 	/*************************************************************************************************************************************
 	FIN CAMBIOS
 	/************************************************************************************************************************************/
@@ -4083,6 +4086,32 @@
 	VALUES (222, 13, 47);
     INSERT INTO PerfilPantalla
 	VALUES (223, 15, 47);
+	INSERT INTO PerfilPantalla
+	VALUES (224, 2, 50);
+    INSERT INTO PerfilPantalla
+	VALUES (225, 3, 50);
+    INSERT INTO PerfilPantalla
+	VALUES (226, 4, 50);
+    INSERT INTO PerfilPantalla
+	VALUES (227, 5, 50);
+    INSERT INTO PerfilPantalla
+	VALUES (228, 6, 50);
+    INSERT INTO PerfilPantalla
+	VALUES (229, 7, 50);
+    INSERT INTO PerfilPantalla
+	VALUES (230, 8, 50);
+    INSERT INTO PerfilPantalla
+	VALUES (231, 9, 50);
+    INSERT INTO PerfilPantalla
+	VALUES (232, 10, 50);
+    INSERT INTO PerfilPantalla
+	VALUES (233, 11, 50);
+    INSERT INTO PerfilPantalla
+	VALUES (234, 12, 50);
+    INSERT INTO PerfilPantalla
+	VALUES (235, 13, 50);
+    INSERT INTO PerfilPantalla
+	VALUES (236, 15, 50);
 
 	/* Usuarios */
 	INSERT INTO Usuario

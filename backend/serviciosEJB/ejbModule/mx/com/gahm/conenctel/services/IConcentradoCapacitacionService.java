@@ -16,6 +16,7 @@ import mx.com.gahm.conenctel.entities.ConcentradoCapacitacionDO;
 @Remote
 public interface IConcentradoCapacitacionService {
 	List<ConcentradoCapacitacionDO> getAll();
+	List<ConcentradoCapacitacionDO> getAllByPerfil( long idPerfil );
 	void deleteItems( List<Integer> idsItems);
 	ConcentradoCapacitacionDO save( ConcentradoCapacitacionDO item );
 	ConcentradoCapacitacionDO update( ConcentradoCapacitacionDO item );

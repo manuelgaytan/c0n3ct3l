@@ -19,6 +19,7 @@ package model
 		public var resultadoImplementacion:ResultadoImplementacion;
 		public var requiereAccionCorrectiva:Boolean;
 		public var comentariosSugerencia:ArrayCollection;
+		public var perfil:Perfil;
 		
 		public function Sugerencia()
 		{

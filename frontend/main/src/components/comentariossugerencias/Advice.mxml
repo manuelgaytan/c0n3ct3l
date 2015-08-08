@@ -16,6 +16,7 @@
 			import model.Contratacion;
 			import model.Deduccion;
 			import model.FormaPagoPrenomina;
+			import model.Model;
 			import model.ResultadoImplementacion;
 			import model.Sugerencia;
 			import model.TipoSancion;
@@ -127,6 +128,7 @@
 				advice.resultadoImplementacion = Util.validateCombo( this.cmbImplementationResult ) as ResultadoImplementacion;
 				advice.requiereAccionCorrectiva = this.chkCorrectiveAction.selected;
 				advice.comentariosSugerencia = this.comments.getCommentsAsInWith("model.ComentarioSistemasGestion","model.ComentarioSugerencia","comentarioSistemasGestion");
+				advice.perfil = Model.getInstance().user.perfil;
 				return advice;
 			}
 			

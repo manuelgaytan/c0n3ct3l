@@ -31,7 +31,8 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name = "Sugerencia")
 @NamedQueries({
-	@NamedQuery(name = "SugerenciaDO.findAll", query = "select rc from SugerenciaDO rc")
+	@NamedQuery(name = "SugerenciaDO.findAll", query = "select rc from SugerenciaDO rc"),
+	@NamedQuery(name = "SugerenciaDO.findAllByPerfil", query = "select s from SugerenciaDO s where s.perfil.id = :idPerfil")
 	})
 public class SugerenciaDO implements Serializable {
 
@@ -79,7 +80,11 @@ public class SugerenciaDO implements Serializable {
 	private ResultadoImplementacionDO ResultadoImplementacion;
 	
 	@OneToMany(mappedBy="sugerencia", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-	private List<ComentarioSugerenciaDO> comentariosSugerencia; 
+	private List<ComentarioSugerenciaDO> comentariosSugerencia;
+	
+	@ManyToOne
+	@JoinColumn(name="fk_perfil")
+	private PerfilDO perfil;
 	
 	public SugerenciaDO() {
 		super();
@@ -220,6 +225,14 @@ public class SugerenciaDO implements Serializable {
 	public void setComentariosSugerencia(
 			List<ComentarioSugerenciaDO> comentariosSugerencia) {
 		this.comentariosSugerencia = comentariosSugerencia;
+	}
+
+	public PerfilDO getPerfil() {
+		return perfil;
+	}
+
+	public void setPerfil(PerfilDO perfil) {
+		this.perfil = perfil;
 	}
 	
 	

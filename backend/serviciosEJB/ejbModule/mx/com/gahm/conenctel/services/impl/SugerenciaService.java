@@ -8,6 +8,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import mx.com.gahm.conenctel.entities.ComentarioSugerenciaDO;
@@ -28,6 +29,18 @@ public class SugerenciaService implements ISugerenciaService{
 		List<SugerenciaDO> datos= null;
 		TypedQuery<SugerenciaDO>  query =null;
 		query = entityManager.createNamedQuery("SugerenciaDO.findAll",SugerenciaDO.class);
+		datos = query.getResultList();
+		
+		return datos;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<SugerenciaDO> getAllByPerfil( long idPerfil ) {
+		List<SugerenciaDO> datos= null;
+		Query query =null;
+		query = entityManager.createNamedQuery("SugerenciaDO.findAll");
+		query.setParameter("idPerfil",idPerfil);
 		datos = query.getResultList();
 		
 		return datos;

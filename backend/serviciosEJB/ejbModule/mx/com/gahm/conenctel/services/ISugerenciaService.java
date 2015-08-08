@@ -16,6 +16,7 @@ import mx.com.gahm.conenctel.entities.SugerenciaDO;
 @Remote
 public interface ISugerenciaService {
 	List<SugerenciaDO> getAll();
+	List<SugerenciaDO> getAllByPerfil( long idPerfil );
 	void deleteItems( List<Integer> idsItems);
 	SugerenciaDO save( SugerenciaDO item );
 	SugerenciaDO update( SugerenciaDO item );

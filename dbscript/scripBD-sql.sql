@@ -2395,6 +2395,7 @@
 	fecha_implementacion DATE NOT NULL,
 	responsable_implementacion VARCHAR(255) NOT NULL,
 	fk_resultado_implementacion INT(11) UNSIGNED NOT NULL,
+	fk_perfil INT(11) UNSIGNED NOT NULL,
 	PRIMARY KEY (id)
 	);
 
@@ -3477,6 +3478,8 @@
     
     ALTER TABLE NoConformidad ADD FOREIGN KEY fk_perfil_idxfk_6 (fk_perfil) REFERENCES Perfil (id);
     
+    ALTER TABLE Sugerencia ADD FOREIGN KEY fk_perfil_idxfk_7 (fk_perfil) REFERENCES Perfil (id);
+    
 	/*************************************************************************************************************************************
 	FIN CAMBIOS
 	/************************************************************************************************************************************/
@@ -4054,6 +4057,32 @@
 	VALUES (209, 13, 48);
     INSERT INTO PerfilPantalla
 	VALUES (210, 15, 48);
+	INSERT INTO PerfilPantalla
+	VALUES (211, 2, 47);
+    INSERT INTO PerfilPantalla
+	VALUES (212, 3, 47);
+    INSERT INTO PerfilPantalla
+	VALUES (213, 4, 47);
+    INSERT INTO PerfilPantalla
+	VALUES (214, 5, 47);
+    INSERT INTO PerfilPantalla
+	VALUES (215, 6, 47);
+    INSERT INTO PerfilPantalla
+	VALUES (216, 7, 47);
+    INSERT INTO PerfilPantalla
+	VALUES (217, 8, 47);
+    INSERT INTO PerfilPantalla
+	VALUES (218, 9, 47);
+    INSERT INTO PerfilPantalla
+	VALUES (219, 10, 47);
+    INSERT INTO PerfilPantalla
+	VALUES (220, 11, 47);
+    INSERT INTO PerfilPantalla
+	VALUES (221, 12, 47);
+    INSERT INTO PerfilPantalla
+	VALUES (222, 13, 47);
+    INSERT INTO PerfilPantalla
+	VALUES (223, 15, 47);
 
 	/* Usuarios */
 	INSERT INTO Usuario

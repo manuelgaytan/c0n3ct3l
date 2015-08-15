@@ -14,6 +14,7 @@
 			import model.Constants;
 			import model.Contratacion;
 			import model.EstadoConcentradoCapacitacion;
+			import model.EstatusConcentradoCapacitacion;
 			import model.Model;
 			import model.TipoCapacitacion;
 			import model.TipoFormacion;
@@ -131,6 +132,7 @@
 				focusedTraining.nombreInstructor = Util.validateEmpty( this.txtTrainerName.text );
 				focusedTraining.calificacion = Util.validateEmpty( this.txtTrainingGrade.text );
 				focusedTraining.constancia = this.fltDlvEvidence.firstDeliver as String;
+				focusedTraining.estatusConcentradoCapacitacion = Util.validateCombo( this.cmbTrainingStatus ) as EstatusConcentradoCapacitacion;
 				focusedTraining.resultadoSeguimiento = Util.validateEmpty( this.txtTraceResult.text );
 				focusedTraining.perfil = Model.getInstance().user.perfil;
 				return focusedTraining;

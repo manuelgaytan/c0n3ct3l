@@ -39,7 +39,7 @@ public class SugerenciaService implements ISugerenciaService{
 	public List<SugerenciaDO> getAllByPerfil( long idPerfil ) {
 		List<SugerenciaDO> datos= null;
 		Query query =null;
-		query = entityManager.createNamedQuery("SugerenciaDO.findAll");
+		query = entityManager.createNamedQuery("SugerenciaDO.findAllByPerfil");
 		query.setParameter("idPerfil",idPerfil);
 		datos = query.getResultList();
 		

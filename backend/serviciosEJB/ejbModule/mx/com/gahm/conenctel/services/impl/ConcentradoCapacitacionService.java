@@ -38,7 +38,7 @@ public class ConcentradoCapacitacionService implements IConcentradoCapacitacionS
 	public List<ConcentradoCapacitacionDO> getAllByPerfil( long idPerfil ) {
 		List<ConcentradoCapacitacionDO> datos= null;
 		Query query =null;
-		query = entityManager.createNamedQuery("ConcentradoCapacitacionDO.findAll");
+		query = entityManager.createNamedQuery("ConcentradoCapacitacionDO.findAllByPerfil");
 		query.setParameter("idPerfil",idPerfil);
 		datos = query.getResultList();
 		

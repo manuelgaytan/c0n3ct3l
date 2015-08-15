@@ -1530,4 +1530,18 @@ public class CatalogoService implements ICatalogoService {
 		}
 		return list;
 	}
+	
+	@Override
+	public List<EstatusConcentradoCapacitacionDO> getEstatusConcentradoCapacitacion() throws ConectelException {
+		TypedQuery<EstatusConcentradoCapacitacionDO> query = entityManager.createNamedQuery(
+				"EstatusConcentradoCapacitacionDO.findAll", EstatusConcentradoCapacitacionDO.class);
+		
+		List<EstatusConcentradoCapacitacionDO> list;
+		try {
+			list = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen elementos registrados.");
+		}
+		return list;
+	}
 }

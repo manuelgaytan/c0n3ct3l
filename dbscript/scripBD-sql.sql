@@ -5147,6 +5147,26 @@
 	VALUES (2, 'Capacitación');
 	INSERT INTO TipoFormacion
 	VALUES (3, 'Capacitación CV');
+	INSERT INTO TipoFormacion
+	VALUES (4, 'Primaria');
+	INSERT INTO TipoFormacion
+	VALUES (5, 'Secundaria');
+	INSERT INTO TipoFormacion
+	VALUES (6, 'Bachillerato');
+	INSERT INTO TipoFormacion
+	VALUES (7, 'Carrera Técnica');
+	INSERT INTO TipoFormacion
+	VALUES (8, 'Ingeniería');
+	INSERT INTO TipoFormacion
+	VALUES (9, 'Licenciatura');
+	INSERT INTO TipoFormacion
+	VALUES (10, 'Maestría');
+	INSERT INTO TipoFormacion
+	VALUES (11, 'Doctorado');
+	INSERT INTO TipoFormacion
+	VALUES (12, 'Diplomado');
+	INSERT INTO TipoFormacion
+	VALUES (13, 'Certificación');
 	
 	INSERT INTO ResponsableMinuta
 	VALUES (1, 'Participantes');

@@ -389,10 +389,10 @@
 		<mx:FormItem label="Índice de Calidad:">
 			<components:TextInput id="txtQualityIndicator"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha Envío Auditoría:">
+		<mx:FormItem label="Recepción de Auditoría:">
 			<components:DateField id="dtfShippingDateAudit"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha de Recepción de Auditoría Interno-Externo:">
+		<mx:FormItem label="Notificación al Área Operativa:">
 			<components:DateField id="dtfReceiptDate"/>
 		</mx:FormItem>
 		<mx:FormItem label="Formato de Auditoría:">

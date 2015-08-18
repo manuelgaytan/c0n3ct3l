@@ -136,12 +136,12 @@
 				<mx:DataGridColumn headerText="{'Índice de\nCalidad'}"
 								   dataField="indiceCalidad"
 								   width="120"/>
-				<mx:DataGridColumn id="dtgShippingDateAudit" headerText="{'Fecha \nEnvío\nAuditoría'}"
+				<mx:DataGridColumn id="dtgShippingDateAudit" headerText="{'Recepción de\nAuditoría'}"
 								   labelFunction="{Util.labelFunctionDate}"
 								   dataField="fechaEnvio"
 								   textAlign="center"
 								   width="100"/>
-				<mx:DataGridColumn id="dtgReceiptDate" headerText="{'Fecha de \nRecepción\nde Auditoría\nInterno-Externo'}"
+				<mx:DataGridColumn id="dtgReceiptDate" headerText="{'Notificación al\nÁrea Operativa'}"
 								   labelFunction="{Util.labelFunctionDate}"
 								   dataField="fechaRecepcion"
 								   textAlign="center"

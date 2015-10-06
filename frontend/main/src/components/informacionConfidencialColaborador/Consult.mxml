@@ -25,11 +25,19 @@
 			private var items:ArrayCollection = null;
 			
 			private var configuracionPruebaEntrega:ConfiguracionPruebaEntrega;
+			
 			[Bindable]
 			private var _readMode:Boolean = false;
 			
+			[Bindable]
+			private var _restricted:Boolean = false;
+			
 			public function set readMode(value:Boolean):void{
 				this._readMode = value;
+			}
+			
+			public function set restricted(value:Boolean):void{
+				this._restricted = value;
 			}
 			
 			protected function responseGetAll_resultHandler(event:ResultEvent):void
@@ -149,7 +157,8 @@
 				<mx:DataGridColumn id="dtgSalary" headerText="{'Sueldo\nPosterior'}"
 								   dataField="sueldo"
 								   textAlign="right"
-								   width="100"/>
+								   width="100"
+								   visible="{!this._restricted}"/>
 				<mx:DataGridColumn headerText="{'I.M.S.S.'}" width="80"
 								   imeMode="tieneImss"
 								   itemRenderer="components.renderers.CheckBoxRendererTieneIMSS">
@@ -161,7 +170,8 @@
 								   labelFunction="{Util.labelFunctionDate}"
 								   dataField="altaImss"
 								   textAlign="center"
-								   width="100"/>
+								   width="100"
+								   visible="{!this._restricted}"/>
 				<mx:DataGridColumn headerText="{'Baja\nI.M.S.S.'}"
 								   labelFunction="{Util.labelFunctionDate}"
 								   dataField="bajaImss"
@@ -202,7 +212,7 @@
 								   dataField="numeroTarjetaNomina"
 								   textAlign="right"
 								   width="120"
-								   />
+								   visible="{!this._restricted}"/>
 				<mx:DataGridColumn id="dtgConectelEmail" headerText="{'Correo\nElectrónico\nConectel'}"
 								   dataField="correoElectronico"
 								   width="100"

@@ -392,7 +392,7 @@
 		<mx:FormItem required="true" label="Colaborador:"/>
 		<mx:VBox width="730">
 			<mx:VBox width="100%" height="100%" verticalGap="5">
-				<informacionConfidencialColaborador:Consult id="recruitmentConsult" readMode="true" itemDetail="recruitmentConsult_itemDetailHandler(event)"/>
+				<informacionConfidencialColaborador:Consult id="recruitmentConsult" readMode="true" restricted="true" itemDetail="recruitmentConsult_itemDetailHandler(event)"/>
 			</mx:VBox>
 		</mx:VBox>
 		<mx:FormItem required="true" label="Nombre del Empleado:">

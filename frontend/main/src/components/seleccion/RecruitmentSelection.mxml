@@ -89,7 +89,7 @@
 				if( this._item == null ){
 					return;
 				}
-				this.txtID.text = this._item.id.toString();
+				this.txtID.text = this._item.reclutamientoSolicitudEmpleo.id.toString();
 				this.recruitmentJobApplication.datagrid.dataProvider = Util.asArrayCollection( this._item.reclutamientoSolicitudEmpleo );
 				this.recruitmentJobApplication.datagrid.selectedIndex = 0;
 				if( Util.isFill( this.cmbCandidateType ) && this._item 

@@ -134,7 +134,7 @@
 					 >
 			<mx:columns>
 				<mx:DataGridColumn id="dtgID" headerText="ID"
-								   dataField="id"
+								   dataField="reclutamientoSolicitudEmpleo.id"
 								   width="60"
 								   textAlign="right"/>
 				<mx:DataGridColumn id="dtgNombre" headerText="{'Nombre'}"

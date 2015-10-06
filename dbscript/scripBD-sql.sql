@@ -2613,6 +2613,7 @@
 	CREATE TABLE SolicitudPermiso
 	(
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+    fecha_permiso DATE NOT NULL,
 	fk_contratacion INT(11) UNSIGNED NOT NULL,
 	fecha DATE NOT NULL,
 	fk_forma_pago_prenomina INT(11) UNSIGNED NOT NULL,
@@ -2660,6 +2661,7 @@
 	CREATE TABLE SolicitudVacaciones
 	(
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+    fecha_permiso DATE NOT NULL,
 	fk_contratacion INT(11) UNSIGNED NOT NULL,
 	fecha DATE NOT NULL,
 	fk_variacion INT(11) UNSIGNED NOT NULL,

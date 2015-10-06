@@ -76,7 +76,8 @@
 		<pagoviaticos:PerDiemPayment id="register" registrer="true" providerPaymentNew="register_providerPaymentNewHandler(event)"
 							diemRequestSelected="detail_diemRequestSelectedHandler(event)"
 							 />
-		<solicitudesviaticos:DiemRequest id="diemRequestDetail" readOnly="true" generalDataSelected="detail_generalDataSelectedHandler(event)"
+		<solicitudesviaticos:DiemRequest id="diemRequestDetail" perDiemPayment="true"
+										 generalDataSelected="detail_generalDataSelectedHandler(event)"
 										 label="Detalle Solicitud de Viáticos"/>
 		<datosgenerales:GeneralData id="generalDataDetail" readOnly="true" 
 									label="Detalle Datos Generales Proyecto"/>

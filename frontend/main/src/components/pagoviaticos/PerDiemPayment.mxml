@@ -238,7 +238,7 @@
 					Util.showErrorMessage("Primero debe seleccionar un elemento.");
 					return;
 				}
-				this.txtAmount.text = diemRequest.totalSolicitado.toString();
+				this.txtAmount.text = diemRequest.totalAutorizado.toString();
 			}
 			
 			protected function responseGetAll_resultHandler(event:ResultEvent):void

@@ -66,26 +66,50 @@ public class SolicitudViaticosDO implements Serializable{
 	@Column(name = "combustible", nullable = false)
 	private Double combustible;
 	
+	@Column(name = "combustible_autorizado", nullable = false)
+	private Double combustibleAutorizado;
+	
 	@Column(name = "casetas", nullable = false)
 	private Double casetas;
+	
+	@Column(name = "casetas_autorizado", nullable = false)
+	private Double casetasAutorizado;
 	
 	@Column(name = "pasajes", nullable = false)
 	private Double pasajes;
 	
+	@Column(name = "pasajes_autorizado", nullable = false)
+	private Double pasajesAutorizado;
+	
 	@Column(name = "hospedaje", nullable = false)
 	private Double hospedaje;
+	
+	@Column(name = "hospedaje_autorizado", nullable = false)
+	private Double hospedajeAutorizado;
 	
 	@Column(name = "alimentos", nullable = false)
 	private Double alimentos;
 	
+	@Column(name = "alimentos_autorizado", nullable = false)
+	private Double alimentosAutorizado;
+	
 	@Column(name = "materiales_herramienta", nullable = false)
 	private Double materialesHerramienta;
+	
+	@Column(name = "materiales_herramienta_autorizado", nullable = false)
+	private Double materialesHerramientaAutorizado;
 	
 	@Column(name = "otros", nullable = false)
 	private Double otros;
 
+	@Column(name = "otros_autorizado", nullable = false)
+	private Double otrosAutorizado;
+	
 	@Column(name = "total_solicitado", nullable = false)
 	private Double totalSolicitado;
+	
+	@Column(name = "total_autorizado", nullable = false)
+	private Double totalAutorizado;
 	
 	@Temporal(TemporalType.DATE)
 	@Column(name = "fecha", nullable = false, length = 10)
@@ -335,6 +359,69 @@ public class SolicitudViaticosDO implements Serializable{
 	public void setPerfil(PerfilDO perfil) {
 		this.perfil = perfil;
 	}
-	
-	
+
+	public Double getCombustibleAutorizado() {
+		return combustibleAutorizado;
+	}
+
+	public void setCombustibleAutorizado(Double combustibleAutorizado) {
+		this.combustibleAutorizado = combustibleAutorizado;
+	}
+
+	public Double getCasetasAutorizado() {
+		return casetasAutorizado;
+	}
+
+	public void setCasetasAutorizado(Double casetasAutorizado) {
+		this.casetasAutorizado = casetasAutorizado;
+	}
+
+	public Double getPasajesAutorizado() {
+		return pasajesAutorizado;
+	}
+
+	public void setPasajesAutorizado(Double pasajesAutorizado) {
+		this.pasajesAutorizado = pasajesAutorizado;
+	}
+
+	public Double getHospedajeAutorizado() {
+		return hospedajeAutorizado;
+	}
+
+	public void setHospedajeAutorizado(Double hospedajeAutorizado) {
+		this.hospedajeAutorizado = hospedajeAutorizado;
+	}
+
+	public Double getAlimentosAutorizado() {
+		return alimentosAutorizado;
+	}
+
+	public void setAlimentosAutorizado(Double alimentosAutorizado) {
+		this.alimentosAutorizado = alimentosAutorizado;
+	}
+
+	public Double getMaterialesHerramientaAutorizado() {
+		return materialesHerramientaAutorizado;
+	}
+
+	public void setMaterialesHerramientaAutorizado(
+			Double materialesHerramientaAutorizado) {
+		this.materialesHerramientaAutorizado = materialesHerramientaAutorizado;
+	}
+
+	public Double getOtrosAutorizado() {
+		return otrosAutorizado;
+	}
+
+	public void setOtrosAutorizado(Double otrosAutorizado) {
+		this.otrosAutorizado = otrosAutorizado;
+	}
+
+	public Double getTotalAutorizado() {
+		return totalAutorizado;
+	}
+
+	public void setTotalAutorizado(Double totalAutorizado) {
+		this.totalAutorizado = totalAutorizado;
+	}		
 }

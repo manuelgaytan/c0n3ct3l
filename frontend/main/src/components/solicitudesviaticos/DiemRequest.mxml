@@ -44,6 +44,9 @@
 			[Bindable]
 			private var _readOnly:Boolean = false;
 			
+			[Bindable]
+			private var _perDiemPayment:Boolean = false;
+			
 			public function set readOnly(value:Boolean):void{
 				this._readOnly = value;
 				this.label = Constants.DETALLE;
@@ -55,6 +58,12 @@
 			}
 			
 			public function set update(value:Boolean):void{
+				mode = Constants.UPDATE_MODE;
+				this.label = Constants.MODIFICAR;
+			}
+			
+			public function set perDiemPayment(value:Boolean):void{
+				this._perDiemPayment = value;
 				mode = Constants.UPDATE_MODE;
 				this.label = Constants.MODIFICAR;
 			}
@@ -103,6 +112,14 @@
 				this.txtMaterialsAndOrTool.text = Util.numberToString( this._item.materialesHerramienta, true);
 				this.txtOthers.text = Util.numberToString( this._item.otros, true);
 				this.txtTotalRequested.text = this._item.totalSolicitado.toString();
+				this.txtAuthorizedGAS.text = Util.numberToString( this._item.combustibleAutorizado, true);
+				this.txtAuthorizedTollBooths.text = Util.numberToString( this._item.casetasAutorizado, true);
+				this.txtAuthorizedPassages.text = Util.numberToString( this._item.pasajesAutorizado, true);
+				this.txtAuthorizedLodging.text = Util.numberToString( this._item.hospedajeAutorizado, true);
+				this.txtAuthorizedFood.text = Util.numberToString( this._item.alimentosAutorizado, true);
+				this.txtAuthorizedMaterialsAndOrTool.text = Util.numberToString( this._item.materialesHerramientaAutorizado, true);
+				this.txtAuthorizedOthers.text = Util.numberToString( this._item.otrosAutorizado, true);
+				this.txtTotalAuthorized.text = this._item.totalAutorizado.toString();
 			}
 			
 			private function getDiemRequest():SolicitudViaticos{
@@ -126,6 +143,14 @@
 				diemRequest.materialesHerramienta = Util.stringToNumber( this.txtMaterialsAndOrTool.text );
 				diemRequest.otros = Util.stringToNumber( this.txtOthers.text );
 				diemRequest.totalSolicitado = Util.stringToNumber( this.txtTotalRequested.text );
+				diemRequest.combustibleAutorizado = Util.stringToNumber( this.txtAuthorizedGAS.text, true );
+				diemRequest.casetasAutorizado = Util.stringToNumber( this.txtAuthorizedTollBooths.text, true );
+				diemRequest.pasajesAutorizado = Util.stringToNumber( this.txtAuthorizedPassages.text, true );
+				diemRequest.hospedajeAutorizado = Util.stringToNumber( this.txtAuthorizedLodging.text, true );
+				diemRequest.alimentosAutorizado = Util.stringToNumber( this.txtAuthorizedFood.text, true );
+				diemRequest.materialesHerramientaAutorizado = Util.stringToNumber( this.txtAuthorizedMaterialsAndOrTool.text, true );
+				diemRequest.otrosAutorizado = Util.stringToNumber( this.txtAuthorizedOthers.text, true );
+				diemRequest.totalAutorizado = Util.stringToNumber( this.txtTotalAuthorized.text, true );
 				diemRequest.perfil = Model.getInstance().user.perfil;
 				return diemRequest;
 			}
@@ -206,6 +231,14 @@
 				this.validators.setRestrictor( this.txtMaterialsAndOrTool, "genericDecimal" );
 				this.validators.setRestrictor( this.txtOthers, "genericDecimal" );
 				this.validators.setValidador( this.txtTotalRequested, "genericDecimal" );
+				this.validators.setRestrictor( this.txtAuthorizedGAS, "genericDecimal" );
+				this.validators.setRestrictor( this.txtAuthorizedTollBooths, "genericDecimal" );
+				this.validators.setRestrictor( this.txtAuthorizedPassages, "genericDecimal" );
+				this.validators.setRestrictor( this.txtAuthorizedLodging, "genericDecimal" );
+				this.validators.setRestrictor( this.txtAuthorizedFood, "genericDecimal" );
+				this.validators.setRestrictor( this.txtAuthorizedMaterialsAndOrTool, "genericDecimal" );
+				this.validators.setRestrictor( this.txtAuthorizedOthers, "genericDecimal" );
+				this.validators.setRestrictor( this.txtTotalAuthorized, "genericDecimal" );
 			}
 			
 			protected function responseSave_resultHandler(event:ResultEvent):void
@@ -244,6 +277,14 @@
 				this.txtMaterialsAndOrTool.reset();
 				this.txtOthers.reset();
 				this.txtTotalRequested.reset();
+				this.txtAuthorizedGAS.reset();
+				this.txtAuthorizedTollBooths.reset();
+				this.txtAuthorizedPassages.reset();
+				this.txtAuthorizedLodging.reset();
+				this.txtAuthorizedFood.reset();
+				this.txtAuthorizedMaterialsAndOrTool.reset();
+				this.txtAuthorizedOthers.reset();
+				this.txtTotalAuthorized.reset();
 				this.cleanColaboratorData();
 			}
 			
@@ -337,6 +378,7 @@
 				}
 				var informacionConfidencialColaborador:InformacionConfidencialColaborador = informacionesConfidencialColaborador.getItemAt( 0 ) as InformacionConfidencialColaborador;
 				if( informacionConfidencialColaborador == null ){
+					this.cleanColaboratorData();
 					return;
 				}
 				this.txtCardNumber.text = informacionConfidencialColaborador.numeroTarjetaNomina;
@@ -354,6 +396,18 @@
 				total += Util.stringToNumber( this.txtMaterialsAndOrTool.text, true );
 				total += Util.stringToNumber( this.txtOthers.text, true );
 				this.txtTotalRequested.text = Util.truncateToString(total);
+			}
+			
+			private function authorizedSum():void{
+				var total:Number = 0;
+				total += Util.stringToNumber( this.txtAuthorizedGAS.text, true );
+				total += Util.stringToNumber( this.txtAuthorizedTollBooths.text, true );
+				total += Util.stringToNumber( this.txtAuthorizedPassages.text, true );
+				total += Util.stringToNumber( this.txtAuthorizedLodging.text, true );
+				total += Util.stringToNumber( this.txtAuthorizedFood.text, true );
+				total += Util.stringToNumber( this.txtAuthorizedMaterialsAndOrTool.text, true );
+				total += Util.stringToNumber( this.txtAuthorizedOthers.text, true );
+				this.txtTotalAuthorized.text = Util.truncateToString(total);
 			}
 			
 			protected function cmbConveyance_changeHandler(event:ListEvent):void
@@ -380,12 +434,23 @@
 					this.txtInitialMileage.text = "";
 					this.txtGAS.text = "";
 					this.txtTollBooths.text = "";
+					this.txtAuthorizedGAS.text = "";
+					this.txtAuthorizedTollBooths.text = "";
+					this.sum();
+					this.authorizedSum();
 				}else{
 					this.txtPassages.text = "";
 					this.txtLodging.text = "";
 					this.txtFood.text = "";
 					this.txtMaterialsAndOrTool.text = "";
 					this.txtOthers.text = "";
+					this.txtAuthorizedPassages.text = "";
+					this.txtAuthorizedLodging.text = "";
+					this.txtAuthorizedFood.text = "";
+					this.txtAuthorizedMaterialsAndOrTool.text = "";
+					this.txtAuthorizedOthers.text = "";
+					this.sum();
+					this.authorizedSum();
 					return;
 				}
 				this.txtNumberOfVehicle.enabled = !isSelected;
@@ -397,6 +462,13 @@
 				this.txtFood.enabled = isSelected;
 				this.txtMaterialsAndOrTool.enabled = isSelected;
 				this.txtOthers.enabled = isSelected;
+				this.txtAuthorizedGAS.enabled = !isSelected;
+				this.txtAuthorizedTollBooths.enabled = !isSelected;
+				this.txtAuthorizedPassages.enabled = isSelected;
+				this.txtAuthorizedLodging.enabled = isSelected;
+				this.txtAuthorizedFood.enabled = isSelected;
+				this.txtAuthorizedMaterialsAndOrTool.enabled = isSelected;
+				this.txtAuthorizedOthers.enabled = isSelected;
 			}
 			
 			private function manageBus():void{
@@ -406,12 +478,23 @@
 					this.txtInitialMileage.text = "";
 					this.txtGAS.text = "";
 					this.txtTollBooths.text = "";
+					this.txtAuthorizedGAS.text = "";
+					this.txtAuthorizedTollBooths.text = "";
+					this.sum();
+					this.authorizedSum();
 				}else{
 					this.txtPassages.text = "";
 					this.txtLodging.text = "";
 					this.txtFood.text = "";
 					this.txtMaterialsAndOrTool.text = "";
 					this.txtOthers.text = "";
+					this.txtAuthorizedPassages.text = "";
+					this.txtAuthorizedLodging.text = "";
+					this.txtAuthorizedFood.text = "";
+					this.txtAuthorizedMaterialsAndOrTool.text = "";
+					this.txtAuthorizedOthers.text = "";
+					this.sum();
+					this.authorizedSum();
 					return;
 				}
 				this.txtNumberOfVehicle.enabled = !isSelected;
@@ -423,12 +506,22 @@
 				this.txtFood.enabled = isSelected;
 				this.txtMaterialsAndOrTool.enabled = isSelected;
 				this.txtOthers.enabled = isSelected;
+				this.txtAuthorizedGAS.enabled = !isSelected;
+				this.txtAuthorizedTollBooths.enabled = !isSelected;
+				this.txtAuthorizedPassages.enabled = isSelected;
+				this.txtAuthorizedLodging.enabled = isSelected;
+				this.txtAuthorizedFood.enabled = isSelected;
+				this.txtAuthorizedMaterialsAndOrTool.enabled = isSelected;
+				this.txtAuthorizedOthers.enabled = isSelected;
 			}
 			
 			private function manageCar():void{
 				var isSelected:Boolean = this.validateIs(MedioTransporte.ID_VEHICULO);
 				if( isSelected ){
 					this.txtPassages.text = "";
+					this.txtAuthorizedPassages.text = "";
+					this.sum();
+					this.authorizedSum();
 				}else{
 					this.txtNumberOfVehicle.text = "";
 					this.txtInitialMileage.text = "";
@@ -438,6 +531,14 @@
 					this.txtFood.text = "";
 					this.txtMaterialsAndOrTool.text = "";
 					this.txtOthers.text = "";
+					this.txtAuthorizedGAS.text = "";
+					this.txtAuthorizedTollBooths.text = "";
+					this.txtAuthorizedLodging.text = "";
+					this.txtAuthorizedFood.text = "";
+					this.txtAuthorizedMaterialsAndOrTool.text = "";
+					this.txtAuthorizedOthers.text = "";
+					this.sum();
+					this.authorizedSum();
 					return;
 				}
 				this.txtNumberOfVehicle.enabled = isSelected;
@@ -449,6 +550,13 @@
 				this.txtFood.enabled = isSelected;
 				this.txtMaterialsAndOrTool.enabled = isSelected;
 				this.txtOthers.enabled = isSelected;
+				this.txtAuthorizedGAS.enabled = isSelected;
+				this.txtAuthorizedTollBooths.enabled = isSelected;
+				this.txtAuthorizedPassages.enabled = !isSelected;
+				this.txtAuthorizedLodging.enabled = isSelected;
+				this.txtAuthorizedFood.enabled = isSelected;
+				this.txtAuthorizedMaterialsAndOrTool.enabled = isSelected;
+				this.txtAuthorizedOthers.enabled = isSelected;
 			}
 			
 			private function manageOther():void{
@@ -464,6 +572,15 @@
 					this.txtFood.text = "";
 					this.txtMaterialsAndOrTool.text = "";
 					this.txtOthers.text = "";
+					this.txtAuthorizedGAS.text = "";
+					this.txtAuthorizedTollBooths.text = "";
+					this.txtAuthorizedPassages.text = "";
+					this.txtAuthorizedLodging.text = "";
+					this.txtAuthorizedFood.text = "";
+					this.txtAuthorizedMaterialsAndOrTool.text = "";
+					this.txtAuthorizedOthers.text = "";
+					this.sum();
+					this.authorizedSum();
 					return;
 				}
 				this.txtNumberOfVehicle.enabled = isSelected;
@@ -475,6 +592,13 @@
 				this.txtFood.enabled = isSelected;
 				this.txtMaterialsAndOrTool.enabled = isSelected;
 				this.txtOthers.enabled = isSelected;
+				this.txtAuthorizedGAS.enabled = isSelected;
+				this.txtAuthorizedTollBooths.enabled = isSelected;
+				this.txtAuthorizedPassages.enabled = isSelected;
+				this.txtAuthorizedLodging.enabled = isSelected;
+				this.txtAuthorizedFood.enabled = isSelected;
+				this.txtAuthorizedMaterialsAndOrTool.enabled = isSelected;
+				this.txtAuthorizedOthers.enabled = isSelected;
 			}
 			
 			protected function responseGetDatosGeneralesProyecto_resultHandler(event:ResultEvent):void
@@ -489,6 +613,9 @@
 				this.dispatchEvent( genericEvent );
 			}
 			
+			private function mostrarBotonAceptar():Boolean{
+				return ( !this._readOnly && !this._perDiemPayment );
+			}
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -537,40 +664,73 @@
 		<mx:FormItem required="false" label="Kilometraje Inicial:">
 			<components:TextInput id="txtInitialMileage" textAlign="right" width="120"/>
 		</mx:FormItem>
-		<mx:FormItem label="Combustible:">
+		<mx:FormItem label="Combustible:" direction="horizontal">
 			<components:TextInput id="txtGAS" textAlign="right" width="160"
 								  focusOut="this.sum()" enter="this.sum()"/>
+			<mx:Label text="Autorizado:" visible="{this._perDiemPayment}"/>
+			<components:TextInput id="txtAuthorizedGAS" textAlign="right" width="160"
+								  focusOut="this.authorizedSum()" enter="this.authorizedSum()"
+								  visible="{this._perDiemPayment}"/>
 		</mx:FormItem>
-		<mx:FormItem label="Casetas:">
+		<mx:FormItem label="Casetas:" direction="horizontal">
 			<components:TextInput id="txtTollBooths" textAlign="right" width="160"
 								  focusOut="this.sum()" enter="this.sum()"/>
+			<mx:Label text="Autorizado:" visible="{this._perDiemPayment}"/>
+			<components:TextInput id="txtAuthorizedTollBooths" textAlign="right" width="160"
+								  focusOut="this.authorizedSum()" enter="this.authorizedSum()"
+								  visible="{this._perDiemPayment}"/>
 		</mx:FormItem>
-		<mx:FormItem label="Pasajes:">
+		<mx:FormItem label="Pasajes:" direction="horizontal">
 			<components:TextInput id="txtPassages" textAlign="right" width="160"
 								  focusOut="this.sum()" enter="this.sum()"/>
+			<mx:Label text="Autorizado:" visible="{this._perDiemPayment}"/>
+			<components:TextInput id="txtAuthorizedPassages" textAlign="right" width="160"
+								  focusOut="this.authorizedSum()" enter="this.authorizedSum()"
+								  visible="{this._perDiemPayment}"/>
 		</mx:FormItem>
-		<mx:FormItem label="Hospedaje:">
+		<mx:FormItem label="Hospedaje:" direction="horizontal">
 			<components:TextInput id="txtLodging" textAlign="right" width="160"
 								  focusOut="this.sum()" enter="this.sum()"/>
+			<mx:Label text="Autorizado:" visible="{this._perDiemPayment}"/>
+			<components:TextInput id="txtAuthorizedLodging" textAlign="right" width="160"
+								  focusOut="this.authorizedSum()" enter="this.authorizedSum()"
+								  visible="{this._perDiemPayment}"/>
 		</mx:FormItem>
-		<mx:FormItem label="Alimentos:">
+		<mx:FormItem label="Alimentos:" direction="horizontal">
 			<components:TextInput id="txtFood" textAlign="right" width="160"
 								  focusOut="this.sum()" enter="this.sum()"/>
+			<mx:Label text="Autorizado:" visible="{this._perDiemPayment}"/>
+			<components:TextInput id="txtAuthorizedFood" textAlign="right" width="160"
+								  focusOut="this.authorizedSum()" enter="this.authorizedSum()"
+								  visible="{this._perDiemPayment}"/>
 		</mx:FormItem>
-		<mx:FormItem label="Materiales y/o Herramienta:">
+		<mx:FormItem label="Materiales y/o Herramienta:" direction="horizontal">
 			<components:TextInput id="txtMaterialsAndOrTool" textAlign="right" width="160"
 								  focusOut="this.sum()" enter="this.sum()"/>
+			<mx:Label text="Autorizado:" visible="{this._perDiemPayment}"/>
+			<components:TextInput id="txtAuthorizedMaterialsAndOrTool" textAlign="right" width="160"
+								  focusOut="this.authorizedSum()" enter="this.authorizedSum()"
+								  visible="{this._perDiemPayment}"/>
 		</mx:FormItem>
-		<mx:FormItem label="Otros:">
+		<mx:FormItem label="Otros:" direction="horizontal">
 			<components:TextInput id="txtOthers" textAlign="right" width="160"
 								  focusOut="this.sum()" enter="this.sum()"/>
+			<mx:Label text="Autorizado:" visible="{this._perDiemPayment}"/>
+			<components:TextInput id="txtAuthorizedOthers" textAlign="right" width="160"
+								  focusOut="this.authorizedSum()" enter="this.authorizedSum()"
+								  visible="{this._perDiemPayment}"/>
 		</mx:FormItem>
-		<mx:FormItem required="true" label="Total Solicitado:">
-			<components:TextInput id="txtTotalRequested" textAlign="right" width="170"/>
+		<mx:FormItem required="true" label="Total Solicitado:" direction="horizontal">
+			<components:TextInput id="txtTotalRequested" textAlign="right" width="160"/>
+			<mx:Label text="Autorizado:" visible="{this._perDiemPayment}"/>
+			<components:TextInput id="txtTotalAuthorized" textAlign="right" width="160"
+								  visible="{this._perDiemPayment}"/>
 		</mx:FormItem>
 		<mx:FormItem direction="horizontal">
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"
-					   visible="{!this._readOnly}"/>
+					   visible="{this.mostrarBotonAceptar()}"/>
+			<mx:Button id="btnSave" label="Guardar" click="btnAccept_clickHandler(event)"
+					   visible="{this._perDiemPayment}"/>
 		</mx:FormItem>
 	</mx:Form>
 	<mx:RemoteObject id="solicitudViaticosService" destination="solicitudViaticosService" fault="solicitudViaticosService_faultHandler(event)"

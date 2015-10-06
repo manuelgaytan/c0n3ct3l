@@ -87,6 +87,7 @@
 					object = item[property];
 					this._items.addItem( object );
 				}
+				this.validateFirstElementAdded();
 			}
 			
 			public function get list():ArrayCollection{
@@ -165,7 +166,8 @@
 			private function validateFirstElementAdded():void
 			{
 				if( this.dispatchSelectedFirstElementAdded ){
-					if( this._items.length == 1 ){
+					if( !( this._items == null ) &&
+						this._items.length >= 1 ){
 						this.lstDelivers.selectedIndex = 0;
 						this.lstDelivers.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
 					}					

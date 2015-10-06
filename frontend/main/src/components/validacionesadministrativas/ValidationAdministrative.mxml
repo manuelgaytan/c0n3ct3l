@@ -13,6 +13,8 @@
 			import components.solicitudalmacen.Consult;
 			import components.telefoniamovil.Consult;
 			
+			import events.GenericEvent;
+			
 			import model.AreaSolicitante;
 			import model.Catalogo;
 			import model.Cliente;
@@ -26,6 +28,7 @@
 			import model.Imputable;
 			import model.Perfil;
 			import model.Prioridad;
+			import model.Proyecto;
 			import model.TipoAlmacen;
 			import model.TipoMantenimiento;
 			import model.TipoValidacionAdministrativa;
@@ -256,6 +259,7 @@
 					//this.parentProjectsConsult.cleanList();
 					this.projectsConsult.cleanList();
 				}
+				this.cleanDetails();
 				this.cmbAdministrativeValidationStatus.selectedIndex = 0;
 				this.cmbTypeValidationAdministrative.selectedIndex = 0;
 				this.txtPorcentage1.reset();
@@ -397,11 +401,41 @@
 				var percentage3:Number = value == undefined ? 0 : value;
 				this.txtTotalPorcentageRecovery.text = Util.numberToString( percentage1 + percentage2 + percentage3 );
 			}
+			
+			protected function responseGetDatosGeneralesProyecto_resultHandler(event:ResultEvent):void
+			{
+				var item:Proyecto = this.projectsConsult.selectedProyect();
+				if( item == null ){
+					Util.showErrorMessage("Primero debe seleccionar un elemento.");
+					return;
+				}
+				var genericEvent:GenericEvent = new GenericEvent("generalDataSelected");
+				genericEvent.information = event.result;
+				this.dispatchEvent( genericEvent );
+			}
+			
+			protected function projectsConsult_projectSelectedHandler(event:GenericEvent):void
+			{
+				var project:Proyecto = event.information as Proyecto;
+				if( project == null ){
+					return;
+				}
+				this.responseGetDatosGeneralesProyecto.token = this.datosGeneralesService.getByIdProyecto( project.id );
+			}
+			
+			private function cleanDetails():void
+			{
+				var event:GenericEvent = new GenericEvent("generalDataSelected");
+				event.information = null;
+				this.dispatchEvent( event );
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:Metadata>
 		[Event(name="validationAdministrativeNew", type="flash.events.Event")]
 		[Event(name="validationAdministrativeUpdated", type="flash.events.Event")]
+		[Event(name="generalDataSelected", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:Form id="form">
 		<mx:FormItem required="true" id="frmID" label="ID:">
@@ -419,7 +453,7 @@
 		<mx:FormItem label="Servicios:"/>
 		<mx:VBox width="850">
 			<mx:VBox width="100%" height="100%" verticalGap="5">
-				<proyectos:Consult id="projectsConsult"/>
+				<proyectos:Consult id="projectsConsult" projectSelected="projectsConsult_projectSelectedHandler(event)"/>
 			</mx:VBox>
 		</mx:VBox>
 		<mx:FormItem required="true" label="Revisión y Validación Administrativa:">
@@ -519,4 +553,7 @@
 	<mx:RemoteObject id="proyectoService" destination="proyectoService" fault="requisicionService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetAllByFiltro" result="responseGetAll_resultHandler(event)"/>
+	<mx:RemoteObject id="datosGeneralesService" destination="datosGeneralesService" fault="requisicionService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseGetDatosGeneralesProyecto" result="responseGetDatosGeneralesProyecto_resultHandler(event)"/>
 </mx:VBox>

@@ -347,7 +347,7 @@
 				this.cleanForm();
 			}
 			
-			private function cleanForm():void
+			public function cleanForm():void
 			{
 				Util.upScroll( this );
 				//this.txtConectelID.reset();

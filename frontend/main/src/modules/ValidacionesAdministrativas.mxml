@@ -2,6 +2,7 @@
 <mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
 		   width="900" height="500"
 		   xmlns:validacionesadministrativas="components.validacionesadministrativas.*"
+		   xmlns:datosgenerales="components.datosgenerales.*"
 		   creationComplete="creationCompleteHandler(event)">
 	<mx:Script>
 		<![CDATA[
@@ -9,6 +10,7 @@
 			
 			import model.ValidacionAdministrativa;
 			
+			import mx.controls.Alert;
 			import mx.events.FlexEvent;
 			
 			protected function creationCompleteHandler(event:FlexEvent):void
@@ -33,11 +35,29 @@
 				this.navigator.selectedChild = this.consult;
 				this.consult.executeQuery();
 			}
+			
+			protected function detail_generalDataSelectedHandler(event:GenericEvent):void
+			{
+				if( event == null ){
+					return;
+				}
+				var item:model.DatosGeneralesProyecto = event.information as model.DatosGeneralesProyecto;
+				if( item == null ){
+					this.generalDataDetail.cleanForm();
+					return;
+				}
+				this.generalDataDetail.generalDataProject = item;
+				this.navigator.selectedChild = this.generalDataDetail;
+			}
 		]]>
 	</mx:Script>
 	<mx:TabNavigator id="navigator" width="100%" height="100%" creationPolicy="all">
 		<validacionesadministrativas:Consult id="consult" validationAdministrativeDetail="consult_validationAdministrativeDetailHandler(event)"/>
-		<validacionesadministrativas:ValidationAdministrative id="detail" update="true" validationAdministrativeUpdated="detail_validationAdministrativeUpdatedHandler(event)"/>
-		<validacionesadministrativas:ValidationAdministrative id="register" registrer="true" validationAdministrativeNew="register_validationAdministrativeNewHandler(event)"/>
+		<validacionesadministrativas:ValidationAdministrative id="detail" update="true" validationAdministrativeUpdated="detail_validationAdministrativeUpdatedHandler(event)"
+															  generalDataSelected="detail_generalDataSelectedHandler(event)"/>
+		<validacionesadministrativas:ValidationAdministrative id="register" registrer="true" validationAdministrativeNew="register_validationAdministrativeNewHandler(event)"
+															  generalDataSelected="detail_generalDataSelectedHandler(event)"/>
+		<datosgenerales:GeneralData id="generalDataDetail" readOnly="true" 
+									label="Detalle Datos Generales Proyecto"/>
 	</mx:TabNavigator>
 </mx:Module>

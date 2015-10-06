@@ -2,7 +2,7 @@
 <mx:Accordion xmlns:mx="http://www.adobe.com/2006/mxml" 
 			  width="300" height="470"
 			  creationComplete="creationCompleteHandler(event)"
-			  creationPolicy="all">
+			  creationPolicy="all" show="this.buildMenu();">
 	<mx:Script>
 		<![CDATA[
 			import events.GenericEvent;
@@ -15,6 +15,8 @@
 			import mx.events.FlexEvent;
 			
 			private var titlesChanging:Array = [];
+			private var _userAccess:Usuario = null;			
+			
 			protected function clickMenuHandler(event:MouseEvent):void
 			{
 				var linkButton:LinkButton = event.currentTarget as LinkButton;
@@ -31,11 +33,16 @@
 			
 			protected function creationCompleteHandler(event:FlexEvent):void
 			{
-				this.selectedChild = empty;
 			}
 			
 			public function set userAccess(user:Usuario):void{
-				for each (var category:VBox in this.getChildren()) 
+				this._userAccess = user;
+				this.buildMenu();
+			}
+			
+			private function buildMenu():void{
+				var category:VBox = null;
+				for each (category in this.getChildren()) 
 				{
 					if( category == null ){
 						continue;
@@ -43,7 +50,7 @@
 					var existAnything:Boolean = false;
 					for each (var button:LinkButton in category.getChildren()) 
 					{
-						button.visible = user.allowed( button.id );
+						button.visible = this._userAccess.allowed( button.id );
 						if( button.visible ){
 							existAnything = true;
 						}
@@ -52,6 +59,7 @@
 						this.removeChild( category );
 					}
 				}
+				this.selectedChild = category;
 			}
 			
 			private function changeTitle(linkButton:LinkButton):String

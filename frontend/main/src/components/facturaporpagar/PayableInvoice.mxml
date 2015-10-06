@@ -357,10 +357,10 @@
 					return "";
 				}
 				if( item is OrdenCompraMaquilado ){
-					returnValue = (item as OrdenCompraMaquilado).solicitudServicioMaquilado.proyecto.id;
+					returnValue = Util.extractToText(item,"solicitudServicioMaquilado.proyecto.id");
 				}
 				if( item is OrdenCompraAlmacen  ){
-					returnValue = (item as OrdenCompraAlmacen).proyecto.id;
+					returnValue = Util.extractToText(item,"proyecto.id");
 				}
 				return returnValue;
 			}
@@ -371,10 +371,10 @@
 					return "";
 				}
 				if( item is OrdenCompraMaquilado ){
-					returnValue = (item as OrdenCompraMaquilado).solicitudServicioMaquilado.id;
+					returnValue = Util.extractToText(item,"solicitudServicioMaquilado.id");
 				}
 				if( (item is OrdenCompraAlmacen) && ( (item as OrdenCompraAlmacen).requisicionCompra != null ) ){
-					returnValue = (item as OrdenCompraAlmacen).requisicionCompra.id;
+					returnValue = Util.extractToText(item,"requisicionCompra.id");
 				}
 				return returnValue;
 			}

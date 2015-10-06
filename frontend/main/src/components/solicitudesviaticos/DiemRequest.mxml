@@ -514,7 +514,8 @@
 			</mx:VBox>
 		</mx:VBox>
 		<mx:FormItem required="true" label="Responsable Viáticos:">
-			<components:ComboList id="cmbApplicantsNames" labelField="nombreCompleto"
+			<components:ComboList id="cmbApplicantsNames" labelField="nombreCompleto" 
+								  avoidDuplicates="true" avoidAddFirstElement="true" dispatchSelectedFirstElementAdded="true"
 								  listChanged="cmbResponsibleViaticum_changeHandler(event)"/>
 		</mx:FormItem>
 		<mx:FormItem label="Número de Tarjeta:">

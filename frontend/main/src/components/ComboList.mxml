@@ -20,6 +20,15 @@
 			[Bindable]
 			public var labelField:String="etiqueta";
 			
+			[Bindable]
+			public var avoidDuplicates:Boolean = false;
+			
+			[Bindable]
+			public var avoidAddFirstElement:Boolean = false;
+			
+			[Bindable]
+			public var dispatchSelectedFirstElementAdded:Boolean = false;
+			
 			public function existElements():Boolean{
 				if( this._items == null ||
 					this._items.length == 0 ){
@@ -112,7 +121,11 @@
 				if( this._items == null ){
 					this._items = new ArrayCollection();
 				}
-				this._items.addItem( this.cmbCombo.selectedItem );
+				if( this.validateAddFirstElement( this.cmbCombo.selectedItem ) &&
+					this.validateDuplicates( this.cmbCombo.selectedItem ) ){
+					this._items.addItem( this.cmbCombo.selectedItem );
+					this.validateFirstElementAdded(); 
+				}
 			}
 			
 			protected function completeHandler(event:Event):void 
@@ -133,6 +146,32 @@
 			public function get selectedItem():Object{
 				return this.lstDelivers.selectedItem;
 			}
+			
+			private function elementExistInList(selectedItem:Object):Boolean
+			{
+				return this._items.contains( selectedItem );
+			}
+			
+			private function validateDuplicates(selectedItem:Object):Boolean
+			{
+				return this.avoidDuplicates && !this.elementExistInList( this.cmbCombo.selectedItem );
+			}
+			
+			private function validateAddFirstElement(selectedItem:Object):Boolean
+			{
+				return this.avoidAddFirstElement && !(selectedItem == this._comboItems.getItemAt( 0 ));
+			}
+			
+			private function validateFirstElementAdded():void
+			{
+				if( this.dispatchSelectedFirstElementAdded ){
+					if( this._items.length == 1 ){
+						this.lstDelivers.selectedIndex = 0;
+						this.lstDelivers.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
+					}					
+				}
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:Metadata>

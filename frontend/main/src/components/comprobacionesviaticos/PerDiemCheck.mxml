@@ -347,6 +347,7 @@
 				this.projectsConsult.datagrid.dataProvider = Util.asArrayCollection( diemRequest.proyecto );
 				this.projectsConsult.datagrid.selectedIndex = 0;
 				this.lstApplicantsNames.dataProvider = diemRequest.solicitantes;
+				this.validateFirstElementAdded();
 				this.txtConveyance.text = diemRequest.medioTransporte.etiqueta;
 				this.txtNumberOfVehicle.text = diemRequest.numeroVehiculo;
 				//this.txtInitialMileage.text = diemRequest.kilometrajeInicial;
@@ -384,6 +385,17 @@
 				}
 				this.setDiemRequest( perDiemPayment.solicitudViaticos );
 				this.txtTotalAuthorized.text = Util.numberToString(perDiemPayment.monto);
+			}
+			
+			private function validateFirstElementAdded():void
+			{
+				if( !( this.lstApplicantsNames == null ) &&
+					!( this.lstApplicantsNames.dataProvider == null ) &&
+					( this.lstApplicantsNames.dataProvider is ArrayCollection ) && 
+					( ( this.lstApplicantsNames.dataProvider as ArrayCollection ).length == 1 ) ){
+					this.lstApplicantsNames.selectedIndex = 0;
+					this.lstApplicantsNames.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
+				}
 			}
 		]]>
 	</mx:Script>

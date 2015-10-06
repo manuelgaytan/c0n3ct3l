@@ -438,7 +438,7 @@
 		<mx:FormItem label="Estatus de la Capacitación:">
 			<mx:ComboBox id="cmbTrainingStatus" labelField="estatus" change="cmbTrainingStatus_changeHandler(event)"/>
 		</mx:FormItem>
-		<mx:FormItem label="Resultado de Seguimiento:">
+		<mx:FormItem label="Resultado de Formación y Comentarios:">
 			<components:TextInput id="txtTraceResult" width="300"/>
 		</mx:FormItem>
 		<mx:FormItem direction="horizontal">

@@ -143,7 +143,7 @@
 								   dataField="id"
 								   width="60"
 								   textAlign="right"/>
-				<mx:DataGridColumn headerText="{'Tipo de Colaborador'}"
+				<mx:DataGridColumn headerText="{'Tipo de\nColaborador'}"
 								   dataField="colaborador.tipoColaborador.tipo"
 								   width="120"/>
 				<mx:DataGridColumn id="dtgColaboratorName" headerText="{'Nombre Colaborador'}"
@@ -195,7 +195,7 @@
 								   dataField="estatusConcentradoCapacitacion.estatus"
 								   width="120"
 								   />
-				<mx:DataGridColumn headerText="{'Resultado de\nSeguimiento'}"
+				<mx:DataGridColumn headerText="{'Resultado de\nFormación y\nComentarios'}"
 								   dataField="resultadoSeguimiento"
 								   width="220"
 								   />

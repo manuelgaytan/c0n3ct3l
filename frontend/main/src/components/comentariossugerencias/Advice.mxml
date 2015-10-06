@@ -213,6 +213,7 @@
 				Util.upScroll( this );
 				this.txtID.reset();
 				this.dtfDate.reset();
+				this.dtfDate.selectedDate = new Date();
 				this.cmbConectelPayroll.selectedIndex = 0;
 				this.txtName.reset();
 				this.txtEmail.reset();
@@ -293,7 +294,8 @@
 								  editable="false"/>
 		</mx:FormItem>
 		<mx:FormItem required="true" label="Fecha:">
-			<components:DateField id="dtfDate"/>
+			<components:DateField id="dtfDate" creationComplete="this.dtfDate.selectedDate = new Date()"
+								  enabled="false"/>
 		</mx:FormItem>
 		<mx:FormItem label="Nómina Conectel:">
 			<mx:ComboBox id="cmbConectelPayroll" width="400"

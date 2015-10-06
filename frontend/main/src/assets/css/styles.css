@@ -319,7 +319,8 @@ FILTERS                                                            *
 
 DateField
 {
-	label-style-name: labelDateField; 
+	disabled-color: "0x535557";
+	label-style-name: labelDateField;
 }
 
 /****************************************************************************************************************

@@ -11,6 +11,10 @@ package model
 		public var folio:String;
 		public var fecha:Date;
 		public var fechaPago:Date;
+		public var fechaPago1:Date;
+		public var porcentajePago1:String;
+		public var fechaPago2:Date;
+		public var porcentajePago2:String;
 		
 		public function FacturaPorPagar(){
 			

@@ -35,6 +35,10 @@
 			private static const ID_ODC_SERVICIO:int = 2;
 			private static const ODC_ALMACEN:String = "Órdenes de Compra de Bienes y Servicios";
 			private static const ODC_SERVICIO:String = "Órdenes de Compra de Servicios de Telecomunicaciones";
+			private static const ID_PARCIAL:int = 1;
+			private static const ID_TOTAL:int = 2;
+			private static const PARCIAL:String = "Parcial";
+			private static const TOTAL:String = "Total";
 			
 			private static function getDataProviderODC():ArrayCollection{
 				var catalago:Catalogo = null;
@@ -46,6 +50,20 @@
 				catalago = new Catalogo();
 				catalago.id = ID_ODC_SERVICIO;
 				catalago.etiqueta = ODC_SERVICIO;
+				data.addItem( catalago );
+				return Util.addEmptyCatalgo(data);
+			}
+			
+			private static function getDataProviderPaymentTypes():ArrayCollection{
+				var catalago:Catalogo = null;
+				var data:ArrayCollection = new ArrayCollection();
+				catalago = new Catalogo();
+				catalago.id = ID_PARCIAL;
+				catalago.etiqueta = PARCIAL;
+				data.addItem( catalago );
+				catalago = new Catalogo();
+				catalago.id = ID_TOTAL;
+				catalago.etiqueta = TOTAL;
 				data.addItem( catalago );
 				return Util.addEmptyCatalgo(data);
 			}
@@ -131,6 +149,7 @@
 					arrayPurchaseOrder = [this._item.ordenCompra];
 				}
 				this.dtgPurchaseOrder.dataProvider = arrayPurchaseOrder;
+				this.dtgPurchaseOrder.selectedIndex = 0;
 				this.lblSupplier.text = supplier;
 				this.txtFolio.text = this._item.folio;
 				this.dtfDate.selectedDate = this._item.fecha;
@@ -141,7 +160,29 @@
 				this.lblIVARetention.text = Util.formatCurrency(ivaRet);
 				this.lblOtherTaxes.text = Util.formatCurrency(otherTaxes);
 				this.lblTotal.text = Util.formatCurrency(total);
-				this.dtfPaymentDate.selectedDate = this._item.fechaPago;
+				if( this._item.fechaPago == null ){
+					this.currentState = "partialPayment";
+					this.dtfPaymentDate1.selectedDate = this._item.fechaPago1;
+					this.txtPercentagePayment1.text = this._item.porcentajePago1;					
+					this.dtfPaymentDate2.selectedDate = this._item.fechaPago2;
+					this.txtPercentagePayment2.text = this._item.porcentajePago2;
+				}else{
+					this.currentState = "totalPayment";
+					this.dtfPaymentDate.selectedDate = this._item.fechaPago;
+				}
+				if( Util.isFill( this.cmbPaymentType )  ){
+					var paymentType:Number = NaN;
+					if( !( this._item.fechaPago == null ) ){
+						paymentType = ID_TOTAL;	
+					}else if( !( this._item.fechaPago1 == null ) || !( this._item.fechaPago2 == null ) ||
+					 	!( this._item.porcentajePago1 == null ) || !( this._item.porcentajePago2 == null )	){
+						paymentType = ID_PARCIAL;	
+					}else{
+						paymentType = 0;
+					}
+					this.cmbPaymentType.selectedIndex = Util.selectedIndexFromCombo( this.cmbPaymentType.dataProvider as ArrayCollection, paymentType);
+					this.cmbPaymentType.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );  
+				}
 			}
 			
 			private function getPayableInvoice():FacturaPorPagar{
@@ -160,7 +201,20 @@
 				}
 				item.folio = Util.validateEmpty( this.txtFolio.text );
 				item.fecha = this.dtfDate.selectedDate;
-				item.fechaPago = this.dtfPaymentDate.selectedDate;
+				if( this.currentState == "partialPayment" ){
+					item.fechaPago1 = this.dtfPaymentDate1.selectedDate;
+					item.porcentajePago1 = Util.validateEmpty( this.txtPercentagePayment1.text );
+					item.fechaPago2 = this.dtfPaymentDate2.selectedDate;
+					item.porcentajePago2 = Util.validateEmpty( this.txtPercentagePayment2.text );
+					item.fechaPago = null;
+				}
+				if( this.currentState == "totalPayment" ){
+					item.fechaPago1 = null;
+					item.porcentajePago1 = null;
+					item.fechaPago2 = null;
+					item.porcentajePago2 = null;
+					item.fechaPago = this.dtfPaymentDate.selectedDate;
+				}
 				return item;
 			}
 			
@@ -224,6 +278,9 @@
 				this.validators = new InicializaValidadoresEtiquetas();
 				this.validators.crearValidadorRestrictor("generic",ValidadorCadenaCualquierCaracter.nombre, 0, 255);
 				this.validators.setValidador( this.txtFolio, "generic");
+				this.validators.crearValidadorRestrictor("percentage",ValidadorCadenaCualquierCaracter.nombre, 0, 20);
+				this.validators.setRestrictor( this.txtPercentagePayment1, "percentage");
+				this.validators.setRestrictor( this.txtPercentagePayment2, "percentage");
 			}
 			
 			protected function responseSave_resultHandler(event:ResultEvent):void
@@ -237,9 +294,9 @@
 			{
 				Util.upScroll( this );
 				if( !labels ){
-				this.txtID.reset();
-				this.cmbPurchaseOrderType.selectedIndex = 0;
-				Util.removeItems(this.dtgPurchaseOrder.dataProvider);
+					this.txtID.reset();
+					this.cmbPurchaseOrderType.selectedIndex = 0;
+					Util.removeItems(this.dtgPurchaseOrder.dataProvider);
 				}
 				this.lblSupplier.text = "";
 				this.txtFolio.reset();
@@ -251,7 +308,17 @@
 				this.lblIVARetention.text = "";
 				this.lblOtherTaxes.text = "";
 				this.lblTotal.text = "";
-				this.dtfPaymentDate.reset();
+				if( this.currentState == "partialPayment" ){
+					this.dtfPaymentDate1.reset();
+					this.txtPercentagePayment1.reset();	
+					this.dtfPaymentDate2.reset();
+					this.txtPercentagePayment2.reset();
+				}
+				if( this.currentState == "totalPayment" ){
+					this.dtfPaymentDate.reset();	
+				}
+				this.cmbPaymentType.selectedIndex = 0;
+				this.cmbPaymentType.dispatchEvent( new ListEvent( ListEvent.CHANGE ) );
 			}
 			
 			protected function responseUpdate_resultHandler(event:ResultEvent):void
@@ -378,6 +445,35 @@
 				}
 				return returnValue;
 			}
+			
+			protected function cmbPaymentType_changeHandler(event:ListEvent):void
+			{
+				var paymentType:* = Util.selectedId(this.cmbPaymentType); 
+				if( paymentType == 0 ){
+					this.currentState = "";
+					return;
+				}
+				if( paymentType == ID_PARCIAL ){
+					if( !( this.dtfPaymentDate == null ) ){
+						this.dtfPaymentDate.reset();
+					}
+					this.currentState = "partialPayment";
+				}else{
+					if( !( this.dtfPaymentDate1 == null ) ){
+						this.dtfPaymentDate1.reset();
+					}
+					if( !( this.txtPercentagePayment1 == null ) ){
+						this.txtPercentagePayment1.reset();
+					}
+					if( !( this.dtfPaymentDate2 == null ) ){
+						this.dtfPaymentDate2.reset();
+					}
+					if( !( this.txtPercentagePayment2 == null ) ){
+						this.txtPercentagePayment2.reset();
+					}
+					this.currentState = "totalPayment";
+				}
+			}
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -453,13 +549,41 @@
 		<mx:FormItem label="Total:">
 			<mx:Label id="lblTotal" textAlign="right" width="200"/>
 		</mx:FormItem>
-		<mx:FormItem label="Fecha de Pago:">
-			<components:DateField id="dtfPaymentDate"/>
+		<mx:FormItem id="frmPaymentType" label="Tipo de Pago:">
+			<mx:ComboBox id="cmbPaymentType" dataProvider="{getDataProviderPaymentTypes()}" width="200"
+				labelField="etiqueta" change="cmbPaymentType_changeHandler(event)"/>
 		</mx:FormItem>
-		<mx:FormItem>
+		<mx:FormItem id="frmAccept">
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
 		</mx:FormItem>
 	</mx:Form>
+	<mx:states>
+		<mx:State name="totalPayment">
+			<mx:AddChild relativeTo="{this.frmAccept}" position="before">
+				<mx:FormItem label="Fecha de Pago Total:">
+					<components:DateField id="dtfPaymentDate"/>
+				</mx:FormItem>
+			</mx:AddChild>
+		</mx:State>
+		<mx:State name="partialPayment">
+			<mx:AddChild relativeTo="{this.frmAccept}" position="before">
+				<mx:FormItem label="Fecha de Pago 1:" direction="horizontal">
+					<components:DateField id="dtfPaymentDate1"/>
+					<mx:Label text="Porcentaje de Pago 1:"/>
+					<components:TextInput id="txtPercentagePayment1" width="50" textAlign="right"/>
+					<mx:Label text="%"/>
+				</mx:FormItem>
+			</mx:AddChild>
+			<mx:AddChild relativeTo="{this.frmAccept}" position="before">
+				<mx:FormItem label="Fecha de Pago 2:" direction="horizontal">
+					<components:DateField id="dtfPaymentDate2"/>
+					<mx:Label text="Porcentaje de Pago 2:"/>
+					<components:TextInput id="txtPercentagePayment2" width="50" textAlign="right"/>
+					<mx:Label text="%"/>
+				</mx:FormItem>
+			</mx:AddChild>
+		</mx:State>
+	</mx:states>
 	<mx:RemoteObject id="facturaPorPagarService" destination="facturaPorPagarService" fault="facturaPorPagarService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseSave" result="responseSave_resultHandler(event)"/>

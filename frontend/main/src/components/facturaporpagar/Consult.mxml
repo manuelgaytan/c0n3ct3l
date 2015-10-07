@@ -129,7 +129,7 @@
 		[Event(name="payableInvoiceDetail", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
-	<mx:DataGrid id="datagrid" width="1180" height="100%" dataProvider="{items}"
+	<mx:DataGrid id="datagrid" width="1480" height="100%" dataProvider="{items}"
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 				 allowMultipleSelection="true">
 		<mx:columns>
@@ -151,49 +151,67 @@
 							   width="120"/>
 			<mx:DataGridColumn id="dtgDate" headerText="Fecha"
 							   dataField="fecha"
-							   width="80"
+							   width="100"
 							   textAlign="center"
 							   labelFunction="labelFunctionDate"/>
 			<mx:DataGridColumn id="dtgSubtotal" headerText="Subtotal"
-							   width="80"
+							   width="100"
 							   dataField="subtotal"
 							   labelFunction="{Util.labelFunctionCurrency}"
 							   textAlign="right"/>
 			<mx:DataGridColumn id="dtgIVA" headerText="I.V.A."
-							   width="80"
+							   width="100"
 							   dataField="iva"
 							   labelFunction="{Util.labelFunctionCurrency}"
 							   textAlign="right"/>
 			<mx:DataGridColumn headerText="I.E.P.S."
-							   width="80"
+							   width="100"
 							   dataField="ieps"
 							   labelFunction="{Util.labelFunctionCurrency}"
 							   textAlign="right"/>
 			<mx:DataGridColumn headerText="{'Retención\nI.S.R.'}"
-							   width="80"
+							   width="100"
 							   dataField="retencionIsr"
 							   labelFunction="{Util.labelFunctionCurrency}"
 							   textAlign="right"/>
 			<mx:DataGridColumn headerText="{'Retención\nI.V.A.'}"
-							   width="80"
+							   width="100"
 							   dataField="retencionIva"
 							   labelFunction="{Util.labelFunctionCurrency}"
 							   textAlign="right"/>
-			<mx:DataGridColumn headerText="Otros Impuestos"
-							   width="80"
+			<mx:DataGridColumn headerText="{'Otros\nImpuestos'}"
+							   width="100"
 							   dataField="otrosImpuestos"
 							   labelFunction="{Util.labelFunctionCurrency}"
 							   textAlign="right"/>
 			<mx:DataGridColumn id="dtgTotal" headerText="Total"
-							   width="80"
+							   width="100"
 							   dataField="total"
 							   labelFunction="{Util.labelFunctionCurrency}"
 							   textAlign="right"/>
-			<mx:DataGridColumn id="dtgPaymentDate" headerText="{'Fecha\nPago'}"
+			<mx:DataGridColumn id="dtgPaymentDate" headerText="{'Fecha\nPago\nTotal'}"
 							   dataField="fechaPago"
-							   width="80"
+							   width="100"
 							   textAlign="center"
 							   labelFunction="labelFunctionDate"/>
+			<mx:DataGridColumn id="dtgPaymentDate1" headerText="{'Fecha\nPago 1'}"
+							   dataField="fechaPago1"
+							   width="100"
+							   textAlign="center"
+							   labelFunction="labelFunctionDate"/>
+			<mx:DataGridColumn id="dtgPercentagePayment1" headerText="{'Porcentaje de\nPago 1'}"
+							   width="120"
+							   dataField="porcentajePago1"
+							   textAlign="right"/>
+			<mx:DataGridColumn id="dtgPaymentDate2" headerText="{'Fecha\nPago 2'}"
+							   dataField="fechaPago2"
+							   width="100"
+							   textAlign="center"
+							   labelFunction="labelFunctionDate"/>
+			<mx:DataGridColumn id="dtgPercentagePayment2" headerText="{'Porcentaje de\nPago 2'}"
+							   width="120"
+							   dataField="porcentajePago2"
+							   textAlign="right"/>
 		</mx:columns>
 	</mx:DataGrid>
 	</mx:HBox>

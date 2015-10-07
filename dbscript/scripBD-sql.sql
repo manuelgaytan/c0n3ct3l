@@ -939,6 +939,10 @@
 	folio VARCHAR(255) NOT NULL,
 	fecha DATE NOT NULL,
 	fecha_pago DATE,
+    fecha_pago1 DATE,
+    porcentaje_pago1 VARCHAR(20),
+    fecha_pago2 DATE,
+    porcentaje_pago2 VARCHAR(20),
 	PRIMARY KEY (id)
 	);
 

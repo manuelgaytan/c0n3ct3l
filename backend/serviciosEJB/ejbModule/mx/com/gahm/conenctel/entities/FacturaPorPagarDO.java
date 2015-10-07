@@ -33,6 +33,10 @@ public class FacturaPorPagarDO implements java.io.Serializable {
 	private String folio;
 	private Date fecha;
 	private Date fechaPago;
+	private Date fechaPago1;
+	private String porcentajePago1;
+	private Date fechaPago2;
+	private String porcentajePago2;
 
 	public FacturaPorPagarDO() {
 	}
@@ -44,12 +48,18 @@ public class FacturaPorPagarDO implements java.io.Serializable {
 
 	public FacturaPorPagarDO(OrdenCompraDO ordenCompra,
 			OrdenCompraMaquiladoDO ordenCompraMaquilado, String folio,
-			Date fecha, Date fechaPago) {
+			Date fecha, Date fechaPago, 
+			Date fechaPago1, String porcentajePago1,
+			Date fechaPago2, String porcentajePago2) {
 		this.ordenCompra = ordenCompra;
 		this.ordenCompraMaquilado = ordenCompraMaquilado;
 		this.folio = folio;
 		this.fecha = fecha;
 		this.fechaPago = fechaPago;
+		this.fechaPago1 = fechaPago1;
+		this.porcentajePago1 = porcentajePago1;
+		this.fechaPago2 = fechaPago2;
+		this.porcentajePago2 = porcentajePago2;
 	}
 
 	@Id
@@ -111,6 +121,44 @@ public class FacturaPorPagarDO implements java.io.Serializable {
 
 	public void setFechaPago(Date fechaPago) {
 		this.fechaPago = fechaPago;
+	}
+
+	@Temporal(TemporalType.DATE)
+	@Column(name = "fecha_pago1", length = 10)
+	public Date getFechaPago1() {
+		return fechaPago1;
+	}
+
+	public void setFechaPago1(Date fechaPago1) {
+		this.fechaPago1 = fechaPago1;
+	}
+
+	@Column(name = "porcentaje_pago1")
+	public String getPorcentajePago1() {
+		return porcentajePago1;
+	}
+
+	public void setPorcentajePago1(String porcentajePago1) {
+		this.porcentajePago1 = porcentajePago1;
+	}
+
+	@Temporal(TemporalType.DATE)
+	@Column(name = "fecha_pago2", length = 10)
+	public Date getFechaPago2() {
+		return fechaPago2;
+	}
+
+	public void setFechaPago2(Date fechaPago2) {
+		this.fechaPago2 = fechaPago2;
+	}
+
+	@Column(name = "porcentaje_pago2")
+	public String getPorcentajePago2() {
+		return porcentajePago2;
+	}
+
+	public void setPorcentajePago2(String porcentajePago2) {
+		this.porcentajePago2 = porcentajePago2;
 	}
 
 }

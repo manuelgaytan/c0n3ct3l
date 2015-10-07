@@ -1,5 +1,6 @@
 package mx.com.gahm.conenctel.services.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -48,6 +49,7 @@ public class ComprobacionViaticosService implements IComprobacionViaticosService
 
 			List<DocumentoComprobacionViaticosDO> documentos =item.getDocumentosComprobacionViaticos();
 			item.setDocumentosComprobacionViaticos(null);
+			item.setFechaSubidaDocumentos(new Date());
 			entityManager.persist(item);
 			this.saveDocumentos(item, documentos);
 		} catch (Exception e) {
@@ -74,6 +76,7 @@ public class ComprobacionViaticosService implements IComprobacionViaticosService
 		deleteDocumentos(item);
 		List<DocumentoComprobacionViaticosDO> documentos =item.getDocumentosComprobacionViaticos();
 		item.setDocumentosComprobacionViaticos(null);
+		item.setFechaSubidaDocumentos(new Date());
 		entityManager.merge(item);
 		saveDocumentos(item, documentos);
 		return item;

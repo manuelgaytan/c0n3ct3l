@@ -482,7 +482,7 @@
 			<components:FlatDeliver id="fltDlvUpDocuments"/>
 		</mx:FormItem>
 		<mx:FormItem label="Fecha de Subida de Documentos:">
-			<components:DateField id="dtfDateUploadedDocuments"
+			<components:DateField id="dtfDateUploadedDocuments" enabled="false"
 								  creationComplete="this.dtfDateUploadedDocuments.selectedDate = new Date()"/>
 		</mx:FormItem>
 		<mx:FormItem required="true" label="Estado:">

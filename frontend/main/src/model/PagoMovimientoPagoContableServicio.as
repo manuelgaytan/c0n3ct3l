@@ -11,6 +11,7 @@ package model
 		public var fechaAbono:Date;
 		public var monto:Number;
 		public var referenciaAbono:String;
+		public var cuentasDestino:String;		
 		public var comentariosPagoMovimientoPagoContableServicio:ArrayCollection;
 		
 		public function PagoMovimientoPagoContableServicio(){

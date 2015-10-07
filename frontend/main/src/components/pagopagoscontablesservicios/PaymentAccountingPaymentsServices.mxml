@@ -94,6 +94,7 @@
 				this.dtfPaymentDate.selectedDate = this._item.fechaAbono;
 				this.txtAmount.text = this._item.monto.toString();
 				this.txtPaymentReference.text = this._item.referenciaAbono;
+				this.txtDestinationAccounts.text = this._item.cuentasDestino;
 				this.comments.setCommentsIn( this._item.comentariosPagoMovimientoPagoContableServicio, "comentarioTesoreria");
 			}
 			
@@ -109,6 +110,7 @@
 				providerPayment.fechaAbono = this.dtfPaymentDate.selectedDate;
 				providerPayment.monto = Util.stringToNumber( this.txtAmount.text );
 				providerPayment.referenciaAbono = Util.validateEmpty( this.txtPaymentReference.text );
+				providerPayment.cuentasDestino = Util.validateEmpty( this.txtDestinationAccounts.text );
 				providerPayment.comentariosPagoMovimientoPagoContableServicio = this.comments.getCommentsAsInWith("model.ComentarioTesoreria","model.ComentarioPagoMovimientoPagoContableServicio","comentarioTesoreria");
 				return providerPayment;
 			}
@@ -175,6 +177,7 @@
 				this.validators.setValidador( this.txtAmount, "genericDecimal" );
 				this.validators.crearValidadorRestrictor("generic",ValidadorCadenaCualquierCaracter.nombre, 0, 255);
 				this.validators.setRestrictor( this.txtPaymentReference, "generic");
+				this.validators.setValidador( this.txtDestinationAccounts, "generic");
 			}
 			
 			protected function responseSave_resultHandler(event:ResultEvent):void
@@ -193,6 +196,7 @@
 				this.dtfPaymentDate.reset();
 				this.txtAmount.reset();
 				this.txtPaymentReference.reset();
+				this.txtDestinationAccounts.reset();
 				this.comments.reset();
 			}
 			
@@ -278,6 +282,9 @@
 		</mx:FormItem>
 		<mx:FormItem label="Referencia de Pago:">
 			<components:TextInput id="txtPaymentReference" textAlign="right" width="260"/>
+		</mx:FormItem>
+		<mx:FormItem label="Cuentas Destino:" required="true">
+			<components:TextInput id="txtDestinationAccounts" textAlign="right" width="260"/>
 		</mx:FormItem>
 		<components:Comments id="comments"/>
 		<mx:FormItem direction="horizontal">

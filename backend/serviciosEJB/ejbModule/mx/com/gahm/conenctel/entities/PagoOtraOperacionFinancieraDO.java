@@ -65,6 +65,9 @@ public class PagoOtraOperacionFinancieraDO implements Serializable {
 
 	@Column(name = "referencia_abono", nullable = false)
 	private Integer referenciaAbono;
+	
+	@Column(name = "cuentas_destino", nullable = false)
+	private String cuentasDestino;
 
 	@OneToMany(mappedBy="pagoOtraOperacionFinanciera", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<ComentarioPagoOtraOperacionFinancieraDO> comentariosPagoOtraOperacionFinanciera;
@@ -268,6 +271,14 @@ public class PagoOtraOperacionFinancieraDO implements Serializable {
 
 	public void setObservaciones(String observaciones) {
 		this.observaciones = observaciones;
+	}
+
+	public String getCuentasDestino() {
+		return cuentasDestino;
+	}
+
+	public void setCuentasDestino(String cuentasDestino) {
+		this.cuentasDestino = cuentasDestino;
 	}
 
 }

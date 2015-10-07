@@ -1671,6 +1671,7 @@
 	fecha_abono DATE NOT NULL,
 	monto DECIMAL(11,2) NOT NULL,
 	referencia_abono VARCHAR(255),
+    cuentas_destino VARCHAR(255) NOT NULL,
 	PRIMARY KEY (id)
 	);
 
@@ -1686,6 +1687,7 @@
 	fecha_abono DATE NOT NULL,
 	monto DECIMAL(11,2) NOT NULL,
 	referencia_abono INT(11) UNSIGNED,
+    cuentas_destino VARCHAR(255) NOT NULL,
 	observaciones VARCHAR(255),
 	PRIMARY KEY (id)
 	);

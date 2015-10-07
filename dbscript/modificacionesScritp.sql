@@ -13,3 +13,5 @@ alter table FacturaPorPagar add column porcentaje_pago1 VARCHAR(20);
 alter table FacturaPorPagar add column fecha_pago2 DATE;
 alter table FacturaPorPagar add column porcentaje_pago2 VARCHAR(20);
 
+alter table PagoMovimientoPagoContableServicio add column cuentas_destino VARCHAR(255) NOT NULL;
+alter table PagoOtraOperacionFinanciera add column cuentas_destino VARCHAR(255) NOT NULL;

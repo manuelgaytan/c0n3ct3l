@@ -103,6 +103,7 @@
 				this.dtfPaymentDate.selectedDate = this._item.fechaAbono;
 				this.txtAmount.text = this._item.monto.toString();
 				this.txtPaymentReference.text = Util.numberToString( this._item.referenciaAbono, true);
+				this.txtDestinationAccounts.text = this._item.cuentasDestino;
 				this.txtObservations.text = this._item.observaciones;
 				this.comments.setCommentsIn( this._item.comentariosPagoOtraOperacionFinanciera, "comentarioTesoreria");
 			}
@@ -123,6 +124,7 @@
 				otherFinancialOperation.fechaAbono = this.dtfPaymentDate.selectedDate;
 				otherFinancialOperation.monto = Util.stringToNumber( this.txtAmount.text );
 				otherFinancialOperation.referenciaAbono = Util.stringToNumber( this.txtPaymentReference.text );
+				otherFinancialOperation.cuentasDestino = Util.validateEmpty( this.txtDestinationAccounts.text );
 				otherFinancialOperation.observaciones = Util.validateEmpty( this.txtObservations.text );
 				otherFinancialOperation.comentariosPagoOtraOperacionFinanciera = this.comments.getCommentsAsInWith("model.ComentarioTesoreria","model.ComentarioPagoOtraOperacionFinanciera","comentarioTesoreria");
 				return otherFinancialOperation;
@@ -196,6 +198,7 @@
 				this.validators.crearValidadorRestrictor("genericInteger", ValidadorEntero.nombre, 14);
 				this.validators.setRestrictor( this.txtPaymentReference, "genericInteger" );
 				this.validators.setRestrictor( this.txtObservations, "genericAlfanumeric" );
+				this.validators.setValidador( this.txtDestinationAccounts, "genericAlfanumeric");
 			}
 			
 			protected function responseSave_resultHandler(event:ResultEvent):void
@@ -219,6 +222,7 @@
 				this.dtfPaymentDate.reset();
 				this.txtAmount.reset();
 				this.txtPaymentReference.reset();
+				this.txtDestinationAccounts.reset();
 				this.txtObservations.reset();
 				this.comments.reset();
 			}
@@ -308,6 +312,9 @@
 		</mx:FormItem>
 		<mx:FormItem label="Referencia:">
 			<components:TextInput id="txtPaymentReference" textAlign="right" width="160"/>
+		</mx:FormItem>
+		<mx:FormItem label="Cuentas Destino:" required="true">
+			<components:TextInput id="txtDestinationAccounts" textAlign="right" width="260"/>
 		</mx:FormItem>
 		<mx:FormItem label="Observaciones:">
 			<components:TextArea id="txtObservations" width="360"/>

@@ -90,7 +90,7 @@
 							   labelFunction="{Util.labelFunctionDate}"
 							   textAlign="center"
 							   wordWrap="true"/>
-			<mx:DataGridColumn id="dtgUserOriginated" headerText="{'Usuario\nCreación'}" width="100"
+			<mx:DataGridColumn id="dtgUserOriginated" headerText="{'Usuario\nSolicitante'}" width="100"
 							   dataField="usuarioCreacion.usuario"
 							   wordWrap="true"/>
 			<mx:DataGridColumn id="dtgAction" headerText="Notificación" width="270"

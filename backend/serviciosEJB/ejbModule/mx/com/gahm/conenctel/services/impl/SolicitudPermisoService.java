@@ -3,6 +3,7 @@
  */
 package mx.com.gahm.conenctel.services.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -58,7 +59,8 @@ public class SolicitudPermisoService implements ISolicitudPermisoService{
 	@Override
 	public SolicitudPermisoDO save(SolicitudPermisoDO item) {
 		List<ComentarioSolicitudPermisoDO> comentarios = item.getComentarios();
-		item.setComentarios( null ); 
+		item.setComentarios( null );
+		item.setFechaRegistro(new Date());
 		entityManager.persist(item);
 		saveComentarios(item,comentarios);
 		return item;
@@ -81,6 +83,7 @@ public class SolicitudPermisoService implements ISolicitudPermisoService{
 		deleteComentarios(item);
 		List<ComentarioSolicitudPermisoDO> comentarios = item.getComentarios();
 		item.setComentarios(null);
+		item.setFechaRegistro(new Date());
 		entityManager.merge(item);
 		saveComentarios(item,comentarios);
 		return item;

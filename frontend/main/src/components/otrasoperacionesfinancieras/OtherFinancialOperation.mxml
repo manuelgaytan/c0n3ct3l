@@ -31,6 +31,7 @@
 			import model.Proyecto;
 			import model.TipoColaborador;
 			import model.TipoEntregable;
+			import model.TipoPago;
 			import model.Util;
 			
 			import mx.charts.chartClasses.DualStyleObject;
@@ -104,6 +105,10 @@
 				this.txtAmount.text = this._item.monto.toString();
 				this.txtPaymentReference.text = Util.numberToString( this._item.referenciaAbono, true);
 				this.txtDestinationAccounts.text = this._item.cuentasDestino;
+				if( Util.isFill( this.cmbTipPago ) && this._item.tipoPago != null ){
+					this.cmbTipPago.selectedIndex = Util.selectedIndexFromCombo( this.cmbTipPago.dataProvider as ArrayCollection, 
+						this._item.tipoPago.id);
+				}
 				this.txtObservations.text = this._item.observaciones;
 				this.comments.setCommentsIn( this._item.comentariosPagoOtraOperacionFinanciera, "comentarioTesoreria");
 			}
@@ -125,6 +130,8 @@
 				otherFinancialOperation.monto = Util.stringToNumber( this.txtAmount.text );
 				otherFinancialOperation.referenciaAbono = Util.stringToNumber( this.txtPaymentReference.text );
 				otherFinancialOperation.cuentasDestino = Util.validateEmpty( this.txtDestinationAccounts.text );
+				otherFinancialOperation.tipoPago = new TipoPago();
+				otherFinancialOperation.tipoPago.id = ((this.cmbTipPago.selectedItem as TipoPago).id);
 				otherFinancialOperation.observaciones = Util.validateEmpty( this.txtObservations.text );
 				otherFinancialOperation.comentariosPagoOtraOperacionFinanciera = this.comments.getCommentsAsInWith("model.ComentarioTesoreria","model.ComentarioPagoOtraOperacionFinanciera","comentarioTesoreria");
 				return otherFinancialOperation;
@@ -134,6 +141,7 @@
 			{
 				this.responseGetConceptoOtraOperacionFinanciera.token = this.catalogoService.getConceptoOtraOperacionFinanciera();
 				this.responseGetBancoConectel.token = this.bancoConectelService.getAll();
+				this.responseTiposPago.token= this.catalogoService.getTipoPagoChequeEfectivoTransferencia();
 			}
 			
 			protected function pagoOtraOperacionFinancieraService_faultHandler(event:FaultEvent):void
@@ -173,6 +181,7 @@
 				value &&= Util.listBaseSelected( this.cmbAnotherFinancialOperationConcept );
 				value &&= Util.listBaseSelected( this.cmbConectelBank );
 				value &&= this.dtfPaymentDate.selectedDate != null;
+				value &&= Util.listBaseSelected( this.cmbTipPago );
 				return value;
 			}
 			
@@ -223,6 +232,7 @@
 				this.txtAmount.reset();
 				this.txtPaymentReference.reset();
 				this.txtDestinationAccounts.reset();
+				this.cmbTipPago.selectedIndex=0;
 				this.txtObservations.reset();
 				this.comments.reset();
 			}
@@ -266,6 +276,19 @@
 			{
 				Util.calculateIVA(txtSubtotal, txtIVA, txtTotal, this.IVApercent);
 			}
+			
+			protected function responseTiposPago_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbTipPago.dataProvider = data;//Util.addEmptyCatalgo( data, "tipo" );
+				if( this._item != null && this._item.tipoPago != null ){
+					this.cmbTipPago.selectedIndex = Util.selectedIndexFromCombo( this.cmbTipPago.dataProvider as ArrayCollection, 
+						this._item.tipoPago.id);
+				} 
+			}
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -292,7 +315,7 @@
 								  enter="this.calculateIVA()"
 								  focusOut="this.calculateIVA()"/>
 		</mx:FormItem>
-		<mx:FormItem required="true" label="I.V.A.:">
+		<mx:FormItem required="true" label="I.V.A.:" direction="horizontal">
 			<components:TextInput id="txtIVA" textAlign="right" width="100"/>
 			<components:TextInputIVA id="compIVA" view="{this}" calculate="{this.calculateIVA}"/>
 		</mx:FormItem>
@@ -316,6 +339,11 @@
 		<mx:FormItem label="Cuentas Destino:" required="true">
 			<components:TextInput id="txtDestinationAccounts" textAlign="right" width="260"/>
 		</mx:FormItem>
+		<mx:FormItem required="true" label="Tipo de Pago:">
+			<mx:ComboBox id="cmbTipPago"
+						 labelField="tipo"
+						 />
+		</mx:FormItem>
 		<mx:FormItem label="Observaciones:">
 			<components:TextArea id="txtObservations" width="360"/>
 		</mx:FormItem>
@@ -334,4 +362,5 @@
 	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="pagoOtraOperacionFinancieraService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetConceptoOtraOperacionFinanciera" result="responseGetConceptoOtraOperacionFinanciera_resultHandler(event)"/>
+	<mx:CallResponder id="responseTiposPago" result="responseTiposPago_resultHandler(event)" />
 </mx:VBox>

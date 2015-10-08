@@ -1544,4 +1544,22 @@ public class CatalogoService implements ICatalogoService {
 		}
 		return list;
 	}
+	
+	@Override
+	public List<TipoPagoDO> getTipoPagoChequeEfectivoTransferencia()
+			throws ConectelException {
+
+		List<TipoPagoDO> datos = null;
+
+		TypedQuery<TipoPagoDO> query = entityManager
+				.createNamedQuery("TipoPagoDO.findChequeEfectivoTransferencia",
+						TipoPagoDO.class);
+
+		try {
+			datos = query.getResultList();
+		} catch (NoResultException e) {
+			throw new ConectelException("No existen informaci�n para mostrar.");
+		}
+		return datos;
+	}
 }

@@ -16,6 +16,7 @@ package model
 		public var monto:Number;
 		public var referenciaAbono:*;
 		public var cuentasDestino:String;
+		public var tipoPago:TipoPago;
 		public var observaciones:String;
 		public var comentariosPagoOtraOperacionFinanciera:ArrayCollection;
 		

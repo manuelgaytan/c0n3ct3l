@@ -6,6 +6,7 @@ package model
 	public class SolicitudPermiso
 	{
 		public var id:*;
+		public var fechaRegistro:Date;
 		public var contratacion:InformacionConfidencialColaborador;
 		public var fecha:Date;
 		public var formaPagoPrenomina:FormaPagoPrenomina;

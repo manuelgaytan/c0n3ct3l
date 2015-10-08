@@ -33,6 +33,10 @@ public class SolicitudVacacionesDO implements Serializable{
 	@Column(name = "id", unique = true, nullable = false)
 	private Integer id;
 	
+	@Column(name = "fecha_registro", nullable = false)
+	@Temporal(TemporalType.DATE)
+	private Date fechaRegistro;
+	
 	@ManyToOne
 	@JoinColumn(name = "fk_contratacion", nullable = false)
 	private InformacionConfidencialColaboradorDO contratacion;
@@ -73,12 +77,13 @@ public class SolicitudVacacionesDO implements Serializable{
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public SolicitudVacacionesDO(Integer id, InformacionConfidencialColaboradorDO contratacion,
+	public SolicitudVacacionesDO(Integer id, Date fechaRegistro, InformacionConfidencialColaboradorDO contratacion,
 			Date fecha, VariacionDO variacion, Integer diasCorrespondientes,
 			Date fechaInicio, Date fechaFin, Boolean vistoBuenoJefeInmediato,
 			Boolean autorizacion) {
 		super();
 		this.id = id;
+		this.fechaRegistro = fechaRegistro;
 		this.contratacion = contratacion;
 		this.fecha = fecha;
 		this.variacion = variacion;
@@ -154,8 +159,10 @@ public class SolicitudVacacionesDO implements Serializable{
 	public void setPerfil(PerfilDO perfil) {
 		this.perfil = perfil;
 	}
-	
-	
-	
-	
+	public Date getFechaRegistro() {
+		return fechaRegistro;
+	}
+	public void setFechaRegistro(Date fechaRegistro) {
+		this.fechaRegistro = fechaRegistro;
+	}
 }

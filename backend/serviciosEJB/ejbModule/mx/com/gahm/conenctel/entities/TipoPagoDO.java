@@ -21,7 +21,8 @@ import javax.persistence.Table;
 @Cacheable(false)
 @Entity
 @NamedQueries({
-	@NamedQuery(name = "TipoPagoDO.findAll", query = "select tp from TipoPagoDO tp ")})
+	@NamedQuery(name = "TipoPagoDO.findAll", query = "select tp from TipoPagoDO tp "),
+	@NamedQuery(name = "TipoPagoDO.findChequeEfectivoTransferencia", query = "select tp from TipoPagoDO tp where tp.id in (1,2,3)")})
 @Table(name="tipopago")
 public class TipoPagoDO implements Serializable {
 	

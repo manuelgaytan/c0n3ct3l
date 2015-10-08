@@ -1672,6 +1672,7 @@
 	monto DECIMAL(11,2) NOT NULL,
 	referencia_abono VARCHAR(255),
     cuentas_destino VARCHAR(255) NOT NULL,
+    fk_tipo_pago INT(11) UNSIGNED NOT NULL,
 	PRIMARY KEY (id)
 	);
 
@@ -1688,6 +1689,7 @@
 	monto DECIMAL(11,2) NOT NULL,
 	referencia_abono INT(11) UNSIGNED,
     cuentas_destino VARCHAR(255) NOT NULL,
+    fk_tipo_pago INT(11) UNSIGNED NOT NULL,
 	observaciones VARCHAR(255),
 	PRIMARY KEY (id)
 	);
@@ -2619,6 +2621,7 @@
 	CREATE TABLE SolicitudPermiso
 	(
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+    fecha_registro DATE NOT NULL,
     fecha_permiso DATE NOT NULL,
 	fk_contratacion INT(11) UNSIGNED NOT NULL,
 	fecha DATE NOT NULL,
@@ -2667,6 +2670,7 @@
 	CREATE TABLE SolicitudVacaciones
 	(
 	id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+    fecha_registro DATE NOT NULL,
     fecha_permiso DATE NOT NULL,
 	fk_contratacion INT(11) UNSIGNED NOT NULL,
 	fecha DATE NOT NULL,
@@ -3499,6 +3503,9 @@
     
     ALTER TABLE ConcentradoCapacitacion ADD FOREIGN KEY fk_perfil_idxfk_8 (fk_perfil) REFERENCES Perfil (id);
     
+    ALTER TABLE PagoMovimientoPagoContableServicio ADD FOREIGN KEY fk_tipo_pago_idxfk_2 (fk_tipo_pago) REFERENCES TipoPago (id);
+
+    ALTER TABLE PagoOtraOperacionFinanciera ADD FOREIGN KEY fk_tipo_pago_idxfk_3 (fk_tipo_pago) REFERENCES TipoPago (id);
 	/*************************************************************************************************************************************
 	FIN CAMBIOS
 	/************************************************************************************************************************************/

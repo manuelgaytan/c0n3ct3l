@@ -86,6 +86,7 @@
 					return;
 				}
 				this.txtID.text = this._item.id;
+				this.dtfDate.selectedDate = this._item.fechaRegistro;
 				this.dtfApplicationDate.selectedDate = this._item.fecha;
 				this.recruitmentConsult.setDataAndSelected( Util.asArrayCollection( this._item.contratacion ) )
 				if( Util.isFill( this.cmbVariation ) && this._item 
@@ -108,6 +109,7 @@
 				}else{
 					item = this._item;
 				}
+				item.fechaRegistro = this.dtfDate.selectedDate;
 				item.fecha= this.dtfApplicationDate.selectedDate;
 				item.contratacion = this.recruitmentConsult.datagrid.selectedItem as InformacionConfidencialColaborador;
 				item.variacion = Util.validateCombo( this.cmbVariation ) as Variacion;
@@ -194,6 +196,7 @@
 			{
 				Util.upScroll( this );
 				this.txtID.reset();
+				this.dtfDate.selectedDate = new Date();
 				this.dtfApplicationDate.selectedDate = new Date();
 				this.recruitmentConsult.datagrid.selectedItem = null;
 				this.txtEmployeeName.reset();
@@ -258,6 +261,10 @@
 		<mx:FormItem required="true" id="frmID" label="Folio:">
 			<components:TextInput id="txtID" editable="false"
 								  textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem required="true" label="Fecha:">
+			<components:DateField id="dtfDate" creationComplete="dtfDate.selectedDate = new Date()"
+				enabled="false"/>
 		</mx:FormItem>
 		<mx:FormItem required="true" label="Fecha de Solicitud:">
 			<components:DateField id="dtfApplicationDate" enabled="false" creationComplete="dtfApplicationDate.selectedDate = new Date()"/>

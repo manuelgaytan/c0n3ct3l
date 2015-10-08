@@ -109,7 +109,7 @@
 		[Event(name="rentalApplicationDetail", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
-	<mx:DataGrid id="datagrid" width="1120" height="100%" dataProvider="{items}"
+	<mx:DataGrid id="datagrid" width="1210" height="100%" dataProvider="{items}"
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 				 allowMultipleSelection="true">
 		<mx:columns>
@@ -117,6 +117,11 @@
 							   dataField="id"
 							   width="80"
 							   textAlign="right"/>
+			<mx:DataGridColumn id="dtgDate" headerText="{'Fecha'}"
+								   width="90"
+								   dataField="fechaRegistro"
+								   labelFunction="{Util.labelFunctionDate}"
+								   textAlign="center"/>
 			<mx:DataGridColumn id="dtgApplicationDate" headerText="{'Fecha de\nSolicitud'}"
 							   width="80"
 							   dataField="fecha"

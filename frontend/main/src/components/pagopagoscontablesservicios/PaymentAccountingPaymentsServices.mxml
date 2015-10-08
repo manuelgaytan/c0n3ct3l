@@ -4,6 +4,7 @@
 		 >
 	<mx:Script>
 		<![CDATA[
+			import model.TipoPago;
 			import components.clientes.Client;
 			
 			import events.GenericEvent;
@@ -95,6 +96,10 @@
 				this.txtAmount.text = this._item.monto.toString();
 				this.txtPaymentReference.text = this._item.referenciaAbono;
 				this.txtDestinationAccounts.text = this._item.cuentasDestino;
+				if( Util.isFill( this.cmbTipPago ) && this._item.tipoPago != null ){
+					this.cmbTipPago.selectedIndex = Util.selectedIndexFromCombo( this.cmbTipPago.dataProvider as ArrayCollection, 
+						this._item.tipoPago.id);
+				}
 				this.comments.setCommentsIn( this._item.comentariosPagoMovimientoPagoContableServicio, "comentarioTesoreria");
 			}
 			
@@ -111,6 +116,8 @@
 				providerPayment.monto = Util.stringToNumber( this.txtAmount.text );
 				providerPayment.referenciaAbono = Util.validateEmpty( this.txtPaymentReference.text );
 				providerPayment.cuentasDestino = Util.validateEmpty( this.txtDestinationAccounts.text );
+				providerPayment.tipoPago = new TipoPago();
+				providerPayment.tipoPago.id = ((this.cmbTipPago.selectedItem as TipoPago).id);
 				providerPayment.comentariosPagoMovimientoPagoContableServicio = this.comments.getCommentsAsInWith("model.ComentarioTesoreria","model.ComentarioPagoMovimientoPagoContableServicio","comentarioTesoreria");
 				return providerPayment;
 			}
@@ -118,6 +125,7 @@
 			private function fillCombos():void
 			{
 				this.responseGetBancoConectel.token = this.bancoConectelService.getAll();
+				this.responseTiposPago.token= this.catalogoService.getTipoPagoChequeEfectivoTransferencia();
 			}
 			
 			
@@ -158,6 +166,7 @@
 				value &&= this.accountingPaymentsServicesConsult.datagrid.selectedItem != null;
 				value &&= Util.listBaseSelected( this.cmbConectelBank );
 				value &&= this.dtfPaymentDate.selectedDate != null;
+				value &&= Util.listBaseSelected( this.cmbTipPago );
 				return value;
 			}
 			
@@ -197,6 +206,7 @@
 				this.txtAmount.reset();
 				this.txtPaymentReference.reset();
 				this.txtDestinationAccounts.reset();
+				this.cmbTipPago.selectedIndex=0;
 				this.comments.reset();
 			}
 			
@@ -247,6 +257,19 @@
 				genericEvent.information = accountingPaymentsServices;
 				this.dispatchEvent( genericEvent );
 			}
+			
+			protected function responseTiposPago_resultHandler(event:ResultEvent):void
+			{
+				var data:ArrayCollection = event.result as ArrayCollection;
+				if( data == null ){
+					return;
+				}
+				this.cmbTipPago.dataProvider = data;//Util.addEmptyCatalgo( data, "tipo" );
+				if( this._item != null && this._item.tipoPago != null ){
+					this.cmbTipPago.selectedIndex = Util.selectedIndexFromCombo( this.cmbTipPago.dataProvider as ArrayCollection, 
+						this._item.tipoPago.id);
+				} 
+			}
 		]]>
 	</mx:Script>
 	<mx:Metadata>
@@ -286,6 +309,11 @@
 		<mx:FormItem label="Cuentas Destino:" required="true">
 			<components:TextInput id="txtDestinationAccounts" textAlign="right" width="260"/>
 		</mx:FormItem>
+		<mx:FormItem required="true" label="Tipo de Pago:">
+			<mx:ComboBox id="cmbTipPago"
+						 labelField="tipo"
+						 />
+		</mx:FormItem>
 		<components:Comments id="comments"/>
 		<mx:FormItem direction="horizontal">
 			<mx:Button id="btnAccept" label="Aceptar" click="btnAccept_clickHandler(event)"/>
@@ -301,4 +329,7 @@
 	<mx:RemoteObject id="comprobanteViaticosService" destination="comprobanteViaticosService" fault="pagoMovimientoPagoContableServicioService_faultHandler(event)"
 					 showBusyCursor="true"/>
 	<mx:CallResponder id="responseGetAll" result="responseGetAll_resultHandler(event)"/>
+	<mx:RemoteObject id="catalogoService" destination="catalogoService" fault="pagoMovimientoPagoContableServicioService_faultHandler(event)"
+					 showBusyCursor="true"/>
+	<mx:CallResponder id="responseTiposPago" result="responseTiposPago_resultHandler(event)" />
 </mx:VBox>

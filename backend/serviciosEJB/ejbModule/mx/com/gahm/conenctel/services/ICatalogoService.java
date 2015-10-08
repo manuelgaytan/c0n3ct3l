@@ -170,4 +170,5 @@ public interface ICatalogoService extends Serializable {
 	public List<EstadoConcentradoCapacitacionDO> getEstadoConcentradoCapacitacion() throws ConectelException;
 	public List<PerfilDO> getPerfiles() throws ConectelException;
 	public List<EstatusConcentradoCapacitacionDO> getEstatusConcentradoCapacitacion() throws ConectelException;
+	public List<TipoPagoDO> getTipoPagoChequeEfectivoTransferencia() throws ConectelException;
 }

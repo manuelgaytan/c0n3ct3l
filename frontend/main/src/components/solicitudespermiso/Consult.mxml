@@ -109,7 +109,7 @@
 		[Event(name="requestPermissionDetail", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
-		<mx:DataGrid id="datagrid" width="1470" height="100%" dataProvider="{items}"
+		<mx:DataGrid id="datagrid" width="1560" height="100%" dataProvider="{items}"
 					 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 					 allowMultipleSelection="true">
 			<mx:columns>
@@ -117,10 +117,15 @@
 								   dataField="id"
 								   width="80"
 								   textAlign="right"/>
+				<mx:DataGridColumn id="dtgApplicationDate" headerText="{'Fecha'}"
+								   width="90"
+								   dataField="fechaRegistro"
+								   labelFunction="{Util.labelFunctionDate}"
+								   textAlign="center"/>
 				<mx:DataGridColumn headerText="{'Nombre del Empleado'}"
 								   labelFunction="labelFunctionNombreEmpleado"
 								   width="280"/>
-				<mx:DataGridColumn id="dtgApplicationDate" headerText="{'Fecha de\nPermiso'}"
+				<mx:DataGridColumn id="dtgDate" headerText="{'Fecha de\nPermiso'}"
 								   width="90"
 								   dataField="fecha"
 								   labelFunction="{Util.labelFunctionDate}"

@@ -112,7 +112,7 @@
 		[Event(name="itemDetail", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
-		<mx:DataGrid id="datagrid" width="980" height="100%" dataProvider="{items}"
+		<mx:DataGrid id="datagrid" width="1080" height="100%" dataProvider="{items}"
 					 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 					 allowMultipleSelection="true"
 					 >
@@ -153,6 +153,9 @@
 								   width="120"
 								   textAlign="right"
 								   />
+				<mx:DataGridColumn id="dtgPaymentType" headerText="{'Tipo \nde Pago'}"
+							   dataField="tipoPago.tipo"
+							   width="100"/>
 			</mx:columns>
 		</mx:DataGrid>
 	</mx:HBox>

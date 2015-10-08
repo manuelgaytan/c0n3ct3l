@@ -90,6 +90,7 @@
 					return;
 				}
 				this.txtID.text = this._item.id;
+				this.dtfDate.selectedDate = this._item.fechaRegistro;
 				this.dtfPermissionDate.selectedDate = this._item.fecha;
 				this.recruitmentConsult.setDataAndSelected( Util.asArrayCollection( this._item.contratacion ) )
 				if( Util.isFill( this.cmbPaymentForm ) && this._item 
@@ -147,6 +148,7 @@
 				}else{
 					item = this._item;
 				}
+				item.fechaRegistro = this.dtfDate.selectedDate;
 				item.fecha= this.dtfPermissionDate.selectedDate;
 				item.contratacion = this.recruitmentConsult.datagrid.selectedItem as InformacionConfidencialColaborador;
 				item.formaPagoPrenomina = Util.validateCombo( this.cmbPaymentForm ) as FormaPagoPrenomina;
@@ -247,6 +249,7 @@
 			{
 				Util.upScroll( this );
 				this.txtID.reset();
+				this.dtfDate.selectedDate = new Date();
 				this.recruitmentConsult.datagrid.selectedItem = null;
 				this.dtfPermissionDate.selectedDate = new Date();
 				this.txtEmployeeName.reset();
@@ -388,6 +391,10 @@
 		<mx:FormItem required="true" id="frmID" label="Folio:">
 			<components:TextInput id="txtID" editable="false"
 								  textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem required="true" label="Fecha:">
+			<components:DateField id="dtfDate" creationComplete="dtfDate.selectedDate = new Date()"
+				enabled="false"/>
 		</mx:FormItem>
 		<mx:FormItem required="true" label="Colaborador:"/>
 		<mx:VBox width="730">

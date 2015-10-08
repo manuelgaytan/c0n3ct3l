@@ -68,6 +68,9 @@ public class PagoOtraOperacionFinancieraDO implements Serializable {
 	
 	@Column(name = "cuentas_destino", nullable = false)
 	private String cuentasDestino;
+	
+	@JoinColumn(name = "fk_tipo_pago", nullable = false)
+	private TipoPagoDO tipoPago;
 
 	@OneToMany(mappedBy="pagoOtraOperacionFinanciera", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<ComentarioPagoOtraOperacionFinancieraDO> comentariosPagoOtraOperacionFinanciera;
@@ -84,7 +87,8 @@ public class PagoOtraOperacionFinancieraDO implements Serializable {
 			ConceptoOtraOperacionFinancieraDO conceptoOtraOperacionFinanciera,
 			String razonSocial, Double subtotal, Double iva, Double total,
 			BancoConectelDO bancoConectel, Date fechaAbono, Double monto,
-			Integer referenciaAbono, String observaciones) {
+			Integer referenciaAbono, String cuentasDestino, TipoPagoDO tipoPago,
+			String observaciones) {
 		super();
 		this.id = id;
 		this.conceptoOtraOperacionFinanciera = conceptoOtraOperacionFinanciera;
@@ -96,6 +100,8 @@ public class PagoOtraOperacionFinancieraDO implements Serializable {
 		this.fechaAbono = fechaAbono;
 		this.monto = monto;
 		this.referenciaAbono = referenciaAbono;
+		this.cuentasDestino = cuentasDestino;
+		this.tipoPago = tipoPago;
 		this.observaciones = observaciones;
 	}
 
@@ -279,6 +285,14 @@ public class PagoOtraOperacionFinancieraDO implements Serializable {
 
 	public void setCuentasDestino(String cuentasDestino) {
 		this.cuentasDestino = cuentasDestino;
+	}
+
+	public TipoPagoDO getTipoPago() {
+		return tipoPago;
+	}
+
+	public void setTipoPago(TipoPagoDO tipoPago) {
+		this.tipoPago = tipoPago;
 	}
 
 }

@@ -33,6 +33,10 @@ public class SolicitudPermisoDO implements Serializable {
 	@Column(name = "id", unique = true, nullable = false)
 	private Integer id;
 	
+	@Column(name = "fecha_registro", nullable = false)
+	@Temporal(TemporalType.DATE)
+	private Date fechaRegistro;
+	
 	@ManyToOne
 	@JoinColumn(name = "fk_contratacion", nullable = false)
 	private InformacionConfidencialColaboradorDO contratacion;
@@ -77,7 +81,7 @@ public class SolicitudPermisoDO implements Serializable {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public SolicitudPermisoDO(Integer id, InformacionConfidencialColaboradorDO contratacion,
+	public SolicitudPermisoDO(Integer id, Date fechaRegistro, InformacionConfidencialColaboradorDO contratacion,
 			Date fecha, FormaPagoPrenominaDO formaPagoPrenomina,
 			Date fechaHoraSalida, Date fechaHoraRetorno,
 			PermisoSinGoceSueldoDO permisoSinGoceSueldo,
@@ -86,6 +90,7 @@ public class SolicitudPermisoDO implements Serializable {
 			List<ComentarioSolicitudPermisoDO> comentarios) {
 		super();
 		this.id = id;
+		this.fechaRegistro = fechaRegistro;
 		this.contratacion = contratacion;
 		this.fecha = fecha;
 		this.formaPagoPrenomina = formaPagoPrenomina;
@@ -168,5 +173,11 @@ public class SolicitudPermisoDO implements Serializable {
 	}
 	public void setPerfil(PerfilDO perfil) {
 		this.perfil = perfil;
+	}
+	public Date getFechaRegistro() {
+		return fechaRegistro;
+	}
+	public void setFechaRegistro(Date fechaRegistro) {
+		this.fechaRegistro = fechaRegistro;
 	}
 }

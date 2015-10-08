@@ -67,6 +67,9 @@ public class PagoMovimientoPagoContableServicioDO implements Serializable{
 	@Column(name = "cuentas_destino", nullable = false)
 	private String cuentasDestino;
 	
+	@JoinColumn(name = "fk_tipo_pago", nullable = false)
+	private TipoPagoDO tipoPago;
+	
 	@OneToMany(mappedBy="pagoMovimientoPagoContableServicio", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	private List<ComentarioPagoMovimientoPagoContableServicioDO> comentariosPagoMovimientoPagoContableServicio;
 	
@@ -78,7 +81,7 @@ public class PagoMovimientoPagoContableServicioDO implements Serializable{
 	public PagoMovimientoPagoContableServicioDO(Integer id,
 			MovimientoPagoContableServicioDO movimientoPagoContableServicio,
 			BancoConectelDO bancoConectel, Date fechaAbono, Double monto,
-			String referenciaAbono) {
+			String referenciaAbono, String cuentasDestino, TipoPagoDO tipoPago) {
 		super();
 		this.id = id;
 		this.movimientoPagoContableServicio = movimientoPagoContableServicio;
@@ -86,6 +89,8 @@ public class PagoMovimientoPagoContableServicioDO implements Serializable{
 		this.fechaAbono = fechaAbono;
 		this.monto = monto;
 		this.referenciaAbono = referenciaAbono;
+		this.cuentasDestino = cuentasDestino;
+		this.tipoPago = tipoPago;
 	}
 
 	public Integer getId() {
@@ -152,5 +157,13 @@ public class PagoMovimientoPagoContableServicioDO implements Serializable{
 
 	public void setCuentasDestino(String cuentasDestino) {
 		this.cuentasDestino = cuentasDestino;
+	}
+
+	public TipoPagoDO getTipoPago() {
+		return tipoPago;
+	}
+
+	public void setTipoPago(TipoPagoDO tipoPago) {
+		this.tipoPago = tipoPago;
 	}
 }

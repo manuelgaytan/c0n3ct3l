@@ -95,7 +95,7 @@
 		[Event(name="proveedorDetail", type="events.GenericEvent")]
 	</mx:Metadata>
 	<mx:HBox width="{Util.getGrandParentWidthLess(this)}" height="100%">
-	<mx:DataGrid id="datagrid" width="1030" height="100%" dataProvider="{items}"
+	<mx:DataGrid id="datagrid" width="1070" height="100%" dataProvider="{items}"
 				 doubleClickEnabled="true" doubleClick="datagrid_doubleClickHandler(event)"
 				 allowMultipleSelection="true">
 		<mx:columns>
@@ -108,7 +108,7 @@
 							   labelFunction="labelFunctionGenerico"/>
 			<mx:DataGridColumn id="dtgDescription" headerText="{'Tipo \nde Pago'}"
 							   dataField="tipoPago.tipo"
-							   width="80"/>
+							   width="100"/>
 			<mx:DataGridColumn id="dtgExistence" headerText="Moneda"
 							   dataField="moneda"
 							   width="80"/>
@@ -134,7 +134,7 @@
 							   width="120"/>
 			<mx:DataGridColumn headerText="{'CLABE\nInterbancaria'}"
 							   dataField="datoBancario.clabeInterbancaria"
-							   width="120"/>
+							   width="140"/>
 		</mx:columns>
 	</mx:DataGrid>
 	</mx:HBox>
